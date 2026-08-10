@@ -25,10 +25,11 @@
 | فیلد | مقدار |
 |------|--------|
 | Current Phase | P00 — Architecture Foundation |
-| Last Accepted Task | TC-P00-T001 |
-| Last Accepted Commit | `834e0c5` |
+| Last Accepted Task | TC-P00-T001A |
+| Last Accepted Commit | `110c748` |
 | Repository Bootstrap | COMPLETE |
 | Architecture Brain | COMPLETE |
+| Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Current Next Task | **TC-P00-T002** — Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules |
 
 ---
@@ -41,6 +42,7 @@
 | TC-P00-T000B | Frontend/repository bootstrap (Next.js monorepo) | Local PASS؛ مشکل remote بعداً حل شد | `cf97f35` |
 | TC-P00-T000C | GitHub auth / private repo / push sync | PASS | همان پایه روی `origin/main` |
 | TC-P00-T001 | Architecture Brain & Constitution | PASS | `834e0c5` |
+| TC-P00-T001A | Project continuity / recovery state | PASS | `110c748` |
 
 Bootstrap commit اولیهٔ فنی:
 
@@ -191,11 +193,12 @@ Search · SEO · Notification
 1. ریپوی TravelCore را باز کنید.
 2. `AGENTS.md` را بخوانید.
 3. `docs/PROJECT-STATE.md` را بخوانید.
-4. اسناد ارجاع‌شده توسط **Current Next Task** را بخوانید.
-5. تاریخچهٔ اخیر Git را بررسی کنید.
-6. وضعیت working tree را تأیید کنید.
-7. از **Current Next Task** ادامه دهید.
-8. فقط به‌خاطر نبودن context چت قبلی، معماری پذیرفته‌شده را بازطراحی نکنید.
+4. `docs/ROADMAP.md` را بخوانید.
+5. اسناد ارجاع‌شده توسط **Current Next Task** را بخوانید.
+6. تاریخچهٔ اخیر Git را بررسی کنید.
+7. وضعیت working tree را تأیید کنید.
+8. از **Current Next Task** ادامه دهید.
+9. فقط به‌خاطر نبودن context چت قبلی، معماری پذیرفته‌شده را بازطراحی نکنید.
 
 پیام پیشنهادی برای شروع گفت‌وگوی جدید با معمار:
 
