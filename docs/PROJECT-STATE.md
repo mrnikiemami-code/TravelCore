@@ -200,15 +200,19 @@ Search · SEO · Notification
 
 وقتی توسعه در چت/نشست AI جدید ادامه می‌یابد:
 
-1. ریپوی TravelCore را باز کنید.
-2. `AGENTS.md` را بخوانید.
-3. `docs/PROJECT-STATE.md` را بخوانید.
-4. `docs/ROADMAP.md` را بخوانید.
-5. اسناد ارجاع‌شده توسط **Current Next Task** را بخوانید.
-6. تاریخچهٔ اخیر Git را بررسی کنید.
-7. وضعیت working tree را تأیید کنید.
-8. از **Current Next Task** ادامه دهید.
-9. فقط به‌خاطر نبودن context چت قبلی، معماری پذیرفته‌شده را بازطراحی نکنید.
+1. ریشهٔ ریپو را با `git rev-parse --show-toplevel` کشف کنید (مسیر ثابت یک ماشین الزامی نیست).
+2. هویت remote را تأیید کنید: `mrnikiemami-code/TravelCore` (`git remote -v`).
+3. `git fetch origin` و در صورت behind بودن، همگام‌سازی safe با `git pull --ff-only`.
+4. `AGENTS.md` را بخوانید.
+5. `docs/PROJECT-STATE.md` را بخوانید.
+6. `docs/ROADMAP.md` را بخوانید.
+7. اسناد ارجاع‌شده توسط **Current Next Task** را بخوانید.
+8. تاریخچهٔ اخیر Git و وضعیت working tree را تأیید کنید.
+9. از **Current Next Task** ادامه دهید.
+10. فقط به‌خاطر نبودن context چت قبلی، معماری پذیرفته‌شده را بازطراحی نکنید.
+11. تاریخچه را force-push / hard-reset نکنید.
+
+جزئیات گردش‌کار چندماشینه: [`architecture/09-ai-development-workflow.md`](architecture/09-ai-development-workflow.md)
 
 پیام پیشنهادی برای شروع گفت‌وگوی جدید با معمار:
 

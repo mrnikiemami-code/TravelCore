@@ -37,11 +37,46 @@ Your job is **NOT** to redesign the architecture.
 
 Your **ONLY** job is to reconstruct the current authoritative TravelCore state from the repository and prepare a complete handoff for a new ChatGPT architect conversation.
 
-Repository:
+### Repository discovery (mandatory — no machine-specific path)
 
-`C:\Users\rezazadeh\source\repos\TravelCore`
+TravelCore is developed from **multiple machines**. Do **not** assume a hardcoded local path such as `C:\Users\...` or `D:\Users\...` as the project identity.
 
-The repository is the source of truth.
+At execution time, discover the repository root dynamically:
+
+```powershell
+git rev-parse --show-toplevel
+```
+
+Then verify identity against the canonical GitHub repository:
+
+```text
+mrnikiemami-code/TravelCore
+```
+
+Expected HTTPS remote:
+
+```text
+https://github.com/mrnikiemami-code/TravelCore.git
+```
+
+Also inspect:
+
+```powershell
+git remote -v
+git branch --show-current
+```
+
+If `origin` clearly points to a different GitHub repository, report:
+
+```text
+SOURCE OF TRUTH CONFLICT — unexpected Git remote.
+```
+
+Do not continue development. Do not “fix” remotes during recovery (recovery remains read-only).
+
+The repository (files + Git history + `origin` identity) is the source of truth.
+
+A local filesystem path may be reported as environment information only; it is **not** the canonical project identity.
 
 Do not depend on Cursor conversation memory.
 
@@ -51,12 +86,16 @@ Do not guess missing information.
 
 ## CRITICAL: FUTURE-PROOF DYNAMIC DISCOVERY
 
-This recovery prompt must remain valid in any phase (P00, P12, P25, …).
+This recovery prompt must remain valid in any phase (P00, P12, P25, …) and on any developer machine.
 
 Do **NOT** hardcode assumptions that the project is still in P00.
 
+Do **NOT** hardcode a mandatory local Windows path.
+
 At execution time, dynamically discover from the repository:
 
+- repository root via `git rev-parse --show-toplevel`
+- Git remote / canonical repository identity
 - Current Phase
 - Last Accepted Task
 - Last Accepted Commit
@@ -261,7 +300,7 @@ Include these sections.
 
 ### A. Project Identity
 
-Project · Repository · Local path · Branch · Architecture style · Backend stack · Frontend stack · Data/platform stack
+Project · Canonical GitHub repository (`owner/name`) · `origin` URL · Local path (environment only; not canonical identity) · Branch · Architecture style · Backend stack · Frontend stack · Data/platform stack
 
 ### B. Current Position
 

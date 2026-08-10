@@ -106,3 +106,37 @@ Architecture · Domain invariants · Validation · Authorization · Migration ·
 تغییر معنادار → ADR. فرایند: [`../adr/README.md`](../adr/README.md)
 
 Agent به‌صورت خودسرانه معماری را عوض نمی‌کند.
+
+---
+
+## چندماشینه و همگام‌سازی Git
+
+TravelCore ممکن است از چند ماشین توسعه داده شود.
+
+هویت کاننیکال ریپو:
+
+```text
+mrnikiemami-code/TravelCore
+```
+
+ریشهٔ محلی را با مسیر ثابت ماشین فرض نکنید؛ کشف کنید با:
+
+```text
+git rev-parse --show-toplevel
+```
+
+### قبل از شروع Task پیاده‌سازی
+
+1. وضعیت working tree را بررسی کنید (`git status`).
+2. branch را تأیید کنید (`main` مگر Task خلاف آن بگوید).
+3. `git fetch origin` را اجرا کنید.
+4. در صورت نیاز، با **fast-forward فقط** همگام شوید (`git pull --ff-only` وقتی behind هستید).
+5. هرگز تاریخچهٔ remote/local را با `reset --hard`، rebase تحمیلی، یا `push --force` بازنویسی نکنید مگر دستور صریح Task/مالک پروژه.
+
+### بعد از Task پیاده‌سازی پذیرفته‌شده
+
+1. Commit کنید.
+2. `git push` کنید (بدون force).
+3. تأیید کنید `origin/main` شامل commit پذیرفته‌شده است.
+
+اگر تاریخچه‌ها diverge شدند: متوقف شوید، گزارش دهید، و بدون تعمیر خودکار منتظر تصمیم بمانید.
