@@ -237,10 +237,42 @@
 - **Canonical:** IndexPolicy
 - **فارسی:** سیاست ایندکس‌پذیری (Published، Canonical، locale معتبر، عدم Redirect و …).
 
+### UUIDv7
+
+- **Canonical:** UUIDv7
+- **فارسی:** نسخهٔ ۷ شناسهٔ UUID برای هویت‌های دامنهٔ قابل‌ارجاع؛ تولید معمولاً در Application قبل از persistence.
+- **اشتباه رایج:** استفاده از UUID v4 به‌عنوان پیش‌فرض، یا وابستگی به sequence دیتابیس برای هویت عمومی.
+
+### ProviderMapping
+
+- **Canonical:** ProviderMapping
+- **فارسی:** نگاشت هویت داخلی TravelCore به `(ProviderCode, ExternalId)`؛ External ID هرگز PK داخلی نیست.
+- **اشتباه رایج:** یک جدول ExternalReference سراسری بدون ADR، یا Provider ID به‌عنوان PK.
+
+### Instant
+
+- **Canonical:** Instant
+- **فارسی:** نقطهٔ زمانی مطلق (NodaTime)؛ در PostgreSQL معمولاً `timestamptz`.
+
+### LocalDate
+
+- **Canonical:** LocalDate
+- **فارسی:** تاریخ تقویمی بدون timezone (مثلاً check-in)؛ PostgreSQL `date`.
+
+### LocalTime
+
+- **Canonical:** LocalTime
+- **فارسی:** ساعت دیواری محلی بدون تاریخ (مثلاً ۱۴:۰۰ check-in)؛ به UTC تبدیل نمی‌شود.
+
+### TimeZoneId
+
+- **Canonical:** TimeZoneId
+- **فارسی:** شناسهٔ IANA timezone (مثلاً `Asia/Tehran`)؛ نه نام Windows-only به‌عنوان مدل هسته.
+
 ---
 
 ## واژگان فنی که ترجمهٔ اجباری نمی‌شوند
 
-DbContext · Aggregate · Value Object · Minimal API · Vertical Slice · SEO · SSR · ISR · Modular Monolith · Outbox · ADR
+DbContext · Aggregate · Value Object · Minimal API · Vertical Slice · SEO · SSR · ISR · Modular Monolith · Outbox · ADR · NodaTime · JSONB
 
 در نثر فارسی می‌توانند عیناً انگلیسی بمانند وقتی دقیق‌ترند.
