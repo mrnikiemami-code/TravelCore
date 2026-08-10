@@ -42,6 +42,7 @@
 | Current Next Task | **TC-P00-T004** — UI Constitution |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
+| TC-P00-T004 State | AWAITING_ARCHITECT_REVIEW |
 
 ### Accepted repository state (خلاصه)
 
@@ -189,6 +190,19 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 #### TC-P00-T004 — UI Constitution
 
 Current Next Task.
+
+**State:** AWAITING_ARCHITECT_REVIEW (not Accepted; do not advance to T005 until architect accepts).
+
+اسناد پیشنهادی این Task:
+
+- [`architecture/10-ui-constitution.md`](architecture/10-ui-constitution.md)
+- [`ui/01-design-system-architecture.md`](ui/01-design-system-architecture.md)
+- [`ui/02-responsive-mobile-architecture.md`](ui/02-responsive-mobile-architecture.md)
+- [`ui/03-rtl-ltr-bidi.md`](ui/03-rtl-ltr-bidi.md)
+- [`ui/04-page-archetype-contract.md`](ui/04-page-archetype-contract.md)
+- [`ui/05-accessibility-and-interaction.md`](ui/05-accessibility-and-interaction.md)
+
+ADRهای مرتبط: Proposed (0005–0006) — تا بازبینی معمار Accepted نشوند.
 
 باید تعریف کند:
 
