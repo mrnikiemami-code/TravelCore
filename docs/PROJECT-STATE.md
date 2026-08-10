@@ -31,15 +31,14 @@
 | فیلد | مقدار |
 |------|--------|
 | Current Phase | P00 — Architecture Foundation |
-| Last Accepted Task | TC-P00-T001A |
-| Last Accepted Commit | `110c748` |
+| Last Accepted Task | TC-P00-T002 |
+| Last Accepted Commit | `08343e7` |
 | Repository Bootstrap | COMPLETE |
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Task | **TC-P00-T002** — Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules |
-| Task State | AWAITING_ARCHITECT_REVIEW |
-| Current Next Task | **TC-P00-T002** — Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules |
+| Current Active Task | None |
+| Current Next Task | **TC-P00-T003** — Data Architecture |
 
 ---
 
@@ -52,6 +51,7 @@
 | TC-P00-T000C | GitHub auth / private repo / push sync | PASS | همان پایه روی `origin/main` |
 | TC-P00-T001 | Architecture Brain & Constitution | PASS | `834e0c5` |
 | TC-P00-T001A | Project continuity / recovery state | PASS | `110c748` |
+| TC-P00-T002 | Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules | ACCEPTED / COMPLETE | `08343e7` |
 
 Bootstrap commit اولیهٔ فنی:
 

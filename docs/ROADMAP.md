@@ -37,9 +37,10 @@
 | Project | TravelCore |
 | Current Phase | P00 — Architecture Foundation |
 | Phase Status | IN_PROGRESS |
-| Last Accepted Task | TC-P00-T001A |
-| Current Next Task | **TC-P00-T002** — Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules |
-| TC-P00-T002 State | AWAITING_ARCHITECT_REVIEW |
+| Last Accepted Task | TC-P00-T002 |
+| Last Accepted Commit | `08343e7` |
+| Current Next Task | **TC-P00-T003** — Data Architecture |
+| TC-P00-T002 State | COMPLETE / ACCEPTED |
 
 ### Accepted repository state (خلاصه)
 
@@ -178,16 +179,13 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 | TC-P00-T001 | Architecture Brain / Constitution |
 | TC-P00-T001A | Project continuity / recovery state |
 | TC-P00-T001B | Master Roadmap (همین سند) |
+| TC-P00-T002 | Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules — COMPLETE / ACCEPTED (`08343e7`) |
 
 ### Next planned architecture tasks
 
-#### TC-P00-T002 — Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules
+#### TC-P00-T003 — Data Architecture
 
 Current Next Task.
-
-**State:** AWAITING_ARCHITECT_REVIEW (not Accepted; do not advance to T003 until architect accepts).
-
-#### TC-P00-T003 — Data Architecture
 
 باید تعریف کند:
 
