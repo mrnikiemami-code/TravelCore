@@ -4,6 +4,12 @@
 
 جزئیات معماری در اسناد اختصاصی است؛ این فایل **فهرست وضعیت و بازیابی** است، نه طراحی تفصیلی.
 
+### Emergency ChatGPT Recovery
+
+اگر گفتگوی معمار ChatGPT از دست رفت، قبل از ادامه این Prompt را در Cursor اجرا کنید:
+
+`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`
+
 ---
 
 ## Project Identity
@@ -30,6 +36,7 @@
 | Repository Bootstrap | COMPLETE |
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
+| Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
 | Current Next Task | **TC-P00-T002** — Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules |
 
 ---

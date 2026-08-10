@@ -20,6 +20,14 @@
 
 معماری را از صفر دوباره تحلیل نکنید مگر مسئلهٔ صریحی پیدا شود.
 
+### Emergency ChatGPT Recovery
+
+اگر گفتگوی معمار از دست رفت:
+
+`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`
+
+این Prompt را در Cursor اجرا کنید و Recovery Packet را به ChatGPT جدید بدهید — قبل از ادامهٔ توسعه.
+
 ---
 
 ## Project Position
