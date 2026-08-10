@@ -39,6 +39,7 @@
 | Phase Status | IN_PROGRESS |
 | Last Accepted Task | TC-P00-T001A |
 | Current Next Task | **TC-P00-T002** — Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules |
+| TC-P00-T002 State | AWAITING_ARCHITECT_REVIEW |
 
 ### Accepted repository state (خلاصه)
 
@@ -183,6 +184,8 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 #### TC-P00-T002 — Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules
 
 Current Next Task.
+
+**State:** AWAITING_ARCHITECT_REVIEW (not Accepted; do not advance to T003 until architect accepts).
 
 #### TC-P00-T003 — Data Architecture
 
