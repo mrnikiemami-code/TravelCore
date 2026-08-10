@@ -1,6 +1,6 @@
 # ADR 0004 — Temporal Model with NodaTime and IANA Timezones
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-10
 - **Task:** TC-P00-T003
 - **Related:** [`../data/03-temporal-model.md`](../data/03-temporal-model.md)

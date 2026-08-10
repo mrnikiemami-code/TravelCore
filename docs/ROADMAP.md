@@ -37,11 +37,11 @@
 | Project | TravelCore |
 | Current Phase | P00 — Architecture Foundation |
 | Phase Status | IN_PROGRESS |
-| Last Accepted Task | TC-P00-T002 |
-| Last Accepted Commit | `08343e7` |
-| Current Next Task | **TC-P00-T003** — Data Architecture |
+| Last Accepted Task | TC-P00-T003 |
+| Last Accepted Commit | `3904bb9` |
+| Current Next Task | **TC-P00-T004** — UI Constitution |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
-| TC-P00-T003 State | AWAITING_ARCHITECT_REVIEW |
+| TC-P00-T003 State | COMPLETE / ACCEPTED |
 
 ### Accepted repository state (خلاصه)
 
@@ -181,43 +181,14 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 | TC-P00-T001A | Project continuity / recovery state |
 | TC-P00-T001B | Master Roadmap (همین سند) |
 | TC-P00-T002 | Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules — COMPLETE / ACCEPTED (`08343e7`) |
+| TC-P00-T003 | Data Architecture — COMPLETE / ACCEPTED (`3904bb9`); ADRs 0001–0004 Accepted |
+| TC-P00-T003R | Canonical repository identity normalization — PASS / ACCEPTED (`840c3e5`) |
 
 ### Next planned architecture tasks
 
-#### TC-P00-T003 — Data Architecture
+#### TC-P00-T004 — UI Constitution
 
 Current Next Task.
-
-**State:** AWAITING_ARCHITECT_REVIEW (not Accepted; do not advance to T004 until architect accepts).
-
-اسناد پیشنهادی این Task:
-
-- [`architecture/07-data-architecture.md`](architecture/07-data-architecture.md)
-- [`architecture/08-persistence-and-migrations.md`](architecture/08-persistence-and-migrations.md)
-- [`data/01-identifiers-and-references.md`](data/01-identifiers-and-references.md)
-- [`data/02-money-and-currency.md`](data/02-money-and-currency.md)
-- [`data/03-temporal-model.md`](data/03-temporal-model.md)
-- [`data/04-localization-and-json-policy.md`](data/04-localization-and-json-policy.md)
-
-ADRهای مرتبط: Proposed (0001–0004) — تا بازبینی معمار Accepted نشوند.
-
-باید تعریف کند:
-
-- module data ownership
-- PostgreSQL schema strategy
-- ID policy / UUID strategy
-- cross-module references
-- transaction boundary
-- EF Core ownership
-- Dapper policy
-- migrations
-- audit fields
-- optimistic concurrency where relevant
-- Date/Time policy
-- Money fundamentals
-- external references / provider IDs
-
-#### TC-P00-T004 — UI Constitution
 
 باید تعریف کند:
 

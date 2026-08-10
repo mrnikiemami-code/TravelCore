@@ -75,3 +75,14 @@ NNNN-short-kebab-title.md
 - ADR محتوایی فقط در Task صریحی که تصمیم را می‌گیرد ایجاد شود
 - Agent بدون دستور Task، ADR اختراع نکند
 - Accepted شدن نیازمند بازبینی معمار است؛ Proposed به‌تنهایی لازم‌الاجرا به‌معنای Accepted نیست
+
+---
+
+## ADR Index
+
+| ADR | Title | Status |
+|-----|-------|--------|
+| [`0001`](0001-postgresql-schema-per-module.md) | PostgreSQL schema-per-module · no cross-module FK by default | Accepted |
+| [`0002`](0002-uuid-v7-domain-identity.md) | UUID v7 domain identity | Accepted |
+| [`0003`](0003-money-currency-irr-toman.md) | Money · Currency · IRR/Toman | Accepted |
+| [`0004`](0004-temporal-model-nodatime.md) | Temporal model · NodaTime · IANA | Accepted |

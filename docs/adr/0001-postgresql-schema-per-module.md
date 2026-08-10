@@ -1,6 +1,6 @@
 # ADR 0001 — PostgreSQL Schema-per-Module and No Cross-Module FK by Default
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-10
 - **Task:** TC-P00-T003
 - **Related:** [`../architecture/07-data-architecture.md`](../architecture/07-data-architecture.md) · [`../architecture/08-persistence-and-migrations.md`](../architecture/08-persistence-and-migrations.md)

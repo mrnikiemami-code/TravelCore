@@ -31,15 +31,17 @@
 | فیلد | مقدار |
 |------|--------|
 | Current Phase | P00 — Architecture Foundation |
-| Last Accepted Task | TC-P00-T002 |
-| Last Accepted Commit | `08343e7` |
+| Last Accepted Task | TC-P00-T003 |
+| Last Accepted Commit | `3904bb9` |
+| Accepted Architecture Commit | `3904bb9` |
+| Repository Normalization | TC-P00-T003R — PASS / ACCEPTED |
+| Repository Normalization Commit | `840c3e5` |
 | Repository Bootstrap | COMPLETE |
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Task | **TC-P00-T003** — Data Architecture |
-| Task State | AWAITING_ARCHITECT_REVIEW |
-| Current Next Task | **TC-P00-T003** — Data Architecture |
+| Current Active Task | None |
+| Current Next Task | **TC-P00-T004** — UI Constitution |
 
 ---
 
@@ -53,6 +55,8 @@
 | TC-P00-T001 | Architecture Brain & Constitution | PASS | `834e0c5` |
 | TC-P00-T001A | Project continuity / recovery state | PASS | `110c748` |
 | TC-P00-T002 | Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules | ACCEPTED / COMPLETE | `08343e7` |
+| TC-P00-T003 | Data Architecture | ACCEPTED / COMPLETE | `3904bb9` |
+| TC-P00-T003R | Normalize canonical GitHub repository identity | PASS / ACCEPTED | `840c3e5` |
 
 Bootstrap commit اولیهٔ فنی:
 

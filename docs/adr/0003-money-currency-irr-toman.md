@@ -1,6 +1,6 @@
 # ADR 0003 — Money, Currency, and IRR/Toman Policy
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-10
 - **Task:** TC-P00-T003
 - **Related:** [`../data/02-money-and-currency.md`](../data/02-money-and-currency.md) · Constitution § پول

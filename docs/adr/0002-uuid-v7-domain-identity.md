@@ -1,6 +1,6 @@
 # ADR 0002 — UUID v7 Domain Identity Policy
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-10
 - **Task:** TC-P00-T003
 - **Related:** [`../data/01-identifiers-and-references.md`](../data/01-identifiers-and-references.md)
