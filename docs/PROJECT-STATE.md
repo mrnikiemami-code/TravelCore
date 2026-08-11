@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P01 — Platform / Backend Foundation** (product phase next; **not started**) |
+| Current Phase | **P01 — Platform / Backend Foundation** (next product phase; **NOT_STARTED**) |
 | Previous Phase | P00 — Architecture Foundation |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -39,13 +39,15 @@
 | Accepted Architecture Commit (T008 content) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | P00 Closure Commit | `6c65cb9` |
-| Last Accepted Commit | `0074437` |
+| TC-GOV-T001 | COMPLETE / ACCEPTED |
+| TC-GOV-T001 Architecture/Protocol Commit | `f44f11e` |
+| TC-GOV-T001A | AWAITING_ARCHITECT_REVIEW (activation / ADR 0013 acceptance) |
+| Last Accepted Commit | `f44f11e` (protocol definition; acceptance commit is this Task) |
 | ADR 0001–0012 | ALL Accepted |
-| ADR 0013 | **Proposed** (TC-GOV-T001) — Controlled agent handoff · human-gated phase transitions |
-| Unresolved Proposed ADR | **YES** — ADR 0013 |
-| Governance Task | **TC-GOV-T001** |
-| Governance Task State | **AWAITING_ARCHITECT_REVIEW** |
-| Agent Handoff Pipeline | **NOT_ACTIVE_UNTIL_ADR_0013_ACCEPTED** |
+| ADR 0013 | **ACCEPTED** — Controlled agent handoff · human-gated phase transitions |
+| Unresolved Proposed ADR | NO |
+| Agent Handoff Pipeline | **ACTIVE** |
+| Protocol | `TRAVELCORE_CURSOR_TASK_V1` · `TRAVELCORE_CURSOR_RESULT_V1` |
 | Future Architecture Transition Map | [`docs/architecture/15-future-architecture-transition-map.md`](architecture/15-future-architecture-transition-map.md) |
 | Agent Handoff Architecture | [`docs/architecture/16-agent-handoff-and-phase-gates.md`](architecture/16-agent-handoff-and-phase-gates.md) |
 | Handoff Protocol Docs | [`docs/ai/01-chatgpt-cursor-handoff-protocol.md`](ai/01-chatgpt-cursor-handoff-protocol.md) · [`02`](ai/02-execution-state-machine.md) · [`03`](ai/03-human-confirmation-gates.md) |
@@ -57,21 +59,26 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Task | TC-GOV-T001 (governance; awaiting architect review) |
+| Current Active Product Task | None |
 | Current Next Product Phase | P01 — Platform / Backend Foundation |
-| Current Next Task | **Await ADR 0013 architect acceptance; then P01 task planning** |
+| Current Next Task | **Await USER `TRAVELCORE_PHASE_CONFIRM: P01` before any P01 work** |
 | P01 | NOT_STARTED |
 | P01 Implementation Started | NO |
+| Phase Transition State | **READY_AWAITING_HUMAN_CONFIRMATION** |
+| Human Phase Confirmation | **REQUIRED BEFORE P01 START** |
+| Pipeline Product Execution | **STOPPED — HUMAN_CONFIRM_NEEDED** |
+| Human Confirmation Reason | P00 → P01 roadmap phase boundary |
+| Required Human Token | `TRAVELCORE_PHASE_CONFIRM: P01` |
 
 ### P00 Exit Summary
 
 - P00 Architecture Foundation formally complete
 - TC-P00-GATE PASS
-- ADR 0001–0012 Accepted
-- ADR 0013 Proposed (governance handoff; not Accepted yet)
+- ADR 0001–0013 Accepted
 - Future Architecture Transition Map is part of recovery context
-- P01 is next **product** phase but has **not** started (no implementation)
-- Automatic ChatGPT↔Cursor pipeline is documented but **not activated** until ADR 0013 Accepted
+- Controlled ChatGPT↔Cursor pipeline is **ACTIVE** (ADR 0013)
+- P01 is next **product** phase but has **not** started
+- Product execution is stopped at the P00→P01 human phase gate until a new USER-authored `TRAVELCORE_PHASE_CONFIRM: P01` (pre-activation chat approvals do not count)
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -111,7 +118,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P00-T008A | Accept engineering quality constitution | ACCEPTED | `0074437` |
 | TC-P00-GATE | Final Architecture Foundation Gate | PASS | audit (read-only) |
 | TC-P00-CLOSE | Normalize recovery state and close P00 | PASS / COMPLETE | `6c65cb9` |
-| TC-GOV-T001 | Controlled ChatGPT↔Cursor handoff + human phase gates | AWAITING_ARCHITECT_REVIEW | see git log for this commit |
+| TC-GOV-T001 | Controlled ChatGPT↔Cursor handoff + human phase gates | COMPLETE / ACCEPTED | `f44f11e` |
+| TC-GOV-T001A | Accept ADR 0013 + activate handoff protocol | AWAITING_ARCHITECT_REVIEW | see git log for this commit |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

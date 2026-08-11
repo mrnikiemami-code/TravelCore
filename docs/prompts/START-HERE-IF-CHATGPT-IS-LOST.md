@@ -117,11 +117,13 @@ At execution time, first discover and read what exists:
 2. `docs/PROJECT-STATE.md`
 3. `docs/ROADMAP.md` (if present)
 4. `docs/architecture/15-future-architecture-transition-map.md` (if present)
-5. `docs/architecture/**`
-6. `docs/domain/**`
-7. `docs/adr/**`
-8. `docs/prompts/**`
-9. Later architecture-related docs **if directories exist**, for example:
+5. `docs/architecture/16-agent-handoff-and-phase-gates.md` (if present)
+6. `docs/ai/01-chatgpt-cursor-handoff-protocol.md` · `docs/ai/02-execution-state-machine.md` · `docs/ai/03-human-confirmation-gates.md` (if present)
+7. `docs/architecture/**`
+8. `docs/domain/**`
+9. `docs/adr/**`
+10. `docs/prompts/**`
+11. Later architecture-related docs **if directories exist**, for example:
    - `docs/ui/**`
    - `docs/i18n/**`
    - `docs/seo/**`
@@ -132,6 +134,24 @@ At execution time, first discover and read what exists:
 Do not assume all these directories already exist.
 
 Discover the repository state dynamically.
+
+When handoff protocol docs exist (ADR 0013 Accepted), recovery **must** also reconstruct from durable repo evidence:
+
+- Pipeline State (`ACTIVE` / `STOPPED — HUMAN_CONFIRM_NEEDED` / …)
+- Current Task State
+- Current Phase Ledger (cumulative for current phase)
+- Human Confirmation State
+- Phase Boundary State (`READY_AWAITING_HUMAN_CONFIRMATION` when applicable)
+
+Recovery remains **READ-ONLY**.
+
+Recovery must **never fabricate**:
+
+- phase confirmation (`TRAVELCORE_PHASE_CONFIRM`)
+- critical-task confirmation (`TRAVELCORE_TASK_CONFIRM`)
+- architect acceptance
+
+If recovery finds `READY_AWAITING_HUMAN_CONFIRMATION` / `HUMAN_CONFIRM_NEEDED`, it must **preserve the stop** and report the required USER token. Do not auto-start the next phase or invent consent from chat memory.
 
 ---
 
@@ -202,6 +222,9 @@ Read `docs/PROJECT-STATE.md` and extract:
 - Known blockers
 - Environment notes
 - Current locked decisions
+- Pipeline State / Agent Handoff Pipeline (if present)
+- Phase Transition State / Human Confirmation State (if present)
+- Current Phase Ledger signals for governance + product tasks (if present)
 
 **Do not modify** `PROJECT-STATE.md` during recovery.
 

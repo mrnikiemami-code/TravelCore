@@ -1,8 +1,8 @@
 # ADR 0013 — Controlled Agent Handoff and Human-Gated Phase Transitions
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
-- **Task:** TC-GOV-T001
+- **Task:** TC-GOV-T001 / TC-GOV-T001A
 - **Related:**
   - [`../architecture/16-agent-handoff-and-phase-gates.md`](../architecture/16-agent-handoff-and-phase-gates.md)
   - [`../ai/01-chatgpt-cursor-handoff-protocol.md`](../ai/01-chatgpt-cursor-handoff-protocol.md)
@@ -85,10 +85,10 @@ NOT_ACTIVE_UNTIL_ADR_0013_ACCEPTED
 - Documentation-only under `docs/architecture`, `docs/ai`, `docs/adr`, `PROJECT-STATE`
 - No application code impact
 - No change to ADR 0001–0012 statuses
-- Do not activate in `AGENTS.md` until Accepted + explicit activation task
+- Activated in `AGENTS.md` and recovery via TC-GOV-T001A
 
 ---
 
 ## Status Note
 
-**Proposed** via TC-GOV-T001. Cursor must **not** mark this ADR Accepted. Acceptance requires Chief Architect review and an explicit acceptance / state-sync task.
+**Accepted** via TC-GOV-T001A after Chief Architect review of TC-GOV-T001. Cursor still cannot self-accept future ADRs; acceptance requires architect review + explicit acceptance/state-sync task.
