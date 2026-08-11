@@ -94,3 +94,4 @@ NNNN-short-kebab-title.md
 | [`0010`](0010-controlled-indexation-programmatic-seo.md) | Controlled indexation · programmatic SEO | Accepted |
 | [`0011`](0011-evidence-based-task-acceptance.md) | Evidence-based task acceptance · quality gates | Accepted |
 | [`0012`](0012-automated-architecture-guardrails.md) | Automated architecture guardrails | Accepted |
+| [`0013`](0013-controlled-agent-handoff-and-human-gated-phase-transitions.md) | Controlled agent handoff · human-gated phase transitions | Proposed |
