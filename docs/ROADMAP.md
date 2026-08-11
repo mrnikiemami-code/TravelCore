@@ -37,15 +37,16 @@
 | Project | TravelCore |
 | Current Phase | P00 — Architecture Foundation |
 | Phase Status | IN_PROGRESS |
-| Last Accepted Task | TC-P00-T006 |
-| Last Accepted Commit | `5dbbb45` |
-| Current Next Task | **TC-P00-T007** — Reference Page Archetypes |
+| Last Accepted Task | TC-P00-T007 |
+| Last Accepted Commit | `fbf1617` |
+| Current Next Task | **TC-P00-T008** — Engineering Quality Constitution |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
 | TC-P00-T005 State | COMPLETE / ACCEPTED |
 | TC-P00-T006 State | COMPLETE / ACCEPTED |
-| TC-P00-T007 State | AWAITING_ARCHITECT_REVIEW |
+| TC-P00-T007 State | COMPLETE / ACCEPTED |
+| TC-P00-T007R | PASS |
 
 ### Accepted repository state (خلاصه)
 
@@ -190,24 +191,13 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 | TC-P00-T004 | UI Constitution — COMPLETE / ACCEPTED (`48e0472`); ADRs 0005–0006 Accepted |
 | TC-P00-T005 | Internationalization Architecture — COMPLETE / ACCEPTED (`66e6f32`); ADRs 0007–0008 Accepted |
 | TC-P00-T006 | SEO Constitution — COMPLETE / ACCEPTED (`5dbbb45`); ADRs 0009–0010 Accepted |
+| TC-P00-T007 | Reference Page Archetypes — COMPLETE / ACCEPTED (`fbf1617`); TC-P00-T007R PASS |
 
 ### Next planned architecture tasks
 
-#### TC-P00-T007 — Reference Page Archetypes
-
-**State:** AWAITING_ARCHITECT_REVIEW
-
-Current Active / Next Task (do not advance to T008 until architect acceptance).
-
-اسناد: [`architecture/13-reference-page-archetypes.md`](architecture/13-reference-page-archetypes.md) · [`pages/`](pages/)
-
-تحلیل و مستندسازی دائم کهن‌الگوهای محصول (Foreign Package Tour Detail، Experience Tour Detail، Tour Listing، Destination Landing، Hotel/Restaurant/Attraction Detail، Article، Travelogue، Visa، Search Results، Controlled SEO Landing). Home / Flight Search / HotelBooking Search / Checkout عمداً به فازهای بعدی موکول شده‌اند.
-
-برای هر archetype مهم: purpose · anatomy · domain data · mobile/desktop · RTL/LTR · SEO · interaction states.
-
-مراجع محصول فقط برای تحلیل‌اند — دارایی دارای حق نشر را کپی نکنید.
-
 #### TC-P00-T008 — Engineering Quality Constitution
+
+Current Next Task.
 
 test strategy · Architecture Tests · integration/API/frontend/E2E · a11y · SEO assertions · security baseline · observability · logging/correlation · CI gates · dependency policy
 
