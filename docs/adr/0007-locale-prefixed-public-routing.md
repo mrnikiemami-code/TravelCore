@@ -1,6 +1,6 @@
 # ADR 0007 — Locale-Prefixed Public Routing
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
 - **Task:** TC-P00-T005
 - **Related:** [`../i18n/01-locale-and-routing.md`](../i18n/01-locale-and-routing.md) · [`../architecture/11-internationalization-architecture.md`](../architecture/11-internationalization-architecture.md)

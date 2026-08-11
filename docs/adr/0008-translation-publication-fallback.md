@@ -1,6 +1,6 @@
 # ADR 0008 — Translation Publication and Fallback Policy
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
 - **Task:** TC-P00-T005
 - **Related:** [`../i18n/04-fallback-and-publication-policy.md`](../i18n/04-fallback-and-publication-policy.md) · Constitution § i18n
