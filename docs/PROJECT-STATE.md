@@ -31,9 +31,9 @@
 | فیلد | مقدار |
 |------|--------|
 | Current Phase | P00 — Architecture Foundation |
-| Last Accepted Task | TC-P00-T005 |
-| Last Accepted Commit | `66e6f32` |
-| Accepted Architecture Commit | `66e6f32` |
+| Last Accepted Task | TC-P00-T006 |
+| Last Accepted Commit | `5dbbb45` |
+| Accepted Architecture Commit | `5dbbb45` |
 | Repository Normalization | TC-P00-T003R — PASS / ACCEPTED |
 | Repository Normalization Commit | `840c3e5` |
 | Emergency ChatGPT Recovery Drill | PASS |
@@ -41,9 +41,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Task | **TC-P00-T006** — SEO Constitution |
-| Task State | AWAITING_ARCHITECT_REVIEW |
-| Current Next Task | **TC-P00-T006** — SEO Constitution |
+| Current Active Task | None |
+| Current Next Task | **TC-P00-T007** — Reference Page Archetypes |
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -63,6 +62,7 @@ Recovery Drill note: recovery prompt successfully reconstructed current phase, a
 | TC-P00-T003R | Normalize canonical GitHub repository identity | PASS / ACCEPTED | `840c3e5` |
 | TC-P00-T004 | UI Constitution | ACCEPTED / COMPLETE | `48e0472` |
 | TC-P00-T005 | Internationalization Architecture | ACCEPTED / COMPLETE | `66e6f32` |
+| TC-P00-T006 | SEO Constitution | ACCEPTED / COMPLETE | `5dbbb45` |
 
 Bootstrap commit اولیهٔ فنی:
 

@@ -1,6 +1,6 @@
 # ADR 0010 — Controlled Indexation and Programmatic SEO
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
 - **Task:** TC-P00-T006
 - **Related:** [`../seo/02-indexation-crawl-and-sitemaps.md`](../seo/02-indexation-crawl-and-sitemaps.md) · [`../seo/04-search-facets-and-programmatic-seo.md`](../seo/04-search-facets-and-programmatic-seo.md)

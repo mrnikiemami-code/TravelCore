@@ -1,6 +1,6 @@
 # ADR 0009 — Centralized SEO Route Ownership
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
 - **Task:** TC-P00-T006
 - **Related:** [`../seo/01-route-canonical-and-redirects.md`](../seo/01-route-canonical-and-redirects.md) · [`../architecture/12-seo-constitution.md`](../architecture/12-seo-constitution.md)

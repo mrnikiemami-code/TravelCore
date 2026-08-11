@@ -37,14 +37,14 @@
 | Project | TravelCore |
 | Current Phase | P00 — Architecture Foundation |
 | Phase Status | IN_PROGRESS |
-| Last Accepted Task | TC-P00-T005 |
-| Last Accepted Commit | `66e6f32` |
-| Current Next Task | **TC-P00-T006** — SEO Constitution |
+| Last Accepted Task | TC-P00-T006 |
+| Last Accepted Commit | `5dbbb45` |
+| Current Next Task | **TC-P00-T007** — Reference Page Archetypes |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
 | TC-P00-T005 State | COMPLETE / ACCEPTED |
-| TC-P00-T006 State | AWAITING_ARCHITECT_REVIEW |
+| TC-P00-T006 State | COMPLETE / ACCEPTED |
 
 ### Accepted repository state (خلاصه)
 
@@ -188,29 +188,13 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 | TC-P00-T003R | Canonical repository identity normalization — PASS / ACCEPTED (`840c3e5`) |
 | TC-P00-T004 | UI Constitution — COMPLETE / ACCEPTED (`48e0472`); ADRs 0005–0006 Accepted |
 | TC-P00-T005 | Internationalization Architecture — COMPLETE / ACCEPTED (`66e6f32`); ADRs 0007–0008 Accepted |
+| TC-P00-T006 | SEO Constitution — COMPLETE / ACCEPTED (`5dbbb45`); ADRs 0009–0010 Accepted |
 
 ### Next planned architecture tasks
 
-#### TC-P00-T006 — SEO Constitution
+#### TC-P00-T007 — Reference Page Archetypes
 
 Current Next Task.
-
-**State:** AWAITING_ARCHITECT_REVIEW (not Accepted; do not advance to T007 until architect accepts).
-
-اسناد پیشنهادی این Task:
-
-- [`architecture/12-seo-constitution.md`](architecture/12-seo-constitution.md)
-- [`seo/01-route-canonical-and-redirects.md`](seo/01-route-canonical-and-redirects.md)
-- [`seo/02-indexation-crawl-and-sitemaps.md`](seo/02-indexation-crawl-and-sitemaps.md)
-- [`seo/03-structured-data-and-metadata.md`](seo/03-structured-data-and-metadata.md)
-- [`seo/04-search-facets-and-programmatic-seo.md`](seo/04-search-facets-and-programmatic-seo.md)
-- [`seo/05-content-lifecycle-and-seo-governance.md`](seo/05-content-lifecycle-and-seo-governance.md)
-
-ADRهای مرتبط: Proposed (0009–0010) — تا بازبینی معمار Accepted نشوند.
-
-SeoRoute · localized URLs · slug history · canonical · hreflang · redirects · IndexPolicy · structured data · sitemap · internal linking · robots · pagination/indexation · filter URL rules · controlled Programmatic SEO · expired/unavailable strategy · multilingual SEO
-
-#### TC-P00-T007 — Reference Page Archetypes
 
 تحلیل و مستندسازی دائم کهن‌الگوهای محصول از LastSecond و TahaGasht (حداقل: Home، Destination Landing، Tour Search/Listing، Foreign Package Tour Detail، Experience Tour Detail، Hotel Listing/Detail، Attraction/Restaurant Detail، Visa، Article، Travelogue، Flight Search، Hotel Booking Search، Checkout/Booking).
 
