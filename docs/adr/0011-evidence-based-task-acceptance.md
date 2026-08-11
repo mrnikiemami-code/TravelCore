@@ -1,6 +1,6 @@
 # ADR 0011 — Evidence-Based Task Acceptance and Quality Gates
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
 - **Task:** TC-P00-T008
 - **Related:** [`../architecture/14-engineering-quality-constitution.md`](../architecture/14-engineering-quality-constitution.md) · [`../quality/01-definition-of-done.md`](../quality/01-definition-of-done.md) · [`../quality/07-agent-review-and-task-acceptance.md`](../quality/07-agent-review-and-task-acceptance.md)
@@ -60,4 +60,4 @@ Agents and humans may treat `dotnet build` / `npm run build` as Task success, sk
 
 ## Status Note
 
-**Proposed** تا پذیرش معمار. Cursor نمی‌تواند این ADR را خود Accepted کند.
+**Accepted** via TC-P00-T008A. Cursor نمی‌تواند ADR را خود Accepted کند.

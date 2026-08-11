@@ -31,24 +31,26 @@
 | فیلد | مقدار |
 |------|--------|
 | Current Phase | P00 — Architecture Foundation |
-| Last Accepted Task | TC-P00-T007 |
-| Last Accepted Commit | `fbf1617` |
-| Accepted Architecture Commit | `fbf1617` |
+| Last Accepted Task | TC-P00-T008 |
+| Last Accepted Commit | `1bd4e95` |
+| Accepted Architecture Commit | `1bd4e95` |
 | Repository Normalization | TC-P00-T003R — PASS / ACCEPTED |
 | Repository Normalization Commit | `840c3e5` |
 | Emergency ChatGPT Recovery Drill | PASS |
 | TC-P00-T007R | PASS |
+| TC-P00-T008R | PASS |
 | Repository Bootstrap | COMPLETE |
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Task | **TC-P00-T008** — Engineering Quality Constitution |
-| Task State | AWAITING_ARCHITECT_REVIEW |
-| Current Next Task | **TC-P00-T008** — Engineering Quality Constitution |
+| Current Active Task | None |
+| Current Next Task | **TC-P00-GATE** — Final Architecture Foundation Gate |
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
 T007R note: integrity review PASS — the T007 update to `docs/ui/04-page-archetype-contract.md` was a compatible documentation traceability extension only (SAFE EXTENSION).
+
+T008R note: repository integrity PASS — canonical origin already `mrnikiemami-code/TravelCore`; prior wrong-owner spelling was REPORT TYPO only; `1bd4e95` on canonical `origin/main`.
 
 ---
 
@@ -69,6 +71,8 @@ T007R note: integrity review PASS — the T007 update to `docs/ui/04-page-archet
 | TC-P00-T006 | SEO Constitution | ACCEPTED / COMPLETE | `5dbbb45` |
 | TC-P00-T007 | Reference Page Archetypes | ACCEPTED / COMPLETE | `fbf1617` |
 | TC-P00-T007R | Accepted-document integrity review (`04-page-archetype-contract.md`) | PASS | review of `fbf1617` |
+| TC-P00-T008 | Engineering Quality Constitution | ACCEPTED / COMPLETE | `1bd4e95` |
+| TC-P00-T008R | Canonical repository integrity review | PASS | review of `1bd4e95` |
 
 Bootstrap commit اولیهٔ فنی:
 

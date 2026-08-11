@@ -1,6 +1,6 @@
 # ADR 0012 — Automated Architecture Guardrails
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
 - **Task:** TC-P00-T008
 - **Related:** [`../architecture/14-engineering-quality-constitution.md`](../architecture/14-engineering-quality-constitution.md) · [`../quality/03-architecture-and-contract-testing.md`](../quality/03-architecture-and-contract-testing.md) · [`../architecture/04-module-boundaries.md`](../architecture/04-module-boundaries.md) · [`../architecture/05-dependency-rules.md`](../architecture/05-dependency-rules.md)
@@ -56,4 +56,4 @@ Accepted TravelCore architecture (Modular Monolith, schema-per-module, no cross-
 
 ## Status Note
 
-**Proposed** تا پذیرش معمار. Cursor نمی‌تواند این ADR را خود Accepted کند.
+**Accepted** via TC-P00-T008A. Cursor نمی‌تواند ADR را خود Accepted کند.

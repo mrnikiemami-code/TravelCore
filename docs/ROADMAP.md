@@ -37,9 +37,9 @@
 | Project | TravelCore |
 | Current Phase | P00 — Architecture Foundation |
 | Phase Status | IN_PROGRESS |
-| Last Accepted Task | TC-P00-T007 |
-| Last Accepted Commit | `fbf1617` |
-| Current Next Task | **TC-P00-T008** — Engineering Quality Constitution |
+| Last Accepted Task | TC-P00-T008 |
+| Last Accepted Commit | `1bd4e95` |
+| Current Next Task | **TC-P00-GATE** — Final Architecture Foundation Gate |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -47,7 +47,9 @@
 | TC-P00-T006 State | COMPLETE / ACCEPTED |
 | TC-P00-T007 State | COMPLETE / ACCEPTED |
 | TC-P00-T007R | PASS |
-| TC-P00-T008 State | AWAITING_ARCHITECT_REVIEW |
+| TC-P00-T008 State | COMPLETE / ACCEPTED |
+| TC-P00-T008R | PASS |
+| TC-P00-GATE State | PENDING |
 
 ### Accepted repository state (خلاصه)
 
@@ -193,24 +195,21 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 | TC-P00-T005 | Internationalization Architecture — COMPLETE / ACCEPTED (`66e6f32`); ADRs 0007–0008 Accepted |
 | TC-P00-T006 | SEO Constitution — COMPLETE / ACCEPTED (`5dbbb45`); ADRs 0009–0010 Accepted |
 | TC-P00-T007 | Reference Page Archetypes — COMPLETE / ACCEPTED (`fbf1617`); TC-P00-T007R PASS |
+| TC-P00-T008 | Engineering Quality Constitution — COMPLETE / ACCEPTED (`1bd4e95`); ADRs 0011–0012 Accepted; TC-P00-T008R PASS |
 
 ### Next planned architecture tasks
 
-#### TC-P00-T008 — Engineering Quality Constitution
+#### TC-P00-GATE — Final Architecture Foundation Gate
 
-**State:** AWAITING_ARCHITECT_REVIEW
+**State:** PENDING
 
-Current Active / Next Task (do not advance to P01 until architect acceptance and P00 gate).
+Current Next Task.
 
-اسناد: [`architecture/14-engineering-quality-constitution.md`](architecture/14-engineering-quality-constitution.md) · [`quality/`](quality/) · Proposed ADRs [`0011`](adr/0011-evidence-based-task-acceptance.md) · [`0012`](adr/0012-automated-architecture-guardrails.md)
-
-test strategy · Architecture Tests · integration/API/frontend/E2E · a11y · SEO assertions · security baseline · observability · logging/correlation · CI gates · dependency policy
-
-Exact tooling/CI/test projects are deferred — this Task documents constitution only.
+Final consistency / transition check before P01. P00 remains **IN_PROGRESS** until this gate passes. Do **not** start P01 until the Chief Architect completes TC-P00-GATE.
 
 ### P00 completion gate
 
-تا معمار P00 را نپذیرد، پیاده‌سازی business-domain آغاز نمی‌شود.
+تا معمار **TC-P00-GATE** را نپذیرد و P00 را کامل اعلام نکند، پیاده‌سازی business-domain / P01 آغاز نمی‌شود.
 
 ---
 
