@@ -1,6 +1,6 @@
 # ADR 0005 — Server Component First and Minimal Client Boundary
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
 - **Task:** TC-P00-T004
 - **Related:** [`../architecture/10-ui-constitution.md`](../architecture/10-ui-constitution.md) · [`../architecture/02-technology-baseline.md`](../architecture/02-technology-baseline.md)

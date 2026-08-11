@@ -37,12 +37,12 @@
 | Project | TravelCore |
 | Current Phase | P00 — Architecture Foundation |
 | Phase Status | IN_PROGRESS |
-| Last Accepted Task | TC-P00-T003 |
-| Last Accepted Commit | `3904bb9` |
-| Current Next Task | **TC-P00-T004** — UI Constitution |
+| Last Accepted Task | TC-P00-T004 |
+| Last Accepted Commit | `48e0472` |
+| Current Next Task | **TC-P00-T005** — Internationalization Architecture |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
-| TC-P00-T004 State | AWAITING_ARCHITECT_REVIEW |
+| TC-P00-T004 State | COMPLETE / ACCEPTED |
 
 ### Accepted repository state (خلاصه)
 
@@ -184,39 +184,13 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 | TC-P00-T002 | Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules — COMPLETE / ACCEPTED (`08343e7`) |
 | TC-P00-T003 | Data Architecture — COMPLETE / ACCEPTED (`3904bb9`); ADRs 0001–0004 Accepted |
 | TC-P00-T003R | Canonical repository identity normalization — PASS / ACCEPTED (`840c3e5`) |
+| TC-P00-T004 | UI Constitution — COMPLETE / ACCEPTED (`48e0472`); ADRs 0005–0006 Accepted |
 
 ### Next planned architecture tasks
 
-#### TC-P00-T004 — UI Constitution
+#### TC-P00-T005 — Internationalization Architecture
 
 Current Next Task.
-
-**State:** AWAITING_ARCHITECT_REVIEW (not Accepted; do not advance to T005 until architect accepts).
-
-اسناد پیشنهادی این Task:
-
-- [`architecture/10-ui-constitution.md`](architecture/10-ui-constitution.md)
-- [`ui/01-design-system-architecture.md`](ui/01-design-system-architecture.md)
-- [`ui/02-responsive-mobile-architecture.md`](ui/02-responsive-mobile-architecture.md)
-- [`ui/03-rtl-ltr-bidi.md`](ui/03-rtl-ltr-bidi.md)
-- [`ui/04-page-archetype-contract.md`](ui/04-page-archetype-contract.md)
-- [`ui/05-accessibility-and-interaction.md`](ui/05-accessibility-and-interaction.md)
-
-ADRهای مرتبط: Proposed (0005–0006) — تا بازبینی معمار Accepted نشوند.
-
-باید تعریف کند:
-
-- Design Tokens · component taxonomy
-- primitives · composites · domain components · page sections · Page Archetypes
-- responsive · mobile-first · RTL/LTR · bidi
-- typography · spacing
-- loading / empty / error states
-- accessibility · interaction rules
-- desktop/mobile differences
-
-**مهم:** معماری UI باید قبل از پیاده‌سازی انبوه صفحات فیچر تثبیت شود.
-
-#### TC-P00-T005 — Internationalization Architecture
 
 locale model · fa/en/ar · scalable translation · Entity/UI/Editorial Translation · localized routing/slug · fallback/publication · number/date formatting · calendar · timezone · currency display · bidi-sensitive values
 

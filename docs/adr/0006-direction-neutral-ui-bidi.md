@@ -1,6 +1,6 @@
 # ADR 0006 — Direction-Neutral UI, Logical CSS, and Explicit Bidi Handling
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
 - **Task:** TC-P00-T004
 - **Related:** [`../ui/03-rtl-ltr-bidi.md`](../ui/03-rtl-ltr-bidi.md) · [`../architecture/10-ui-constitution.md`](../architecture/10-ui-constitution.md) · ADR 0003 (Money/IRR)

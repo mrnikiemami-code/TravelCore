@@ -86,5 +86,5 @@ NNNN-short-kebab-title.md
 | [`0002`](0002-uuid-v7-domain-identity.md) | UUID v7 domain identity | Accepted |
 | [`0003`](0003-money-currency-irr-toman.md) | Money · Currency · IRR/Toman | Accepted |
 | [`0004`](0004-temporal-model-nodatime.md) | Temporal model · NodaTime · IANA | Accepted |
-| [`0005`](0005-server-component-first.md) | Server Component first · minimal Client boundary | Proposed |
-| [`0006`](0006-direction-neutral-ui-bidi.md) | Direction-neutral UI · logical CSS · explicit bidi | Proposed |
+| [`0005`](0005-server-component-first.md) | Server Component first · minimal Client boundary | Accepted |
+| [`0006`](0006-direction-neutral-ui-bidi.md) | Direction-neutral UI · logical CSS · explicit bidi | Accepted |
