@@ -2,6 +2,7 @@
 
 Companion to:
 
+- [`TRAVELCORE-PIPELINE-PROTOCOL.md`](TRAVELCORE-PIPELINE-PROTOCOL.md) (canonical entry)
 - [`01-chatgpt-cursor-handoff-protocol.md`](01-chatgpt-cursor-handoff-protocol.md)
 - [`03-human-confirmation-gates.md`](03-human-confirmation-gates.md)
 - [`../architecture/16-agent-handoff-and-phase-gates.md`](../architecture/16-agent-handoff-and-phase-gates.md)
@@ -107,9 +108,10 @@ Cursor PASS
 
 | Label | Meaning |
 |-------|---------|
-| `NORMAL` | May accept next explicit same-phase task (when protocol active) |
+| `NORMAL` | May accept next explicit same-phase task (when protocol active and not human-gated) |
 | `STOPPED — HUMAN_CONFIRM_NEEDED` | Hard stop for human decision |
-| `NOT_ACTIVE_UNTIL_ADR_0013_ACCEPTED` | Governance documented; automatic channel not activated |
+| `ACTIVE` | ADR 0013 handoff protocol accepted/active |
+| `OFF` / `HUMAN` | Automatic PIPELINE loop not running (default; see Proposed ADR 0014) |
 
 ---
 

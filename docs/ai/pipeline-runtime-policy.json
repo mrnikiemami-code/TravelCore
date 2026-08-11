@@ -1,0 +1,20 @@
+{
+  "protocolVersion": 1,
+  "defaultMode": "HUMAN",
+  "supportedModes": [
+    "HUMAN",
+    "PIPELINE"
+  ],
+  "pipelinePollIntervalSeconds": 20,
+  "pipelinePollJitterSeconds": 3,
+  "maximumConsecutiveWatchFailures": 3,
+  "oneTaskAtATime": true,
+  "historicalChatExecutable": false,
+  "resultEnvelopeExecutable": false,
+  "repositoryIsSourceOfTruth": true,
+  "phaseHumanGateRequired": true,
+  "criticalTaskHumanGateRequired": true,
+  "chatContextLimitRequiresStop": true,
+  "automaticRecoveryAfterChatLimit": false,
+  "recoveryDefaultMode": "HUMAN"
+}

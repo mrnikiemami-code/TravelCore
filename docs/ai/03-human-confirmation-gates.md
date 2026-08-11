@@ -2,8 +2,10 @@
 
 Companion to:
 
+- [`TRAVELCORE-PIPELINE-PROTOCOL.md`](TRAVELCORE-PIPELINE-PROTOCOL.md) (canonical entry)
 - [`01-chatgpt-cursor-handoff-protocol.md`](01-chatgpt-cursor-handoff-protocol.md)
 - [`02-execution-state-machine.md`](02-execution-state-machine.md)
+- [`04-human-and-pipeline-modes.md`](04-human-and-pipeline-modes.md) (Proposed ADR 0014)
 - [`../architecture/16-agent-handoff-and-phase-gates.md`](../architecture/16-agent-handoff-and-phase-gates.md)
 
 User remains ultimate authority at phase boundaries and other high-risk stop points.

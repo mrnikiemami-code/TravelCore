@@ -2,15 +2,19 @@
 
 این سند **نمای معماری** پروتکل کنترل‌شدهٔ ChatGPT ↔ Cursor است.
 
-وضعیت فعال‌سازی: تا پذیرش ADR 0013، این پروتکل **مستند** است و هنوز در `AGENTS.md` / recovery به‌عنوان کانال اجرایی اجباری فعال نشده است.
+وضعیت: ADR 0013 **Accepted**. نقطهٔ ورود canonical برای انسان/عامل:
+
+[`../ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](../ai/TRAVELCORE-PIPELINE-PROTOCOL.md)
 
 | سند | نقش |
 |-----|-----|
+| [`../ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](../ai/TRAVELCORE-PIPELINE-PROTOCOL.md) | **Canonical entry** · خلاصهٔ کامل پروتکل |
 | این فایل | نمای معماری · نقش‌ها · مرز اختیارات · دروازه‌ها |
 | [`../ai/01-chatgpt-cursor-handoff-protocol.md`](../ai/01-chatgpt-cursor-handoff-protocol.md) | قالب Task/Result · قوانین اجرا |
 | [`../ai/02-execution-state-machine.md`](../ai/02-execution-state-machine.md) | ماشین حالت اجرا |
 | [`../ai/03-human-confirmation-gates.md`](../ai/03-human-confirmation-gates.md) | تأیید انسان · Breakpoint |
-| [`../adr/0013-controlled-agent-handoff-and-human-gated-phase-transitions.md`](../adr/0013-controlled-agent-handoff-and-human-gated-phase-transitions.md) | ADR (Proposed تا پذیرش معمار) |
+| [`../architecture/17-human-and-pipeline-operating-modes.md`](17-human-and-pipeline-operating-modes.md) | HUMAN/PIPELINE (Proposed ADR 0014) |
+| [`../adr/0013-controlled-agent-handoff-and-human-gated-phase-transitions.md`](../adr/0013-controlled-agent-handoff-and-human-gated-phase-transitions.md) | ADR 0013 Accepted |
 
 **قانون:** دسترسی مستقیم به صفحهٔ ChatGPT فقط **حمل‌ونقل** است؛ مجوز اجرای همهٔ محتوای قابل‌مشاهده نیست.
 
@@ -164,11 +168,11 @@ Reason = STATE_LEDGER_CONFLICT
 
 | مرحله | وضعیت |
 |-------|--------|
-| TC-GOV-T001 (این Task) | مستندسازی + ADR 0013 = **Proposed** |
-| تا پذیرش ADR 0013 | Pipeline رسمی = `NOT_ACTIVE_UNTIL_ADR_0013_ACCEPTED` |
-| پس از پذیرش معمار | فعال‌سازی صریح در `AGENTS.md` / recovery (Task جدا) |
+| TC-GOV-T001 / T001A | ADR 0013 Accepted · handoff envelopes ACTIVE in AGENTS |
+| TC-GOV-T002 | Canonical entry + HUMAN/PIPELINE docs · ADR 0014 **Proposed** |
+| تا پذیرش ADR 0014 | Mode/poll/chat-limit extension documented; **not** AGENTS-activated |
 
-تا فعال‌سازی، Cursor نباید فرض کند هر پیام ChatGPT قابل اجراست مگر در چارچوب همین Task حاکمیتی که صریحاً صادر شده است.
+Canonical entry for humans/agents: [`../ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](../ai/TRAVELCORE-PIPELINE-PROTOCOL.md)
 
 ---
 

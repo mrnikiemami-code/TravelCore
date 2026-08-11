@@ -2,9 +2,11 @@
 
 Protocol family: `TRAVELCORE_CURSOR_TASK_V1` / `TRAVELCORE_CURSOR_RESULT_V1`
 
+**Canonical entry:** [`TRAVELCORE-PIPELINE-PROTOCOL.md`](TRAVELCORE-PIPELINE-PROTOCOL.md)
+
 نمای معماری: [`../architecture/16-agent-handoff-and-phase-gates.md`](../architecture/16-agent-handoff-and-phase-gates.md)
 
-**Activation:** تا Accepted شدن ADR 0013، این پروتکل مستند است و کانال خودکار رسمی فعال نیست (`NOT_ACTIVE_UNTIL_ADR_0013_ACCEPTED`).
+**Activation:** ADR 0013 Accepted. HUMAN/PIPELINE mode extension is Proposed (ADR 0014) and is **not** AGENTS-activated until Accepted.
 
 ---
 
