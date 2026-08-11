@@ -1,8 +1,8 @@
 # ADR 0014 — Human/Pipeline Operating Modes and Chat-Limit Safety
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-11
-- **Task:** TC-GOV-T002
+- **Task:** TC-GOV-T002 / TC-GOV-T002A
 - **Related:**
   - [`../ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](../ai/TRAVELCORE-PIPELINE-PROTOCOL.md)
   - [`../ai/04-human-and-pipeline-modes.md`](../ai/04-human-and-pipeline-modes.md)
@@ -75,10 +75,10 @@ Activation in `AGENTS.md` / Recovery requires a later acceptance task after Chie
 - Documentation under `docs/ai`, `docs/architecture`, `docs/adr`, `PROJECT-STATE`
 - No application code impact
 - Does not change ADR 0001–0013 statuses
-- Do not activate in `AGENTS.md` until Accepted + explicit activation task
+- Activated in `AGENTS.md` and Recovery via TC-GOV-T002A
 
 ---
 
 ## Status Note
 
-**Proposed** via TC-GOV-T002. Cursor must **not** mark this ADR Accepted.
+**Accepted** via TC-GOV-T002A after Chief Architect review of TC-GOV-T002. Cursor still cannot self-accept future ADRs.

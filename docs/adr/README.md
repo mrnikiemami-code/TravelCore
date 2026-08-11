@@ -95,4 +95,4 @@ NNNN-short-kebab-title.md
 | [`0011`](0011-evidence-based-task-acceptance.md) | Evidence-based task acceptance · quality gates | Accepted |
 | [`0012`](0012-automated-architecture-guardrails.md) | Automated architecture guardrails | Accepted |
 | [`0013`](0013-controlled-agent-handoff-and-human-gated-phase-transitions.md) | Controlled agent handoff · human-gated phase transitions | Accepted |
-| [`0014`](0014-human-pipeline-modes-and-chat-limit-safety.md) | Human/Pipeline operating modes · chat-limit safety | Proposed |
+| [`0014`](0014-human-pipeline-modes-and-chat-limit-safety.md) | Human/Pipeline operating modes · chat-limit safety | Accepted |

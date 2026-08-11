@@ -117,13 +117,16 @@ At execution time, first discover and read what exists:
 2. `docs/PROJECT-STATE.md`
 3. `docs/ROADMAP.md` (if present)
 4. `docs/architecture/15-future-architecture-transition-map.md` (if present)
-5. `docs/architecture/16-agent-handoff-and-phase-gates.md` (if present)
-6. `docs/ai/01-chatgpt-cursor-handoff-protocol.md` · `docs/ai/02-execution-state-machine.md` · `docs/ai/03-human-confirmation-gates.md` (if present)
-7. `docs/architecture/**`
-8. `docs/domain/**`
-9. `docs/adr/**`
-10. `docs/prompts/**`
-11. Later architecture-related docs **if directories exist**, for example:
+5. `docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md` (canonical Pipeline Protocol entry — if present)
+6. `docs/ai/pipeline-runtime-policy.json` (if present)
+7. `docs/architecture/16-agent-handoff-and-phase-gates.md` (if present)
+8. `docs/architecture/17-human-and-pipeline-operating-modes.md` (if present)
+9. `docs/ai/01-chatgpt-cursor-handoff-protocol.md` · `docs/ai/02-execution-state-machine.md` · `docs/ai/03-human-confirmation-gates.md` · `docs/ai/04-human-and-pipeline-modes.md` (if present)
+10. `docs/architecture/**`
+11. `docs/domain/**`
+12. `docs/adr/**` (including ADR 0013 / ADR 0014 when present)
+13. `docs/prompts/**`
+14. Later architecture-related docs **if directories exist**, for example:
    - `docs/ui/**`
    - `docs/i18n/**`
    - `docs/seo/**`
@@ -135,13 +138,15 @@ Do not assume all these directories already exist.
 
 Discover the repository state dynamically.
 
-When handoff protocol docs exist (ADR 0013 Accepted), recovery **must** also reconstruct from durable repo evidence:
+When Pipeline Protocol docs exist (ADR 0013 + ADR 0014 Accepted), recovery **must** reconstruct from durable repo evidence:
 
-- Pipeline State (`ACTIVE` / `STOPPED — HUMAN_CONFIRM_NEEDED` / …)
-- Current Task State
-- Current Phase Ledger (cumulative for current phase)
-- Human Confirmation State
-- Phase Boundary State (`READY_AWAITING_HUMAN_CONFIRMATION` when applicable)
+- Current product phase
+- Current Task state
+- Cumulative current-phase ledger
+- Phase human gate / Phase Boundary State
+- Pipeline governance state (protocol READY vs automatic loop OFF/ON)
+- Breakpoint state (`HUMAN_CONFIRM_NEEDED`, `CHAT_CONTEXT_LIMIT`, …)
+- Current Runtime Mode (report durable signals; **do not** treat prior chat PIPELINE as still ON)
 
 Recovery remains **READ-ONLY**.
 
@@ -150,8 +155,26 @@ Recovery must **never fabricate**:
 - phase confirmation (`TRAVELCORE_PHASE_CONFIRM`)
 - critical-task confirmation (`TRAVELCORE_TASK_CONFIRM`)
 - architect acceptance
+- `TRAVELCORE_MODE: PIPELINE`
 
-If recovery finds `READY_AWAITING_HUMAN_CONFIRMATION` / `HUMAN_CONFIRM_NEEDED`, it must **preserve the stop** and report the required USER token. Do not auto-start the next phase or invent consent from chat memory.
+After chat loss, chat limit, or uncertain conversation continuity:
+
+```text
+runtime default = HUMAN
+Automatic Pipeline = OFF
+```
+
+Recovery must **never infer** `PIPELINE = ON` from previous conversation state.
+
+If recovery finds `READY_AWAITING_HUMAN_CONFIRMATION` / `HUMAN_CONFIRM_NEEDED` / `CHAT_CONTEXT_LIMIT`, it must **preserve the stop** and report the required USER token. Do not auto-start the next phase, invent consent, or auto-resume PIPELINE.
+
+After successful read-only Recovery and Chief Architect review, automatic Pipeline may resume **only** after a new USER command:
+
+```text
+TRAVELCORE_MODE: PIPELINE
+```
+
+No implicit resume.
 
 ---
 

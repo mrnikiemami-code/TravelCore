@@ -4,7 +4,7 @@ Canonical entry: [`TRAVELCORE-PIPELINE-PROTOCOL.md`](TRAVELCORE-PIPELINE-PROTOCO
 
 Architecture companion: [`../architecture/17-human-and-pipeline-operating-modes.md`](../architecture/17-human-and-pipeline-operating-modes.md)
 
-**Status:** Documented under TC-GOV-T002. Binding activation in `AGENTS.md` / Recovery requires **ADR 0014 Accepted**.
+**Status:** Accepted (ADR 0014 via TC-GOV-T002A). Binding in `AGENTS.md` / Recovery.
 
 ---
 

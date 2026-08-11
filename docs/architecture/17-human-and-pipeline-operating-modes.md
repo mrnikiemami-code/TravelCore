@@ -6,9 +6,9 @@ Canonical entry: [`../ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](../ai/TRAVELCORE-PIPE
 
 Detail: [`../ai/04-human-and-pipeline-modes.md`](../ai/04-human-and-pipeline-modes.md)
 
-ADR: [`../adr/0014-human-pipeline-modes-and-chat-limit-safety.md`](../adr/0014-human-pipeline-modes-and-chat-limit-safety.md) (**Proposed**)
+ADR: [`../adr/0014-human-pipeline-modes-and-chat-limit-safety.md`](../adr/0014-human-pipeline-modes-and-chat-limit-safety.md) (**Accepted**)
 
-**قانون:** تا Accepted شدن ADR 0014، این قواعد در `AGENTS.md` / Recovery به‌عنوان کانال اجباری فعال نمی‌شوند. ADR 0013 همچنان مرجع handoff پذیرفته‌شده است.
+**قانون:** ADR 0014 Accepted. Canonical entry: [`../ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](../ai/TRAVELCORE-PIPELINE-PROTOCOL.md). Default runtime remains HUMAN until USER opts into PIPELINE.
 
 ---
 

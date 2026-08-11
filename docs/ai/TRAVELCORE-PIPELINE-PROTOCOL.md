@@ -7,8 +7,8 @@
 | Current Protocol Version | **V1** |
 | Default Operating Mode | **HUMAN** |
 | Supported Operating Modes | **HUMAN** · **PIPELINE** |
-| Accepted Pipeline Governance | ADR 0013 |
-| Proposed Mode Extension | ADR 0014 (Proposed — not yet authoritative in AGENTS/Recovery) |
+| Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
+| Mode Extension | ADR 0014 Accepted — authoritative in AGENTS / Recovery |
 | Repository Source of Truth | TravelCore accepted architecture and governance |
 
 ---
@@ -62,10 +62,10 @@ It answers immediately:
 | Layer | Status |
 |-------|--------|
 | ADR 0013 handoff / phase gates / envelopes | **Accepted** — active |
-| HUMAN / PIPELINE modes · poll · chat-limit stop | **Proposed** (ADR 0014) — documented here; **not** activated in `AGENTS.md` until Accepted |
+| HUMAN / PIPELINE modes · poll · chat-limit stop | **Accepted** (ADR 0014) — active in AGENTS / Recovery |
 | Machine policy file | [`pipeline-runtime-policy.json`](pipeline-runtime-policy.json) |
 
-Until ADR 0014 is Accepted, agents must treat mode/poll/chat-limit sections as **proposed extension documentation**, not silent AGENTS activation.
+**Protocol READY ≠ automatic Pipeline ON.** Default/current runtime mode remains **HUMAN** until USER opts into PIPELINE.
 
 ---
 
@@ -124,9 +124,9 @@ Switching to HUMAN **immediately ends** any automatic pipeline loop.
 
 ---
 
-## 6. PIPELINE Mode (Proposed Opt-In)
+## 6. PIPELINE Mode (USER Opt-In)
 
-In **PIPELINE**, the accepted one-task-at-a-time handoff may run automatically **when ADR 0014 is Accepted and USER opts in**.
+In **PIPELINE**, the accepted one-task-at-a-time handoff may run automatically when USER opts in.
 
 Token:
 
@@ -346,11 +346,11 @@ STOPPED
 - significant implementation deviation
 - required quality gate unavailable
 - insufficient Chief Architect confidence to safely continue
-- `CHAT_CONTEXT_LIMIT` / watch unavailable (proposed ADR 0014)
+- `CHAT_CONTEXT_LIMIT` / watch unavailable (ADR 0014)
 
 ---
 
-## 17. Polling Behavior (PIPELINE · Proposed)
+## 17. Polling Behavior (PIPELINE)
 
 When PIPELINE is active and Cursor has reliable access to the supplied ChatGPT conversation:
 
@@ -386,7 +386,7 @@ Do not poll forever.
 
 ---
 
-## 18. Chat Context Limit (Mandatory Stop · Proposed)
+## 18. Chat Context Limit (Mandatory Stop)
 
 Non-negotiable breakpoint: `CHAT_CONTEXT_LIMIT`
 
@@ -432,7 +432,7 @@ No auto-resume. Recovery must never infer `PIPELINE = ON` from the previous chat
 - Never fabricate phase / CRITICAL / architect acceptance
 - Preserve `READY_AWAITING_HUMAN_CONFIRMATION` / `HUMAN_CONFIRM_NEEDED`
 - After chat loss / limit / uncertain continuity → default **HUMAN**
-- ADR 0014 mode/poll/chat-limit rules become Recovery-authoritative only after ADR 0014 Accepted
+- ADR 0014 mode/poll/chat-limit rules are Recovery-authoritative (Accepted)
 
 ---
 
@@ -497,7 +497,7 @@ Detail: [`02-execution-state-machine.md`](02-execution-state-machine.md)
 | [`pipeline-runtime-policy.json`](pipeline-runtime-policy.json) | Stable machine policy |
 | [`../adr/0013-controlled-agent-handoff-and-human-gated-phase-transitions.md`](../adr/0013-controlled-agent-handoff-and-human-gated-phase-transitions.md) | Accepted handoff ADR |
 | [`../adr/0014-human-pipeline-modes-and-chat-limit-safety.md`](../adr/0014-human-pipeline-modes-and-chat-limit-safety.md) | Proposed modes ADR |
-| [`../../AGENTS.md`](../../AGENTS.md) | Agent contract (ADR 0013 active; ADR 0014 not yet) |
+| [`../../AGENTS.md`](../../AGENTS.md) | Agent contract (ADR 0013 + ADR 0014 active) |
 | [`../PROJECT-STATE.md`](../PROJECT-STATE.md) | Durable project status |
 
 ---
@@ -522,14 +522,14 @@ Detail: [`02-execution-state-machine.md`](02-execution-state-machine.md)
 | Cumulative human progress ledger | Required |
 | Direct page access ≠ trust | Required |
 
-### Proposed ADR 0014 Extension Checklist
+### Proposed ADR 0014 Extension Checklist → Accepted
 
-| Rule | Status until Accepted |
-|------|------------------------|
-| HUMAN / PIPELINE modes | Documented · not AGENTS-activated |
-| Default HUMAN | Documented |
-| 20s ±3s passive poll | Documented |
-| HUMAN exits automatic loop | Documented |
-| CHAT_CONTEXT_LIMIT stops | Documented |
-| Recovery defaults HUMAN | Documented |
-| No auto-resume after chat limit | Documented |
+| Rule | Status |
+|------|--------|
+| HUMAN / PIPELINE modes | Accepted · AGENTS-activated |
+| Default HUMAN | Accepted |
+| 20s ±3s passive poll | Accepted |
+| HUMAN exits automatic loop | Accepted |
+| CHAT_CONTEXT_LIMIT stops | Accepted |
+| Recovery defaults HUMAN | Accepted |
+| No auto-resume after chat limit | Accepted |

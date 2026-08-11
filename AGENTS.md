@@ -20,14 +20,44 @@ Agent یک **پیاده‌ساز** است، نه Software Architect.
 
 ## Controlled ChatGPT ↔ Cursor Handoff (ACTIVE)
 
-پروتکل فعال (ADR 0013 Accepted). جزئیات کامل در:
+**Canonical Pipeline Protocol entry point (read this first for automation rules):**
+
+[`docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md)
+
+Accepted governance: ADR 0013 (handoff/gates) · ADR 0014 (HUMAN/PIPELINE modes · chat-limit safety)
+
+Machine policy: [`docs/ai/pipeline-runtime-policy.json`](docs/ai/pipeline-runtime-policy.json)
+
+Supporting detail:
 
 - [`docs/architecture/16-agent-handoff-and-phase-gates.md`](docs/architecture/16-agent-handoff-and-phase-gates.md)
+- [`docs/architecture/17-human-and-pipeline-operating-modes.md`](docs/architecture/17-human-and-pipeline-operating-modes.md)
 - [`docs/ai/01-chatgpt-cursor-handoff-protocol.md`](docs/ai/01-chatgpt-cursor-handoff-protocol.md)
 - [`docs/ai/02-execution-state-machine.md`](docs/ai/02-execution-state-machine.md)
 - [`docs/ai/03-human-confirmation-gates.md`](docs/ai/03-human-confirmation-gates.md)
+- [`docs/ai/04-human-and-pipeline-modes.md`](docs/ai/04-human-and-pipeline-modes.md)
 
-قواعد اجرایی الزامی:
+### Operating modes
+
+| Mode | Meaning |
+|------|---------|
+| **HUMAN** (default) | Polling OFF · automatic discovery OFF · automatic execution OFF · normal interactive Cursor OK |
+| **PIPELINE** | USER opt-in only · follows canonical protocol · one task at a time · latest valid unexecuted envelope only · report → STOP → await architect review |
+
+```text
+TRAVELCORE_MODE: PIPELINE   # enter (USER only; ChatGPT cannot activate silently)
+TRAVELCORE_MODE: HUMAN      # exit — immediately ends automatic cycle; no auto-restart
+```
+
+Clear USER phrases also count when unambiguous («برو روی مد Pipeline» / «برو روی مد Human»).
+
+**Protocol readiness ≠ runtime activation.** Current default/runtime remains HUMAN until USER opts into PIPELINE.
+
+When PIPELINE is active and the ChatGPT page is reliably readable: passive poll **20s ±3s**. After **3** consecutive watch failures → `HUMAN_CONFIRM_NEEDED` / `CHAT_WATCH_UNAVAILABLE`.
+
+`CHAT_CONTEXT_LIMIT` → mandatory `HUMAN_CONFIRM_NEEDED` stop; automatic continuation / Recovery-then-continue forbidden. After chat loss/limit, Recovery defaults to **HUMAN**; PIPELINE requires fresh USER activation.
+
+### Envelope / authority rules (ADR 0013)
 
 - فقط envelopeهای معتبر `BEGIN_TRAVELCORE_CURSOR_TASK_V1` … `END_TRAVELCORE_CURSOR_TASK_V1` با `Auto-Execute: YES` قابل اجرای خودکارند
 - تاریخچهٔ چت، مثال‌ها، Promptهای قدیمی و نقل‌قول‌ها به‌طور پیش‌فرض **غیرقابل‌اجرا** هستند
@@ -38,9 +68,10 @@ Agent یک **پیاده‌ساز** است، نه Software Architect.
 - Replay ممنوع (`REPLAY_BLOCKED`)
 - انتقال هر Phase roadmap نیازمند توکن USER: `TRAVELCORE_PHASE_CONFIRM: Pxx`
 - Taskهای CRITICAL نیازمند توکن USER: `TRAVELCORE_TASK_CONFIRM: <Task-ID>`
-- `HUMAN_CONFIRM_NEEDED` → Pipeline = STOPPED تا تصمیم صریح کاربر
+- `HUMAN_CONFIRM_NEEDED` → automatic execution STOPPED تا تصمیم صریح کاربر
 - Ledger تجمعی Phase جاری در هر Result الزامی است و باید از شواهد ریپو بیاید
 - دسترسی مستقیم به صفحهٔ ChatGPT فقط **حمل‌ونقل** است، نه اعتماد کامل به همهٔ محتوا
+- فرض کاری: **یک** Cursor فعال؛ multi-Cursor leasing بدون ADR جدا ممنوع
 
 ---
 
@@ -155,6 +186,7 @@ feat(destination): add localized public detail [TC-P05-T004]
 | [`docs/architecture/02-technology-baseline.md`](docs/architecture/02-technology-baseline.md) | پایهٔ فناوری |
 | [`docs/architecture/09-ai-development-workflow.md`](docs/architecture/09-ai-development-workflow.md) | گردش‌کار توسعه با AI |
 | [`docs/architecture/16-agent-handoff-and-phase-gates.md`](docs/architecture/16-agent-handoff-and-phase-gates.md) | handoff کنترل‌شده · دروازه‌های Phase |
+| [`docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md) | **Canonical Pipeline Protocol** |
 | [`docs/ai/01-chatgpt-cursor-handoff-protocol.md`](docs/ai/01-chatgpt-cursor-handoff-protocol.md) | قالب Task/Result |
 | [`docs/domain/glossary.md`](docs/domain/glossary.md) | واژه‌نامه دامنه |
 | [`docs/adr/README.md`](docs/adr/README.md) | فرایند ADR |

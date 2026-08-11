@@ -43,19 +43,21 @@
 | TC-GOV-T001 Architecture/Protocol Commit | `f44f11e` |
 | TC-GOV-T001A | COMPLETE / ACCEPTED |
 | TC-GOV-T001A Activation Commit | `476ae67` |
-| Governance Task | **TC-GOV-T002** |
-| Governance Task State | **AWAITING_ARCHITECT_REVIEW** |
-| Last Accepted Commit | `476ae67` |
-| ADR 0001–0013 | ALL Accepted |
-| ADR 0014 | **Proposed** (TC-GOV-T002) — Human/Pipeline modes · chat-limit safety |
-| Unresolved Proposed ADR | **YES** — ADR 0014 |
-| Accepted Pipeline Governance | ADR 0013 |
+| TC-GOV-T002 | COMPLETE / ACCEPTED |
+| TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
+| TC-GOV-T002A | AWAITING_ARCHITECT_REVIEW (ADR 0014 acceptance / AGENTS+Recovery activation) |
+| Last Accepted Commit | `1cfe48a` |
+| ADR 0001–0014 | ALL Accepted |
+| Unresolved Proposed ADR | NO |
+| Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
 | Canonical Pipeline Entry | [`docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md`](ai/TRAVELCORE-PIPELINE-PROTOCOL.md) |
+| Pipeline Protocol | **READY** |
 | Pipeline Runtime Policy | [`docs/ai/pipeline-runtime-policy.json`](ai/pipeline-runtime-policy.json) |
-| Proposed Operating Modes | HUMAN (default) / PIPELINE (USER opt-in) — pending ADR 0014 acceptance |
-| Agent Handoff Pipeline | **ACTIVE** (ADR 0013 envelopes) |
+| Operating Modes | HUMAN (default) / PIPELINE (USER opt-in) |
+| Default Mode | **HUMAN** |
 | Current Runtime Mode | **HUMAN** |
-| Automatic Pipeline Loop | **OFF** |
+| Automatic Pipeline | **OFF** |
+| Agent Handoff Envelopes | ACTIVE (ADR 0013) |
 | Protocol | `TRAVELCORE_CURSOR_TASK_V1` · `TRAVELCORE_CURSOR_RESULT_V1` |
 | Future Architecture Transition Map | [`docs/architecture/15-future-architecture-transition-map.md`](architecture/15-future-architecture-transition-map.md) |
 | Agent Handoff Architecture | [`docs/architecture/16-agent-handoff-and-phase-gates.md`](architecture/16-agent-handoff-and-phase-gates.md) |
@@ -71,7 +73,7 @@
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
 | Current Active Product Task | None |
 | Current Next Product Phase | P01 — Platform / Backend Foundation |
-| Current Next Task | **TC-GOV-T002 awaiting architect review; P01 still gated on `TRAVELCORE_PHASE_CONFIRM: P01`** |
+| Current Next Task | **Await USER `TRAVELCORE_PHASE_CONFIRM: P01` before any P01 work** (protocol READY; automatic Pipeline OFF) |
 | P01 | NOT_STARTED |
 | P01 Implementation Started | NO |
 | Phase Transition State | **READY_AWAITING_HUMAN_CONFIRMATION** |
@@ -85,9 +87,9 @@
 
 - P00 Architecture Foundation formally complete
 - TC-P00-GATE PASS
-- ADR 0001–0013 Accepted; ADR 0014 Proposed (modes / chat-limit)
-- Canonical pipeline entry: `docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md`
-- Controlled ChatGPT↔Cursor handoff ACTIVE (ADR 0013); HUMAN/PIPELINE mode extension not AGENTS-activated until ADR 0014 Accepted
+- ADR 0001–0014 Accepted
+- Canonical pipeline entry ACTIVE: `docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md`
+- Pipeline Protocol = READY; Current Runtime Mode = HUMAN; Automatic Pipeline = OFF
 - P01 is next **product** phase but has **not** started
 - Product execution is stopped at the P00→P01 human phase gate until a new USER-authored `TRAVELCORE_PHASE_CONFIRM: P01`
 
@@ -131,7 +133,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P00-CLOSE | Normalize recovery state and close P00 | PASS / COMPLETE | `6c65cb9` |
 | TC-GOV-T001 | Controlled ChatGPT↔Cursor handoff + human phase gates | COMPLETE / ACCEPTED | `f44f11e` |
 | TC-GOV-T001A | Accept ADR 0013 + activate handoff protocol | COMPLETE / ACCEPTED | `476ae67` |
-| TC-GOV-T002 | Consolidate pipeline protocol + HUMAN/PIPELINE modes | AWAITING_ARCHITECT_REVIEW | see git log for this commit |
+| TC-GOV-T002 | Consolidate pipeline protocol + HUMAN/PIPELINE modes | COMPLETE / ACCEPTED | `1cfe48a` |
+| TC-GOV-T002A | Accept ADR 0014 + activate Pipeline Protocol in AGENTS/Recovery | AWAITING_ARCHITECT_REVIEW | see git log for this commit |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
