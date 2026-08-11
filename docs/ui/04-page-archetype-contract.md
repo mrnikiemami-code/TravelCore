@@ -3,6 +3,8 @@
 منبع: [`../architecture/10-ui-constitution.md`](../architecture/10-ui-constitution.md)  
 Roadmap validation sequence: [`../ROADMAP.md`](../ROADMAP.md)
 
+مشخصات canonical کهن‌الگوهای عمومی (TC-P00-T007): [`../architecture/13-reference-page-archetypes.md`](../architecture/13-reference-page-archetypes.md) · [`../pages/00-page-archetype-registry.md`](../pages/00-page-archetype-registry.md)
+
 ---
 
 ## 1. صفحه فقط JSX نیست

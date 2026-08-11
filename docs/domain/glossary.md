@@ -225,7 +225,8 @@
 ### PageArchetype
 
 - **Canonical:** PageArchetype
-- **فارسی:** الگوی صفحه با anatomy، داده، SEO و رفتار responsive مشخص (مثلاً ForeignTourDetailPage).
+- **فارسی:** قرارداد ساختاری قابل‌استفادهٔ مجدد برای صفحهٔ عمومی (نه یک Route Instance و نه Domain Aggregate). رجیستری: [`../pages/00-page-archetype-registry.md`](../pages/00-page-archetype-registry.md).
+- **اشتباه رایج:** یکی‌دانستن archetype با یک تور/مقصد خاص، یا یکی‌دانستن Page View Model با Domain/EF Entity.
 
 ### LocalizedSlug
 

@@ -45,6 +45,7 @@
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
 | TC-P00-T005 State | COMPLETE / ACCEPTED |
 | TC-P00-T006 State | COMPLETE / ACCEPTED |
+| TC-P00-T007 State | AWAITING_ARCHITECT_REVIEW |
 
 ### Accepted repository state (خلاصه)
 
@@ -194,9 +195,13 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 
 #### TC-P00-T007 — Reference Page Archetypes
 
-Current Next Task.
+**State:** AWAITING_ARCHITECT_REVIEW
 
-تحلیل و مستندسازی دائم کهن‌الگوهای محصول از LastSecond و TahaGasht (حداقل: Home، Destination Landing، Tour Search/Listing، Foreign Package Tour Detail، Experience Tour Detail، Hotel Listing/Detail، Attraction/Restaurant Detail، Visa، Article، Travelogue، Flight Search، Hotel Booking Search، Checkout/Booking).
+Current Active / Next Task (do not advance to T008 until architect acceptance).
+
+اسناد: [`architecture/13-reference-page-archetypes.md`](architecture/13-reference-page-archetypes.md) · [`pages/`](pages/)
+
+تحلیل و مستندسازی دائم کهن‌الگوهای محصول (Foreign Package Tour Detail، Experience Tour Detail، Tour Listing، Destination Landing، Hotel/Restaurant/Attraction Detail، Article، Travelogue، Visa، Search Results، Controlled SEO Landing). Home / Flight Search / HotelBooking Search / Checkout عمداً به فازهای بعدی موکول شده‌اند.
 
 برای هر archetype مهم: purpose · anatomy · domain data · mobile/desktop · RTL/LTR · SEO · interaction states.
 
