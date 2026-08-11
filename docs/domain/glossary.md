@@ -237,6 +237,27 @@
 - **Canonical:** IndexPolicy
 - **فارسی:** سیاست ایندکس‌پذیری (Published، Canonical، locale معتبر، عدم Redirect و …).
 
+### Locale
+
+- **Canonical:** Locale
+- **فارسی:** زمینهٔ زبان/فرهنگ UI و محتوا با شناسهٔ BCP 47 (مثلاً `fa`، `en`، `ar`، `fa-IR`).
+- **اشتباه رایج:** یکی‌دانستن با Currency، Calendar، یا TimeZone؛ یا محدودکردن دائمی سیستم به دقیقاً سه کد.
+
+### LanguageTag
+
+- **Canonical:** LanguageTag
+- **فارسی:** شناسهٔ نرمال‌شدهٔ زبان طبق semantics BCP 47 برای LocaleCode.
+
+### SourceLocale
+
+- **Canonical:** SourceLocale
+- **فارسی:** locale مبدأ/اصلی یک آیتم قابل‌ترجمه برای workflow editorial؛ اجبارکنندهٔ public fallback نیست.
+
+### LocalizedPublication
+
+- **Canonical:** LocalizedPublication
+- **فارسی:** وضعیت انتشار یک representation محلی‌شده (مثلاً Draft/Ready/Published)؛ جدا از lifecycle تجاری Entity و جدا از صرف وجود ردیف ترجمه.
+
 ### UUIDv7
 
 - **Canonical:** UUIDv7
@@ -273,6 +294,6 @@
 
 ## واژگان فنی که ترجمهٔ اجباری نمی‌شوند
 
-DbContext · Aggregate · Value Object · Minimal API · Vertical Slice · SEO · SSR · ISR · Modular Monolith · Outbox · ADR · NodaTime · JSONB
+DbContext · Aggregate · Value Object · Minimal API · Vertical Slice · SEO · SSR · ISR · Modular Monolith · Outbox · ADR · NodaTime · JSONB · BCP 47
 
 در نثر فارسی می‌توانند عیناً انگلیسی بمانند وقتی دقیق‌ترند.

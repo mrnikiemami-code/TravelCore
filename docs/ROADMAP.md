@@ -43,6 +43,7 @@
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
+| TC-P00-T005 State | AWAITING_ARCHITECT_REVIEW |
 
 ### Accepted repository state (خلاصه)
 
@@ -191,6 +192,19 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 #### TC-P00-T005 — Internationalization Architecture
 
 Current Next Task.
+
+**State:** AWAITING_ARCHITECT_REVIEW (not Accepted; do not advance to T006 until architect accepts).
+
+اسناد پیشنهادی این Task:
+
+- [`architecture/11-internationalization-architecture.md`](architecture/11-internationalization-architecture.md)
+- [`i18n/01-locale-and-routing.md`](i18n/01-locale-and-routing.md)
+- [`i18n/02-translation-ownership-and-lifecycle.md`](i18n/02-translation-ownership-and-lifecycle.md)
+- [`i18n/03-formatting-and-cultural-preferences.md`](i18n/03-formatting-and-cultural-preferences.md)
+- [`i18n/04-fallback-and-publication-policy.md`](i18n/04-fallback-and-publication-policy.md)
+- [`i18n/05-i18n-quality-and-governance.md`](i18n/05-i18n-quality-and-governance.md)
+
+ADRهای مرتبط: Proposed (0007–0008) — تا بازبینی معمار Accepted نشوند.
 
 locale model · fa/en/ar · scalable translation · Entity/UI/Editorial Translation · localized routing/slug · fallback/publication · number/date formatting · calendar · timezone · currency display · bidi-sensitive values
 

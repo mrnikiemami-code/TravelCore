@@ -88,3 +88,5 @@ NNNN-short-kebab-title.md
 | [`0004`](0004-temporal-model-nodatime.md) | Temporal model · NodaTime · IANA | Accepted |
 | [`0005`](0005-server-component-first.md) | Server Component first · minimal Client boundary | Accepted |
 | [`0006`](0006-direction-neutral-ui-bidi.md) | Direction-neutral UI · logical CSS · explicit bidi | Accepted |
+| [`0007`](0007-locale-prefixed-public-routing.md) | Locale-prefixed public routing | Proposed |
+| [`0008`](0008-translation-publication-fallback.md) | Translation publication · fallback policy | Proposed |
