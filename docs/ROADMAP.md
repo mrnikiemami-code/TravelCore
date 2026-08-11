@@ -35,11 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | P00 — Architecture Foundation |
-| Phase Status | IN_PROGRESS |
-| Last Accepted Task | TC-P00-T008 |
-| Last Accepted Commit | `1bd4e95` |
-| Current Next Task | **TC-P00-GATE** — Final Architecture Foundation Gate |
+| Current Phase | **P01 — Platform / Backend Foundation** |
+| Phase Status | P00 COMPLETE · P01 NOT_STARTED |
+| Last Accepted P00 Task | TC-P00-T008 |
+| Accepted Architecture Commit (T008) | `1bd4e95` |
+| Acceptance / State Commit (T008A) | `0074437` |
+| Last Accepted Commit | `0074437` |
+| P00 Final Gate | TC-P00-GATE — PASS |
+| P00 Closure | TC-P00-CLOSE |
+| Current Next Task | **P01 task planning required** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -49,7 +53,8 @@
 | TC-P00-T007R | PASS |
 | TC-P00-T008 State | COMPLETE / ACCEPTED |
 | TC-P00-T008R | PASS |
-| TC-P00-GATE State | PENDING |
+| TC-P00-GATE State | PASS |
+| Future Transition Map | [`architecture/15-future-architecture-transition-map.md`](architecture/15-future-architecture-transition-map.md) |
 
 ### Accepted repository state (خلاصه)
 
@@ -94,8 +99,9 @@
 
 وضعیت فعلی:
 
-- **P00** = IN_PROGRESS
-- **P01–P29 و Post-P29** = PLANNED
+- **P00** = COMPLETE
+- **P01** = NEXT / NOT_STARTED
+- **P02–P29 و Post-P29** = PLANNED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -174,7 +180,7 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 
 ## P00 — Architecture Foundation
 
-**Status:** IN_PROGRESS
+**Status:** COMPLETE
 
 **Purpose:** قبل از پیاده‌سازی کسب‌وکار، معماری آن‌قدر صریح باشد که Cursor/Hermes مرز ماژول، مالکیت داده، رفتار UI، قواعد SEO یا localization را اختراع نکنند.
 
@@ -201,21 +207,19 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 
 #### TC-P00-GATE — Final Architecture Foundation Gate
 
-**State:** PENDING
+**State:** PASS
 
-Current Next Task.
-
-Final consistency / transition check before P01. P00 remains **IN_PROGRESS** until this gate passes. Do **not** start P01 until the Chief Architect completes TC-P00-GATE.
+Final architecture gate accepted by Chief Architect. P00 may close.
 
 ### P00 completion gate
 
-تا معمار **TC-P00-GATE** را نپذیرد و P00 را کامل اعلام نکند، پیاده‌سازی business-domain / P01 آغاز نمی‌شود.
+TC-P00-GATE = PASS. P00 = COMPLETE. پیاده‌سازی P01 هنوز شروع نشده؛ شناسهٔ دقیق اولین Task هنوز در ROADMAP تعریف نشده — **P01 task planning required**.
 
 ---
 
 ## P01 — Platform / Backend Foundation
 
-**Status:** PLANNED
+**Status:** NEXT / NOT_STARTED
 
 **Purpose:** اسکلت فنی را به host آمادهٔ Modular Monolith تبدیل کند.
 
@@ -602,8 +606,8 @@ P26 = Advanced SEO.
 
 | Phase | Title | Status |
 |-------|-------|--------|
-| P00 | Architecture Foundation | IN_PROGRESS |
-| P01 | Platform / Backend Foundation | PLANNED |
+| P00 | Architecture Foundation | COMPLETE |
+| P01 | Platform / Backend Foundation | NEXT / NOT_STARTED |
 | P02 | Frontend Foundation + Walking Skeleton | PLANNED |
 | P03 | Identity + Access + Party | PLANNED |
 | P04 | Reference Data + Destination | PLANNED |

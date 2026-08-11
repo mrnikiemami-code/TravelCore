@@ -1,7 +1,7 @@
 # Route, Canonical, and Redirects
 
-منبع: [`../architecture/12-seo-constitution.md`](../architecture/12-seo-constitution.md)  
-ADR مرتبط (Proposed): [`../adr/0009-centralized-seo-route-ownership.md`](../adr/0009-centralized-seo-route-ownership.md)  
+منبع: [`../architecture/12-seo-constitution.md`](../architecture/12-seo-constitution.md)
+ADR مرتبط (Accepted): [`../adr/0009-centralized-seo-route-ownership.md`](../adr/0009-centralized-seo-route-ownership.md)
 i18n routing: ADR 0007 Accepted
 
 ---
@@ -82,7 +82,7 @@ Host: یک canonical host per deployment/brand. Hostname نهایی اینجا h
 
 ### مثال ۲
 
-فقط معادل‌های published. Reciprocal جایی که کاربرد دارد.  
+فقط معادل‌های published. Reciprocal جایی که کاربرد دارد.
 `x-default` اجباری همه‌جا نیست؛ برای entry خنثی ممکن است — fake locale نباشد. خروجی markup → later.
 
 ---
@@ -107,7 +107,7 @@ Redirect records صریح؛ نه فقط از لاگ. جلوگیری از loop و
 
 در scope مسیریابی (مفهومی: Locale + RouteKind + Slug/path) دو صفحهٔ فعال برای یک canonical path رقابت نکنند.
 
-Conflict قبل از publication تشخیص داده شود — نه بعد از duplicate.  
+Conflict قبل از publication تشخیص داده شود — نه بعد از duplicate.
 Consistency قوی برای uniqueness/reservation لازم است؛ صرفاً eventual background کافی نیست اگر conflict بسازد.
 
 Namespace مسیر متمرکز در SEO؛ Destination/Tour/Place/Content رجیستری URL جداگانهٔ بی‌ربط پیاده نکنند.

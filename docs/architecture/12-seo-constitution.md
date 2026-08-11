@@ -14,7 +14,7 @@
 | [`11-internationalization-architecture.md`](11-internationalization-architecture.md) · ADR 0007/0008 | locale routes · publication |
 | [`10-ui-constitution.md`](10-ui-constitution.md) · ADR 0005 | Server render · CWV |
 
-ADRهای مرتبط این Task در وضعیت **Proposed** هستند تا بازبینی معمار.
+ADRهای مرتبط این Task **Accepted** هستند.
 
 ---
 
@@ -123,7 +123,7 @@ Soft-404 (HTTP 200 با «یافت نشد») ممنوع.
 
 JSON-LD جهت ترجیحی است. SEO ترکیب می‌کند؛ SoR کسب‌وکار باقی می‌ماند.
 
-حقیقت: قیمت · availability · rating — بدون جعل.  
+حقیقت: قیمت · availability · rating — بدون جعل.
 Mixed-currency: جمع/تبدیل جعلی ممنوع (ADR 0003). IRR≠Toman در schema.
 
 ### مثال ۱۱، ۱۵، ۱۷
@@ -171,11 +171,11 @@ Breadcrumb از سلسله‌مراتب معنایی Destination؛ محتوای 
 
 ---
 
-## 10. ADRهای Proposed این Task
+## 10. ADRهای Accepted این Task
 
 | ADR | موضوع |
 |-----|--------|
 | [`../adr/0009-centralized-seo-route-ownership.md`](../adr/0009-centralized-seo-route-ownership.md) | مالکیت متمرکز مسیر SEO |
 | [`../adr/0010-controlled-indexation-programmatic-seo.md`](../adr/0010-controlled-indexation-programmatic-seo.md) | ایندکس کنترل‌شده · programmatic SEO |
 
-وضعیت: **Proposed** — تا پذیرش معمار Accepted نشوند.
+وضعیت: **Accepted**.

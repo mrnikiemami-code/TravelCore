@@ -1,9 +1,9 @@
 # Identifiers and References — شناسه‌ها و ارجاعات
 
-منبع سطح‌بالا: [`../architecture/07-data-architecture.md`](../architecture/07-data-architecture.md)  
-مرز ماژول: [`../architecture/04-module-boundaries.md`](../architecture/04-module-boundaries.md)  
-ADR مرتبط (Proposed): [`../adr/0002-uuid-v7-domain-identity.md`](../adr/0002-uuid-v7-domain-identity.md)  
-ADR schema/FK (Proposed): [`../adr/0001-postgresql-schema-per-module.md`](../adr/0001-postgresql-schema-per-module.md)
+منبع سطح‌بالا: [`../architecture/07-data-architecture.md`](../architecture/07-data-architecture.md)
+مرز ماژول: [`../architecture/04-module-boundaries.md`](../architecture/04-module-boundaries.md)
+ADR مرتبط (Accepted): [`../adr/0002-uuid-v7-domain-identity.md`](../adr/0002-uuid-v7-domain-identity.md)
+ADR schema/FK (Accepted): [`../adr/0001-postgresql-schema-per-module.md`](../adr/0001-postgresql-schema-per-module.md)
 
 ---
 
@@ -37,7 +37,7 @@ MediaAssetId
 
 ### تولید
 
-هویت معمولاً توسط **Application قبل از persistence** تولید می‌شود.  
+هویت معمولاً توسط **Application قبل از persistence** تولید می‌شود.
 برای به‌دست‌آوردن هویت دامنه به round-trip دیتابیس وابسته نشوید.
 
 ---
@@ -50,7 +50,7 @@ MediaAssetId
 
 مقدار persistence زیرین همچنان UUID است.
 
-در این Task کتابخانهٔ third-party StronglyTypedId انتخاب/نصب نمی‌شود. مکانیسم پیاده‌سازی → P01.  
+در این Task کتابخانهٔ third-party StronglyTypedId انتخاب/نصب نمی‌شود. مکانیسم پیاده‌سازی → P01.
 قانون معماری: **ایمنی معنایی نوع**.
 
 ---
@@ -93,7 +93,7 @@ MediaAssetId
 | ISO country | طبق استاندارد |
 | IANA timezone | `Asia/Tehran` · `Europe/Istanbul` |
 
-ReferenceData می‌تواند metadata توصیفی این کدها را مالک باشد.  
+ReferenceData می‌تواند metadata توصیفی این کدها را مالک باشد.
 در قراردادهای عمومی/دامنه، استانداردهای بین‌المللی معنادار را با integer ID دلخواه جایگزین نکنید.
 
 ---

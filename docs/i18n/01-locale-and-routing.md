@@ -1,7 +1,7 @@
 # Locale and Routing
 
-منبع: [`../architecture/11-internationalization-architecture.md`](../architecture/11-internationalization-architecture.md)  
-ADR مرتبط (Proposed): [`../adr/0007-locale-prefixed-public-routing.md`](../adr/0007-locale-prefixed-public-routing.md)  
+منبع: [`../architecture/11-internationalization-architecture.md`](../architecture/11-internationalization-architecture.md)
+ADR مرتبط (Accepted): [`../adr/0007-locale-prefixed-public-routing.md`](../adr/0007-locale-prefixed-public-routing.md)
 SEO تفصیلی: TC-P00-T006 · UI direction: ADR 0006 Accepted
 
 ---
@@ -223,7 +223,7 @@ Switch EN: /en/destinations/istanbul
 
 ## 13. Admin / Agency Routing
 
-فرض نکنید Admin/Agency باید دقیقاً همان مکانیک URL عمومی را داشته باشند.  
+فرض نکنید Admin/Agency باید دقیقاً همان مکانیک URL عمومی را داشته باشند.
 اما UI translation همان semantics Locale را رعایت می‌کند. طراحی دقیق → deferred.
 
 ---

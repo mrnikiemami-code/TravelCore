@@ -30,27 +30,45 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | P00 — Architecture Foundation |
-| Last Accepted Task | TC-P00-T008 |
-| Last Accepted Commit | `1bd4e95` |
-| Accepted Architecture Commit | `1bd4e95` |
-| Repository Normalization | TC-P00-T003R — PASS / ACCEPTED |
-| Repository Normalization Commit | `840c3e5` |
+| Current Phase | **P01 — Platform / Backend Foundation** |
+| Previous Phase | P00 — Architecture Foundation |
+| P00 | COMPLETE / ACCEPTED |
+| P00 Final Gate | TC-P00-GATE — PASS |
+| P00 Closure Task | TC-P00-CLOSE |
+| Last Accepted P00 Task | TC-P00-T008 |
+| Accepted Architecture Commit (T008 content) | `1bd4e95` |
+| Acceptance / State Commit (T008A) | `0074437` |
+| Last Accepted Commit | `0074437` |
+| ADR 0001–0012 | ALL Accepted |
+| Unresolved Proposed ADR | NO |
+| Future Architecture Transition Map | [`docs/architecture/15-future-architecture-transition-map.md`](architecture/15-future-architecture-transition-map.md) |
+| Repository Normalization | TC-P00-T003R — PASS / ACCEPTED (`840c3e5`) |
 | Emergency ChatGPT Recovery Drill | PASS |
-| TC-P00-T007R | PASS |
+| TC-P00-T007R | PASS (SAFE EXTENSION) |
 | TC-P00-T008R | PASS |
 | Repository Bootstrap | COMPLETE |
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
 | Current Active Task | None |
-| Current Next Task | **TC-P00-GATE** — Final Architecture Foundation Gate |
+| Current Next Phase | P01 — Platform / Backend Foundation |
+| Current Next Task | **P01 task planning required** |
+| P01 | NOT_STARTED |
+| P01 Implementation Started | NO |
+
+### P00 Exit Summary
+
+- P00 Architecture Foundation formally complete
+- TC-P00-GATE PASS
+- ADR 0001–0012 Accepted; no unresolved Proposed ADR
+- Future Architecture Transition Map is part of recovery context
+- P01 is next phase but has **not** started (no implementation)
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
 T007R note: integrity review PASS — the T007 update to `docs/ui/04-page-archetype-contract.md` was a compatible documentation traceability extension only (SAFE EXTENSION).
 
-T008R note: repository integrity PASS — canonical origin already `mrnikiemami-code/TravelCore`; prior wrong-owner spelling was REPORT TYPO only; `1bd4e95` on canonical `origin/main`.
+T008R note: repository integrity PASS — canonical origin already `mrnikiemami-code/TravelCore`; prior wrong-owner spelling was REPORT TYPO only.
 
 ---
 
@@ -59,27 +77,33 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | Task | خلاصه | نتیجه | Commit مرتبط |
 |------|--------|--------|----------------|
 | TC-P00-T000A | Backend bootstrap (.NET 10 Minimal API) | PASS | بخشی از `cf97f35` |
-| TC-P00-T000B | Frontend/repository bootstrap (Next.js monorepo) | Local PASS؛ مشکل remote بعداً حل شد | `cf97f35` |
-| TC-P00-T000C | GitHub auth / private repo / push sync | PASS | همان پایه روی `origin/main` |
+| TC-P00-T000B | Frontend/repository bootstrap | Local PASS؛ remote بعداً حل شد | `cf97f35` |
+| TC-P00-T000C | GitHub auth / private repo / push sync | PASS | روی `origin/main` |
 | TC-P00-T001 | Architecture Brain & Constitution | PASS | `834e0c5` |
-| TC-P00-T001A | Project continuity / recovery state | PASS | `110c748` |
-| TC-P00-T002 | Domain Map + Module Boundaries + Ownership Matrix + Dependency Rules | ACCEPTED / COMPLETE | `08343e7` |
+| TC-P00-T001A | Project continuity / PROJECT-STATE | PASS | `110c748` |
+| TC-P00-T001B | Master execution roadmap | PASS | `783c4e4` |
+| TC-P00-T001C | Emergency ChatGPT recovery prompt | PASS | `31d1bfe` |
+| TC-P00-T002 | Domain map / module boundaries | ACCEPTED / COMPLETE | `08343e7` |
+| TC-P00-T002A | Accept domain boundaries / advance state | ACCEPTED | `6f50897` |
 | TC-P00-T003 | Data Architecture | ACCEPTED / COMPLETE | `3904bb9` |
-| TC-P00-T003R | Normalize canonical GitHub repository identity | PASS / ACCEPTED | `840c3e5` |
+| TC-P00-T003R | Normalize canonical GitHub identity | PASS / ACCEPTED | `840c3e5` |
+| TC-P00-T003A | Accept data architecture | ACCEPTED | `f74f0a4` |
 | TC-P00-T004 | UI Constitution | ACCEPTED / COMPLETE | `48e0472` |
+| TC-P00-T004A | Accept UI constitution | ACCEPTED | `b477755` |
 | TC-P00-T005 | Internationalization Architecture | ACCEPTED / COMPLETE | `66e6f32` |
+| TC-P00-T005A | Accept i18n architecture | ACCEPTED | `b73bc10` |
 | TC-P00-T006 | SEO Constitution | ACCEPTED / COMPLETE | `5dbbb45` |
+| TC-P00-T006A | Accept SEO constitution | ACCEPTED | `5d81f5a` |
 | TC-P00-T007 | Reference Page Archetypes | ACCEPTED / COMPLETE | `fbf1617` |
-| TC-P00-T007R | Accepted-document integrity review (`04-page-archetype-contract.md`) | PASS | review of `fbf1617` |
+| TC-P00-T007R | Accepted-doc integrity review | PASS | review of `fbf1617` |
+| TC-P00-T007A | Accept page archetypes | ACCEPTED | `b671f58` |
 | TC-P00-T008 | Engineering Quality Constitution | ACCEPTED / COMPLETE | `1bd4e95` |
 | TC-P00-T008R | Canonical repository integrity review | PASS | review of `1bd4e95` |
+| TC-P00-T008A | Accept engineering quality constitution | ACCEPTED | `0074437` |
+| TC-P00-GATE | Final Architecture Foundation Gate | PASS | audit (read-only) |
+| TC-P00-CLOSE | Normalize recovery state and close P00 | THIS COMMIT | see git log |
 
-Bootstrap commit اولیهٔ فنی:
-
-`cf97f35 chore: bootstrap TravelCore repository`
-
----
-
+Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
 
 این‌ها تصمیم‌های قفل‌شدهٔ فعلی‌اند؛ تصمیم جدید اختراع نشده است:

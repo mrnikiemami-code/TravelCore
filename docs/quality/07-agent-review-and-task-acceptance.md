@@ -1,7 +1,7 @@
 # Agent Review and Task Acceptance
 
-منبع: [`../architecture/14-engineering-quality-constitution.md`](../architecture/14-engineering-quality-constitution.md) · [`../architecture/09-ai-development-workflow.md`](../architecture/09-ai-development-workflow.md)  
-ADR: [`../adr/0011-evidence-based-task-acceptance.md`](../adr/0011-evidence-based-task-acceptance.md) (Proposed)
+منبع: [`../architecture/14-engineering-quality-constitution.md`](../architecture/14-engineering-quality-constitution.md) · [`../architecture/09-ai-development-workflow.md`](../architecture/09-ai-development-workflow.md)
+ADR: [`../adr/0011-evidence-based-task-acceptance.md`](../adr/0011-evidence-based-task-acceptance.md) (Accepted)
 
 ---
 
@@ -9,12 +9,12 @@ ADR: [`../adr/0011-evidence-based-task-acceptance.md`](../adr/0011-evidence-base
 
 Before reporting completion / committing, Cursor reviews its own diff for:
 
-- scope correctness  
-- unexpected files  
-- architecture violations  
-- missing applicable tests  
-- state documentation consistency  
-- `git diff --check`  
+- scope correctness
+- unexpected files
+- architecture violations
+- missing applicable tests
+- state documentation consistency
+- `git diff --check`
 
 Do not immediately commit after writing without reviewing the diff.
 
@@ -36,9 +36,9 @@ Architecture-affecting work requires Chief Architect review where workflow says 
 
 **Cursor cannot:**
 
-- self-accept an ADR  
-- convert Proposed → Accepted without architect instruction  
-- self-declare architectural change accepted  
+- self-accept an ADR
+- convert Proposed → Accepted without architect instruction
+- self-declare architectural change accepted
 
 ---
 
@@ -68,9 +68,9 @@ Do not work around a blocker by silently changing scope.
 
 ## 6. Gate State Discipline
 
-- Unexecuted required gate ≠ PASS  
-- Environment prevents required gate → BLOCKED  
-- Credible non-need → NOT_APPLICABLE with reason  
+- Unexecuted required gate ≠ PASS
+- Environment prevents required gate → BLOCKED
+- Credible non-need → NOT_APPLICABLE with reason
 
 ---
 
@@ -96,7 +96,7 @@ Secrets never committed.
 
 ## 9. Documentation / State
 
-Do not update architecture docs to describe aspirational code as if implemented.  
+Do not update architecture docs to describe aspirational code as if implemented.
 Do not leave PROJECT-STATE claiming acceptance before architect acceptance.
 
 Comments explain **WHY**; identifiers English; Persian docs/comments OK; UTF-8 readable.

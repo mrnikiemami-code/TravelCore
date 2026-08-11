@@ -1,7 +1,7 @@
 # Search, Facets, and Programmatic SEO
 
-منبع: [`../architecture/12-seo-constitution.md`](../architecture/12-seo-constitution.md)  
-ADR مرتبط (Proposed): [`../adr/0010-controlled-indexation-programmatic-seo.md`](../adr/0010-controlled-indexation-programmatic-seo.md)
+منبع: [`../architecture/12-seo-constitution.md`](../architecture/12-seo-constitution.md)
+ADR مرتبط (Accepted): [`../adr/0010-controlled-indexation-programmatic-seo.md`](../adr/0010-controlled-indexation-programmatic-seo.md)
 
 ---
 
@@ -11,7 +11,7 @@ ADR مرتبط (Proposed): [`../adr/0010-controlled-indexation-programmatic-seo.
 |--------|-----|
 | index · ranking · facets · autocomplete · query projections | indexable public routes · canonical · robots · sitemap · landing semantics |
 
-Search derived است، SoR محتوا/SEO نیست.  
+Search derived است، SoR محتوا/SEO نیست.
 Search result state خودکار SEO page نیست.
 
 ---
@@ -22,7 +22,7 @@ Search result state خودکار SEO page نیست.
 /fa/search?q=istanbul
 ```
 
-برای کاربر مفید است. **خودکار canonical SEO landing نیست.**  
+برای کاربر مفید است. **خودکار canonical SEO landing نیست.**
 معمولاً نباید صفحهٔ indexable کنترل‌نشده شود. رفتار دقیق noindex/crawl → later.
 
 ---

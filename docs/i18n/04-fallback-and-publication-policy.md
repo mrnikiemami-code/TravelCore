@@ -1,7 +1,7 @@
 # Fallback and Publication Policy
 
-منبع: [`../architecture/11-internationalization-architecture.md`](../architecture/11-internationalization-architecture.md)  
-ADR مرتبط (Proposed): [`../adr/0008-translation-publication-fallback.md`](../adr/0008-translation-publication-fallback.md)
+منبع: [`../architecture/11-internationalization-architecture.md`](../architecture/11-internationalization-architecture.md)
+ADR مرتبط (Accepted): [`../adr/0008-translation-publication-fallback.md`](../adr/0008-translation-publication-fallback.md)
 
 ---
 
@@ -96,7 +96,7 @@ Fallback from fa
 
 صفحه‌ای که `lang="en"` اعلام می‌کند باید وقتی منتشر عمومی است محتوای اصلی واقعاً انگلیسی داشته باشد.
 
-بدنهٔ فارسی زیر مسیر انگلیسی فقط برای پوشش URL ممنوع است.  
+بدنهٔ فارسی زیر مسیر انگلیسی فقط برای پوشش URL ممنوع است.
 صحت زبان > کامل‌بودن ظاهری locale routes.
 
 ---
@@ -105,7 +105,7 @@ Fallback from fa
 
 سیستم i18n نباید خودکار هر Entity را به هر locale route عمومی تبدیل کند.
 
-مسیر عمومی locale فقط وقتی سیاست انتشار اجازه می‌دهد وجود دارد.  
+مسیر عمومی locale فقط وقتی سیاست انتشار اجازه می‌دهد وجود دارد.
 قواعد indexation تفصیلی → T006.
 
 ---
@@ -139,7 +139,7 @@ en product page: Missing
 
 ## 12. Cache Invalidation Direction
 
-Publish/update یک locale باید projection/cache مرتبط همان locale را invalidate کند.  
+Publish/update یک locale باید projection/cache مرتبط همان locale را invalidate کند.
 لزوماً همهٔ localeها را وقتی فقط فارسی عوض شده invalidate نکنید مگر دادهٔ غیرمحلی مشترک هم عوض شده باشد.
 
 پیاده‌سازی دقیق → later.

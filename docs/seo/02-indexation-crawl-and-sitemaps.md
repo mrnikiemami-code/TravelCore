@@ -1,7 +1,7 @@
 # Indexation, Crawl, and Sitemaps
 
-منبع: [`../architecture/12-seo-constitution.md`](../architecture/12-seo-constitution.md)  
-ADR مرتبط (Proposed): [`../adr/0010-controlled-indexation-programmatic-seo.md`](../adr/0010-controlled-indexation-programmatic-seo.md)
+منبع: [`../architecture/12-seo-constitution.md`](../architecture/12-seo-constitution.md)
+ADR مرتبط (Accepted): [`../adr/0010-controlled-indexation-programmatic-seo.md`](../adr/0010-controlled-indexation-programmatic-seo.md)
 
 ---
 
@@ -71,7 +71,7 @@ Filter/search query → بخش [`04-search-facets-and-programmatic-seo.md`](04-s
 
 ### مثال ۱۴
 
-Listing صفحه‌بندی‌شده باید URL پایدار داشته باشد (`?page=2`).  
+Listing صفحه‌بندی‌شده باید URL پایدار داشته باشد (`?page=2`).
 کشف فقط به infinite scroll کلاینت وابسته نباشد؛ UX scroll مجاز است ولی مسیر crawlable لازم است.
 
 **Canonical هر صفحه به page 1 به‌صورت خودکار ممنوع نیست** — هر صفحه ممکن است محتوای لیست متمایز داشته باشد. nuance عمدی است.
@@ -80,6 +80,6 @@ Listing صفحه‌بندی‌شده باید URL پایدار داشته باش
 
 ## 6. Crawl Behavior Direction
 
-Index quality > URL quantity.  
-Facet explosion و thin content را crawl/index نکنید.  
+Index quality > URL quantity.
+Facet explosion و thin content را crawl/index نکنید.
 Duplicate از query order، tracking، slash/case، route pattern، locale mistake با canonical/redirect کنترل شود.

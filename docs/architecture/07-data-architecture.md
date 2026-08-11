@@ -15,7 +15,7 @@
 | [`05-dependency-rules.md`](05-dependency-rules.md) | قوانین وابستگی |
 | [`06-cross-module-communication.md`](06-cross-module-communication.md) | قراردادها · رویداد · projection |
 
-ADRهای مرتبط این Task در وضعیت **Proposed** هستند تا بازبینی معمار.
+ADRهای مرتبط این Task **Accepted** هستند.
 
 ---
 
@@ -143,7 +143,7 @@ tour.tour_departures.tour_product_id  → FK → tour.tour_products.id
 3. snapshot برای حقایق تاریخی
 4. رویداد / projection وقتی لازم است
 
-هزینه: دیتابیس نمی‌تواند ارجاع بین‌schema را enforce کند.  
+هزینه: دیتابیس نمی‌تواند ارجاع بین‌schema را enforce کند.
 سود: استقلال migration و استخراج آیندهٔ ماژول.
 
 ---
@@ -370,7 +370,7 @@ PostgreSQL: `lowercase snake_case` بدون identifierهای quoted mixed-case.
 
 ---
 
-## 19. پیوند ADRهای Proposed
+## 19. پیوند ADRهای Accepted
 
 | موضوع | ADR |
 |-------|-----|
@@ -379,4 +379,4 @@ PostgreSQL: `lowercase snake_case` بدون identifierهای quoted mixed-case.
 | Money / IRR / Toman | [`../adr/0003-money-currency-irr-toman.md`](../adr/0003-money-currency-irr-toman.md) |
 | NodaTime / IANA | [`../adr/0004-temporal-model-nodatime.md`](../adr/0004-temporal-model-nodatime.md) |
 
-وضعیت همه در این Task: **Proposed** — تا پذیرش معمار، Accepted نشوند.
+وضعیت همه: **Accepted**.

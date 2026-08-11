@@ -1,8 +1,8 @@
 # Money and Currency — پول و ارز
 
-منبع سطح‌بالا: [`../architecture/07-data-architecture.md`](../architecture/07-data-architecture.md)  
-واژه‌نامه: [`../domain/glossary.md`](../domain/glossary.md)  
-ADR مرتبط (Proposed): [`../adr/0003-money-currency-irr-toman.md`](../adr/0003-money-currency-irr-toman.md)
+منبع سطح‌بالا: [`../architecture/07-data-architecture.md`](../architecture/07-data-architecture.md)
+واژه‌نامه: [`../domain/glossary.md`](../domain/glossary.md)
+ADR مرتبط (Accepted): [`../adr/0003-money-currency-irr-toman.md`](../adr/0003-money-currency-irr-toman.md)
 
 ---
 

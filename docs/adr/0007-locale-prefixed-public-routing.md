@@ -62,4 +62,4 @@ TravelCore یک محصول چندزبانهٔ SEO-first است. اگر صفحا�
 
 ## Migration / Impact
 
-پیاده‌سازی routing در P02 و SEO persistence در T006/P05. این ADR کد/پکیج نصب نمی‌کند. Status تا بازبینی معمار **Proposed**.
+پیاده‌سازی routing در P02 و SEO persistence در T006/P05. این ADR کد/پکیج نصب نمی‌کند. Status: **Accepted**.

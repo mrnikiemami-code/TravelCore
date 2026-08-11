@@ -65,4 +65,4 @@
 
 ## Migration / Impact
 
-قواعد validation انتشار در فازهای ماژول؛ routing/SEO در T006/P02. بدون پیاده‌سازی در این Task. Status تا بازبینی معمار **Proposed**.
+قواعد validation انتشار در فازهای ماژول؛ routing/SEO در T006/P02. بدون پیاده‌سازی در این Task. Status: **Accepted**.

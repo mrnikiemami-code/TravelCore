@@ -116,11 +116,12 @@ At execution time, first discover and read what exists:
 1. `AGENTS.md`
 2. `docs/PROJECT-STATE.md`
 3. `docs/ROADMAP.md` (if present)
-4. `docs/architecture/**`
-5. `docs/domain/**`
-6. `docs/adr/**`
-7. `docs/prompts/**`
-8. Later architecture-related docs **if directories exist**, for example:
+4. `docs/architecture/15-future-architecture-transition-map.md` (if present)
+5. `docs/architecture/**`
+6. `docs/domain/**`
+7. `docs/adr/**`
+8. `docs/prompts/**`
+9. Later architecture-related docs **if directories exist**, for example:
    - `docs/ui/**`
    - `docs/i18n/**`
    - `docs/seo/**`
@@ -217,6 +218,24 @@ If `docs/ROADMAP.md` exists, read it and extract:
 - completion gates
 
 Do not dump the entire roadmap. Provide enough context for the new architect to continue safely.
+
+---
+
+## INSPECT FUTURE ARCHITECTURE TRANSITION MAP
+
+If `docs/architecture/15-future-architecture-transition-map.md` exists, read it.
+
+For concerns relevant to the Current Phase / Current Next Task / next dependent phases, report where useful:
+
+- Current State
+- Target State
+- Transition Trigger
+- Target Phase
+- Preserved Invariants
+
+This map supplements ROADMAP. It does **not** authorize starting future work.
+
+Recovery remains READ-ONLY and must NOT automatically begin implementation.
 
 ---
 
@@ -361,6 +380,8 @@ Summarize roadmap with statuses: COMPLETE · IN_PROGRESS · PLANNED · BLOCKED
 
 Emphasize: current phase · current next task · next 2–3 major dependent phases
 
+If the Future Architecture Transition Map exists, add a short subsection for the most relevant upcoming transitions (Current State · Target State · Trigger/Phase · Invariants). Do not dump the entire map.
+
 ### I. Cross-Cutting Requirements
 
 Summarize accepted rules for Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security · Testing · Performance · Observability
@@ -417,7 +438,7 @@ Always include:
 - `AGENTS.md`
 - `docs/PROJECT-STATE.md`
 
-Also include ROADMAP (if present) and documents relevant to Current Next Task.
+Also include ROADMAP (if present), `docs/architecture/15-future-architecture-transition-map.md` (if present), and documents relevant to Current Next Task.
 
 Do not dump every file.
 

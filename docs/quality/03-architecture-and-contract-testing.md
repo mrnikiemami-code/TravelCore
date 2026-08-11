@@ -1,7 +1,7 @@
 # Architecture and Contract Testing
 
-منبع: [`../architecture/14-engineering-quality-constitution.md`](../architecture/14-engineering-quality-constitution.md)  
-ADR: [`../adr/0012-automated-architecture-guardrails.md`](../adr/0012-automated-architecture-guardrails.md) (Proposed)
+منبع: [`../architecture/14-engineering-quality-constitution.md`](../architecture/14-engineering-quality-constitution.md)
+ADR: [`../adr/0012-automated-architecture-guardrails.md`](../adr/0012-automated-architecture-guardrails.md) (Accepted)
 
 ---
 
@@ -39,15 +39,15 @@ Exact project/package graphs established in P01+.
 
 Detect/prevent:
 
-- new global DbContext  
-- cross-module EF navigation  
-- language-specific Name columns  
-- raw provider ID as primary domain ID  
-- inventing `TOMAN` as currency code contrary to Money ADR  
-- business rules authoritative only in frontend  
-- SEO route logic duplicated across business modules  
-- all pages converted to Client Components  
-- page composition via cross-module DbContext  
+- new global DbContext
+- cross-module EF navigation
+- language-specific Name columns
+- raw provider ID as primary domain ID
+- inventing `TOMAN` as currency code contrary to Money ADR
+- business rules authoritative only in frontend
+- SEO route logic duplicated across business modules
+- all pages converted to Client Components
+- page composition via cross-module DbContext
 
 Mechanically detectable forms should fail the Architecture quality gate.
 
@@ -63,15 +63,15 @@ Tour may consume **approved contracts**, but must not directly depend on another
 
 Where contract breakage risk exists:
 
-- frontend ↔ backend public APIs  
-- inter-module application contracts  
-- external provider adapters  
+- frontend ↔ backend public APIs
+- inter-module application contracts
+- external provider adapters
 
 Protect **semantic** compatibility. Snapshots may help structured contracts / rendering / serialization but:
 
-- review every large snapshot change  
-- snapshot change ≠ automatic correctness  
-- do not use snapshots alone as sole contract validation  
+- review every large snapshot change
+- snapshot change ≠ automatic correctness
+- do not use snapshots alone as sole contract validation
 
 ---
 
@@ -91,9 +91,9 @@ Accepted architecture documents are protected.
 
 If an implementation task modifies an accepted architecture doc:
 
-1. Classify: SAFE EXTENSION vs ACCEPTED ARCHITECTURE MODIFICATION vs UNRELATED  
-2. Safe traceability/editorial extension may be reported  
-3. Changed architectural rule → architect review and potentially ADR  
+1. Classify: SAFE EXTENSION vs ACCEPTED ARCHITECTURE MODIFICATION vs UNRELATED
+2. Safe traceability/editorial extension may be reported
+3. Changed architectural rule → architect review and potentially ADR
 
 Do not silently rewrite accepted decisions. Cursor cannot convert Proposed → Accepted without architect instruction.
 

@@ -1,7 +1,7 @@
 # Temporal Model — مدل زمانی TravelCore
 
-منبع سطح‌بالا: [`../architecture/07-data-architecture.md`](../architecture/07-data-architecture.md)  
-ADR مرتبط (Proposed): [`../adr/0004-temporal-model-nodatime.md`](../adr/0004-temporal-model-nodatime.md)
+منبع سطح‌بالا: [`../architecture/07-data-architecture.md`](../architecture/07-data-architecture.md)
+ADR مرتبط (Accepted): [`../adr/0004-temporal-model-nodatime.md`](../adr/0004-temporal-model-nodatime.md)
 
 TravelCore یک سیستم travel با فشار timezone است. مدل زمانی Domain/Application نباید روی `DateTime` مبهم BCL تکیه کند.
 

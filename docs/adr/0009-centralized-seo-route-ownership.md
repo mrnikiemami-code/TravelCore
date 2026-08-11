@@ -60,4 +60,4 @@
 
 ## Migration / Impact
 
-پیاده‌سازی در P05 و فازهای ماژول. Schema دقیق deferred. Status تا بازبینی معمار **Proposed**.
+پیاده‌سازی در P05 و فازهای ماژول. Schema دقیق deferred. Status: **Accepted**.

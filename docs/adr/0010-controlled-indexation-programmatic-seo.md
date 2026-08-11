@@ -61,4 +61,4 @@
 
 ## Migration / Impact
 
-پیاده‌سازی IndexPolicy، sitemap generator، و landing workflow در P05/P26 و صفحات عمومی. Status تا بازبینی معمار **Proposed**.
+پیاده‌سازی IndexPolicy، sitemap generator، و landing workflow در P05/P26 و صفحات عمومی. Status: **Accepted**.

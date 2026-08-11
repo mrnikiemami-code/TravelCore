@@ -14,7 +14,7 @@
 | [`00-constitution.md`](00-constitution.md) | قانون اساسی سیستم |
 | [`02-technology-baseline.md`](02-technology-baseline.md) | Next.js · Tailwind baseline |
 
-ADRهای مرتبط این Task در وضعیت **Proposed** هستند تا بازبینی معمار.
+ADRهای مرتبط این Task **Accepted** هستند.
 
 ---
 
@@ -85,7 +85,7 @@ ForeignTourDetailPage (Server)
 entire Tour page = "use client"
 ```
 
-جزئیات: ADR Proposed [`../adr/0005-server-component-first.md`](../adr/0005-server-component-first.md)
+جزئیات: ADR Accepted [`../adr/0005-server-component-first.md`](../adr/0005-server-component-first.md)
 
 ---
 
@@ -155,7 +155,7 @@ Backend برای invariants کسب‌وکار authoritative است.
 
 ## 8. Mobile-first و Responsive
 
-عرض‌های اعتبارسنجی: `360 · 390 · 768 · 1024 · 1280 · 1440`  
+عرض‌های اعتبارسنجی: `360 · 390 · 768 · 1024 · 1280 · 1440`
 این‌ها نقطهٔ بررسی‌اند، نه الزام شش media query جدا.
 
 هر Page Archetype مهم نیاز به **Responsive Behavior Matrix** دارد (Desktop / Tablet / Mobile / RTL-LTR / a11y).
@@ -201,7 +201,7 @@ Arabic: `lang="ar" dir="rtl"`.
 
 در UI فارسی، `IKA → IST` معنای جغرافیایی دارد — فلش مسیر را فقط به‌خاطر RTL کورانه آینه نکنید.
 
-جزئیات: [`../ui/03-rtl-ltr-bidi.md`](../ui/03-rtl-ltr-bidi.md) · ADR Proposed [`../adr/0006-direction-neutral-ui-bidi.md`](../adr/0006-direction-neutral-ui-bidi.md)
+جزئیات: [`../ui/03-rtl-ltr-bidi.md`](../ui/03-rtl-ltr-bidi.md) · ADR Accepted [`../adr/0006-direction-neutral-ui-bidi.md`](../adr/0006-direction-neutral-ui-bidi.md)
 
 ---
 
@@ -249,7 +249,7 @@ Loading · Success · Empty · Error · Unavailable/Expired
 
 Semantic HTML · keyboard · focus · labels · heading hierarchy · landmarks · contrast · screen readers · reduced motion · touch targets · error association.
 
-`button` برای action، `a`/`Link` برای navigation.  
+`button` برای action، `a`/`Link` برای navigation.
 Heading level از معنا می‌آید، نه از اندازهٔ فونت.
 
 ---

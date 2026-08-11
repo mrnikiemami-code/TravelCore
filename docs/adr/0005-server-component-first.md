@@ -62,4 +62,4 @@ TravelCore public UI باید SEO-first، mobile-friendly و با JavaScript م�
 
 ## Migration / Impact
 
-پیاده‌سازی در P02 و صفحات بعدی. این ADR کتابخانه یا کد نصب/ایجاد نمی‌کند. Status تا بازبینی معمار **Proposed** می‌ماند.
+پیاده‌سازی در P02 و صفحات بعدی. این ADR کتابخانه یا کد نصب/ایجاد نمی‌کند. Status: **Accepted**.

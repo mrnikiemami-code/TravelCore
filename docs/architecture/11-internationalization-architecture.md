@@ -15,7 +15,7 @@
 | [`07-data-architecture.md`](07-data-architecture.md) · ADR 0003/0004 Accepted | Money · IRR/Toman · temporal |
 | SEO تفصیلی | **TC-P00-T006** |
 
-ADRهای مرتبط این Task در وضعیت **Proposed** هستند تا بازبینی معمار.
+ADRهای مرتبط این Task **Accepted** هستند.
 
 ---
 
@@ -60,7 +60,7 @@ Default عمومی اولیهٔ محصول: **`fa`** — اما default یک م�
 /ar/...
 ```
 
-صفحات SEO/عمومی مهم فقط به `Accept-Language` یا browser state وابسته نیستند.  
+صفحات SEO/عمومی مهم فقط به `Accept-Language` یا browser state وابسته نیستند.
 یک canonical URL واحد برای زبان‌های indexable متفاوت سرو نشود.
 
 پس از وجود locale در URL عمومی:
@@ -153,7 +153,7 @@ Toman display ≠ forced by fa     ✓ (explicit display policy)
 
 ## 8. مالکیت slug / SEO
 
-محتوای ترجمه متعلق به ماژول Entity/Content است.  
+محتوای ترجمه متعلق به ماژول Entity/Content است.
 مکانیک مسیر عمومی (LocalizedSlug · Canonical · Redirect · IndexPolicy) متعلق به **SEO** است.
 
 حقیقت مسیر را داخل هر جدول translation دامنه تکرار نکنید. جزئیات → T006.
@@ -184,7 +184,7 @@ Domain error code (language-neutral)
 
 ## 10. RTL / Bidi
 
-Locale جهت پیش‌فرض سند را می‌دهد (`fa`/`ar` rtl · `en` ltr).  
+Locale جهت پیش‌فرض سند را می‌دهد (`fa`/`ar` rtl · `en` ltr).
 صفحه ≠ مقدار: ADR 0006 Accepted.
 
 ### مثال ۱۲ و ۱۵
@@ -235,11 +235,11 @@ English UGC may appear inside Persian UI without being labeled Persian
 
 ---
 
-## 13. ADRهای Proposed این Task
+## 13. ADRهای Accepted این Task
 
 | ADR | موضوع |
 |-----|--------|
 | [`../adr/0007-locale-prefixed-public-routing.md`](../adr/0007-locale-prefixed-public-routing.md) | Locale-prefixed public routing |
 | [`../adr/0008-translation-publication-fallback.md`](../adr/0008-translation-publication-fallback.md) | Publication per locale · fallback policy |
 
-وضعیت: **Proposed** — تا پذیرش معمار Accepted نشوند.
+وضعیت: **Accepted**.

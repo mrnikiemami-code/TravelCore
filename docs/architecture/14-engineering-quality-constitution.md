@@ -4,7 +4,7 @@
 
 مرجع‌های محافظت‌شونده: Accepted ADRs 0001–0010 · [`00-constitution.md`](00-constitution.md) · UI/i18n/SEO/Page Archetypes · [`09-ai-development-workflow.md`](09-ai-development-workflow.md)
 
-ADRهای مرتبط (Proposed تا پذیرش معمار): [`../adr/0011-evidence-based-task-acceptance.md`](../adr/0011-evidence-based-task-acceptance.md) · [`../adr/0012-automated-architecture-guardrails.md`](../adr/0012-automated-architecture-guardrails.md)
+ADRهای مرتبط (Accepted): [`../adr/0011-evidence-based-task-acceptance.md`](../adr/0011-evidence-based-task-acceptance.md) · [`../adr/0012-automated-architecture-guardrails.md`](../adr/0012-automated-architecture-guardrails.md)
 
 ---
 
@@ -97,28 +97,28 @@ CI باید در آینده دروازه‌های تکرارپذیر را enforc
 
 ## 12. Anti-Patterns
 
-- Build PASS = Task PASS  
-- تست نزده ولی PASS  
-- rerun flaky تا سبز  
-- InMemory/SQLite به‌عنوان اثبات PostgreSQL  
-- EnsureCreated به‌عنوان تست migration  
-- architecture tests جایگزین architect review  
-- پوشش ۱۰۰٪ به‌عنوان معیار جهانی  
-- snapshot عظیم بدون تفسیر  
-- فقط E2E برای همه چیز  
-- mock بی‌معنا  
-- داده/راز واقعی در fixture  
-- وابستگی CI به شبکهٔ production provider  
-- پنهان کردن warningها  
-- بلعیدن استثنا  
-- لاگ راز  
-- نقض معماری چون «تست‌ها سبزند»  
-- frontend بدون RTL/mobile وقتی لازم است  
-- SEO به‌خاطر syntax JSON-LD  
-- migration فقط چون compile می‌شود  
-- Cursor خود-پذیرش ADR  
-- force-push عادی به main  
-- working tree کثیف نادیده  
+- Build PASS = Task PASS
+- تست نزده ولی PASS
+- rerun flaky تا سبز
+- InMemory/SQLite به‌عنوان اثبات PostgreSQL
+- EnsureCreated به‌عنوان تست migration
+- architecture tests جایگزین architect review
+- پوشش ۱۰۰٪ به‌عنوان معیار جهانی
+- snapshot عظیم بدون تفسیر
+- فقط E2E برای همه چیز
+- mock بی‌معنا
+- داده/راز واقعی در fixture
+- وابستگی CI به شبکهٔ production provider
+- پنهان کردن warningها
+- بلعیدن استثنا
+- لاگ راز
+- نقض معماری چون «تست‌ها سبزند»
+- frontend بدون RTL/mobile وقتی لازم است
+- SEO به‌خاطر syntax JSON-LD
+- migration فقط چون compile می‌شود
+- Cursor خود-پذیرش ADR
+- force-push عادی به main
+- working tree کثیف نادیده
 
 ---
 

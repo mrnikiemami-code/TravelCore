@@ -1,7 +1,7 @@
 # RTL / LTR / Bidi Architecture
 
-منبع: [`../architecture/10-ui-constitution.md`](../architecture/10-ui-constitution.md)  
-ADR مرتبط (Proposed): [`../adr/0006-direction-neutral-ui-bidi.md`](../adr/0006-direction-neutral-ui-bidi.md)  
+منبع: [`../architecture/10-ui-constitution.md`](../architecture/10-ui-constitution.md)
+ADR مرتبط (Accepted): [`../adr/0006-direction-neutral-ui-bidi.md`](../adr/0006-direction-neutral-ui-bidi.md)
 پول: [`../data/02-money-and-currency.md`](../data/02-money-and-currency.md)
 
 ---

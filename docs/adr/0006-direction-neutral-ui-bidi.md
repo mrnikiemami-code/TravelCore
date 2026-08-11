@@ -64,4 +64,4 @@ TravelCore از روز اول locales با جهت‌های متفاوت دارد
 
 ## Migration / Impact
 
-پیاده‌سازی root `lang`/`dir`، primitives direction-neutral، و bidi utilities در P02. بدون نصب پکیج در این Task. Status تا بازبینی معمار **Proposed** می‌ماند.
+پیاده‌سازی root `lang`/`dir`، primitives direction-neutral، و bidi utilities در P02. بدون نصب پکیج در این Task. Status: **Accepted**.
