@@ -47,6 +47,7 @@
 | TC-P00-T006 State | COMPLETE / ACCEPTED |
 | TC-P00-T007 State | COMPLETE / ACCEPTED |
 | TC-P00-T007R | PASS |
+| TC-P00-T008 State | AWAITING_ARCHITECT_REVIEW |
 
 ### Accepted repository state (خلاصه)
 
@@ -197,9 +198,15 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 
 #### TC-P00-T008 — Engineering Quality Constitution
 
-Current Next Task.
+**State:** AWAITING_ARCHITECT_REVIEW
+
+Current Active / Next Task (do not advance to P01 until architect acceptance and P00 gate).
+
+اسناد: [`architecture/14-engineering-quality-constitution.md`](architecture/14-engineering-quality-constitution.md) · [`quality/`](quality/) · Proposed ADRs [`0011`](adr/0011-evidence-based-task-acceptance.md) · [`0012`](adr/0012-automated-architecture-guardrails.md)
 
 test strategy · Architecture Tests · integration/API/frontend/E2E · a11y · SEO assertions · security baseline · observability · logging/correlation · CI gates · dependency policy
+
+Exact tooling/CI/test projects are deferred — this Task documents constitution only.
 
 ### P00 completion gate
 

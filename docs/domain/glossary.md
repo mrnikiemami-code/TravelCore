@@ -228,6 +228,17 @@
 - **فارسی:** قرارداد ساختاری قابل‌استفادهٔ مجدد برای صفحهٔ عمومی (نه یک Route Instance و نه Domain Aggregate). رجیستری: [`../pages/00-page-archetype-registry.md`](../pages/00-page-archetype-registry.md).
 - **اشتباه رایج:** یکی‌دانستن archetype با یک تور/مقصد خاص، یا یکی‌دانستن Page View Model با Domain/EF Entity.
 
+### QualityGate
+
+- **Canonical:** QualityGate
+- **فارسی:** دروازهٔ کیفیت قابل‌ارزیابی برای پذیرش Task با یکی از وضعیت‌های PASS / FAIL / BLOCKED / NOT_APPLICABLE. جزئیات: [`../quality/01-definition-of-done.md`](../quality/01-definition-of-done.md).
+- **اشتباه رایج:** گزارش PASS برای دروازه‌ای که اصلاً اجرا نشده؛ یا یکی‌دانستن Build سبز با Task PASS.
+
+### DefinitionOfDone
+
+- **Canonical:** DefinitionOfDone
+- **فارسی:** مجموعهٔ دروازه‌های کاربردی که باید برای Done شدن یک Task برقرار باشند. Build به‌تنهایی کافی نیست.
+
 ### LocalizedSlug
 
 - **Canonical:** LocalizedSlug

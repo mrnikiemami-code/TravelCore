@@ -42,7 +42,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Task | None |
+| Current Active Task | **TC-P00-T008** — Engineering Quality Constitution |
+| Task State | AWAITING_ARCHITECT_REVIEW |
 | Current Next Task | **TC-P00-T008** — Engineering Quality Constitution |
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.

@@ -92,3 +92,5 @@ NNNN-short-kebab-title.md
 | [`0008`](0008-translation-publication-fallback.md) | Translation publication · fallback policy | Accepted |
 | [`0009`](0009-centralized-seo-route-ownership.md) | Centralized SEO route ownership | Accepted |
 | [`0010`](0010-controlled-indexation-programmatic-seo.md) | Controlled indexation · programmatic SEO | Accepted |
+| [`0011`](0011-evidence-based-task-acceptance.md) | Evidence-based task acceptance · quality gates | Proposed |
+| [`0012`](0012-automated-architecture-guardrails.md) | Automated architecture guardrails | Proposed |
