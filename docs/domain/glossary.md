@@ -237,6 +237,12 @@
 - **Canonical:** IndexPolicy
 - **فارسی:** سیاست ایندکس‌پذیری (Published، Canonical، locale معتبر، عدم Redirect و …).
 
+### SeoLandingPage
+
+- **Canonical:** SeoLandingPage
+- **فارسی:** مسیر عمومی کنترل‌شده و تأییدشده برای intent جستجوی معنادار؛ متمایز از URL خام فیلتر/جستجو.
+- **اشتباه رایج:** یکی‌دانستن هر ترکیب فیلتر یا نتیجهٔ جستجو با Landing SEO.
+
 ### Locale
 
 - **Canonical:** Locale

@@ -44,6 +44,7 @@
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
 | TC-P00-T005 State | COMPLETE / ACCEPTED |
+| TC-P00-T006 State | AWAITING_ARCHITECT_REVIEW |
 
 ### Accepted repository state (خلاصه)
 
@@ -193,6 +194,19 @@ Multilingual · RTL/LTR · Bidi · Mobile · SEO · Accessibility · Security ·
 #### TC-P00-T006 — SEO Constitution
 
 Current Next Task.
+
+**State:** AWAITING_ARCHITECT_REVIEW (not Accepted; do not advance to T007 until architect accepts).
+
+اسناد پیشنهادی این Task:
+
+- [`architecture/12-seo-constitution.md`](architecture/12-seo-constitution.md)
+- [`seo/01-route-canonical-and-redirects.md`](seo/01-route-canonical-and-redirects.md)
+- [`seo/02-indexation-crawl-and-sitemaps.md`](seo/02-indexation-crawl-and-sitemaps.md)
+- [`seo/03-structured-data-and-metadata.md`](seo/03-structured-data-and-metadata.md)
+- [`seo/04-search-facets-and-programmatic-seo.md`](seo/04-search-facets-and-programmatic-seo.md)
+- [`seo/05-content-lifecycle-and-seo-governance.md`](seo/05-content-lifecycle-and-seo-governance.md)
+
+ADRهای مرتبط: Proposed (0009–0010) — تا بازبینی معمار Accepted نشوند.
 
 SeoRoute · localized URLs · slug history · canonical · hreflang · redirects · IndexPolicy · structured data · sitemap · internal linking · robots · pagination/indexation · filter URL rules · controlled Programmatic SEO · expired/unavailable strategy · multilingual SEO
 

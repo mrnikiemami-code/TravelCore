@@ -90,3 +90,5 @@ NNNN-short-kebab-title.md
 | [`0006`](0006-direction-neutral-ui-bidi.md) | Direction-neutral UI · logical CSS · explicit bidi | Accepted |
 | [`0007`](0007-locale-prefixed-public-routing.md) | Locale-prefixed public routing | Accepted |
 | [`0008`](0008-translation-publication-fallback.md) | Translation publication · fallback policy | Accepted |
+| [`0009`](0009-centralized-seo-route-ownership.md) | Centralized SEO route ownership | Proposed |
+| [`0010`](0010-controlled-indexation-programmatic-seo.md) | Controlled indexation · programmatic SEO | Proposed |
