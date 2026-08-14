@@ -14,5 +14,6 @@ src/backend/
     ├── Configuration/  # explicit Options registration helpers
     ├── Health/         # liveness / readiness health endpoints
     ├── Observability/  # logging + X-Correlation-ID foundation
-    └── Identifiers/    # UUID v7 generation (Guid.CreateVersion7)
+    ├── Identifiers/    # UUID v7 generation (Guid.CreateVersion7)
+    └── Time/           # NodaTime temporal foundation
 ```

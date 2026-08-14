@@ -15,6 +15,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+    <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Time\TravelCore.Time\TravelCore.Time.csproj" />
   </ItemGroup>
 
 </Project>

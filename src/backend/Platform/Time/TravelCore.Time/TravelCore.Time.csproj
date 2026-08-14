@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Time</RootNamespace>
+    <AssemblyName>TravelCore.Time</AssemblyName>
+    <Description>NodaTime temporal foundation for TravelCore (ADR 0004).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+
+</Project>

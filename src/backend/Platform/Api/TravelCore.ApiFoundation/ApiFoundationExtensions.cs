@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NodaTime.Serialization.SystemTextJson;
+using TravelCore.Time;
 
 namespace TravelCore.ApiFoundation;
 
 /// <summary>
-/// Host-facing API foundation: Problem Details, System.Text.Json baseline, and OpenAPI document generation.
+/// Host-facing API foundation: Problem Details, System.Text.Json baseline, OpenAPI, and NodaTime JSON.
 /// </summary>
 public static class ApiFoundationExtensions
 {
@@ -19,8 +21,11 @@ public static class ApiFoundationExtensions
         // Official ASP.NET Core OpenAPI document generation (runtime).
         services.AddOpenApi();
 
-        // Keep ASP.NET Core System.Text.Json web defaults unless a later task owns a change.
-        // Do not configure JsonSerializerOptions merely to create configuration noise.
+        // System.Text.Json with official NodaTime converters (IANA/TZDB).
+        services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.ConfigureForNodaTime(TravelCoreTemporal.TimeZones);
+        });
 
         return services;
     }
