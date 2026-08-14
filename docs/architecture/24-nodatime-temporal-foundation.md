@@ -28,7 +28,13 @@ ADR 0004 remains authoritative.
 | Time without date | `LocalTime` |
 | Local schedule | `LocalDateTime` + IANA zone id |
 | Timezones | IANA via `DateTimeZoneProviders.Tzdb` (`TravelCoreTemporal.TimeZones`) |
-| Clock | `NodaTime.IClock` → `SystemClock.Instance` |
+| Clock | `NodaTime.IClock` / production direction `SystemClock.Instance` |
+
+## Clock DI
+
+**Clock DI Registration: DEFERRED**
+
+No current P01 consumer requires injected clock access. `TravelCore.Time` remains DI-neutral (NodaTime only; no `Microsoft.Extensions.DependencyInjection.*`).
 
 ## API / JSON
 

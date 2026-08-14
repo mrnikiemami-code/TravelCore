@@ -2,12 +2,10 @@ using TravelCore.ApiFoundation;
 using TravelCore.Health;
 using TravelCore.Modularity;
 using TravelCore.Observability;
-using TravelCore.Time;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTravelCoreApiFoundation();
-builder.Services.AddTravelCoreTime();
 builder.Services.AddTravelCoreObservability();
 builder.Services.AddTravelCoreHealth();
 

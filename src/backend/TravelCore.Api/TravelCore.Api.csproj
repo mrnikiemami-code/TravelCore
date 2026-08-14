@@ -6,7 +6,6 @@
     <ProjectReference Include="..\Platform\Configuration\TravelCore.Configuration\TravelCore.Configuration.csproj" />
     <ProjectReference Include="..\Platform\Health\TravelCore.Health\TravelCore.Health.csproj" />
     <ProjectReference Include="..\Platform\Observability\TravelCore.Observability\TravelCore.Observability.csproj" />
-    <ProjectReference Include="..\Platform\Time\TravelCore.Time\TravelCore.Time.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
