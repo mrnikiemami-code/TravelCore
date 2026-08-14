@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
 
 namespace TravelCore.Persistence.PostgreSql;
 
@@ -11,6 +12,7 @@ public static class PostgreSqlProviderExtensions
     /// <summary>
     /// Applies TravelCore's PostgreSQL provider configuration to <paramref name="optionsBuilder"/>.
     /// The caller supplies an already-resolved connection string (no secret ownership here).
+    /// Includes official NodaTime mapping policy (ADR 0004).
     /// </summary>
     public static DbContextOptionsBuilder UseTravelCorePostgreSql(
         this DbContextOptionsBuilder optionsBuilder,
@@ -19,8 +21,8 @@ public static class PostgreSqlProviderExtensions
         ArgumentNullException.ThrowIfNull(optionsBuilder);
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
-        // سیاست مشترک ارائه‌دهنده؛ بدون retry/timeout speculative و بدون باز کردن اتصال در startup.
-        return optionsBuilder.UseNpgsql(connectionString);
+        // سیاست مشترک ارائه‌دهنده + NodaTime؛ بدون retry/timeout speculative و بدون باز کردن اتصال در startup.
+        return optionsBuilder.UseNpgsql(connectionString, ConfigureNpgsql);
     }
 
     /// <inheritdoc cref="UseTravelCorePostgreSql(DbContextOptionsBuilder, string)"/>
@@ -32,6 +34,11 @@ public static class PostgreSqlProviderExtensions
         ArgumentNullException.ThrowIfNull(optionsBuilder);
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
-        return optionsBuilder.UseNpgsql(connectionString);
+        return optionsBuilder.UseNpgsql(connectionString, ConfigureNpgsql);
+    }
+
+    private static void ConfigureNpgsql(NpgsqlDbContextOptionsBuilder npgsql)
+    {
+        npgsql.UseNodaTime();
     }
 }

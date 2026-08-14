@@ -18,14 +18,17 @@ ADR 0001 remains authoritative for one database / schema-per-module / module-own
 |---------|---------|
 | Microsoft.EntityFrameworkCore | 10.0.11 |
 | Microsoft.EntityFrameworkCore.Relational | 10.0.11 |
+| NodaTime | 3.3.3 |
 | Npgsql.EntityFrameworkCore.PostgreSQL | 10.0.3 |
+| Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime | 10.0.3 |
 
 Microsoft EF Core runtime packages used by this foundation are intentionally aligned on the same patch (`10.0.11`). `Relational` is a direct reference for that alignment — not a new architecture capability.
+
+NodaTime PostgreSQL mapping is part of provider policy via `Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime` (`UseNodaTime()` inside `UseTravelCorePostgreSql`).
 
 Deferred (not in T011):
 
 - `Microsoft.EntityFrameworkCore.Design` / Tools → migration task (`TC-P01-T013`)
-- `Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime` → with real DbContext proof (`TC-P01-T012`)
 - Direct `Npgsql` PackageReference — only if ADO.NET types are used directly (not required here)
 - Dapper — later read projections when justified
 
