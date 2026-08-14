@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Health", "src\ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Observability", "src\backend\Platform\Observability\TravelCore.Observability\TravelCore.Observability.csproj", "{B8C9D0E1-F2A3-4567-1234-678901234567}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Identifiers", "src\backend\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj", "{C9D0E1F2-A3B4-5678-2345-789012345678}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,18 @@ Global
 		{B8C9D0E1-F2A3-4567-1234-678901234567}.Release|x64.Build.0 = Release|Any CPU
 		{B8C9D0E1-F2A3-4567-1234-678901234567}.Release|x86.ActiveCfg = Release|Any CPU
 		{B8C9D0E1-F2A3-4567-1234-678901234567}.Release|x86.Build.0 = Release|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Debug|x64.Build.0 = Debug|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Debug|x86.Build.0 = Debug|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Release|x64.ActiveCfg = Release|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Release|x64.Build.0 = Release|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Release|x86.ActiveCfg = Release|Any CPU
+		{C9D0E1F2-A3B4-5678-2345-789012345678}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,5 +135,6 @@ Global
 		{F6A7B8C9-D0E1-2345-F012-456789012345} = {C3D4E5F6-A7B8-9012-CDEF-123456789012}
 		{A7B8C9D0-E1F2-3456-0123-567890123456} = {C3D4E5F6-A7B8-9012-CDEF-123456789012}
 		{B8C9D0E1-F2A3-4567-1234-678901234567} = {C3D4E5F6-A7B8-9012-CDEF-123456789012}
+		{C9D0E1F2-A3B4-5678-2345-789012345678} = {C3D4E5F6-A7B8-9012-CDEF-123456789012}
 	EndGlobalSection
 EndGlobal

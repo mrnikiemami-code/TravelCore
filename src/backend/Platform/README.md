@@ -9,6 +9,7 @@ Examples of capabilities that may land here in later P01 tasks:
 - Configuration (explicit Options helpers) — T005
 - Health (liveness / readiness) — T006
 - Observability (logging / correlation) — T007
+- Identifiers (UUID v7) — T008
 - Time (NodaTime)
 - Money
 - Identifiers (UUID v7)

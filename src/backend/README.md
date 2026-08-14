@@ -13,5 +13,6 @@ src/backend/
     ├── Api/            # Problem Details + JSON + OpenAPI foundation
     ├── Configuration/  # explicit Options registration helpers
     ├── Health/         # liveness / readiness health endpoints
-    └── Observability/  # logging + X-Correlation-ID foundation
+    ├── Observability/  # logging + X-Correlation-ID foundation
+    └── Identifiers/    # UUID v7 generation (Guid.CreateVersion7)
 ```

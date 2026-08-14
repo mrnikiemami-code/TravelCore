@@ -71,25 +71,28 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P01-T007** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P01-T008** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P01 — Platform / Backend Foundation |
-| Current Next Task | Architect review of `TC-P01-T007`; do not start `TC-P01-T008` until accepted |
+| Current Next Task | Architect review of `TC-P01-T008`; do not start `TC-P01-T009` until accepted |
 | P01 | **IN_PROGRESS** (AUTHORIZED) |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
-| Last P01 Implementation Commit | pending T007 (`TC-P01-T006R` = `c6bd109`) |
+| Last P01 Implementation Commit | pending T008 (`TC-P01-T007` = `4420eef`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
 | API Foundation Doc | [`docs/architecture/19-api-error-and-serialization-foundation.md`](architecture/19-api-error-and-serialization-foundation.md) |
 | Configuration Foundation Doc | [`docs/architecture/20-configuration-and-options-foundation.md`](architecture/20-configuration-and-options-foundation.md) |
 | Health Foundation Doc | [`docs/architecture/21-health-check-foundation.md`](architecture/21-health-check-foundation.md) |
 | Observability Foundation Doc | [`docs/architecture/22-observability-logging-and-correlation-foundation.md`](architecture/22-observability-logging-and-correlation-foundation.md) |
+| UUID v7 Identity Foundation Doc | [`docs/architecture/23-uuid-v7-identity-foundation.md`](architecture/23-uuid-v7-identity-foundation.md) |
 | Phase Transition State | **P01_IN_PROGRESS** |
 | P01 Phase Gate | NOT_STARTED (after T001–T019) |
 | Human Phase Confirmation | P01 confirmed; P02 still requires `TRAVELCORE_PHASE_CONFIRM: P02` later |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T007`) |
-| Human Confirmation Reason | None for current T007 |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T008`) |
+| Human Confirmation Reason | None for current T008 |
 | TC-P01-T006 | COMPLETE (accepted after T006R) |
 | TC-P01-T006R | COMPLETE (`c6bd109`) |
+| TC-P01-T007 | COMPLETE (`4420eef`; evidence via T007A) |
+| TC-P01-T007A | COMPLETE |
 | Required Human Token | `TRAVELCORE_PHASE_CONFIRM: P01` |
 
 ### P00 Exit Summary
