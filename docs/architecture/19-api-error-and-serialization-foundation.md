@@ -47,3 +47,19 @@ Future public API contracts are not persistence entities and not domain models:
 `Domain Model ≠ Persistence Model ≠ API Contract ≠ Page View Model`
 
 No business DTOs are introduced in this foundation.
+
+---
+
+## OpenAPI (T004)
+
+| Item | Choice |
+|------|--------|
+| Package | `Microsoft.AspNetCore.OpenApi` **10.0.11** (stable, major 10, net10.0) |
+| Registration | `services.AddOpenApi()` inside `AddTravelCoreApiFoundation()` |
+| Exposure | `app.MapOpenApi()` **only when** `IsDevelopment()` |
+| Interactive UI | None (no Swagger UI / Scalar / ReDoc / Swashbuckle / NSwag) |
+| Documents | Single default document |
+| Build-time generation | Not in T004 |
+| Committed OpenAPI JSON | Not in T004 |
+
+Production public exposure of the OpenAPI document is deferred until a real deployment/security requirement exists.

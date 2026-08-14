@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace TravelCore.ApiFoundation;
 
 /// <summary>
-/// Host-facing API foundation: Problem Details error boundary and System.Text.Json baseline.
+/// Host-facing API foundation: Problem Details, System.Text.Json baseline, and OpenAPI document generation.
 /// </summary>
 public static class ApiFoundationExtensions
 {
@@ -14,6 +15,9 @@ public static class ApiFoundationExtensions
 
         // Framework-standard Problem Details; no business error taxonomy yet.
         services.AddProblemDetails();
+
+        // Official ASP.NET Core OpenAPI document generation (runtime).
+        services.AddOpenApi();
 
         // Keep ASP.NET Core System.Text.Json web defaults unless a later task owns a change.
         // Do not configure JsonSerializerOptions merely to create configuration noise.
@@ -28,6 +32,12 @@ public static class ApiFoundationExtensions
         // Middleware order: exception handler before status-code pages.
         app.UseExceptionHandler();
         app.UseStatusCodePages();
+
+        // Development-only OpenAPI document exposure for P01.
+        if (app.Environment.IsDevelopment())
+        {
+            app.MapOpenApi();
+        }
 
         return app;
     }
