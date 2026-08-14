@@ -43,9 +43,13 @@ Composition may pass an already-resolved connection string into provider configu
 
 ```csharp
 optionsBuilder.UseTravelCorePostgreSql(connectionString);
+// optional: module-owned migration history schema (caller supplies the name)
+optionsBuilder.UseTravelCorePostgreSql(connectionString, migrationsHistorySchema: "module_schema");
 ```
 
 Builds EF `DbContextOptions` with the Npgsql provider. Building options does **not** open a PostgreSQL connection and must not require a running server at host startup.
+
+When `migrationsHistorySchema` is provided, history uses `__EFMigrationsHistory` inside that schema (not `public`). The provider never invents module schema names.
 
 ## Architecture rules (this foundation)
 
@@ -61,7 +65,7 @@ Builds EF `DbContextOptions` with the Npgsql provider. Building options does **n
 ## Deferred proofs
 
 - Non-business fixture DbContext / schema ownership → `TC-P01-T012`
-- Migrations tooling → `TC-P01-T013`
+- Migrations tooling / history schema ownership → `TC-P01-T013`
 - Real PostgreSQL infrastructure / migration proof → `TC-P01-T016` / `TC-P01-T017`
 
 ## Host impact

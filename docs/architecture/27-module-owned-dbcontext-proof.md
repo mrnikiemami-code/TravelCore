@@ -38,8 +38,9 @@ Shared `TravelCore.Persistence.PostgreSql` supplies provider policy. The module 
 
 - Test/support only — must never evolve into a business module
 - Probe entity (`PersistenceProbe`) is technical metadata only (no domain semantics)
-- No Money mapping, no migrations, no `EnsureCreated`, no real PostgreSQL connection in T012
-- Migrations → `TC-P01-T013`; live DB proof → `TC-P01-T016` / `T017`
+- No Money mapping, no `EnsureCreated`, no real PostgreSQL connection in T012
+- Migrations ownership / tooling → `TC-P01-T013` (`docs/architecture/28-module-owned-migrations-and-runner-convention.md`)
+- Live DB apply → `TC-P01-T016` / `T017`
 
 ## NodaTime provider policy
 
