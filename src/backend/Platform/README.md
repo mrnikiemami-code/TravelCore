@@ -7,6 +7,7 @@ Examples of capabilities that may land here in later P01 tasks:
 - Modularity (composition contract) — T002
 - ApiFoundation (Problem Details / JSON / OpenAPI) — T003–T004
 - Configuration (explicit Options helpers) — T005
+- Health (liveness / readiness) — T006
 - Time (NodaTime)
 - Money
 - Identifiers (UUID v7)

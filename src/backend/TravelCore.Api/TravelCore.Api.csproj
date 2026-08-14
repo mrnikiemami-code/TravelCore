@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
     <ProjectReference Include="..\Platform\Api\TravelCore.ApiFoundation\TravelCore.ApiFoundation.csproj" />
     <ProjectReference Include="..\Platform\Configuration\TravelCore.Configuration\TravelCore.Configuration.csproj" />
+    <ProjectReference Include="..\Platform\Health\TravelCore.Health\TravelCore.Health.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -11,5 +11,6 @@ src/backend/
 └── Platform/           # narrowly scoped cross-module technical foundations
     ├── Modularity/     # explicit host↔module composition contract
     ├── Api/            # Problem Details + JSON + OpenAPI foundation
-    └── Configuration/  # explicit Options registration helpers
+    ├── Configuration/  # explicit Options registration helpers
+    └── Health/         # liveness / readiness health endpoints
 ```
