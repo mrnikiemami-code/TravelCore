@@ -16,15 +16,16 @@ Health is **host/platform infrastructure**, not a business module.
 
 ## Liveness vs readiness
 
-| Concept | Path | Meaning |
-|---------|------|---------|
-| Liveness | `/health/live` | Is this process alive and able to respond? |
-| Readiness | `/health/ready` | Is this instance ready for normal workload given currently registered required dependencies? |
+| Concept | Path | Meaning | Predicate |
+|---------|------|---------|-----------|
+| Liveness | `/health/live` | Is this process alive and able to respond? | **Zero** registered checks (`Predicate = _ => false`) |
+| Readiness | `/health/ready` | Is this instance ready for normal workload given currently registered required dependencies? | **Only** checks tagged `ready` |
 
 These remain separate.
 
-- Liveness **does not** run checks tagged `ready`.
+- Liveness executes **no** registered health checks. It is not “everything except ready”.
 - Readiness runs **only** checks tagged `ready`.
+- An **untagged** future check belongs to **neither** endpoint unless a later architectural decision deliberately incorporates it.
 - A database outage must not by itself imply the process is dead.
 
 ## Readiness tag
@@ -35,7 +36,7 @@ ready
 
 Constant: `TravelCoreHealthTags.Ready`.
 
-Today no required dependency checks are registered, so readiness may legitimately return Healthy. PostgreSQL probing is deferred (not part of T006).
+Today no required dependency checks are registered, so readiness may legitimately return Healthy. PostgreSQL probing is deferred (not part of T006 / T006R).
 
 ## Framework-native
 

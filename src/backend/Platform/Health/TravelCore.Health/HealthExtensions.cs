@@ -33,18 +33,18 @@ public static class HealthExtensions
     {
         ArgumentNullException.ThrowIfNull(endpoints);
 
-        // Liveness: process viability — never runs readiness-tagged dependency checks.
+        // Liveness: process viability only — execute ZERO registered health checks.
+        // Untagged future dependency checks must not contaminate this endpoint.
         endpoints.MapHealthChecks(LivenessPath, new HealthCheckOptions
             {
-                Predicate = registration =>
-                    !registration.Tags.Contains(TravelCoreHealthTags.Ready)
+                Predicate = static _ => false
             })
             .WithMetadata(new ExcludeFromDescriptionAttribute());
 
         // Readiness: only checks tagged "ready". Empty set is Healthy until dependencies register.
         endpoints.MapHealthChecks(ReadinessPath, new HealthCheckOptions
             {
-                Predicate = registration =>
+                Predicate = static registration =>
                     registration.Tags.Contains(TravelCoreHealthTags.Ready)
             })
             .WithMetadata(new ExcludeFromDescriptionAttribute());
