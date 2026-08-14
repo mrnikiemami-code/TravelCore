@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Money</RootNamespace>
+    <AssemblyName>TravelCore.Money</AssemblyName>
+    <Description>Money and CurrencyCode primitives for TravelCore (ADR 0003).</Description>
+  </PropertyGroup>
+
+</Project>

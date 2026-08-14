@@ -15,5 +15,6 @@ src/backend/
     ├── Health/         # liveness / readiness health endpoints
     ├── Observability/  # logging + X-Correlation-ID foundation
     ├── Identifiers/    # UUID v7 generation (Guid.CreateVersion7)
-    └── Time/           # NodaTime temporal foundation
+    ├── Time/           # NodaTime temporal foundation
+    └── Money/          # Money + CurrencyCode primitives (ADR 0003)
 ```

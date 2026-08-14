@@ -11,9 +11,7 @@ Examples of capabilities that may land here in later P01 tasks:
 - Observability (logging / correlation) — T007
 - Identifiers (UUID v7) — T008
 - Time (NodaTime) — T009
-- Money
-- Identifiers (UUID v7)
-- Observability helpers
+- Money / CurrencyCode — T010
 
 ## Rules
 
