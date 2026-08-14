@@ -10,5 +10,6 @@ src/backend/
 ├── Modules/            # future module-owned code (no fake modules yet)
 └── Platform/           # narrowly scoped cross-module technical foundations
     ├── Modularity/     # explicit host↔module composition contract
-    └── Api/            # Problem Details + JSON API foundation
+    ├── Api/            # Problem Details + JSON + OpenAPI foundation
+    └── Configuration/  # explicit Options registration helpers
 ```

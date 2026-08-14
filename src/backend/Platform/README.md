@@ -5,7 +5,8 @@ Narrow home for **genuine cross-module technical foundations** that are not busi
 Examples of capabilities that may land here in later P01 tasks:
 
 - Modularity (composition contract) — T002
-- ApiFoundation (Problem Details / JSON boundary) — T003
+- ApiFoundation (Problem Details / JSON / OpenAPI) — T003–T004
+- Configuration (explicit Options helpers) — T005
 - Time (NodaTime)
 - Money
 - Identifiers (UUID v7)
