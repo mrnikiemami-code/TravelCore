@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{C3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Api", "src\backend\TravelCore.Api\TravelCore.Api.csproj", "{F77B2429-4A49-4B7E-8708-8D394F4BA51F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modularity", "src\backend\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj", "{D4E5F6A7-B8C9-0123-DEF0-234567890123}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,18 @@ Global
 		{F77B2429-4A49-4B7E-8708-8D394F4BA51F}.Release|x64.Build.0 = Release|Any CPU
 		{F77B2429-4A49-4B7E-8708-8D394F4BA51F}.Release|x86.ActiveCfg = Release|Any CPU
 		{F77B2429-4A49-4B7E-8708-8D394F4BA51F}.Release|x86.Build.0 = Release|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Debug|x64.Build.0 = Debug|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Debug|x86.Build.0 = Debug|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Release|x64.ActiveCfg = Release|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Release|x64.Build.0 = Release|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Release|x86.ActiveCfg = Release|Any CPU
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +60,6 @@ Global
 		{B2C3D4E5-F6A7-8901-BCDE-F12345678901} = {FE360695-3F2B-1049-3887-35FBB5135923}
 		{C3D4E5F6-A7B8-9012-CDEF-123456789012} = {FE360695-3F2B-1049-3887-35FBB5135923}
 		{F77B2429-4A49-4B7E-8708-8D394F4BA51F} = {A1B2C3D4-E5F6-7890-ABCD-EF1234567890}
+		{D4E5F6A7-B8C9-0123-DEF0-234567890123} = {C3D4E5F6-A7B8-9012-CDEF-123456789012}
 	EndGlobalSection
 EndGlobal

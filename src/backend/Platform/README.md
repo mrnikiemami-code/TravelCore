@@ -2,8 +2,9 @@
 
 Narrow home for **genuine cross-module technical foundations** that are not business modules.
 
-Examples of capabilities that may land here in later P01 tasks (not in T001):
+Examples of capabilities that may land here in later P01 tasks:
 
+- Modularity (composition contract) — introduced in T002
 - Time (NodaTime)
 - Money
 - Identifiers (UUID v7)

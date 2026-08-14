@@ -1,12 +1,18 @@
+using TravelCore.Modularity;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Explicit module composition list (compile-time / host-owned).
+// Add future modules here deliberately — no assembly scanning.
+IReadOnlyList<ITravelCoreModule> modules = [];
+
+builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
+
+app.MapTravelCoreModules(modules);
 
 var summaries = new[]
 {
@@ -15,7 +21,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

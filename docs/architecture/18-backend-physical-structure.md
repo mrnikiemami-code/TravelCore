@@ -93,3 +93,30 @@ T001 does not add architecture tests; those arrive in `TC-P01-T015`. This layout
 - Adding EF Core, PostgreSQL, OpenAPI, validation, health, observability code
 - Creating empty speculative .NET projects
 - Expanding API scaffold cleanup (belongs primarily to later API foundation tasks)
+
+---
+
+## Module composition (T002)
+
+Physical contract project:
+
+```text
+src/backend/Platform/Modularity/TravelCore.Modularity/
+```
+
+| Item | Rule |
+|------|------|
+| Contract | `ITravelCoreModule` — `RegisterServices` + `MapEndpoints` |
+| Host wiring | Explicit `IReadOnlyList<ITravelCoreModule>` in `TravelCore.Api` / `Program.cs` |
+| Discovery | **Forbidden** — no assembly scanning, reflection find-all, or dynamic plugin loading |
+| Empty set | Valid today (no business modules registered yet) |
+| Domain | Must **not** reference `TravelCore.Modularity` |
+| Composition owners | Module composition/infrastructure entry points and the host may reference it |
+| Not a service locator | Host passes concrete module instances; modules do not resolve peers via `IServiceProvider.GetService` for composition |
+
+How a future module connects:
+
+1. Implement `ITravelCoreModule` in the module’s composition entry (not Domain).
+2. Add a project reference from `TravelCore.Api` to that module composition assembly when ready.
+3. Construct the module instance and append it to the explicit `modules` list in `Program.cs`.
+4. Keep order deterministic by list order — no priority graphs in P01.
