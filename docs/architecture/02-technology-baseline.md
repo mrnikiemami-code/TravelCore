@@ -40,12 +40,15 @@ TravelCore/
 ├── docs/
 ├── src/
 │   ├── backend/
-│   │   └── TravelCore.Api/
+│   │   ├── TravelCore.Api/     # Host
+│   │   ├── Modules/            # Future module-owned code
+│   │   └── Platform/           # Narrow technical foundations (later tasks)
 │   └── frontend/
 │       └── web/
 ```
 
-- Backend: `src/backend/TravelCore.Api`
+- Backend host: `src/backend/TravelCore.Api`
+- Backend physical convention: [`18-backend-physical-structure.md`](18-backend-physical-structure.md)
 - Frontend: `src/frontend/web`
 - Solution: `TravelCore.sln`
 - TargetFramework پروژهٔ API: `net10.0`

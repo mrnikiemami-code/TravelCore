@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P01 — Platform / Backend Foundation** (next product phase; **NOT_STARTED**) |
+| Current Phase | **P01 — Platform / Backend Foundation** (**IN_PROGRESS**) |
 | Previous Phase | P00 — Architecture Foundation |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -55,8 +55,8 @@
 | Pipeline Runtime Policy | [`docs/ai/pipeline-runtime-policy.json`](ai/pipeline-runtime-policy.json) |
 | Operating Modes | HUMAN (default) / PIPELINE (USER opt-in) |
 | Default Mode | **HUMAN** |
-| Current Runtime Mode | **HUMAN** |
-| Automatic Pipeline | **OFF** |
+| Current Runtime Mode | **PIPELINE** |
+| Automatic Pipeline | **ON** (USER opted in with phase confirm) |
 | Agent Handoff Envelopes | ACTIVE (ADR 0013) |
 | Protocol | `TRAVELCORE_CURSOR_TASK_V1` · `TRAVELCORE_CURSOR_RESULT_V1` |
 | Future Architecture Transition Map | [`docs/architecture/15-future-architecture-transition-map.md`](architecture/15-future-architecture-transition-map.md) |
@@ -71,16 +71,18 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | None |
+| Current Active Product Task | **TC-P01-T001** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P01 — Platform / Backend Foundation |
-| Current Next Task | **Await USER `TRAVELCORE_PHASE_CONFIRM: P01` before any P01 work** (protocol READY; automatic Pipeline OFF) |
-| P01 | NOT_STARTED |
-| P01 Implementation Started | NO |
-| Phase Transition State | **READY_AWAITING_HUMAN_CONFIRMATION** |
-| P01 Phase Gate | **READY_AWAITING_HUMAN_CONFIRMATION** |
-| Human Phase Confirmation | **REQUIRED BEFORE P01 START** |
-| Pipeline Product Execution | **STOPPED — HUMAN_CONFIRM_NEEDED** |
-| Human Confirmation Reason | P00 → P01 roadmap phase boundary |
+| Current Next Task | Architect review of `TC-P01-T001`; do not start `TC-P01-T002` until accepted |
+| P01 | **IN_PROGRESS** (AUTHORIZED) |
+| P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
+| P01 Implementation Started | **YES** (`TC-P01-T001`) |
+| Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
+| Phase Transition State | **P01_IN_PROGRESS** |
+| P01 Phase Gate | NOT_STARTED (after T001–T019) |
+| Human Phase Confirmation | P01 confirmed; P02 still requires `TRAVELCORE_PHASE_CONFIRM: P02` later |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T001`) |
+| Human Confirmation Reason | None for current T001 |
 | Required Human Token | `TRAVELCORE_PHASE_CONFIRM: P01` |
 
 ### P00 Exit Summary
