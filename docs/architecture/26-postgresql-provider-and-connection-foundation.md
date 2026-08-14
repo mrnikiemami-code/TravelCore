@@ -17,7 +17,10 @@ ADR 0001 remains authoritative for one database / schema-per-module / module-own
 | Package | Version |
 |---------|---------|
 | Microsoft.EntityFrameworkCore | 10.0.11 |
+| Microsoft.EntityFrameworkCore.Relational | 10.0.11 |
 | Npgsql.EntityFrameworkCore.PostgreSQL | 10.0.3 |
+
+Microsoft EF Core runtime packages used by this foundation are intentionally aligned on the same patch (`10.0.11`). `Relational` is a direct reference for that alignment — not a new architecture capability.
 
 Deferred (not in T011):
 
