@@ -71,13 +71,13 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P01-T010** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P01-T011** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P01 — Platform / Backend Foundation |
-| Current Next Task | Architect review of `TC-P01-T010`; do not start `TC-P01-T011` until accepted |
+| Current Next Task | Architect review of `TC-P01-T011`; do not start `TC-P01-T012` until accepted |
 | P01 | **IN_PROGRESS** (AUTHORIZED) |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
-| Last P01 Implementation Commit | pending T010 (`TC-P01-T009R` = `16e38b2`) |
+| Last P01 Implementation Commit | pending T011 (`TC-P01-T010` = `c552953`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
 | API Foundation Doc | [`docs/architecture/19-api-error-and-serialization-foundation.md`](architecture/19-api-error-and-serialization-foundation.md) |
 | Configuration Foundation Doc | [`docs/architecture/20-configuration-and-options-foundation.md`](architecture/20-configuration-and-options-foundation.md) |
@@ -86,11 +86,12 @@
 | UUID v7 Identity Foundation Doc | [`docs/architecture/23-uuid-v7-identity-foundation.md`](architecture/23-uuid-v7-identity-foundation.md) |
 | NodaTime Temporal Foundation Doc | [`docs/architecture/24-nodatime-temporal-foundation.md`](architecture/24-nodatime-temporal-foundation.md) |
 | Money / Currency Foundation Doc | [`docs/architecture/25-money-and-currency-foundation.md`](architecture/25-money-and-currency-foundation.md) |
+| PostgreSQL Provider Foundation Doc | [`docs/architecture/26-postgresql-provider-and-connection-foundation.md`](architecture/26-postgresql-provider-and-connection-foundation.md) |
 | Phase Transition State | **P01_IN_PROGRESS** |
 | P01 Phase Gate | NOT_STARTED (after T001–T019) |
 | Human Phase Confirmation | P01 confirmed; P02 still requires `TRAVELCORE_PHASE_CONFIRM: P02` later |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T010`) |
-| Human Confirmation Reason | None for current T010 |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T011`) |
+| Human Confirmation Reason | None for current T011 |
 | TC-P01-T006 | COMPLETE (accepted after T006R) |
 | TC-P01-T006R | COMPLETE (`c6bd109`) |
 | TC-P01-T007 | COMPLETE (`4420eef`; evidence via T007A) |
@@ -99,7 +100,9 @@
 | TC-P01-T009 | COMPLETE (`4d403c9`; accepted after T009R/T009A) |
 | TC-P01-T009R | COMPLETE (`16e38b2`) |
 | TC-P01-T009A | COMPLETE (READ_ONLY evidence) |
-| TC-P01-T010 | AWAITING_ARCHITECT_REVIEW |
+| TC-P01-T010 | COMPLETE (`c552953`; accepted after T010A) |
+| TC-P01-T010A | COMPLETE (READ_ONLY equality evidence) |
+| TC-P01-T011 | AWAITING_ARCHITECT_REVIEW |
 | Required Human Token | `TRAVELCORE_PHASE_CONFIRM: P01` |
 
 ### P00 Exit Summary

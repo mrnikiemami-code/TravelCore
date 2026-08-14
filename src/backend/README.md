@@ -16,5 +16,6 @@ src/backend/
     ├── Observability/  # logging + X-Correlation-ID foundation
     ├── Identifiers/    # UUID v7 generation (Guid.CreateVersion7)
     ├── Time/           # NodaTime temporal foundation
-    └── Money/          # Money + CurrencyCode primitives (ADR 0003)
+    ├── Money/          # Money + CurrencyCode primitives (ADR 0003)
+    └── Persistence/    # PostgreSQL / EF provider foundation
 ```

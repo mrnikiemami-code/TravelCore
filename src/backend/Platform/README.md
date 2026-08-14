@@ -12,6 +12,7 @@ Examples of capabilities that may land here in later P01 tasks:
 - Identifiers (UUID v7) — T008
 - Time (NodaTime) — T009
 - Money / CurrencyCode — T010
+- Persistence / PostgreSQL provider — T011
 
 ## Rules
 
