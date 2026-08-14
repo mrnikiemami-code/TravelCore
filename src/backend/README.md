@@ -12,5 +12,6 @@ src/backend/
     ├── Modularity/     # explicit host↔module composition contract
     ├── Api/            # Problem Details + JSON + OpenAPI foundation
     ├── Configuration/  # explicit Options registration helpers
-    └── Health/         # liveness / readiness health endpoints
+    ├── Health/         # liveness / readiness health endpoints
+    └── Observability/  # logging + X-Correlation-ID foundation
 ```

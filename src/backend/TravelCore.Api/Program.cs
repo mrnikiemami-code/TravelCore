@@ -1,10 +1,12 @@
 using TravelCore.ApiFoundation;
 using TravelCore.Health;
 using TravelCore.Modularity;
+using TravelCore.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTravelCoreApiFoundation();
+builder.Services.AddTravelCoreObservability();
 builder.Services.AddTravelCoreHealth();
 
 // Explicit module composition list (compile-time / host-owned).
@@ -14,6 +16,8 @@ builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 var app = builder.Build();
 
 app.UseTravelCoreApiFoundation();
+// Correlation early so downstream handlers/logs see CorrelationId / TraceId scope.
+app.UseTravelCoreObservability();
 app.UseHttpsRedirection();
 app.MapTravelCoreHealth();
 app.MapTravelCoreModules(modules);
