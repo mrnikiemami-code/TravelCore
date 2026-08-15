@@ -2,15 +2,16 @@
 
 Business and capability modules live under this directory.
 
-## Active module shells (P03)
+## Active modules (P03)
 
-| Module | Infrastructure project | Schema |
-|--------|------------------------|--------|
-| Identity | `Identity/TravelCore.Modules.Identity.Infrastructure` | `identity` |
-| Access | `Access/TravelCore.Modules.Access.Infrastructure` | `access` |
-| Party | `Party/TravelCore.Modules.Party.Infrastructure` | `party` |
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Identity | `Identity/TravelCore.Modules.Identity.Infrastructure` (shell) | `identity` |
+| Access | `Access/TravelCore.Modules.Access.Infrastructure` (shell) | `access` |
+| Party | `Party/TravelCore.Modules.Party.{Domain,Contracts,Infrastructure}` | `party` |
 
-These are **scaffolding shells** introduced by `TC-P03-T001` (empty DbContext + host DI stubs). Domain persistence/features arrive in later P03 tasks.
+- **Identity / Access:** scaffolding shells from `TC-P03-T001` (empty DbContext + host DI stubs).
+- **Party:** domain + persistence + Minimal API create/get/search stubs from `TC-P03-T002`.
 
 ## Naming
 

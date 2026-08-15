@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Party.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Party.Infrastructure</AssemblyName>
-    <Description>Party module infrastructure shell (TC-P03-T001). Schema ownership only; no domain features yet.</Description>
+    <Description>Party module infrastructure: EF persistence, migrations, Minimal API endpoints (TC-P03-T002).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,11 +15,22 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TravelCore.Modules.Party.Contracts\TravelCore.Modules.Party.Contracts.csproj" />
+    <ProjectReference Include="..\TravelCore.Modules.Party.Domain\TravelCore.Modules.Party.Domain.csproj" />
     <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
     <ProjectReference Include="..\..\..\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
   </ItemGroup>
 
 </Project>

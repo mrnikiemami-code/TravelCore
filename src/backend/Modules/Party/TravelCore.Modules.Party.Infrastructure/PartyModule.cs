@@ -2,13 +2,17 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Party.Infrastructure.Endpoints;
+using TravelCore.Modules.Party.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Party.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Party module (scaffolding only).
+/// Host composition entry for the Party module.
 /// </summary>
 public sealed class PartyModule : ITravelCoreModule
 {
@@ -16,6 +20,9 @@ public sealed class PartyModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
+
+        services.AddValidation();
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
 
         services.AddDbContext<PartyDbContext>((_, options) =>
         {
@@ -27,11 +34,13 @@ public sealed class PartyModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: PartyDbContext.SchemaName);
         });
+
+        services.AddScoped<PartyApplicationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // No endpoints in TC-P03-T001 scaffolding.
+        endpoints.MapPartyEndpoints();
     }
 }

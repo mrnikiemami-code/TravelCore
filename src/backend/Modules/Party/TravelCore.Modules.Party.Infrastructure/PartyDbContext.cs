@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using PartyAggregate = TravelCore.Modules.Party.Domain.Party;
 
 namespace TravelCore.Modules.Party.Infrastructure;
 
 /// <summary>
-/// Empty Party-owned DbContext shell. Owns PostgreSQL schema <c>party</c>.
-/// No entities, migrations, or business features in TC-P03-T001.
+/// Party-owned DbContext. Owns PostgreSQL schema <c>party</c>.
 /// </summary>
 public sealed class PartyDbContext : DbContext
 {
@@ -15,9 +15,12 @@ public sealed class PartyDbContext : DbContext
     {
     }
 
+    public DbSet<PartyAggregate> Parties => Set<PartyAggregate>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.HasDefaultSchema(SchemaName);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PartyDbContext).Assembly);
     }
 }
