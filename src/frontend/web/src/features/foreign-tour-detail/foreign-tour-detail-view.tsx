@@ -8,6 +8,7 @@ import {
   Surface,
   Text,
 } from "@/components/ui";
+import { BookingCtaIsland } from "@/features/foreign-tour-detail/booking-cta-island";
 import type { ForeignTourDetailPageViewModel } from "@/types/pages/foreign-tour-detail";
 
 function statusLabel(vm: ForeignTourDetailPageViewModel): string {
@@ -317,33 +318,18 @@ export function ForeignTourDetailView({
             </Surface>
           ) : null}
 
-          {/* M · CTA slot (presentation only — interactive sticky = T014) */}
+          {/* M · CTA — small Client island only (T014); page remains Server */}
           <Surface>
             <Stack gap="sm">
               <Text as="h2" role="title">
                 {vm.locale === "fa" ? "اقدام" : "Action"}
               </Text>
-              <p>
-                <span
-                  className={
-                    vm.cta.enabled
-                      ? "inline-flex min-h-touch items-center rounded-md bg-primary px-4 text-label text-primary-foreground"
-                      : "inline-flex min-h-touch items-center rounded-md bg-surface-muted px-4 text-label text-muted-foreground"
-                  }
-                  aria-disabled={!vm.cta.enabled}
-                >
-                  {vm.cta.label}
-                </span>
-              </p>
-              {!vm.cta.enabled && vm.cta.reasonDisabled ? (
-                <Text role="caption">{vm.cta.reasonDisabled}</Text>
-              ) : (
-                <Text role="caption">
-                  {vm.locale === "fa"
-                    ? "اسلات CTA نمایشی — جزیرهٔ تعاملی sticky در T014."
-                    : "Presentation CTA slot — interactive sticky island in T014."}
-                </Text>
-              )}
+              <Text role="caption">
+                {vm.locale === "fa"
+                  ? "محتوای تصمیم‌ساز بالا بدون sticky هم خواناست؛ نوار اقدام فقط affordance است."
+                  : "Decision content above remains readable without sticky; bar is affordance only."}
+              </Text>
+              <BookingCtaIsland cta={vm.cta} locale={vm.locale} />
             </Stack>
           </Surface>
         </Stack>
