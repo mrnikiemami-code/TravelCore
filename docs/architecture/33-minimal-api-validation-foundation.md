@@ -1,6 +1,6 @@
 # Minimal API Validation Foundation
 
-وضعیت: Active (`TC-P01-T018`)
+وضعیت: Active (`TC-P01-T018` / corrective `TC-P01-T018R`)
 
 ## Why
 
@@ -10,10 +10,19 @@ TravelCore needs request-boundary validation for Minimal APIs using the **offici
 
 | Piece | Choice |
 |-------|--------|
-| Package | `Microsoft.Extensions.Validation` **10.0.11** (direct on `TravelCore.Api`) |
+| Host project | `TravelCore.Api` — `Microsoft.NET.Sdk.Web` / `net10.0` |
+| Framework supply | ASP.NET Core shared framework via Web SDK (`Microsoft.AspNetCore.App` implicit) |
 | Registration | `builder.Services.AddValidation()` in `TravelCore.Api` |
 | Rules | `System.ComponentModel.DataAnnotations` on request contracts |
 | Error surface | Framework 400 + existing Problem Details (`IProblemDetailsService`) |
+
+### Package ownership (T018R)
+
+An explicit `PackageReference` to `Microsoft.Extensions.Validation` on the Web host was **removed**.
+
+The .NET SDK reported `NU1510` because that package is already available through the ASP.NET Core shared framework for `Microsoft.NET.Sdk.Web` projects. Keeping a redundant direct NuGet reference was not required for `AddValidation()`.
+
+Do **not** assume every future non-Web class library automatically receives the same compiler/runtime behavior. Endpoint-owning assemblies still follow the registration rule below.
 
 Do **not** recreate this with custom middleware, custom endpoint filters, or `Validator.TryValidateObject` as the primary path.
 
@@ -59,7 +68,7 @@ Host-only `AddValidation()` is not a substitute for module-owned registration on
 
 ## Runtime proof (not committed)
 
-Official pipeline behavior (body / query / header, handler short-circuit, 400 details) is proven with a **temporary** out-of-repo Minimal API smoke using the same package/version. That project is not added to `TravelCore.sln`.
+Official pipeline behavior (body / query / header, handler short-circuit, 400 details) is proven with a **temporary** out-of-repo Minimal API smoke using `Microsoft.NET.Sdk.Web` **without** a direct `Microsoft.Extensions.Validation` PackageReference. That project is not added to `TravelCore.sln`.
 
 ## Related
 
