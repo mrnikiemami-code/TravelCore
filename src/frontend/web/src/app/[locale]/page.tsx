@@ -4,6 +4,8 @@ import {
   Container,
   Inline,
   LtrValue,
+  MixedCurrencyPrice,
+  MoneyText,
   Stack,
   Surface,
   Text,
@@ -14,9 +16,20 @@ import {
   isAppLocale,
   type AppLocale,
 } from "@/lib/i18n";
+import type { MixedCurrencyPriceView, MoneyView } from "@/types/money";
+
+/** Fixture — authoritative values supplied as if from a read model (not calculated here). */
+const SAMPLE_USD: MoneyView = { amount: "1290", currencyCode: "USD" };
+const SAMPLE_IRR: MoneyView = { amount: "119900000", currencyCode: "IRR" };
+const SAMPLE_MIXED: MixedCurrencyPriceView = {
+  components: [
+    { ...SAMPLE_USD, purpose: "PackagePrice" },
+    { ...SAMPLE_IRR, purpose: "LocalCharge" },
+  ],
+};
 
 /**
- * Minimal locale home — routing + token + primitive/bidi smoke (not a product page).
+ * Minimal locale home — routing + token + primitive + money smoke (not a product page).
  */
 export default async function LocaleHomePage({
   params,
@@ -31,6 +44,7 @@ export default async function LocaleHomePage({
   const locale: AppLocale = localeParam;
   const lang = getHtmlLang(locale);
   const dir = getHtmlDir(locale);
+  const irrDisplayUnit = locale === "fa" ? "Toman" : "IRR";
 
   return (
     <main className="flex flex-1 flex-col bg-background py-8 text-foreground">
@@ -63,8 +77,7 @@ export default async function LocaleHomePage({
                 مسیر: <LtrValue>IKA → IST</LtrValue>
               </Text>
               <Text role="body">
-                مهمان:{" "}
-                <BidiText dir="rtl">علی رضایی</BidiText>
+                مهمان: <BidiText dir="rtl">علی رضایی</BidiText>
                 {" · "}
                 <LtrValue>guest@example.com</LtrValue>
               </Text>
@@ -76,6 +89,44 @@ export default async function LocaleHomePage({
                   focus
                 </span>
               </Inline>
+            </Stack>
+          </Surface>
+
+          <Surface>
+            <Stack gap="md">
+              <Text as="h2" role="title">
+                Money presentation smoke
+              </Text>
+              <Text role="caption">
+                Locale formats digits only; currency comes from supplied Money
+                (irrDisplayUnit=<LtrValue>{irrDisplayUnit}</LtrValue> explicit).
+              </Text>
+              <div>
+                <Text role="label">USD on this locale</Text>
+                <div className="mt-1">
+                  <MoneyText money={SAMPLE_USD} locale={locale} />
+                </div>
+              </div>
+              <div>
+                <Text role="label">IRR canonical → display unit</Text>
+                <div className="mt-1">
+                  <MoneyText
+                    money={SAMPLE_IRR}
+                    locale={locale}
+                    irrDisplayUnit={irrDisplayUnit}
+                  />
+                </div>
+              </div>
+              <div>
+                <Text role="label">MixedCurrencyPrice (no FX / no sum)</Text>
+                <div className="mt-2">
+                  <MixedCurrencyPrice
+                    price={SAMPLE_MIXED}
+                    locale={locale}
+                    irrDisplayUnit={irrDisplayUnit}
+                  />
+                </div>
+              </div>
             </Stack>
           </Surface>
         </Stack>

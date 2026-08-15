@@ -13,6 +13,8 @@ Shared **direction-neutral UI primitives** for TravelCore web (T004).
 | `Text` | semantic typography roles (`display` … `caption` / `muted`) |
 | `BidiText` | `<bdi>` isolation; `dir="auto" \| "ltr" \| "rtl"` |
 | `LtrValue` | convenience for known LTR identifiers (codes, emails, refs) |
+| `MoneyText` | single Money presentation (display-only; ADR 0003) |
+| `MixedCurrencyPrice` | multiple supplied components; no FX / no silent sum |
 
 ## Rules
 
