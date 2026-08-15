@@ -1,4 +1,5 @@
 using NodaTime;
+using TravelCore.Modules.Access.Contracts;
 using TravelCore.Modules.Access.Domain;
 using Xunit;
 
@@ -45,5 +46,22 @@ public sealed class AccessTaxonomyTests
         Assert.NotEmpty(AccessPermissionCatalog.AdminBaseline);
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "access.roles.write");
         Assert.Equal("admin", AccessPermissionCatalog.AdminRoleCode);
+    }
+}
+
+public sealed class AccessEvaluationContractTests
+{
+    [Fact]
+    public void EvaluateAccessResponse_Defaults_ToExplicitDecisionFields()
+    {
+        var deny = new EvaluateAccessResponse
+        {
+            Allowed = false,
+            PermissionCode = "x",
+            Decision = "Deny",
+            Reason = "Deny-by-default"
+        };
+        Assert.False(deny.Allowed);
+        Assert.Equal("Deny", deny.Decision);
     }
 }

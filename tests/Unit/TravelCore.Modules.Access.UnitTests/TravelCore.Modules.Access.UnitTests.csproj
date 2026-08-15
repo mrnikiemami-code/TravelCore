@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\backend\Modules\Access\TravelCore.Modules.Access.Domain\TravelCore.Modules.Access.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Access\TravelCore.Modules.Access.Contracts\TravelCore.Modules.Access.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

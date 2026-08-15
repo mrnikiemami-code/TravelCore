@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `91e530a` (`TC-P03-T004`) |
+| Last Accepted Commit | `00dd11d` (`TC-P03-T005`) |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P03-T005** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P03-T006** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P03 — Identity + Access + Party (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P03-T005`; then next issued task |
+| Current Next Task | Architect review of `TC-P03-T006`; then next issued task |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -107,7 +107,7 @@
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | NOT_STARTED (after T001–T012) |
 | Human Phase Confirmation | P03 entered via USER `TRAVELCORE_PHASE_CONFIRM: P03` |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P03-T005`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P03-T006`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -177,8 +177,9 @@
 | TC-P03-T002 | COMPLETE / ACCEPTED (`393b7df`; evidence `5d5315e`/`036735d`) |
 | TC-P03-T003 | COMPLETE / ACCEPTED (`5730074`) |
 | TC-P03-T004 | COMPLETE / ACCEPTED (`91e530a`) |
-| TC-P03-T005 | AWAITING_ARCHITECT_REVIEW |
-| Required Human Token | none (await architect accept of `TC-P03-T005`) |
+| TC-P03-T005 | COMPLETE / ACCEPTED (`00dd11d`) |
+| TC-P03-T006 | AWAITING_ARCHITECT_REVIEW |
+| Required Human Token | none (await architect accept of `TC-P03-T006`) |
 
 ### P00 Exit Summary
 
@@ -189,7 +190,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P03 IN_PROGRESS; T001–T004 ACCEPTED; `TC-P03-T005` AWAITING_ARCHITECT_REVIEW; P04 NOT_STARTED; Runtime Mode = PIPELINE
+- P03 IN_PROGRESS; T001–T005 ACCEPTED; `TC-P03-T006` AWAITING_ARCHITECT_REVIEW; P04 NOT_STARTED; Runtime Mode = PIPELINE
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -259,7 +260,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P03-T002 | Party domain + persistence foundation | COMPLETE / ACCEPTED | `393b7df` (+ evidence `5d5315e`/`036735d`) |
 | TC-P03-T003 | Identity domain + credential persistence baseline | COMPLETE / ACCEPTED | `5730074` |
 | TC-P03-T004 | Identity ↔ Party association contracts | COMPLETE / ACCEPTED | `91e530a` |
-| TC-P03-T005 | Access taxonomy (Permission/Role) + persistence | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P03-T005 | Access taxonomy (Permission/Role) + persistence | COMPLETE / ACCEPTED | `00dd11d` |
+| TC-P03-T006 | Authorization evaluation service | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

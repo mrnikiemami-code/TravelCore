@@ -36,6 +36,7 @@ public sealed class AccessModule : ITravelCoreModule
         });
 
         services.AddScoped<AccessTaxonomyService>();
+        services.AddScoped<IAccessAuthorizationEvaluator, AccessAuthorizationEvaluator>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

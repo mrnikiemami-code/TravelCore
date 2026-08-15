@@ -83,6 +83,25 @@ internal static class AccessEndpoints
             }
         });
 
+        endpoints.MapPost("/api/access/evaluate", async Task<IResult> (
+            EvaluateAccessRequest request,
+            IAccessAuthorizationEvaluator evaluator,
+            CancellationToken ct) =>
+        {
+            try
+            {
+                var decision = await evaluator.EvaluateAsync(request, ct);
+                return Results.Ok(decision);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+        }).WithTags("Access");
+
         return endpoints;
     }
 }
