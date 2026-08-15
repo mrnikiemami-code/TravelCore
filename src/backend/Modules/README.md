@@ -6,12 +6,13 @@ Business and capability modules live under this directory.
 
 | Module | Projects | Schema |
 |--------|----------|--------|
-| Identity | `Identity/TravelCore.Modules.Identity.Infrastructure` (shell) | `identity` |
+| Identity | `Identity/TravelCore.Modules.Identity.{Domain,Contracts,Infrastructure}` | `identity` |
 | Access | `Access/TravelCore.Modules.Access.Infrastructure` (shell) | `access` |
 | Party | `Party/TravelCore.Modules.Party.{Domain,Contracts,Infrastructure}` | `party` |
 
-- **Identity / Access:** scaffolding shells from `TC-P03-T001` (empty DbContext + host DI stubs).
-- **Party:** domain + persistence + Minimal API create/get/search stubs from `TC-P03-T002`.
+- **Access:** scaffolding shell from `TC-P03-T001` (empty DbContext + host DI stubs).
+- **Party:** domain + persistence + Minimal API create/get/search stubs (`TC-P03-T002`).
+- **Identity:** Account + secure credential hashing + create/status API stubs (`TC-P03-T003`).
 
 ## Naming
 

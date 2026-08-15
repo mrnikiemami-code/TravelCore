@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using AccountAggregate = TravelCore.Modules.Identity.Domain.Account;
 
 namespace TravelCore.Modules.Identity.Infrastructure;
 
 /// <summary>
-/// Empty Identity-owned DbContext shell. Owns PostgreSQL schema <c>identity</c>.
-/// No entities, migrations, or business features in TC-P03-T001.
+/// Identity-owned DbContext. Owns PostgreSQL schema <c>identity</c>.
 /// </summary>
 public sealed class IdentityDbContext : DbContext
 {
@@ -15,9 +15,12 @@ public sealed class IdentityDbContext : DbContext
     {
     }
 
+    public DbSet<AccountAggregate> Accounts => Set<AccountAggregate>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.HasDefaultSchema(SchemaName);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityDbContext).Assembly);
     }
 }

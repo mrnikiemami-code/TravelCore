@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.Identity.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Identity.UnitTests</AssemblyName>
+    <Description>Identity domain/security unit tests (TC-P03-T003).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\Identity\TravelCore.Modules.Identity.Domain\TravelCore.Modules.Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Identity\TravelCore.Modules.Identity.Infrastructure\TravelCore.Modules.Identity.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
