@@ -3,12 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TravelCore.Modularity;
+using TravelCore.Modules.ReferenceData.Contracts;
+using TravelCore.Modules.ReferenceData.Infrastructure.Endpoints;
+using TravelCore.Modules.ReferenceData.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.ReferenceData.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the ReferenceData module (scaffolding only).
+/// Host composition entry for the ReferenceData module.
 /// </summary>
 public sealed class ReferenceDataModule : ITravelCoreModule
 {
@@ -17,7 +20,6 @@ public sealed class ReferenceDataModule : ITravelCoreModule
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        // CS is resolved when the DbContext is created — host can compose without requiring DB at startup.
         services.AddDbContext<ReferenceDataDbContext>((_, options) =>
         {
             var connectionString = configuration.GetConnectionString(TravelCoreConnectionStrings.TravelCore)
@@ -28,11 +30,13 @@ public sealed class ReferenceDataModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: ReferenceDataDbContext.SchemaName);
         });
+
+        services.AddScoped<IReferenceDataCatalogQuery, ReferenceDataCatalogQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // No endpoints in TC-P04-T001 scaffolding.
+        endpoints.MapReferenceDataEndpoints();
     }
 }

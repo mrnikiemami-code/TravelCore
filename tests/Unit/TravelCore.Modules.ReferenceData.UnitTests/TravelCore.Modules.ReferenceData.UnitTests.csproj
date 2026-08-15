@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.ReferenceData.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.ReferenceData.UnitTests</AssemblyName>
+    <Description>ReferenceData domain unit tests (TC-P04-T002).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\ReferenceData\TravelCore.Modules.ReferenceData.Domain\TravelCore.Modules.ReferenceData.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

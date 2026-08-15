@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.ReferenceData.Domain;
 
 namespace TravelCore.Modules.ReferenceData.Infrastructure;
 
 /// <summary>
-/// Empty ReferenceData-owned DbContext shell. Owns PostgreSQL schema <c>reference_data</c>.
-/// No entities, migrations, or business features in TC-P04-T001.
+/// ReferenceData-owned DbContext. Owns PostgreSQL schema <c>reference_data</c>.
 /// </summary>
 public sealed class ReferenceDataDbContext : DbContext
 {
@@ -15,9 +15,18 @@ public sealed class ReferenceDataDbContext : DbContext
     {
     }
 
+    public DbSet<CurrencyCatalogEntry> Currencies => Set<CurrencyCatalogEntry>();
+
+    public DbSet<LocaleCatalogEntry> Locales => Set<LocaleCatalogEntry>();
+
+    public DbSet<CountryCatalogEntry> Countries => Set<CountryCatalogEntry>();
+
+    public DbSet<TimeZoneCatalogEntry> TimeZones => Set<TimeZoneCatalogEntry>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.HasDefaultSchema(SchemaName);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ReferenceDataDbContext).Assembly);
     }
 }

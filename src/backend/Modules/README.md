@@ -14,14 +14,15 @@ Business and capability modules live under this directory.
 - **Access:** Permission/Role taxonomy + seed + CRUD stubs (`TC-P03-T005`).
 - **Party:** Person/Organization/Agency persistence + stubs (`TC-P03-T002`).
 
-## Active modules (P04 scaffolding)
+## Active modules (P04)
 
 | Module | Projects | Schema |
 |--------|----------|--------|
-| ReferenceData | `ReferenceData/TravelCore.Modules.ReferenceData.Infrastructure` (shell) | `reference_data` |
+| ReferenceData | `ReferenceData/TravelCore.Modules.ReferenceData.{Domain,Contracts,Infrastructure}` | `reference_data` |
 | Destination | `Destination/TravelCore.Modules.Destination.Infrastructure` (shell) | `destination` |
 
-- **ReferenceData / Destination:** Infrastructure shells only (`TC-P04-T001`) — no domain features yet.
+- **ReferenceData:** Currency / Locale / ISO Country / IANA TimeZone catalogs + read APIs (`TC-P04-T002`).
+- **Destination:** Infrastructure shell only (`TC-P04-T001`) — hierarchy not yet.
 - Invariant: **ReferenceData ≠ Destination**.
 
 ## Naming
