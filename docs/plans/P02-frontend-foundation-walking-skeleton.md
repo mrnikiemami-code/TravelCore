@@ -9,7 +9,7 @@
 | Authoritative sources | `docs/ROADMAP.md` · `docs/architecture/10-ui-constitution.md` · `docs/ui/*` · `docs/pages/01-foreign-tour-detail.md` · ADR 0005 / 0006 / 0007 |
 | Frontend root | `src/frontend/web` |
 
-این سند **نقشهٔ اجرایی معتبر P02** است. پیاده‌سازی محصول در این سند انجام نمی‌شود؛ فقط Taskهای اجرایی را برای Cursor تعریف می‌کند.
+این سند **نقشهٔ اجرایی معتبر P02** است. پیاده‌سازی محصول در این سند انجام نمی‌شود؛ فقط Taskهای اجرایی را برای Cursor تعریف می‌کند. نقشهٔ فعلی: T001–T017 + GATE (پس از revision معمار).
 
 ---
 
@@ -53,7 +53,37 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-## 4. Validation strategy (repository-supported)
+## 4. Cross-domain workflow-driven UX (locked for P02)
+
+**Durable rule (also in UI constitution):**
+
+> Domain boundaries protect architecture; they do not automatically define screen, form, menu, navigation, or workflow boundaries. UI is designed around user goals and may coordinate multiple domains through explicit application/API contracts while preserving domain ownership.
+
+- Frontend **MUST NOT** mechanically mirror backend bounded contexts as screens/menus.
+- Backend ownership remains separate even when one guided UI flow spans multiple domains.
+
+### Explicit valid pattern — Identity + Party
+
+Identity and Party remain separate domains. A user workflow MAY:
+
+1. create Identity
+2. create or link Party within the same guided flow
+3. establish the relationship
+4. continue to relevant profile/access steps
+
+without forcing disconnected CRUD screens, raw ID copy/paste, or exposing internal foreign keys.
+
+### Mobile-first workflow requirements (for T010+)
+
+Cross-domain workflows must explicitly require: minimum typing · minimum context switching · inline create/link/select where useful · touch-friendly interaction · progressive disclosure · preserved form/workflow state · no raw IDs · no desktop-only critical path.
+
+### Admin navigation freeze
+
+Admin shell layout primitives (T008) must not freeze domain-mirroring navigation. Final Admin IA is planned only after `TC-P02-T010`.
+
+---
+
+## 5. Validation strategy (repository-supported)
 
 برای Taskهای پیاده‌سازی P02، مگر خلاف صریح در Task:
 
@@ -73,7 +103,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-## 5. Out of scope for entire P02
+## 6. Out of scope for entire P02
 
 - پیاده‌سازی کامل ماژول Tour / Booking / Payment / HotelBooking / Flight inventory / Search
 - Authentication/Authorization redesign
@@ -84,7 +114,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-## 6. Ordered task map
+## 7. Ordered task map
 
 ### TC-P02-T001 — Frontend physical structure & conventions
 
@@ -198,20 +228,19 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-### TC-P02-T008 — Public shell + Admin shell foundation
+### TC-P02-T008 — Public shell + Admin shell layout primitives
 
 | Field | Content |
 |-------|---------|
-| Objective | Public shell واقعیِ حداقلی و Admin shell foundation را جدا کند. |
-| Exact scope | header/nav/footer عمومی locale-aware؛ stub/layout foundation ادمین بدون business logic؛ بدون کپی منطق دامنه در Admin. |
-| Allowed | shell layouts/components. |
-| Forbidden | auth redesign · agency marketplace · admin CRUD واقعی. |
+| Objective | Public shell حداقلی و **primitives/layout** اسکلت Admin را جدا کند — بدون قفل کردن IA/navigation مبتنی بر دامنه. |
+| Exact scope | header/nav/footer عمومی locale-aware؛ Admin shell = chrome/layout/slots فقط (sidebar/header placeholders)؛ **نه** منوی نهایی Admin هم‌تراز با bounded contexts. |
+| Allowed | shell layouts/components · layout slots. |
+| Forbidden | auth redesign · agency marketplace · admin CRUD واقعی · **domain-mirroring Admin navigation IA** · قفل منو بر اساس ماژول‌های Backend. |
 | Dependencies | T002 · T004 · T006 |
-| Acceptance | Public shell در FA/EN کار می‌کند؛ Admin foundation جدا و خالی از منطق محصول. |
+| Acceptance | Public shell در FA/EN کار می‌کند؛ Admin foundation جداست و navigation نهایی Admin هنوز **unfrozen** است تا بعد از `TC-P02-T010`. |
 | Proofs | build · FA/EN smoke |
-| Artifacts | PublicShell · AdminShell foundation |
-| Stop | یک shell مشترک که مرز Public/Admin را مخدوش کند |
-
+| Artifacts | PublicShell · AdminShell layout primitives |
+| Stop | تبدیل Admin shell به نقشهٔ منوی دامنه-به-دامنه قبل از Cross-Domain Workflow task
 ---
 
 ### TC-P02-T009 — Frontend API / read-model boundary
@@ -230,7 +259,23 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-### TC-P02-T010 — Image foundation
+### TC-P02-T010 — Cross-Domain Workflow & Navigation Model
+
+| Field | Content |
+|-------|---------|
+| Objective | مدل workflow-driven و navigation را برای UI چنددامنه‌ای قبل از قفل شدن Admin IA تثبیت کند. |
+| Exact scope | تحلیل و مستندسازی الگوهای orchestration در لایهٔ application/API برای حداقل: Identity↔Party↔Access · Tour↔Destination↔Media↔Pricing · Booking↔Party↔Pricing↔Payment · Place/Hotel↔Media↔Pricing (در صورت کاربرد). برای هر جریان: user goal · persona · participating domains · owner هر عملیات · workflow sequence · create/link/select · API/application boundary · prefill/reuse · mobile behavior · validation · permissions · failure/retry/recovery · navigation implications · جزئیات دامنه‌ای که باید از کاربر پنهان بماند. |
+| Allowed | docs under `docs/` (plan appendix و/یا `docs/ui`/`docs/architecture` مرتبط) — بدون پیاده‌سازی محصول. |
+| Forbidden | backend domain redesign · CRUD صفحات جدا برای هر دامنه به‌عنوان مدل اجباری · اجرای T011+ محصولی · P03+. |
+| Dependencies | T008 · T009 |
+| Acceptance | اصل «مرز دامنه ≠ مرز صفحه/منو» در نقشهٔ P02 اجرایی است؛ الگوی Identity+Party create/link مستند است؛ Admin navigation هنوز قبل از این Task قابل freeze نیست و بعد از آن طراحی می‌شود. |
+| Proofs | documentation consistency · `git diff --check` |
+| Artifacts | Cross-domain workflow & navigation model doc/section |
+| Stop | mirror کردن ماژول‌های Backend در منوی Admin به‌عنوان پیش‌فرض |
+
+---
+
+### TC-P02-T011 — Image foundation
 
 | Field | Content |
 |-------|---------|
@@ -246,7 +291,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-### TC-P02-T011 — Foreign Tour Detail PVM + typed fixture
+### TC-P02-T012 — Foreign Tour Detail PVM + typed fixture
 
 | Field | Content |
 |-------|---------|
@@ -262,7 +307,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-### TC-P02-T012 — Foreign Tour Detail walking skeleton (Server)
+### TC-P02-T013 — Foreign Tour Detail walking skeleton (Server)
 
 | Field | Content |
 |-------|---------|
@@ -270,7 +315,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 | Exact scope | route locale-aware؛ sections تصمیم‌ساز (header/hero، departure summary، flight summary، hotel options، pricing/occupancy، services، requirements، CTA slot)؛ Server-first؛ بدون Client کردن کل صفحه. |
 | Allowed | page + sections under feature folder. |
 | Forbidden | Booking واقعی · Payment · Search · Experience Tour کامل. |
-| Dependencies | T007 · T008 · T010 · T011 |
+| Dependencies | T007 · T008 · T011 · T012 |
 | Acceptance | FA و EN رندر می‌شوند؛ anatomy اصلی archetype پوشش داده شده؛ SEO-critical content در HTML اولیه موجود است. |
 | Proofs | build · view-source/server HTML spot-check · lint |
 | Artifacts | Foreign Tour Detail route + sections |
@@ -278,7 +323,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-### TC-P02-T013 — Sticky / mobile booking CTA island
+### TC-P02-T014 — Sticky / mobile booking CTA island
 
 | Field | Content |
 |-------|---------|
@@ -286,7 +331,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 | Exact scope | CTA island تعاملی حداقلی؛ sticky summary در دسکتاپ بدون مالکیت محتوای منحصربه‌فرد غیرقابل دسترس؛ bottom sticky/sheet hook در موبایل طبق UI constitution. |
 | Allowed | small `"use client"` island فقط برای تعامل. |
 | Forbidden | checkout · auth · payment. |
-| Dependencies | T012 |
+| Dependencies | T013 |
 | Acceptance | موبایل CTA پایدار و usable؛ محتوا بدون sticky هم خوانا است. |
 | Proofs | build · FA/EN mobile/desktop smoke notes |
 | Artifacts | BookingCtaIsland / sticky summary |
@@ -294,7 +339,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-### TC-P02-T014 — SEO metadata baseline for skeleton route
+### TC-P02-T015 — SEO metadata baseline for skeleton route
 
 | Field | Content |
 |-------|---------|
@@ -302,7 +347,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 | Exact scope | `generateMetadata` (یا معادل) از PVM/fixture؛ title/description؛ آمادگی برای hreflang/canonical بعدی بدون پیاده‌سازی P05. |
 | Allowed | metadata API روی route اسکلت. |
 | Forbidden | slug history · IndexPolicy engine · sitemap کامل (P05). |
-| Dependencies | T012 |
+| Dependencies | T013 |
 | Acceptance | FA/EN metadata متمایز و server-emitted. |
 | Proofs | build · metadata inspection |
 | Artifacts | metadata for skeleton routes |
@@ -310,7 +355,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-### TC-P02-T015 — Frontend quality gates
+### TC-P02-T016 — Frontend quality gates
 
 | Field | Content |
 |-------|---------|
@@ -318,7 +363,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 | Exact scope | scripts `lint` / `typecheck` / `build`؛ در صورت نیاز حداقل تست برای Money یا bidi helper با توجیه؛ مستندسازی دستورات در README؛ بدون CI کامل اجباری مگر فایل‌های موجود لمس شوند. |
 | Allowed | `package.json` scripts · devDependency فقط با توجیه صریح در این Task. |
 | Forbidden | تعویض کلی stack · Playwright کامل بدون نیاز اثبات‌شده. |
-| Dependencies | T005 · T012 (حداقل یک سطح از کد محصولی) |
+| Dependencies | T005 · T013 (حداقل یک سطح از کد محصولی) |
 | Acceptance | یک دستور/مجموعه‌دستور مستند برای lint+typecheck+build سبز است. |
 | Proofs | lint · tsc · build |
 | Artifacts | scripts + optional minimal tests |
@@ -326,7 +371,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 
 ---
 
-### TC-P02-T016 — Walking skeleton validation matrix evidence
+### TC-P02-T017 — Walking skeleton validation matrix evidence
 
 | Field | Content |
 |-------|---------|
@@ -334,7 +379,7 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 | Exact scope | ماتریس FA Desktop · FA Mobile · EN Desktop · EN Mobile؛ پوشش RTL/LTR/bidi/sticky/a11y/SEO-render؛ نماینده عرض‌ها؛ بدون ادعای کامل بودن Experience Tour. |
 | Allowed | docs evidence تحت `docs/` یا `docs/plans/` · checklist. |
 | Forbidden | شروع P03 · پیاده‌سازی فیچر جدید خارج از رفع باگ اسکلت. |
-| Dependencies | T013 · T014 · T015 |
+| Dependencies | T014 · T015 · T016 |
 | Acceptance | سند شواهد کامل و قابل‌بازبینی معمار. |
 | Proofs | evidence doc · build still green |
 | Artifacts | validation evidence document |
@@ -350,15 +395,15 @@ P02 **Tour domain کامل**، Booking، Payment، Search، CMS، یا P03+ نی
 | Exact scope | verification-only + truthful state/docs؛ بدون فیچر جدید. |
 | Allowed | PROJECT-STATE/ROADMAP · شواهد. |
 | Forbidden | P03 · redesign · گسترش Tour domain. |
-| Dependencies | T001–T016 COMPLETE/ACCEPTED per architect |
+| Dependencies | T001–T017 COMPLETE/ACCEPTED per architect |
 | Acceptance | معمار معماری UI را در RTL/LTR و mobile/desktop برای اسکلت تأیید می‌کند. |
 | Proofs | full P02 validation set |
 | Artifacts | GATE result + state |
-| Stop | اجرای GATE قبل از تکمیل T016 |
+| Stop | اجرای GATE قبل از تکمیل T017 |
 
 ---
 
-## 7. Dependency graph (summary)
+## 8. Dependency graph (summary)
 
 ```text
 T001
@@ -366,48 +411,47 @@ T001
 ├── T003 ──┼── T004 ── T005
 │          │      ├── T006 ── T008
 │          │      └── T007
-│          └── T009 ──────────────┐
-└── T010                          ├── T011 ── T012 ── T013
-                                  │              └── T014
-                                  └──────────────────── T015
-                                                         │
-                                                      T016 ── GATE
+│          └── T009 ── T010 ──┐
+└── T011                      ├── T012 ── T013 ── T014
+                              │              └── T015
+                              └──────────────────── T016
+                                                     │
+                                                  T017 ── GATE
 ```
 
 - **First implementation task:** `TC-P02-T001`
-- **Foreign Tour Detail tasks:** `TC-P02-T011` · `TC-P02-T012` · `TC-P02-T013` · `TC-P02-T014` · (evidence in `T016`)
+- **Cross-domain workflow task:** `TC-P02-T010` (before Admin navigation freeze)
+- **Foreign Tour Detail tasks:** `TC-P02-T012` · `TC-P02-T013` · `TC-P02-T014` · `TC-P02-T015` · (evidence in `T017`)
 - **Final gate:** `TC-P02-GATE`
 - **P03 scope in this plan:** NO
-
----
-
-## 8. Coverage checklist vs P02 objectives
+## 9. Coverage checklist vs P02 objectives
 
 | Objective | Covered by |
 |-----------|------------|
-| Frontend application foundation | T001–T010 |
-| App Router architecture | T002 · T007 · T012 |
-| Server Component First | T012–T014 constraints |
-| Minimal Client | T013 only for interaction |
-| Mobile-first | T008 · T012 · T013 · T016 |
-| RTL/LTR + bidi | T002 · T004 · T011–T016 |
+| Frontend application foundation | T001–T011 |
+| App Router architecture | T002 · T007 · T013 |
+| Server Component First | T013–T015 constraints |
+| Minimal Client | T014 only for interaction |
+| Mobile-first | T008 · T010 · T013 · T014 · T017 |
+| Cross-domain workflow-driven UX | T010 (+ durable rule in UI constitution) |
+| Admin navigation freeze protection | T008 limited · T010 before final Admin IA |
+| RTL/LTR + bidi | T002 · T004 · T012–T017 |
 | Direction-neutral primitives | T004 |
-| Accessibility baseline | T006 · T016 |
-| SEO-sensitive SSR | T012 · T014 |
-| Shared shells | T008 |
-| Design tokens/components | T003 · T004 · T005 · T010 |
+| Accessibility baseline | T006 · T017 |
+| SEO-sensitive SSR | T013 · T015 |
+| Shared shells (layout only for Admin) | T008 |
+| Design tokens/components | T003 · T004 · T005 · T011 |
 | API/client boundary | T009 |
 | Loading/error/not-found | T007 |
-| Foreign Tour Detail skeleton | T011–T014 |
-| FA/EN · desktop/mobile validation | T016 · GATE |
-| Representative IA | T011 · T012 |
-| Sticky/mobile booking affordance | T013 |
-| Automated quality gates | T015 |
-| No full Tour domain / no P03 | §5 · all Forbidden fields |
-
+| Foreign Tour Detail skeleton | T012–T015 |
+| FA/EN · desktop/mobile validation | T017 · GATE |
+| Representative IA | T012 · T013 |
+| Sticky/mobile booking affordance | T014 |
+| Automated quality gates | T016 |
+| No full Tour domain / no P03 | §6 · all Forbidden fields |
 ---
 
-## 9. Execution rules for Cursor
+## 10. Execution rules for Cursor
 
 1. فقط یک Task با envelope `Auto-Execute: YES` در هر چرخه.
 2. بعد از Result → STOP تا بازبینی معمار.
@@ -417,8 +461,9 @@ T001
 
 ---
 
-## 10. Document history
+## 11. Document history
 
 | Date | Note |
 |------|------|
 | 2026-08-15 | `TC-P02-PLAN` initial authoritative map at baseline `0853d04` |
+| 2026-08-15 | Architect revision: cross-domain workflow UX rule + T010 + renumber T011–T017; Admin shell non-freezing |

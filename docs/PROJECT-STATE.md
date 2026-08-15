@@ -56,7 +56,7 @@
 | Operating Modes | HUMAN (default) / PIPELINE (USER opt-in) |
 | Default Mode | **HUMAN** |
 | Current Runtime Mode | **PIPELINE** |
-| Automatic Pipeline | **ON** (USER opted in; P02 PLAN authorized) |
+| Automatic Pipeline | **ON** (USER re-activated after recovery; `TRAVELCORE_PHASE_CONFIRM: P02`) |
 | Agent Handoff Envelopes | ACTIVE (ADR 0013) |
 | Protocol | `TRAVELCORE_CURSOR_TASK_V1` · `TRAVELCORE_CURSOR_RESULT_V1` |
 | Future Architecture Transition Map | [`docs/architecture/15-future-architecture-transition-map.md`](architecture/15-future-architecture-transition-map.md) |
@@ -100,7 +100,7 @@
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
 | Phase Transition State | **P02_IN_PROGRESS** |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
-| P02 Phase Gate | NOT_STARTED (after T001–T016) |
+| P02 Phase Gate | NOT_STARTED (after T001–T017) |
 | Human Phase Confirmation | P01 confirmed; P02 entered via USER Auto-Execute `TC-P02-PLAN` |
 | Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P02-PLAN`) |
 | Human Confirmation Reason | None for current PLAN |

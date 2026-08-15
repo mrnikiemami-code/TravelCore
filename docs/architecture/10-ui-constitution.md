@@ -58,6 +58,21 @@ Route → random JSX → arbitrary CSS → duplicated controls
 8. **بدون منطق کسب‌وکار authoritative در UI**
 9. **بدون فیلد layout در API** (`leftColumn`, `desktopSidebar`, …)
 10. **مرجع‌های محصول برای تحلیل‌اند** — کپی برند/کد/محتوا/layout اختصاصی ممنوع
+11. **مرز دامنه ≠ مرز صفحه/منو/فرم/workflow** — Domain boundaries از معماری محافظت می‌کنند؛ به‌طور خودکار مرز screen، form، menu، navigation یا workflow را تعریف نمی‌کنند. UI حول هدف کاربر طراحی می‌شود و می‌تواند چند دامنه را از طریق قراردادهای صریح application/API هماهنگ کند، در حالی که ownership دامنه در Backend حفظ می‌شود.
+12. **Frontend نباید bounded contextهای Backend را مکانیکی mirror کند** — منو/CRUD جدا برای هر ماژول به‌عنوان مدل پیش‌فرض ممنوع است وقتی هدف کاربر یک جریان هدایت‌شدهٔ چنددامنه‌ای است.
+
+### الگوی معتبر — Identity + Party (cross-domain guided flow)
+
+Identity و Party دامنه‌های جدا می‌مانند. یک workflow کاربری **مجاز است**:
+
+1. Identity بسازد
+2. در همان جریان هدایت‌شده Party بسازد یا لینک کند
+3. رابطه را برقرار کند
+4. به گام‌های profile/access مرتبط ادامه دهد
+
+بدون اجبار به صفحات CRUD جدا، کپی خام ID، یا افشای FKهای داخلی. مالکیت Backend همچنان جداست.
+
+الزامات mobile-first برای چنین جریان‌هایی: حداقل تایپ · حداقل context-switch · create/link/select درون‌خطی در صورت مفید بودن · تعامل touch-friendly · progressive disclosure · حفظ state فرم/workflow · بدون raw ID · بدون مسیر حیاتی فقط-دسکتاپ.
 
 ---
 

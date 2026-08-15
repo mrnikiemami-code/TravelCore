@@ -242,7 +242,7 @@ Backend foundation بیلد و تست می‌شود و اجرای مرز ماژ�
 
 **Purpose:** قبل از ساخت ده‌ها صفحه، معماری UI / i18n / RTL-LTR / mobile / SEO را اثبات کند.
 
-پیاده‌سازی پایه: app architecture · locale-aware root · HTML lang/dir · Design Tokens · typography · containers/grid · primitives · responsive · bidi-safe primitives · Money / MixedCurrencyPrice · loading/error · Public shell · Admin shell foundation · API client strategy · OpenAPI-generated types/client اگر تأیید شد · image foundation · a11y baseline
+پیاده‌سازی پایه: app architecture · locale-aware root · HTML lang/dir · Design Tokens · typography · containers/grid · primitives · responsive · bidi-safe primitives · Money / MixedCurrencyPrice · loading/error · Public shell · Admin shell layout primitives (navigation IA after cross-domain workflow task) · cross-domain workflow & navigation model · API client strategy · OpenAPI-generated types/client اگر تأیید شد · image foundation · a11y baseline
 
 سپس **UI Walking Skeleton واقعی** با fixtureهای typed.
 
