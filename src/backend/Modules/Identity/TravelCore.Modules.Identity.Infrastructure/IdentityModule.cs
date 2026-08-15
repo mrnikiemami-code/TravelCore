@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Identity.Contracts;
 using TravelCore.Modules.Identity.Infrastructure.Endpoints;
 using TravelCore.Modules.Identity.Infrastructure.Security;
 using TravelCore.Modules.Identity.Infrastructure.Services;
@@ -38,6 +39,7 @@ public sealed class IdentityModule : ITravelCoreModule
         });
 
         services.AddScoped<IdentityApplicationService>();
+        services.AddScoped<IAccountExistenceQuery, AccountExistenceQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

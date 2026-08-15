@@ -102,6 +102,72 @@ internal static class AccessEndpoints
             }
         }).WithTags("Access");
 
+        var assignments = endpoints.MapGroup("/api/access/subject-roles").WithTags("Access");
+        assignments.MapPost("/", async Task<IResult> (
+            AssignSubjectRoleRequest request,
+            AccessSubjectAssignmentService svc,
+            CancellationToken ct) =>
+        {
+            try
+            {
+                var created = await svc.AssignAsync(request, ct);
+                return Results.Ok(created);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.Conflict(new { title = "Conflict", detail = ex.Message });
+            }
+        });
+        assignments.MapGet("/", async Task<IResult> (
+            string subjectType,
+            Guid subjectId,
+            AccessSubjectAssignmentService svc,
+            CancellationToken ct) =>
+        {
+            try
+            {
+                return Results.Ok(await svc.ListAsync(subjectType, subjectId, ct));
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+        });
+        assignments.MapDelete("/", async Task<IResult> (
+            string subjectType,
+            Guid subjectId,
+            Guid roleId,
+            AccessSubjectAssignmentService svc,
+            CancellationToken ct) =>
+        {
+            try
+            {
+                await svc.RevokeAsync(subjectType, subjectId, roleId, ct);
+                return Results.NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return Results.NotFound();
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+        });
+
         return endpoints;
     }
 }

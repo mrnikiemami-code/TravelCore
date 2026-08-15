@@ -61,3 +61,23 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
+
+internal sealed class SubjectRoleAssignmentConfiguration : IEntityTypeConfiguration<SubjectRoleAssignment>
+{
+    public void Configure(EntityTypeBuilder<SubjectRoleAssignment> builder)
+    {
+        builder.ToTable("subject_role_assignments");
+        builder.HasKey(x => new { x.SubjectKind, x.SubjectId, x.RoleId });
+        builder.Property(x => x.SubjectKind).HasColumnName("subject_kind").HasConversion<short>().IsRequired();
+        builder.Property(x => x.SubjectId).HasColumnName("subject_id").IsRequired();
+        builder.Property(x => x.RoleId).HasColumnName("role_id")
+            .HasConversion(id => id.Value, v => RoleId.From(v));
+        builder.Property(x => x.AssignedAt).HasColumnName("assigned_at").IsRequired();
+        builder.HasIndex(x => new { x.SubjectKind, x.SubjectId })
+            .HasDatabaseName("ix_subject_role_assignments_subject");
+        builder.HasOne<RoleEntity>()
+            .WithMany()
+            .HasForeignKey(x => x.RoleId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}

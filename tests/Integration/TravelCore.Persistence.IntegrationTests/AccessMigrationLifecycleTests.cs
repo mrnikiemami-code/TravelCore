@@ -54,8 +54,9 @@ public sealed class AccessMigrationLifecycleTests
         await using (var inventory = _postgres.CreateDbContext())
         {
             var migrations = inventory.Database.GetMigrations().ToArray();
-            Assert.Single(migrations);
+            Assert.Equal(2, migrations.Length);
             Assert.EndsWith("_InitialAccessPersistence", migrations[0], StringComparison.Ordinal);
+            Assert.EndsWith("_AddSubjectRoleAssignments", migrations[1], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -68,15 +69,15 @@ public sealed class AccessMigrationLifecycleTests
             var conn = db.Database.GetDbConnection();
             await db.Database.OpenConnectionAsync(ct);
             Assert.Equal(1, await ScalarIntAsync(conn, "SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'access';", ct));
-            Assert.Equal(4, await ScalarIntAsync(conn, """
+            Assert.Equal(5, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM information_schema.tables
                 WHERE table_schema = 'access'
-                  AND table_name IN ('permissions','roles','role_permissions','__EFMigrationsHistory');
+                  AND table_name IN ('permissions','roles','role_permissions','subject_role_assignments','__EFMigrationsHistory');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM information_schema.tables
                 WHERE table_schema = 'public'
-                  AND table_name IN ('permissions','roles','role_permissions','__EFMigrationsHistory');
+                  AND table_name IN ('permissions','roles','role_permissions','subject_role_assignments','__EFMigrationsHistory');
                 """, ct));
             Assert.False(db.Database.HasPendingModelChanges());
         }

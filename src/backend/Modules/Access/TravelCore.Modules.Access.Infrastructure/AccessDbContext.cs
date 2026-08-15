@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PermissionEntity = TravelCore.Modules.Access.Domain.Permission;
 using RoleEntity = TravelCore.Modules.Access.Domain.Role;
 using RolePermissionEntity = TravelCore.Modules.Access.Domain.RolePermission;
+using SubjectRoleAssignmentEntity = TravelCore.Modules.Access.Domain.SubjectRoleAssignment;
 
 namespace TravelCore.Modules.Access.Infrastructure;
 
@@ -22,6 +23,8 @@ public sealed class AccessDbContext : DbContext
     public DbSet<RoleEntity> Roles => Set<RoleEntity>();
 
     public DbSet<RolePermissionEntity> RolePermissions => Set<RolePermissionEntity>();
+
+    public DbSet<SubjectRoleAssignmentEntity> SubjectRoleAssignments => Set<SubjectRoleAssignmentEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

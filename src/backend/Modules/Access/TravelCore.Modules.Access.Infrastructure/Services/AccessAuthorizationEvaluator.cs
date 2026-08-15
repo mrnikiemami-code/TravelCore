@@ -5,8 +5,8 @@ using TravelCore.Modules.Access.Domain;
 namespace TravelCore.Modules.Access.Infrastructure.Services;
 
 /// <summary>
-/// Evaluates whether a permission is allowed given Access taxonomy (and optional RoleIds).
-/// Subject→role assignment persistence/API is T007 — without RoleIds, decision is deny.
+/// Evaluates whether a permission is allowed. Deny-by-default.
+/// Uses subject→role assignments (T007) and/or explicit RoleIds for probes.
 /// </summary>
 public sealed class AccessAuthorizationEvaluator : IAccessAuthorizationEvaluator
 {
@@ -30,23 +30,35 @@ public sealed class AccessAuthorizationEvaluator : IAccessAuthorizationEvaluator
             return Deny(permissionCode, "Permission code is invalid.");
         }
 
-        // Subject assignment is T007. Subject fields alone never grant access in T006.
-        if (request.RoleIds is null || request.RoleIds.Count == 0)
+        var roleIds = new HashSet<RoleId>();
+
+        if (request.RoleIds is { Count: > 0 })
         {
-            return Deny(
-                permissionCode,
-                "Deny-by-default: no RoleIds provided and subject assignments are not owned by T006.");
+            foreach (var id in request.RoleIds.Where(x => x != Guid.Empty).Distinct())
+            {
+                roleIds.Add(RoleId.From(id));
+            }
         }
 
-        var roleIds = request.RoleIds
-            .Where(id => id != Guid.Empty)
-            .Distinct()
-            .Select(RoleId.From)
-            .ToArray();
-
-        if (roleIds.Length == 0)
+        if (!string.IsNullOrWhiteSpace(request.SubjectType) && request.SubjectId is Guid subjectId && subjectId != Guid.Empty)
         {
-            return Deny(permissionCode, "Deny-by-default: no valid RoleIds.");
+            if (Enum.TryParse<AccessSubjectKind>(request.SubjectType, ignoreCase: true, out var kind)
+                && Enum.IsDefined(kind))
+            {
+                var assigned = await _db.SubjectRoleAssignments.AsNoTracking()
+                    .Where(x => x.SubjectKind == kind && x.SubjectId == subjectId)
+                    .Select(x => x.RoleId)
+                    .ToListAsync(cancellationToken);
+                foreach (var roleId in assigned)
+                {
+                    roleIds.Add(roleId);
+                }
+            }
+        }
+
+        if (roleIds.Count == 0)
+        {
+            return Deny(permissionCode, "Deny-by-default: no roles resolved for evaluation.");
         }
 
         var permission = await _db.Permissions.AsNoTracking()
@@ -63,7 +75,7 @@ public sealed class AccessAuthorizationEvaluator : IAccessAuthorizationEvaluator
 
         if (!allowed)
         {
-            return Deny(permissionCode, "Roles do not grant the requested permission.");
+            return Deny(permissionCode, "Resolved roles do not grant the requested permission.");
         }
 
         return new EvaluateAccessResponse
@@ -71,7 +83,7 @@ public sealed class AccessAuthorizationEvaluator : IAccessAuthorizationEvaluator
             Allowed = true,
             PermissionCode = permissionCode,
             Decision = "Allow",
-            Reason = "Granted via Role→Permission taxonomy."
+            Reason = "Granted via subject/role assignment and Role→Permission taxonomy."
         };
     }
 
