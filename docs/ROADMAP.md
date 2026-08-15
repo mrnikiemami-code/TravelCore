@@ -102,7 +102,7 @@
 - **P00** = COMPLETE
 - **P01** = COMPLETE
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
-- **P03** = IN_PROGRESS (T001–T006 ACCEPTED; `TC-P03-T007` AWAITING_ARCHITECT_REVIEW)
+- **P03** = IN_PROGRESS (T001–T007 ACCEPTED; `TC-P03-T008` AWAITING_ARCHITECT_REVIEW; R1 = HttpOnly cookie)
 - **P04–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -268,7 +268,7 @@ Prototype باید قرارداد Design System و fixture typed داشته با
 
 **Authoritative plan:** [`plans/P03-implementation-plan.md`](plans/P03-implementation-plan.md) (`TC-P03-PLAN`)
 
-**Progress:** T001–T006 COMPLETE / ACCEPTED · `TC-P03-T007` AWAITING_ARCHITECT_REVIEW
+**Progress:** T001–T007 COMPLETE / ACCEPTED · `TC-P03-T008` AWAITING_ARCHITECT_REVIEW · **R1 RESOLVED** (secure HttpOnly cookie; Bearer deferred)
 
 Identity · Access · Party · Organization · Agency identity · Roles/permissions طبق معماری پذیرفته‌شده · پایهٔ authz ادمین · دسترسی Presentation آژانس.
 

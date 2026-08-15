@@ -264,7 +264,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P03-T004 | Identity ↔ Party association contracts | COMPLETE / ACCEPTED | `91e530a` |
 | TC-P03-T005 | Access taxonomy (Permission/Role) + persistence | COMPLETE / ACCEPTED | `00dd11d` |
 | TC-P03-T006 | Authorization evaluation service | COMPLETE / ACCEPTED | `86f7107` |
-| TC-P03-T007 | Subject role assignment foundation | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P03-T007 | Subject role assignment foundation | COMPLETE / ACCEPTED | `089c396` |
+| TC-P03-T008 | Host authentication ticket (HttpOnly cookie) | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
