@@ -1,13 +1,22 @@
+import { notFound } from "next/navigation";
+import {
+  BidiText,
+  Container,
+  Inline,
+  LtrValue,
+  Stack,
+  Surface,
+  Text,
+} from "@/components/ui";
 import {
   getHtmlDir,
   getHtmlLang,
   isAppLocale,
   type AppLocale,
 } from "@/lib/i18n";
-import { notFound } from "next/navigation";
 
 /**
- * Minimal locale home — routing/root proof + semantic token smoke (not a product page).
+ * Minimal locale home — routing + token + primitive/bidi smoke (not a product page).
  */
 export default async function LocaleHomePage({
   params,
@@ -24,27 +33,53 @@ export default async function LocaleHomePage({
   const dir = getHtmlDir(locale);
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 bg-background p-8 text-foreground">
-      <div className="w-full max-w-content rounded-lg border border-border bg-surface p-6 shadow-sm">
-        <h1 className="text-heading font-semibold tracking-tight">TravelCore</h1>
-        <p className="mt-2 text-body text-muted-foreground">
-          Locale foundation — <code className="text-label">{locale}</code>
-        </p>
-        <p className="mt-1 text-caption text-muted-foreground">
-          document: lang=<code>{lang}</code> dir=<code>{dir}</code>
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <span className="inline-flex min-h-touch items-center rounded-md bg-primary px-4 text-label text-primary-foreground">
-            primary
-          </span>
-          <span className="inline-flex min-h-touch items-center rounded-md bg-surface-muted px-4 text-label text-foreground ring-2 ring-focus">
-            focus ring
-          </span>
-          <span className="inline-flex min-h-touch items-center rounded-md bg-danger px-4 text-label text-danger-foreground">
-            danger
-          </span>
-        </div>
-      </div>
+    <main className="flex flex-1 flex-col bg-background py-8 text-foreground">
+      <Container width="content">
+        <Stack gap="lg">
+          <Surface>
+            <Stack gap="sm">
+              <Text as="h1" role="heading">
+                TravelCore
+              </Text>
+              <Text role="muted">
+                Locale foundation — <LtrValue>{locale}</LtrValue>
+              </Text>
+              <Text role="caption">
+                document: lang=<LtrValue>{lang}</LtrValue> dir=
+                <LtrValue>{dir}</LtrValue>
+              </Text>
+            </Stack>
+          </Surface>
+
+          <Surface tone="muted">
+            <Stack gap="md">
+              <Text as="h2" role="title">
+                Bidi isolation smoke
+              </Text>
+              <Text role="body">
+                مرجع رزرو: <LtrValue>TC-REF-88421</LtrValue>
+              </Text>
+              <Text role="body">
+                مسیر: <LtrValue>IKA → IST</LtrValue>
+              </Text>
+              <Text role="body">
+                مهمان:{" "}
+                <BidiText dir="rtl">علی رضایی</BidiText>
+                {" · "}
+                <LtrValue>guest@example.com</LtrValue>
+              </Text>
+              <Inline gap="sm">
+                <span className="inline-flex min-h-touch items-center rounded-md bg-primary px-4 text-label text-primary-foreground">
+                  primary
+                </span>
+                <span className="inline-flex min-h-touch items-center rounded-md bg-surface px-4 text-label text-foreground ring-2 ring-focus">
+                  focus
+                </span>
+              </Inline>
+            </Stack>
+          </Surface>
+        </Stack>
+      </Container>
     </main>
   );
 }
