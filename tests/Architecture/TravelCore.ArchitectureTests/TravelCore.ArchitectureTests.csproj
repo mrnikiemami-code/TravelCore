@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.ArchitectureTests</RootNamespace>
+    <AssemblyName>TravelCore.ArchitectureTests</AssemblyName>
+    <Description>Executable architecture guardrails (TC-P01-T015).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="TngTech.ArchUnitNET" Version="0.13.3" />
+    <PackageReference Include="TngTech.ArchUnitNET.xUnitV3" Version="0.13.3" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\TravelCore.Api\TravelCore.Api.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Time\TravelCore.Time\TravelCore.Time.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
+    <ProjectReference Include="..\..\..\tests\Fixtures\Persistence\TravelCore.PersistenceFixture\TravelCore.PersistenceFixture.csproj" />
+  </ItemGroup>
+
+</Project>
