@@ -41,6 +41,14 @@ internal sealed class DestinationConfiguration : IEntityTypeConfiguration<Destin
             .HasColumnName("iso_country_code")
             .HasMaxLength(2);
 
+        builder.Property(x => x.Latitude)
+            .HasColumnName("latitude")
+            .HasPrecision(9, 6);
+
+        builder.Property(x => x.Longitude)
+            .HasColumnName("longitude")
+            .HasPrecision(9, 6);
+
         builder.Property(x => x.CreatedAt)
             .HasColumnName("created_at")
             .IsRequired();
@@ -67,5 +75,49 @@ internal sealed class DestinationConfiguration : IEntityTypeConfiguration<Destin
             .WithMany()
             .HasForeignKey(x => x.ParentId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(x => x.Translations)
+            .WithOne()
+            .HasForeignKey(x => x.DestinationId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Translations)
+            .HasField("_translations")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+    }
+}
+
+internal sealed class DestinationTranslationConfiguration : IEntityTypeConfiguration<DestinationTranslation>
+{
+    public void Configure(EntityTypeBuilder<DestinationTranslation> builder)
+    {
+        builder.ToTable("destination_translations");
+        builder.HasKey(x => new { x.DestinationId, x.LocaleCode });
+
+        builder.Property(x => x.DestinationId)
+            .HasColumnName("destination_id")
+            .HasConversion(id => id.Value, value => DestinationId.From(value));
+
+        builder.Property(x => x.LocaleCode)
+            .HasColumnName("locale_code")
+            .HasMaxLength(DestinationTranslation.LocaleCodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Name)
+            .HasColumnName("name")
+            .HasMaxLength(DestinationTranslation.NameMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Description)
+            .HasColumnName("description")
+            .HasMaxLength(DestinationTranslation.DescriptionMaxLength);
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at")
+            .IsRequired();
+
+        builder.HasIndex(x => x.LocaleCode)
+            .HasDatabaseName("ix_destination_translations_locale_code");
     }
 }

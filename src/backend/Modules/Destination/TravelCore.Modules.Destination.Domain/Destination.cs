@@ -10,6 +10,8 @@ public sealed class Destination
     public const int CodeMaxLength = 64;
     public const int NameMaxLength = 200;
 
+    private readonly List<DestinationTranslation> _translations = [];
+
     private Destination()
     {
         Code = null!;
@@ -42,7 +44,7 @@ public sealed class Destination
     /// <summary>Stable opaque destination code within TravelCore (not SEO slug — that is T006).</summary>
     public string Code { get; private set; }
 
-    /// <summary>Baseline English display name until T004 translations land.</summary>
+    /// <summary>Baseline English display name (catalog/admin fallback; localized names live in translations).</summary>
     public string EnglishName { get; private set; }
 
     public DestinationId? ParentId { get; private set; }
@@ -53,9 +55,17 @@ public sealed class Destination
     /// </summary>
     public string? IsoCountryCode { get; private set; }
 
+    /// <summary>Optional WGS84 latitude. Destination geo identity — not Place catalog.</summary>
+    public decimal? Latitude { get; private set; }
+
+    /// <summary>Optional WGS84 longitude. Destination geo identity — not Place catalog.</summary>
+    public decimal? Longitude { get; private set; }
+
     public Instant CreatedAt { get; private set; }
 
     public Instant UpdatedAt { get; private set; }
+
+    public IReadOnlyCollection<DestinationTranslation> Translations => _translations;
 
     public static Destination Create(
         DestinationKind kind,
@@ -81,6 +91,66 @@ public sealed class Destination
             parentId,
             normalizedIso,
             now);
+    }
+
+    public void SetGeographicIdentity(decimal? latitude, decimal? longitude, Instant now)
+    {
+        if (latitude is null && longitude is null)
+        {
+            Latitude = null;
+            Longitude = null;
+            UpdatedAt = now;
+            return;
+        }
+
+        if (latitude is null || longitude is null)
+        {
+            throw new ArgumentException("Latitude and Longitude must both be set or both cleared.");
+        }
+
+        if (latitude is < -90m or > 90m)
+        {
+            throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be between -90 and 90.");
+        }
+
+        if (longitude is < -180m or > 180m)
+        {
+            throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be between -180 and 180.");
+        }
+
+        Latitude = decimal.Round(latitude.Value, 6, MidpointRounding.AwayFromZero);
+        Longitude = decimal.Round(longitude.Value, 6, MidpointRounding.AwayFromZero);
+        UpdatedAt = now;
+    }
+
+    public DestinationTranslation UpsertTranslation(
+        string localeCode,
+        string name,
+        string? description,
+        Instant now)
+    {
+        var normalizedLocale = DestinationTranslation.NormalizeLocaleCode(localeCode);
+        var existing = _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+
+        if (existing is null)
+        {
+            var created = DestinationTranslation.Create(Id, normalizedLocale, name, description, now);
+            _translations.Add(created);
+            UpdatedAt = now;
+            return created;
+        }
+
+        existing.Update(name, description, now);
+        UpdatedAt = now;
+        return existing;
+    }
+
+    public DestinationTranslation? FindTranslation(string localeCode)
+    {
+        var normalizedLocale = DestinationTranslation.NormalizeLocaleCode(localeCode);
+        return _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
     }
 
     public static void ValidateHierarchy(

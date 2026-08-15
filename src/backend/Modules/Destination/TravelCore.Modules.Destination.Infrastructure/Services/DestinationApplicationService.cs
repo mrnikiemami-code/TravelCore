@@ -8,7 +8,7 @@ using DestinationAggregate = TravelCore.Modules.Destination.Domain.Destination;
 namespace TravelCore.Modules.Destination.Infrastructure.Services;
 
 /// <summary>
-/// Destination application service for create/get/children (server-owned persistence).
+/// Destination application service for create/get/children/translations/geo.
 /// </summary>
 public sealed class DestinationApplicationService
 {
@@ -79,12 +79,15 @@ public sealed class DestinationApplicationService
         return Map(destination);
     }
 
-    public async Task<DestinationResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<DestinationResponse?> GetByIdAsync(
+        Guid id,
+        string? locale,
+        CancellationToken cancellationToken)
     {
         var destinationId = DestinationId.From(id);
         var destination = await _db.Destinations.AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == destinationId, cancellationToken);
-        return destination is null ? null : Map(destination);
+        return destination is null ? null : Map(destination, locale);
     }
 
     public async Task<IReadOnlyList<DestinationResponse>> ListChildrenAsync(
@@ -98,7 +101,76 @@ public sealed class DestinationApplicationService
             .ThenBy(x => x.Code)
             .ToListAsync(cancellationToken);
 
-        return children.Select(Map).ToList();
+        return children.Select(x => Map(x)).ToList();
+    }
+
+    public async Task<DestinationTranslationResponse> UpsertTranslationAsync(
+        Guid destinationId,
+        string localeCode,
+        UpsertDestinationTranslationRequest request,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var locale = await _referenceData.GetLocaleAsync(localeCode, cancellationToken)
+            ?? throw new ArgumentException(
+                $"Locale '{localeCode}' was not found in ReferenceData locale catalog.",
+                nameof(localeCode));
+
+        var id = DestinationId.From(destinationId);
+        var destination = await _db.Destinations
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+            ?? throw new ArgumentException("Destination was not found.", nameof(destinationId));
+
+        var now = _clock.GetCurrentInstant();
+        var translation = destination.UpsertTranslation(locale.Code, request.Name, request.Description, now);
+        await _db.SaveChangesAsync(cancellationToken);
+
+        return new DestinationTranslationResponse(
+            translation.DestinationId.Value,
+            translation.LocaleCode,
+            translation.Name,
+            translation.Description);
+    }
+
+    public async Task<IReadOnlyList<DestinationTranslationResponse>> ListTranslationsAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken)
+    {
+        var id = DestinationId.From(destinationId);
+        var destination = await _db.Destinations.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (destination is null)
+        {
+            return Array.Empty<DestinationTranslationResponse>();
+        }
+
+        return destination.Translations
+            .OrderBy(x => x.LocaleCode, StringComparer.Ordinal)
+            .Select(x => new DestinationTranslationResponse(
+                x.DestinationId.Value,
+                x.LocaleCode,
+                x.Name,
+                x.Description))
+            .ToList();
+    }
+
+    public async Task<DestinationResponse> SetGeoAsync(
+        Guid destinationId,
+        SetDestinationGeoRequest request,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var id = DestinationId.From(destinationId);
+        var destination = await _db.Destinations
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+            ?? throw new ArgumentException("Destination was not found.", nameof(destinationId));
+
+        var now = _clock.GetCurrentInstant();
+        destination.SetGeographicIdentity(request.Latitude, request.Longitude, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(destination);
     }
 
     private static DestinationKind ParseKind(string kind)
@@ -114,12 +186,34 @@ public sealed class DestinationApplicationService
             nameof(kind));
     }
 
-    private static DestinationResponse Map(DestinationAggregate destination) =>
-        new(
+    private static DestinationResponse Map(DestinationAggregate destination, string? locale = null)
+    {
+        string? localizedName = null;
+        string? localizedDescription = null;
+        string? resolvedLocale = null;
+
+        if (!string.IsNullOrWhiteSpace(locale))
+        {
+            var translation = destination.FindTranslation(locale);
+            if (translation is not null)
+            {
+                localizedName = translation.Name;
+                localizedDescription = translation.Description;
+                resolvedLocale = translation.LocaleCode;
+            }
+        }
+
+        return new DestinationResponse(
             destination.Id.Value,
             destination.Kind.ToString(),
             destination.Code,
             destination.EnglishName,
             destination.ParentId?.Value,
-            destination.IsoCountryCode);
+            destination.IsoCountryCode,
+            destination.Latitude,
+            destination.Longitude,
+            localizedName,
+            localizedDescription,
+            resolvedLocale);
+    }
 }

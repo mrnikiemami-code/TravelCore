@@ -30,8 +30,9 @@ public sealed class DestinationMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Single(expectedMigrations);
+            Assert.Equal(2, expectedMigrations.Length);
             Assert.EndsWith("_InitialDestinationPersistence", expectedMigrations[0], StringComparison.Ordinal);
+            Assert.EndsWith("_DestinationTranslationsAndGeo", expectedMigrations[1], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -47,11 +48,14 @@ public sealed class DestinationMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'destination';
                 """, ct));
-            Assert.Equal(2, await ScalarIntAsync(conn, """
+            Assert.Equal(3, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'destination'
-                  AND table_name IN ('destinations', '__EFMigrationsHistory');
+                  AND table_name IN (
+                    'destinations',
+                    'destination_translations',
+                    '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
@@ -91,6 +95,10 @@ public sealed class DestinationMigrationLifecycleTests
                 parentId: city.Id,
                 parent: city);
 
+            country.UpsertTranslation("fa", "ایران", null, now);
+            country.UpsertTranslation("en", "Iran", "Islamic Republic of Iran", now);
+            city.SetGeographicIdentity(35.6892m, 51.3890m, now);
+
             db.Destinations.AddRange(country, region, city, area);
             await db.SaveChangesAsync(ct);
             countryId = country.Id;
@@ -109,6 +117,23 @@ public sealed class DestinationMigrationLifecycleTests
             var country = await db.Destinations.AsNoTracking()
                 .SingleAsync(x => x.Id == countryId, ct);
             Assert.Equal("IR", country.IsoCountryCode);
+            Assert.Equal(2, country.Translations.Count);
+            Assert.Contains(country.Translations, x => x.LocaleCode == "fa" && x.Name == "ایران");
+            Assert.Contains(country.Translations, x => x.LocaleCode == "en");
+
+            var city = await db.Destinations.AsNoTracking()
+                .SingleAsync(x => x.Id == cityId, ct);
+            Assert.Equal(35.689200m, city.Latitude);
+            Assert.Equal(51.389000m, city.Longitude);
+
+            var conn = db.Database.GetDbConnection();
+            await db.Database.OpenConnectionAsync(ct);
+            Assert.Equal(2, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'destination'
+                  AND table_name IN ('destinations', 'destination_translations');
+                """, ct));
         }
 
         await using (var db = _postgres.CreateDbContext())

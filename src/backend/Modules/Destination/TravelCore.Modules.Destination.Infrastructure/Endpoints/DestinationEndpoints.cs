@@ -25,19 +25,17 @@ internal static class DestinationEndpoints
             }
             catch (ArgumentException ex)
             {
-                return Results.ValidationProblem(new Dictionary<string, string[]>
-                {
-                    [ex.ParamName ?? "request"] = [ex.Message]
-                });
+                return Validation(ex);
             }
         });
 
         group.MapGet("/{id:guid}", async Task<IResult> (
             Guid id,
+            string? locale,
             DestinationApplicationService service,
             CancellationToken cancellationToken) =>
         {
-            var destination = await service.GetByIdAsync(id, cancellationToken);
+            var destination = await service.GetByIdAsync(id, locale, cancellationToken);
             return destination is null ? Results.NotFound() : Results.Ok(destination);
         });
 
@@ -50,6 +48,59 @@ internal static class DestinationEndpoints
             return Results.Ok(children);
         });
 
+        group.MapPut("/{id:guid}/translations/{localeCode}", async Task<IResult> (
+            Guid id,
+            string localeCode,
+            UpsertDestinationTranslationRequest request,
+            DestinationApplicationService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var translation = await service.UpsertTranslationAsync(id, localeCode, request, cancellationToken);
+                return Results.Ok(translation);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
+        group.MapGet("/{id:guid}/translations", async Task<IResult> (
+            Guid id,
+            DestinationApplicationService service,
+            CancellationToken cancellationToken) =>
+        {
+            var translations = await service.ListTranslationsAsync(id, cancellationToken);
+            return Results.Ok(translations);
+        });
+
+        group.MapPut("/{id:guid}/geo", async Task<IResult> (
+            Guid id,
+            SetDestinationGeoRequest request,
+            DestinationApplicationService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var updated = await service.SetGeoAsync(id, request, cancellationToken);
+                return Results.Ok(updated);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+        });
+
         return endpoints;
     }
+
+    private static IResult Validation(ArgumentException ex) =>
+        Results.ValidationProblem(new Dictionary<string, string[]>
+        {
+            [ex.ParamName ?? "request"] = [ex.Message]
+        });
 }
