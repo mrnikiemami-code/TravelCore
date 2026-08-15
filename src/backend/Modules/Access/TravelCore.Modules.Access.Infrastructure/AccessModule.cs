@@ -2,13 +2,17 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Access.Infrastructure.Endpoints;
+using TravelCore.Modules.Access.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Access.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Access module (scaffolding only).
+/// Host composition entry for the Access module.
 /// </summary>
 public sealed class AccessModule : ITravelCoreModule
 {
@@ -16,6 +20,9 @@ public sealed class AccessModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
+
+        services.AddValidation();
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
 
         services.AddDbContext<AccessDbContext>((_, options) =>
         {
@@ -27,11 +34,13 @@ public sealed class AccessModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: AccessDbContext.SchemaName);
         });
+
+        services.AddScoped<AccessTaxonomyService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // No endpoints in TC-P03-T001 scaffolding.
+        endpoints.MapAccessEndpoints();
     }
 }

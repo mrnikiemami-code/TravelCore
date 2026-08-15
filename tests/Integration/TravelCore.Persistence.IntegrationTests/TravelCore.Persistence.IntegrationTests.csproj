@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\..\src\backend\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Party\TravelCore.Modules.Party.Infrastructure\TravelCore.Modules.Party.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Identity\TravelCore.Modules.Identity.Infrastructure\TravelCore.Modules.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Access\TravelCore.Modules.Access.Infrastructure\TravelCore.Modules.Access.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Fixtures\Persistence\TravelCore.PersistenceFixture\TravelCore.PersistenceFixture.csproj" />
   </ItemGroup>
 
