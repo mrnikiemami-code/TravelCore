@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P03 — Identity + Access + Party** (**IN_PROGRESS**) |
+| Current Phase | **P03 — Identity + Access + Party** (**COMPLETE**) |
 | Previous Phase | P02 — Frontend Foundation + Walking Skeleton (COMPLETE) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `00dd11d` (`TC-P03-T005`) |
+| Last Accepted Commit | `349bd8a` (`TC-P03-T012`); gate closes P03 |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P03-T012** (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P03 — Identity + Access + Party (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P03-T012`; then next issued task |
+| Current Active Product Task | **NONE** (P03 closed; await architect accept of `TC-P03-GATE`, then USER `TRAVELCORE_PHASE_CONFIRM: P04`) |
+| Current Next Product Phase | P04 — Reference Data + Destination (**NOT_STARTED**) |
+| Current Next Task | Await architect accept of `TC-P03-GATE`; then USER `TRAVELCORE_PHASE_CONFIRM: P04` + architect-issued `TC-P04-*` (do not invent) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -83,9 +83,11 @@
 | P02 Plan | `TC-P02-PLAN` COMPLETE / ACCEPTED (`47475ba`) — [`docs/plans/P02-frontend-foundation-walking-skeleton.md`](plans/P02-frontend-foundation-walking-skeleton.md) |
 | P02 Implementation Started | **YES** (`TC-P02-T001`) |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
-| P03 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P03`) |
+| P03 | **COMPLETE** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P03`; closed by `TC-P03-GATE`) |
 | P03 Plan | `TC-P03-PLAN` COMPLETE / ACCEPTED (`a779726`) — [`docs/plans/P03-implementation-plan.md`](plans/P03-implementation-plan.md) |
 | P03 Implementation Started | **YES** (`TC-P03-T001`) |
+| P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (this commit) |
+| P03 Gate Evidence | [`docs/plans/P03-GATE-acceptance-evidence.md`](plans/P03-GATE-acceptance-evidence.md) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
 | API Foundation Doc | [`docs/architecture/19-api-error-and-serialization-foundation.md`](architecture/19-api-error-and-serialization-foundation.md) |
 | Configuration Foundation Doc | [`docs/architecture/20-configuration-and-options-foundation.md`](architecture/20-configuration-and-options-foundation.md) |
@@ -102,13 +104,13 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P03_IN_PROGRESS** |
+| Phase Transition State | **P03_COMPLETE** |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
-| P03 Phase Gate | NOT_STARTED (after T001–T012) |
-| Human Phase Confirmation | P03 entered via USER `TRAVELCORE_PHASE_CONFIRM: P03` |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P03-T012`) |
-| Human Confirmation Reason | None for current task |
+| P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (this commit) |
+| Human Phase Confirmation | P03 entered via USER `TRAVELCORE_PHASE_CONFIRM: P03`; P04 requires fresh USER `TRAVELCORE_PHASE_CONFIRM: P04` |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_NEXT_TASK** (P04 NOT_STARTED) |
+| Human Confirmation Reason | None for current task; P04 blocked until phase confirm |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
 | TC-P02-T002 | COMPLETE / ACCEPTED (`55ea466`) |
@@ -182,8 +184,11 @@
 | TC-P03-T007 | COMPLETE / ACCEPTED (`089c396`) |
 | TC-P03-T008 | COMPLETE / ACCEPTED (`289180c`; evidence `7c22c80`) |
 | TC-P03-T009 | COMPLETE / ACCEPTED (`2843127`) |
-| TC-P03-T010 | COMPLETE / ACCEPTED (`446d557`) |`n| TC-P03-T011 | COMPLETE / ACCEPTED (`45aedb2`) |`n| TC-P03-T012 | AWAITING_ARCHITECT_REVIEW |
-| Required Human Token | none (await architect accept of `TC-P03-T012`) |
+| TC-P03-T010 | COMPLETE / ACCEPTED (`446d557`) |
+| TC-P03-T011 | COMPLETE / ACCEPTED (`45aedb2`) |
+| TC-P03-T012 | COMPLETE / ACCEPTED (`349bd8a`) |
+| TC-P03-GATE | COMPLETE / ACCEPTED (this commit) |
+| Required Human Token | none (P03 closed; P04 awaits USER `TRAVELCORE_PHASE_CONFIRM: P04` + architect-issued task) |
 
 ### P00 Exit Summary
 
@@ -194,7 +199,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P03 IN_PROGRESS; T001–T011 ACCEPTED; `TC-P03-T012` AWAITING_ARCHITECT_REVIEW; R1 RESOLVED (HttpOnly cookie); P04 NOT_STARTED; Runtime Mode = PIPELINE
+- P03 COMPLETE; T001–T012 ACCEPTED; `TC-P03-GATE` COMPLETE / ACCEPTED; evidence: `docs/plans/P03-GATE-acceptance-evidence.md`; R1 RESOLVED (HttpOnly cookie); P04 NOT_STARTED; Runtime Mode = PIPELINE
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -269,7 +274,10 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P03-T007 | Subject role assignment foundation | COMPLETE / ACCEPTED | `089c396` |
 | TC-P03-T008 | Host authentication ticket (HttpOnly cookie) | COMPLETE / ACCEPTED | `289180c` (+ evidence `7c22c80`) |
 | TC-P03-T009 | Admin authz baseline (Access-backed) | COMPLETE / ACCEPTED | `2843127` |
-| TC-P03-T010 | Guided Admin Identity↔Party workflow UI | COMPLETE / ACCEPTED | `446d557` |`n| TC-P03-T011 | Agency presentation access baseline | COMPLETE / ACCEPTED | `45aedb2` |`n| TC-P03-T012 | P03 hardening evidence pack | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P03-T010 | Guided Admin Identity↔Party workflow UI | COMPLETE / ACCEPTED | `446d557` |
+| TC-P03-T011 | Agency presentation access baseline | COMPLETE / ACCEPTED | `45aedb2` |
+| TC-P03-T012 | P03 hardening evidence pack | COMPLETE / ACCEPTED | `349bd8a` |
+| TC-P03-GATE | P03 Acceptance Gate | COMPLETE / ACCEPTED | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
