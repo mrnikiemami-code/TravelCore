@@ -63,6 +63,110 @@ public sealed class DestinationReadQuery : IDestinationReadQuery
             .ToList();
     }
 
+    public async Task<IReadOnlyList<DestinationPathNode>> ListAncestorsAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken = default)
+    {
+        var path = await GetPathAsync(destinationId, cancellationToken);
+        return path?.AncestorsRootFirst ?? Array.Empty<DestinationPathNode>();
+    }
+
+    public async Task<DestinationPathResponse?> GetPathAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken = default)
+    {
+        var id = DestinationId.From(destinationId);
+        var current = await _db.Destinations.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (current is null)
+        {
+            return null;
+        }
+
+        var chainLeafToRoot = new List<Domain.Destination> { current };
+        var guard = 0;
+        while (current.ParentId is not null)
+        {
+            if (++guard > 64)
+            {
+                throw new InvalidOperationException("Destination parent chain exceeded safety depth.");
+            }
+
+            var parentId = current.ParentId.Value;
+            current = await _db.Destinations.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == parentId, cancellationToken)
+                ?? throw new InvalidOperationException($"Broken destination parent link at {parentId}.");
+            chainLeafToRoot.Add(current);
+        }
+
+        chainLeafToRoot.Reverse();
+        var nodes = chainLeafToRoot
+            .Select((x, index) => ToPathNode(x, index))
+            .ToList();
+
+        var self = nodes[^1];
+        IReadOnlyList<DestinationPathNode> ancestors = nodes.Count == 1
+            ? Array.Empty<DestinationPathNode>()
+            : nodes.Take(nodes.Count - 1).ToList();
+        return new DestinationPathResponse(destinationId, ancestors, self, nodes);
+    }
+
+    public async Task<DestinationDescendantsResponse?> ListDescendantsAsync(
+        Guid destinationId,
+        int maxDepth,
+        CancellationToken cancellationToken = default)
+    {
+        if (maxDepth < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxDepth), "maxDepth must be >= 0.");
+        }
+
+        // Cap to prevent accidental unbounded scans; hierarchy is shallow by design.
+        maxDepth = Math.Min(maxDepth, 16);
+
+        var rootId = DestinationId.From(destinationId);
+        var root = await _db.Destinations.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == rootId, cancellationToken);
+        if (root is null)
+        {
+            return null;
+        }
+
+        if (maxDepth == 0)
+        {
+            return new DestinationDescendantsResponse(destinationId, maxDepth, Array.Empty<DestinationPathNode>());
+        }
+
+        var results = new List<DestinationPathNode>();
+        var frontier = new List<DestinationId> { rootId };
+        var depthFromRoot = 0;
+
+        for (var level = 1; level <= maxDepth && frontier.Count > 0; level++)
+        {
+            depthFromRoot = level;
+            var parentIds = frontier.Select(x => (DestinationId?)x).ToList();
+            var children = await _db.Destinations.AsNoTracking()
+                .Where(x => x.ParentId != null && parentIds.Contains(x.ParentId))
+                .OrderBy(x => x.EnglishName)
+                .ThenBy(x => x.Code)
+                .ToListAsync(cancellationToken);
+
+            results.AddRange(children.Select(x => ToPathNode(x, depthFromRoot)));
+            frontier = children.Select(x => x.Id).ToList();
+        }
+
+        return new DestinationDescendantsResponse(destinationId, maxDepth, results);
+    }
+
+    private static DestinationPathNode ToPathNode(Domain.Destination destination, int depthFromRoot) =>
+        new(
+            destination.Id.Value,
+            destination.Kind.ToString(),
+            destination.Code,
+            destination.EnglishName,
+            destination.ParentId?.Value,
+            depthFromRoot);
+
     private static DestinationResponse Map(Domain.Destination destination, string? locale = null)
     {
         string? localizedName = null;

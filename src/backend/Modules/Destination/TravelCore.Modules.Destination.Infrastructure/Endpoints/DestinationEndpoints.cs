@@ -95,6 +95,45 @@ internal static class DestinationEndpoints
             }
         });
 
+        group.MapGet("/{id:guid}/ancestors", async Task<IResult> (
+            Guid id,
+            IDestinationReadQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            var path = await query.GetPathAsync(id, cancellationToken);
+            return path is null ? Results.NotFound() : Results.Ok(path.AncestorsRootFirst);
+        });
+
+        group.MapGet("/{id:guid}/path", async Task<IResult> (
+            Guid id,
+            IDestinationReadQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            var path = await query.GetPathAsync(id, cancellationToken);
+            return path is null ? Results.NotFound() : Results.Ok(path);
+        });
+
+        group.MapGet("/{id:guid}/descendants", async Task<IResult> (
+            Guid id,
+            int? depth,
+            IDestinationReadQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var maxDepth = depth ?? 1;
+                var descendants = await query.ListDescendantsAsync(id, maxDepth, cancellationToken);
+                return descendants is null ? Results.NotFound() : Results.Ok(descendants);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "depth"] = [ex.Message]
+                });
+            }
+        });
+
         return endpoints;
     }
 
