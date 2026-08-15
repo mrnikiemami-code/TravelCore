@@ -253,7 +253,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P02-GATE | P02 Acceptance Gate | COMPLETE / ACCEPTED | `4eacff5` |
 | TC-P03-PLAN | P03 Identity + Access + Party Plan | COMPLETE / ACCEPTED | `a779726` |
 | TC-P03-T001 | Identity / Access / Party module scaffolding | COMPLETE / ACCEPTED | `afdf73c` |
-| TC-P03-T002 | Party domain + persistence foundation | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P03-T002 | Party domain + persistence foundation | AWAITING_ARCHITECT_REVIEW (scope correction: plan owns contracts+API stubs; evidence `docs/plans/P03-T002-scope-alignment-evidence.md`) | `393b7df` + evidence commit |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
