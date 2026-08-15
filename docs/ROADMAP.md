@@ -1,4 +1,4 @@
-# TravelCore Master Execution Roadmap
+﻿# TravelCore Master Execution Roadmap
 
 این سند **ترتیب اجرایی معماری** TravelCore است — نه سند تخمین اسپرینت و نه تاریخ تحویل.
 
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `4eacff5` (`TC-P02-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P03-T010`; then next issued task |
+| Current Next Task | Architect review of `TC-P03-T011`; then next issued task |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -102,7 +102,7 @@
 - **P00** = COMPLETE
 - **P01** = COMPLETE
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
-- **P03** = IN_PROGRESS (T001–T009 ACCEPTED; `TC-P03-T010` AWAITING_ARCHITECT_REVIEW; R1 = HttpOnly cookie)
+- **P03** = IN_PROGRESS (T001–T010 ACCEPTED; `TC-P03-T011` AWAITING_ARCHITECT_REVIEW; R1 = HttpOnly cookie)
 - **P04–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -268,7 +268,7 @@ Prototype باید قرارداد Design System و fixture typed داشته با
 
 **Authoritative plan:** [`plans/P03-implementation-plan.md`](plans/P03-implementation-plan.md) (`TC-P03-PLAN`)
 
-**Progress:** T001–T009 COMPLETE / ACCEPTED · `TC-P03-T010` AWAITING_ARCHITECT_REVIEW · **R1 RESOLVED** (secure HttpOnly cookie; Bearer deferred)
+**Progress:** T001–T010 COMPLETE / ACCEPTED · `TC-P03-T011` AWAITING_ARCHITECT_REVIEW · **R1 RESOLVED** (secure HttpOnly cookie; Bearer deferred)
 
 Identity · Access · Party · Organization · Agency identity · Roles/permissions طبق معماری پذیرفته‌شده · پایهٔ authz ادمین · دسترسی Presentation آژانس.
 

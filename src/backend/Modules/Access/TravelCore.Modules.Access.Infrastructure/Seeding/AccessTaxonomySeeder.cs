@@ -55,5 +55,39 @@ public static class AccessTaxonomySeeder
         }
 
         await db.SaveChangesAsync(cancellationToken);
+
+        // Agency presentation baseline (T011) — commerce-free capability gate.
+        foreach (var (code, displayName) in AccessPermissionCatalog.AgencyPresentationBaseline)
+        {
+            var existing = await db.Permissions.FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
+            if (existing is null)
+            {
+                existing = PermissionEntity.Create(code, displayName, now);
+                db.Permissions.Add(existing);
+            }
+
+            permissionIds[code] = existing.Id;
+        }
+
+        await db.SaveChangesAsync(cancellationToken);
+
+        var agency = await db.Roles.FirstOrDefaultAsync(x => x.Code == AccessPermissionCatalog.AgencyRoleCode, cancellationToken);
+        if (agency is null)
+        {
+            agency = RoleEntity.Create(
+                AccessPermissionCatalog.AgencyRoleCode,
+                AccessPermissionCatalog.AgencyRoleDisplayName,
+                now);
+            db.Roles.Add(agency);
+            await db.SaveChangesAsync(cancellationToken);
+            agency = await db.Roles.FirstAsync(x => x.Code == AccessPermissionCatalog.AgencyRoleCode, cancellationToken);
+        }
+
+        foreach (var (code, _) in AccessPermissionCatalog.AgencyPresentationBaseline)
+        {
+            agency.GrantPermission(permissionIds[code], now);
+        }
+
+        await db.SaveChangesAsync(cancellationToken);
     }
 }

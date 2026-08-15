@@ -1,9 +1,12 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TravelCore.Modules.Access.Contracts;
 using TravelCore.Modules.Access.Infrastructure.Authorization;
 using TravelCore.Modules.Access.Infrastructure.Services;
+using TravelCore.Modules.Identity.Contracts;
+using TravelCore.Modules.Party.Contracts;
 
 namespace TravelCore.Modules.Access.Infrastructure.Endpoints;
 
@@ -174,6 +177,58 @@ internal static class AccessEndpoints
         adminAccess.MapGet("/roles", async Task<IResult> (AccessTaxonomyService svc, CancellationToken ct)
                 => Results.Ok(await svc.ListRolesAsync(ct)))
             .RequireAuthorization(AccessAuthorizationPolicies.AdminRolesRead);
+
+        // Agency presentation capability stub (T011) — Access-gated, commerce-free.
+        var agencyPanel = endpoints.MapGroup("/api/agency/panel").WithTags("AgencyPresentation");
+        agencyPanel.MapGet("/capabilities", async Task<IResult> (
+            HttpContext httpContext,
+            IAccountAssociationQuery associations,
+            IPartyReadQuery parties,
+            CancellationToken ct) =>
+        {
+            var idValue = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(idValue, out var accountId) || accountId == Guid.Empty)
+            {
+                return Results.Unauthorized();
+            }
+
+            var partyId = await associations.GetAssociatedPartyIdAsync(accountId, ct);
+            if (partyId is null)
+            {
+                return Results.Conflict(new
+                {
+                    title = "Conflict",
+                    detail = "Authenticated account has no associated Agency Party."
+                });
+            }
+
+            var party = await parties.GetAsync(partyId.Value, ct);
+            if (party is null || !string.Equals(party.Kind, "Agency", StringComparison.OrdinalIgnoreCase))
+            {
+                return Results.Conflict(new
+                {
+                    title = "Conflict",
+                    detail = "Acting Party must be an Agency."
+                });
+            }
+
+            return Results.Ok(new
+            {
+                surface = "agency-panel",
+                commerceEnabled = false,
+                tourOwned = false,
+                pricingOwned = false,
+                bookingOwned = false,
+                paymentOwned = false,
+                actingParty = new
+                {
+                    id = party.Id,
+                    kind = party.Kind,
+                    displayName = party.DisplayName
+                },
+                capabilities = new[] { "agency.panel.open" }
+            });
+        }).RequireAuthorization(AccessAuthorizationPolicies.AgencyPanelOpen);
 
         return endpoints;
     }

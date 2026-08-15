@@ -19,4 +19,12 @@ public static class AccessPermissionCatalog
 
     public const string AdminRoleCode = "admin";
     public const string AdminRoleDisplayName = "Administrator";
+
+    public const string AgencyRoleCode = "agency";
+    public const string AgencyRoleDisplayName = "Agency operator";
+
+    public static IReadOnlyList<(string Code, string DisplayName)> AgencyPresentationBaseline { get; } =
+    [
+        ("agency.panel.open", "Open Agency presentation panel")
+    ];
 }

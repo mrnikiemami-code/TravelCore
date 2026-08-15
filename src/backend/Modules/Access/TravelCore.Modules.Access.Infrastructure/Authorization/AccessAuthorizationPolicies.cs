@@ -6,4 +6,9 @@ public static class AccessAuthorizationPolicies
     /// Admin sample policy: Access-backed <c>access.roles.read</c>.
     /// </summary>
     public const string AdminRolesRead = "Access.Admin.Roles.Read";
+
+    /// <summary>
+    /// Agency presentation sample policy: Access-backed <c>agency.panel.open</c>.
+    /// </summary>
+    public const string AgencyPanelOpen = "Access.Agency.Panel.Open";
 }

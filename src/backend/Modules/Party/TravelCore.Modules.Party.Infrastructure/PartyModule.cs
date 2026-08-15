@@ -38,6 +38,7 @@ public sealed class PartyModule : ITravelCoreModule
 
         services.AddScoped<PartyApplicationService>();
         services.AddScoped<IPartyExistenceQuery, PartyExistenceQuery>();
+        services.AddScoped<IPartyReadQuery, PartyReadQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
