@@ -43,7 +43,7 @@
 | Last Accepted Commit | `6a8a5ce` (`TC-P03-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P04-PLAN`; then next issued `TC-P04-*` (do not invent) |
+| Current Next Task | Architect review of `TC-P04-T001`; then next issued task |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -103,7 +103,7 @@
 - **P01** = COMPLETE
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
-- **P04** = IN_PROGRESS (`TC-P04-PLAN` AWAITING_ARCHITECT_REVIEW; plan [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md))
+- **P04** = IN_PROGRESS (`TC-P04-PLAN` ACCEPTED `9d264e6`; `TC-P04-T001` AWAITING_ARCHITECT_REVIEW; plan [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md))
 - **P05–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -216,7 +216,7 @@ Final architecture gate accepted by Chief Architect. P00 may close.
 
 ### P00 completion gate
 
-TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`). P03 COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`). P04 IN_PROGRESS — authoritative plan: [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) (`TC-P04-PLAN` AWAITING_ARCHITECT_REVIEW). P05 remains NOT_STARTED.
+TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`). P03 COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`). P04 IN_PROGRESS — authoritative plan: [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) (`TC-P04-PLAN` ACCEPTED `9d264e6`). `TC-P04-T001` AWAITING_ARCHITECT_REVIEW. P05 remains NOT_STARTED.
 
 ---
 
@@ -287,7 +287,7 @@ Invariant قفل‌شده: **Identity ≠ Party ≠ Access**.
 
 **Authoritative plan:** [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) (`TC-P04-PLAN`)
 
-**Progress:** `TC-P04-PLAN` AWAITING_ARCHITECT_REVIEW · T001+ NOT_STARTED · P05 NOT_STARTED
+**Progress:** `TC-P04-PLAN` COMPLETE / ACCEPTED · `TC-P04-T001` AWAITING_ARCHITECT_REVIEW · P05 NOT_STARTED
 
 ReferenceData fundamentals.
 

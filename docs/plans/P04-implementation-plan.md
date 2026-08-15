@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P04-PLAN` |
 | Phase | P04 — Reference Data + Destination |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | COMPLETE / ACCEPTED (`9d264e6`) |
 | Baseline | `6a8a5ce` (`TC-P03-GATE`) |
 | Authoritative sources | `docs/ROADMAP.md` · `docs/architecture/03-domain-map.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` · `08-persistence-and-migrations.md` · `10-ui-constitution.md` · `11-internationalization-architecture.md` · `12-seo-constitution.md` · `15-future-architecture-transition-map.md` § D · `18-backend-physical-structure.md` · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` · `docs/ui/06-cross-domain-workflow-and-navigation.md` · ADR 0001–0014 |
 | Backend root | `src/backend` |

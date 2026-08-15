@@ -14,6 +14,16 @@ Business and capability modules live under this directory.
 - **Access:** Permission/Role taxonomy + seed + CRUD stubs (`TC-P03-T005`).
 - **Party:** Person/Organization/Agency persistence + stubs (`TC-P03-T002`).
 
+## Active modules (P04 scaffolding)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| ReferenceData | `ReferenceData/TravelCore.Modules.ReferenceData.Infrastructure` (shell) | `reference_data` |
+| Destination | `Destination/TravelCore.Modules.Destination.Infrastructure` (shell) | `destination` |
+
+- **ReferenceData / Destination:** Infrastructure shells only (`TC-P04-T001`) — no domain features yet.
+- Invariant: **ReferenceData ≠ Destination**.
+
 ## Naming
 
 Preferred project naming when a module is actually introduced:
@@ -33,6 +43,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - Modules must not access another module’s persistence or use cross-module EF navigation.
 - Cross-module collaboration uses contracts / semantic events — see architecture dependency docs.
 - Identity ≠ Party ≠ Access.
+- ReferenceData ≠ Destination.
 
 ## Host
 

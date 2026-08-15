@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P04-PLAN** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P04-T001** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P04 — Reference Data + Destination (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P04-PLAN`; then next issued `TC-P04-*` (do not invent) |
+| Current Next Task | Architect review of `TC-P04-T001`; then next issued task |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -89,8 +89,8 @@
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P03 Gate Evidence | [`docs/plans/P03-GATE-acceptance-evidence.md`](plans/P03-GATE-acceptance-evidence.md) |
 | P04 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P04`) |
-| P04 Plan | `TC-P04-PLAN` AWAITING_ARCHITECT_REVIEW — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
-| P04 Implementation Started | **NO** (plan only) |
+| P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
+| P04 Implementation Started | **YES** (`TC-P04-T001`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
 | API Foundation Doc | [`docs/architecture/19-api-error-and-serialization-foundation.md`](architecture/19-api-error-and-serialization-foundation.md) |
 | Configuration Foundation Doc | [`docs/architecture/20-configuration-and-options-foundation.md`](architecture/20-configuration-and-options-foundation.md) |
@@ -113,7 +113,7 @@
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P04 Phase Gate | NOT_STARTED |
 | Human Phase Confirmation | P04 entered via USER `TRAVELCORE_PHASE_CONFIRM: P04` |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P04-PLAN`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P04-T001`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -192,8 +192,9 @@
 | TC-P03-T011 | COMPLETE / ACCEPTED (`45aedb2`) |
 | TC-P03-T012 | COMPLETE / ACCEPTED (`349bd8a`) |
 | TC-P03-GATE | COMPLETE / ACCEPTED (`6a8a5ce`) |
-| TC-P04-PLAN | AWAITING_ARCHITECT_REVIEW |
-| Required Human Token | none (await architect accept of `TC-P04-PLAN`) |
+| TC-P04-PLAN | COMPLETE / ACCEPTED (`9d264e6`) |
+| TC-P04-T001 | AWAITING_ARCHITECT_REVIEW |
+| Required Human Token | none (await architect accept of `TC-P04-T001`) |
 
 ### P00 Exit Summary
 
@@ -204,7 +205,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P03 COMPLETE; `TC-P03-GATE` ACCEPTED (`6a8a5ce`); P04 IN_PROGRESS; `TC-P04-PLAN` AWAITING_ARCHITECT_REVIEW (`docs/plans/P04-implementation-plan.md`); P05 NOT_STARTED; Runtime Mode = PIPELINE
+- P03 COMPLETE; `TC-P03-GATE` ACCEPTED (`6a8a5ce`); P04 IN_PROGRESS; `TC-P04-PLAN` ACCEPTED (`9d264e6`); `TC-P04-T001` AWAITING_ARCHITECT_REVIEW; P05 NOT_STARTED; Runtime Mode = PIPELINE
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -283,7 +284,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P03-T011 | Agency presentation access baseline | COMPLETE / ACCEPTED | `45aedb2` |
 | TC-P03-T012 | P03 hardening evidence pack | COMPLETE / ACCEPTED | `349bd8a` |
 | TC-P03-GATE | P03 Acceptance Gate | COMPLETE / ACCEPTED | `6a8a5ce` |
-| TC-P04-PLAN | P04 Reference Data + Destination Plan | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P04-PLAN | P04 Reference Data + Destination Plan | COMPLETE / ACCEPTED | `9d264e6` |
+| TC-P04-T001 | ReferenceData / Destination module scaffolding | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

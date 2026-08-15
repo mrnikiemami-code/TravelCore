@@ -2,8 +2,10 @@ using TravelCore.ApiFoundation;
 using TravelCore.Health;
 using TravelCore.Modularity;
 using TravelCore.Modules.Access.Infrastructure;
+using TravelCore.Modules.Destination.Infrastructure;
 using TravelCore.Modules.Identity.Infrastructure;
 using TravelCore.Modules.Party.Infrastructure;
+using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,8 @@ IReadOnlyList<ITravelCoreModule> modules =
     new IdentityModule(),
     new AccessModule(),
     new PartyModule(),
+    new ReferenceDataModule(),
+    new DestinationModule(),
 ];
 builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 
