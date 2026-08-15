@@ -2,13 +2,18 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Destination.Contracts;
+using TravelCore.Modules.Destination.Infrastructure.Endpoints;
+using TravelCore.Modules.Destination.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Destination.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Destination module (scaffolding only).
+/// Host composition entry for the Destination module.
 /// </summary>
 public sealed class DestinationModule : ITravelCoreModule
 {
@@ -17,7 +22,8 @@ public sealed class DestinationModule : ITravelCoreModule
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        // CS is resolved when the DbContext is created — host can compose without requiring DB at startup.
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
+
         services.AddDbContext<DestinationDbContext>((_, options) =>
         {
             var connectionString = configuration.GetConnectionString(TravelCoreConnectionStrings.TravelCore)
@@ -28,11 +34,14 @@ public sealed class DestinationModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: DestinationDbContext.SchemaName);
         });
+
+        services.AddScoped<DestinationApplicationService>();
+        services.AddScoped<IDestinationReadQuery, DestinationReadQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // No endpoints in TC-P04-T001 scaffolding.
+        endpoints.MapDestinationEndpoints();
     }
 }
