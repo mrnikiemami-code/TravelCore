@@ -287,7 +287,7 @@ Invariant قفل‌شده: **Identity ≠ Party ≠ Access**.
 
 **Authoritative plan:** [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) (`TC-P04-PLAN`)
 
-**Progress:** `TC-P04-T001`–`T005` COMPLETE / ACCEPTED · `TC-P04-T006` AWAITING_ARCHITECT_REVIEW · P05 NOT_STARTED
+**Progress:** `TC-P04-T001`–`T006` COMPLETE / ACCEPTED · `TC-P04-T007` AWAITING_ARCHITECT_REVIEW · P05 NOT_STARTED
 
 ReferenceData fundamentals.
 
