@@ -45,6 +45,78 @@ internal static class IdentityEndpoints
             return account is null ? Results.NotFound() : Results.Ok(account);
         });
 
+        group.MapPost("/{id:guid}/party-association", async Task<IResult> (
+            Guid id,
+            SetAccountPartyAssociationRequest request,
+            IdentityApplicationService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var updated = await service.LinkPartyAsync(id, request.PartyId, cancellationToken);
+                return Results.Ok(updated);
+            }
+            catch (KeyNotFoundException)
+            {
+                return Results.NotFound();
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.Conflict(new { title = "Conflict", detail = ex.Message });
+            }
+        });
+
+        group.MapPut("/{id:guid}/party-association", async Task<IResult> (
+            Guid id,
+            SetAccountPartyAssociationRequest request,
+            IdentityApplicationService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var updated = await service.ReplacePartyAsync(id, request.PartyId, cancellationToken);
+                return Results.Ok(updated);
+            }
+            catch (KeyNotFoundException)
+            {
+                return Results.NotFound();
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.Conflict(new { title = "Conflict", detail = ex.Message });
+            }
+        });
+
+        group.MapDelete("/{id:guid}/party-association", async Task<IResult> (
+            Guid id,
+            IdentityApplicationService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var updated = await service.UnlinkPartyAsync(id, cancellationToken);
+                return Results.Ok(updated);
+            }
+            catch (KeyNotFoundException)
+            {
+                return Results.NotFound();
+            }
+        });
+
         return endpoints;
     }
 }

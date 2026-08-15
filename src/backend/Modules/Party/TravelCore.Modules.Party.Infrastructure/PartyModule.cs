@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Party.Contracts;
 using TravelCore.Modules.Party.Infrastructure.Endpoints;
 using TravelCore.Modules.Party.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
@@ -36,6 +37,7 @@ public sealed class PartyModule : ITravelCoreModule
         });
 
         services.AddScoped<PartyApplicationService>();
+        services.AddScoped<IPartyExistenceQuery, PartyExistenceQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

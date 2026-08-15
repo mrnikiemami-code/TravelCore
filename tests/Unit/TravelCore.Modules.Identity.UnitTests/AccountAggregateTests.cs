@@ -40,6 +40,28 @@ public sealed class AccountAggregateTests
     }
 
     [Fact]
+    public void LinkReplaceUnlink_AssociationRules()
+    {
+        var account = AccountAggregate.Create("user@example.com", "HASH", Now);
+        var partyA = Guid.CreateVersion7();
+        var partyB = Guid.CreateVersion7();
+        var t1 = Now.Plus(Duration.FromSeconds(1));
+        var t2 = Now.Plus(Duration.FromSeconds(2));
+        var t3 = Now.Plus(Duration.FromSeconds(3));
+
+        account.LinkAssociatedParty(partyA, t1);
+        Assert.Equal(partyA, account.AssociatedPartyId);
+
+        Assert.Throws<InvalidOperationException>(() => account.LinkAssociatedParty(partyB, t2));
+
+        account.ReplaceAssociatedParty(partyB, t2);
+        Assert.Equal(partyB, account.AssociatedPartyId);
+
+        account.UnlinkAssociatedParty(t3);
+        Assert.Null(account.AssociatedPartyId);
+    }
+
+    [Fact]
     public void Disable_SetsDisabledLifecycle()
     {
         var account = AccountAggregate.Create("user@example.com", "HASH", Now);

@@ -43,7 +43,7 @@
 | Last Accepted Commit | `4eacff5` (`TC-P02-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P03-T003`; then next issued task |
+| Current Next Task | Architect review of `TC-P03-T004`; then next issued task |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -102,7 +102,7 @@
 - **P00** = COMPLETE
 - **P01** = COMPLETE
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
-- **P03** = IN_PROGRESS (`TC-P03-PLAN` ACCEPTED; T001–T002 ACCEPTED; `TC-P03-T003` AWAITING_ARCHITECT_REVIEW)
+- **P03** = IN_PROGRESS (T001–T003 ACCEPTED; `TC-P03-T004` AWAITING_ARCHITECT_REVIEW)
 - **P04–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -268,7 +268,7 @@ Prototype باید قرارداد Design System و fixture typed داشته با
 
 **Authoritative plan:** [`plans/P03-implementation-plan.md`](plans/P03-implementation-plan.md) (`TC-P03-PLAN`)
 
-**Progress:** `TC-P03-T001` COMPLETE / ACCEPTED · `TC-P03-T002` COMPLETE / ACCEPTED · `TC-P03-T003` AWAITING_ARCHITECT_REVIEW
+**Progress:** T001–T003 COMPLETE / ACCEPTED · `TC-P03-T004` AWAITING_ARCHITECT_REVIEW
 
 Identity · Access · Party · Organization · Agency identity · Roles/permissions طبق معماری پذیرفته‌شده · پایهٔ authz ادمین · دسترسی Presentation آژانس.
 

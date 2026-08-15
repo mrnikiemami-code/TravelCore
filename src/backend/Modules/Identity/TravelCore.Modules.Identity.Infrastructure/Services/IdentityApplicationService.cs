@@ -3,26 +3,30 @@ using NodaTime;
 using TravelCore.Modules.Identity.Contracts;
 using TravelCore.Modules.Identity.Domain;
 using TravelCore.Modules.Identity.Infrastructure.Security;
+using TravelCore.Modules.Party.Contracts;
 using AccountAggregate = TravelCore.Modules.Identity.Domain.Account;
 
 namespace TravelCore.Modules.Identity.Infrastructure.Services;
 
 /// <summary>
-/// Identity application service: account create/status (+ internal credential verify). No session/ticket issuance.
+/// Identity application service: account create/status + association commands. No session/ticket issuance.
 /// </summary>
 public sealed class IdentityApplicationService
 {
     private readonly IdentityDbContext _db;
     private readonly IIdentityPasswordHasher _passwordHasher;
+    private readonly IPartyExistenceQuery _partyExistence;
     private readonly IClock _clock;
 
     public IdentityApplicationService(
         IdentityDbContext db,
         IIdentityPasswordHasher passwordHasher,
+        IPartyExistenceQuery partyExistence,
         IClock clock)
     {
         _db = db;
         _passwordHasher = passwordHasher;
+        _partyExistence = partyExistence;
         _clock = clock;
     }
 
@@ -36,6 +40,11 @@ public sealed class IdentityApplicationService
         if (exists)
         {
             throw new InvalidOperationException("An account with this email already exists.");
+        }
+
+        if (request.AssociatedPartyId is Guid partyId)
+        {
+            await EnsurePartyExistsAsync(partyId, cancellationToken);
         }
 
         var hash = _passwordHasher.HashPassword(request.Password);
@@ -59,6 +68,38 @@ public sealed class IdentityApplicationService
         return account is null ? null : Map(account);
     }
 
+    public async Task<AccountStatusResponse> LinkPartyAsync(
+        Guid accountId,
+        Guid partyId,
+        CancellationToken cancellationToken)
+    {
+        await EnsurePartyExistsAsync(partyId, cancellationToken);
+        var account = await LoadTrackedAsync(accountId, cancellationToken);
+        account.LinkAssociatedParty(partyId, _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(account);
+    }
+
+    public async Task<AccountStatusResponse> ReplacePartyAsync(
+        Guid accountId,
+        Guid partyId,
+        CancellationToken cancellationToken)
+    {
+        await EnsurePartyExistsAsync(partyId, cancellationToken);
+        var account = await LoadTrackedAsync(accountId, cancellationToken);
+        account.ReplaceAssociatedParty(partyId, _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(account);
+    }
+
+    public async Task<AccountStatusResponse> UnlinkPartyAsync(Guid accountId, CancellationToken cancellationToken)
+    {
+        var account = await LoadTrackedAsync(accountId, cancellationToken);
+        account.UnlinkAssociatedParty(_clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(account);
+    }
+
     /// <summary>
     /// Credential verification hook for later auth flows. Does not issue tickets (R1 deferred).
     /// </summary>
@@ -74,6 +115,26 @@ public sealed class IdentityApplicationService
         }
 
         return _passwordHasher.VerifyHashedPassword(account.PasswordHash, password);
+    }
+
+    private async Task EnsurePartyExistsAsync(Guid partyId, CancellationToken cancellationToken)
+    {
+        if (!await _partyExistence.ExistsAsync(partyId, cancellationToken))
+        {
+            throw new InvalidOperationException("Party does not exist.");
+        }
+    }
+
+    private async Task<AccountAggregate> LoadTrackedAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var accountId = AccountId.From(id);
+        var account = await _db.Accounts.FirstOrDefaultAsync(x => x.Id == accountId, cancellationToken);
+        if (account is null)
+        {
+            throw new KeyNotFoundException("Account was not found.");
+        }
+
+        return account;
     }
 
     private static AccountStatusResponse Map(AccountAggregate account) => new()
