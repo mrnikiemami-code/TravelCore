@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P02 — Frontend Foundation + Walking Skeleton** (**COMPLETE**) |
-| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 COMPLETE · P03 NOT_STARTED |
+| Current Phase | **P03 — Identity + Access + Party** (**IN_PROGRESS**) |
+| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 COMPLETE · P03 IN_PROGRESS · P04 NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `45adc28` (`TC-P02-T017`); gate closes P02 |
+| Last Accepted Commit | `4eacff5` (`TC-P02-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await architect-issued `TC-P03-*` (do not invent; P03 NOT_STARTED) |
+| Current Next Task | Architect review of `TC-P03-PLAN`; then `TC-P03-T001` when issued |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -101,8 +101,9 @@
 
 - **P00** = COMPLETE
 - **P01** = COMPLETE
-- **P02** = COMPLETE (`TC-P02-PLAN` … `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE)
-- **P03–P29 و Post-P29** = PLANNED / NOT_STARTED (P03 NOT_STARTED)
+- **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
+- **P03** = IN_PROGRESS (`TC-P03-PLAN` AWAITING_ARCHITECT_REVIEW)
+- **P04–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -214,7 +215,7 @@ Final architecture gate accepted by Chief Architect. P00 may close.
 
 ### P00 completion gate
 
-TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 COMPLETE (`TC-P02-GATE` ACCEPTED). Authoritative plan: [`plans/P02-frontend-foundation-walking-skeleton.md`](plans/P02-frontend-foundation-walking-skeleton.md). P03 remains NOT_STARTED.
+TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`). P03 IN_PROGRESS — authoritative plan: [`plans/P03-implementation-plan.md`](plans/P03-implementation-plan.md) (`TC-P03-PLAN` AWAITING_ARCHITECT_REVIEW). P04 remains NOT_STARTED.
 
 ---
 
@@ -263,11 +264,15 @@ Prototype باید قرارداد Design System و fixture typed داشته با
 
 ## P03 — Identity + Access + Party
 
-**Status:** PLANNED
+**Status:** IN_PROGRESS
+
+**Authoritative plan:** [`plans/P03-implementation-plan.md`](plans/P03-implementation-plan.md) (`TC-P03-PLAN`)
 
 Identity · Access · Party · Organization · Agency identity · Roles/permissions طبق معماری پذیرفته‌شده · پایهٔ authz ادمین · دسترسی Presentation آژانس.
 
 منطق دامنه را در Admin کپی نکنید.
+
+Invariant قفل‌شده: **Identity ≠ Party ≠ Access**.
 
 ---
 
@@ -612,7 +617,7 @@ P26 = Advanced SEO.
 | P00 | Architecture Foundation | COMPLETE |
 | P01 | Platform / Backend Foundation | COMPLETE |
 | P02 | Frontend Foundation + Walking Skeleton | COMPLETE |
-| P03 | Identity + Access + Party | PLANNED |
+| P03 | Identity + Access + Party | IN_PROGRESS |
 | P04 | Reference Data + Destination | PLANNED |
 | P05 | SEO Engine | PLANNED |
 | P06 | Media | PLANNED |
