@@ -41,6 +41,7 @@ Shared `TravelCore.Persistence.PostgreSql` supplies provider policy. The module 
 - No Money mapping, no `EnsureCreated`, no real PostgreSQL connection in T012
 - Migrations ownership / tooling → `TC-P01-T013` (`docs/architecture/28-module-owned-migrations-and-runner-convention.md`)
 - Live DB apply → `TC-P01-T016` / `T017`
+- Module-local Outbox persistence shape → `TC-P01-T014` (`docs/architecture/29-module-local-transactional-outbox.md`)
 
 ## NodaTime provider policy
 

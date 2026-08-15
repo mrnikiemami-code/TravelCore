@@ -13,7 +13,7 @@ Examples of capabilities that may land here in later P01 tasks:
 - Time (NodaTime) — T009
 - Money / CurrencyCode — T010
 - Persistence / PostgreSQL provider — T011–T013 (NodaTime plugin; optional migrations-history schema)
-- PersistenceFixture (tests only) — T012 DbContext/schema; T013 migrations + migrator convention
+- PersistenceFixture (tests only) — T012 DbContext/schema; T013 migrations; T014 module-local Outbox
 
 ## Rules
 

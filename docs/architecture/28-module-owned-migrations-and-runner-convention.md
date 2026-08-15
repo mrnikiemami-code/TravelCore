@@ -71,3 +71,5 @@ A future host/deployment orchestrator may call module migrators **explicitly**.
 ## Deferred
 
 Real PostgreSQL apply / live proof → `TC-P01-T016` / `TC-P01-T017`.
+
+Module-local Outbox persistence (same DbContext/schema) → `TC-P01-T014` / `docs/architecture/29-module-local-transactional-outbox.md`.

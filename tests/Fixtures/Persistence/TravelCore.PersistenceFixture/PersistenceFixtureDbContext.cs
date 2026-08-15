@@ -18,6 +18,8 @@ public sealed class PersistenceFixtureDbContext : DbContext
 
     internal DbSet<PersistenceProbe> PersistenceProbes => Set<PersistenceProbe>();
 
+    internal DbSet<PersistenceFixtureOutboxMessage> OutboxMessages => Set<PersistenceFixtureOutboxMessage>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
@@ -33,6 +35,17 @@ public sealed class PersistenceFixtureDbContext : DbContext
             entity.Property(x => x.LocalDateValue);
             entity.Property(x => x.LocalTimeValue);
             entity.Property(x => x.LocalDateTimeValue);
+        });
+
+        modelBuilder.Entity<PersistenceFixtureOutboxMessage>(entity =>
+        {
+            // Outbox محلی همان مالک DbContext/schema — نه جدول سراسری.
+            entity.ToTable("outbox_messages");
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.OccurredAt).IsRequired();
+            entity.Property(x => x.MessageType).IsRequired().HasMaxLength(256);
+            entity.Property(x => x.Payload).IsRequired().HasColumnType("jsonb");
+            entity.Property(x => x.ProcessedAt);
         });
     }
 }
@@ -51,4 +64,21 @@ internal sealed class PersistenceProbe
     public LocalTime LocalTimeValue { get; set; }
 
     public LocalDateTime LocalDateTimeValue { get; set; }
+}
+
+/// <summary>
+/// Technical fixture-owned Outbox row — not a business aggregate.
+/// Proves module-local transactional Outbox persistence shape only (no dispatch).
+/// </summary>
+internal sealed class PersistenceFixtureOutboxMessage
+{
+    public Guid Id { get; set; }
+
+    public Instant OccurredAt { get; set; }
+
+    public string MessageType { get; set; } = null!;
+
+    public string Payload { get; set; } = null!;
+
+    public Instant? ProcessedAt { get; set; }
 }
