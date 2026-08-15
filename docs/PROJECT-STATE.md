@@ -71,13 +71,13 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P01-T015** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P01-T016** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P01 — Platform / Backend Foundation |
-| Current Next Task | Architect review of `TC-P01-T015`; do not start `TC-P01-T016` until accepted |
+| Current Next Task | Architect review of `TC-P01-T016`; do not start `TC-P01-T017` until accepted |
 | P01 | **IN_PROGRESS** (AUTHORIZED) |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
-| Last P01 Implementation Commit | pending T015 (`TC-P01-T014` = `bdd4a55`) |
+| Last P01 Implementation Commit | pending T016 (`TC-P01-T015` = `6d66d9e`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
 | API Foundation Doc | [`docs/architecture/19-api-error-and-serialization-foundation.md`](architecture/19-api-error-and-serialization-foundation.md) |
 | Configuration Foundation Doc | [`docs/architecture/20-configuration-and-options-foundation.md`](architecture/20-configuration-and-options-foundation.md) |
@@ -91,11 +91,12 @@
 | Module-Owned Migrations Doc | [`docs/architecture/28-module-owned-migrations-and-runner-convention.md`](architecture/28-module-owned-migrations-and-runner-convention.md) |
 | Module-Local Transactional Outbox Doc | [`docs/architecture/29-module-local-transactional-outbox.md`](architecture/29-module-local-transactional-outbox.md) |
 | Automated Architecture Guardrails Doc | [`docs/architecture/30-automated-architecture-guardrails.md`](architecture/30-automated-architecture-guardrails.md) |
+| Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Phase Transition State | **P01_IN_PROGRESS** |
 | P01 Phase Gate | NOT_STARTED (after T001–T019) |
 | Human Phase Confirmation | P01 confirmed; P02 still requires `TRAVELCORE_PHASE_CONFIRM: P02` later |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T015`) |
-| Human Confirmation Reason | None for current T015 |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T016`) |
+| Human Confirmation Reason | None for current T016 |
 | TC-P01-T006 | COMPLETE (accepted after T006R) |
 | TC-P01-T006R | COMPLETE (`c6bd109`) |
 | TC-P01-T007 | COMPLETE (`4420eef`; evidence via T007A) |
@@ -113,7 +114,8 @@
 | TC-P01-T012R | COMPLETE (`f3798e2`) |
 | TC-P01-T013 | COMPLETE (`7368284`) |
 | TC-P01-T014 | COMPLETE (`bdd4a55`) |
-| TC-P01-T015 | AWAITING_ARCHITECT_REVIEW |
+| TC-P01-T015 | COMPLETE |
+| TC-P01-T016 | AWAITING_ARCHITECT_REVIEW |
 | Required Human Token | `TRAVELCORE_PHASE_CONFIRM: P01` |
 
 ### P00 Exit Summary

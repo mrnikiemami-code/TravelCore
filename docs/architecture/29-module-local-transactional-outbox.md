@@ -43,7 +43,7 @@ PersistenceFixtureDbContext
 | Payload | JSON text | **jsonb** |
 | ProcessedAt | `Instant?` | nullable timestamptz |
 
-T014 proves **structural** same-DbContext / same-schema ownership. Real PostgreSQL atomicity → deferred (`TC-P01-T016` / integration gate).
+T014 proves **structural** same-DbContext / same-schema ownership. Real PostgreSQL atomicity → [`31-real-postgresql-integration-test-foundation.md`](31-real-postgresql-integration-test-foundation.md) (`TC-P01-T016`).
 
 ## Delivery semantics
 
