@@ -17,7 +17,7 @@ npm run build
 
 ```text
 src/
-  app/                 App Router entry (layouts, routes) — Server Component default
+  app/                 App Router entry — locale-prefixed public routes under `app/[locale]/` (ADR 0007)
   components/ui/       Shared direction-neutral UI primitives (no business logic)
   features/            Page/feature composition (workflow-oriented; not domain silos)
   lib/
