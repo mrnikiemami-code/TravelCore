@@ -16,11 +16,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="Testcontainers.PostgreSql" Version="4.14.0" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\backend\TravelCore.Api\TravelCore.Api.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Identity\TravelCore.Modules.Identity.Infrastructure\TravelCore.Modules.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Access\TravelCore.Modules.Access.Infrastructure\TravelCore.Modules.Access.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Party\TravelCore.Modules.Party.Infrastructure\TravelCore.Modules.Party.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

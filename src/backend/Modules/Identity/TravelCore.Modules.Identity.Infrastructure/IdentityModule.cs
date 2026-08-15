@@ -40,6 +40,7 @@ public sealed class IdentityModule : ITravelCoreModule
 
         services.AddScoped<IdentityApplicationService>();
         services.AddScoped<IAccountExistenceQuery, AccountExistenceQuery>();
+        services.AddTravelCoreIdentityCookieAuthentication();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

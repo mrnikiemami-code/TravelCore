@@ -35,6 +35,8 @@ app.UseTravelCoreApiFoundation();
 // Correlation early so downstream handlers/logs see CorrelationId / TraceId scope.
 app.UseTravelCoreObservability();
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapTravelCoreHealth();
 app.MapTravelCoreModules(modules);
 

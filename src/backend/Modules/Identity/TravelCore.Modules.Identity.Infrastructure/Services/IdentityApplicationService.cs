@@ -9,7 +9,8 @@ using AccountAggregate = TravelCore.Modules.Identity.Domain.Account;
 namespace TravelCore.Modules.Identity.Infrastructure.Services;
 
 /// <summary>
-/// Identity application service: account create/status + association commands. No session/ticket issuance.
+/// Identity application service: account create/status + association + credential authentication.
+/// Ticket issuance is owned by login endpoints (cookie transport; R1).
 /// </summary>
 public sealed class IdentityApplicationService
 {
@@ -101,9 +102,13 @@ public sealed class IdentityApplicationService
     }
 
     /// <summary>
-    /// Credential verification hook for later auth flows. Does not issue tickets (R1 deferred).
+    /// Verifies credentials for an Active account. Returns principal projection or null (no existence leakage).
+    /// Does not issue tickets — callers use cookie SignIn.
     /// </summary>
-    public async Task<bool> VerifyCredentialsAsync(string email, string password, CancellationToken cancellationToken)
+    public async Task<AuthenticatedPrincipalResponse?> AuthenticateAsync(
+        string email,
+        string password,
+        CancellationToken cancellationToken)
     {
         var (_, normalized) = AccountAggregate.NormalizeEmail(email);
         var account = await _db.Accounts.AsNoTracking()
@@ -111,10 +116,30 @@ public sealed class IdentityApplicationService
 
         if (account is null || account.Status != AccountStatus.Active)
         {
-            return false;
+            return null;
         }
 
-        return _passwordHasher.VerifyHashedPassword(account.PasswordHash, password);
+        if (!_passwordHasher.VerifyHashedPassword(account.PasswordHash, password))
+        {
+            return null;
+        }
+
+        return new AuthenticatedPrincipalResponse
+        {
+            AccountId = account.Id.Value,
+            Email = account.Email,
+            Status = account.Status.ToString(),
+            AssociatedPartyId = account.AssociatedPartyId,
+            AuthenticatedAt = _clock.GetCurrentInstant()
+        };
+    }
+
+    /// <summary>
+    /// Credential verification hook. Prefer <see cref="AuthenticateAsync"/> for login flows.
+    /// </summary>
+    public async Task<bool> VerifyCredentialsAsync(string email, string password, CancellationToken cancellationToken)
+    {
+        return await AuthenticateAsync(email, password, cancellationToken) is not null;
     }
 
     private async Task EnsurePartyExistsAsync(Guid partyId, CancellationToken cancellationToken)
