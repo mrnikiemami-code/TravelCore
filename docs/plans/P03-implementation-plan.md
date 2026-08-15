@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P03-PLAN` |
 | Phase | P03 — Identity + Access + Party |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | COMPLETE / ACCEPTED (`a779726`) |
 | Baseline | `4eacff5` (`TC-P02-GATE`) |
 | Authoritative sources | `docs/ROADMAP.md` · `docs/architecture/03-domain-map.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `10-ui-constitution.md` · `15-future-architecture-transition-map.md` · `18-backend-physical-structure.md` · `docs/domain/module-ownership-matrix.md` · `docs/ui/06-cross-domain-workflow-and-navigation.md` · ADR 0001–0014 |
 | Backend root | `src/backend` |

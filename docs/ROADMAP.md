@@ -43,7 +43,7 @@
 | Last Accepted Commit | `4eacff5` (`TC-P02-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P03-PLAN`; then `TC-P03-T001` when issued |
+| Current Next Task | Architect review of `TC-P03-T001`; then next issued task |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -102,7 +102,7 @@
 - **P00** = COMPLETE
 - **P01** = COMPLETE
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
-- **P03** = IN_PROGRESS (`TC-P03-PLAN` AWAITING_ARCHITECT_REVIEW)
+- **P03** = IN_PROGRESS (`TC-P03-PLAN` ACCEPTED; `TC-P03-T001` AWAITING_ARCHITECT_REVIEW)
 - **P04–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -215,7 +215,7 @@ Final architecture gate accepted by Chief Architect. P00 may close.
 
 ### P00 completion gate
 
-TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`). P03 IN_PROGRESS — authoritative plan: [`plans/P03-implementation-plan.md`](plans/P03-implementation-plan.md) (`TC-P03-PLAN` AWAITING_ARCHITECT_REVIEW). P04 remains NOT_STARTED.
+TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`). P03 IN_PROGRESS — authoritative plan: [`plans/P03-implementation-plan.md`](plans/P03-implementation-plan.md) (`TC-P03-PLAN` ACCEPTED). `TC-P03-T001` AWAITING_ARCHITECT_REVIEW. P04 remains NOT_STARTED.
 
 ---
 

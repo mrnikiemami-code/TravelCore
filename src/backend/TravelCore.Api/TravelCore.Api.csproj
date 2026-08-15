@@ -6,6 +6,9 @@
     <ProjectReference Include="..\Platform\Configuration\TravelCore.Configuration\TravelCore.Configuration.csproj" />
     <ProjectReference Include="..\Platform\Health\TravelCore.Health\TravelCore.Health.csproj" />
     <ProjectReference Include="..\Platform\Observability\TravelCore.Observability\TravelCore.Observability.csproj" />
+    <ProjectReference Include="..\Modules\Identity\TravelCore.Modules.Identity.Infrastructure\TravelCore.Modules.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Access\TravelCore.Modules.Access.Infrastructure\TravelCore.Modules.Access.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Party\TravelCore.Modules.Party.Infrastructure\TravelCore.Modules.Party.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

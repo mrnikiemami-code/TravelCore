@@ -1,6 +1,9 @@
 using TravelCore.ApiFoundation;
 using TravelCore.Health;
 using TravelCore.Modularity;
+using TravelCore.Modules.Access.Infrastructure;
+using TravelCore.Modules.Identity.Infrastructure;
+using TravelCore.Modules.Party.Infrastructure;
 using TravelCore.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +20,13 @@ builder.Services.AddTravelCoreHealth();
 // Validation metadata is assembly-scoped; call AddValidation in the endpoint-owning host (Api).
 builder.Services.AddValidation();
 
-// Explicit module composition list (compile-time / host-owned).
-IReadOnlyList<ITravelCoreModule> modules = [];
+// Explicit module composition list (compile-time / host-owned). Order is deterministic.
+IReadOnlyList<ITravelCoreModule> modules =
+[
+    new IdentityModule(),
+    new AccessModule(),
+    new PartyModule(),
+];
 builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 
 var app = builder.Build();

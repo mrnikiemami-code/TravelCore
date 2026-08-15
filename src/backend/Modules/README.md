@@ -1,6 +1,16 @@
 # Modules
 
-Future **business and capability modules** live under this directory.
+Business and capability modules live under this directory.
+
+## Active module shells (P03)
+
+| Module | Infrastructure project | Schema |
+|--------|------------------------|--------|
+| Identity | `Identity/TravelCore.Modules.Identity.Infrastructure` | `identity` |
+| Access | `Access/TravelCore.Modules.Access.Infrastructure` | `access` |
+| Party | `Party/TravelCore.Modules.Party.Infrastructure` | `party` |
+
+These are **scaffolding shells** introduced by `TC-P03-T001` (empty DbContext + host DI stubs). Domain persistence/features arrive in later P03 tasks.
 
 ## Naming
 
@@ -17,11 +27,11 @@ Create only the layers a module actually needs. Empty layer projects are not req
 
 ## Rules
 
-- Do **not** create placeholder / fake production modules ahead of their phase.
 - Each persistent module owns its own DbContext and PostgreSQL schema (ADR 0001).
 - Modules must not access another module’s persistence or use cross-module EF navigation.
 - Cross-module collaboration uses contracts / semantic events — see architecture dependency docs.
+- Identity ≠ Party ≠ Access.
 
 ## Host
 
-`TravelCore.Api` remains the composition host. Modules register into the host in later tasks; this folder only establishes the physical home.
+`TravelCore.Api` remains the composition host. Modules register explicitly via `ITravelCoreModule` (no assembly scanning).
