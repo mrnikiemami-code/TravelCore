@@ -1,0 +1,118 @@
+/**
+ * TravelCore semantic design tokens — CSS custom properties.
+ *
+ * Source of truth for visual primitives (T003). Brand palette is intentionally
+ * unresolved: values are a minimal neutral baseline, not final product branding.
+ *
+ * Locale ≠ Currency ≠ Calendar ≠ TimeZone — tokens here are visual only.
+ * Direction: no RTL/LTR forks; no physical left/right spacing tokens.
+ */
+
+:root {
+  /* —— Color (semantic / purpose-based) —— */
+  --tc-color-background: #ffffff;
+  --tc-color-foreground: #171717;
+  --tc-color-surface: #ffffff;
+  --tc-color-surface-muted: #f4f4f5;
+  --tc-color-muted-foreground: #52525b;
+  --tc-color-border: #e4e4e7;
+  --tc-color-primary: #18181b;
+  --tc-color-primary-foreground: #fafafa;
+  --tc-color-danger: #b91c1c;
+  --tc-color-danger-foreground: #fef2f2;
+  --tc-color-focus: #2563eb;
+  --tc-color-ring: #2563eb;
+
+  /* —— Typography scale (roles mapped via @theme / conventions) —— */
+  --tc-font-size-caption: 0.75rem;
+  --tc-line-height-caption: 1.25rem;
+  --tc-font-size-label: 0.875rem;
+  --tc-line-height-label: 1.25rem;
+  --tc-font-size-body: 1rem;
+  --tc-line-height-body: 1.5rem;
+  --tc-font-size-title: 1.125rem;
+  --tc-line-height-title: 1.75rem;
+  --tc-font-size-heading: 1.5rem;
+  --tc-line-height-heading: 2rem;
+  --tc-font-size-display: 1.875rem;
+  --tc-line-height-display: 2.25rem;
+
+  /* —— Spacing scale (4px base; mobile-first) —— */
+  --tc-space-0: 0;
+  --tc-space-1: 0.25rem;
+  --tc-space-2: 0.5rem;
+  --tc-space-3: 0.75rem;
+  --tc-space-4: 1rem;
+  --tc-space-5: 1.25rem;
+  --tc-space-6: 1.5rem;
+  --tc-space-8: 2rem;
+  --tc-space-10: 2.5rem;
+  --tc-space-12: 3rem;
+  --tc-space-16: 4rem;
+
+  /* —— Radius —— */
+  --tc-radius-sm: 0.25rem;
+  --tc-radius-md: 0.5rem;
+  --tc-radius-lg: 0.75rem;
+  --tc-radius-full: 9999px;
+
+  /* —— Border —— */
+  --tc-border-width: 1px;
+
+  /* —— Elevation —— */
+  --tc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --tc-shadow-md: 0 4px 12px rgb(0 0 0 / 0.08);
+
+  /* —— Container widths —— */
+  --tc-container-narrow: 42rem;
+  --tc-container-content: 72rem;
+  --tc-container-wide: 80rem;
+
+  /* —— Z-index (semantic layers) —— */
+  --tc-z-base: 0;
+  --tc-z-sticky: 20;
+  --tc-z-dropdown: 40;
+  --tc-z-overlay: 50;
+  --tc-z-modal: 60;
+  --tc-z-toast: 70;
+
+  /* —— Motion —— */
+  --tc-duration-fast: 150ms;
+  --tc-duration-normal: 250ms;
+  --tc-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* —— Control / touch —— */
+  --tc-size-control-sm: 2rem;
+  --tc-size-control-md: 2.5rem;
+  --tc-size-touch-min: 2.75rem; /* ~44px — docs/ui/02 + 05 */
+}
+
+/**
+ * OS preference remapping only — not a product theme switcher / dark-mode feature.
+ * Same semantic names; provisional until brand theme is decided.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tc-color-background: #0a0a0a;
+    --tc-color-foreground: #ededed;
+    --tc-color-surface: #0a0a0a;
+    --tc-color-surface-muted: #18181b;
+    --tc-color-muted-foreground: #a1a1aa;
+    --tc-color-border: #27272a;
+    --tc-color-primary: #fafafa;
+    --tc-color-primary-foreground: #18181b;
+    --tc-color-danger: #f87171;
+    --tc-color-danger-foreground: #450a0a;
+    --tc-color-focus: #60a5fa;
+    --tc-color-ring: #60a5fa;
+    --tc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --tc-shadow-md: 0 4px 12px rgb(0 0 0 / 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tc-duration-fast: 0ms;
+    --tc-duration-normal: 0ms;
+  }
+}

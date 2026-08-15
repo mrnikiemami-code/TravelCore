@@ -7,7 +7,7 @@ import {
 import { notFound } from "next/navigation";
 
 /**
- * Minimal locale home — routing/root proof only (not a product page).
+ * Minimal locale home — routing/root proof + semantic token smoke (not a product page).
  */
 export default async function LocaleHomePage({
   params,
@@ -24,14 +24,27 @@ export default async function LocaleHomePage({
   const dir = getHtmlDir(locale);
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 p-8">
-      <h1 className="text-2xl font-semibold tracking-tight">TravelCore</h1>
-      <p className="text-zinc-600 dark:text-zinc-400">
-        Locale foundation — <code>{locale}</code>
-      </p>
-      <p className="text-sm text-zinc-500">
-        document: lang=<code>{lang}</code> dir=<code>{dir}</code>
-      </p>
+    <main className="flex flex-1 flex-col items-center justify-center gap-4 bg-background p-8 text-foreground">
+      <div className="w-full max-w-content rounded-lg border border-border bg-surface p-6 shadow-sm">
+        <h1 className="text-heading font-semibold tracking-tight">TravelCore</h1>
+        <p className="mt-2 text-body text-muted-foreground">
+          Locale foundation — <code className="text-label">{locale}</code>
+        </p>
+        <p className="mt-1 text-caption text-muted-foreground">
+          document: lang=<code>{lang}</code> dir=<code>{dir}</code>
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <span className="inline-flex min-h-touch items-center rounded-md bg-primary px-4 text-label text-primary-foreground">
+            primary
+          </span>
+          <span className="inline-flex min-h-touch items-center rounded-md bg-surface-muted px-4 text-label text-foreground ring-2 ring-focus">
+            focus ring
+          </span>
+          <span className="inline-flex min-h-touch items-center rounded-md bg-danger px-4 text-label text-danger-foreground">
+            danger
+          </span>
+        </div>
+      </div>
     </main>
   );
 }
