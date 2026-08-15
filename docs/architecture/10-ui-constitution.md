@@ -11,6 +11,7 @@
 | [`../ui/03-rtl-ltr-bidi.md`](../ui/03-rtl-ltr-bidi.md) | dir/lang · logical CSS · bidi |
 | [`../ui/04-page-archetype-contract.md`](../ui/04-page-archetype-contract.md) | چک‌لیست Page Archetype · validation |
 | [`../ui/05-accessibility-and-interaction.md`](../ui/05-accessibility-and-interaction.md) | a11y · forms · states · feedback |
+| [`../ui/06-cross-domain-workflow-and-navigation.md`](../ui/06-cross-domain-workflow-and-navigation.md) | Cross-domain workflow · navigation (TC-P02-T010) |
 | [`00-constitution.md`](00-constitution.md) | قانون اساسی سیستم |
 | [`02-technology-baseline.md`](02-technology-baseline.md) | Next.js · Tailwind baseline |
 
@@ -58,7 +59,7 @@ Route → random JSX → arbitrary CSS → duplicated controls
 8. **بدون منطق کسب‌وکار authoritative در UI**
 9. **بدون فیلد layout در API** (`leftColumn`, `desktopSidebar`, …)
 10. **مرجع‌های محصول برای تحلیل‌اند** — کپی برند/کد/محتوا/layout اختصاصی ممنوع
-11. **مرز دامنه ≠ مرز صفحه/منو/فرم/workflow** — Domain boundaries از معماری محافظت می‌کنند؛ به‌طور خودکار مرز screen، form، menu، navigation یا workflow را تعریف نمی‌کنند. UI حول هدف کاربر طراحی می‌شود و می‌تواند چند دامنه را از طریق قراردادهای صریح application/API هماهنگ کند، در حالی که ownership دامنه در Backend حفظ می‌شود.
+11. **مرز دامنه ≠ مرز صفحه/منو/فرم/workflow** — Domain boundaries از معماری محافظت می‌کنند؛ به‌طور خودکار مرز screen، form، menu، navigation یا workflow را تعریف نمی‌کنند. UI حول هدف کاربر طراحی می‌شود و می‌تواند چند دامنه را از طریق قراردادهای صریح application/API هماهنگ کند، در حالی که ownership دامنه در Backend حفظ می‌شود. مدل اجرایی P02+: [`../ui/06-cross-domain-workflow-and-navigation.md`](../ui/06-cross-domain-workflow-and-navigation.md).
 12. **Frontend نباید bounded contextهای Backend را مکانیکی mirror کند** — منو/CRUD جدا برای هر ماژول به‌عنوان مدل پیش‌فرض ممنوع است وقتی هدف کاربر یک جریان هدایت‌شدهٔ چنددامنه‌ای است.
 
 ### الگوی معتبر — Identity + Party (cross-domain guided flow)

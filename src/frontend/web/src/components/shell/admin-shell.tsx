@@ -6,8 +6,8 @@ export type AdminShellProps = {
   header?: ReactNode;
   /**
    * Navigation SLOT only — may be empty.
-   * Final Admin IA / menu taxonomy is UNDECIDED (owned by TC-P02-T010).
-   * Do not pass durable domain-based menu trees here.
+   * Job-based workflow/navigation model: docs/ui/06-cross-domain-workflow-and-navigation.md (T010).
+   * Concrete Admin menu taxonomy remains undecided — do not pass durable domain-mirrored trees.
    */
   navigation?: ReactNode;
   /** Optional contextual actions (filters, primary page actions). */
@@ -26,7 +26,7 @@ export type AdminShellProps = {
  * Generic ADMIN workspace shell — layout mechanics only (T008).
  *
  * - Provides regions/slots: header · navigation · actions · content
- * - Does NOT define Admin navigation IA or domain→menu mapping
+ * - Does NOT freeze concrete Admin menu items; hosts T010 job-based nav when provided
  * - Mobile-first: navigation is a block region, not a permanent desktop-only sidebar
  * - Direction-neutral: uses logical `border-e`, no left/right API
  *
