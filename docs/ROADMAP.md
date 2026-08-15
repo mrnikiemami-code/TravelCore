@@ -103,7 +103,7 @@
 - **P01** = COMPLETE
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
-- **P04** = IN_PROGRESS (`TC-P04-PLAN` ACCEPTED `9d264e6`; … `TC-P04-T004` ACCEPTED `9c30e77`; `TC-P04-T005` AWAITING_ARCHITECT_REVIEW)
+- **P04** = IN_PROGRESS (`TC-P04-T001`–`T005` ACCEPTED; `TC-P04-T006` AWAITING_ARCHITECT_REVIEW)
 - **P05–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -287,7 +287,7 @@ Invariant قفل‌شده: **Identity ≠ Party ≠ Access**.
 
 **Authoritative plan:** [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) (`TC-P04-PLAN`)
 
-**Progress:** `TC-P04-PLAN` COMPLETE / ACCEPTED · `TC-P04-T001`–`T004` COMPLETE / ACCEPTED · `TC-P04-T005` AWAITING_ARCHITECT_REVIEW · P05 NOT_STARTED
+**Progress:** `TC-P04-T001`–`T005` COMPLETE / ACCEPTED · `TC-P04-T006` AWAITING_ARCHITECT_REVIEW · P05 NOT_STARTED
 
 ReferenceData fundamentals.
 
