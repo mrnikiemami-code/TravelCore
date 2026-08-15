@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { AdminShell, PublicShell } from "@/components/shell";
 import {
   BidiText,
   Container,
@@ -29,7 +30,7 @@ const SAMPLE_MIXED: MixedCurrencyPriceView = {
 };
 
 /**
- * Minimal locale home — routing + token + primitive + money smoke (not a product page).
+ * Minimal locale home — foundation smoke under PublicShell (not a product page).
  */
 export default async function LocaleHomePage({
   params,
@@ -47,94 +48,140 @@ export default async function LocaleHomePage({
   const irrDisplayUnit = locale === "fa" ? "Toman" : "IRR";
 
   return (
-    <main
-      id="main-content"
-      tabIndex={-1}
-      className="flex flex-1 flex-col bg-background py-8 text-foreground outline-none"
+    <PublicShell
+      header={
+        <Text as="p" role="label">
+          TravelCore
+        </Text>
+      }
+      footer={
+        <Text role="caption">Public shell footer slot — structure only</Text>
+      }
     >
-      <Container width="content">
-        <Stack gap="lg">
-          <Surface>
-            <Stack gap="sm">
-              <Text as="h1" role="heading">
-                TravelCore
-              </Text>
-              <Text role="muted">
-                Locale foundation — <LtrValue>{locale}</LtrValue>
-              </Text>
-              <Text role="caption">
-                document: lang=<LtrValue>{lang}</LtrValue> dir=
-                <LtrValue>{dir}</LtrValue>
-              </Text>
-            </Stack>
-          </Surface>
+      <div className="py-8">
+        <Container width="content">
+          <Stack gap="lg">
+            <Surface>
+              <Stack gap="sm">
+                <Text as="h1" role="heading">
+                  TravelCore
+                </Text>
+                <Text role="muted">
+                  Locale foundation — <LtrValue>{locale}</LtrValue>
+                </Text>
+                <Text role="caption">
+                  document: lang=<LtrValue>{lang}</LtrValue> dir=
+                  <LtrValue>{dir}</LtrValue>
+                </Text>
+              </Stack>
+            </Surface>
 
-          <Surface tone="muted">
-            <Stack gap="md">
-              <Text as="h2" role="title">
-                Bidi isolation smoke
-              </Text>
-              <Text role="body">
-                مرجع رزرو: <LtrValue>TC-REF-88421</LtrValue>
-              </Text>
-              <Text role="body">
-                مسیر: <LtrValue>IKA → IST</LtrValue>
-              </Text>
-              <Text role="body">
-                مهمان: <BidiText dir="rtl">علی رضایی</BidiText>
-                {" · "}
-                <LtrValue>guest@example.com</LtrValue>
-              </Text>
-              <Inline gap="sm">
-                <span className="inline-flex min-h-touch items-center rounded-md bg-primary px-4 text-label text-primary-foreground">
-                  primary
-                </span>
-                <span className="inline-flex min-h-touch items-center rounded-md bg-surface px-4 text-label text-foreground ring-2 ring-focus">
-                  focus
-                </span>
-              </Inline>
-            </Stack>
-          </Surface>
+            <Surface tone="muted">
+              <Stack gap="md">
+                <Text as="h2" role="title">
+                  Bidi isolation smoke
+                </Text>
+                <Text role="body">
+                  مرجع رزرو: <LtrValue>TC-REF-88421</LtrValue>
+                </Text>
+                <Text role="body">
+                  مسیر: <LtrValue>IKA → IST</LtrValue>
+                </Text>
+                <Text role="body">
+                  مهمان: <BidiText dir="rtl">علی رضایی</BidiText>
+                  {" · "}
+                  <LtrValue>guest@example.com</LtrValue>
+                </Text>
+                <Inline gap="sm">
+                  <span className="inline-flex min-h-touch items-center rounded-md bg-primary px-4 text-label text-primary-foreground">
+                    primary
+                  </span>
+                  <span className="inline-flex min-h-touch items-center rounded-md bg-surface px-4 text-label text-foreground ring-2 ring-focus">
+                    focus
+                  </span>
+                </Inline>
+              </Stack>
+            </Surface>
 
-          <Surface>
-            <Stack gap="md">
-              <Text as="h2" role="title">
-                Money presentation smoke
-              </Text>
-              <Text role="caption">
-                Locale formats digits only; currency comes from supplied Money
-                (irrDisplayUnit=<LtrValue>{irrDisplayUnit}</LtrValue> explicit).
-              </Text>
-              <div>
-                <Text role="label">USD on this locale</Text>
-                <div className="mt-1">
-                  <MoneyText money={SAMPLE_USD} locale={locale} />
+            <Surface>
+              <Stack gap="md">
+                <Text as="h2" role="title">
+                  Money presentation smoke
+                </Text>
+                <Text role="caption">
+                  Locale formats digits only; currency comes from supplied Money
+                  (irrDisplayUnit=<LtrValue>{irrDisplayUnit}</LtrValue>{" "}
+                  explicit).
+                </Text>
+                <div>
+                  <Text role="label">USD on this locale</Text>
+                  <div className="mt-1">
+                    <MoneyText money={SAMPLE_USD} locale={locale} />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <Text role="label">IRR canonical → display unit</Text>
-                <div className="mt-1">
-                  <MoneyText
-                    money={SAMPLE_IRR}
-                    locale={locale}
-                    irrDisplayUnit={irrDisplayUnit}
-                  />
+                <div>
+                  <Text role="label">IRR canonical → display unit</Text>
+                  <div className="mt-1">
+                    <MoneyText
+                      money={SAMPLE_IRR}
+                      locale={locale}
+                      irrDisplayUnit={irrDisplayUnit}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <Text role="label">MixedCurrencyPrice (no FX / no sum)</Text>
-                <div className="mt-2">
-                  <MixedCurrencyPrice
-                    price={SAMPLE_MIXED}
-                    locale={locale}
-                    irrDisplayUnit={irrDisplayUnit}
-                  />
+                <div>
+                  <Text role="label">MixedCurrencyPrice (no FX / no sum)</Text>
+                  <div className="mt-2">
+                    <MixedCurrencyPrice
+                      price={SAMPLE_MIXED}
+                      locale={locale}
+                      irrDisplayUnit={irrDisplayUnit}
+                    />
+                  </div>
                 </div>
-              </div>
-            </Stack>
-          </Surface>
-        </Stack>
-      </Container>
-    </main>
+              </Stack>
+            </Surface>
+
+            <Surface>
+              <Stack gap="md">
+                <Text as="h2" role="title">
+                  Admin shell composition smoke
+                </Text>
+                <Text role="caption">
+                  Navigation slot is empty on purpose — Admin IA frozen only
+                  after TC-P02-T010. No domain menu tree.
+                </Text>
+                <div className="overflow-hidden rounded-lg border border-border">
+                  <AdminShell
+                    embedded
+                    header={
+                      <Text as="p" role="label">
+                        Admin workspace chrome
+                      </Text>
+                    }
+                    navigation={
+                      <Text role="caption">
+                        Navigation slot (IA undecided — T010)
+                      </Text>
+                    }
+                    actions={
+                      <span className="inline-flex min-h-touch items-center rounded-md border border-border px-3 text-label">
+                        actions slot
+                      </span>
+                    }
+                  >
+                    <div className="p-4">
+                      <Text role="body">
+                        Workspace content region — layout only
+                      </Text>
+                    </div>
+                  </AdminShell>
+                </div>
+              </Stack>
+            </Surface>
+          </Stack>
+        </Container>
+      </div>
+    </PublicShell>
   );
 }
