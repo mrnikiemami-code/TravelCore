@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Access.Infrastructure.Authorization;
 using TravelCore.Modules.Access.Infrastructure.Endpoints;
 using TravelCore.Modules.Access.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
@@ -38,6 +40,13 @@ public sealed class AccessModule : ITravelCoreModule
         services.AddScoped<AccessTaxonomyService>();
         services.AddScoped<AccessSubjectAssignmentService>();
         services.AddScoped<IAccessAuthorizationEvaluator, AccessAuthorizationEvaluator>();
+        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddAuthorizationBuilder()
+            .AddPolicy(AccessAuthorizationPolicies.AdminRolesRead, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("access.roles.read"));
+            });
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

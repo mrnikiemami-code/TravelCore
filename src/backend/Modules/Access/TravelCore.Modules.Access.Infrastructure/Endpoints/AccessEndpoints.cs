@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TravelCore.Modules.Access.Contracts;
+using TravelCore.Modules.Access.Infrastructure.Authorization;
 using TravelCore.Modules.Access.Infrastructure.Services;
 
 namespace TravelCore.Modules.Access.Infrastructure.Endpoints;
@@ -167,6 +168,12 @@ internal static class AccessEndpoints
                 });
             }
         });
+
+        // Admin sample surface — authentication + Access-backed authorization (hide ≠ authz).
+        var adminAccess = endpoints.MapGroup("/api/admin/access").WithTags("AdminAccess");
+        adminAccess.MapGet("/roles", async Task<IResult> (AccessTaxonomyService svc, CancellationToken ct)
+                => Results.Ok(await svc.ListRolesAsync(ct)))
+            .RequireAuthorization(AccessAuthorizationPolicies.AdminRolesRead);
 
         return endpoints;
     }
