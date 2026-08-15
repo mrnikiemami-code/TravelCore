@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P02-T016** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P02-T017** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P02 — Frontend Foundation + Walking Skeleton |
-| Current Next Task | Architect review of `TC-P02-T016`; do not start `TC-P02-T017` until issued |
+| Current Next Task | Architect review of `TC-P02-T017`; then `TC-P02-GATE` when issued |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -102,7 +102,7 @@
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | NOT_STARTED (after T001–T017) |
 | Human Phase Confirmation | P01 confirmed; P02 entered via USER Auto-Execute `TC-P02-PLAN` |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P02-T016`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P02-T017`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -120,7 +120,8 @@
 | TC-P02-T013 | COMPLETE / ACCEPTED (`ddf138f`) |
 | TC-P02-T014 | COMPLETE / ACCEPTED (`4b6531b`) |
 | TC-P02-T015 | COMPLETE / ACCEPTED (`8fc30ca`) |
-| TC-P02-T016 | AWAITING_ARCHITECT_REVIEW |
+| TC-P02-T016 | COMPLETE / ACCEPTED (`ea590d3`) |
+| TC-P02-T017 | AWAITING_ARCHITECT_REVIEW |
 | TC-P01-T006 | COMPLETE (accepted after T006R) |
 | TC-P01-T006R | COMPLETE (`c6bd109`) |
 | TC-P01-T007 | COMPLETE (`4420eef`; evidence via T007A) |
@@ -162,7 +163,8 @@
 | TC-P02-T013 | COMPLETE / ACCEPTED (`ddf138f`) |
 | TC-P02-T014 | COMPLETE / ACCEPTED (`4b6531b`) |
 | TC-P02-T015 | COMPLETE / ACCEPTED (`8fc30ca`) |
-| TC-P02-T016 | AWAITING_ARCHITECT_REVIEW |
+| TC-P02-T016 | COMPLETE / ACCEPTED (`ea590d3`) |
+| TC-P02-T017 | AWAITING_ARCHITECT_REVIEW |
 | Required Human Token | none for current PLAN (implementation tasks follow architect accept) |
 
 ### P00 Exit Summary
@@ -173,7 +175,7 @@
 - Canonical pipeline entry ACTIVE: `docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md`
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
-- P02 IN_PROGRESS; `TC-P02-PLAN` COMPLETE / ACCEPTED (`47475ba`); T001–T015 ACCEPTED; `TC-P02-T016` awaiting architect review
+- P02 IN_PROGRESS; `TC-P02-PLAN` COMPLETE / ACCEPTED (`47475ba`); T001–T016 ACCEPTED; `TC-P02-T017` awaiting architect review; evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
