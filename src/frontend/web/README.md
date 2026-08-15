@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TravelCore Web Frontend
 
-## Getting Started
+Next.js App Router frontend for TravelCore (`src/frontend/web`).
 
-First, run the development server:
+Authoritative product architecture lives in repository docs (`AGENTS.md`, `docs/architecture/*`, `docs/plans/P02-frontend-foundation-walking-skeleton.md`). This README is the **local convention map** for P02+.
+
+## Commands
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run typecheck
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Physical structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+src/
+  app/                 App Router entry (layouts, routes) — Server Component default
+  components/ui/       Shared direction-neutral UI primitives (no business logic)
+  features/            Page/feature composition (workflow-oriented; not domain silos)
+  lib/
+    api/               Frontend application/API access boundary (no DB/persistence)
+    i18n/              Locale/i18n infrastructure location (behavior comes in later tasks)
+    formatting/        Presentation helpers (money/date display later; no authoritative calc)
+  types/               Shared frontend contracts / view-model shapes (not backend entities)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Responsibility rules
 
-## Learn More
+1. **Server Components by default.** `"use client"` only for real browser interaction/runtime needs.
+2. Do not put `"use client"` on shared/root foundations by convenience.
+3. No authoritative business logic in UI components.
+4. No direct database / EF / module DbContext / persistence access from frontend.
+5. Backend bounded contexts do **not** automatically become frontend folders, menus, or screens.
+6. Feature composition may span multiple domains through explicit application/API contracts while backend ownership stays separate.
+7. Shared code must be genuinely reusable — `components/ui` is not a dumping ground.
+8. Keep page-specific composition under `features/`, reusable primitives under `components/ui`.
+9. Prefer direction-neutral naming and logical layout assumptions (RTL is not a secondary branch).
+10. Do not treat raw backend entities as page view models by default.
+11. No global mutable client state infrastructure in early foundation tasks.
+12. Import alias: `@/*` → `./src/*` (see `tsconfig.json`).
 
-To learn more about Next.js, take a look at the following resources:
+### Explicitly out of scope for T001
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Locale routing/`lang`/`dir` behavior · design tokens · bidi primitives · money components · shells · API clients · Foreign Tour Detail · Admin navigation IA.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Import hygiene
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Prefer `@/` imports for app-local modules.
+- Keep dependency direction: `app` / `features` → `components` / `lib` / `types` (not the reverse into routes).
+- Avoid circular imports between `features` and `components`.
