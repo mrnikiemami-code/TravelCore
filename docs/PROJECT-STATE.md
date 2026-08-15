@@ -71,13 +71,13 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P01-T017** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P01-T018** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P01 — Platform / Backend Foundation |
-| Current Next Task | Architect review of `TC-P01-T017`; do not start `TC-P01-T018` until accepted |
+| Current Next Task | Architect review of `TC-P01-T018`; do not start `TC-P01-T019` until accepted |
 | P01 | **IN_PROGRESS** (AUTHORIZED) |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
-| Last P01 Implementation Commit | pending T017 (`TC-P01-T016` = `346dc3e`) |
+| Last P01 Implementation Commit | pending T018 (`TC-P01-T017` = `45b3e4b`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
 | API Foundation Doc | [`docs/architecture/19-api-error-and-serialization-foundation.md`](architecture/19-api-error-and-serialization-foundation.md) |
 | Configuration Foundation Doc | [`docs/architecture/20-configuration-and-options-foundation.md`](architecture/20-configuration-and-options-foundation.md) |
@@ -93,11 +93,12 @@
 | Automated Architecture Guardrails Doc | [`docs/architecture/30-automated-architecture-guardrails.md`](architecture/30-automated-architecture-guardrails.md) |
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
+| Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
 | Phase Transition State | **P01_IN_PROGRESS** |
 | P01 Phase Gate | NOT_STARTED (after T001–T019) |
 | Human Phase Confirmation | P01 confirmed; P02 still requires `TRAVELCORE_PHASE_CONFIRM: P02` later |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T017`) |
-| Human Confirmation Reason | None for current T017 |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T018`) |
+| Human Confirmation Reason | None for current T018 |
 | TC-P01-T006 | COMPLETE (accepted after T006R) |
 | TC-P01-T006R | COMPLETE (`c6bd109`) |
 | TC-P01-T007 | COMPLETE (`4420eef`; evidence via T007A) |
@@ -117,7 +118,9 @@
 | TC-P01-T014 | COMPLETE (`bdd4a55`) |
 | TC-P01-T015 | COMPLETE |
 | TC-P01-T016 | COMPLETE |
-| TC-P01-T017 | AWAITING_ARCHITECT_REVIEW |
+| TC-P01-T017 | COMPLETE |
+| TC-P01-T017A | COMPLETE |
+| TC-P01-T018 | AWAITING_ARCHITECT_REVIEW |
 | Required Human Token | `TRAVELCORE_PHASE_CONFIRM: P01` |
 
 ### P00 Exit Summary

@@ -21,7 +21,7 @@ src/backend/Platform/Api/TravelCore.ApiFoundation/
 ## Explicit non-goals
 
 - OpenAPI (`TC-P01-T004`)
-- Validation (`TC-P01-T018`)
+- Validation (`TC-P01-T018`) — see [`33-minimal-api-validation-foundation.md`](33-minimal-api-validation-foundation.md)
 - Health (`TC-P01-T006`)
 - Correlation / observability (`TC-P01-T007`)
 - Business error codes, localization, or domain exception taxonomies
