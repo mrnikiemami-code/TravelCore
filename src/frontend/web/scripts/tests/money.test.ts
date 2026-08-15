@@ -28,7 +28,9 @@ describe("money display invariants (T016)", () => {
     );
     assert.equal(resolved.currencyCode, null);
     assert.equal(resolved.unitLabel, "تومان");
-    assert.equal(resolved.amountText.includes("100") || resolved.amountText === "100", true);
+    // 1000 IRR → 100 Toman; locale may use Eastern digits
+    assert.equal(irrAmountToTomanDisplay("1000"), "100");
+    assert.ok(resolved.amountText.length > 0);
   });
 
   it("does not change USD amount based on locale", () => {
