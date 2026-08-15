@@ -11,8 +11,11 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run build
+npm run test:quality
+npm run quality
 ```
 
+`npm run quality` is the **P02 quality gate** (lint + typecheck + build + deterministic checks). See [`docs/QUALITY-GATES.md`](docs/QUALITY-GATES.md).
 ## Physical structure
 
 ```text
