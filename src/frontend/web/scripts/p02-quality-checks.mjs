@@ -13,6 +13,7 @@ const srcRoot = path.join(webRoot, "src");
 
 const ALLOWED_USE_CLIENT = new Set([
   path.normalize("features/foreign-tour-detail/booking-cta-island.tsx"),
+  path.normalize("features/admin-identity-party/identity-party-workflow-island.tsx"),
   path.normalize("app/[locale]/error.tsx"),
 ]);
 
@@ -120,9 +121,25 @@ function main() {
     fs.existsSync(path.join(srcRoot, "types", "pages", "foreign-tour-detail.ts")),
   );
 
+  // 8) P03 T010 guided Admin Identity↔Party workflow routes (job-based, not silo CRUD)
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "app", "[locale]", "admin", "accounts", "page.tsx")),
+  );
+  assert.ok(
+    fs.existsSync(
+      path.join(srcRoot, "app", "[locale]", "admin", "accounts", "onboard", "page.tsx"),
+    ),
+  );
+  const onboard = read(
+    path.join(srcRoot, "app", "[locale]", "admin", "accounts", "onboard", "page.tsx"),
+  );
+  assert.doesNotMatch(onboard, /['"]use client['"]/);
+  assert.match(onboard, /IdentityPartyWorkflowIsland/);
+  assert.match(onboard, /robots/);
+
   console.log("p02-quality-checks: PASS");
   console.log(`  use client allowlist (${ALLOWED_USE_CLIENT.size}): ok`);
-  console.log("  locale/tour/fixtures/metadata/a11y/media/money: ok");
+  console.log("  locale/tour/fixtures/metadata/a11y/media/money/admin-workflow: ok");
 }
 
 main();

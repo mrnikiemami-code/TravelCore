@@ -11,19 +11,21 @@ export type ServerFetchOptions = {
   signal?: AbortSignal;
 };
 
+export type ServerMutateOptions = ServerFetchOptions & {
+  method?: "POST" | "PUT" | "DELETE";
+  body?: unknown;
+};
+
 function joinUrl(base: string, path: string): string {
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
   const normalized = path.startsWith("/") ? path : `/${path}`;
   return `${base}${normalized}`;
 }
 
-/**
- * Server-side JSON GET — primary API consumption path for Server Components.
- * Does not encode domain/pricing/booking authority.
- */
-export async function apiGetJson<T>(
+async function executeJsonRequest<T>(
   path: string,
-  options: ServerFetchOptions = {},
+  method: string,
+  options: ServerMutateOptions,
 ): Promise<ApiResult<T>> {
   const base = getApiBaseUrl();
   if (!base) {
@@ -43,13 +45,18 @@ export async function apiGetJson<T>(
   if (!headers.has("accept")) {
     headers.set("accept", "application/json, application/problem+json");
   }
+  if (options.body !== undefined && !headers.has("content-type")) {
+    headers.set("content-type", "application/json");
+  }
 
   let response: Response;
   try {
     response = await fetch(joinUrl(base, path), {
-      method: "GET",
+      method,
       headers,
-      cache: options.cache,
+      body:
+        options.body === undefined ? undefined : JSON.stringify(options.body),
+      cache: options.cache ?? "no-store",
       next: options.next,
       signal: options.signal,
     });
@@ -79,6 +86,10 @@ export async function apiGetJson<T>(
     });
   }
 
+  if (response.status === 204) {
+    return apiOk(undefined as T, response.status, correlationId ?? undefined);
+  }
+
   try {
     const data = (await response.json()) as T;
     return apiOk(data, response.status, correlationId ?? undefined);
@@ -90,4 +101,26 @@ export async function apiGetJson<T>(
       correlationId,
     });
   }
+}
+
+/**
+ * Server-side JSON GET — primary API consumption path for Server Components.
+ * Does not encode domain/pricing/booking authority.
+ */
+export async function apiGetJson<T>(
+  path: string,
+  options: ServerFetchOptions = {},
+): Promise<ApiResult<T>> {
+  return executeJsonRequest<T>(path, "GET", options);
+}
+
+/**
+ * Server-side JSON mutate helper (POST/PUT/DELETE) for Admin workflow writes.
+ * Callers must forward auth cookies when required; Access remains server-side.
+ */
+export async function apiSendJson<T>(
+  path: string,
+  options: ServerMutateOptions = {},
+): Promise<ApiResult<T>> {
+  return executeJsonRequest<T>(path, options.method ?? "POST", options);
 }
