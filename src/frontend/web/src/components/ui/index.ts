@@ -17,3 +17,4 @@ export {
 } from "./field-message";
 export { RouteStatePanel, RouteLoadingSkeleton } from "./route-state";
 export { NotFoundView } from "./not-found-view";
+export { MediaImage, type MediaImageProps } from "./media-image";

@@ -7,6 +7,7 @@ import {
   LtrValue,
   MixedCurrencyPrice,
   MoneyText,
+  MediaImage,
   Stack,
   Surface,
   Text,
@@ -145,11 +146,29 @@ export default async function LocaleHomePage({
             <Surface>
               <Stack gap="md">
                 <Text as="h2" role="title">
+                  Image foundation smoke
+                </Text>
+                <Text role="caption">
+                  Local static fixture via MediaImage (next/image). Not a Tour
+                  gallery. priority opt-in only; alt from presentation model.
+                </Text>
+                <MediaImage
+                  src="/media/foundation-sample.png"
+                  alt="Sample foundation media for TravelCore image contract"
+                  aspectRatio="16 / 9"
+                  sizes="(max-width: 768px) 100vw, 640px"
+                />
+              </Stack>
+            </Surface>
+
+            <Surface>
+              <Stack gap="md">
+                <Text as="h2" role="title">
                   Admin shell composition smoke
                 </Text>
                 <Text role="caption">
-                  Navigation slot is empty on purpose — Admin IA frozen only
-                  after TC-P02-T010. No domain menu tree.
+                  Navigation slot may host job-based IA from T010 later — no
+                  domain-mirrored menu tree here.
                 </Text>
                 <div className="overflow-hidden rounded-lg border border-border">
                   <AdminShell
@@ -161,7 +180,7 @@ export default async function LocaleHomePage({
                     }
                     navigation={
                       <Text role="caption">
-                        Navigation slot (IA undecided — T010)
+                        Navigation slot (job-based model — T010; items undecided)
                       </Text>
                     }
                     actions={
