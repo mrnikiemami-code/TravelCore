@@ -14,7 +14,8 @@ public static class AccessPermissionCatalog
         ("access.permissions.read", "Read access permissions"),
         ("access.permissions.write", "Manage access permissions"),
         ("access.roles.read", "Read access roles"),
-        ("access.roles.write", "Manage access roles")
+        ("access.roles.write", "Manage access roles"),
+        ("destination.destinations.write", "Create/update Destination hierarchy and owned fields")
     ];
 
     public const string AdminRoleCode = "admin";

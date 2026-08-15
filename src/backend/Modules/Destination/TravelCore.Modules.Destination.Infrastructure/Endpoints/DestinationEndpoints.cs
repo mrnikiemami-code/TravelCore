@@ -27,7 +27,7 @@ internal static class DestinationEndpoints
             {
                 return Validation(ex);
             }
-        });
+        }).RequireAuthorization("Access.Destination.Destinations.Write");
 
         group.MapGet("/{id:guid}", async Task<IResult> (
             Guid id,
@@ -64,7 +64,7 @@ internal static class DestinationEndpoints
             {
                 return Validation(ex);
             }
-        });
+        }).RequireAuthorization("Access.Destination.Destinations.Write");
 
         group.MapGet("/{id:guid}/translations", async Task<IResult> (
             Guid id,
@@ -91,7 +91,7 @@ internal static class DestinationEndpoints
             {
                 return Validation(ex);
             }
-        });
+        }).RequireAuthorization("Access.Destination.Destinations.Write");
 
         group.MapGet("/by-slug/{localeCode}/{slug}", async Task<IResult> (
             string localeCode,
@@ -128,7 +128,7 @@ internal static class DestinationEndpoints
                     [ex.ParamName ?? "request"] = [ex.Message]
                 });
             }
-        });
+        }).RequireAuthorization("Access.Destination.Destinations.Write");
 
         group.MapGet("/{id:guid}/ancestors", async Task<IResult> (
             Guid id,

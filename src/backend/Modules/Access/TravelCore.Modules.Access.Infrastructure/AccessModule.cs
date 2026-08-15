@@ -51,6 +51,11 @@ public sealed class AccessModule : ITravelCoreModule
             {
                 policy.RequireAuthenticatedUser();
                 policy.AddRequirements(new PermissionRequirement("agency.panel.open"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.DestinationDestinationsWrite, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("destination.destinations.write"));
             });
     }
 

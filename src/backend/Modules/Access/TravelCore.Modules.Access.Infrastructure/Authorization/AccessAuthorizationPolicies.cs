@@ -11,4 +11,9 @@ public static class AccessAuthorizationPolicies
     /// Agency presentation sample policy: Access-backed <c>agency.panel.open</c>.
     /// </summary>
     public const string AgencyPanelOpen = "Access.Agency.Panel.Open";
+
+    /// <summary>
+    /// Destination Admin mutations: Access-backed <c>destination.destinations.write</c>.
+    /// </summary>
+    public const string DestinationDestinationsWrite = "Access.Destination.Destinations.Write";
 }
