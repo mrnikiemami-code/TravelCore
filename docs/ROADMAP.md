@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P02 — Frontend Foundation + Walking Skeleton** |
-| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 IN_PROGRESS · P03 NOT_STARTED |
+| Current Phase | **P02 — Frontend Foundation + Walking Skeleton** (**COMPLETE**) |
+| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 COMPLETE · P03 NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `0853d04` (`TC-P01-GATE`) |
+| Last Accepted Commit | `45adc28` (`TC-P02-T017`); gate closes P02 |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P02-T017`; then `TC-P02-GATE` when issued |
+| Current Next Task | Await architect-issued `TC-P03-*` (do not invent; P03 NOT_STARTED) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -101,8 +101,8 @@
 
 - **P00** = COMPLETE
 - **P01** = COMPLETE
-- **P02** = IN_PROGRESS (`TC-P02-PLAN` ACCEPTED; T001–T016 ACCEPTED; `TC-P02-T017` awaiting architect review)
-- **P03–P29 و Post-P29** = PLANNED
+- **P02** = COMPLETE (`TC-P02-PLAN` … `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE)
+- **P03–P29 و Post-P29** = PLANNED / NOT_STARTED (P03 NOT_STARTED)
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -214,7 +214,7 @@ Final architecture gate accepted by Chief Architect. P00 may close.
 
 ### P00 completion gate
 
-TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 IN_PROGRESS — authoritative plan: [`plans/P02-frontend-foundation-walking-skeleton.md`](plans/P02-frontend-foundation-walking-skeleton.md). P03 remains NOT_STARTED.
+TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 COMPLETE (`TC-P02-GATE` ACCEPTED). Authoritative plan: [`plans/P02-frontend-foundation-walking-skeleton.md`](plans/P02-frontend-foundation-walking-skeleton.md). P03 remains NOT_STARTED.
 
 ---
 
@@ -236,7 +236,7 @@ Backend foundation بیلد و تست می‌شود و اجرای مرز ماژ�
 
 ## P02 — Frontend Foundation + Walking Skeleton
 
-**Status:** IN_PROGRESS
+**Status:** COMPLETE
 
 **Authoritative plan:** [`plans/P02-frontend-foundation-walking-skeleton.md`](plans/P02-frontend-foundation-walking-skeleton.md) (`TC-P02-PLAN`)
 
@@ -257,7 +257,7 @@ Prototype باید قرارداد Design System و fixture typed داشته با
 
 ### P02 completion gate
 
-معماری UI در RTL و LTR و mobile/desktop توسط معمار تأیید شود قبل از پیاده‌سازی عمدهٔ صفحات فیچر.
+**TC-P02-GATE** = COMPLETE / ACCEPTED. معماری UI در RTL و LTR و mobile/desktop برای walking skeleton پذیرفته شد. P03 remains NOT_STARTED.
 
 ---
 
@@ -611,7 +611,7 @@ P26 = Advanced SEO.
 |-------|-------|--------|
 | P00 | Architecture Foundation | COMPLETE |
 | P01 | Platform / Backend Foundation | COMPLETE |
-| P02 | Frontend Foundation + Walking Skeleton | IN_PROGRESS |
+| P02 | Frontend Foundation + Walking Skeleton | COMPLETE |
 | P03 | Identity + Access + Party | PLANNED |
 | P04 | Reference Data + Destination | PLANNED |
 | P05 | SEO Engine | PLANNED |

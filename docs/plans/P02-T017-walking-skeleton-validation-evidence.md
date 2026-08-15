@@ -1,7 +1,7 @@
 # TC-P02-T017 — Walking Skeleton Validation Matrix Evidence
 
-**Status:** Evidence for architect review (P02 walking skeleton)  
-**Baseline:** `ea590d3` (`origin/main`)  
+**Status:** Evidence accepted with `TC-P02-GATE` (P02 walking skeleton CLOSED)
+**Baseline:** `ea590d3` (`origin/main`)
 **Route under test:** `/[locale]/tours/fixture-istanbul-package`  
 **Quality command:** `npm run quality` → **PASS** (lint · typecheck · build · test:quality)  
 **Date:** 2026-08-15
@@ -75,5 +75,5 @@ npm run quality → PASS
 
 ## 5. Gate readiness
 
-Walking skeleton is ready for **architect review toward `TC-P02-GATE`**.  
-This task does **not** execute the phase gate.
+Walking skeleton evidence was accepted under **`TC-P02-GATE`**.
+P02 = COMPLETE. P03 remains NOT_STARTED.

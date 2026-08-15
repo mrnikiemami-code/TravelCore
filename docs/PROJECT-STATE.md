@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P02 — Frontend Foundation + Walking Skeleton** (**IN_PROGRESS**) |
+| Current Phase | **P02 — Frontend Foundation + Walking Skeleton** (**COMPLETE**) |
 | Previous Phase | P01 — Platform / Backend Foundation |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `0853d04` (`TC-P01-GATE`) |
+| Last Accepted Commit | `45adc28` (`TC-P02-T017`) |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,15 +71,15 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P02-T017** (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P02 — Frontend Foundation + Walking Skeleton |
-| Current Next Task | Architect review of `TC-P02-T017`; then `TC-P02-GATE` when issued |
+| Current Active Product Task | **NONE** (P02 closed; await architect-issued P03 task) |
+| Current Next Product Phase | P03 — Identity + Access + Party (**NOT_STARTED**) |
+| Current Next Task | Await architect-issued `TC-P03-*` (do not invent) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
 | Last P01 Implementation Commit | `2370316` (`TC-P01-T019`) |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED (`0853d04`) |
-| P02 | **IN_PROGRESS** (AUTHORIZED) |
+| P02 | **COMPLETE** |
 | P02 Plan | `TC-P02-PLAN` COMPLETE / ACCEPTED (`47475ba`) — [`docs/plans/P02-frontend-foundation-walking-skeleton.md`](plans/P02-frontend-foundation-walking-skeleton.md) |
 | P02 Implementation Started | **YES** (`TC-P02-T001`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
@@ -98,11 +98,11 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P02_IN_PROGRESS** |
+| Phase Transition State | **P02_COMPLETE** |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
-| P02 Phase Gate | NOT_STARTED (after T001–T017) |
-| Human Phase Confirmation | P01 confirmed; P02 entered via USER Auto-Execute `TC-P02-PLAN` |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P02-T017`) |
+| P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED |
+| Human Phase Confirmation | P01 confirmed; P02 entered via USER Auto-Execute `TC-P02-PLAN`; P02 closed via USER Auto-Execute `TC-P02-GATE` |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_NEXT_TASK** (P03 NOT_STARTED) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -121,7 +121,8 @@
 | TC-P02-T014 | COMPLETE / ACCEPTED (`4b6531b`) |
 | TC-P02-T015 | COMPLETE / ACCEPTED (`8fc30ca`) |
 | TC-P02-T016 | COMPLETE / ACCEPTED (`ea590d3`) |
-| TC-P02-T017 | AWAITING_ARCHITECT_REVIEW |
+| TC-P02-T017 | COMPLETE / ACCEPTED (`45adc28`) |
+| TC-P02-GATE | COMPLETE / ACCEPTED |
 | TC-P01-T006 | COMPLETE (accepted after T006R) |
 | TC-P01-T006R | COMPLETE (`c6bd109`) |
 | TC-P01-T007 | COMPLETE (`4420eef`; evidence via T007A) |
@@ -164,8 +165,9 @@
 | TC-P02-T014 | COMPLETE / ACCEPTED (`4b6531b`) |
 | TC-P02-T015 | COMPLETE / ACCEPTED (`8fc30ca`) |
 | TC-P02-T016 | COMPLETE / ACCEPTED (`ea590d3`) |
-| TC-P02-T017 | AWAITING_ARCHITECT_REVIEW |
-| Required Human Token | none for current PLAN (implementation tasks follow architect accept) |
+| TC-P02-T017 | COMPLETE / ACCEPTED (`45adc28`) |
+| TC-P02-GATE | COMPLETE / ACCEPTED |
+| Required Human Token | none (P02 closed; P03 awaits architect-issued task) |
 
 ### P00 Exit Summary
 
@@ -175,7 +177,7 @@
 - Canonical pipeline entry ACTIVE: `docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md`
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
-- P02 IN_PROGRESS; `TC-P02-PLAN` COMPLETE / ACCEPTED (`47475ba`); T001–T016 ACCEPTED; `TC-P02-T017` awaiting architect review; evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
+- P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED; evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`; P03 remains NOT_STARTED
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -229,7 +231,17 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P02-T005 | Money / MixedCurrencyPrice presentation | COMPLETE / ACCEPTED | `67782e0` |
 | TC-P02-T006 | Accessibility baseline | COMPLETE / ACCEPTED | `faa56c1` |
 | TC-P02-T007 | App Router loading / error / not-found | COMPLETE / ACCEPTED | `3db7237` |
-| TC-P02-T008 | Public + Admin shell layout foundation | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P02-T008 | Public + Admin shell layout foundation | COMPLETE / ACCEPTED | `ee64ea1` |
+| TC-P02-T009 | Frontend API / read-model boundary | COMPLETE / ACCEPTED | `60c44f6` |
+| TC-P02-T010 | Cross-domain workflow & navigation model | COMPLETE / ACCEPTED | `fc9a698` |
+| TC-P02-T011 | Media / Image foundation | COMPLETE / ACCEPTED | `f776b64` |
+| TC-P02-T012 | Foreign Tour Detail PVM + fixtures | COMPLETE / ACCEPTED | `44c91c9` |
+| TC-P02-T013 | Foreign Tour Detail page + view | COMPLETE / ACCEPTED | `ddf138f` |
+| TC-P02-T014 | Sticky booking CTA island | COMPLETE / ACCEPTED | `4b6531b` |
+| TC-P02-T015 | SEO metadata baseline | COMPLETE / ACCEPTED | `8fc30ca` |
+| TC-P02-T016 | Automated quality gates | COMPLETE / ACCEPTED | `ea590d3` |
+| TC-P02-T017 | Walking skeleton validation evidence | COMPLETE / ACCEPTED | `45adc28` |
+| TC-P02-GATE | P02 Acceptance Gate | COMPLETE / ACCEPTED | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P02-PLAN` |
 | Phase | P02 |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | COMPLETE / ACCEPTED (`TC-P02-GATE`) |
 | Baseline | `0853d04` |
 | Authoritative sources | `docs/ROADMAP.md` · `docs/architecture/10-ui-constitution.md` · `docs/ui/*` · `docs/pages/01-foreign-tour-detail.md` · ADR 0005 / 0006 / 0007 |
 | Frontend root | `src/frontend/web` |
