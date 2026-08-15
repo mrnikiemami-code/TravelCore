@@ -5,6 +5,12 @@ using TravelCore.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Kestrel fingerprinting: do not emit the Server identification header.
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.AddServerHeader = false;
+});
+
 builder.Services.AddTravelCoreApiFoundation();
 builder.Services.AddTravelCoreObservability();
 builder.Services.AddTravelCoreHealth();
@@ -24,4 +30,15 @@ app.UseHttpsRedirection();
 app.MapTravelCoreHealth();
 app.MapTravelCoreModules(modules);
 
+// Test-only fault endpoint — enabled solely by host test infrastructure (never default config).
+if (app.Configuration.GetValue("TravelCore:SecurityTests:MapFaultEndpoint", defaultValue: false))
+{
+    app.MapGet("/__security_test/fault", () =>
+    {
+        throw new InvalidOperationException("intentional-security-test-fault");
+    });
+}
+
 app.Run();
+
+public partial class Program;
