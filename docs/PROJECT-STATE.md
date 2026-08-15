@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P01 — Platform / Backend Foundation** (**IN_PROGRESS**) |
+| Current Phase | **P01 — Platform / Backend Foundation** (**COMPLETE**) |
 | Previous Phase | P00 — Architecture Foundation |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -45,8 +45,8 @@
 | TC-GOV-T001A Activation Commit | `476ae67` |
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
-| TC-GOV-T002A | AWAITING_ARCHITECT_REVIEW (ADR 0014 acceptance / AGENTS+Recovery activation) |
-| Last Accepted Commit | `1cfe48a` |
+| TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
+| Last Accepted Commit | `2370316` |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -56,7 +56,7 @@
 | Operating Modes | HUMAN (default) / PIPELINE (USER opt-in) |
 | Default Mode | **HUMAN** |
 | Current Runtime Mode | **PIPELINE** |
-| Automatic Pipeline | **ON** (USER opted in with phase confirm) |
+| Automatic Pipeline | **ON** (USER opted in with phase confirm; GATE authorized) |
 | Agent Handoff Envelopes | ACTIVE (ADR 0013) |
 | Protocol | `TRAVELCORE_CURSOR_TASK_V1` · `TRAVELCORE_CURSOR_RESULT_V1` |
 | Future Architecture Transition Map | [`docs/architecture/15-future-architecture-transition-map.md`](architecture/15-future-architecture-transition-map.md) |
@@ -71,13 +71,13 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P01-T019** (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P01 — Platform / Backend Foundation |
-| Current Next Task | Architect review of `TC-P01-T019`; do not start `TC-P01-GATE` until issued |
-| P01 | **IN_PROGRESS** (AUTHORIZED) |
+| Current Active Product Task | **TC-P01-GATE** (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Product Phase | P02 — requires `TRAVELCORE_PHASE_CONFIRM: P02` |
+| Current Next Task | Architect review of `TC-P01-GATE`; do not start P02 until phase confirm |
+| P01 | **COMPLETE** (AUTHORIZED · GATE PASS pending architect accept of this result) |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
-| Last P01 Implementation Commit | pending T019 (`TC-P01-T018R` = `c1a1047`) |
+| Last P01 Implementation Commit | `2370316` (`TC-P01-T019`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
 | API Foundation Doc | [`docs/architecture/19-api-error-and-serialization-foundation.md`](architecture/19-api-error-and-serialization-foundation.md) |
 | Configuration Foundation Doc | [`docs/architecture/20-configuration-and-options-foundation.md`](architecture/20-configuration-and-options-foundation.md) |
@@ -94,11 +94,11 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P01_IN_PROGRESS** |
-| P01 Phase Gate | NOT_STARTED (after T001–T019) |
-| Human Phase Confirmation | P01 confirmed; P02 still requires `TRAVELCORE_PHASE_CONFIRM: P02` later |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-T019`) |
-| Human Confirmation Reason | None for current T019 |
+| Phase Transition State | **P01_GATE_SUBMITTED** (await architect accept of `TC-P01-GATE`) |
+| P01 Phase Gate | **TC-P01-GATE** executed — Cursor PASS pending architect accept |
+| Human Phase Confirmation | P01 confirmed; P02 still requires `TRAVELCORE_PHASE_CONFIRM: P02` |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P01-GATE`) |
+| Human Confirmation Reason | None for current GATE |
 | TC-P01-T006 | COMPLETE (accepted after T006R) |
 | TC-P01-T006R | COMPLETE (`c6bd109`) |
 | TC-P01-T007 | COMPLETE (`4420eef`; evidence via T007A) |
@@ -122,7 +122,8 @@
 | TC-P01-T017A | COMPLETE |
 | TC-P01-T018 | COMPLETE (`c8fb491`; accepted after T018R) |
 | TC-P01-T018R | COMPLETE (`c1a1047`) |
-| TC-P01-T019 | AWAITING_ARCHITECT_REVIEW |
+| TC-P01-T019 | COMPLETE (`2370316`) |
+| TC-P01-GATE | AWAITING_ARCHITECT_REVIEW (this result) |
 | Required Human Token | `TRAVELCORE_PHASE_CONFIRM: P01` |
 
 ### P00 Exit Summary
@@ -131,9 +132,9 @@
 - TC-P00-GATE PASS
 - ADR 0001–0014 Accepted
 - Canonical pipeline entry ACTIVE: `docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md`
-- Pipeline Protocol = READY; Current Runtime Mode = HUMAN; Automatic Pipeline = OFF
-- P01 is next **product** phase but has **not** started
-- Product execution is stopped at the P00→P01 human phase gate until a new USER-authored `TRAVELCORE_PHASE_CONFIRM: P01`
+- Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
+- P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` awaiting architect accept
+- P02 remains NOT_STARTED until USER-authored `TRAVELCORE_PHASE_CONFIRM: P02`
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -176,7 +177,9 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-GOV-T001 | Controlled ChatGPT↔Cursor handoff + human phase gates | COMPLETE / ACCEPTED | `f44f11e` |
 | TC-GOV-T001A | Accept ADR 0013 + activate handoff protocol | COMPLETE / ACCEPTED | `476ae67` |
 | TC-GOV-T002 | Consolidate pipeline protocol + HUMAN/PIPELINE modes | COMPLETE / ACCEPTED | `1cfe48a` |
-| TC-GOV-T002A | Accept ADR 0014 + activate Pipeline Protocol in AGENTS/Recovery | AWAITING_ARCHITECT_REVIEW | see git log for this commit |
+| TC-GOV-T002A | Accept ADR 0014 + activate Pipeline Protocol in AGENTS/Recovery | COMPLETE / ACCEPTED | `1f9ad48` |
+| TC-P01-T019 | Security Hygiene Baseline | COMPLETE / ACCEPTED | `2370316` |
+| TC-P01-GATE | P01 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

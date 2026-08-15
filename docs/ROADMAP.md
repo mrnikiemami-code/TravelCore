@@ -36,14 +36,14 @@
 |------|--------|
 | Project | TravelCore |
 | Current Phase | **P01 — Platform / Backend Foundation** |
-| Phase Status | P00 COMPLETE · P01 NOT_STARTED |
+| Phase Status | P00 COMPLETE · P01 COMPLETE (GATE submitted) · P02 NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `0074437` |
+| Last Accepted Commit | `2370316` (`TC-P01-T019`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | **P01 task planning required** |
+| Current Next Task | **TC-P01-GATE** architect review; then P02 requires `TRAVELCORE_PHASE_CONFIRM: P02` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -100,7 +100,7 @@
 وضعیت فعلی:
 
 - **P00** = COMPLETE
-- **P01** = NEXT / NOT_STARTED
+- **P01** = COMPLETE (GATE submitted — await architect accept)
 - **P02–P29 و Post-P29** = PLANNED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -213,13 +213,13 @@ Final architecture gate accepted by Chief Architect. P00 may close.
 
 ### P00 completion gate
 
-TC-P00-GATE = PASS. P00 = COMPLETE. پیاده‌سازی P01 هنوز شروع نشده؛ شناسهٔ دقیق اولین Task هنوز در ROADMAP تعریف نشده — **P01 task planning required**.
+TC-P00-GATE = PASS. P00 = COMPLETE. P01 implementation complete through `TC-P01-T019` (`2370316`). `TC-P01-GATE` submitted for architect acceptance. P02 remains NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P02`.
 
 ---
 
 ## P01 — Platform / Backend Foundation
 
-**Status:** NEXT / NOT_STARTED
+**Status:** COMPLETE (GATE submitted — await architect accept of `TC-P01-GATE`)
 
 **Purpose:** اسکلت فنی را به host آمادهٔ Modular Monolith تبدیل کند.
 
@@ -607,7 +607,7 @@ P26 = Advanced SEO.
 | Phase | Title | Status |
 |-------|-------|--------|
 | P00 | Architecture Foundation | COMPLETE |
-| P01 | Platform / Backend Foundation | NEXT / NOT_STARTED |
+| P01 | Platform / Backend Foundation | COMPLETE (GATE submitted) |
 | P02 | Frontend Foundation + Walking Skeleton | PLANNED |
 | P03 | Identity + Access + Party | PLANNED |
 | P04 | Reference Data + Destination | PLANNED |
