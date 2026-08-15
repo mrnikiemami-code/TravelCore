@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P01 — Platform / Backend Foundation** |
-| Phase Status | P00 COMPLETE · P01 COMPLETE (GATE submitted) · P02 NOT_STARTED |
+| Current Phase | **P02 — Frontend Foundation + Walking Skeleton** |
+| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 IN_PROGRESS · P03 NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `2370316` (`TC-P01-T019`) |
+| Last Accepted Commit | `0853d04` (`TC-P01-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | **TC-P01-GATE** architect review; then P02 requires `TRAVELCORE_PHASE_CONFIRM: P02` |
+| Current Next Task | **TC-P02-PLAN** architect review; then `TC-P02-T001` when issued |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -100,8 +100,9 @@
 وضعیت فعلی:
 
 - **P00** = COMPLETE
-- **P01** = COMPLETE (GATE submitted — await architect accept)
-- **P02–P29 و Post-P29** = PLANNED
+- **P01** = COMPLETE
+- **P02** = IN_PROGRESS (`TC-P02-PLAN` awaiting architect accept)
+- **P03–P29 و Post-P29** = PLANNED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -213,13 +214,13 @@ Final architecture gate accepted by Chief Architect. P00 may close.
 
 ### P00 completion gate
 
-TC-P00-GATE = PASS. P00 = COMPLETE. P01 implementation complete through `TC-P01-T019` (`2370316`). `TC-P01-GATE` submitted for architect acceptance. P02 remains NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P02`.
+TC-P00-GATE = PASS. P00 = COMPLETE. P01 COMPLETE (`TC-P01-GATE` ACCEPTED `0853d04`). P02 IN_PROGRESS — authoritative plan: [`plans/P02-frontend-foundation-walking-skeleton.md`](plans/P02-frontend-foundation-walking-skeleton.md). P03 remains NOT_STARTED.
 
 ---
 
 ## P01 — Platform / Backend Foundation
 
-**Status:** COMPLETE (GATE submitted — await architect accept of `TC-P01-GATE`)
+**Status:** COMPLETE
 
 **Purpose:** اسکلت فنی را به host آمادهٔ Modular Monolith تبدیل کند.
 
@@ -235,7 +236,9 @@ Backend foundation بیلد و تست می‌شود و اجرای مرز ماژ�
 
 ## P02 — Frontend Foundation + Walking Skeleton
 
-**Status:** PLANNED
+**Status:** IN_PROGRESS
+
+**Authoritative plan:** [`plans/P02-frontend-foundation-walking-skeleton.md`](plans/P02-frontend-foundation-walking-skeleton.md) (`TC-P02-PLAN`)
 
 **Purpose:** قبل از ساخت ده‌ها صفحه، معماری UI / i18n / RTL-LTR / mobile / SEO را اثبات کند.
 
@@ -607,8 +610,8 @@ P26 = Advanced SEO.
 | Phase | Title | Status |
 |-------|-------|--------|
 | P00 | Architecture Foundation | COMPLETE |
-| P01 | Platform / Backend Foundation | COMPLETE (GATE submitted) |
-| P02 | Frontend Foundation + Walking Skeleton | PLANNED |
+| P01 | Platform / Backend Foundation | COMPLETE |
+| P02 | Frontend Foundation + Walking Skeleton | IN_PROGRESS |
 | P03 | Identity + Access + Party | PLANNED |
 | P04 | Reference Data + Destination | PLANNED |
 | P05 | SEO Engine | PLANNED |
