@@ -72,3 +72,25 @@ body {
   color: var(--tc-color-foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
+
+/* Visible focus baseline — never remove without accessible replacement (T006). */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--tc-color-focus);
+  outline-offset: 2px;
+}
+
+/* Decorative transitions respect prefers-reduced-motion (token durations also collapse). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

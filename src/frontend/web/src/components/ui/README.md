@@ -15,6 +15,11 @@ Shared **direction-neutral UI primitives** for TravelCore web (T004).
 | `LtrValue` | convenience for known LTR identifiers (codes, emails, refs) |
 | `MoneyText` | single Money presentation (display-only; ADR 0003) |
 | `MixedCurrencyPrice` | multiple supplied components; no FX / no silent sum |
+| `SkipLink` | keyboard skip-to-main (`#main-content`) |
+| `FieldMessage` / `VisuallyHidden` | form help/error association + SR-only text |
+
+See also: [`ACCESSIBILITY.md`](./ACCESSIBILITY.md) (T006 baseline).
+
 
 ## Rules
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SkipLink } from "@/components/ui/skip-link";
 import {
   getHtmlDir,
   getHtmlLang,
@@ -42,6 +43,12 @@ export async function generateMetadata({
   };
 }
 
+function skipLinkLabel(locale: AppLocale): string {
+  if (locale === "fa") return "پرش به محتوا";
+  if (locale === "ar") return "تخطى إلى المحتوى";
+  return "Skip to content";
+}
+
 export default async function LocaleLayout({
   children,
   params,
@@ -65,7 +72,10 @@ export default async function LocaleLayout({
       dir={dir}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SkipLink hrefId="main-content">{skipLinkLabel(locale)}</SkipLink>
+        {children}
+      </body>
     </html>
   );
 }

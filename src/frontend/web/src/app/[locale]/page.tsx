@@ -47,7 +47,11 @@ export default async function LocaleHomePage({
   const irrDisplayUnit = locale === "fa" ? "Toman" : "IRR";
 
   return (
-    <main className="flex flex-1 flex-col bg-background py-8 text-foreground">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="flex flex-1 flex-col bg-background py-8 text-foreground outline-none"
+    >
       <Container width="content">
         <Stack gap="lg">
           <Surface>
