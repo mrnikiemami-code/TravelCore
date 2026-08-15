@@ -31,7 +31,7 @@ tests/Integration/TravelCore.Persistence.IntegrationTests/
 - Framework: `xunit.v3` **3.2.2** (same standalone MTP pattern as T015)
 - DbContext construction uses production provider policy: `UseTravelCorePostgreSql(...)` (includes `UseNodaTime()` and module-owned migrations-history schema)
 - Schema setup applies committed fixture migrations via `PersistenceFixtureMigrator` (**test setup only**)
-- Formal migration lifecycle acceptance remains **`TC-P01-T017`**
+- Formal migration lifecycle acceptance → [`32-real-postgresql-migration-proof.md`](32-real-postgresql-migration-proof.md) (`TC-P01-T017`).
 
 Pinned image `postgres:18.6` is the **P01 integration-test baseline**. It does not by itself establish the permanent production deployment version.
 
