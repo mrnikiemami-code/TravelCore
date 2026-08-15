@@ -43,7 +43,7 @@
 | Last Accepted Commit | `6a8a5ce` (`TC-P03-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P04-T005`; then next issued task |
+| Current Next Task | Architect review of `TC-P04-T006`; then next issued task |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |

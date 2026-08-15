@@ -59,8 +59,38 @@ public sealed class DestinationReadQuery : IDestinationReadQuery
                 x.DestinationId.Value,
                 x.LocaleCode,
                 x.Name,
-                x.Description))
+                x.Description,
+                x.Slug))
             .ToList();
+    }
+
+    public async Task<DestinationSlugLookupResponse?> FindBySlugAsync(
+        string localeCode,
+        string slug,
+        CancellationToken cancellationToken = default)
+    {
+        var normalizedLocale = DestinationTranslation.NormalizeLocaleCode(localeCode);
+        var normalizedSlug = DestinationTranslation.NormalizeSlug(slug)
+            ?? throw new ArgumentException("Slug is required.", nameof(slug));
+
+        var hit = await _db.Destinations.AsNoTracking()
+            .SelectMany(d => d.Translations.Select(t => new { Destination = d, Translation = t }))
+            .FirstOrDefaultAsync(
+                x => x.Translation.LocaleCode == normalizedLocale && x.Translation.Slug == normalizedSlug,
+                cancellationToken);
+
+        if (hit is null)
+        {
+            return null;
+        }
+
+        return new DestinationSlugLookupResponse(
+            hit.Destination.Id.Value,
+            hit.Translation.LocaleCode,
+            hit.Translation.Slug!,
+            hit.Destination.Kind.ToString(),
+            hit.Destination.Code,
+            hit.Destination.EnglishName);
     }
 
     public async Task<IReadOnlyList<DestinationPathNode>> ListAncestorsAsync(

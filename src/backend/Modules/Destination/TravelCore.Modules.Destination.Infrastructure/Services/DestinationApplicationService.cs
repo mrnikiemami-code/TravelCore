@@ -123,14 +123,83 @@ public sealed class DestinationApplicationService
             ?? throw new ArgumentException("Destination was not found.", nameof(destinationId));
 
         var now = _clock.GetCurrentInstant();
-        var translation = destination.UpsertTranslation(locale.Code, request.Name, request.Description, now);
+        var setSlug = request.Slug is not null;
+        var translation = destination.UpsertTranslation(
+            locale.Code,
+            request.Name,
+            request.Description,
+            now,
+            request.Slug,
+            setSlug);
+
+        if (setSlug && translation.Slug is not null)
+        {
+            await EnsureSlugUniqueAsync(locale.Code, translation.Slug, destination.Id, cancellationToken);
+        }
+
         await _db.SaveChangesAsync(cancellationToken);
 
         return new DestinationTranslationResponse(
             translation.DestinationId.Value,
             translation.LocaleCode,
             translation.Name,
-            translation.Description);
+            translation.Description,
+            translation.Slug);
+    }
+
+    public async Task<DestinationTranslationResponse> SetTranslationSlugAsync(
+        Guid destinationId,
+        string localeCode,
+        SetDestinationTranslationSlugRequest request,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var locale = await _referenceData.GetLocaleAsync(localeCode, cancellationToken)
+            ?? throw new ArgumentException(
+                $"Locale '{localeCode}' was not found in ReferenceData locale catalog.",
+                nameof(localeCode));
+
+        var id = DestinationId.From(destinationId);
+        var destination = await _db.Destinations
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+            ?? throw new ArgumentException("Destination was not found.", nameof(destinationId));
+
+        var now = _clock.GetCurrentInstant();
+        var translation = destination.SetTranslationSlug(locale.Code, request.Slug, now);
+        if (translation.Slug is not null)
+        {
+            await EnsureSlugUniqueAsync(locale.Code, translation.Slug, destination.Id, cancellationToken);
+        }
+
+        await _db.SaveChangesAsync(cancellationToken);
+        return new DestinationTranslationResponse(
+            translation.DestinationId.Value,
+            translation.LocaleCode,
+            translation.Name,
+            translation.Description,
+            translation.Slug);
+    }
+
+    private async Task EnsureSlugUniqueAsync(
+        string localeCode,
+        string slug,
+        DestinationId ownerId,
+        CancellationToken cancellationToken)
+    {
+        var conflict = await _db.Destinations
+            .AsNoTracking()
+            .SelectMany(d => d.Translations.Select(t => new { DestinationId = d.Id, t.LocaleCode, t.Slug }))
+            .FirstOrDefaultAsync(
+                x => x.LocaleCode == localeCode && x.Slug == slug && x.DestinationId != ownerId,
+                cancellationToken);
+
+        if (conflict is not null)
+        {
+            throw new ArgumentException(
+                $"Slug '{slug}' is already used for locale '{localeCode}'.",
+                nameof(slug));
+        }
     }
 
     public async Task<IReadOnlyList<DestinationTranslationResponse>> ListTranslationsAsync(
@@ -151,7 +220,8 @@ public sealed class DestinationApplicationService
                 x.DestinationId.Value,
                 x.LocaleCode,
                 x.Name,
-                x.Description))
+                x.Description,
+                x.Slug))
             .ToList();
     }
 

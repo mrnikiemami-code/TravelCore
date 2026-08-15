@@ -127,7 +127,9 @@ public sealed class Destination
         string localeCode,
         string name,
         string? description,
-        Instant now)
+        Instant now,
+        string? slug = null,
+        bool setSlug = false)
     {
         var normalizedLocale = DestinationTranslation.NormalizeLocaleCode(localeCode);
         var existing = _translations.FirstOrDefault(x =>
@@ -135,13 +137,38 @@ public sealed class Destination
 
         if (existing is null)
         {
-            var created = DestinationTranslation.Create(Id, normalizedLocale, name, description, now);
+            var created = DestinationTranslation.Create(
+                Id,
+                normalizedLocale,
+                name,
+                description,
+                now,
+                setSlug ? slug : null);
             _translations.Add(created);
             UpdatedAt = now;
             return created;
         }
 
         existing.Update(name, description, now);
+        if (setSlug)
+        {
+            existing.SetSlug(slug, now);
+        }
+
+        UpdatedAt = now;
+        return existing;
+    }
+
+    public DestinationTranslation SetTranslationSlug(string localeCode, string? slug, Instant now)
+    {
+        var normalizedLocale = DestinationTranslation.NormalizeLocaleCode(localeCode);
+        var existing = _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal))
+            ?? throw new ArgumentException(
+                $"Translation for locale '{normalizedLocale}' was not found.",
+                nameof(localeCode));
+
+        existing.SetSlug(slug, now);
         UpdatedAt = now;
         return existing;
     }

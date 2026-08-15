@@ -30,9 +30,10 @@ public sealed class DestinationMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.EndsWith("_InitialDestinationPersistence", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_DestinationTranslationsAndGeo", expectedMigrations[1], StringComparison.Ordinal);
+            Assert.EndsWith("_DestinationLocalizedSlugHooks", expectedMigrations[2], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())

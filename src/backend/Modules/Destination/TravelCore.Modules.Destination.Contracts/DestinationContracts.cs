@@ -22,13 +22,25 @@ public sealed record CreateDestinationRequest(
 
 public sealed record UpsertDestinationTranslationRequest(
     string Name,
-    string? Description);
+    string? Description,
+    string? Slug = null);
 
 public sealed record DestinationTranslationResponse(
     Guid DestinationId,
     string LocaleCode,
     string Name,
-    string? Description);
+    string? Description,
+    string? Slug);
+
+public sealed record SetDestinationTranslationSlugRequest(string? Slug);
+
+public sealed record DestinationSlugLookupResponse(
+    Guid DestinationId,
+    string LocaleCode,
+    string Slug,
+    string Kind,
+    string Code,
+    string EnglishName);
 
 public sealed record SetDestinationGeoRequest(
     decimal? Latitude,
@@ -63,6 +75,11 @@ public interface IDestinationReadQuery
 
     Task<IReadOnlyList<DestinationTranslationResponse>> ListTranslationsAsync(
         Guid destinationId,
+        CancellationToken cancellationToken = default);
+
+    Task<DestinationSlugLookupResponse?> FindBySlugAsync(
+        string localeCode,
+        string slug,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<DestinationPathNode>> ListAncestorsAsync(

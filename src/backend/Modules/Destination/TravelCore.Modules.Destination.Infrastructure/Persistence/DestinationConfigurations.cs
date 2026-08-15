@@ -113,11 +113,20 @@ internal sealed class DestinationTranslationConfiguration : IEntityTypeConfigura
             .HasColumnName("description")
             .HasMaxLength(DestinationTranslation.DescriptionMaxLength);
 
+        builder.Property(x => x.Slug)
+            .HasColumnName("slug")
+            .HasMaxLength(DestinationTranslation.SlugMaxLength);
+
         builder.Property(x => x.UpdatedAt)
             .HasColumnName("updated_at")
             .IsRequired();
 
         builder.HasIndex(x => x.LocaleCode)
             .HasDatabaseName("ix_destination_translations_locale_code");
+
+        builder.HasIndex(x => new { x.LocaleCode, x.Slug })
+            .IsUnique()
+            .HasFilter("slug IS NOT NULL")
+            .HasDatabaseName("ux_destination_translations_locale_slug");
     }
 }

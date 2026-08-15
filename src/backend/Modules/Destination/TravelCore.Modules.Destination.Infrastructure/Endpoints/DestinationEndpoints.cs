@@ -75,6 +75,41 @@ internal static class DestinationEndpoints
             return Results.Ok(translations);
         });
 
+        group.MapPut("/{id:guid}/translations/{localeCode}/slug", async Task<IResult> (
+            Guid id,
+            string localeCode,
+            SetDestinationTranslationSlugRequest request,
+            DestinationApplicationService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var translation = await service.SetTranslationSlugAsync(id, localeCode, request, cancellationToken);
+                return Results.Ok(translation);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
+        group.MapGet("/by-slug/{localeCode}/{slug}", async Task<IResult> (
+            string localeCode,
+            string slug,
+            IDestinationReadQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var hit = await query.FindBySlugAsync(localeCode, slug, cancellationToken);
+                return hit is null ? Results.NotFound() : Results.Ok(hit);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
         group.MapPut("/{id:guid}/geo", async Task<IResult> (
             Guid id,
             SetDestinationGeoRequest request,
