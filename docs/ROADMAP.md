@@ -43,7 +43,7 @@
 | Last Accepted Commit | `6a8a5ce` (`TC-P03-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P04-T010`; then next issued task |
+| Current Next Task | Architect review of `TC-P04-T011`; then `TC-P04-GATE` if issued |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -103,7 +103,7 @@
 - **P01** = COMPLETE
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
-- **P04** = IN_PROGRESS (`TC-P04-T001`–`T009` ACCEPTED; `TC-P04-T010` AWAITING_ARCHITECT_REVIEW; R3 RESOLVED = noindex,follow)
+- **P04** = IN_PROGRESS (`TC-P04-T001`–`T010` ACCEPTED; `TC-P04-T011` AWAITING_ARCHITECT_REVIEW; R3 RESOLVED = noindex,follow)
 - **P05–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -287,7 +287,7 @@ Invariant قفل‌شده: **Identity ≠ Party ≠ Access**.
 
 **Authoritative plan:** [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) (`TC-P04-PLAN`)
 
-**Progress:** `TC-P04-T001`–`T009` COMPLETE / ACCEPTED · `TC-P04-T010` AWAITING_ARCHITECT_REVIEW · R3 RESOLVED (public Destination noindex,follow) · P05 NOT_STARTED
+**Progress:** `TC-P04-T001`–`T010` COMPLETE / ACCEPTED · `TC-P04-T011` AWAITING_ARCHITECT_REVIEW · R3 RESOLVED (public Destination noindex,follow) · P05 NOT_STARTED
 
 ReferenceData fundamentals.
 
