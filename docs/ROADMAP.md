@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P07 — Place Catalog** (**NOT_STARTED** · awaiting phase confirm) |
-| Phase Status | P00–P06 COMPLETE · P07 NOT_STARTED |
+| Current Phase | **P07 — Place Catalog** (**IN_PROGRESS** · PLAN awaiting review) |
+| Phase Status | P00–P06 COMPLETE · P07 IN_PROGRESS |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `da345b5` (`TC-P06-GATE` ACCEPTED) · hygiene `0d2edad` |
+| Last Accepted Commit | `da345b5` (`TC-P06-GATE` ACCEPTED) · hygiene `0d2edad` · P06 COMPLETE docs `77eb9dd` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P07` then architect issues `TC-P07-PLAN` |
+| Current Next Task | `TC-P07-PLAN` AWAITING_ARCHITECT_REVIEW → then `TC-P07-T001` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -105,8 +105,9 @@
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
 - **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
-- **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED** · P07 NOT_STARTED — needs `TRAVELCORE_PHASE_CONFIRM: P07`)
-- **P07–P29 و Post-P29** = PLANNED / NOT_STARTED
+- **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED**)
+- **P07** = IN_PROGRESS (`TC-P07-PLAN` AWAITING_ARCHITECT_REVIEW · baseline `77eb9dd` · USER `TRAVELCORE_PHASE_CONFIRM: P07`)
+- **P08–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -329,7 +330,7 @@ SeoRoute · localized route · slug history · Redirect · Canonical · hreflang
 
 **Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — COMPLETE / ACCEPTED · `87069e4`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P06-GATE` COMPLETE / ACCEPTED** (`da345b5`) · **P06-R1 DEFER** · **P06-R2/R3/R4/R5/R6 RESOLVED** · **P06-R7 DEFERRED** · **P06-R8 UNRESOLVED** · **P06-R9 DEFERRED** · P07 **NOT_STARTED** (needs `TRAVELCORE_PHASE_CONFIRM: P07`)
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P06-GATE` COMPLETE / ACCEPTED** (`da345b5`) · **P06-R1 DEFER** · **P06-R2/R3/R4/R5/R6 RESOLVED** · **P06-R7 DEFERRED** · **P06-R8 UNRESOLVED** · **P06-R9 DEFERRED** · P07 **IN_PROGRESS**
 
 Media Asset · object storage · upload · validation · variants · dimensions · focal point · alt/caption translations · optimization contract (same-format; WebP/AVIF DEFERRED) · app-proxy presentation · consumer reference proof (contract-only) · Admin Media baseline · hardening evidence pack.
 
@@ -346,7 +347,11 @@ Invariant: Media مالک بایت/متادیتای دارایی است؛ معن
 
 ## P07 — Place Catalog
 
-**Status:** PLANNED / NOT_STARTED
+**Status:** IN_PROGRESS
+
+**Authoritative plan:** [`plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) (`TC-P07-PLAN` — AWAITING_ARCHITECT_REVIEW)
+
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P07` · plan authored · **P07-R1–R5 UNRESOLVED** · product tasks NOT_STARTED
 
 Place · Hotel · Restaurant · Attraction با localization، رابطه با Destination، geo، facilities، media، وضعیت عملیاتی، جزئیات عمومی، Admin، یکپارچگی SEO.
 
@@ -655,7 +660,7 @@ P26 = Advanced SEO.
 | P04 | Reference Data + Destination | COMPLETE |
 | P05 | SEO Engine | COMPLETE |
 | P06 | Media | **COMPLETE** (`TC-P06-GATE` ACCEPTED) |
-| P07 | Place Catalog | PLANNED / NOT_STARTED |
+| P07 | Place Catalog | **IN_PROGRESS** (`TC-P07-PLAN` awaiting review) |
 | P08 | Content CMS | PLANNED |
 | P09 | Tour Core | PLANNED |
 | P10 | Experience Tour | PLANNED |
