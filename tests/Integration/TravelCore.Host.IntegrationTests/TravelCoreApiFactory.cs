@@ -7,6 +7,7 @@ using TravelCore.Modules.Identity.Infrastructure;
 using TravelCore.Modules.Party.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Destination.Infrastructure;
+using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Persistence.PostgreSql;
 using Xunit;
 
@@ -40,6 +41,9 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
 
         await using var destination = CreateDestinationDb();
         await DestinationMigrator.MigrateAsync(destination);
+
+        await using var seo = CreateSeoDb();
+        await SeoMigrator.MigrateAsync(seo);
     }
 
     public async ValueTask DisposeAsync() => await _container.DisposeAsync();
@@ -82,6 +86,14 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
             .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: DestinationDbContext.SchemaName)
             .Options;
         return new DestinationDbContext(options);
+    }
+
+    public SeoDbContext CreateSeoDb()
+    {
+        var options = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<SeoDbContext>()
+            .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: SeoDbContext.SchemaName)
+            .Options;
+        return new SeoDbContext(options);
     }
 
     public TravelCoreApiFactory CreateFactory(string environmentName) =>

@@ -224,7 +224,88 @@ internal static class SeoEndpoints
         group.MapGet("/robots.txt", (ISeoSitemapService sitemap) =>
             Results.Content(sitemap.RenderRobotsTxt(), "text/plain; charset=utf-8"));
 
-        // Destination public-path publication (T010) — SEO namespace; Destination keeps slug SoR.
+        // Admin Destination SEO posture (T011) — job-based inspect; Access-backed.
+        group.MapGet("/admin/destination-posture/{destinationId:guid}/{locale}", async Task<IResult> (
+            Guid destinationId,
+            string locale,
+            ISeoAdminDestinationPostureService posture,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var snapshot = await posture.GetDestinationPostureAsync(destinationId, locale, cancellationToken);
+                return Results.Ok(snapshot);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "destinationId"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization("Access.Seo.DestinationPosture.Write");
+
+        group.MapGet("/routes/by-resource/{resourceType}/{resourceId:guid}", async Task<IResult> (
+            string resourceType,
+            Guid resourceId,
+            ISeoRouteService routes,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var list = await routes.ListByResourceAsync(resourceType, resourceId, cancellationToken);
+                return Results.Ok(list);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "resourceType"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization("Access.Seo.DestinationPosture.Write");
+
+        group.MapGet("/index-policies/{resourceType}/{resourceId:guid}/{locale}", async Task<IResult> (
+            string resourceType,
+            Guid resourceId,
+            string locale,
+            ISeoIndexPolicyService policies,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var row = await policies.GetAsync(resourceType, resourceId, locale, cancellationToken);
+                return row is null ? Results.NotFound() : Results.Ok(row);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "resourceType"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization("Access.Seo.DestinationPosture.Write");
+
+        group.MapPut("/index-policies", async Task<IResult> (
+            SetSeoIndexPolicyRequest request,
+            ISeoIndexPolicyService policies,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var row = await policies.SetAsync(request, cancellationToken);
+                return Results.Ok(row);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization("Access.Seo.DestinationPosture.Write");
+
+        // Destination public-path publication (T010/T011) — SEO namespace; Access-backed write.
         group.MapPost("/publication/destination", async Task<IResult> (
             PublishDestinationSeoRouteRequest request,
             ISeoDestinationPublicationService publication,
@@ -246,7 +327,7 @@ internal static class SeoEndpoints
             {
                 return Results.Conflict(new { title = "SeoRoute conflict", detail = ex.Message });
             }
-        });
+        }).RequireAuthorization("Access.Seo.DestinationPosture.Write");
 
         return endpoints;
     }

@@ -20,6 +20,7 @@ import type {
   DestinationTranslationView,
 } from "@/features/admin-destination-hierarchy/types";
 import type { CountryCatalogView } from "@/features/admin-reference-data/types";
+import { DestinationSeoPosturePanel } from "@/features/admin-destination-seo/destination-seo-posture-panel";
 
 export type DestinationHierarchyWorkflowIslandProps = {
   locale: AppLocale;
@@ -655,6 +656,17 @@ export function DestinationHierarchyWorkflowIsland({
           </Stack>
         </Surface>
       ) : null}
+
+      <DestinationSeoPosturePanel
+        locale={locale}
+        destinationId={focused?.id ?? null}
+        defaultSlug={
+          translations.find((t) => t.localeCode === (locale === "en" ? "en" : "fa"))
+            ?.slug ??
+          translations.find((t) => t.slug)?.slug ??
+          null
+        }
+      />
     </Stack>
   );
 }

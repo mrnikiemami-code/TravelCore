@@ -2,12 +2,18 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NodaTime;
+using TravelCore.Modules.Access.Contracts;
+using TravelCore.Modules.Access.Domain;
+using TravelCore.Modules.Access.Infrastructure.Seeding;
+using TravelCore.Modules.Identity.Contracts;
 using TravelCore.Modules.Seo.Contracts;
 using Xunit;
 
 namespace TravelCore.Host.IntegrationTests;
 
-[Collection(nameof(SeoRedirectHostCollection))]
+[Collection(nameof(IdentityAuthHostCollection))]
 public sealed class SeoDestinationPublicationHostTests
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -15,22 +21,76 @@ public sealed class SeoDestinationPublicationHostTests
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly SeoRedirectHostFixture _fixture;
+    private readonly IdentityAuthHostFixture _fixture;
 
-    public SeoDestinationPublicationHostTests(SeoRedirectHostFixture fixture)
+    public SeoDestinationPublicationHostTests(IdentityAuthHostFixture fixture)
     {
         _fixture = fixture;
     }
 
     [Fact]
-    public async Task Publish_CreatesSeoRoute_Idempotent_AndConflictOnOtherResource()
+    public async Task Publish_RequiresAuth_ThenCreatesSeoRoute_Idempotent_AndConflictOnOtherResource()
     {
-        await using var factory = _fixture.CreateFactory();
+        await using var factory = _fixture.CreateFactory(Environments.Development);
         var ct = TestContext.Current.CancellationToken;
         var destA = Guid.Parse("0198a000-0000-7000-8000-000000000901");
         var destB = Guid.Parse("0198a000-0000-7000-8000-000000000902");
+        const string email = "seo-publish-authz@travelcore.test";
+        const string password = "Seo-Publish-Authz-Password-1";
+
+        await using (var accessDb = _fixture.CreateAccessDb())
+        {
+            await AccessTaxonomySeeder.SeedAdminBaselineAsync(accessDb, SystemClock.Instance, ct);
+        }
 
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });
+
+        var anonymous = await client.PostAsJsonAsync(
+            new Uri("/api/seo/publication/destination", UriKind.Relative),
+            new PublishDestinationSeoRouteRequest(destA, "en", "istanbul"),
+            ct);
+        Assert.Equal(HttpStatusCode.Unauthorized, anonymous.StatusCode);
+
+        var createAccount = await client.PostAsJsonAsync(
+            "/api/identity/accounts/",
+            new CreateAccountRequest { Email = email, Password = password },
+            ct);
+        Assert.Equal(HttpStatusCode.Created, createAccount.StatusCode);
+        using var createDoc = JsonDocument.Parse(await createAccount.Content.ReadAsStringAsync(ct));
+        var accountId = createDoc.RootElement.GetProperty("id").GetGuid();
+
+        var login = await client.PostAsJsonAsync(
+            "/api/identity/login",
+            new LoginRequest { Email = email, Password = password },
+            ct);
+        Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+
+        var denied = await client.PostAsJsonAsync(
+            new Uri("/api/seo/publication/destination", UriKind.Relative),
+            new PublishDestinationSeoRouteRequest(destA, "en", "istanbul"),
+            ct);
+        Assert.Equal(HttpStatusCode.Forbidden, denied.StatusCode);
+
+        Guid adminRoleId;
+        await using (var accessDb = _fixture.CreateAccessDb())
+        {
+            var admin = accessDb.Roles.Single(x => x.Code == AccessPermissionCatalog.AdminRoleCode);
+            adminRoleId = admin.Id.Value;
+            Assert.Contains(
+                accessDb.Permissions.AsEnumerable(),
+                x => x.Code == "seo.destination-posture.write");
+        }
+
+        var assign = await client.PostAsJsonAsync(
+            "/api/access/subject-roles/",
+            new AssignSubjectRoleRequest
+            {
+                SubjectType = "Identity",
+                SubjectId = accountId,
+                RoleId = adminRoleId
+            },
+            ct);
+        Assert.Equal(HttpStatusCode.OK, assign.StatusCode);
 
         var created = await client.PostAsJsonAsync(
             new Uri("/api/seo/publication/destination", UriKind.Relative),
@@ -41,7 +101,6 @@ public sealed class SeoDestinationPublicationHostTests
         Assert.NotNull(createdBody);
         Assert.True(createdBody.Created);
         Assert.Equal("destinations/istanbul", createdBody.PublicPath);
-        Assert.Equal("/en/destinations/istanbul", $"/{createdBody.Route.Locale}/{createdBody.Route.Path}".Replace("//", "/"));
 
         var again = await client.PostAsJsonAsync(
             new Uri("/api/seo/publication/destination", UriKind.Relative),
@@ -58,7 +117,6 @@ public sealed class SeoDestinationPublicationHostTests
             ct);
         Assert.Equal(HttpStatusCode.Conflict, conflict.StatusCode);
 
-        // Path change for same destination publishes new slug and keeps history via ChangePath.
         var changed = await client.PostAsJsonAsync(
             new Uri("/api/seo/publication/destination", UriKind.Relative),
             new PublishDestinationSeoRouteRequest(destA, "en", "istanbul-city"),

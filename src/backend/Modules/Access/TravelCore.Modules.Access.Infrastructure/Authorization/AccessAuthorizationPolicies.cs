@@ -16,4 +16,9 @@ public static class AccessAuthorizationPolicies
     /// Destination Admin mutations: Access-backed <c>destination.destinations.write</c>.
     /// </summary>
     public const string DestinationDestinationsWrite = "Access.Destination.Destinations.Write";
+
+    /// <summary>
+    /// Destination SEO posture mutations: Access-backed <c>seo.destination-posture.write</c>.
+    /// </summary>
+    public const string SeoDestinationPostureWrite = "Access.Seo.DestinationPosture.Write";
 }

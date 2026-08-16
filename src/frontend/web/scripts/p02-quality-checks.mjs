@@ -18,6 +18,9 @@ const ALLOWED_USE_CLIENT = new Set([
     "features/admin-destination-hierarchy/destination-hierarchy-workflow-island.tsx",
   ),
   path.normalize(
+    "features/admin-destination-seo/destination-seo-posture-panel.tsx",
+  ),
+  path.normalize(
     "features/admin-reference-data/reference-data-browse-island.tsx",
   ),
   path.normalize("app/[locale]/error.tsx"),
