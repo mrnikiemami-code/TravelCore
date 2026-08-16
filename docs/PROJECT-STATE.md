@@ -243,7 +243,7 @@
 | TC-P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`; hygiene `8e8fb63`) |
 | TC-P06-T002 | **COMPLETE / ACCEPTED** (`020ce99`; hygiene `6100891`) |
 | TC-P06-T003 | **COMPLETE / ACCEPTED** (`cf95e5c`; hygiene `1d4e497`) |
-| TC-P06-T004 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T004 | **AWAITING_ARCHITECT_REVIEW** (`7f83885`) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R6 | **RESOLVED** (SVG DENY — Option A) |
 | Required Human Token | none |
