@@ -319,7 +319,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-PLAN | P05 SEO Engine Implementation Plan | COMPLETE / ACCEPTED | `032dabc` |
 | TC-P05-PLAN-R1 | P05 Plan Baseline Reconciliation & Architect Review Evidence | COMPLETE / ACCEPTED | `31c3283` |
 | TC-P05-T001 | SEO module scaffolding | COMPLETE / ACCEPTED | `a65fcc8` |
-| TC-P05-T002 | SeoRoute + localized path binding baseline | AWAITING_ARCHITECT_REVIEW | `PENDING_COMMIT_SHA` |
+| TC-P05-T002 | SeoRoute + localized path binding baseline | AWAITING_ARCHITECT_REVIEW | `796e013` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
