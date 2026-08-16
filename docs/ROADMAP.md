@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P06 — Media** (**IN_PROGRESS** · GATE PASS pending architect) |
-| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 COMPLETE · P03 COMPLETE · P04 COMPLETE · P05 COMPLETE · P06 IN_PROGRESS (GATE evidence posted) · P07 NOT_STARTED |
+| Current Phase | **P07 — Place Catalog** (**NOT_STARTED** · awaiting phase confirm) |
+| Phase Status | P00–P06 COMPLETE · P07 NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `37637bf` (`TC-P05-GATE` / `TC-P05-GATE-R1` ACCEPTED) · docs sync `02e06d3` |
+| Last Accepted Commit | `da345b5` (`TC-P06-GATE` ACCEPTED) · hygiene `0d2edad` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect accept of `TC-P06-GATE`; P07 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P07` |
+| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P07` then architect issues `TC-P07-PLAN` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -105,7 +105,7 @@
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
 - **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
-- **P06** = GATE PASS evidence posted (`TC-P06-T001`–`T012` ACCEPTED · awaiting architect `TC-P06-GATE` accept · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED** · P07 NOT_STARTED)
+- **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED** · P07 NOT_STARTED — needs `TRAVELCORE_PHASE_CONFIRM: P07`)
 - **P07–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -307,7 +307,7 @@ Invariant: Destination مالک Hotel/Tour/Article/Booking نیست؛ ReferenceD
 
 **Authoritative plan:** [`plans/P05-implementation-plan.md`](plans/P05-implementation-plan.md) (`TC-P05-PLAN`)
 
-**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P05-GATE` COMPLETE / ACCEPTED** · **`TC-P05-GATE-R1` COMPLETE / ACCEPTED** · **P05-R1/R2 RESOLVED** · P06 IN_PROGRESS
+**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P05-GATE` COMPLETE / ACCEPTED** · **`TC-P05-GATE-R1` COMPLETE / ACCEPTED** · **P05-R1/R2 RESOLVED** · P06 COMPLETE
 
 **Evidence pack:** [`plans/P05-T012-evidence-pack.md`](plans/P05-T012-evidence-pack.md)  
 **Gate evidence:** [`plans/P05-GATE-acceptance-evidence.md`](plans/P05-GATE-acceptance-evidence.md)  
@@ -325,11 +325,11 @@ SeoRoute · localized route · slug history · Redirect · Canonical · hreflang
 
 ## P06 — Media
 
-**Status:** IN_PROGRESS (GATE evidence posted; awaiting architect ACCEPT to mark COMPLETE)
+**Status:** COMPLETE
 
 **Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — COMPLETE / ACCEPTED · `87069e4`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P06-GATE` AWAITING_ARCHITECT_REVIEW** · **P06-R1 DEFER** · **P06-R2/R3/R4/R5/R6 RESOLVED** · **P06-R7 DEFERRED** · **P06-R8 UNRESOLVED** · **P06-R9 DEFERRED** · P07 **NOT_STARTED** (needs `TRAVELCORE_PHASE_CONFIRM: P07`)
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P06-GATE` COMPLETE / ACCEPTED** (`da345b5`) · **P06-R1 DEFER** · **P06-R2/R3/R4/R5/R6 RESOLVED** · **P06-R7 DEFERRED** · **P06-R8 UNRESOLVED** · **P06-R9 DEFERRED** · P07 **NOT_STARTED** (needs `TRAVELCORE_PHASE_CONFIRM: P07`)
 
 Media Asset · object storage · upload · validation · variants · dimensions · focal point · alt/caption translations · optimization contract (same-format; WebP/AVIF DEFERRED) · app-proxy presentation · consumer reference proof (contract-only) · Admin Media baseline · hardening evidence pack.
 
@@ -654,7 +654,7 @@ P26 = Advanced SEO.
 | P03 | Identity + Access + Party | COMPLETE |
 | P04 | Reference Data + Destination | COMPLETE |
 | P05 | SEO Engine | COMPLETE |
-| P06 | Media | IN_PROGRESS (GATE evidence posted) |
+| P06 | Media | **COMPLETE** (`TC-P06-GATE` ACCEPTED) |
 | P07 | Place Catalog | PLANNED / NOT_STARTED |
 | P08 | Content CMS | PLANNED |
 | P09 | Tour Core | PLANNED |

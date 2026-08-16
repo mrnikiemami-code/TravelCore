@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P06-PLAN` |
 | Phase | P06 — Media |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | COMPLETE / ACCEPTED |
 | Baseline | `02e06d3` (`docs: mark P05 COMPLETE after TC-P05-GATE accept`; envelope reissued after correct STOP on `37637bf`→`02e06d3` drift) |
 | Authoritative sources | `docs/ROADMAP.md` § P06 · `docs/architecture/15-future-architecture-transition-map.md` § F · `04-module-boundaries.md` § Media · `00-constitution.md` · `02-technology-baseline.md` · `05-dependency-rules.md` · `docs/domain/module-ownership-matrix.md` · `docs/data/01-identifiers-and-references.md` · P02 image foundation (`TC-P02-T011`) · P05 SEO locks (R1/R2) · ADR 0001 · ADR 0007–0008 · ADR 0011–0014 |
 | Backend root | `src/backend` |

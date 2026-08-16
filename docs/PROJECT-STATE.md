@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P06 — Media** (**IN_PROGRESS**) |
-| Previous Phase | P05 — SEO Engine (COMPLETE) |
+| Current Phase | **P07 — Place Catalog** (**NOT_STARTED** · awaiting `TRAVELCORE_PHASE_CONFIRM: P07`) |
+| Previous Phase | **P06 — Media** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `37637bf` (`TC-P05-GATE` / `TC-P05-GATE-R1`) · docs sync `02e06d3` |
+| Last Accepted Commit | `da345b5` (`TC-P06-GATE`) · hygiene `0d2edad` · prior P05 `37637bf` / docs `02e06d3` |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P06-GATE** (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P06 — Media (**GATE PASS pending architect**; then P07 needs phase confirm) |
-| Current Next Task | Architect accept of `TC-P06-GATE`; P07 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P07` |
+| Current Active Product Task | none — await USER `TRAVELCORE_PHASE_CONFIRM: P07` |
+| Current Next Product Phase | P07 — Place Catalog (**NOT_STARTED**) |
+| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P07` then architect issues `TC-P07-PLAN` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -94,7 +94,7 @@
 | P05 Plan Remediation | `TC-P05-PLAN-R1` COMPLETE / ACCEPTED — [`docs/plans/P05-PLAN-R1-baseline-reconciliation.md`](plans/P05-PLAN-R1-baseline-reconciliation.md) |
 | P05-R1 (slug history ownership) | **RESOLVED** — Destination owns current `DestinationTranslation.Slug`; SEO owns path history/reservation/redirect mechanics |
 | P05-R2 (default IndexPolicy) | **RESOLVED** — default missing policy = `noindex, follow`; explicit Index requires eligibility |
-| P06 | **IN_PROGRESS** (GATE PASS evidence posted; awaiting architect accept to mark COMPLETE) |
+| P06 | **COMPLETE** (closed by `TC-P06-GATE` ACCEPTED `da345b5`; hygiene `0d2edad`) |
 | P06 Plan | `TC-P06-PLAN` **COMPLETE / ACCEPTED** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
 | P06 Gate Evidence | [`docs/plans/P06-GATE-acceptance-evidence.md`](plans/P06-GATE-acceptance-evidence.md) |
 | P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`) |
@@ -109,7 +109,7 @@
 | P06-T010 | **COMPLETE / ACCEPTED** (`05ef0ac`) — contract-only consumer reference proof; **P06-R5 RESOLVED CONTRACT-ONLY** |
 | P06-T011 | **COMPLETE / ACCEPTED** (`8b0de5a`) — Admin Media operational baseline (upload/inspect/alt/focal; R8 no-delete; R9 no consumer alt override; R5 no Destination assign) |
 | P06-T012 | **COMPLETE / ACCEPTED** (`8981312`; hygiene `acfed76`) — hardening + evidence pack [`plans/P06-T012-hardening-and-evidence-pack.md`](plans/P06-T012-hardening-and-evidence-pack.md) |
-| P06-GATE | **AWAITING_ARCHITECT_REVIEW** (`da345b5`) |
+| P06-GATE | **COMPLETE / ACCEPTED** (`da345b5`; hygiene `0d2edad`) |
 | P06 Focal Coordinate Policy | **RESOLVED** — normalized [0,1] top-left (`TC-P06-T006-R1`) |
 | P06-R1 (WebP/AVIF pipeline) | **RESOLVED — DEFER** — out of P06; evidence [`plans/P06-T008-optimization-contract-and-r1-defer.md`](plans/P06-T008-optimization-contract-and-r1-defer.md) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
@@ -139,15 +139,15 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P06_IN_PROGRESS** · T001–T012 ACCEPTED · GATE PASS evidence posted / AWAITING_ARCHITECT_REVIEW · P06-R1 DEFER · P06-R2/R3/R4/R5/R6 RESOLVED · P06-R7 DEFERRED · P06-R8 UNRESOLVED (no delete UI) · P06-R9 DEFERRED · P07 NOT_STARTED |
+| Phase Transition State | **P06_COMPLETE** · `TC-P06-GATE` ACCEPTED · P07 NOT_STARTED (needs `TRAVELCORE_PHASE_CONFIRM: P07`) |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
 | P05 Phase Gate | **TC-P05-GATE** COMPLETE / ACCEPTED (`7f234e8`; R1 `bde6661`) |
-| P06 Phase Gate | **TC-P06-GATE** AWAITING_ARCHITECT_REVIEW |
-| Human Phase Confirmation | P06 entered via USER `TRAVELCORE_PHASE_CONFIRM: P06` (P05 previously via P05 token) |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P06-GATE`) |
+| P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
+| Human Phase Confirmation | P06 closed via GATE accept; **P07 requires** USER `TRAVELCORE_PHASE_CONFIRM: P07` |
+| Pipeline Product Execution | **WAITING_HUMAN_CONFIRMATION** (`TRAVELCORE_PHASE_CONFIRM: P07`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -271,7 +271,7 @@
 | TC-P06-T010 | **COMPLETE / ACCEPTED** (`05ef0ac`) |
 | TC-P06-T011 | **COMPLETE / ACCEPTED** (`8b0de5a`) |
 | TC-P06-T012 | **COMPLETE / ACCEPTED** (`8981312`; hygiene `acfed76`) — evidence pack `docs/plans/P06-T012-hardening-and-evidence-pack.md` |
-| TC-P06-GATE | **AWAITING_ARCHITECT_REVIEW** (`da345b5`) |
+| TC-P06-GATE | **COMPLETE / ACCEPTED** (`da345b5`; hygiene `0d2edad`) |
 | P06-R1 | **RESOLVED — DEFER** (no WebP/AVIF conversion pipeline in P06; same-format variants only) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R3 | **RESOLVED** (SYNCHRONOUS variant generation; sizing 1600/960/320 fit-within; GIF fail-closed) |
@@ -281,7 +281,7 @@
 | P06-R7 | **DEFERRED** (malware/AV scanning; recorded security requirement) |
 | P06-R8 | **UNRESOLVED** (no Admin delete UI/actions; OK for gate — deletion not in P06 product scope) |
 | P06-R9 | **DEFERRED** (consumer alt override; Media owns default alt/caption only) |
-| Required Human Token | none for GATE review; P07 later needs `TRAVELCORE_PHASE_CONFIRM: P07` |
+| Required Human Token | `TRAVELCORE_PHASE_CONFIRM: P07` (required before `TC-P07-PLAN`) |
 
 ### P00 Exit Summary
 
@@ -292,7 +292,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; **P06 GATE PASS evidence posted** (`TC-P06-T001`–`T012` ACCEPTED); awaiting architect accept of `TC-P06-GATE`; P06-R1 DEFER; P06-R2/R3/R4/R5/R6 RESOLVED; P06-R7 DEFERRED; P06-R8 UNRESOLVED; P06-R9 DEFERRED; P07 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P07`
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); Runtime Mode = PIPELINE; **WAITING** USER `TRAVELCORE_PHASE_CONFIRM: P07`; P06-R1 DEFER; P06-R2/R3/R4/R5/R6 RESOLVED; P06-R7 DEFERRED; P06-R8 UNRESOLVED; P06-R9 DEFERRED; P07 NOT_STARTED
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -401,7 +401,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T012 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `0c8ab0a` (+ `3351755`/`be407fc`/`6a02d9d`) |
 | TC-P05-GATE | P05 Acceptance Gate | COMPLETE / ACCEPTED | `7f234e8` (+ `d6bcbfb`) |
 | TC-P05-GATE-R1 | Reconcile P05 Gate Baseline Drift | COMPLETE / ACCEPTED | `bde6661` (+ `37637bf`) |
-| TC-P06-GATE | P06 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | `da345b5` |
+| TC-P06-GATE | P06 Acceptance Gate | COMPLETE / ACCEPTED | `da345b5` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
