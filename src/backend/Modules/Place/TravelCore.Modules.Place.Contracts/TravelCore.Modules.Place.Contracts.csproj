@@ -6,7 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Place.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Place.Contracts</AssemblyName>
-    <Description>Place module contracts: create/get/list DTOs. No EF entities. TC-P07-T002.</Description>
+    <Description>Place module contracts: catalog + Place↔Media relation DTOs (TC-P07-T005). No EF entities.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Media\TravelCore.Modules.Media.Contracts\TravelCore.Modules.Media.Contracts.csproj" />
+  </ItemGroup>
 
 </Project>

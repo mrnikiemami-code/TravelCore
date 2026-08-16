@@ -1,3 +1,5 @@
+using TravelCore.Modules.Media.Contracts;
+
 namespace TravelCore.Modules.Place.Contracts;
 
 /// <summary>
@@ -85,9 +87,33 @@ public sealed record SetPlaceClassificationRequest(string? ClassificationCode);
 
 public sealed record SetPlaceFacilitiesRequest(IReadOnlyList<string> FacilityCodes);
 
+public sealed record PlaceMediaLinkResponse(
+    Guid PlaceId,
+    Guid MediaAssetId,
+    string Role,
+    int SortOrder);
+
+public sealed record SetPlaceCoverRequest(Guid MediaAssetId);
+
+public sealed record AddPlaceGalleryItemRequest(
+    Guid MediaAssetId,
+    int? SortOrder = null);
+
+public sealed record ReorderPlaceGalleryRequest(IReadOnlyList<Guid> OrderedMediaAssetIds);
+
+public sealed record PlaceMediaItemPresentation(
+    Guid MediaAssetId,
+    string Role,
+    int SortOrder,
+    MediaAssetPresentationResponse? Presentation);
+
+public sealed record PlaceMediaPresentationResponse(
+    Guid PlaceId,
+    PlaceMediaItemPresentation? Cover,
+    IReadOnlyList<PlaceMediaItemPresentation> Gallery);
+
 /// <summary>
-/// Cross-module contract for Place create/get/list + localization / Destination link / geo-address /
-/// facilities · classification · catalog status (TC-P07-T004).
+/// Cross-module contract for Place catalog + Place↔Media relations (TC-P07-T005).
 /// </summary>
 public interface IPlaceService
 {
@@ -147,5 +173,38 @@ public interface IPlaceService
     Task<PlaceResponse> SetFacilitiesAsync(
         Guid placeId,
         SetPlaceFacilitiesRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<PlaceMediaLinkResponse> SetCoverAsync(
+        Guid placeId,
+        SetPlaceCoverRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task RemoveCoverAsync(
+        Guid placeId,
+        CancellationToken cancellationToken = default);
+
+    Task<PlaceMediaLinkResponse> AddGalleryItemAsync(
+        Guid placeId,
+        AddPlaceGalleryItemRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task RemoveGalleryItemAsync(
+        Guid placeId,
+        Guid mediaAssetId,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<PlaceMediaLinkResponse>> ReorderGalleryAsync(
+        Guid placeId,
+        ReorderPlaceGalleryRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<PlaceMediaLinkResponse>> ListMediaLinksAsync(
+        Guid placeId,
+        CancellationToken cancellationToken = default);
+
+    Task<PlaceMediaPresentationResponse?> GetMediaPresentationAsync(
+        Guid placeId,
+        string? locale = null,
         CancellationToken cancellationToken = default);
 }

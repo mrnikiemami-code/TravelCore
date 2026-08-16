@@ -60,6 +60,9 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
             .HasColumnName("updated_at")
             .IsRequired();
 
+        builder.Ignore(x => x.Cover);
+        builder.Ignore(x => x.GalleryOrdered);
+
         builder.OwnsOne(x => x.Address, address =>
         {
             address.Property(a => a.Line1)
@@ -140,6 +143,58 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
             .HasField("_facilities")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
+        builder.Navigation(x => x.MediaLinks)
+            .HasField("_mediaLinks")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+    }
+}
+
+internal sealed class PlaceMediaLinkConfiguration : IEntityTypeConfiguration<PlaceMediaLink>
+{
+    public void Configure(EntityTypeBuilder<PlaceMediaLink> builder)
+    {
+        builder.ToTable("place_media_links");
+        builder.HasKey(x => new { x.PlaceId, x.MediaAssetId });
+
+        builder.Property(x => x.PlaceId)
+            .HasColumnName("place_id")
+            .HasConversion(id => id.Value, value => PlaceId.From(value));
+
+        // Logical MediaAssetId only — deliberately no FK / navigation to Media.
+        builder.Property(x => x.MediaAssetId)
+            .HasColumnName("media_asset_id")
+            .IsRequired();
+
+        builder.Property(x => x.Role)
+            .HasColumnName("role")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.SortOrder)
+            .HasColumnName("sort_order")
+            .IsRequired();
+
+        builder.HasOne<PlaceAggregate>()
+            .WithMany(x => x.MediaLinks)
+            .HasForeignKey(x => x.PlaceId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+
+        builder.HasIndex(x => x.MediaAssetId)
+            .HasDatabaseName("ix_place_media_links_media_asset_id");
+
+        // At most one Cover per Place.
+        builder.HasIndex(x => x.PlaceId)
+            .IsUnique()
+            .HasFilter("role = 0")
+            .HasDatabaseName("ux_place_media_links_cover");
+
+        // Gallery SortOrder unique per Place (Cover SortOrder=0 is outside this filter).
+        builder.HasIndex(x => new { x.PlaceId, x.SortOrder })
+            .IsUnique()
+            .HasFilter("role = 1")
+            .HasDatabaseName("ux_place_media_links_gallery_sort");
     }
 }
 

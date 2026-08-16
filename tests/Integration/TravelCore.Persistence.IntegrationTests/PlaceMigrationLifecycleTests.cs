@@ -2,6 +2,7 @@ using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using TravelCore.Modules.Destination.Contracts;
+using TravelCore.Modules.Media.Contracts;
 using TravelCore.Modules.Place.Contracts;
 using TravelCore.Modules.Place.Infrastructure;
 using TravelCore.Modules.Place.Infrastructure.Services;
@@ -11,8 +12,8 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Place migration + catalog / localization / Destination link / geo /
-/// facilities · classification · catalog status (TC-P07-T004).
+/// Real-PostgreSQL Place migration + catalog / localization / Destination / geo /
+/// facilities · classification · catalog status · Place↔Media links (TC-P07-T005).
 /// </summary>
 [Collection(nameof(PlaceMigrationLifecycleCollection))]
 public sealed class PlaceMigrationLifecycleTests
@@ -33,11 +34,12 @@ public sealed class PlaceMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.EndsWith("_InitialPlaceScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPlaceCatalogTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_PlaceTranslationsDestinationLinkAndGeo", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_PlaceFacilitiesClassificationAndCatalogStatus", expectedMigrations[3], StringComparison.Ordinal);
+            Assert.EndsWith("_PlaceMediaLinks", expectedMigrations[4], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -53,14 +55,25 @@ public sealed class PlaceMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'place';
                 """, ct));
-            Assert.Equal(7, await ScalarIntAsync(conn, """
+            Assert.Equal(8, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'place'
-                  AND table_name IN ('places', 'hotels', 'restaurants', 'attractions', 'place_translations', 'place_facilities', '__EFMigrationsHistory');
+                  AND table_name IN ('places', 'hotels', 'restaurants', 'attractions', 'place_translations', 'place_facilities', 'place_media_links', '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.table_constraints tc
+                JOIN information_schema.constraint_column_usage ccu
+                  ON tc.constraint_name = ccu.constraint_name
+                 AND tc.table_schema = ccu.table_schema
+                WHERE tc.table_schema = 'place'
+                  AND tc.table_name = 'place_media_links'
+                  AND tc.constraint_type = 'FOREIGN KEY'
+                  AND ccu.table_schema = 'media';
+                """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.table_constraints tc
@@ -75,13 +88,24 @@ public sealed class PlaceMigrationLifecycleTests
         }
 
         var knownDestinationId = Guid.Parse("01900000-0000-7000-8000-0000000000bb");
+        var readyMediaA = Guid.Parse("01900000-0000-7000-8000-000000000501");
+        var readyMediaB = Guid.Parse("01900000-0000-7000-8000-000000000502");
+        var readyMediaC = Guid.Parse("01900000-0000-7000-8000-000000000503");
         var destinations = new StubDestinationExistence(knownDestinationId);
         var locales = new StubReferenceDataCatalog(("fa", "Persian"), ("en", "English"));
+        var mediaReady = new StubMediaReadiness(readyMediaA, readyMediaB, readyMediaC);
+        var mediaPresentation = new StubMediaPresentation();
 
         Guid createdId;
         await using (var db = _postgres.CreateDbContext())
         {
-            var service = new PlaceApplicationService(db, SystemClock.Instance, destinations, locales);
+            var service = new PlaceApplicationService(
+                db,
+                SystemClock.Instance,
+                destinations,
+                locales,
+                mediaReady,
+                mediaPresentation);
             var created = await service.CreateAsync(
                 new CreatePlaceRequest(
                     "Hotel",
@@ -182,6 +206,49 @@ public sealed class PlaceMigrationLifecycleTests
             Assert.Equal("boutique-hotel", readBack.ClassificationCode);
             Assert.Equal(["parking", "pool", "wifi"], readBack.Facilities);
 
+            var cover = await service.SetCoverAsync(
+                createdId,
+                new SetPlaceCoverRequest(readyMediaA),
+                ct);
+            Assert.Equal("Cover", cover.Role);
+            Assert.Equal(0, cover.SortOrder);
+            Assert.Equal(readyMediaA, cover.MediaAssetId);
+
+            await service.AddGalleryItemAsync(
+                createdId,
+                new AddPlaceGalleryItemRequest(readyMediaB, SortOrder: 10),
+                ct);
+            await service.AddGalleryItemAsync(
+                createdId,
+                new AddPlaceGalleryItemRequest(readyMediaC, SortOrder: 20),
+                ct);
+
+            var reordered = await service.ReorderGalleryAsync(
+                createdId,
+                new ReorderPlaceGalleryRequest([readyMediaC, readyMediaB]),
+                ct);
+            Assert.Equal([readyMediaC, readyMediaB], reordered.Select(x => x.MediaAssetId).ToArray());
+            Assert.Equal([0, 1], reordered.Select(x => x.SortOrder).ToArray());
+
+            var links = await service.ListMediaLinksAsync(createdId, ct);
+            Assert.Contains(links, x => x.Role == "Cover" && x.MediaAssetId == readyMediaA);
+            Assert.Equal(3, links.Count);
+
+            var presentation = await service.GetMediaPresentationAsync(createdId, "fa", ct);
+            Assert.NotNull(presentation);
+            Assert.Equal(readyMediaA, presentation!.Cover!.MediaAssetId);
+            Assert.NotNull(presentation.Cover.Presentation);
+            Assert.Equal(
+                MediaPresentationUrls.OriginalContent(readyMediaA),
+                presentation.Cover.Presentation!.OriginalContentUrl);
+            Assert.Equal(2, presentation.Gallery.Count);
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                service.SetCoverAsync(
+                    createdId,
+                    new SetPlaceCoverRequest(Guid.Parse("01900000-0000-7000-8000-000000000599")),
+                    ct));
+
             await Assert.ThrowsAsync<ArgumentException>(() =>
                 service.SetCatalogStatusAsync(
                     createdId,
@@ -250,6 +317,16 @@ public sealed class PlaceMigrationLifecycleTests
             Assert.Equal(3, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM place.place_facilities WHERE place_id = @id;
                 """, ct, createdId));
+            Assert.Equal(3, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int FROM place.place_media_links WHERE place_id = @id;
+                """, ct, createdId));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'place'
+                  AND table_name = 'place_media_links'
+                  AND column_name IN ('storage_key', 'content_url', 'presigned_url');
+                """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM place.restaurants;
                 """, ct));
@@ -310,6 +387,34 @@ public sealed class PlaceMigrationLifecycleTests
     {
         public Task<bool> ExistsAsync(Guid destinationId, CancellationToken cancellationToken = default)
             => Task.FromResult(destinationId == knownId);
+    }
+
+    private sealed class StubMediaReadiness(params Guid[] readyIds) : IMediaAssetReadinessQuery
+    {
+        private readonly HashSet<Guid> _ready = readyIds.ToHashSet();
+
+        public Task<bool> IsReadyAsync(Guid mediaAssetId, CancellationToken cancellationToken = default)
+            => Task.FromResult(mediaAssetId != Guid.Empty && _ready.Contains(mediaAssetId));
+    }
+
+    private sealed class StubMediaPresentation : IMediaPresentationService
+    {
+        public Task<MediaAssetPresentationResponse?> GetPresentationAsync(
+            Guid mediaAssetId,
+            string? localeCode = null,
+            CancellationToken cancellationToken = default)
+            => Task.FromResult<MediaAssetPresentationResponse?>(
+                new MediaAssetPresentationResponse(
+                    mediaAssetId,
+                    "Ready",
+                    MediaPresentationUrls.OriginalContent(mediaAssetId),
+                    Width: 800,
+                    Height: 600,
+                    FocalX: null,
+                    FocalY: null,
+                    ContentType: "image/jpeg",
+                    Variants: [],
+                    AltCaption: null));
     }
 
     private sealed class StubReferenceDataCatalog(params (string Code, string EnglishName)[] locales)

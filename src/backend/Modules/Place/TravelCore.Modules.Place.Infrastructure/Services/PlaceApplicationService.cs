@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using TravelCore.Modules.Destination.Contracts;
+using TravelCore.Modules.Media.Contracts;
 using TravelCore.Modules.Place.Contracts;
 using TravelCore.Modules.Place.Domain;
 using TravelCore.Modules.ReferenceData.Contracts;
@@ -9,8 +10,7 @@ using PlaceAggregate = TravelCore.Modules.Place.Domain.Place;
 namespace TravelCore.Modules.Place.Infrastructure.Services;
 
 /// <summary>
-/// Application service implementing Place create/get/list + localization / Destination link / geo-address /
-/// facilities · classification · catalog status (TC-P07-T004).
+/// Application service implementing Place catalog + Place↔Media relations (TC-P07-T005).
 /// </summary>
 public sealed class PlaceApplicationService : IPlaceService
 {
@@ -20,17 +20,23 @@ public sealed class PlaceApplicationService : IPlaceService
     private readonly IClock _clock;
     private readonly IDestinationExistenceQuery _destinations;
     private readonly IReferenceDataCatalogQuery _referenceData;
+    private readonly IMediaAssetReadinessQuery _mediaReadiness;
+    private readonly IMediaPresentationService _mediaPresentation;
 
     public PlaceApplicationService(
         PlaceDbContext db,
         IClock clock,
         IDestinationExistenceQuery destinations,
-        IReferenceDataCatalogQuery referenceData)
+        IReferenceDataCatalogQuery referenceData,
+        IMediaAssetReadinessQuery mediaReadiness,
+        IMediaPresentationService mediaPresentation)
     {
         _db = db;
         _clock = clock;
         _destinations = destinations;
         _referenceData = referenceData;
+        _mediaReadiness = mediaReadiness;
+        _mediaPresentation = mediaPresentation;
     }
 
     public async Task<PlaceResponse> CreateAsync(
@@ -267,6 +273,151 @@ public sealed class PlaceApplicationService : IPlaceService
         await _db.SaveChangesAsync(cancellationToken);
         return Map(place);
     }
+
+    public async Task<PlaceMediaLinkResponse> SetCoverAsync(
+        Guid placeId,
+        SetPlaceCoverRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        await EnsureMediaReadyAsync(request.MediaAssetId, cancellationToken);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var link = place.SetCover(request.MediaAssetId, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return MapMediaLink(link);
+    }
+
+    public async Task RemoveCoverAsync(
+        Guid placeId,
+        CancellationToken cancellationToken = default)
+    {
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        place.RemoveCover(now);
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<PlaceMediaLinkResponse> AddGalleryItemAsync(
+        Guid placeId,
+        AddPlaceGalleryItemRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        await EnsureMediaReadyAsync(request.MediaAssetId, cancellationToken);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var link = place.AddGalleryItem(request.MediaAssetId, now, request.SortOrder);
+        await _db.SaveChangesAsync(cancellationToken);
+        return MapMediaLink(link);
+    }
+
+    public async Task RemoveGalleryItemAsync(
+        Guid placeId,
+        Guid mediaAssetId,
+        CancellationToken cancellationToken = default)
+    {
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        place.RemoveGalleryItem(mediaAssetId, now);
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<PlaceMediaLinkResponse>> ReorderGalleryAsync(
+        Guid placeId,
+        ReorderPlaceGalleryRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(request.OrderedMediaAssetIds);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var links = place.ReorderGallery(request.OrderedMediaAssetIds, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return links.Select(MapMediaLink).ToList();
+    }
+
+    public async Task<IReadOnlyList<PlaceMediaLinkResponse>> ListMediaLinksAsync(
+        Guid placeId,
+        CancellationToken cancellationToken = default)
+    {
+        var id = PlaceId.From(placeId);
+        var place = await _db.Places.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (place is null)
+        {
+            return [];
+        }
+
+        return place.MediaLinks
+            .OrderBy(x => x.Role)
+            .ThenBy(x => x.SortOrder)
+            .ThenBy(x => x.MediaAssetId)
+            .Select(MapMediaLink)
+            .ToList();
+    }
+
+    public async Task<PlaceMediaPresentationResponse?> GetMediaPresentationAsync(
+        Guid placeId,
+        string? locale = null,
+        CancellationToken cancellationToken = default)
+    {
+        var id = PlaceId.From(placeId);
+        var place = await _db.Places.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (place is null)
+        {
+            return null;
+        }
+
+        PlaceMediaItemPresentation? cover = null;
+        if (place.Cover is not null)
+        {
+            cover = new PlaceMediaItemPresentation(
+                place.Cover.MediaAssetId,
+                place.Cover.Role.ToString(),
+                place.Cover.SortOrder,
+                await _mediaPresentation.GetPresentationAsync(
+                    place.Cover.MediaAssetId,
+                    locale,
+                    cancellationToken));
+        }
+
+        var gallery = new List<PlaceMediaItemPresentation>();
+        foreach (var link in place.GalleryOrdered)
+        {
+            gallery.Add(new PlaceMediaItemPresentation(
+                link.MediaAssetId,
+                link.Role.ToString(),
+                link.SortOrder,
+                await _mediaPresentation.GetPresentationAsync(
+                    link.MediaAssetId,
+                    locale,
+                    cancellationToken)));
+        }
+
+        return new PlaceMediaPresentationResponse(place.Id.Value, cover, gallery);
+    }
+
+    private async Task EnsureMediaReadyAsync(Guid mediaAssetId, CancellationToken cancellationToken)
+    {
+        if (mediaAssetId == Guid.Empty)
+        {
+            throw new ArgumentException("MediaAssetId cannot be empty.", nameof(mediaAssetId));
+        }
+
+        if (!await _mediaReadiness.IsReadyAsync(mediaAssetId, cancellationToken))
+        {
+            throw new InvalidOperationException(
+                "MediaAsset must exist and be Ready to attach to a Place.");
+        }
+    }
+
+    private static PlaceMediaLinkResponse MapMediaLink(PlaceMediaLink link) =>
+        new(link.PlaceId.Value, link.MediaAssetId, link.Role.ToString(), link.SortOrder);
 
     private async Task<PlaceAggregate> LoadTrackedAsync(Guid placeId, CancellationToken cancellationToken)
     {

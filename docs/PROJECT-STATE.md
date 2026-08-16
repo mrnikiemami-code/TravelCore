@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P07-T004` — AWAITING_ARCHITECT_REVIEW |
+| Current Active Product Task | `TC-P07-T005` — AWAITING_ARCHITECT_REVIEW |
 | Current Next Product Phase | P07 — Place Catalog (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P07-T004`; then Auto-Execute `TC-P07-T005` |
+| Current Next Task | Architect review of `TC-P07-T005`; then Auto-Execute `TC-P07-T006` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -127,6 +127,7 @@
 | P07-T002-R1 | **AWAITING_ARCHITECT_REVIEW** (`0b86f05`) — PlaceId identity + T002 scope reconciliation (docs-only) |
 | P07-T003 | **AWAITING_ARCHITECT_REVIEW** — Localization + Destination link + geo/address |
 | P07-T004 | **AWAITING_ARCHITECT_REVIEW** — Facilities · classification · catalog status |
+| P07-T005 | **AWAITING_ARCHITECT_REVIEW** — Place↔Media relations (Cover/Gallery) |
 | P07-R1 (Place model shape) | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION (`PlaceId` only; Hotel/Restaurant/Attraction 1:1 tables; no TPH; no HotelBooking fields) |
 | P07-R2 (Destination link requiredness) | **RESOLVED** — OPTIONAL SINGLE LOGICAL REFERENCE (0..1; Place-owned nullable DestinationId; no cross-schema FK; Contracts existence validation) |
 | P07-R3 (Place delete/archive) | **UNRESOLVED** |
@@ -150,7 +151,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P07_IN_PROGRESS** · `TC-P07-PLAN` ACCEPTED · `TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002` AWAITING_ARCHITECT_REVIEW · `TC-P07-T002-R1` AWAITING_ARCHITECT_REVIEW · `TC-P07-T003` AWAITING_ARCHITECT_REVIEW · `TC-P07-T004` AWAITING_ARCHITECT_REVIEW · **P07-R1 RESOLVED** · **P07-R2 RESOLVED** |
+| Phase Transition State | **P07_IN_PROGRESS** · `TC-P07-PLAN` ACCEPTED · `TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002` AWAITING_ARCHITECT_REVIEW · `TC-P07-T002-R1` AWAITING_ARCHITECT_REVIEW · `TC-P07-T003` AWAITING_ARCHITECT_REVIEW · `TC-P07-T004` AWAITING_ARCHITECT_REVIEW · `TC-P07-T005` AWAITING_ARCHITECT_REVIEW · **P07-R1 RESOLVED** · **P07-R2 RESOLVED** |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -298,6 +299,7 @@
 | TC-P07-T002-R1 | **AWAITING_ARCHITECT_REVIEW** (`0b86f05`) — PlaceId identity + T002 scope reconciliation (docs-only); artifact [`plans/P07-T002-R1-place-identity-and-scope-reconciliation.md`](plans/P07-T002-R1-place-identity-and-scope-reconciliation.md) |
 | TC-P07-T003 | **AWAITING_ARCHITECT_REVIEW** — Localization + Destination link + geo/address (translations; optional DestinationId; Place-owned address/coordinates) |
 | TC-P07-T004 | **AWAITING_ARCHITECT_REVIEW** — Facilities · classification · catalog status (`PlaceCatalogStatus` Draft/Active/Inactive; opaque ClassificationCode; `place_facilities`) |
+| TC-P07-T005 | **AWAITING_ARCHITECT_REVIEW** — Place↔Media relations (Cover/Gallery; `place_media_links`; Ready validation via `IMediaAssetReadinessQuery`; presentation via Media contracts) |
 | P07-R1 | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION |
 | P07-R2 | **RESOLVED** — OPTIONAL SINGLE LOGICAL REFERENCE Place→Destination (0..1; nullable DestinationId; no cross-schema FK; Contracts existence validation; no DestinationKind restriction in T003) |
 | P07-R3 | **UNRESOLVED** (Place delete/archive) — T004 CatalogStatus is catalog ops only (Draft/Active/Inactive); does **not** resolve R3 |
@@ -314,7 +316,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); Runtime Mode = PIPELINE; **P07 IN_PROGRESS** (`TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002` AWAITING_ARCHITECT_REVIEW · `TC-P07-T002-R1` AWAITING_ARCHITECT_REVIEW · `TC-P07-T003` AWAITING_ARCHITECT_REVIEW · `TC-P07-T004` AWAITING_ARCHITECT_REVIEW · **P07-R1 RESOLVED** · **P07-R2 RESOLVED**; R3–R5 UNRESOLVED)
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); Runtime Mode = PIPELINE; **P07 IN_PROGRESS** (`TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002` AWAITING_ARCHITECT_REVIEW · `TC-P07-T002-R1` AWAITING_ARCHITECT_REVIEW · `TC-P07-T003` AWAITING_ARCHITECT_REVIEW · `TC-P07-T004` AWAITING_ARCHITECT_REVIEW · `TC-P07-T005` AWAITING_ARCHITECT_REVIEW · **P07-R1 RESOLVED** · **P07-R2 RESOLVED**; R3–R5 UNRESOLVED)
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -430,6 +432,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P07-T002-R1 | PlaceId identity + T002 scope reconciliation (docs-only) | AWAITING_ARCHITECT_REVIEW | `0b86f05` |
 | TC-P07-T003 | Localization + Destination link + geo/address | AWAITING_ARCHITECT_REVIEW | `3ec0f4c` |
 | TC-P07-T004 | Facilities · classification · catalog status | AWAITING_ARCHITECT_REVIEW | `6258003` |
+| TC-P07-T005 | Place↔Media relations (gallery meaning) | AWAITING_ARCHITECT_REVIEW | (pending commit SHA) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
