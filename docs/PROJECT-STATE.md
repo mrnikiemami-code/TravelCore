@@ -98,7 +98,7 @@
 | P06 Plan | `TC-P06-PLAN` **COMPLETE / ACCEPTED** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
 | P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`) |
 | P06-T002 | **COMPLETE / ACCEPTED** (`020ce99`) |
-| P06-T003 | **AWAITING_ARCHITECT_REVIEW** |
+| P06-T003 | **AWAITING_ARCHITECT_REVIEW** (`cf95e5c`) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
 | P07 | **NOT_STARTED** |
 | P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
@@ -240,7 +240,7 @@
 | TC-P06-PLAN | **COMPLETE / ACCEPTED** (`87069e4`; hygiene `f323857`/`1b2877b`) |
 | TC-P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`; hygiene `8e8fb63`) |
 | TC-P06-T002 | **COMPLETE / ACCEPTED** (`020ce99`; hygiene `6100891`) |
-| TC-P06-T003 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T003 | **AWAITING_ARCHITECT_REVIEW** (`cf95e5c`) |
 | TC-P06-T004 | **NOT_STARTED** |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | Required Human Token | none |
