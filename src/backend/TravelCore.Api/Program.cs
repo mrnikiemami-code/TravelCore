@@ -6,6 +6,7 @@ using TravelCore.Modules.Destination.Infrastructure;
 using TravelCore.Modules.Identity.Infrastructure;
 using TravelCore.Modules.Media.Infrastructure;
 using TravelCore.Modules.Party.Infrastructure;
+using TravelCore.Modules.Place.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Observability;
@@ -34,6 +35,7 @@ IReadOnlyList<ITravelCoreModule> modules =
     new DestinationModule(),
     new SeoModule(),
     new MediaModule(),
+    new PlaceModule(),
 ];
 builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 

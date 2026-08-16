@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P07-PLAN` |
 | Phase | P07 — Place Catalog |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | COMPLETE / ACCEPTED |
 | Baseline | `77eb9dd` (`docs: mark P06 COMPLETE after TC-P06-GATE accept`) |
 | Authoritative sources | `docs/ROADMAP.md` § P07 · `docs/architecture/15-future-architecture-transition-map.md` § G · `04-module-boundaries.md` § Place (+ HotelBooking) · `00-constitution.md` §7 · `05-dependency-rules.md` · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` · `docs/data/01-identifiers-and-references.md` · `docs/ui/06-cross-domain-workflow-and-navigation.md` §11 Workflow D · P04 Destination patterns · P05 SEO locks (R1/R2) · P06 Media locks (R1–R6; consumer gallery meaning deferred to P07) · ADR 0001 · ADR 0007–0008 · ADR 0011–0014 |
 | Backend root | `src/backend` |

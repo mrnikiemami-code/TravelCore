@@ -44,6 +44,15 @@ Business and capability modules live under this directory.
 - Invariant: **Media owns technical asset truth**; consumers own relationship meaning (gallery/hero/order). Media ≠ SEO authority.
 - **P06-R2 RESOLVED:** storage abstraction is Media-owned first (not Platform-wide `IObjectStorage`).
 
+## Active modules (P07)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Place | `Place/TravelCore.Modules.Place.{Domain,Contracts,Infrastructure}` | `place` |
+
+- **Place:** Module scaffolding (`TC-P07-T001`) — schema ownership only; catalog aggregates in later P07 tasks.
+- Invariant: **Hotel Catalog ≠ Hotel Booking**; Place.Hotel = canonical hotel catalog (when modeled); Destination ≠ Place.
+
 ## Naming
 
 Preferred project naming when a module is actually introduced:
@@ -67,6 +76,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - Destination ≠ SEO content ownership; SEO owns route/indexation mechanics only (P05).
 - SEO ≠ Search.
 - Media ≠ consumer gallery/hero semantics; Media ≠ SEO IndexPolicy.
+- Place ≠ HotelBooking; Place ≠ Destination hierarchy ownership.
 
 ## Host
 

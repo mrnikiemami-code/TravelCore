@@ -296,6 +296,29 @@ public sealed class ArchitectureGuardrailTests
     }
 
     [Fact]
+    public void PlacePersistence_MustUseOwnedSchema_place()
+    {
+        var options = new DbContextOptionsBuilder<TravelCore.Modules.Place.Infrastructure.PlaceDbContext>()
+            .UseTravelCorePostgreSql(
+                "Host=127.0.0.1;Database=architecture_guard_place_design;Username=architecture;Password=not-a-real-secret",
+                migrationsHistorySchema: TravelCore.Modules.Place.Infrastructure.PlaceDbContext.SchemaName)
+            .Options;
+
+        using var db = new TravelCore.Modules.Place.Infrastructure.PlaceDbContext(options);
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+        Assert.Equal("place", TravelCore.Modules.Place.Infrastructure.PlaceDbContext.SchemaName);
+
+        // Scaffolding has no product entities yet; default schema ownership must still be place.
+        Assert.Equal("place", db.Model.GetDefaultSchema());
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            Assert.Equal("place", entity.GetSchema());
+        }
+
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+    }
+
+    [Fact]
     public void FixtureMigrations_MustRemainUnderFixtureProject()
     {
         var migrationsDir = Path.Combine(

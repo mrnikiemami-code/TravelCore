@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P07-PLAN` — AWAITING_ARCHITECT_REVIEW |
+| Current Active Product Task | `TC-P07-T001` — AWAITING_ARCHITECT_REVIEW |
 | Current Next Product Phase | P07 — Place Catalog (**IN_PROGRESS**) |
-| Current Next Task | Architect accept of `TC-P07-PLAN` then Auto-Execute `TC-P07-T001` |
+| Current Next Task | Architect accept of `TC-P07-T001` then Auto-Execute `TC-P07-T002` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -121,7 +121,8 @@
 | P06-R8 (domain delete lifecycle) | **UNRESOLVED** — OK for gate (no delete UX / not in P06 product scope; do not invent) |
 | P06-R9 (consumer alt override) | **DEFERRED** — Media owns default alt/caption only |
 | P07 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P07`; plan awaiting review) |
-| P07 Plan | `TC-P07-PLAN` **AWAITING_ARCHITECT_REVIEW** (`5dbc152`) — [`docs/plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) |
+| P07 Plan | `TC-P07-PLAN` **COMPLETE / ACCEPTED** (`5dbc152`) — [`docs/plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) |
+| P07-T001 | **AWAITING_ARCHITECT_REVIEW** (Place module scaffolding) |
 | P07-R1 (Place model shape) | **UNRESOLVED** |
 | P07-R2 (Destination link requiredness) | **UNRESOLVED** |
 | P07-R3 (Place delete/archive) | **UNRESOLVED** |
@@ -287,7 +288,8 @@
 | P06-R7 | **DEFERRED** (malware/AV scanning; recorded security requirement) |
 | P06-R8 | **UNRESOLVED** (no Admin delete UI/actions; OK for gate — deletion not in P06 product scope) |
 | P06-R9 | **DEFERRED** (consumer alt override; Media owns default alt/caption only) |
-| TC-P07-PLAN | **AWAITING_ARCHITECT_REVIEW** (`5dbc152`) — [`docs/plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) |
+| TC-P07-PLAN | **COMPLETE / ACCEPTED** (`5dbc152`; hygiene `768a2c5`) |
+| TC-P07-T001 | **AWAITING_ARCHITECT_REVIEW** |
 | P07-R1 | **UNRESOLVED** (Place model shape) |
 | P07-R2 | **UNRESOLVED** (Destination link requiredness) |
 | P07-R3 | **UNRESOLVED** (Place delete/archive) |
@@ -414,7 +416,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-GATE | P05 Acceptance Gate | COMPLETE / ACCEPTED | `7f234e8` (+ `d6bcbfb`) |
 | TC-P05-GATE-R1 | Reconcile P05 Gate Baseline Drift | COMPLETE / ACCEPTED | `bde6661` (+ `37637bf`) |
 | TC-P06-GATE | P06 Acceptance Gate | COMPLETE / ACCEPTED | `da345b5` |
-| TC-P07-PLAN | P07 Place Catalog Implementation Plan | AWAITING_ARCHITECT_REVIEW | `5dbc152` |
+| TC-P07-PLAN | P07 Place Catalog Implementation Plan | COMPLETE / ACCEPTED | `5dbc152` |
+| TC-P07-T001 | Place module scaffolding | AWAITING_ARCHITECT_REVIEW | (pending commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
