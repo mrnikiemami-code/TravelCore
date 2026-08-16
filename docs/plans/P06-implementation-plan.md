@@ -215,6 +215,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P06`.
 - **Forbidden:** wildcard remote hosts · SEO image SoR.
 - **Validation:** `npm run quality` · build · alt a11y.
 - **Done-when:** approved remote/local presentation path works without CLS regression.
+- **Decision lock (P06-R4 RESOLVED — APP PROXY):** public delivery via TravelCore HTTP (`/api/media/assets/{id}/content` and `/variants/{profile}/content`); anonymous Ready-only stream through `IMediaObjectStorage`; no StorageKey/public URL/presign on storage port; same-origin preferred; `remotePatterns` only for configured public API origin (`/api/media/**`) — never object-storage hosts.
 
 ### TC-P06-T010 — Consumer reference proof (no gallery engines)
 
@@ -298,7 +299,7 @@ TC-P06-PLAN (architect accept)
 | R1 | Whether WebP/AVIF generation pipeline ships in P06 | **RESOLVED — DEFER** — same-format variants only (T005); no cross-format WebP/AVIF conversion / negotiation in P06; evidence [`P06-T008-optimization-contract-and-r1-defer.md`](P06-T008-optimization-contract-and-r1-defer.md) |
 | R2 | Object-storage ownership (Platform abstraction vs Media.Infrastructure-first) | **RESOLVED** — Media-owned `IMediaObjectStorage` first; local FS + in-memory adapters; not Platform-wide |
 | R3 | Sync vs async variant generation | **RESOLVED** — SYNCHRONOUS baseline; Media-owned processor; HTTP calls sync; no Hangfire/Quartz/queue. Sizing: large=1600 / medium=960 / thumbnail=320 (max longest edge); fit-within; no crop; no upscale. original = logical source MediaAsset (no duplicate original blob). Decode limits: max W/H 12000; max pixels 40_000_000. GIF variant policy unresolved → fail-closed. |
-| R4 | Public URL strategy (direct object URL vs app proxy vs signed URL) | **OPEN** — decide by T009; drives `remotePatterns` |
+| R4 | Public URL strategy (direct object URL vs app proxy vs signed URL) | **RESOLVED — APP PROXY** — Browser → TravelCore Media delivery endpoint → metadata/lifecycle checks → `IMediaObjectStorage.OpenRead` → stream. StorageKey never public. Anonymous public read for Ready representations. Direct object URL rejected for P06; Signed URL deferred. Evidence: TC-P06-T009. |
 | R5 | Whether Destination schema gets optional MediaAssetId in P06 or contract-only proof | **OPEN** — decide by T010; Destination relationship meaning stays Destination-owned either way |
 | R6 | SVG acceptance policy | **RESOLVED** — DENY `image/svg+xml` / `.svg` / detected SVG-XML payload (Option A); B deferred; C rejected |
 | R7 | Malware/AV scanning | **DEFERRED** unless architect expands; record security requirement |

@@ -237,6 +237,52 @@ internal static class MediaEndpoints
             }
         }).RequireAuthorization(MediaAssetsWritePolicy);
 
+        // --- Anonymous public app-proxy delivery (P06-R4) ---
+        // Mutation endpoints above remain Access-protected. These GETs intentionally omit
+        // RequireAuthorization (anonymous public read). StorageKey is never accepted from callers.
+
+        group.MapGet("/{id:guid}/content", async Task<IResult> (
+            Guid id,
+            IMediaContentDeliveryService delivery,
+            CancellationToken cancellationToken) =>
+        {
+            var opened = await delivery.OpenOriginalAsync(id, cancellationToken);
+            return opened is null ? Results.NotFound() : ToStreamResult(opened);
+        }).AllowAnonymous();
+
+        group.MapGet("/{id:guid}/variants/{profile}/content", async Task<IResult> (
+            Guid id,
+            string profile,
+            IMediaContentDeliveryService delivery,
+            CancellationToken cancellationToken) =>
+        {
+            var opened = await delivery.OpenVariantAsync(id, profile, cancellationToken);
+            return opened is null ? Results.NotFound() : ToStreamResult(opened);
+        }).AllowAnonymous();
+
+        group.MapGet("/{id:guid}/presentation", async Task<IResult> (
+            Guid id,
+            string? locale,
+            IMediaPresentationService presentation,
+            CancellationToken cancellationToken) =>
+        {
+            var dto = await presentation.GetPresentationAsync(id, locale, cancellationToken);
+            return dto is null ? Results.NotFound() : Results.Ok(dto);
+        }).AllowAnonymous();
+
         return endpoints;
+    }
+
+    private static IResult ToStreamResult(MediaContentDeliveryResult opened)
+    {
+        // Conservative cache: do not invent long-lived immutable Cache-Control.
+        // Content-Type comes from trusted Media metadata (not caller / filename).
+        return Results.Stream(
+            opened.Content,
+            contentType: opened.ContentType,
+            fileDownloadName: null,
+            lastModified: null,
+            entityTag: null,
+            enableRangeProcessing: false);
     }
 }

@@ -117,11 +117,14 @@ function main() {
     fs.existsSync(path.join(srcRoot, "components", "ui", "field-message.tsx")),
   );
 
-  // 6) Image foundation present; next.config has no remote wildcard
+  // 6) Image foundation present; next.config has no remote wildcard / storage-provider hosts
   assert.ok(fs.existsSync(path.join(srcRoot, "components", "ui", "media-image.tsx")));
+  assert.ok(fs.existsSync(path.join(srcRoot, "lib", "media", "media-presentation.ts")));
   const nextConfig = read(path.join(webRoot, "next.config.ts"));
   assert.doesNotMatch(nextConfig, /hostname:\s*['"]\*['"]/);
   assert.doesNotMatch(nextConfig, /remotePatterns:\s*\[[^\]]*['"]\*\*\/*/);
+  assert.doesNotMatch(nextConfig, /amazonaws\.com|r2\.cloudflarestorage|minio/i);
+  assert.match(nextConfig, /\/api\/media\/\*\*/);
 
   // 7) Money / Media contracts exist
   assert.ok(fs.existsSync(path.join(srcRoot, "types", "money.ts")));
