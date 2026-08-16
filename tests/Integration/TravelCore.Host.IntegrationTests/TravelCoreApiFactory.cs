@@ -9,6 +9,7 @@ using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Destination.Infrastructure;
 using TravelCore.Modules.Media.Infrastructure;
 using TravelCore.Modules.Place.Infrastructure;
+using TravelCore.Modules.Content.Infrastructure;
 using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Persistence.PostgreSql;
 using Xunit;
@@ -52,6 +53,9 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
 
         await using var place = CreatePlaceDb();
         await PlaceMigrator.MigrateAsync(place);
+
+        await using var content = CreateContentDb();
+        await ContentMigrator.MigrateAsync(content);
     }
 
     public async ValueTask DisposeAsync() => await _container.DisposeAsync();
@@ -118,6 +122,14 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
             .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: PlaceDbContext.SchemaName)
             .Options;
         return new PlaceDbContext(options);
+    }
+
+    public ContentDbContext CreateContentDb()
+    {
+        var options = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<ContentDbContext>()
+            .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: ContentDbContext.SchemaName)
+            .Options;
+        return new ContentDbContext(options);
     }
 
     public TravelCoreApiFactory CreateFactory(string environmentName) =>

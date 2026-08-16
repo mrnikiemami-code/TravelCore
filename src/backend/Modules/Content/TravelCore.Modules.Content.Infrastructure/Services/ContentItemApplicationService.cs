@@ -89,6 +89,17 @@ public sealed class ContentItemApplicationService : IContentItemService
         return item is null ? null : Map(item, locale);
     }
 
+    public async Task<ContentItemResponse?> GetByCodeAsync(
+        string code,
+        string? locale = null,
+        CancellationToken cancellationToken = default)
+    {
+        var normalized = ContentItemAggregate.NormalizeCode(code);
+        var item = await _db.ContentItems.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Code == normalized, cancellationToken);
+        return item is null ? null : Map(item, locale);
+    }
+
     public async Task<IReadOnlyList<ContentItemResponse>> ListAsync(
         string? kind = null,
         int take = 50,

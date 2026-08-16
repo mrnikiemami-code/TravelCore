@@ -36,4 +36,9 @@ public static class AccessAuthorizationPolicies
     /// Place SEO route publication: Access-backed <c>seo.place-posture.write</c>.
     /// </summary>
     public const string SeoPlacePostureWrite = "Access.Seo.PlacePosture.Write";
+
+    /// <summary>
+    /// Content Admin editorial mutations: Access-backed <c>content.items.write</c>.
+    /// </summary>
+    public const string ContentItemsWrite = "Access.Content.Items.Write";
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Content.Contracts;
+using TravelCore.Modules.Content.Infrastructure.Endpoints;
 using TravelCore.Modules.Content.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
@@ -42,6 +43,6 @@ public sealed class ContentModule : ITravelCoreModule
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // Product endpoints belong to later P08 Admin/public tasks.
+        endpoints.MapContentEndpoints();
     }
 }

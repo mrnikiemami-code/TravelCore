@@ -96,6 +96,11 @@ public interface IContentItemService
         string? locale,
         CancellationToken cancellationToken = default);
 
+    Task<ContentItemResponse?> GetByCodeAsync(
+        string code,
+        string? locale = null,
+        CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<ContentItemResponse>> ListAsync(
         string? kind = null,
         int take = 50,
