@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P07 — Place Catalog** (**IN_PROGRESS** · PLAN awaiting review) |
-| Phase Status | P00–P06 COMPLETE · P07 IN_PROGRESS |
+| Current Phase | **P07 — Place Catalog** (**IN_PROGRESS** · GATE PASS pending architect) |
+| Phase Status | P00–P06 COMPLETE · P07 IN_PROGRESS (GATE evidence posted) · P08 NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `da345b5` (`TC-P06-GATE` ACCEPTED) · hygiene `0d2edad` · P06 COMPLETE docs `77eb9dd` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | `TC-P07-PLAN` AWAITING_ARCHITECT_REVIEW → then `TC-P07-T001` |
+| Current Next Task | Architect accept of `TC-P07-GATE`; P08 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P08` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -106,7 +106,7 @@
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
 - **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
 - **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED**)
-- **P07** = IN_PROGRESS (`TC-P07-PLAN` AWAITING_ARCHITECT_REVIEW · baseline `77eb9dd` · USER `TRAVELCORE_PHASE_CONFIRM: P07`)
+- **P07** = GATE PASS evidence posted (`TC-P07-T001`–`T008` ACCEPTED · awaiting architect `TC-P07-GATE` accept · **P07-R1/R2/R4/R5 RESOLVED** · **P07-R3 UNRESOLVED** · P08 NOT_STARTED)
 - **P08–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -347,15 +347,18 @@ Invariant: Media مالک بایت/متادیتای دارایی است؛ معن
 
 ## P07 — Place Catalog
 
-**Status:** IN_PROGRESS
+**Status:** IN_PROGRESS (GATE evidence posted; awaiting architect ACCEPT to mark COMPLETE)
 
 **Authoritative plan:** [`plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) (`TC-P07-PLAN` — COMPLETE / ACCEPTED · `5dbc152`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P07` · plan ACCEPTED · `TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002`–`T008` AWAITING_ARCHITECT_REVIEW · evidence [`plans/P07-T008-hardening-and-evidence-pack.md`](plans/P07-T008-hardening-and-evidence-pack.md) ready for GATE · **P07-R1 RESOLVED** · **P07-R2 RESOLVED** · **P07-R4 RESOLVED** (Place owns current Slug) · **P07-R5 RESOLVED** (default noindex,follow) · **P07-R3 UNRESOLVED** · `TC-P07-GATE` NOT_STARTED · P08 NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P07` · plan ACCEPTED · `TC-P07-T001`–`T008` COMPLETE / ACCEPTED · **`TC-P07-GATE` AWAITING_ARCHITECT_REVIEW** · **P07-R1 RESOLVED** · **P07-R2 RESOLVED** · **P07-R4 RESOLVED** (Place owns current Slug) · **P07-R5 RESOLVED** (default noindex,follow) · **P07-R3 UNRESOLVED** · P08 **NOT_STARTED** (needs `TRAVELCORE_PHASE_CONFIRM: P08`)
 
 Place · Hotel · Restaurant · Attraction با localization، رابطه با Destination، geo، facilities، media، وضعیت عملیاتی، جزئیات عمومی، Admin، یکپارچگی SEO.
 
 **زندهٔ Hotel Booking inventory را اینجا پیاده نکنید.** Hotel Catalog ≠ Hotel Booking.
+
+**Evidence pack:** [`plans/P07-T008-hardening-and-evidence-pack.md`](plans/P07-T008-hardening-and-evidence-pack.md) (`f7843cc`)  
+**Gate evidence:** [`plans/P07-GATE-acceptance-evidence.md`](plans/P07-GATE-acceptance-evidence.md)
 
 ---
 
@@ -660,8 +663,8 @@ P26 = Advanced SEO.
 | P04 | Reference Data + Destination | COMPLETE |
 | P05 | SEO Engine | COMPLETE |
 | P06 | Media | **COMPLETE** (`TC-P06-GATE` ACCEPTED) |
-| P07 | Place Catalog | **IN_PROGRESS** (`TC-P07-PLAN` awaiting review) |
-| P08 | Content CMS | PLANNED |
+| P07 | Place Catalog | **IN_PROGRESS** (GATE evidence posted) |
+| P08 | Content CMS | PLANNED / NOT_STARTED |
 | P09 | Tour Core | PLANNED |
 | P10 | Experience Tour | PLANNED |
 | P11 | Foreign Package Tour | PLANNED |
