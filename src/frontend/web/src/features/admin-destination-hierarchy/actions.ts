@@ -289,6 +289,24 @@ export async function setTranslationSlugAction(input: {
     },
   );
   if (!result.ok) return failMessage(result);
+
+  // TC-P05-T010: publish Destination content slug into SEO namespace (no IndexPolicy flip).
+  const trimmedSlug = input.slug?.trim() ?? "";
+  if (trimmedSlug.length > 0) {
+    const publish = await apiSendJson<unknown>("/api/seo/publication/destination", {
+      method: "POST",
+      body: {
+        destinationId: input.destinationId,
+        locale: input.localeCode.trim(),
+        slug: trimmedSlug,
+      },
+      headers: await authHeaders(),
+    });
+    if (!publish.ok) {
+      return failMessage(publish);
+    }
+  }
+
   return { ok: true, translation: mapTranslation(result.data) };
 }
 

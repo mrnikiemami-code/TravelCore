@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TravelCore.Modules.Seo.Contracts;
+using TravelCore.Modules.Seo.Domain;
 
 namespace TravelCore.Modules.Seo.Infrastructure.Endpoints;
 
@@ -222,6 +223,30 @@ internal static class SeoEndpoints
 
         group.MapGet("/robots.txt", (ISeoSitemapService sitemap) =>
             Results.Content(sitemap.RenderRobotsTxt(), "text/plain; charset=utf-8"));
+
+        // Destination public-path publication (T010) — SEO namespace; Destination keeps slug SoR.
+        group.MapPost("/publication/destination", async Task<IResult> (
+            PublishDestinationSeoRouteRequest request,
+            ISeoDestinationPublicationService publication,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var result = await publication.PublishAsync(request, cancellationToken);
+                return Results.Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+            catch (SeoRouteConflictException ex)
+            {
+                return Results.Conflict(new { title = "SeoRoute conflict", detail = ex.Message });
+            }
+        });
 
         return endpoints;
     }

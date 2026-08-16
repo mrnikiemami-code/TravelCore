@@ -107,7 +107,7 @@ const COPY: Record<"fa" | "en", DestinationHierarchyWorkflowCopy> = {
     kindRegion: "منطقه / استان",
     kindCity: "شهر",
     kindArea: "ناحیه",
-    slugNotSeo: "اسلاگ هوک موجودیت است — موتور SEO/انتشار عمومی اینجا نیست.",
+    slugNotSeo: "اسلاگ هوک موجودیت است؛ انتشار مسیر عمومی از API سئو پس از ذخیره اسلاگ انجام می‌شود (Index خودکار نیست).",
     unauthorizedBody:
       "برای ایجاد/ویرایش باید با Cookie امن احراز هویت شده باشید و مجوز نوشتن داشته باشید.",
     apiMissing: "آدرس API پیکربندی نشده است (TRAVELCORE_API_BASE_URL).",
@@ -166,7 +166,8 @@ const COPY: Record<"fa" | "en", DestinationHierarchyWorkflowCopy> = {
     kindRegion: "Region",
     kindCity: "City",
     kindArea: "Area",
-    slugNotSeo: "Slug is an entity hook — SEO publish engine is not here.",
+    slugNotSeo:
+      "Slug is an entity hook; public SEO path is published via SEO API after slug save (no automatic Index).",
     unauthorizedBody:
       "Create/edit requires a secure authenticated session with write permission.",
     apiMissing: "API base URL is not configured (TRAVELCORE_API_BASE_URL).",

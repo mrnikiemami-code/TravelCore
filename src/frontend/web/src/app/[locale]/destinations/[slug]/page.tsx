@@ -22,6 +22,8 @@ type PageProps = {
  * Public Destination detail baseline (TC-P04-T009).
  * TC-P05-T007: SEO-aware metadata composition (robots via IndexPolicy / R2).
  * TC-P05-T008: truthful BreadcrumbList JSON-LD via SEO structured-data framework.
+ * TC-P05-T010: public path publication lives in SEO (`/api/seo/publication/destination`);
+ * this page consumes SEO contracts only — Destination remains content SoR.
  */
 export async function generateMetadata({
   params,

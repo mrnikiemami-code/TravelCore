@@ -43,6 +43,7 @@ public sealed class SeoModule : ITravelCoreModule
         services.AddScoped<ISeoMetadataService, SeoMetadataApplicationService>();
         services.AddScoped<ISeoStructuredDataService, SeoStructuredDataApplicationService>();
         services.AddScoped<ISeoSitemapService, SeoSitemapApplicationService>();
+        services.AddScoped<ISeoDestinationPublicationService, SeoDestinationPublicationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
