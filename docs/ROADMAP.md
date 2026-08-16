@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P04 — Reference Data + Destination** (**IN_PROGRESS** — gate pending architect accept) |
-| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 COMPLETE · P03 COMPLETE · P04 IN_PROGRESS (GATE pending) · P05 NOT_STARTED |
+| Current Phase | **P04 — Reference Data + Destination** (**COMPLETE**) |
+| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 COMPLETE · P03 COMPLETE · P04 COMPLETE · P05 NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `6a8a5ce` (`TC-P03-GATE`) |
+| Last Accepted Commit | `f70991f` (`TC-P04-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P04-GATE`; then USER `TRAVELCORE_PHASE_CONFIRM: P05` before P05 |
+| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P05`; then architect-issued first P05 task |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -103,7 +103,7 @@
 - **P01** = COMPLETE
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
-- **P04** = IN_PROGRESS (`TC-P04-T001`–`T011` ACCEPTED; `TC-P04-GATE` AWAITING_ARCHITECT_REVIEW; R3 RESOLVED = noindex,follow)
+- **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
 - **P05–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -283,11 +283,11 @@ Invariant قفل‌شده: **Identity ≠ Party ≠ Access**.
 
 ## P04 — Reference Data + Destination
 
-**Status:** IN_PROGRESS (Cursor GATE PASS — awaiting architect accept)
+**Status:** COMPLETE / ACCEPTED (`f70991f`)
 
 **Authoritative plan:** [`plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) (`TC-P04-PLAN`)
 
-**Progress:** `TC-P04-T001`–`T011` COMPLETE / ACCEPTED · `TC-P04-GATE` AWAITING_ARCHITECT_REVIEW · evidence [`plans/P04-GATE-acceptance-evidence.md`](plans/P04-GATE-acceptance-evidence.md) · R3 RESOLVED · P05 NOT_STARTED
+**Progress:** `TC-P04-T001`–`T011` COMPLETE / ACCEPTED · `TC-P04-GATE` COMPLETE / ACCEPTED · evidence [`plans/P04-GATE-acceptance-evidence.md`](plans/P04-GATE-acceptance-evidence.md) · R3 RESOLVED · P05 NOT_STARTED (needs `TRAVELCORE_PHASE_CONFIRM: P05`)
 
 ReferenceData fundamentals.
 
@@ -653,4 +653,4 @@ P26 = Advanced SEO.
 | P27 | Analytics + Product Intelligence | PLANNED |
 | P28 | Performance & Scale | PLANNED |
 | P29 | Production Hardening | PLANNED |
-| Post-P29 | Continuous Evolution | PLANNED |
+| Post-P29 | Continuous Evolution | PLANNE
