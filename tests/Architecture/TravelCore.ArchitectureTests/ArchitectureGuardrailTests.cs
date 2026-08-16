@@ -342,6 +342,29 @@ public sealed class ArchitectureGuardrailTests
     }
 
     [Fact]
+    public void TourPersistence_MustUseOwnedSchema_tour()
+    {
+        var options = new DbContextOptionsBuilder<TravelCore.Modules.Tour.Infrastructure.TourDbContext>()
+            .UseTravelCorePostgreSql(
+                "Host=127.0.0.1;Database=architecture_guard_tour_design;Username=architecture;Password=not-a-real-secret",
+                migrationsHistorySchema: TravelCore.Modules.Tour.Infrastructure.TourDbContext.SchemaName)
+            .Options;
+
+        using var db = new TravelCore.Modules.Tour.Infrastructure.TourDbContext(options);
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+        Assert.Equal("tour", TravelCore.Modules.Tour.Infrastructure.TourDbContext.SchemaName);
+
+        // Scaffolding has no product entities yet; default schema ownership must still be tour.
+        Assert.Equal("tour", db.Model.GetDefaultSchema());
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            Assert.Equal("tour", entity.GetSchema());
+        }
+
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+    }
+
+    [Fact]
     public void FixtureMigrations_MustRemainUnderFixtureProject()
     {
         var migrationsDir = Path.Combine(

@@ -10,6 +10,7 @@ using TravelCore.Modules.Content.Infrastructure;
 using TravelCore.Modules.Place.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Seo.Infrastructure;
+using TravelCore.Modules.Tour.Infrastructure;
 using TravelCore.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,7 @@ IReadOnlyList<ITravelCoreModule> modules =
     new MediaModule(),
     new PlaceModule(),
     new ContentModule(),
+    new TourModule(),
 ];
 builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 

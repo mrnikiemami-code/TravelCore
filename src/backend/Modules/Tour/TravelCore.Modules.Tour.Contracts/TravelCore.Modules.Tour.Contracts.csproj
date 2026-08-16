@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Tour.Contracts</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Tour.Contracts</AssemblyName>
+    <Description>Tour module contracts (scaffolding). No EF entities. TC-P09-T001.</Description>
+  </PropertyGroup>
+
+</Project>

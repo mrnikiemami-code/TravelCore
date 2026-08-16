@@ -62,6 +62,15 @@ Business and capability modules live under this directory.
 - **Content:** ContentItem core + typed Article/LandingPage/Guide specializations (`TC-P08-T002`) — `ContentItemId` canonical; 1:1 tables in schema `content` (P08-R1).
 - Invariant: **Content owns editorial**; SEO owns route/IndexPolicy; Destination/Place/Tour referenced by ID only (links deferred).
 
+## Active modules (P09)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Tour | `Tour/TravelCore.Modules.Tour.{Domain,Contracts,Infrastructure}` | `tour` |
+
+- **Tour:** module scaffolding only (`TC-P09-T001`) — schema `tour` ownership; no TourProduct aggregate yet (T002 / P09-R1).
+- Invariant: **TourProduct ≠ TourDeparture**; Experience itinerary = P10; Departure/Flight/TourHotelOption product = P11; Tour ≠ Pricing/Booking/Search/Content ownership.
+
 ## Naming
 
 Preferred project naming when a module is actually introduced:
@@ -87,6 +96,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - Media ≠ consumer gallery/hero semantics; Media ≠ SEO IndexPolicy.
 - Place ≠ HotelBooking; Place ≠ Destination hierarchy ownership.
 - Content ≠ SEO substance duplication; Content ≠ Tour/Place/UGC ownership.
+- Tour ≠ TourDeparture (P11); Tour ≠ Pricing/Booking/Search; Tour ≠ Place Hotel ownership.
 
 ## Host
 

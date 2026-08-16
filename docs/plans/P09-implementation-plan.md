@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P09-PLAN` |
 | Phase | P09 — Tour Core |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | ACCEPTED (`7de2518`) — architect ACCEPT 2026-08-17; Auto-Execute T001 authorized |
 | Baseline | `f9ab2e8` (`docs: fix residual P08 COMPLETE SoT rows` — P08 COMPLETE SoT) |
 | Authoritative sources | `docs/ROADMAP.md` § P09 · `docs/architecture/15-future-architecture-transition-map.md` § I · `04-module-boundaries.md` § Tour (+ Pricing/Booking/SEO/Media/Place/Destination adjacent) · `05-dependency-rules.md` · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` (TourProduct · ExperienceTour · PackageTour · TourDeparture · FlightSegment · TourHotelOption) · P05 SEO locks (R1/R2; Content/Place slug+IndexPolicy continuity) · P06 Media locks (consumer owns relationship meaning; MediaAssetId refs) · P07 Place locks (Hotel catalog ≠ booking; PlaceId for Hotel-kind) · P08 Content locks (Content ≠ Tour product) · ADR 0001 · ADR 0007–0008 · ADR 0011–0014 |
 | Backend root | `src/backend` |
