@@ -203,6 +203,26 @@ internal static class SeoEndpoints
             }
         });
 
+        // Sitemap / robots framework (T009) — IndexPolicy-gated inclusion only.
+        group.MapGet("/sitemap.xml", async Task<IResult> (
+            ISeoSitemapService sitemap,
+            CancellationToken cancellationToken) =>
+        {
+            var xml = await sitemap.RenderSitemapXmlAsync(cancellationToken);
+            return Results.Content(xml, "application/xml; charset=utf-8");
+        });
+
+        group.MapGet("/sitemap", async Task<IResult> (
+            ISeoSitemapService sitemap,
+            CancellationToken cancellationToken) =>
+        {
+            var doc = await sitemap.BuildAsync(cancellationToken);
+            return Results.Ok(doc);
+        });
+
+        group.MapGet("/robots.txt", (ISeoSitemapService sitemap) =>
+            Results.Content(sitemap.RenderRobotsTxt(), "text/plain; charset=utf-8"));
+
         return endpoints;
     }
 
