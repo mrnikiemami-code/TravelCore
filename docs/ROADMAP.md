@@ -351,7 +351,7 @@ Invariant: Media مالک بایت/متادیتای دارایی است؛ معن
 
 **Authoritative plan:** [`plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) (`TC-P07-PLAN` — COMPLETE / ACCEPTED · `5dbc152`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P07` · plan ACCEPTED · `TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002` AWAITING_ARCHITECT_REVIEW · `TC-P07-T003` AWAITING_ARCHITECT_REVIEW · `TC-P07-T004` AWAITING_ARCHITECT_REVIEW · `TC-P07-T005` AWAITING_ARCHITECT_REVIEW · **P07-R1 RESOLVED** (core Place + typed specialization) · **P07-R2 RESOLVED** (optional single Destination link) · **P07-R3–R5 UNRESOLVED** · T006+ NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P07` · plan ACCEPTED · `TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002`–`T006` AWAITING_ARCHITECT_REVIEW · **P07-R1 RESOLVED** (core Place + typed specialization) · **P07-R2 RESOLVED** (optional single Destination link) · **P07-R3–R5 UNRESOLVED** · T007+ NOT_STARTED
 
 Place · Hotel · Restaurant · Attraction با localization، رابطه با Destination، geo، facilities، media، وضعیت عملیاتی، جزئیات عمومی، Admin، یکپارچگی SEO.
 

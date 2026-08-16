@@ -24,6 +24,7 @@ const ALLOWED_USE_CLIENT = new Set([
     "features/admin-reference-data/reference-data-browse-island.tsx",
   ),
   path.normalize("features/admin-media/media-workflow-island.tsx"),
+  path.normalize("features/admin-place/place-workflow-island.tsx"),
   path.normalize("app/[locale]/error.tsx"),
 ]);
 

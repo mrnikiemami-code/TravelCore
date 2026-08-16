@@ -107,6 +107,17 @@ public sealed class PlaceApplicationService : IPlaceService
         return place is null ? null : Map(place, locale);
     }
 
+    public async Task<PlaceResponse?> GetByCodeAsync(
+        string code,
+        string? locale = null,
+        CancellationToken cancellationToken = default)
+    {
+        var normalized = PlaceAggregate.NormalizeCode(code);
+        var place = await _db.Places.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Code == normalized, cancellationToken);
+        return place is null ? null : Map(place, locale);
+    }
+
     public async Task<IReadOnlyList<PlaceResponse>> ListAsync(
         string? kind = null,
         int take = 50,

@@ -130,6 +130,14 @@ public interface IPlaceService
         string? locale,
         CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Admin-friendly lookup by unique Place.Code (not slug — P07-R4 unresolved).
+    /// </summary>
+    Task<PlaceResponse?> GetByCodeAsync(
+        string code,
+        string? locale = null,
+        CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<PlaceResponse>> ListAsync(
         string? kind = null,
         int take = 50,

@@ -26,4 +26,9 @@ public static class AccessAuthorizationPolicies
     /// Media Admin upload/mutations: Access-backed <c>media.assets.write</c>.
     /// </summary>
     public const string MediaAssetsWrite = "Access.Media.Assets.Write";
+
+    /// <summary>
+    /// Place Admin catalog mutations: Access-backed <c>place.places.write</c>.
+    /// </summary>
+    public const string PlacePlacesWrite = "Access.Place.Places.Write";
 }

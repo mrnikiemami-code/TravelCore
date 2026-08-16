@@ -47,6 +47,7 @@ public sealed class AccessTaxonomyTests
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "access.roles.write");
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "seo.destination-posture.write");
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "media.assets.write");
+        Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "place.places.write");
         Assert.Equal("admin", AccessPermissionCatalog.AdminRoleCode);
     }
 }

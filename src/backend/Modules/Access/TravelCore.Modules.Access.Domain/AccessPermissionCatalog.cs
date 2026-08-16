@@ -17,7 +17,8 @@ public static class AccessPermissionCatalog
         ("access.roles.write", "Manage access roles"),
         ("destination.destinations.write", "Create/update Destination hierarchy and owned fields"),
         ("seo.destination-posture.write", "Publish Destination SEO routes and set IndexPolicy posture"),
-        ("media.assets.write", "Upload and mutate MediaAsset technical metadata")
+        ("media.assets.write", "Upload and mutate MediaAsset technical metadata"),
+        ("place.places.write", "Create/update Place catalog entries and owned fields")
     ];
 
     public const string AdminRoleCode = "admin";
