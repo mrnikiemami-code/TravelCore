@@ -18,6 +18,9 @@ public sealed class TourProduct
 
     private readonly List<TourProductTranslation> _translations = [];
     private readonly List<TourProductDestination> _destinations = [];
+    private readonly List<TourProductService> _services = [];
+    private readonly List<TourProductPolicy> _policies = [];
+    private readonly List<TourProductRequirement> _requirements = [];
 
     private TourProduct()
     {
@@ -82,6 +85,12 @@ public sealed class TourProduct
     public IReadOnlyCollection<TourProductTranslation> Translations => _translations;
 
     public IReadOnlyCollection<TourProductDestination> Destinations => _destinations;
+
+    public IReadOnlyCollection<TourProductService> Services => _services;
+
+    public IReadOnlyCollection<TourProductPolicy> Policies => _policies;
+
+    public IReadOnlyCollection<TourProductRequirement> Requirements => _requirements;
 
     public static TourProduct CreateExperience(
         string code,
@@ -230,6 +239,67 @@ public sealed class TourProduct
         _destinations.Remove(existing);
         UpdatedAt = now;
         return true;
+    }
+
+    public void ReplaceServices(IEnumerable<TourCatalogFactInput> services, Instant now)
+    {
+        ReplaceCatalogFacts(
+            services,
+            _services,
+            static (id, code, detail) => TourProductService.Create(id, code, detail),
+            now);
+    }
+
+    public void ReplacePolicies(IEnumerable<TourCatalogFactInput> policies, Instant now)
+    {
+        ReplaceCatalogFacts(
+            policies,
+            _policies,
+            static (id, code, detail) => TourProductPolicy.Create(id, code, detail),
+            now);
+    }
+
+    public void ReplaceRequirements(IEnumerable<TourCatalogFactInput> requirements, Instant now)
+    {
+        ReplaceCatalogFacts(
+            requirements,
+            _requirements,
+            static (id, code, detail) => TourProductRequirement.Create(id, code, detail),
+            now);
+    }
+
+    private void ReplaceCatalogFacts<T>(
+        IEnumerable<TourCatalogFactInput> inputs,
+        List<T> target,
+        Func<TourProductId, string, string?, T> factory,
+        Instant now)
+        where T : class
+    {
+        ArgumentNullException.ThrowIfNull(inputs);
+
+        var normalized = inputs
+            .Select(x => (
+                Code: TourCatalogFactCode.NormalizeCode(x.Code),
+                Detail: TourCatalogFactCode.NormalizeDetail(x.Detail)))
+            .GroupBy(x => x.Code, StringComparer.Ordinal)
+            .Select(g => g.Last())
+            .OrderBy(x => x.Code, StringComparer.Ordinal)
+            .ToList();
+
+        if (normalized.Count > TourCatalogFactCode.MaxEntriesPerKind)
+        {
+            throw new ArgumentException(
+                $"A TourProduct may have at most {TourCatalogFactCode.MaxEntriesPerKind} entries of this kind.",
+                nameof(inputs));
+        }
+
+        target.Clear();
+        foreach (var row in normalized)
+        {
+            target.Add(factory(Id, row.Code, row.Detail));
+        }
+
+        UpdatedAt = now;
     }
 
     public static string? NormalizeClassificationCode(string? classificationCode)

@@ -88,6 +88,36 @@ internal sealed class TourProductConfiguration : IEntityTypeConfiguration<TourPr
             .HasField("_destinations")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
+
+        builder.HasMany(x => x.Services)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Services)
+            .HasField("_services")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasMany(x => x.Policies)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Policies)
+            .HasField("_policies")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasMany(x => x.Requirements)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Requirements)
+            .HasField("_requirements")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
     }
 }
 
@@ -143,5 +173,71 @@ internal sealed class TourProductDestinationConfiguration : IEntityTypeConfigura
 
         builder.HasIndex(x => x.DestinationId)
             .HasDatabaseName("ix_tour_product_destinations_destination_id");
+    }
+}
+
+internal sealed class TourProductServiceConfiguration : IEntityTypeConfiguration<TourProductService>
+{
+    public void Configure(EntityTypeBuilder<TourProductService> builder)
+    {
+        builder.ToTable("tour_product_services");
+        builder.HasKey(x => new { x.TourProductId, x.Code });
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(TourCatalogFactCode.CodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Detail)
+            .HasColumnName("detail")
+            .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
+    }
+}
+
+internal sealed class TourProductPolicyConfiguration : IEntityTypeConfiguration<TourProductPolicy>
+{
+    public void Configure(EntityTypeBuilder<TourProductPolicy> builder)
+    {
+        builder.ToTable("tour_product_policies");
+        builder.HasKey(x => new { x.TourProductId, x.Code });
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(TourCatalogFactCode.CodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Detail)
+            .HasColumnName("detail")
+            .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
+    }
+}
+
+internal sealed class TourProductRequirementConfiguration : IEntityTypeConfiguration<TourProductRequirement>
+{
+    public void Configure(EntityTypeBuilder<TourProductRequirement> builder)
+    {
+        builder.ToTable("tour_product_requirements");
+        builder.HasKey(x => new { x.TourProductId, x.Code });
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(TourCatalogFactCode.CodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Detail)
+            .HasColumnName("detail")
+            .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
     }
 }

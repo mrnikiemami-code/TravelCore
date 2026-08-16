@@ -29,12 +29,13 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(5, expectedMigrations.Length);
+            Assert.Equal(6, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductSemanticLinks", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductAgencyLink", expectedMigrations[4], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourProductCatalogFacts", expectedMigrations[5], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -50,7 +51,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'tour';
                 """, ct));
-            Assert.Equal(4, await ScalarIntAsync(conn, """
+            Assert.Equal(7, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'tour'
@@ -58,6 +59,9 @@ public sealed class TourMigrationLifecycleTests
                     'tour_products',
                     'tour_product_translations',
                     'tour_product_destinations',
+                    'tour_product_services',
+                    'tour_product_policies',
+                    'tour_product_requirements',
                     '__EFMigrationsHistory');
                 """, ct));
             // P09-R7 / T004: no specialty / departure / cross-schema FK invented.
@@ -110,6 +114,11 @@ public sealed class TourMigrationLifecycleTests
             experience.AssignDestination(destA, now);
             experience.AssignDestination(destB, now);
             experience.SetAgencyLink(agencyId, now);
+            experience.ReplaceServices(
+                [new TourCatalogFactInput("transfer", null), new TourCatalogFactInput("meals", "Breakfast")],
+                now);
+            experience.ReplacePolicies([new TourCatalogFactInput("cancellation", "24h notice")], now);
+            experience.ReplaceRequirements([new TourCatalogFactInput("passport", "6 months validity")], now);
             var package = TourProduct.CreatePackage("PKG-IT-001", "Istanbul Package", now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
@@ -125,6 +134,12 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal("cultural-walk", loaded.ClassificationCode);
             Assert.Equal(originId, loaded.OriginDestinationId);
             Assert.Equal(agencyId, loaded.AgencyId);
+            Assert.Equal(2, loaded.Services.Count);
+            Assert.Contains(loaded.Services, x => x.Code == "transfer");
+            Assert.Equal("Breakfast", loaded.Services.Single(x => x.Code == "meals").Detail);
+            Assert.Single(loaded.Policies);
+            Assert.Equal("cancellation", loaded.Policies.Single().Code);
+            Assert.Single(loaded.Requirements);
             Assert.Equal(2, loaded.Destinations.Count);
             Assert.Contains(loaded.Destinations, x => x.DestinationId == destA);
             Assert.Contains(loaded.Destinations, x => x.DestinationId == destB);
