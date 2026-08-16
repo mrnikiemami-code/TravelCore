@@ -218,7 +218,7 @@
 | TC-P05-T003 | COMPLETE / ACCEPTED (`8fb6ede`; hygiene `7226451`) |
 | TC-P05-T003-R1 | COMPLETE / ACCEPTED (`fb00313`; hygiene `e24d09a`) |
 | TC-P05-T004 | COMPLETE / ACCEPTED (`1573baf`; hygiene `f7d9e51`/`96a43a4`) |
-| TC-P05-T005 | AWAITING_ARCHITECT_REVIEW |
+| TC-P05-T005 | AWAITING_ARCHITECT_REVIEW (`95c79da`) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
 | Required Human Token | none (await architect accept of `TC-P05-T005`) |
@@ -331,7 +331,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T003 | Slug history / reservation coordination | COMPLETE / ACCEPTED | `8fb6ede` |
 | TC-P05-T003-R1 | Reconcile P05 R1 Decision State | COMPLETE / ACCEPTED | `fb00313` |
 | TC-P05-T004 | Canonical + Redirect engine baseline | COMPLETE / ACCEPTED | `1573baf` |
-| TC-P05-T005 | IndexPolicy + robots posture | AWAITING_ARCHITECT_REVIEW | _(pending)_ |
+| TC-P05-T005 | IndexPolicy + robots posture | AWAITING_ARCHITECT_REVIEW | `95c79da` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
