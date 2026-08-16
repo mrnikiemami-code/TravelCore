@@ -133,7 +133,7 @@
 | P07-T006-R1 | **COMPLETE / ACCEPTED** (`e4b5201`; hygiene `48aaaea`) — Admin Ready-media visual picker |
 | P07-T007 | **COMPLETE / ACCEPTED** (`1c76f6b`; hygiene `b47f6de`) — Public Place detail + SEO hooks |
 | P07-T008 | **COMPLETE / ACCEPTED** (`f7843cc`; hygiene `2d10fbd`/`fcefadd`) — hardening + evidence pack [`plans/P07-T008-hardening-and-evidence-pack.md`](plans/P07-T008-hardening-and-evidence-pack.md) |
-| P07-GATE | **AWAITING_ARCHITECT_REVIEW** (evidence this commit) |
+| P07-GATE | **AWAITING_ARCHITECT_REVIEW** (`84a0a48`) |
 | P07-R1 (Place model shape) | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION (`PlaceId` only; Hotel/Restaurant/Attraction 1:1 tables; no TPH; no HotelBooking fields) |
 | P07-R2 (Destination link requiredness) | **RESOLVED** — OPTIONAL SINGLE LOGICAL REFERENCE (0..1; Place-owned nullable DestinationId; no cross-schema FK; Contracts existence validation) |
 | P07-R3 (Place delete/archive) | **UNRESOLVED** — OK for gate (no delete/archive product; do not invent) |
@@ -165,6 +165,7 @@
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
 | P05 Phase Gate | **TC-P05-GATE** COMPLETE / ACCEPTED (`7f234e8`; R1 `bde6661`) |
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
+| P07 Phase Gate | **TC-P07-GATE** AWAITING_ARCHITECT_REVIEW (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P07` received |
 | Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P07-GATE`) |
 | Human Confirmation Reason | None for current task |
