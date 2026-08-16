@@ -97,7 +97,7 @@
 | P06 | **IN_PROGRESS** (authorized via USER `TRAVELCORE_PHASE_CONFIRM: P06`) |
 | P06 Plan | `TC-P06-PLAN` **COMPLETE / ACCEPTED** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
 | P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`) |
-| P06-T002 | **AWAITING_ARCHITECT_REVIEW** |
+| P06-T002 | **AWAITING_ARCHITECT_REVIEW** (`020ce99`) |
 | P07 | **NOT_STARTED** |
 | P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
 | P04 Implementation Started | **YES** (`TC-P04-T001`) |
@@ -237,7 +237,7 @@
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
 | TC-P06-PLAN | **COMPLETE / ACCEPTED** (`87069e4`; hygiene `f323857`/`1b2877b`) |
 | TC-P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`; hygiene `8e8fb63`) |
-| TC-P06-T002 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T002 | **AWAITING_ARCHITECT_REVIEW** (`020ce99`) |
 | TC-P06-T003 | **NOT_STARTED** |
 | Required Human Token | none |
 
