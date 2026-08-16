@@ -4,7 +4,8 @@ namespace TravelCore.Modules.Media.Domain;
 
 /// <summary>
 /// Media-owned technical asset aggregate.
-/// Owns identity, MIME, size, dimensions, storage key metadata, and processing status.
+/// Owns identity, MIME, size, dimensions, storage key metadata, processing status,
+/// and default alt/caption translations (locale rows — no AltFa/AltEn columns).
 /// Does not own consumer relationship meaning (hero/gallery order/role).
 /// Does not store binary bytes in the metadata table.
 /// </summary>

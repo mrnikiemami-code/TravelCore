@@ -19,6 +19,8 @@ public sealed class MediaDbContext : DbContext
 
     public DbSet<MediaVariant> MediaVariants => Set<MediaVariant>();
 
+    public DbSet<MediaAssetTranslation> MediaAssetTranslations => Set<MediaAssetTranslation>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

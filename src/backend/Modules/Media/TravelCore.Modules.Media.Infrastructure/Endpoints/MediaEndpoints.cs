@@ -157,6 +157,86 @@ internal static class MediaEndpoints
             return focal is null ? Results.NotFound() : Results.Ok(focal);
         }).RequireAuthorization(MediaAssetsWritePolicy);
 
+        group.MapPut("/{id:guid}/translations/{localeCode}", async Task<IResult> (
+            Guid id,
+            string localeCode,
+            UpsertMediaAssetTranslationRequest request,
+            IMediaAssetTranslationService translations,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var upserted = await translations.UpsertAsync(id, localeCode, request, cancellationToken);
+                return Results.Ok(upserted);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "translation"] = [ex.Message]
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.Problem(
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status404NotFound,
+                    title: "Media asset not found");
+            }
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
+        group.MapGet("/{id:guid}/translations", async Task<IResult> (
+            Guid id,
+            IMediaAssetTranslationService translations,
+            CancellationToken cancellationToken) =>
+        {
+            var list = await translations.ListAsync(id, cancellationToken);
+            return Results.Ok(list);
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
+        group.MapGet("/{id:guid}/translations/{localeCode}", async Task<IResult> (
+            Guid id,
+            string localeCode,
+            IMediaAssetTranslationService translations,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var row = await translations.GetAsync(id, localeCode, cancellationToken);
+                return row is null ? Results.NotFound() : Results.Ok(row);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "localeCode"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
+        group.MapGet("/{id:guid}/translations/{localeCode}/presentation", async Task<IResult> (
+            Guid id,
+            string localeCode,
+            IMediaAssetTranslationService translations,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var published = await translations.GetPublishedForPresentationAsync(
+                    id,
+                    localeCode,
+                    cancellationToken);
+                return published is null ? Results.NotFound() : Results.Ok(published);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "localeCode"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
         return endpoints;
     }
 }

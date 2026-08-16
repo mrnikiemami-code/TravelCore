@@ -30,11 +30,12 @@ public sealed class MediaMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.EndsWith("_InitialMediaScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddMediaAssets", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddMediaVariants", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddMediaAssetFocalPoint", expectedMigrations[3], StringComparison.Ordinal);
+            Assert.EndsWith("_AddMediaAssetTranslations", expectedMigrations[4], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -50,11 +51,11 @@ public sealed class MediaMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'media';
                 """, ct));
-            Assert.Equal(3, await ScalarIntAsync(conn, """
+            Assert.Equal(4, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'media'
-                  AND table_name IN ('media_assets', 'media_variants', '__EFMigrationsHistory');
+                  AND table_name IN ('media_assets', 'media_variants', 'media_asset_translations', '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
@@ -113,6 +114,12 @@ public sealed class MediaMigrationLifecycleTests
             Assert.Equal(2, await db.MediaAssets.CountAsync(ct));
             var conn = db.Database.GetDbConnection();
             await db.Database.OpenConnectionAsync(ct);
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'media'
+                  AND table_name = 'media_asset_translations';
+                """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
