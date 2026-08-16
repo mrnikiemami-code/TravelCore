@@ -307,8 +307,9 @@ Exact parallelization may be adjusted by architect on accept; Cursor must not in
 | **P09-R3** | Agency reference shape (single PartyId vs role-typed refs / offering agency semantics) | **RESOLVED** | Single optional logical `AgencyId` on TourProduct (**0..1**); Agency identity is `PartyKind.Agency` under Party SoR; **no** cross-schema FK/write; validate via `Party.Contracts` (`IPartyReadQuery` Kind=Agency). No role-typed multi-agency refs in P09. |
 | **P09-R4** | Publishing/catalog status vs delete-archive lifecycle | **UNRESOLVED** | Do not invent hard-delete product; publication status may suffice — architect lock. |
 | **P09-R5** | Slug ownership (Tour-localized current slug vs SEO-only route key) | **UNRESOLVED** | Expect P05/P07/P08 pattern (Tour owns current locale slug; SEO owns history/IndexPolicy) but **do not assume** until locked. |
-| **P09-R6** | IndexPolicy default for public Tour | **UNRESOLVED** | Expect `noindex, follow` continuity from P05/P07/P08 but **do not assume** / do **not** invent Active=Index until locked. |
-| **P09-R7** | Experience/Package specialty fields in P09 | **RESOLVED** | Specialty fields **DEFERRED** to P10/P11; P09 owns only shared TourProduct facts |
+| **P09-R6** | Public IndexPolicy default for Tour | **UNRESOLVED** | Do not invent Index=Active / Published=Index. |
+| **P09-R7** | Experience/Package specialty fields in P09 | **RESOLVED** | Specialty fields **DEFERRED** to P10/P11; P09 owns only shared TourProduct facts. |
+| **P09-R8** | TourProduct Media relation policy (roles / cardinality) | **RESOLVED** | Roles **Cover** (0..1) + **Gallery** (0..N); duplicate MediaAssetId forbidden; SortOrder ≥ 0 for Gallery; logical MediaAssetId only; **no** StorageKey in Tour; **no** cross-schema FK; readiness via Media.Contracts; **no** Hero/custom roles. |
 | P08-R6/R7/R8 | Content widgets / Author / delete-archive | UNRESOLVED (Content) | Out of Tour product scope. |
 | P07-R3 | Place delete/archive | UNRESOLVED (Place) | Out of Tour product scope. |
 | P06-R8/R9 | Media delete / consumer alt override | Unresolved/Deferred (Media) | Tour uses Media defaults unless expanded. |

@@ -118,6 +118,19 @@ internal sealed class TourProductConfiguration : IEntityTypeConfiguration<TourPr
             .HasField("_requirements")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
+
+        builder.Ignore(x => x.Cover);
+        builder.Ignore(x => x.GalleryOrdered);
+
+        builder.HasMany(x => x.MediaLinks)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.MediaLinks)
+            .HasField("_mediaLinks")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
     }
 }
 
@@ -239,5 +252,45 @@ internal sealed class TourProductRequirementConfiguration : IEntityTypeConfigura
         builder.Property(x => x.Detail)
             .HasColumnName("detail")
             .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
+    }
+}
+
+internal sealed class TourProductMediaLinkConfiguration : IEntityTypeConfiguration<TourProductMediaLink>
+{
+    public void Configure(EntityTypeBuilder<TourProductMediaLink> builder)
+    {
+        builder.ToTable("tour_product_media_links");
+        builder.HasKey(x => new { x.TourProductId, x.MediaAssetId });
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value));
+
+        // Logical MediaAssetId only — deliberately no FK / navigation to Media.
+        builder.Property(x => x.MediaAssetId)
+            .HasColumnName("media_asset_id")
+            .IsRequired();
+
+        builder.Property(x => x.Role)
+            .HasColumnName("role")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.SortOrder)
+            .HasColumnName("sort_order")
+            .IsRequired();
+
+        builder.HasIndex(x => x.MediaAssetId)
+            .HasDatabaseName("ix_tour_product_media_links_media_asset_id");
+
+        builder.HasIndex(x => x.TourProductId)
+            .IsUnique()
+            .HasFilter("role = 0")
+            .HasDatabaseName("ux_tour_product_media_links_cover");
+
+        builder.HasIndex(x => new { x.TourProductId, x.SortOrder })
+            .IsUnique()
+            .HasFilter("role = 1")
+            .HasDatabaseName("ux_tour_product_media_links_gallery_sort");
     }
 }

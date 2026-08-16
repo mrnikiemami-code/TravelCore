@@ -21,6 +21,7 @@ public sealed class TourProduct
     private readonly List<TourProductService> _services = [];
     private readonly List<TourProductPolicy> _policies = [];
     private readonly List<TourProductRequirement> _requirements = [];
+    private readonly List<TourProductMediaLink> _mediaLinks = [];
 
     private TourProduct()
     {
@@ -91,6 +92,17 @@ public sealed class TourProduct
     public IReadOnlyCollection<TourProductPolicy> Policies => _policies;
 
     public IReadOnlyCollection<TourProductRequirement> Requirements => _requirements;
+
+    public IReadOnlyCollection<TourProductMediaLink> MediaLinks => _mediaLinks;
+
+    public TourProductMediaLink? Cover =>
+        _mediaLinks.FirstOrDefault(x => x.Role == TourMediaRole.Cover);
+
+    public IReadOnlyList<TourProductMediaLink> GalleryOrdered =>
+        _mediaLinks
+            .Where(x => x.Role == TourMediaRole.Gallery)
+            .OrderBy(x => x.SortOrder)
+            .ToList();
 
     public static TourProduct CreateExperience(
         string code,
@@ -266,6 +278,155 @@ public sealed class TourProduct
             _requirements,
             static (id, code, detail) => TourProductRequirement.Create(id, code, detail),
             now);
+    }
+
+    /// <summary>
+    /// Sets Cover with replacement semantics (0..1). SortOrder fixed at 0 (no Cover reorder). P09-R8.
+    /// </summary>
+    public TourProductMediaLink SetCover(Guid mediaAssetId, Instant now)
+    {
+        if (mediaAssetId == Guid.Empty)
+        {
+            throw new ArgumentException("MediaAssetId cannot be empty.", nameof(mediaAssetId));
+        }
+
+        var existingSameAsset = _mediaLinks.FirstOrDefault(x => x.MediaAssetId == mediaAssetId);
+        if (existingSameAsset is not null)
+        {
+            if (existingSameAsset.Role == TourMediaRole.Cover)
+            {
+                UpdatedAt = now;
+                return existingSameAsset;
+            }
+
+            throw new InvalidOperationException(
+                "MediaAssetId is already linked as Gallery for this TourProduct; Cover and Gallery are mutually exclusive per asset.");
+        }
+
+        var existingCover = _mediaLinks.FirstOrDefault(x => x.Role == TourMediaRole.Cover);
+        if (existingCover is not null)
+        {
+            _mediaLinks.Remove(existingCover);
+        }
+
+        var cover = TourProductMediaLink.CreateCover(Id, mediaAssetId);
+        _mediaLinks.Add(cover);
+        UpdatedAt = now;
+        return cover;
+    }
+
+    public void RemoveCover(Instant now)
+    {
+        var cover = _mediaLinks.FirstOrDefault(x => x.Role == TourMediaRole.Cover);
+        if (cover is null)
+        {
+            return;
+        }
+
+        _mediaLinks.Remove(cover);
+        UpdatedAt = now;
+    }
+
+    public TourProductMediaLink AddGalleryItem(Guid mediaAssetId, Instant now, int? sortOrder = null)
+    {
+        if (mediaAssetId == Guid.Empty)
+        {
+            throw new ArgumentException("MediaAssetId cannot be empty.", nameof(mediaAssetId));
+        }
+
+        if (_mediaLinks.Any(x => x.MediaAssetId == mediaAssetId))
+        {
+            throw new InvalidOperationException(
+                "MediaAssetId is already linked for this TourProduct (UNIQUE TourProductId, MediaAssetId).");
+        }
+
+        var resolvedSort = sortOrder ?? NextGallerySortOrder();
+        if (resolvedSort < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(sortOrder), resolvedSort, "Gallery SortOrder must be >= 0.");
+        }
+
+        if (_mediaLinks.Any(x => x.Role == TourMediaRole.Gallery && x.SortOrder == resolvedSort))
+        {
+            throw new ArgumentException(
+                $"Gallery SortOrder {resolvedSort} is already used for this TourProduct.",
+                nameof(sortOrder));
+        }
+
+        var link = TourProductMediaLink.CreateGallery(Id, mediaAssetId, resolvedSort);
+        _mediaLinks.Add(link);
+        UpdatedAt = now;
+        return link;
+    }
+
+    public void RemoveGalleryItem(Guid mediaAssetId, Instant now)
+    {
+        if (mediaAssetId == Guid.Empty)
+        {
+            throw new ArgumentException("MediaAssetId cannot be empty.", nameof(mediaAssetId));
+        }
+
+        var link = _mediaLinks.FirstOrDefault(x =>
+            x.MediaAssetId == mediaAssetId && x.Role == TourMediaRole.Gallery)
+            ?? throw new ArgumentException(
+                "Gallery MediaAssetId was not found for this TourProduct.",
+                nameof(mediaAssetId));
+
+        _mediaLinks.Remove(link);
+        UpdatedAt = now;
+    }
+
+    public IReadOnlyList<TourProductMediaLink> ReorderGallery(IReadOnlyList<Guid> orderedMediaAssetIds, Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(orderedMediaAssetIds);
+
+        var gallery = _mediaLinks.Where(x => x.Role == TourMediaRole.Gallery).ToList();
+        if (orderedMediaAssetIds.Count != gallery.Count)
+        {
+            throw new ArgumentException(
+                "ReorderGallery must include exactly the current Gallery MediaAssetId set.",
+                nameof(orderedMediaAssetIds));
+        }
+
+        if (orderedMediaAssetIds.Any(id => id == Guid.Empty))
+        {
+            throw new ArgumentException("MediaAssetId cannot be empty.", nameof(orderedMediaAssetIds));
+        }
+
+        if (orderedMediaAssetIds.Distinct().Count() != orderedMediaAssetIds.Count)
+        {
+            throw new ArgumentException("ReorderGallery MediaAssetId list must be unique.", nameof(orderedMediaAssetIds));
+        }
+
+        var byId = gallery.ToDictionary(x => x.MediaAssetId);
+        foreach (var id in orderedMediaAssetIds)
+        {
+            if (!byId.ContainsKey(id))
+            {
+                throw new ArgumentException(
+                    $"MediaAssetId '{id:D}' is not a Gallery item for this TourProduct.",
+                    nameof(orderedMediaAssetIds));
+            }
+        }
+
+        for (var i = 0; i < orderedMediaAssetIds.Count; i++)
+        {
+            byId[orderedMediaAssetIds[i]].SetGallerySortOrder(i);
+        }
+
+        UpdatedAt = now;
+        return GalleryOrdered;
+    }
+
+    private int NextGallerySortOrder()
+    {
+        var gallery = _mediaLinks.Where(x => x.Role == TourMediaRole.Gallery).ToList();
+        if (gallery.Count == 0)
+        {
+            return 0;
+        }
+
+        return gallery.Max(x => x.SortOrder) + 1;
     }
 
     private void ReplaceCatalogFacts<T>(

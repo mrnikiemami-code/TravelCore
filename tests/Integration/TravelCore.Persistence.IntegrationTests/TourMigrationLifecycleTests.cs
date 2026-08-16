@@ -29,13 +29,14 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(6, expectedMigrations.Length);
+            Assert.Equal(7, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductSemanticLinks", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductAgencyLink", expectedMigrations[4], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductCatalogFacts", expectedMigrations[5], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourProductMediaLinks", expectedMigrations[6], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -51,7 +52,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'tour';
                 """, ct));
-            Assert.Equal(7, await ScalarIntAsync(conn, """
+            Assert.Equal(8, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'tour'
@@ -62,6 +63,7 @@ public sealed class TourMigrationLifecycleTests
                     'tour_product_services',
                     'tour_product_policies',
                     'tour_product_requirements',
+                    'tour_product_media_links',
                     '__EFMigrationsHistory');
                 """, ct));
             // P09-R7 / T004: no specialty / departure / cross-schema FK invented.
@@ -91,7 +93,7 @@ public sealed class TourMigrationLifecycleTests
                  AND tc.table_schema = ccu.table_schema
                 WHERE tc.table_schema = 'tour'
                   AND tc.constraint_type = 'FOREIGN KEY'
-                  AND ccu.table_schema IN ('destination', 'party');
+                  AND ccu.table_schema IN ('destination', 'party', 'media');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
@@ -103,6 +105,8 @@ public sealed class TourMigrationLifecycleTests
         var destA = Guid.Parse("01900000-0000-7000-8000-000000000201");
         var destB = Guid.Parse("01900000-0000-7000-8000-000000000202");
         var agencyId = Guid.Parse("01900000-0000-7000-8000-000000000301");
+        var coverId = Guid.Parse("01900000-0000-7000-8000-000000000501");
+        var galleryId = Guid.Parse("01900000-0000-7000-8000-000000000502");
 
         await using (var db = _postgres.CreateDbContext())
         {
@@ -119,6 +123,8 @@ public sealed class TourMigrationLifecycleTests
                 now);
             experience.ReplacePolicies([new TourCatalogFactInput("cancellation", "24h notice")], now);
             experience.ReplaceRequirements([new TourCatalogFactInput("passport", "6 months validity")], now);
+            experience.SetCover(coverId, now);
+            experience.AddGalleryItem(galleryId, now);
             var package = TourProduct.CreatePackage("PKG-IT-001", "Istanbul Package", now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
@@ -140,6 +146,9 @@ public sealed class TourMigrationLifecycleTests
             Assert.Single(loaded.Policies);
             Assert.Equal("cancellation", loaded.Policies.Single().Code);
             Assert.Single(loaded.Requirements);
+            Assert.Equal(coverId, loaded.Cover!.MediaAssetId);
+            Assert.Single(loaded.GalleryOrdered);
+            Assert.Equal(galleryId, loaded.GalleryOrdered[0].MediaAssetId);
             Assert.Equal(2, loaded.Destinations.Count);
             Assert.Contains(loaded.Destinations, x => x.DestinationId == destA);
             Assert.Contains(loaded.Destinations, x => x.DestinationId == destB);

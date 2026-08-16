@@ -35,6 +35,7 @@ public sealed class TourModule : ITravelCoreModule
         services.TryAddSingleton<IClock>(SystemClock.Instance);
         services.AddScoped<ITourProductSemanticLinkService, TourProductSemanticLinkService>();
         services.AddScoped<ITourProductCatalogFactService, TourProductCatalogFactService>();
+        services.AddScoped<ITourProductMediaService, TourProductMediaService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
