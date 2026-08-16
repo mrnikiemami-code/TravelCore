@@ -47,5 +47,49 @@ internal sealed class TourProductConfiguration : IEntityTypeConfiguration<TourPr
 
         builder.HasIndex(x => x.CreatedAt)
             .HasDatabaseName("ix_tour_products_created_at");
+
+        builder.HasMany(x => x.Translations)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Translations)
+            .HasField("_translations")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+    }
+}
+
+internal sealed class TourProductTranslationConfiguration : IEntityTypeConfiguration<TourProductTranslation>
+{
+    public void Configure(EntityTypeBuilder<TourProductTranslation> builder)
+    {
+        builder.ToTable("tour_product_translations");
+        builder.HasKey(x => new { x.TourProductId, x.LocaleCode });
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value));
+
+        builder.Property(x => x.LocaleCode)
+            .HasColumnName("locale_code")
+            .HasMaxLength(TourProductTranslation.LocaleCodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Title)
+            .HasColumnName("title")
+            .HasMaxLength(TourProductTranslation.TitleMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Description)
+            .HasColumnName("description")
+            .HasMaxLength(TourProductTranslation.DescriptionMaxLength);
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at")
+            .IsRequired();
+
+        builder.HasIndex(x => x.LocaleCode)
+            .HasDatabaseName("ix_tour_product_translations_locale_code");
     }
 }

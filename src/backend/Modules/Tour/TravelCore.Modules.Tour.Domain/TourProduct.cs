@@ -6,12 +6,15 @@ namespace TravelCore.Modules.Tour.Domain;
 /// TourProduct shared-core aggregate root (P09-R1).
 /// Shared Tour facts live here; Experience/Package specialty tables are deferred (P09-R7 → P10/P11).
 /// TourDeparture is a separate future aggregate (P11) — never collapsed into TourProduct.
-/// Localization / classification / agency / media / publishing belong to later P09 tasks.
+/// Localized title/description: TourProductTranslation rows (TC-P09-T003 / ADR 0008). Slug deferred (P09-R5).
+/// Classification / agency / media / publishing belong to later P09 tasks.
 /// </summary>
 public sealed class TourProduct
 {
     public const int CodeMaxLength = 64;
     public const int NameMaxLength = 200;
+
+    private readonly List<TourProductTranslation> _translations = [];
 
     private TourProduct()
     {
@@ -51,12 +54,14 @@ public sealed class TourProduct
     /// <summary>Stable opaque tour product code within TravelCore (not SEO slug).</summary>
     public string Code { get; private set; }
 
-    /// <summary>Baseline English display name (localized titles live in later translation rows).</summary>
+    /// <summary>Baseline English display name (localized titles live in translation rows).</summary>
     public string EnglishName { get; private set; }
 
     public Instant CreatedAt { get; private set; }
 
     public Instant UpdatedAt { get; private set; }
+
+    public IReadOnlyCollection<TourProductTranslation> Translations => _translations;
 
     public static TourProduct CreateExperience(
         string code,
@@ -99,6 +104,36 @@ public sealed class TourProduct
     {
         EnglishName = NormalizeName(englishName);
         UpdatedAt = now;
+    }
+
+    public TourProductTranslation UpsertTranslation(
+        string localeCode,
+        string title,
+        string? description,
+        Instant now)
+    {
+        var normalizedLocale = TourProductTranslation.NormalizeLocaleCode(localeCode);
+        var existing = _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+
+        if (existing is null)
+        {
+            var created = TourProductTranslation.Create(Id, normalizedLocale, title, description, now);
+            _translations.Add(created);
+            UpdatedAt = now;
+            return created;
+        }
+
+        existing.Update(title, description, now);
+        UpdatedAt = now;
+        return existing;
+    }
+
+    public TourProductTranslation? FindTranslation(string localeCode)
+    {
+        var normalizedLocale = TourProductTranslation.NormalizeLocaleCode(localeCode);
+        return _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
     }
 
     private static TourProduct Create(
