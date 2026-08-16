@@ -176,6 +176,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P06`.
 - **Forbidden:** requiring full CDN product.
 - **Validation:** unit/integration.
 - **Done-when:** at least one derived size path works end-to-end for a test image.
+- **Decision lock (P06-R3 RESOLVED):** synchronous Media-owned processor; sizing 1600/960/320 fit-within no crop/no upscale; original not duplicated; decode limits 12000 edge / 40M pixels; GIF fail-closed.
 
 ### TC-P06-T006 — Focal point
 
@@ -294,7 +295,7 @@ TC-P06-PLAN (architect accept)
 |----|------|----------------|
 | R1 | Whether WebP/AVIF generation pipeline ships in P06 | **OPEN** — ROADMAP: «در صورت تأیید»; decide by T008 (ship or explicit defer) |
 | R2 | Object-storage ownership (Platform abstraction vs Media.Infrastructure-first) | **RESOLVED** — Media-owned `IMediaObjectStorage` first; local FS + in-memory adapters; not Platform-wide |
-| R3 | Sync vs async variant generation | **OPEN** — decide by T005; sync baseline acceptable if async not justified |
+| R3 | Sync vs async variant generation | **RESOLVED** — SYNCHRONOUS baseline; Media-owned processor; HTTP calls sync; no Hangfire/Quartz/queue. Sizing: large=1600 / medium=960 / thumbnail=320 (max longest edge); fit-within; no crop; no upscale. original = logical source MediaAsset (no duplicate original blob). Decode limits: max W/H 12000; max pixels 40_000_000. GIF variant policy unresolved → fail-closed. |
 | R4 | Public URL strategy (direct object URL vs app proxy vs signed URL) | **OPEN** — decide by T009; drives `remotePatterns` |
 | R5 | Whether Destination schema gets optional MediaAssetId in P06 or contract-only proof | **OPEN** — decide by T010; Destination relationship meaning stays Destination-owned either way |
 | R6 | SVG acceptance policy | **RESOLVED** — DENY `image/svg+xml` / `.svg` / detected SVG-XML payload (Option A); B deferred; C rejected |

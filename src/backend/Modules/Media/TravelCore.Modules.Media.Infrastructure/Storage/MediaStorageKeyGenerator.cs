@@ -16,6 +16,16 @@ public static class MediaStorageKeyGenerator
         return $"{now:yyyy}/{now:MM}/{now:dd}/{id}{extension}";
     }
 
+    public static string NewVariantObjectKey(string contentType, MediaVariantProfile profile)
+    {
+        var mime = MediaAsset.NormalizeContentType(contentType);
+        var extension = GuessExtension(mime);
+        var id = MediaVariantId.New().Value.ToString("N");
+        var now = DateTime.UtcNow;
+        var profileSegment = profile.ToString().ToLowerInvariant();
+        return $"{now:yyyy}/{now:MM}/{now:dd}/variants/{profileSegment}/{id}{extension}";
+    }
+
     private static string GuessExtension(string mime) =>
         mime switch
         {

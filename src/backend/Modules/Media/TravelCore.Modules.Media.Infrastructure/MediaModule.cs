@@ -7,6 +7,7 @@ using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Media.Contracts;
 using TravelCore.Modules.Media.Infrastructure.Endpoints;
+using TravelCore.Modules.Media.Infrastructure.Processing;
 using TravelCore.Modules.Media.Infrastructure.Services;
 using TravelCore.Modules.Media.Infrastructure.Storage;
 using TravelCore.Persistence.PostgreSql;
@@ -56,6 +57,8 @@ public sealed class MediaModule : ITravelCoreModule
         services.AddScoped<IMediaAssetService, MediaAssetApplicationService>();
         services.AddScoped<IMediaObjectBindingService, MediaObjectBindingService>();
         services.AddScoped<IMediaUploadService, MediaUploadApplicationService>();
+        services.AddSingleton<ImageSharpMediaVariantProcessor>();
+        services.AddScoped<IMediaVariantProcessingService, MediaVariantApplicationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

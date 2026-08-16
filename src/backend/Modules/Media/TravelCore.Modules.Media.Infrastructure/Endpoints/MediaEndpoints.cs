@@ -86,6 +86,41 @@ internal static class MediaEndpoints
             return asset is null ? Results.NotFound() : Results.Ok(asset);
         }).RequireAuthorization(MediaAssetsWritePolicy);
 
+        group.MapPost("/{id:guid}/variants/generate", async Task<IResult> (
+            Guid id,
+            IMediaVariantProcessingService variants,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var created = await variants.GenerateForAssetAsync(id, cancellationToken);
+                return Results.Created($"/api/media/assets/{id:D}/variants", created);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "mediaAssetId"] = [ex.Message]
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.Problem(
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status422UnprocessableEntity,
+                    title: "Media variant generation failed");
+            }
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
+        group.MapGet("/{id:guid}/variants", async Task<IResult> (
+            Guid id,
+            IMediaVariantProcessingService variants,
+            CancellationToken cancellationToken) =>
+        {
+            var list = await variants.ListForAssetAsync(id, cancellationToken);
+            return Results.Ok(list);
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
         return endpoints;
     }
 }

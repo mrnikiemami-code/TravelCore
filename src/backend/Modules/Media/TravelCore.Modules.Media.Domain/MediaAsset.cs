@@ -97,6 +97,16 @@ public sealed class MediaAsset
         UpdatedAt = now;
     }
 
+    /// <summary>
+    /// Records decoded source dimensions during variant processing. Does not change Status.
+    /// </summary>
+    public void SetDimensions(int width, int height, Instant now)
+    {
+        Width = NormalizeDimension(width, nameof(width));
+        Height = NormalizeDimension(height, nameof(height));
+        UpdatedAt = now;
+    }
+
     public static MediaAsset Create(
         string contentType,
         long byteSize,
