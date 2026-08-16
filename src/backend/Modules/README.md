@@ -19,11 +19,20 @@ Business and capability modules live under this directory.
 | Module | Projects | Schema |
 |--------|----------|--------|
 | ReferenceData | `ReferenceData/TravelCore.Modules.ReferenceData.{Domain,Contracts,Infrastructure}` | `reference_data` |
-| Destination | `Destination/TravelCore.Modules.Destination.Infrastructure` (shell) | `destination` |
+| Destination | `Destination/TravelCore.Modules.Destination.{Domain,Contracts,Infrastructure}` | `destination` |
 
 - **ReferenceData:** Currency / Locale / ISO Country / IANA TimeZone catalogs + read APIs (`TC-P04-T002`).
-- **Destination:** Infrastructure shell only (`TC-P04-T001`) — hierarchy not yet.
+- **Destination:** Hierarchy + translations + slug hooks + public/Admin surfaces (P04 complete).
 - Invariant: **ReferenceData ≠ Destination**.
+
+## Active modules (P05)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Seo | `Seo/TravelCore.Modules.Seo.{Domain,Contracts,Infrastructure}` | `seo` |
+
+- **Seo:** Module scaffolding only (`TC-P05-T001`) — SeoRoute/IndexPolicy product behavior deferred.
+- Invariant: **SEO ≠ Destination content ownership**; Destination ≠ SEO authority.
 
 ## Naming
 
@@ -45,6 +54,8 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - Cross-module collaboration uses contracts / semantic events — see architecture dependency docs.
 - Identity ≠ Party ≠ Access.
 - ReferenceData ≠ Destination.
+- Destination ≠ SEO content ownership; SEO owns route/indexation mechanics only (P05).
+- SEO ≠ Search.
 
 ## Host
 

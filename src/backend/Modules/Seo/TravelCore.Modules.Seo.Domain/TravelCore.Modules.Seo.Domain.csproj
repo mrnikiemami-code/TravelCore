@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Seo.Domain</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Seo.Domain</AssemblyName>
+    <Description>SEO domain layer shell. SeoRoute product entities deferred to TC-P05-T002+. No EF/ASP.NET.</Description>
+  </PropertyGroup>
+
+</Project>

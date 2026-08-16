@@ -43,7 +43,7 @@
 | Last Accepted Commit | `f70991f` (`TC-P04-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P05-PLAN` + `TC-P05-PLAN-R1`; then first issued P05 task |
+| Current Next Task | Architect review of `TC-P05-T001`; then `TC-P05-T002` when issued |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -306,7 +306,7 @@ Invariant: Destination مالک Hotel/Tour/Article/Booking نیست؛ ReferenceD
 
 **Authoritative plan:** [`plans/P05-implementation-plan.md`](plans/P05-implementation-plan.md) (`TC-P05-PLAN`)
 
-**Progress:** `TC-P05-PLAN` AWAITING_ARCHITECT_REVIEW · `TC-P05-PLAN-R1` baseline reconciliation evidence · P06 NOT_STARTED
+**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-PLAN-R1` ACCEPTED · `TC-P05-T001` in flight · P06 NOT_STARTED
 
 **Remediation evidence:** [`plans/P05-PLAN-R1-baseline-reconciliation.md`](plans/P05-PLAN-R1-baseline-reconciliation.md)
 

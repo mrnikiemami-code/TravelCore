@@ -250,6 +250,29 @@ public sealed class ArchitectureGuardrailTests
     }
 
     [Fact]
+    public void SeoPersistence_MustUseOwnedSchema_seo()
+    {
+        var options = new DbContextOptionsBuilder<TravelCore.Modules.Seo.Infrastructure.SeoDbContext>()
+            .UseTravelCorePostgreSql(
+                "Host=127.0.0.1;Database=architecture_guard_seo_design;Username=architecture;Password=not-a-real-secret",
+                migrationsHistorySchema: TravelCore.Modules.Seo.Infrastructure.SeoDbContext.SchemaName)
+            .Options;
+
+        using var db = new TravelCore.Modules.Seo.Infrastructure.SeoDbContext(options);
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+        Assert.Equal("seo", TravelCore.Modules.Seo.Infrastructure.SeoDbContext.SchemaName);
+
+        // Scaffolding has no product entities yet; default schema ownership must still be seo.
+        Assert.Equal("seo", db.Model.GetDefaultSchema());
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            Assert.Equal("seo", entity.GetSchema());
+        }
+
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+    }
+
+    [Fact]
     public void FixtureMigrations_MustRemainUnderFixtureProject()
     {
         var migrationsDir = Path.Combine(

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P05-PLAN` |
 | Phase | P05 — SEO Engine |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | COMPLETE / ACCEPTED (architect) |
 | Baseline | `1d3c224` at plan write (docs hygiene after `TC-P04-GATE` ACCEPTED `f70991f`); governance: original envelope expected `f70991f` — see [`P05-PLAN-R1-baseline-reconciliation.md`](P05-PLAN-R1-baseline-reconciliation.md) |
 | Authoritative sources | `docs/ROADMAP.md` § P05 · `docs/architecture/12-seo-constitution.md` · `15-future-architecture-transition-map.md` § E · `docs/seo/01`–`05` · ADR 0007–0010 · ADR 0001 · `03/04/05` domain · `docs/domain/module-ownership-matrix.md` · P04 Destination slug hooks (`TC-P04-T006`) · P04 R3 (`noindex,follow` until SEO IndexPolicy) · ADR 0011–0014 |
 | Backend root | `src/backend` |
