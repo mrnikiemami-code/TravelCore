@@ -312,7 +312,7 @@
 | TC-P07-T006-R1 | **COMPLETE / ACCEPTED** (`e4b5201`; hygiene `48aaaea`) — Ready Media visual picker; evidence [`plans/P07-T006-R1-admin-place-media-picker-reconciliation.md`](plans/P07-T006-R1-admin-place-media-picker-reconciliation.md) |
 | TC-P07-T007 | **COMPLETE / ACCEPTED** (`1c76f6b`; hygiene `b47f6de`) — Public Place detail + SEO hooks |
 | TC-P07-T008 | **COMPLETE / ACCEPTED** (`f7843cc`; hygiene `2d10fbd`/`fcefadd`) — evidence pack [`plans/P07-T008-hardening-and-evidence-pack.md`](plans/P07-T008-hardening-and-evidence-pack.md) |
-| TC-P07-GATE | **AWAITING_ARCHITECT_REVIEW** (evidence this commit) — [`plans/P07-GATE-acceptance-evidence.md`](plans/P07-GATE-acceptance-evidence.md) |
+| TC-P07-GATE | **AWAITING_ARCHITECT_REVIEW** (`84a0a48`) — [`plans/P07-GATE-acceptance-evidence.md`](plans/P07-GATE-acceptance-evidence.md) |
 | P07-R1 | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION |
 | P07-R2 | **RESOLVED** — OPTIONAL SINGLE LOGICAL REFERENCE Place→Destination (0..1; nullable DestinationId; no cross-schema FK; Contracts existence validation; no DestinationKind restriction in T003) |
 | P07-R3 | **UNRESOLVED** (Place delete/archive) — OK for gate; CatalogStatus is catalog ops only; no delete/archive product invented |
