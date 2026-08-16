@@ -301,6 +301,6 @@ Cursor must **STOP** with `BLOCKED_ARCHITECT_DECISION_REQUIRED` when a task dead
 - [x] Open decisions listed (P07-R1–R5)
 - [x] Task map + gate checklist present
 - [x] `docs/PROJECT-STATE.md` / `docs/ROADMAP.md` updated to P07 IN_PROGRESS (PLAN awaiting review)
-- [ ] Commit + push on baseline `77eb9dd`
+- [x] Commit + push on baseline `77eb9dd`
 - [ ] RESULT envelope returned to architect
 )

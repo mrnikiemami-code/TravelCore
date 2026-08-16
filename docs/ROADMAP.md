@@ -349,7 +349,7 @@ Invariant: Media مالک بایت/متادیتای دارایی است؛ معن
 
 **Status:** IN_PROGRESS
 
-**Authoritative plan:** [`plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) (`TC-P07-PLAN` — AWAITING_ARCHITECT_REVIEW)
+**Authoritative plan:** [`plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) (`TC-P07-PLAN` — AWAITING_ARCHITECT_REVIEW · `5dbc152`)
 
 **Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P07` · plan authored · **P07-R1–R5 UNRESOLVED** · product tasks NOT_STARTED
 
