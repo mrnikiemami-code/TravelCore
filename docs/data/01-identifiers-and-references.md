@@ -20,12 +20,13 @@ TourProductId
 TourDepartureId
 DestinationId
 PlaceId
-HotelId
 PartyId
 BookingId
 PaymentId
 MediaAssetId
 ```
+
+> **P07-R1:** Place catalog identity is **`PlaceId` only**. Hotel / Restaurant / Attraction are specializations of Place and share that id — there is no independent canonical `HotelId` / `RestaurantId` / `AttractionId` for the Place catalog.
 
 ### چرا
 
@@ -46,7 +47,7 @@ MediaAssetId
 
 در Domain/Application، هویت‌ها در صورت عملی بودن strongly typed باشند.
 
-مفهومی: `TourProductId`، `HotelId`، `BookingId`، `PartyId` نباید در کد دامنه به‌عنوان `Guid` خام قابل‌تعویض رفتار کنند.
+مفهومی: `TourProductId`، `PlaceId`، `BookingId`، `PartyId` نباید در کد دامنه به‌عنوان `Guid` خام قابل‌تعویض رفتار کنند.
 
 مقدار persistence زیرین همچنان UUID است.
 
@@ -123,18 +124,19 @@ ReferenceData می‌تواند metadata توصیفی این کدها را ما�
 
 ارجاع بین‌ماژولی به‌صورت **scalar logical identity** ذخیره می‌شود.
 
-### مثال A — Tour referencing Hotel
+### مثال A — Tour referencing Hotel (Place catalog)
 
 ```csharp
 // Conceptual — no Place.Hotel navigation
+// Value is PlaceId of a Hotel-kind Place (P07-R1); no independent HotelId catalog PK
 public class TourHotelOption
 {
-    public HotelId HotelId { get; set; }
+    public PlaceId PlaceId { get; set; }
 }
 ```
 
 ```text
-tour.tour_hotel_options.hotel_id  -- uuid, logical reference
+tour.tour_hotel_options.hotel_id  -- uuid, logical PlaceId (Hotel-kind); column name may stay alias until Tour phase
 ```
 
 Booking می‌تواند `TourProductId` و `TourDepartureId` نگه دارد بدون map کردن Entityهای Tour.
@@ -149,8 +151,8 @@ Booking می‌تواند `TourProductId` و `TourDepartureId` نگه دارد �
 
 ```text
 tour.tour_hotel_options.hotel_id
-  → logical Place.HotelId
-  → NO PostgreSQL FK to place.hotels
+  → logical PlaceId (Hotel-kind Place)
+  → NO PostgreSQL FK to place.places / place.hotels
 ```
 
 دلیل: coupling persistence بین schemaها و پیچیدگی migration/extraction.
@@ -177,12 +179,12 @@ External ID هرگز هویت اصلی داخلی TravelCore نمی‌شود.
 ### مثال F — Provider hotel mapping
 
 ```text
-InternalId:      HotelId (UUID v7)
+InternalId:      PlaceId (UUID v7)   -- canonical Place catalog identity (Hotel-kind)
 ProviderCode:    ProviderA
-ExternalHotelId: 998812
+ExternalHotelId: 998812              -- provider-side id; never Place PK
 ```
 
-نگاشت متعلق به ماژول مربوطه است (مثلاً HotelBooking برای inventory زنده؛ Place برای هویت کاتالوگ — طبق مرزهای مالکیت موجود).
+نگاشت متعلق به ماژول مربوطه است (مثلاً HotelBooking برای inventory زنده نگاشت `ExternalHotelId` → `PlaceId`؛ Place برای هویت کاتالوگ — طبق مرزهای مالکیت موجود).
 
 یک mega-table سراسری `ExternalReference` بین‌ماژولی بدون ADR صریح ممنوع است.
 

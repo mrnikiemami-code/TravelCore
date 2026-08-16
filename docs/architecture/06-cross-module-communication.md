@@ -24,18 +24,18 @@ Prefer:
 روابط بین‌ماژولی در سطح دامنه، ارجاع منطقی شناسه‌اند.
 
 ```csharp
-// Preferred conceptual shape
+// Preferred conceptual shape — PlaceId of a Hotel-kind Place (P07-R1)
 public class TourHotelOption
 {
-    public Guid HotelId { get; set; }
+    public Guid PlaceId { get; set; }
 }
 ```
 
 نه navigation به Entity متعلق به Place.
 
-نوع دقیق شناسه → TC-P00-T003.
+نوع دقیق شناسه → `PlaceId` (strongly typed); legacy column alias `hotel_id` may remain until Tour phase.
 
-FK فیزیکی دیتابیس → تصمیم persistence جدا (T003)، نه شرط مالکیت دامنه.
+FK فیزیکی دیتابیس → تصمیم persistence جدا، نه شرط مالکیت دامنه.
 
 ---
 
@@ -46,7 +46,7 @@ FK فیزیکی دیتابیس → تصمیم persistence جدا (T003)، نه �
 | Consumer | Provider | Example question |
 |----------|----------|------------------|
 | Booking | Pricing | Quote X معتبر و قابل مصرف است؟ |
-| Tour | Place | HotelId X وجود دارد و Hotel است؟ |
+| Tour | Place | PlaceId X وجود دارد و PlaceKind=Hotel است؟ |
 | Pricing | Tour | DepartureId X متعلق به TourProduct Y و قابل قیمت‌گذاری است؟ |
 
 ### Rules
@@ -180,7 +180,7 @@ DTO عمومی برای use case/page ساخته می‌شود. ترکیب صف�
 ### Example 1 — Tour → Hotel reference
 
 ```text
-TourHotelOption.HotelId → Place.Hotel
+TourHotelOption.PlaceId → Place (Hotel-kind)
 Tour stores tour-specific nights / meal plan / package config
 Tour does NOT duplicate Hotel catalog entity
 No EF navigation TourHotelOption.Hotel
@@ -227,8 +227,8 @@ Public page composes Tour response + SEO response
 ### Example 6 — Provider Hotel mapping
 
 ```text
-Place.Hotel: HotelId=H123, name, address, Destination, facilities, media
-HotelBooking mapping: HotelId=H123, Provider=ProviderA, ExternalHotelId=998812
+Place.Hotel: PlaceId=H123, name, address, Destination, facilities, media
+HotelBooking mapping: PlaceId=H123, Provider=ProviderA, ExternalHotelId=998812
 Live: rooms, rates, availability, cancellation
 No second canonical hotel merely because ProviderA returned one
 ```

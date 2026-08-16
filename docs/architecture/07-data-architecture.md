@@ -117,11 +117,11 @@ TravelCore PostgreSQL (single database)
 ### مثال A — Tour → Hotel
 
 ```text
-tour.tour_hotel_options.hotel_id  →  Place.HotelId (logical)
+tour.tour_hotel_options.hotel_id  →  PlaceId (logical; Hotel-kind Place)
 ```
 
 - بدون EF navigation به `Place.Hotel`
-- بدون PostgreSQL FK به `place.hotels` (پیش‌فرض قفل‌شده)
+- بدون PostgreSQL FK به `place.places` / `place.hotels` (پیش‌فرض قفل‌شده)
 - اعتبار وجود/نوع Hotel از طریق قرارداد Application ماژول Place
 
 داخل **همان** ماژول، FK رابطه‌ای معمول است:
@@ -317,12 +317,12 @@ Outbox مفهومی: `tour.outbox_messages` داخل schema همان ماژول 
 ### مثال F
 
 ```text
-HotelId (TravelCore UUID v7)
+PlaceId (TravelCore UUID v7; Hotel-kind Place catalog identity)
 + ProviderCode
 + ExternalHotelId
 ```
 
-External ID هرگز PK داخلی TravelCore نیست. نگاشت متعلق به ماژول مربوطه است؛ یک mega-table سراسری ExternalReference بدون ADR ممنوع است.
+External ID هرگز PK داخلی TravelCore نیست. نگاشت متعلق به ماژول مربوطه است (HotelBooking: `ExternalHotelId` → `PlaceId`)؛ یک mega-table سراسری ExternalReference بدون ADR ممنوع است.
 
 ---
 

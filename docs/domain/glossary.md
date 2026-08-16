@@ -106,7 +106,7 @@
 ### TourHotelOption
 
 - **Canonical:** TourHotelOption
-- **فارسی:** گزینهٔ هتلِ وابسته به تور که با HotelId به کاتالوگ ارجاع می‌دهد و حقایق تورمحور (شب، MealPlan، ترکیب نرخ) را نگه می‌دارد.
+- **فارسی:** گزینهٔ هتلِ وابسته به تور که با PlaceId (Hotel-kind Place) به کاتالوگ ارجاع می‌دهد و حقایق تورمحور (شب، MealPlan، ترکیب نرخ) را نگه می‌دارد.
 - **اشتباه رایج:** کپی کامل Entity هتل داخل ماژول Tour یا navigation مستقیم EF به Place.
 
 ### MealPlan

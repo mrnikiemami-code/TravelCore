@@ -20,7 +20,7 @@
 
 P07 باید ماژول **Place** را به‌عنوان SoR کاتالوگ مکانی TravelCore با مالکیت schema-per-module پیاده‌سازی کند تا:
 
-1. **Place** به‌عنوان هویت کاتالوگ برای **Hotel · Restaurant · Attraction** متمرکز شود (`PlaceId` / typed ids طبق `docs/data/01-identifiers-and-references.md`).
+1. **Place** به‌عنوان هویت کاتالوگ برای **Hotel · Restaurant · Attraction** متمرکز شود (`PlaceId` only — P07-R1; no independent public HotelId/RestaurantId/AttractionId).
 2. **Localization** نام/توضیح (و slug در صورت مالکیت Place) با ردیف‌های locale — **بدون** ستون‌های `NameFa`/`NameEn`.
 3. **رابطه با Destination** با ارجاع شناسه/قرارداد (نه مالکیت Destination بر Hotel/POI؛ نه EF nav دوطرفهٔ ممنوع).
 4. **Geo / address** برای مکان‌های کاتالوگ (جدا از geo سلسله‌مراتبی Destination که در P04 است).
@@ -60,7 +60,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P07`.
 | Destination adjacency | P04 Destination module (hierarchy SoR; explicitly ≠ Place) |
 | Media adjacency | P06 Media + `MediaAssetReference` · consumer owns gallery meaning |
 | SEO adjacency | P05 R1/R2 · SEO binds publishable surfaces; does not own Place catalog text |
-| Identifiers | `docs/data/01-identifiers-and-references.md` (`PlaceId`, `HotelId`) |
+| Identifiers | `docs/data/01-identifiers-and-references.md` (`PlaceId` canonical for Place catalog; HotelBooking `ExternalHotelId` → `PlaceId`) |
 | Admin UX | `docs/ui/06` Workflow D (Place/Hotel ↔ Media) |
 | Localization | ADR 0007–0008 |
 | Authz | P03 Access + cookie Identity |
@@ -72,7 +72,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P07`.
 
 1. Physical **Place** module scaffolding under `src/backend/Modules/Place/` (Contracts/Domain/Infrastructure) with dedicated DbContext + PostgreSQL schema `place`.
 2. **Place catalog model** covering Hotel · Restaurant · Attraction (exact polymorphism strategy may be locked by **P07-R1**).
-3. Strong ids: `PlaceId` and typed subtype ids as architecture requires (`HotelId` already named).
+3. Strong ids: `PlaceId` only for Place catalog (Hotel/Restaurant/Attraction specializations share `PlaceId`; P07-R1).
 4. **Translations** for name/description (+ localized slug if Place-owned) — forbid `NameFa`/`NameEn`.
 5. **DestinationId** reference (required/optional policy may be **P07-R2**) without Destination owning hotels.
 6. **Address / coordinates** on Place catalog entities.
@@ -130,7 +130,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P07`.
 | Place gallery order/role | **Place** |
 | SEO route/IndexPolicy mechanics | SEO |
 | Live hotel bookability | HotelBooking (not in P07) |
-| TourHotelOption | Tour (later; references HotelId) |
+| TourHotelOption | Tour (later; references PlaceId of Hotel-kind Place) |
 
 ---
 

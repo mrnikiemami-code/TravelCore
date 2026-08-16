@@ -25,7 +25,7 @@
 | Visa | Commerce | Visa offerings / requirements / workflow concepts | Destination, ReferenceData, Media | Tour ownership of visa product | Hard bidirectional Tour dependency; Search/SEO/Notification as hard deps |
 | Booking | Commerce | Reservation/order state, traveler + quote snapshots | Party, Tour contracts, Pricing Quote contracts | Payment execution, live price engine, Tour catalog, Agency profile | Payment DbContext, Pricing DbContext, Tour DbContext, Search, SEO, Notification |
 | Payment | Commerce | Payment lifecycle, attempts, provider results, refund foundation | Booking references/contracts, ReferenceData | Booking business lifecycle, price calculation, Tour, Quote generation | Booking DbContext mutation, Tour, Search, SEO |
-| HotelBooking | External | Live hotel provider search/book/voucher + mappings | Place.HotelId, ReferenceData, providers | Canonical Hotel catalog | Place ownership takeover; Pricing until explicitly designed; Search/SEO/Notification as hard deps |
+| HotelBooking | External | Live hotel provider search/book/voucher + mappings | PlaceId (Hotel-kind), ReferenceData, providers | Canonical Hotel catalog | Place ownership takeover; Pricing until explicitly designed; Search/SEO/Notification as hard deps |
 | Flight | External | Live flight search/book/provider offers | ReferenceData, providers | Tour package segment ownership | Tour ownership of live inventory; Pricing until explicitly designed; Search/SEO/Notification as hard deps |
 | Search | Platform | Search index / projections / facets / autocomplete | Events/contracts from publishers | Authoritative Tour/Destination/Place/Content/UGC/Visa | Being required by core business transactions |
 | SEO | Platform | SeoRoute, canonical, hreflang, redirects, IndexPolicy, sitemap mechanics | Publishable contracts/events | Tour/Place business content ownership | Being required by core business transactions |
@@ -62,7 +62,7 @@
 | UGC | Media | B | User media |
 | UGC | Destination/Place/Tour | B | Review target IDs |
 | Tour | Destination | B | Destination links |
-| Tour | Place | B / C | HotelId validation / option |
+| Tour | Place | B / C | PlaceId validation (Hotel-kind) / option |
 | Tour | Party | B | Agency/offer ownership refs |
 | Tour | Media | B | TourMedia |
 | Tour | ReferenceData | B | Shared refs |

@@ -182,7 +182,7 @@ Media owns the asset
 
 **Foreign Package Tour (داخل Tour):** departures · transport segments · حقایق حمل‌ونقل پکیج · hotel options · stay · applicability · services · travel requirements.
 
-**Key boundary:** Tour package `FlightSegment` ≠ موجودی زندهٔ Flight. TourHotelOption با `HotelId` به Place.Hotel ارجاع می‌دهد و کاتالوگ کامل را کپی نمی‌کند.
+**Key boundary:** Tour package `FlightSegment` ≠ موجودی زندهٔ Flight. TourHotelOption با `PlaceId` (Hotel-kind Place) به Place.Hotel ارجاع می‌دهد و کاتالوگ کامل را کپی نمی‌کند.
 
 **References:** Destination · Place/Hotel · Party/Agency · Media · ReferenceData از طریق شناسه/قرارداد.
 
@@ -252,13 +252,13 @@ Media owns the asset
 
 **Owns:** Provider · mapping هتل provider · availability search · room offers · live rates · cancellation conditions · provider quote · reservation · booking · voucher · sync/reference.
 
-**References:** Place.Hotel با HotelId داخلی + mapping provider · ReferenceData · provider abstractions.
+**References:** Place.Hotel با `PlaceId` داخلی + mapping provider · ReferenceData · provider abstractions.
 
-**Key boundary:** HotelBooking کاتالوگ Place را به‌عنوان canonical جایگزین نمی‌کند. `ProviderHotelId` هرگز PK داخلی Hotel نمی‌شود.
+**Key boundary:** HotelBooking کاتالوگ Place را به‌عنوان canonical جایگزین نمی‌کند. `ProviderHotelId` / `ExternalHotelId` هرگز PK داخلی Place نمی‌شود.
 
 ```text
-Place.Hotel: HotelId = H123 (canonical catalog)
-HotelBooking mapping: HotelId=H123, Provider=ProviderA, ExternalHotelId=998812
+Place.Hotel: PlaceId = H123 (canonical catalog identity)
+HotelBooking mapping: PlaceId=H123, Provider=ProviderA, ExternalHotelId=998812
 ```
 
 ---

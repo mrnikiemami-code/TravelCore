@@ -374,8 +374,8 @@ currency_code          -- column
 ```text
 Module: tour
 Table:  tour.tour_hotel_options
-Column: hotel_id uuid NOT NULL   -- logical Place.HotelId
-FK to place.hotels: NONE (default)
+Column: hotel_id uuid NOT NULL   -- logical PlaceId (Hotel-kind Place; alias column name OK until Tour)
+FK to place.places / place.hotels: NONE (default)
 EF navigation to Hotel: NONE
 ```
 

@@ -279,7 +279,7 @@ Offers & pricing job area → create/edit tour product/departure (future).
 | Destination nodes | **Destination** |
 | MediaAsset bytes/metadata | **Media** |
 | TourMedia ordering/role | **Tour** (references MediaAssetId) |
-| Hotel catalog facts for options | **Place** (Tour references HotelId) |
+| Hotel catalog facts for options | **Place** (Tour references PlaceId of Hotel-kind Place) |
 | TourRate / PriceComponent / Quote | **Pricing** |
 | Currency catalog | **ReferenceData** |
 
@@ -381,7 +381,7 @@ Maintain hotel (and related place) catalog quality: descriptive profile, media, 
 | Hotel descriptive catalog | **Place** |
 | MediaAsset | **Media** |
 | Place↔media meaning/order | **Place** (references MediaAssetId) |
-| Live provider search/book/voucher | **HotelBooking** (maps to Place.HotelId) |
+| Live provider search/book/voucher | **HotelBooking** (maps ExternalHotelId → PlaceId) |
 | TourCore Pricing aggregates for provider fares | **Not fully decided** — do not invent; Money meaning may be shared later |
 
 ### Sequence (catalog path)
@@ -393,7 +393,7 @@ Maintain hotel (and related place) catalog quality: descriptive profile, media, 
 
 ### HotelBooking path (separate job when enabled)
 
-Live availability/book flows invoke **HotelBooking**, referencing Place.HotelId.  
+Live availability/book flows invoke **HotelBooking**, referencing PlaceId (Hotel-kind Place).  
 UI must not let catalog edit screens silently become provider booking engines.
 
 ### Partial failure
