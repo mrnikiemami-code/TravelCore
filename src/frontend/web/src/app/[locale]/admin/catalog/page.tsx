@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdminShell } from "@/components/shell";
 import { Text } from "@/components/ui";
+import { getAdminMediaWorkflowCopy } from "@/features/admin-media/copy";
 import { getDestinationHierarchyWorkflowCopy } from "@/features/admin-destination-hierarchy/copy";
 import { getApiBaseUrl } from "@/lib/api/config";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
@@ -21,6 +22,7 @@ export default async function AdminCatalogHubPage({
   }
   const locale: AppLocale = localeParam;
   const copy = getDestinationHierarchyWorkflowCopy(locale);
+  const mediaCopy = getAdminMediaWorkflowCopy(locale);
   const apiConfigured = Boolean(getApiBaseUrl());
 
   return (
@@ -60,6 +62,14 @@ export default async function AdminCatalogHubPage({
             <li>
               <Link
                 className="min-h-touch inline-flex items-center underline-offset-2 hover:underline"
+                href={`/${locale}/admin/media`}
+              >
+                {mediaCopy.navLabel}
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="min-h-touch inline-flex items-center underline-offset-2 hover:underline"
                 href={`/${locale}/admin/accounts`}
               >
                 {copy.accountsJob}
@@ -85,6 +95,12 @@ export default async function AdminCatalogHubPage({
           href={`/${locale}/admin/catalog/reference`}
         >
           {copy.referencesLink}
+        </Link>
+        <Link
+          className="min-h-touch inline-flex w-fit items-center rounded-md border border-border px-4"
+          href={`/${locale}/admin/media`}
+        >
+          {mediaCopy.pageTitle}
         </Link>
       </div>
     </AdminShell>

@@ -14,6 +14,34 @@ internal static class MediaEndpoints
         var group = endpoints.MapGroup("/api/media/assets")
             .WithTags("Media");
 
+        // Minimal Access-protected list (take/status only — no query DSL).
+        group.MapGet("/", async Task<IResult> (
+            string? status,
+            int? take,
+            IMediaAssetService assets,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var list = await assets.ListAsync(status, take ?? 50, cancellationToken);
+                return Results.Ok(list);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "take"] = [ex.Message]
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "status"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
         group.MapPost("/upload", async Task<IResult> (
             HttpRequest request,
             IMediaUploadService uploadService,
