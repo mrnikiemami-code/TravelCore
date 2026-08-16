@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P08-T008` — **AWAITING_ARCHITECT_REVIEW** (`4924892`) |
+| Current Active Product Task | `TC-P08-T009` — awaiting Auto-Execute |
 | Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
-| Current Next Task | Architect review `TC-P08-T008`; then T009 / next P08 task |
+| Current Next Task | Architect Auto-Execute `TC-P08-T009` (R6–R8 not required) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -148,7 +148,7 @@
 | P08-T005 | **COMPLETE / ACCEPTED** (`f66458b`; hygiene `3220d58`) — Relational Content Blocks engine (P08-R2; no widgets / P08-R6) |
 | P08-T006 | **COMPLETE / ACCEPTED** (`4e9c94e`; hygiene `ba391d0`) — Destination logical links 0..N (P08-R5) |
 | P08-T007 | **COMPLETE / ACCEPTED** (`6a56a0d`; hygiene `4de0f93`) — Access + Admin Content baseline (no delete/archive; no slug/SEO; no Author/widgets) |
-| P08-T008 | **AWAITING_ARCHITECT_REVIEW** (`4924892`) — Public Content pages + SEO hooks (slug SoR + noindex,follow) |
+| P08-T008 | **COMPLETE / ACCEPTED** (`4924892`; hygiene `19beaca`) — Public Content pages + SEO hooks (R3/R4) |
 | P08-R1 (Content model shape) | **RESOLVED** — Core Content Aggregate + Typed Content Variants (`ContentItemId` only; Article/LandingPage/Guide 1:1) |
 | P08-R2 (Block storage) | **RESOLVED** — Relational Block Storage (`ContentBlock` first-class + ordering) |
 | P08-R5 (Destination link) | **RESOLVED** — Content→Destination logical refs · cardinality 0..N · no cross-schema FK · contract existence validation |
@@ -184,7 +184,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P08-T008` · `4924892`) |
+| Pipeline Product Execution | **NORMAL — awaiting Auto-Execute** (`TC-P08-T009`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
