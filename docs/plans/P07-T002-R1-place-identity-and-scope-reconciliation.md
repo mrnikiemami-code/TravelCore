@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|--------|
 | Task | `TC-P07-T002-R1` |
-| Baseline | `HEAD=d127ee7` (clean at start) |
+| Baseline | `HEAD=d127ee7` (clean at start) → remediation commit `0b86f05` |
 | Product under review | `TC-P07-T002` (`83529cf`) |
 | Scope | **Docs-only** — no product/migration code changes |
 | Authoritative lock | **P07-R1 RESOLVED** — CORE PLACE + TYPED SPECIALIZATION |

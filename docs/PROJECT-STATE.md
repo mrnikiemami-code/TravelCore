@@ -124,7 +124,7 @@
 | P07 Plan | `TC-P07-PLAN` **COMPLETE / ACCEPTED** (`5dbc152`) — [`docs/plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) |
 | P07-T001 | **COMPLETE / ACCEPTED** (`108ac34`; hygiene `a245358`) |
 | P07-T002 | **AWAITING_ARCHITECT_REVIEW** (Place catalog domain + persistence baseline; `83529cf`) |
-| P07-T002-R1 | **AWAITING_ARCHITECT_REVIEW** — PlaceId identity + T002 scope reconciliation (docs-only) |
+| P07-T002-R1 | **AWAITING_ARCHITECT_REVIEW** (`0b86f05`) — PlaceId identity + T002 scope reconciliation (docs-only) |
 | P07-R1 (Place model shape) | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION (`PlaceId` only; Hotel/Restaurant/Attraction 1:1 tables; no TPH; no HotelBooking fields) |
 | P07-R2 (Destination link requiredness) | **UNRESOLVED** |
 | P07-R3 (Place delete/archive) | **UNRESOLVED** |
@@ -293,7 +293,7 @@
 | TC-P07-PLAN | **COMPLETE / ACCEPTED** (`5dbc152`; hygiene `768a2c5`) |
 | TC-P07-T001 | **COMPLETE / ACCEPTED** (`108ac34`; hygiene `a245358`) |
 | TC-P07-T002 | **AWAITING_ARCHITECT_REVIEW** (`83529cf`) |
-| TC-P07-T002-R1 | **AWAITING_ARCHITECT_REVIEW** — PlaceId identity + T002 scope reconciliation (docs-only); artifact [`plans/P07-T002-R1-place-identity-and-scope-reconciliation.md`](plans/P07-T002-R1-place-identity-and-scope-reconciliation.md) |
+| TC-P07-T002-R1 | **AWAITING_ARCHITECT_REVIEW** (`0b86f05`) — PlaceId identity + T002 scope reconciliation (docs-only); artifact [`plans/P07-T002-R1-place-identity-and-scope-reconciliation.md`](plans/P07-T002-R1-place-identity-and-scope-reconciliation.md) |
 | P07-R1 | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION |
 | P07-R2 | **UNRESOLVED** (Destination link requiredness) |
 | P07-R3 | **UNRESOLVED** (Place delete/archive) |
@@ -423,7 +423,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P07-PLAN | P07 Place Catalog Implementation Plan | COMPLETE / ACCEPTED | `5dbc152` |
 | TC-P07-T001 | Place module scaffolding | COMPLETE / ACCEPTED | `108ac34` |
 | TC-P07-T002 | Place catalog domain + persistence baseline | AWAITING_ARCHITECT_REVIEW | `83529cf` |
-| TC-P07-T002-R1 | PlaceId identity + T002 scope reconciliation (docs-only) | AWAITING_ARCHITECT_REVIEW | *(this commit)* |
+| TC-P07-T002-R1 | PlaceId identity + T002 scope reconciliation (docs-only) | AWAITING_ARCHITECT_REVIEW | `0b86f05` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
