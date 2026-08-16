@@ -43,7 +43,7 @@
 | Last Accepted Commit | `84a0a48` (`TC-P07-GATE` ACCEPTED) · hygiene `8136455`/`003e9e4` · P07 COMPLETE docs `37956ef` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review/accept `TC-P08-PLAN` → then `TC-P08-T001` |
+| Current Next Task | Architect review/accept `TC-P08-T001` → then next Auto-Execute task |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -369,7 +369,7 @@ Place · Hotel · Restaurant · Attraction با localization، رابطه با D
 
 **Authoritative plan:** [`plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) (`TC-P08-PLAN` — AWAITING_ARCHITECT_REVIEW)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan authored · AWAITING_ARCHITECT_REVIEW · **P08-R1–R8 UNRESOLVED** · `TC-P08-T001` NOT_STARTED · P09 NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan ACCEPTED (`7012fe0`) · `TC-P08-T001` AWAITING_ARCHITECT_REVIEW · **P08-R1–R8 UNRESOLVED** · P09 NOT_STARTED
 
 Article · LandingPage · Category · Tag · Author · Content Blocks با پیوند معنادار به Destination.
 

@@ -53,6 +53,15 @@ Business and capability modules live under this directory.
 - **Place:** Place core + typed specializations (`TC-P07-T002`) — `PlaceId` canonical; Hotel/Restaurant/Attraction 1:1 tables in schema `place` (P07-R1).
 - Invariant: **Hotel Catalog ≠ Hotel Booking**; Place.Hotel = canonical hotel catalog; Destination ≠ Place; no independent public HotelId/RestaurantId/AttractionId.
 
+## Active modules (P08)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Content | `Content/TravelCore.Modules.Content.{Domain,Contracts,Infrastructure}` | `content` |
+
+- **Content:** module scaffolding only (`TC-P08-T001`) — schema `content` ownership; no Article/Landing aggregates yet (T002 / P08-R1).
+- Invariant: **Content owns editorial**; SEO owns route/IndexPolicy; Destination/Place/Tour referenced by ID only.
+
 ## Naming
 
 Preferred project naming when a module is actually introduced:
@@ -77,6 +86,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - SEO ≠ Search.
 - Media ≠ consumer gallery/hero semantics; Media ≠ SEO IndexPolicy.
 - Place ≠ HotelBooking; Place ≠ Destination hierarchy ownership.
+- Content ≠ SEO substance duplication; Content ≠ Tour/Place/UGC ownership.
 
 ## Host
 

@@ -319,6 +319,29 @@ public sealed class ArchitectureGuardrailTests
     }
 
     [Fact]
+    public void ContentPersistence_MustUseOwnedSchema_content()
+    {
+        var options = new DbContextOptionsBuilder<TravelCore.Modules.Content.Infrastructure.ContentDbContext>()
+            .UseTravelCorePostgreSql(
+                "Host=127.0.0.1;Database=architecture_guard_content_design;Username=architecture;Password=not-a-real-secret",
+                migrationsHistorySchema: TravelCore.Modules.Content.Infrastructure.ContentDbContext.SchemaName)
+            .Options;
+
+        using var db = new TravelCore.Modules.Content.Infrastructure.ContentDbContext(options);
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+        Assert.Equal("content", TravelCore.Modules.Content.Infrastructure.ContentDbContext.SchemaName);
+
+        // Scaffolding has no product entities yet; default schema ownership must still be content.
+        Assert.Equal("content", db.Model.GetDefaultSchema());
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            Assert.Equal("content", entity.GetSchema());
+        }
+
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+    }
+
+    [Fact]
     public void FixtureMigrations_MustRemainUnderFixtureProject()
     {
         var migrationsDir = Path.Combine(
