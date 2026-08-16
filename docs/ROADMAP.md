@@ -43,7 +43,7 @@
 | Last Accepted Commit | `f70991f` (`TC-P04-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | USER `TRAVELCORE_TASK_CONFIRM: TC-P05-GATE` then architect issues gate |
+| Current Next Task | Architect accept of `TC-P05-GATE`; P06 needs separate phase confirm |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -104,7 +104,7 @@
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
-- **P05** = IN_PROGRESS / GATE-READY (`TC-P05-T001`–`T012` ACCEPTED · await USER `TRAVELCORE_TASK_CONFIRM: TC-P05-GATE` · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED)
+- **P05** = GATE PASS evidence posted (`TC-P05-T001`–`T012` ACCEPTED · awaiting architect `TC-P05-GATE` accept · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED)
 - **P06–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -302,13 +302,14 @@ Invariant: Destination مالک Hotel/Tour/Article/Booking نیست؛ ReferenceD
 
 ## P05 — SEO Engine
 
-**Status:** IN_PROGRESS
+**Status:** IN_PROGRESS (GATE evidence posted; awaiting architect ACCEPT to mark COMPLETE)
 
 **Authoritative plan:** [`plans/P05-implementation-plan.md`](plans/P05-implementation-plan.md) (`TC-P05-PLAN`)
 
-**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T012` COMPLETE / ACCEPTED · **GATE READY / NOT_STARTED** (needs USER `TRAVELCORE_TASK_CONFIRM: TC-P05-GATE`) · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED
+**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P05-GATE` AWAITING_ARCHITECT_REVIEW** · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED
 
-**Evidence pack:** [`plans/P05-T012-evidence-pack.md`](plans/P05-T012-evidence-pack.md)
+**Evidence pack:** [`plans/P05-T012-evidence-pack.md`](plans/P05-T012-evidence-pack.md)  
+**Gate evidence:** [`plans/P05-GATE-acceptance-evidence.md`](plans/P05-GATE-acceptance-evidence.md)
 
 **Remediation evidence:** [`plans/P05-PLAN-R1-baseline-reconciliation.md`](plans/P05-PLAN-R1-baseline-reconciliation.md) · [`plans/P05-T003-R1-r1-decision-reconciliation.md`](plans/P05-T003-R1-r1-decision-reconciliation.md)
 

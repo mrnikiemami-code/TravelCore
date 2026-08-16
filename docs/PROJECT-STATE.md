@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P05-GATE** (AWAITING_USER_CONFIRM — not issued yet) |
-| Current Next Product Phase | P05 — SEO Engine (**IN_PROGRESS** · gate-ready) |
-| Current Next Task | USER must send `TRAVELCORE_TASK_CONFIRM: TC-P05-GATE`; then await architect Auto-Execute |
+| Current Active Product Task | **TC-P05-GATE** (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Product Phase | P05 — SEO Engine (**GATE PASS pending architect**; then P06 needs phase confirm) |
+| Current Next Task | Architect accept of `TC-P05-GATE`; P06 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P06` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -89,7 +89,7 @@
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P03 Gate Evidence | [`docs/plans/P03-GATE-acceptance-evidence.md`](plans/P03-GATE-acceptance-evidence.md) |
 | P04 | **COMPLETE** (closed by `TC-P04-GATE` ACCEPTED `f70991f`) |
-| P05 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P05`) |
+| P05 | **IN_PROGRESS** (GATE PASS evidence posted; awaiting architect accept to mark COMPLETE) |
 | P05 Plan | `TC-P05-PLAN` COMPLETE / ACCEPTED — [`docs/plans/P05-implementation-plan.md`](plans/P05-implementation-plan.md) |
 | P05 Plan Remediation | `TC-P05-PLAN-R1` COMPLETE / ACCEPTED — [`docs/plans/P05-PLAN-R1-baseline-reconciliation.md`](plans/P05-PLAN-R1-baseline-reconciliation.md) |
 | P05-R1 (slug history ownership) | **RESOLVED** — Destination owns current `DestinationTranslation.Slug`; SEO owns path history/reservation/redirect mechanics |
@@ -117,9 +117,9 @@
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
-| P05 Phase Gate | NOT_STARTED |
+| P05 Phase Gate | **TC-P05-GATE** AWAITING_ARCHITECT_REVIEW |
 | Human Phase Confirmation | P05 entered via USER `TRAVELCORE_PHASE_CONFIRM: P05` (P04 previously via P04 token) |
-| Pipeline Product Execution | **WAITING_HUMAN_CONFIRMATION** (`TRAVELCORE_TASK_CONFIRM: TC-P05-GATE`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P05-GATE`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -226,10 +226,10 @@
 | TC-P05-T010 | COMPLETE / ACCEPTED (`78caf4b`; hygiene `28cfb41`/`84c7ab2`) |
 | TC-P05-T011 | COMPLETE / ACCEPTED (`8a9c4b7`; hygiene `61dd8c1`/`9258479`/`85ac421`) |
 | TC-P05-T012 | COMPLETE / ACCEPTED (`0c8ab0a`; hygiene `3351755`/`be407fc`/`6a02d9d`) |
-| TC-P05-GATE | READY / NOT_STARTED (await USER confirm token) |
+| TC-P05-GATE | AWAITING_ARCHITECT_REVIEW (evidence this commit) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
-| Required Human Token | `TRAVELCORE_TASK_CONFIRM: TC-P05-GATE` |
+| Required Human Token | none for GATE review; P06 later needs `TRAVELCORE_PHASE_CONFIRM: P06` |
 
 ### P00 Exit Summary
 
@@ -240,7 +240,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 IN_PROGRESS** (gate-ready); `TC-P05-T001`–`T012` ACCEPTED; **await USER `TRAVELCORE_TASK_CONFIRM: TC-P05-GATE`**; **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; P06 NOT_STARTED
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 GATE PASS evidence posted** (`TC-P05-T001`–`T012` ACCEPTED); awaiting architect accept of `TC-P05-GATE`; **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; P06 NOT_STARTED
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -347,7 +347,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T010 | Destination public integration + publication rules | COMPLETE / ACCEPTED | `78caf4b` (+ `28cfb41`/`84c7ab2`) |
 | TC-P05-T011 | Admin SEO operational baseline | COMPLETE / ACCEPTED | `8a9c4b7` (+ `61dd8c1`/`9258479`/`85ac421`) |
 | TC-P05-T012 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `0c8ab0a` (+ `3351755`/`be407fc`/`6a02d9d`) |
-| TC-P05-GATE | P05 Acceptance Gate | READY / NOT_STARTED | await USER confirm |
+| TC-P05-GATE | P05 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
