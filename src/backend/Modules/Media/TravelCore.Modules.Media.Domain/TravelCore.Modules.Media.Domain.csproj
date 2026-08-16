@@ -6,7 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Media.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Media.Domain</AssemblyName>
-    <Description>Media domain layer shell. MediaAsset product entities deferred to TC-P06-T002+. No EF/ASP.NET.</Description>
+    <Description>Media domain: MediaAsset technical metadata aggregate. No EF/ASP.NET. No consumer gallery semantics.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 
 </Project>

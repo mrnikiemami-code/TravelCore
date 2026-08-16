@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Media.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Media.Contracts</AssemblyName>
-    <Description>Media module contracts shell. MediaAsset product contracts deferred to TC-P06-T002+. No EF entities.</Description>
+    <Description>Media module contracts (MediaAsset create/get/list). No EF entities.</Description>
   </PropertyGroup>
 
 </Project>

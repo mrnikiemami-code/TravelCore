@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.Media.Domain;
 
 namespace TravelCore.Modules.Media.Infrastructure;
 
 /// <summary>
 /// Media-owned DbContext. Owns PostgreSQL schema <c>media</c>.
-/// Product entities (MediaAsset, variants, translations) are deferred to later P06 tasks.
 /// </summary>
 public sealed class MediaDbContext : DbContext
 {
@@ -14,6 +14,8 @@ public sealed class MediaDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<MediaAsset> MediaAssets => Set<MediaAsset>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

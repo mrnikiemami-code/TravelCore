@@ -40,7 +40,7 @@ Business and capability modules live under this directory.
 |--------|----------|--------|
 | Media | `Media/TravelCore.Modules.Media.{Domain,Contracts,Infrastructure}` | `media` |
 
-- **Media:** Module scaffolding only (`TC-P06-T001`) — MediaAsset/storage/upload product behavior deferred to T002+.
+- **Media:** MediaAsset metadata SoR (`TC-P06-T002`) — storage/upload/variants/Admin deferred to T003+.
 - Invariant: **Media owns technical asset truth**; consumers own relationship meaning (gallery/hero/order). Media ≠ SEO authority.
 
 ## Naming

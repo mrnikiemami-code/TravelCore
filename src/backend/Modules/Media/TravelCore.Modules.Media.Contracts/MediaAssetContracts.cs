@@ -1,0 +1,42 @@
+namespace TravelCore.Modules.Media.Contracts;
+
+/// <summary>
+/// Public DTO for a MediaAsset. Never exposes EF entities or consumer relationship fields.
+/// </summary>
+public sealed record MediaAssetResponse(
+    Guid Id,
+    string ContentType,
+    long ByteSize,
+    int? Width,
+    int? Height,
+    string? StorageKey,
+    string Status,
+    string CreatedAt,
+    string UpdatedAt);
+
+public sealed record CreateMediaAssetRequest(
+    string ContentType,
+    long ByteSize,
+    int? Width = null,
+    int? Height = null,
+    string? StorageKey = null,
+    string? Status = null);
+
+/// <summary>
+/// Cross-module contract for MediaAsset create/get/list (TC-P06-T002 baseline).
+/// </summary>
+public interface IMediaAssetService
+{
+    Task<MediaAssetResponse> CreateAsync(
+        CreateMediaAssetRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<MediaAssetResponse?> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<MediaAssetResponse>> ListAsync(
+        string? status = null,
+        int take = 50,
+        CancellationToken cancellationToken = default);
+}

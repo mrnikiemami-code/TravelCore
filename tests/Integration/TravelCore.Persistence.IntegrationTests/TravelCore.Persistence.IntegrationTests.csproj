@@ -30,6 +30,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\ReferenceData\TravelCore.Modules.ReferenceData.Infrastructure\TravelCore.Modules.ReferenceData.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Destination\TravelCore.Modules.Destination.Infrastructure\TravelCore.Modules.Destination.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Seo\TravelCore.Modules.Seo.Infrastructure\TravelCore.Modules.Seo.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Media\TravelCore.Modules.Media.Infrastructure\TravelCore.Modules.Media.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Fixtures\Persistence\TravelCore.PersistenceFixture\TravelCore.PersistenceFixture.csproj" />
   </ItemGroup>
 

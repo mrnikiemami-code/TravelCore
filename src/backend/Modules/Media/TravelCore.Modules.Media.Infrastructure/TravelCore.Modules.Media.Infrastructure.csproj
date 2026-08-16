@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Media.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Media.Infrastructure</AssemblyName>
-    <Description>Media module infrastructure: DbContext schema media, migrations, host registration (TC-P06-T001).</Description>
+    <Description>Media module infrastructure: MediaAsset metadata persistence in schema media (TC-P06-T002).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>
