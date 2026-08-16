@@ -188,10 +188,11 @@ function main() {
   const publicDest = read(publicDestinationPage);
   assert.doesNotMatch(publicDest, /['"]use client['"]/);
   assert.match(publicDest, /generateMetadata/);
-  assert.match(publicDest, /index:\s*false/);
-  assert.match(publicDest, /follow:\s*true/);
+  assert.match(publicDest, /loadComposedSeoMetadata/);
+  assert.match(publicDest, /robotsFromComposed/);
   assert.match(publicDest, /loadDestinationLandingPage/);
   assert.match(publicDest, /PublicShell/);
+  // T007: SEO-aware composition required (robots may still noindex via R2 evaluation)
   assert.ok(
     fs.existsSync(
       path.join(srcRoot, "types", "pages", "destination-landing.ts"),
@@ -217,15 +218,23 @@ function main() {
   );
   assert.doesNotMatch(landingView, /['"]use client['"]/);
   assert.doesNotMatch(landingView, /\/destinations\/\$\{[^}]*id/);
-  // T006: languages alternates allowed; canonical still deferred (T007+)
-  assert.doesNotMatch(publicDest, /alternates:\s*\{[\s\S]*canonical/);
-  assert.match(publicDest, /loadSeoHreflangLanguagesByPath/);
-  assert.match(publicDest, /alternates:\s*\{\s*languages/);
+  // T007: composed metadata may include canonical + languages from SEO
+  assert.match(publicDest, /loadComposedSeoMetadata/);
+  assert.match(publicDest, /languagesFromComposed|canonicalHref/);
   assert.ok(
     fs.existsSync(path.join(srcRoot, "lib", "seo", "hreflang-contract.ts")),
   );
   assert.ok(
     fs.existsSync(path.join(srcRoot, "lib", "seo", "load-hreflang.ts")),
+  );
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "lib", "seo", "metadata-contract.ts")),
+  );
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "lib", "seo", "load-composed-metadata.ts")),
+  );
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "lib", "seo", "indexability-contract.ts")),
   );
 
   // 11) P04 T010 ReferenceData Admin read surface (job catalog, not silo CMS)

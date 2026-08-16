@@ -27,6 +27,8 @@ public sealed class SeoDbContext : DbContext
 
     public DbSet<SeoIndexPolicy> SeoIndexPolicies => Set<SeoIndexPolicy>();
 
+    public DbSet<SeoMetadataOverride> SeoMetadataOverrides => Set<SeoMetadataOverride>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

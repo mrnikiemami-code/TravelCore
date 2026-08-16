@@ -123,6 +123,66 @@ internal static class SeoEndpoints
             }
         });
 
+        // Server-side metadata composition (T007) — content inputs from domain contracts.
+        group.MapPost("/metadata/compose", async Task<IResult> (
+            ComposeSeoMetadataRequest request,
+            ISeoMetadataService metadata,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var composed = await metadata.ComposeAsync(request, cancellationToken);
+                return Results.Ok(composed);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+        });
+
+        group.MapGet("/metadata/overrides/{resourceType}/{resourceId:guid}/{locale}", async Task<IResult> (
+            string resourceType,
+            Guid resourceId,
+            string locale,
+            ISeoMetadataService metadata,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var row = await metadata.GetOverrideAsync(resourceType, resourceId, locale, cancellationToken);
+                return row is null ? Results.NotFound() : Results.Ok(row);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "resourceType"] = [ex.Message]
+                });
+            }
+        });
+
+        group.MapPut("/metadata/overrides", async Task<IResult> (
+            SetSeoMetadataOverrideRequest request,
+            ISeoMetadataService metadata,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var row = await metadata.SetOverrideAsync(request, cancellationToken);
+                return Results.Ok(row);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+        });
+
         return endpoints;
     }
 

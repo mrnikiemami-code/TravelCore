@@ -6,7 +6,11 @@ import { DestinationLandingView } from "@/features/destination-landing/destinati
 import { loadDestinationLandingPage } from "@/features/destination-landing/load-destination-landing";
 import { isApiOk } from "@/lib/api/result";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
-import { loadSeoHreflangLanguagesByPath } from "@/lib/seo/load-hreflang";
+import { loadComposedSeoMetadata } from "@/lib/seo/load-composed-metadata";
+import {
+  languagesFromComposed,
+  robotsFromComposed,
+} from "@/lib/seo/metadata-contract";
 
 type PageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -14,10 +18,9 @@ type PageProps = {
 
 /**
  * Public Destination detail baseline (TC-P04-T009).
- * R3 RESOLVED: page may exist for humans; robots = noindex, follow.
- * TC-P05-T005: IndexPolicy API/contract exists but this page keeps hardcoded
- * noindex until metadata composition (T007+) — no mass flip.
- * TC-P05-T006: hreflang alternates from SEO bindings only (no fabricated locales).
+ * TC-P05-T007: metadata composed server-side via SEO (title/description/robots/
+ * canonical/hreflang). Missing IndexPolicy remains noindex,follow (R2) —
+ * not a mass index flip.
  */
 export async function generateMetadata({
   params,
@@ -33,21 +36,40 @@ export async function generateMetadata({
   }
 
   const vm = loaded.data;
-  const languages = await loadSeoHreflangLanguagesByPath(
-    localeParam,
-    `destinations/${slug}`,
-  );
+  const path = `destinations/${slug}`;
+  const composed = await loadComposedSeoMetadata({
+    locale: localeParam,
+    path,
+    localizedTitle: vm.name,
+    localizedDescription: vm.description,
+  });
+
+  // Conservative fallback if SEO compose unavailable — still noindex.
+  if (!composed) {
+    return {
+      title: vm.name,
+      description: vm.description ?? undefined,
+      robots: { index: false, follow: true },
+    };
+  }
+
+  const languages = languagesFromComposed(composed);
+  const robots = robotsFromComposed(composed);
 
   return {
-    title: vm.name,
-    description: vm.description ?? undefined,
-    ...(Object.keys(languages).length > 0
-      ? { alternates: { languages } }
+    title: composed.title,
+    description: composed.description ?? undefined,
+    ...(composed.canonicalHref || Object.keys(languages).length > 0
+      ? {
+          alternates: {
+            ...(composed.canonicalHref
+              ? { canonical: composed.canonicalHref }
+              : {}),
+            ...(Object.keys(languages).length > 0 ? { languages } : {}),
+          },
+        }
       : {}),
-    robots: {
-      index: false,
-      follow: true,
-    },
+    robots,
   };
 }
 

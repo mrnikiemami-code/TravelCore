@@ -31,12 +31,13 @@ public sealed class SeoMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(5, expectedMigrations.Length);
+            Assert.Equal(6, expectedMigrations.Length);
             Assert.EndsWith("_InitialSeoScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoRoutes", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoPathHistoryAndReservations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoRedirectsAndCanonicalBaseline", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoIndexPolicies", expectedMigrations[4], StringComparison.Ordinal);
+            Assert.EndsWith("_AddSeoMetadataOverrides", expectedMigrations[5], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
