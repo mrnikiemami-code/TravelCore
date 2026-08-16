@@ -44,7 +44,12 @@ export type AdminPlaceWorkflowCopy = {
   translationLocale: string;
   nameLabel: string;
   descriptionLabel: string;
+  slugLabel: string;
+  slugHint: string;
   saveTranslation: string;
+  saveSlug: string;
+  publishSeoRoute: string;
+  publishSeoHint: string;
   destinationSlugLocale: string;
   destinationSlugLabel: string;
   resolveDestination: string;
@@ -124,7 +129,7 @@ const COPY: Record<"fa" | "en", AdminPlaceWorkflowCopy> = {
     noPlaces: "مکانی نیست — ابتدا ایجاد کنید.",
     selectPlace: "باز کردن",
     openByCodeAction: "باز کردن",
-    openByCodeHint: "Code یکتای کاتالوگ؛ جایگزین slug عمومی (هنوز تصمیم‌گیری نشده).",
+    openByCodeHint: "Code یکتای کاتالوگ برای باز کردن سریع Admin.",
     selectedTitle: "مکان انتخاب‌شده",
     metadataHeading: "متادیتا",
     statusLabel: "وضعیت کاتالوگ",
@@ -135,7 +140,13 @@ const COPY: Record<"fa" | "en", AdminPlaceWorkflowCopy> = {
     translationLocale: "زبان ترجمه",
     nameLabel: "نام محلی",
     descriptionLabel: "توضیح",
+    slugLabel: "Slug محلی",
+    slugHint: "مالکیت فعلی با Place است؛ تاریخچه/ریدایرکت با SEO.",
     saveTranslation: "ذخیرهٔ ترجمه",
+    saveSlug: "ذخیرهٔ slug",
+    publishSeoRoute: "انتشار مسیر SEO",
+    publishSeoHint:
+      "مسیر places/{slug} را در namespace SEO ثبت می‌کند. IndexPolicy پیش‌فرض noindex,follow می‌ماند مگر صریحاً تنظیم شود.",
     destinationSlugLocale: "زبان slug مقصد",
     destinationSlugLabel: "slug مقصد",
     resolveDestination: "یافتن مقصد",
@@ -216,7 +227,7 @@ const COPY: Record<"fa" | "en", AdminPlaceWorkflowCopy> = {
     noPlaces: "No places yet — create first.",
     selectPlace: "Open",
     openByCodeAction: "Open",
-    openByCodeHint: "Unique catalog Code; not a public slug (P07-R4 still open).",
+    openByCodeHint: "Unique catalog Code for fast Admin open.",
     selectedTitle: "Selected place",
     metadataHeading: "Metadata",
     statusLabel: "Catalog status",
@@ -227,7 +238,13 @@ const COPY: Record<"fa" | "en", AdminPlaceWorkflowCopy> = {
     translationLocale: "Translation locale",
     nameLabel: "Localized name",
     descriptionLabel: "Description",
+    slugLabel: "Localized slug",
+    slugHint: "Place owns current slug; SEO owns history/redirects.",
     saveTranslation: "Save translation",
+    saveSlug: "Save slug",
+    publishSeoRoute: "Publish SEO route",
+    publishSeoHint:
+      "Registers places/{slug} in the SEO namespace. Default IndexPolicy stays noindex,follow until set explicitly.",
     destinationSlugLocale: "Destination slug locale",
     destinationSlugLabel: "Destination slug",
     resolveDestination: "Resolve destination",

@@ -21,3 +21,25 @@ public interface ISeoDestinationPublicationService
         PublishDestinationSeoRouteRequest request,
         CancellationToken cancellationToken = default);
 }
+
+/// <summary>
+/// Publish Place content-owned slug into SEO namespace as places/{slug} (TC-P07-T007 / P07-R4).
+/// Does not write Place tables; does not flip IndexPolicy (P07-R5 default remains noindex,follow).
+/// </summary>
+public sealed record PublishPlaceSeoRouteRequest(
+    Guid PlaceId,
+    string Locale,
+    string Slug);
+
+public sealed record PublishPlaceSeoRouteResponse(
+    SeoRouteResponse Route,
+    bool Created,
+    bool PathChanged,
+    string PublicPath);
+
+public interface ISeoPlacePublicationService
+{
+    Task<PublishPlaceSeoRouteResponse> PublishAsync(
+        PublishPlaceSeoRouteRequest request,
+        CancellationToken cancellationToken = default);
+}

@@ -257,6 +257,48 @@ function main() {
     ),
   );
 
+  // 11) P07 T007 public Place detail (R5 default noindex,follow; Server Component)
+  const publicPlacePage = path.join(
+    srcRoot,
+    "app",
+    "[locale]",
+    "places",
+    "[slug]",
+    "page.tsx",
+  );
+  assert.ok(fs.existsSync(publicPlacePage));
+  const publicPlace = read(publicPlacePage);
+  assert.doesNotMatch(publicPlace, /['"]use client['"]/);
+  assert.match(publicPlace, /generateMetadata/);
+  assert.match(publicPlace, /loadComposedSeoMetadata/);
+  assert.match(publicPlace, /robotsFromComposed/);
+  assert.match(publicPlace, /loadSeoBreadcrumbJsonLd/);
+  assert.match(publicPlace, /application\/ld\+json/);
+  assert.match(publicPlace, /loadPlaceDetailPage/);
+  assert.match(publicPlace, /PublicShell/);
+  assert.match(publicPlace, /places\/\$\{/);
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "types", "pages", "place-detail.ts")),
+  );
+  assert.ok(
+    fs.existsSync(
+      path.join(srcRoot, "features", "place-detail", "place-detail-view.tsx"),
+    ),
+  );
+  const placeView = read(
+    path.join(srcRoot, "features", "place-detail", "place-detail-view.tsx"),
+  );
+  assert.doesNotMatch(placeView, /['"]use client['"]/);
+    assert.doesNotMatch(placeView, /\/places\/\$\{[^}]*id/);
+  assert.doesNotMatch(placeView, /\bstorageKey\b/i);
+  assert.doesNotMatch(placeView, /\bHero\b/);
+
+  // 12) Admin catalog places workflow island remains intentional client boundary
+  assert.ok(
+    fs.existsSync(
+      path.join(srcRoot, "app", "[locale]", "admin", "catalog", "places", "page.tsx"),
+    ),
+  );
   // 11) P04 T010 ReferenceData Admin read surface (job catalog, not silo CMS)
   const referencePage = path.join(
     srcRoot,

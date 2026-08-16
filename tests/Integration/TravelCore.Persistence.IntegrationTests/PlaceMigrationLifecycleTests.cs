@@ -34,12 +34,13 @@ public sealed class PlaceMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(5, expectedMigrations.Length);
+            Assert.Equal(6, expectedMigrations.Length);
             Assert.EndsWith("_InitialPlaceScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPlaceCatalogTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_PlaceTranslationsDestinationLinkAndGeo", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_PlaceFacilitiesClassificationAndCatalogStatus", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_PlaceMediaLinks", expectedMigrations[4], StringComparison.Ordinal);
+            Assert.EndsWith("_PlaceTranslationSlugs", expectedMigrations[5], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())

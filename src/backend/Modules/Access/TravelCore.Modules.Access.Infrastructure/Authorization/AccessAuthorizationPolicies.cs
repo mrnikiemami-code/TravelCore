@@ -31,4 +31,9 @@ public static class AccessAuthorizationPolicies
     /// Place Admin catalog mutations: Access-backed <c>place.places.write</c>.
     /// </summary>
     public const string PlacePlacesWrite = "Access.Place.Places.Write";
+
+    /// <summary>
+    /// Place SEO route publication: Access-backed <c>seo.place-posture.write</c>.
+    /// </summary>
+    public const string SeoPlacePostureWrite = "Access.Seo.PlacePosture.Write";
 }

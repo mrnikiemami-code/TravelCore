@@ -38,6 +38,7 @@ export type PlaceTranslationView = {
   localeCode: string;
   name: string;
   description: string | null;
+  slug: string | null;
 };
 
 export type PlaceMediaLinkView = {

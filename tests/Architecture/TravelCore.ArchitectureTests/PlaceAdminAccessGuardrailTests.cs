@@ -36,10 +36,11 @@ public sealed class PlaceAdminAccessGuardrailTests
         Assert.DoesNotContain("ArchivedAt", text, StringComparison.Ordinal);
         Assert.DoesNotContain("IsDeleted", text, StringComparison.Ordinal);
 
-        // No slug / SEO index routes (P07-R4 / P07-R5).
-        Assert.DoesNotContain("/slug", text, StringComparison.OrdinalIgnoreCase);
-        Assert.DoesNotContain("IndexPolicy", text, StringComparison.Ordinal);
-        Assert.DoesNotContain("by-slug", text, StringComparison.OrdinalIgnoreCase);
+        // Slug lookup is Place-owned (P07-R4); indexability stays SEO-owned (P07-R5).
+        Assert.Contains("by-slug", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("/slug", text, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("SetIndexPolicy", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("ISeoIndexPolicy", text, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -83,14 +84,14 @@ public sealed class PlaceAdminAccessGuardrailTests
                 .Where(x => !x.line.TrimStart().StartsWith("//", StringComparison.Ordinal)
                             && Regex.IsMatch(
                                 x.line,
-                                @"\b(deletePlace|archivePlace|restorePlace|IsDeleted|DeletedAt|ArchivedAt|PlaceTranslation\.Slug|IndexPolicy)\b",
+                                @"\b(deletePlace|archivePlace|restorePlace|IsDeleted|DeletedAt|ArchivedAt|SetIndexPolicy|ISeoIndexPolicy)\b",
                                 RegexOptions.IgnoreCase)))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "Admin Place must not invent R3/R4/R5 surfaces:\n" + string.Join('\n', hits));
+            "Admin Place must not invent R3 delete/archive or SEO index-policy mutation UI:\n" + string.Join('\n', hits));
     }
 
     [Fact]

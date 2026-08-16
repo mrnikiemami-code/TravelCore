@@ -44,7 +44,7 @@ public sealed class PlaceCatalogOpsGuardrailTests
     }
 
     [Fact]
-    public void PlaceModule_ForbidsPlaceTranslationSlug_UntilR4()
+    public void PlaceModule_AllowsPlaceTranslationSlug_ForbidsRedirectHistoryFields()
     {
         var placeRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Place");
         var hits = Directory.EnumerateFiles(placeRoot, "*.cs", SearchOption.AllDirectories)
@@ -52,15 +52,23 @@ public sealed class PlaceCatalogOpsGuardrailTests
                         && !p.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase))
             .SelectMany(path => File.ReadAllLines(path)
                 .Select((line, i) => (path, line, i))
-                .Where(x => x.path.Contains("PlaceTranslation", StringComparison.OrdinalIgnoreCase)
+                .Where(x => !x.line.TrimStart().StartsWith("//", StringComparison.Ordinal)
+                            && !x.line.TrimStart().StartsWith("///", StringComparison.Ordinal)
                             && Regex.IsMatch(
                                 x.line,
-                                @"\b(public|private|internal|protected)\s+.*\bSlug\b")))
+                                @"\b(PreviousSlug|RedirectTo|HistoricalSlug|SlugHistory|RedirectFrom)\b")))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "P07-R4 unresolved — PlaceTranslation must not gain Slug in T004:\n" + string.Join('\n', hits));
+            "P07-R4: Place owns current Slug only — redirect/history stay SEO-owned:\n" + string.Join('\n', hits));
+
+        var translationPath = Path.Combine(
+            placeRoot,
+            "TravelCore.Modules.Place.Domain",
+            "PlaceTranslation.cs");
+        Assert.True(File.Exists(translationPath), translationPath);
+        Assert.Contains("public string? Slug", File.ReadAllText(translationPath), StringComparison.Ordinal);
     }
 }

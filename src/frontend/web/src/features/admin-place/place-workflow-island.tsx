@@ -11,6 +11,7 @@ import {
   listPlacesAction,
   loadPlaceDetailAction,
   openPlaceByCodeAction,
+  publishPlaceSeoRouteAction,
   removePlaceCoverAction,
   removePlaceGalleryItemAction,
   resolveDestinationBySlugAction,
@@ -19,6 +20,7 @@ import {
   setPlaceCoverAction,
   setPlaceDestinationLinkAction,
   setPlaceGeoAction,
+  setPlaceTranslationSlugAction,
   upsertPlaceTranslationAction,
 } from "@/features/admin-place/actions";
 import { getAdminPlaceWorkflowCopy } from "@/features/admin-place/copy";
@@ -63,6 +65,7 @@ export function PlaceWorkflowIsland({
   );
   const [localizedName, setLocalizedName] = useState("");
   const [localizedDescription, setLocalizedDescription] = useState("");
+  const [placeSlug, setPlaceSlug] = useState("");
   const [destSlugLocale, setDestSlugLocale] = useState<"fa" | "en">(
     locale === "en" ? "en" : "fa",
   );
@@ -112,6 +115,7 @@ export function PlaceWorkflowIsland({
     );
     setLocalizedName(row?.name ?? "");
     setLocalizedDescription(row?.description ?? "");
+    setPlaceSlug(row?.slug ?? "");
     setLatitude(place.latitude == null ? "" : String(place.latitude));
     setLongitude(place.longitude == null ? "" : String(place.longitude));
     setLine1(place.address?.line1 ?? "");
@@ -503,6 +507,7 @@ export function PlaceWorkflowIsland({
                       );
                       setLocalizedName(row?.name ?? "");
                       setLocalizedDescription(row?.description ?? "");
+                      setPlaceSlug(row?.slug ?? "");
                     }}
                     className="min-h-touch rounded-md border border-border bg-background px-3"
                   >
@@ -537,6 +542,64 @@ export function PlaceWorkflowIsland({
                     {copy.saveTranslation}
                   </button>
                 </div>
+              </form>
+              <form
+                className="grid gap-3 sm:grid-cols-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  run(async () => {
+                    const result = await setPlaceTranslationSlugAction({
+                      placeId: selected.id,
+                      localeCode: translationLocale,
+                      slug: placeSlug.trim() || null,
+                    });
+                    if (!result.ok) {
+                      setError(mapAuthError(result.status));
+                      return;
+                    }
+                    await reloadSelected();
+                  });
+                }}
+              >
+                <label className="flex flex-col gap-1 text-sm sm:col-span-2">
+                  <span>{copy.slugLabel}</span>
+                  <input
+                    value={placeSlug}
+                    onChange={(e) => setPlaceSlug(e.target.value)}
+                    className="min-h-touch rounded-md border border-border bg-background px-3"
+                  />
+                  <Text role="caption">{copy.slugHint}</Text>
+                </label>
+                <div className="flex flex-wrap gap-2 sm:col-span-2">
+                  <button
+                    type="submit"
+                    disabled={pending}
+                    className="min-h-touch rounded-md bg-foreground px-4 text-background disabled:opacity-50"
+                  >
+                    {copy.saveSlug}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={pending || !placeSlug.trim()}
+                    className="min-h-touch rounded-md border border-border px-4 disabled:opacity-50"
+                    onClick={() =>
+                      run(async () => {
+                        const result = await publishPlaceSeoRouteAction({
+                          placeId: selected.id,
+                          localeCode: translationLocale,
+                          slug: placeSlug.trim(),
+                        });
+                        if (!result.ok) {
+                          setError(mapAuthError(result.status));
+                          return;
+                        }
+                      })
+                    }
+                  >
+                    {copy.publishSeoRoute}
+                  </button>
+                </div>
+                <Text role="caption">{copy.publishSeoHint}</Text>
               </form>
             </Stack>
           </Surface>

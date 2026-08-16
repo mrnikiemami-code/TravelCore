@@ -47,6 +47,7 @@ type ApiTranslation = {
   localeCode: string;
   name: string;
   description?: string | null;
+  slug?: string | null;
 };
 
 type ApiMediaLink = {
@@ -114,6 +115,7 @@ function mapTranslation(t: ApiTranslation): PlaceTranslationView {
     localeCode: t.localeCode,
     name: t.name,
     description: t.description ?? null,
+    slug: t.slug ?? null,
   };
 }
 
@@ -277,6 +279,52 @@ export async function upsertPlaceTranslationAction(input: {
   );
   if (!result.ok) return failMessage(result);
   return { ok: true, translation: mapTranslation(result.data) };
+}
+
+export async function setPlaceTranslationSlugAction(input: {
+  placeId: string;
+  localeCode: string;
+  slug: string | null;
+}): Promise<
+  | { ok: true; translation: PlaceTranslationView }
+  | { ok: false; message: string; status?: number }
+> {
+  const id = encodeURIComponent(input.placeId.trim());
+  const locale = encodeURIComponent(input.localeCode.trim());
+  const result = await apiSendJson<ApiTranslation>(
+    `/api/place/places/${id}/translations/${locale}/slug`,
+    {
+      method: "PUT",
+      headers: await authHeaders(),
+      body: { slug: input.slug },
+    },
+  );
+  if (!result.ok) return failMessage(result);
+  return { ok: true, translation: mapTranslation(result.data) };
+}
+
+export async function publishPlaceSeoRouteAction(input: {
+  placeId: string;
+  localeCode: string;
+  slug: string;
+}): Promise<
+  | { ok: true; publicPath: string }
+  | { ok: false; message: string; status?: number }
+> {
+  const result = await apiSendJson<{ publicPath: string }>(
+    "/api/seo/publication/place",
+    {
+      method: "POST",
+      headers: await authHeaders(),
+      body: {
+        placeId: input.placeId,
+        locale: input.localeCode,
+        slug: input.slug,
+      },
+    },
+  );
+  if (!result.ok) return failMessage(result);
+  return { ok: true, publicPath: result.data.publicPath };
 }
 
 export async function resolveDestinationBySlugAction(input: {

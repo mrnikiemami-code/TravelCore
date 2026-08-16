@@ -59,13 +59,29 @@ public sealed record CreatePlaceRequest(
 
 public sealed record UpsertPlaceTranslationRequest(
     string Name,
-    string? Description);
+    string? Description,
+    string? Slug = null);
+
+public sealed record SetPlaceTranslationSlugRequest(string? Slug);
 
 public sealed record PlaceTranslationResponse(
     Guid PlaceId,
     string LocaleCode,
     string Name,
-    string? Description);
+    string? Description,
+    string? Slug);
+
+/// <summary>
+/// Public slug lookup hit. Public callers should only receive Active catalog places.
+/// </summary>
+public sealed record PlaceSlugLookupResponse(
+    Guid PlaceId,
+    string LocaleCode,
+    string Slug,
+    string Kind,
+    string Code,
+    string EnglishName,
+    string CatalogStatus);
 
 public sealed record SetPlaceDestinationLinkRequest(Guid? DestinationId);
 
@@ -131,11 +147,21 @@ public interface IPlaceService
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Admin-friendly lookup by unique Place.Code (not slug — P07-R4 unresolved).
+    /// Admin-friendly lookup by unique Place.Code.
     /// </summary>
     Task<PlaceResponse?> GetByCodeAsync(
         string code,
         string? locale = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Locale-specific slug lookup (P07-R4). When <paramref name="publicOnly"/> is true,
+    /// only Active catalog places are returned (Draft/Inactive → not found; no Admin leak).
+    /// </summary>
+    Task<PlaceSlugLookupResponse?> FindBySlugAsync(
+        string localeCode,
+        string slug,
+        bool publicOnly = true,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<PlaceResponse>> ListAsync(
@@ -147,6 +173,12 @@ public interface IPlaceService
         Guid placeId,
         string localeCode,
         UpsertPlaceTranslationRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<PlaceTranslationResponse> SetTranslationSlugAsync(
+        Guid placeId,
+        string localeCode,
+        SetPlaceTranslationSlugRequest request,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<PlaceTranslationResponse>> ListTranslationsAsync(

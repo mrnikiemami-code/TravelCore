@@ -6,8 +6,8 @@ using TravelCore.Modules.Place.Contracts;
 namespace TravelCore.Modules.Place.Infrastructure.Endpoints;
 
 /// <summary>
-/// Admin Place catalog HTTP surface (TC-P07-T006). Mutations require Access.Place.Places.Write.
-/// No Delete/Archive (P07-R3), no slug routes (P07-R4), no SEO/index controls (P07-R5).
+/// Admin Place catalog HTTP surface (TC-P07-T006/T007). Mutations require Access.Place.Places.Write.
+/// No Delete/Archive (P07-R3). Place owns current translation Slug (P07-R4); SEO owns indexability (P07-R5).
 /// </summary>
 internal static class PlaceEndpoints
 {
@@ -75,6 +75,29 @@ internal static class PlaceEndpoints
             }
         });
 
+        // Public-facing slug lookup defaults to Active-only (Draft/Inactive → 404).
+        group.MapGet("/by-slug/{localeCode}/{slug}", async Task<IResult> (
+            string localeCode,
+            string slug,
+            bool? publicOnly,
+            IPlaceService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var hit = await service.FindBySlugAsync(
+                    localeCode,
+                    slug,
+                    publicOnly ?? true,
+                    cancellationToken);
+                return hit is null ? Results.NotFound() : Results.Ok(hit);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
         group.MapGet("/{id:guid}", async Task<IResult> (
             Guid id,
             string? locale,
@@ -95,6 +118,24 @@ internal static class PlaceEndpoints
             try
             {
                 var translation = await service.UpsertTranslationAsync(id, localeCode, request, cancellationToken);
+                return Results.Ok(translation);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        }).RequireAuthorization(PlacePlacesWritePolicy);
+
+        group.MapPut("/{id:guid}/translations/{localeCode}/slug", async Task<IResult> (
+            Guid id,
+            string localeCode,
+            SetPlaceTranslationSlugRequest request,
+            IPlaceService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var translation = await service.SetTranslationSlugAsync(id, localeCode, request, cancellationToken);
                 return Results.Ok(translation);
             }
             catch (ArgumentException ex)

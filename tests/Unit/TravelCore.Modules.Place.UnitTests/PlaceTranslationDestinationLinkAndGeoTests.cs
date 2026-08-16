@@ -86,4 +86,18 @@ public sealed class PlaceTranslationDestinationLinkAndGeoTests
         Assert.Throws<ArgumentException>(() =>
             PlaceAddress.Create("Line", null, null, null, null, "IRN"));
     }
+
+    [Fact]
+    public void PlaceTranslation_Slug_NormalizesLikeDestination_AndIsLocaleOwned()
+    {
+        var place = PlaceAggregate.CreateHotel("htl-slug", "Slug Hotel", Now, starRating: 4);
+        place.UpsertTranslation("en", "Slug Hotel", "Desc", Now);
+        place.SetTranslationSlug("en", "Grand-Hotel", Now);
+
+        var en = place.FindTranslation("en")!;
+        Assert.Equal("grand-hotel", en.Slug);
+
+        Assert.Throws<ArgumentException>(() => place.SetTranslationSlug("en", "Bad_Slug", Now));
+        Assert.Throws<ArgumentException>(() => place.SetTranslationSlug("en", "-leading", Now));
+    }
 }

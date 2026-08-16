@@ -7,4 +7,5 @@ namespace TravelCore.Modules.Seo.Domain;
 public enum SeoResourceType : short
 {
     Destination = 1,
+    Place = 2,
 }

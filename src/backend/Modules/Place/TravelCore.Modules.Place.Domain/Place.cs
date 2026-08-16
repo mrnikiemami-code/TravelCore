@@ -525,7 +525,9 @@ public sealed class Place
         string localeCode,
         string name,
         string? description,
-        Instant now)
+        Instant now,
+        string? slug = null,
+        bool setSlug = false)
     {
         var normalizedLocale = PlaceTranslation.NormalizeLocaleCode(localeCode);
         var existing = _translations.FirstOrDefault(x =>
@@ -533,13 +535,38 @@ public sealed class Place
 
         if (existing is null)
         {
-            var created = PlaceTranslation.Create(Id, normalizedLocale, name, description, now);
+            var created = PlaceTranslation.Create(
+                Id,
+                normalizedLocale,
+                name,
+                description,
+                now,
+                setSlug ? slug : null);
             _translations.Add(created);
             UpdatedAt = now;
             return created;
         }
 
         existing.Update(name, description, now);
+        if (setSlug)
+        {
+            existing.SetSlug(slug, now);
+        }
+
+        UpdatedAt = now;
+        return existing;
+    }
+
+    public PlaceTranslation SetTranslationSlug(string localeCode, string? slug, Instant now)
+    {
+        var normalizedLocale = PlaceTranslation.NormalizeLocaleCode(localeCode);
+        var existing = _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal))
+            ?? throw new ArgumentException(
+                $"Translation for locale '{normalizedLocale}' was not found.",
+                nameof(localeCode));
+
+        existing.SetSlug(slug, now);
         UpdatedAt = now;
         return existing;
     }

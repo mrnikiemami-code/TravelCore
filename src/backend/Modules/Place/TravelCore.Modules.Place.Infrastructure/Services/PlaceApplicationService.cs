@@ -145,6 +145,43 @@ public sealed class PlaceApplicationService : IPlaceService
         return places.Select(x => Map(x)).ToList();
     }
 
+    public async Task<PlaceSlugLookupResponse?> FindBySlugAsync(
+        string localeCode,
+        string slug,
+        bool publicOnly = true,
+        CancellationToken cancellationToken = default)
+    {
+        var normalizedLocale = PlaceTranslation.NormalizeLocaleCode(localeCode);
+        var normalizedSlug = PlaceTranslation.NormalizeSlug(slug)
+            ?? throw new ArgumentException("Slug is required.", nameof(slug));
+
+        var hit = await _db.Places.AsNoTracking()
+            .SelectMany(p => p.Translations.Select(t => new { Place = p, Translation = t }))
+            .FirstOrDefaultAsync(
+                x => x.Translation.LocaleCode == normalizedLocale && x.Translation.Slug == normalizedSlug,
+                cancellationToken);
+
+        if (hit is null)
+        {
+            return null;
+        }
+
+        if (publicOnly && hit.Place.CatalogStatus != PlaceCatalogStatus.Active)
+        {
+            // Draft/Inactive are not publicly renderable — do not leak Admin catalog state.
+            return null;
+        }
+
+        return new PlaceSlugLookupResponse(
+            hit.Place.Id.Value,
+            hit.Translation.LocaleCode,
+            hit.Translation.Slug!,
+            hit.Place.Kind.ToString(),
+            hit.Place.Code,
+            hit.Place.EnglishName,
+            hit.Place.CatalogStatus.ToString());
+    }
+
     public async Task<PlaceTranslationResponse> UpsertTranslationAsync(
         Guid placeId,
         string localeCode,
@@ -160,14 +197,49 @@ public sealed class PlaceApplicationService : IPlaceService
 
         var place = await LoadTrackedAsync(placeId, cancellationToken);
         var now = _clock.GetCurrentInstant();
-        var translation = place.UpsertTranslation(locale.Code, request.Name, request.Description, now);
-        await _db.SaveChangesAsync(cancellationToken);
+        // Slug on upsert is optional; only apply when the request property is supplied (non-null reference
+        // means caller intends set — empty string clears via NormalizeSlug → null).
+        var setSlug = request.Slug is not null;
+        var translation = place.UpsertTranslation(
+            locale.Code,
+            request.Name,
+            request.Description,
+            now,
+            request.Slug,
+            setSlug);
 
-        return new PlaceTranslationResponse(
-            translation.PlaceId.Value,
-            translation.LocaleCode,
-            translation.Name,
-            translation.Description);
+        if (setSlug && translation.Slug is not null)
+        {
+            await EnsureSlugUniqueAsync(locale.Code, translation.Slug, place.Id, cancellationToken);
+        }
+
+        await _db.SaveChangesAsync(cancellationToken);
+        return MapTranslation(translation);
+    }
+
+    public async Task<PlaceTranslationResponse> SetTranslationSlugAsync(
+        Guid placeId,
+        string localeCode,
+        SetPlaceTranslationSlugRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var locale = await _referenceData.GetLocaleAsync(localeCode, cancellationToken)
+            ?? throw new ArgumentException(
+                $"Locale '{localeCode}' was not found in ReferenceData locale catalog.",
+                nameof(localeCode));
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var translation = place.SetTranslationSlug(locale.Code, request.Slug, now);
+        if (translation.Slug is not null)
+        {
+            await EnsureSlugUniqueAsync(locale.Code, translation.Slug, place.Id, cancellationToken);
+        }
+
+        await _db.SaveChangesAsync(cancellationToken);
+        return MapTranslation(translation);
     }
 
     public async Task<IReadOnlyList<PlaceTranslationResponse>> ListTranslationsAsync(
@@ -184,13 +256,38 @@ public sealed class PlaceApplicationService : IPlaceService
 
         return place.Translations
             .OrderBy(x => x.LocaleCode, StringComparer.Ordinal)
-            .Select(x => new PlaceTranslationResponse(
-                x.PlaceId.Value,
-                x.LocaleCode,
-                x.Name,
-                x.Description))
+            .Select(MapTranslation)
             .ToList();
     }
+
+    private async Task EnsureSlugUniqueAsync(
+        string localeCode,
+        string slug,
+        PlaceId ownerId,
+        CancellationToken cancellationToken)
+    {
+        var conflict = await _db.Places
+            .AsNoTracking()
+            .SelectMany(p => p.Translations.Select(t => new { PlaceId = p.Id, t.LocaleCode, t.Slug }))
+            .FirstOrDefaultAsync(
+                x => x.LocaleCode == localeCode && x.Slug == slug && x.PlaceId != ownerId,
+                cancellationToken);
+
+        if (conflict is not null)
+        {
+            throw new ArgumentException(
+                $"Slug '{slug}' is already used for locale '{localeCode}'.",
+                nameof(slug));
+        }
+    }
+
+    private static PlaceTranslationResponse MapTranslation(PlaceTranslation translation) =>
+        new(
+            translation.PlaceId.Value,
+            translation.LocaleCode,
+            translation.Name,
+            translation.Description,
+            translation.Slug);
 
     public async Task<PlaceResponse> SetDestinationLinkAsync(
         Guid placeId,

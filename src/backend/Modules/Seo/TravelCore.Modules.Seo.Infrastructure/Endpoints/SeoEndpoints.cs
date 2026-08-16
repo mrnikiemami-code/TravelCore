@@ -329,6 +329,31 @@ internal static class SeoEndpoints
             }
         }).RequireAuthorization("Access.Seo.DestinationPosture.Write");
 
+        // Place public-path publication (TC-P07-T007) — SEO namespace; Access-backed write.
+        // Does not set IndexPolicy (P07-R5: default missing policy remains noindex,follow).
+        group.MapPost("/publication/place", async Task<IResult> (
+            PublishPlaceSeoRouteRequest request,
+            ISeoPlacePublicationService publication,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var result = await publication.PublishAsync(request, cancellationToken);
+                return Results.Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+            catch (SeoRouteConflictException ex)
+            {
+                return Results.Conflict(new { title = "SeoRoute conflict", detail = ex.Message });
+            }
+        }).RequireAuthorization("Access.Seo.PlacePosture.Write");
+
         return endpoints;
     }
 
