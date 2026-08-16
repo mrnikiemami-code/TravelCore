@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Seo.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Seo.Infrastructure</AssemblyName>
-    <Description>SEO module infrastructure: SeoRoute, path history, reservations, and redirect-candidate persistence in schema seo.</Description>
+    <Description>SEO module infrastructure: SeoRoute, path history, reservations, redirects, and canonical resolution in schema seo.</Description>
   </PropertyGroup>
 
   <ItemGroup>

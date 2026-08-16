@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Seo.Contracts;
+using TravelCore.Modules.Seo.Infrastructure.Endpoints;
 using TravelCore.Modules.Seo.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
@@ -34,12 +35,14 @@ public sealed class SeoModule : ITravelCoreModule
                 migrationsHistorySchema: SeoDbContext.SchemaName);
         });
 
+        services.AddScoped<SeoRedirectApplicationService>();
+        services.AddScoped<ISeoRedirectService>(sp => sp.GetRequiredService<SeoRedirectApplicationService>());
         services.AddScoped<ISeoRouteService, SeoRouteApplicationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // HTTP endpoints for SEO operations deferred to later P05 tasks.
+        endpoints.MapSeoEndpoints();
     }
 }

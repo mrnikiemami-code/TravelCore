@@ -4,21 +4,22 @@ using TravelCore.Modules.Seo.Domain;
 
 namespace TravelCore.Modules.Seo.Infrastructure.Persistence;
 
-internal sealed class SeoRedirectCandidateConfiguration : IEntityTypeConfiguration<SeoRedirectCandidate>
+internal sealed class SeoRedirectConfiguration : IEntityTypeConfiguration<SeoRedirect>
 {
-    public void Configure(EntityTypeBuilder<SeoRedirectCandidate> builder)
+    public void Configure(EntityTypeBuilder<SeoRedirect> builder)
     {
-        builder.ToTable("seo_redirect_candidates");
+        builder.ToTable("seo_redirects");
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
             .HasColumnName("id")
-            .HasConversion(id => id.Value, value => SeoRedirectCandidateId.From(value));
+            .HasConversion(id => id.Value, value => SeoRedirectId.From(value));
 
         builder.Property(x => x.SeoRouteId)
             .HasColumnName("seo_route_id")
-            .HasConversion(id => id.Value, value => SeoRouteId.From(value))
-            .IsRequired();
+            .HasConversion(
+                id => id.HasValue ? id.Value.Value : (Guid?)null,
+                value => value.HasValue ? SeoRouteId.From(value.Value) : null);
 
         builder.Property(x => x.ResourceType)
             .HasColumnName("resource_type")
@@ -41,8 +42,7 @@ internal sealed class SeoRedirectCandidateConfiguration : IEntityTypeConfigurati
 
         builder.Property(x => x.ToPath)
             .HasColumnName("to_path")
-            .HasMaxLength(SeoRoute.PathMaxLength)
-            .IsRequired();
+            .HasMaxLength(SeoRoute.PathMaxLength);
 
         builder.Property(x => x.Status)
             .HasColumnName("status")
@@ -53,13 +53,18 @@ internal sealed class SeoRedirectCandidateConfiguration : IEntityTypeConfigurati
             .HasColumnName("created_at")
             .IsRequired();
 
-        builder.Property(x => x.ActivatedAt)
-            .HasColumnName("activated_at");
+        builder.Property(x => x.SourceCandidateId)
+            .HasColumnName("source_candidate_id")
+            .HasConversion(
+                id => id.HasValue ? id.Value.Value : (Guid?)null,
+                value => value.HasValue ? SeoRedirectCandidateId.From(value.Value) : null);
 
-        builder.HasIndex(x => x.SeoRouteId)
-            .HasDatabaseName("ix_seo_redirect_candidates_route");
+        // One live redirect/gone posture per locale+from_path.
+        builder.HasIndex(x => new { x.Locale, x.FromPath })
+            .IsUnique()
+            .HasDatabaseName("ux_seo_redirects_locale_from_path");
 
         builder.HasIndex(x => new { x.ResourceType, x.ResourceId, x.Locale })
-            .HasDatabaseName("ix_seo_redirect_candidates_resource_locale");
+            .HasDatabaseName("ix_seo_redirects_resource_locale");
     }
 }

@@ -23,6 +23,8 @@ public sealed class SeoDbContext : DbContext
 
     public DbSet<SeoRedirectCandidate> SeoRedirectCandidates => Set<SeoRedirectCandidate>();
 
+    public DbSet<SeoRedirect> SeoRedirects => Set<SeoRedirect>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

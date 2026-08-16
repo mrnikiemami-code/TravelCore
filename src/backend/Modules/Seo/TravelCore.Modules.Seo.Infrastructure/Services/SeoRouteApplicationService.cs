@@ -13,11 +13,16 @@ public sealed class SeoRouteApplicationService : ISeoRouteService
 {
     private readonly SeoDbContext _db;
     private readonly IClock _clock;
+    private readonly SeoRedirectApplicationService _redirects;
 
-    public SeoRouteApplicationService(SeoDbContext db, IClock clock)
+    public SeoRouteApplicationService(
+        SeoDbContext db,
+        IClock clock,
+        SeoRedirectApplicationService redirects)
     {
         _db = db;
         _clock = clock;
+        _redirects = redirects;
     }
 
     public async Task<SeoRouteResponse> CreateAsync(
@@ -52,6 +57,8 @@ public sealed class SeoRouteApplicationService : ISeoRouteService
             request.ResourceId,
             locale,
             path);
+
+        await EnsurePathNotLiveRedirectSourceAsync(locale, path, cancellationToken);
 
         var now = _clock.GetCurrentInstant();
         var route = SeoRoute.Create(resourceType, request.ResourceId, locale, path, now);
@@ -151,6 +158,8 @@ public sealed class SeoRouteApplicationService : ISeoRouteService
             locale,
             newPath);
 
+        await EnsurePathNotLiveRedirectSourceAsync(locale, newPath, cancellationToken);
+
         var now = _clock.GetCurrentInstant();
         var change = route.ChangePath(newPath, now);
         _db.SeoPathHistory.Add(change.History);
@@ -168,6 +177,19 @@ public sealed class SeoRouteApplicationService : ISeoRouteService
             _db.SeoPathReservations.RemoveRange(ownReservations);
         }
 
+        // T004: promote path-change candidate into a live chain-free permanent redirect.
+        var liveRedirect = await _redirects.ActivatePermanentCoreAsync(
+            route.Id,
+            route.ResourceType,
+            route.ResourceId,
+            locale,
+            change.RedirectCandidate.FromPath,
+            change.RedirectCandidate.ToPath,
+            change.RedirectCandidate.Id,
+            now,
+            cancellationToken);
+        change.RedirectCandidate.MarkActivated(now);
+
         try
         {
             await _db.SaveChangesAsync(cancellationToken);
@@ -182,7 +204,8 @@ public sealed class SeoRouteApplicationService : ISeoRouteService
         return new ChangeSeoRoutePathResponse(
             MapRoute(route),
             MapHistory(change.History),
-            MapCandidate(change.RedirectCandidate));
+            MapCandidate(change.RedirectCandidate),
+            MapRedirect(liveRedirect));
     }
 
     public async Task<SeoPathReservationResponse> ReservePathAsync(
@@ -221,6 +244,8 @@ public sealed class SeoRouteApplicationService : ISeoRouteService
             request.ResourceId,
             locale,
             path);
+
+        await EnsurePathNotLiveRedirectSourceAsync(locale, path, cancellationToken);
 
         if (reservations.Any(x =>
                 x.ResourceType == resourceType
@@ -312,6 +337,20 @@ public sealed class SeoRouteApplicationService : ISeoRouteService
         return rows.Select(MapCandidate).ToList();
     }
 
+    private async Task EnsurePathNotLiveRedirectSourceAsync(
+        string locale,
+        string path,
+        CancellationToken cancellationToken)
+    {
+        var redirectSource = await _db.SeoRedirects.AsNoTracking()
+            .AnyAsync(x => x.Locale == locale && x.FromPath == path, cancellationToken);
+        if (redirectSource)
+        {
+            throw new SeoRouteConflictException(
+                $"Path '{path}' for locale '{locale}' is a live redirect/gone source and cannot bind a current route.");
+        }
+    }
+
     private static SeoResourceType ParseResourceType(string resourceType)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(resourceType);
@@ -365,4 +404,17 @@ public sealed class SeoRouteApplicationService : ISeoRouteService
             candidate.ToPath,
             candidate.Status.ToString(),
             candidate.CreatedAt.ToDateTimeOffset());
+
+    private static SeoRedirectResponse MapRedirect(SeoRedirect redirect) =>
+        new(
+            redirect.Id.Value,
+            redirect.SeoRouteId?.Value,
+            redirect.ResourceType.ToString(),
+            redirect.ResourceId,
+            redirect.Locale,
+            redirect.FromPath,
+            redirect.ToPath,
+            redirect.Status.ToString(),
+            redirect.CreatedAt.ToDateTimeOffset(),
+            redirect.SourceCandidateId?.Value);
 }

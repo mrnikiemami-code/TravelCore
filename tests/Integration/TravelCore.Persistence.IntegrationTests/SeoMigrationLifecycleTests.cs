@@ -9,9 +9,9 @@ using Xunit;
 
 namespace TravelCore.Persistence.IntegrationTests;
 
-/// <summary>
-/// Real-PostgreSQL SEO migration + SeoRoute / path-history / reservation smoke (TC-P05-T002/T003).
-/// </summary>
+    /// <summary>
+    /// Real-PostgreSQL SEO migration + SeoRoute / path-history / reservation / redirect smoke (TC-P05-T002/T003/T004).
+    /// </summary>
 [Collection(nameof(SeoMigrationLifecycleCollection))]
 public sealed class SeoMigrationLifecycleTests
 {
@@ -31,10 +31,11 @@ public sealed class SeoMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(3, expectedMigrations.Length);
+            Assert.Equal(4, expectedMigrations.Length);
             Assert.EndsWith("_InitialSeoScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoRoutes", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoPathHistoryAndReservations", expectedMigrations[2], StringComparison.Ordinal);
+            Assert.EndsWith("_AddSeoRedirectsAndCanonicalBaseline", expectedMigrations[3], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -50,7 +51,7 @@ public sealed class SeoMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'seo';
                 """, ct));
-            Assert.Equal(5, await ScalarIntAsync(conn, """
+            Assert.Equal(6, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'seo'
@@ -59,6 +60,7 @@ public sealed class SeoMigrationLifecycleTests
                     'seo_path_history',
                     'seo_path_reservations',
                     'seo_redirect_candidates',
+                    'seo_redirects',
                     '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
@@ -71,7 +73,8 @@ public sealed class SeoMigrationLifecycleTests
 
         await using (var db = _postgres.CreateDbContext())
         {
-            var service = new SeoRouteApplicationService(db, SystemClock.Instance);
+            var redirects = new SeoRedirectApplicationService(db, SystemClock.Instance);
+            var service = new SeoRouteApplicationService(db, SystemClock.Instance, redirects);
             var created = await service.CreateAsync(
                 new CreateSeoRouteRequest(
                     "Destination",
@@ -155,9 +158,13 @@ public sealed class SeoMigrationLifecycleTests
             Assert.Equal(createdId, change.History.SeoRouteId);
             Assert.Equal("destinations/istanbul", change.History.Path);
             Assert.Equal("destinations/istanbul-metropolis", change.History.SucceededByPath);
-            Assert.Equal("Pending", change.RedirectCandidate.Status);
+            Assert.Equal("Activated", change.RedirectCandidate.Status);
             Assert.Equal("destinations/istanbul", change.RedirectCandidate.FromPath);
             Assert.Equal("destinations/istanbul-metropolis", change.RedirectCandidate.ToPath);
+            Assert.NotNull(change.Redirect);
+            Assert.Equal("PermanentMoved", change.Redirect.Status);
+            Assert.Equal("destinations/istanbul", change.Redirect.FromPath);
+            Assert.Equal("destinations/istanbul-metropolis", change.Redirect.ToPath);
 
             var history = await service.ListPathHistoryByResourceAsync("Destination", destinationId, ct);
             Assert.Single(history);
@@ -169,14 +176,58 @@ public sealed class SeoMigrationLifecycleTests
 
             Assert.All(history, h => Assert.Equal(destinationId, h.ResourceId));
             Assert.All(candidates, c => Assert.Equal(destinationId, c.ResourceId));
-            Assert.Equal(0, await db.SeoPathReservations.CountAsync(ct));
+
+            // T004: historical from-path remains reserved for the same resource.
+            Assert.Equal(1, await db.SeoPathReservations.CountAsync(ct));
+            var historicalReservation = await db.SeoPathReservations.SingleAsync(ct);
+            Assert.Equal("destinations/istanbul", historicalReservation.Path);
+            Assert.Equal(destinationId, historicalReservation.ResourceId);
+
+            var resolved = await redirects.ResolvePathAsync("en", "destinations/istanbul", ct);
+            Assert.Equal("PermanentRedirect", resolved.Kind);
+            Assert.Equal(301, resolved.SuggestedStatusCode);
+            Assert.Equal("destinations/istanbul-metropolis", resolved.TargetPath);
+
+            var canonical = await redirects.GetCanonicalAsync("en", "destinations/istanbul-metropolis", ct);
+            Assert.NotNull(canonical);
+            Assert.True(canonical.IsSelfCanonical);
+
+            // Chain flattening: second change retargets A→C.
+            var change2 = await service.ChangePathAsync(
+                createdId,
+                new ChangeSeoRoutePathRequest("destinations/istanbul-final"),
+                ct);
+            Assert.Equal("destinations/istanbul-final", change2.Route.Path);
+            Assert.Equal("destinations/istanbul-final", change2.Redirect!.ToPath);
+
+            var fromOriginal = await redirects.ResolvePathAsync("en", "destinations/istanbul", ct);
+            var fromMiddle = await redirects.ResolvePathAsync("en", "destinations/istanbul-metropolis", ct);
+            Assert.Equal("destinations/istanbul-final", fromOriginal.TargetPath);
+            Assert.Equal("destinations/istanbul-final", fromMiddle.TargetPath);
+
+            var gone = await redirects.MarkGoneAsync(
+                new MarkSeoPathGoneRequest(
+                    "Destination",
+                    destinationId,
+                    "en",
+                    "destinations/never-published",
+                    SeoRouteId: null),
+                ct);
+            Assert.Equal("Gone", gone.Status);
+            var goneResolution = await redirects.ResolvePathAsync("en", "destinations/never-published", ct);
+            Assert.Equal("Gone", goneResolution.Kind);
+            Assert.Equal(410, goneResolution.SuggestedStatusCode);
+            var unknown = await redirects.ResolvePathAsync("en", "destinations/does-not-exist", ct);
+            Assert.Equal("NotFound", unknown.Kind);
+            Assert.Equal(404, unknown.SuggestedStatusCode);
         }
 
         await using (var db = _postgres.CreateDbContext())
         {
             Assert.Equal(2, await db.SeoRoutes.CountAsync(ct));
-            Assert.Equal(1, await db.SeoPathHistory.CountAsync(ct));
-            Assert.Equal(1, await db.SeoRedirectCandidates.CountAsync(ct));
+            Assert.Equal(2, await db.SeoPathHistory.CountAsync(ct));
+            Assert.Equal(2, await db.SeoRedirectCandidates.CountAsync(ct));
+            Assert.True(await db.SeoRedirects.CountAsync(ct) >= 3);
             var conn = db.Database.GetDbConnection();
             await db.Database.OpenConnectionAsync(ct);
             Assert.Equal(1, await ScalarIntAsync(conn, """
@@ -191,6 +242,12 @@ public sealed class SeoMigrationLifecycleTests
                 WHERE table_schema = 'seo'
                   AND table_name = 'seo_path_history';
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'seo'
+                  AND table_name = 'seo_redirects';
+                """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
@@ -199,7 +256,8 @@ public sealed class SeoMigrationLifecycleTests
                     'seo_routes',
                     'seo_path_history',
                     'seo_path_reservations',
-                    'seo_redirect_candidates');
+                    'seo_redirect_candidates',
+                    'seo_redirects');
                 """, ct));
         }
 
@@ -207,7 +265,8 @@ public sealed class SeoMigrationLifecycleTests
         {
             await SeoMigrator.MigrateAsync(db, ct);
             Assert.Equal(2, await db.SeoRoutes.CountAsync(ct));
-            Assert.Equal(1, await db.SeoPathHistory.CountAsync(ct));
+            Assert.Equal(2, await db.SeoPathHistory.CountAsync(ct));
+            Assert.True(await db.SeoRedirects.CountAsync(ct) >= 3);
         }
     }
 

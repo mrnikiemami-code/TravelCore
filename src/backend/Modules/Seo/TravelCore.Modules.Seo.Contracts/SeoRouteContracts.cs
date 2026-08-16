@@ -21,7 +21,8 @@ public sealed record ChangeSeoRoutePathRequest(string NewPath);
 public sealed record ChangeSeoRoutePathResponse(
     SeoRouteResponse Route,
     SeoPathHistoryResponse History,
-    SeoRedirectCandidateResponse RedirectCandidate);
+    SeoRedirectCandidateResponse RedirectCandidate,
+    SeoRedirectResponse? Redirect);
 
 public sealed record SeoPathHistoryResponse(
     Guid Id,
@@ -78,7 +79,8 @@ public interface ISeoRouteService
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Changes the SEO-bound public path: writes history + pending redirect-candidate hook.
+    /// Changes the SEO-bound public path: writes history + pending redirect-candidate hook,
+    /// then activates a live permanent redirect (T004).
     /// Does not mutate Destination.Translation.Slug (Destination remains content-slug SoR).
     /// </summary>
     Task<ChangeSeoRoutePathResponse> ChangePathAsync(

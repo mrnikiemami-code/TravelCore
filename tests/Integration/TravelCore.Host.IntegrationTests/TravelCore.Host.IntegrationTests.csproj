@@ -20,13 +20,15 @@
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
 
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\..\..\src\backend\TravelCore.Api\TravelCore.Api.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Identity\TravelCore.Modules.Identity.Infrastructure\TravelCore.Modules.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Access\TravelCore.Modules.Access.Infrastructure\TravelCore.Modules.Access.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Party\TravelCore.Modules.Party.Infrastructure\TravelCore.Modules.Party.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\ReferenceData\TravelCore.Modules.ReferenceData.Infrastructure\TravelCore.Modules.ReferenceData.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Destination\TravelCore.Modules.Destination.Infrastructure\TravelCore.Modules.Destination.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Seo\TravelCore.Modules.Seo.Infrastructure\TravelCore.Modules.Seo.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Seo\TravelCore.Modules.Seo.Contracts\TravelCore.Modules.Seo.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

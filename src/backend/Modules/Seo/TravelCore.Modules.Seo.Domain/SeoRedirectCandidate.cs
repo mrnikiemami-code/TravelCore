@@ -55,6 +55,20 @@ public sealed class SeoRedirectCandidate
 
     public Instant CreatedAt { get; private set; }
 
+    public Instant? ActivatedAt { get; private set; }
+
+    public void MarkActivated(Instant now)
+    {
+        if (Status != SeoRedirectCandidateStatus.Pending)
+        {
+            throw new InvalidOperationException(
+                $"Redirect candidate '{Id}' cannot be activated from status '{Status}'.");
+        }
+
+        Status = SeoRedirectCandidateStatus.Activated;
+        ActivatedAt = now;
+    }
+
     public static SeoRedirectCandidate CreatePending(
         SeoRouteId seoRouteId,
         SeoResourceType resourceType,
@@ -91,9 +105,10 @@ public sealed class SeoRedirectCandidate
 }
 
 /// <summary>
-/// Lifecycle of a redirect candidate before T004 promotes it to a Redirect record.
+/// Lifecycle of a redirect candidate — Pending until T004 promotes it to a live SeoRedirect.
 /// </summary>
 public enum SeoRedirectCandidateStatus : short
 {
     Pending = 1,
+    Activated = 2,
 }
