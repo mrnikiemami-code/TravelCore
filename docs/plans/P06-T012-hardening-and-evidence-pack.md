@@ -22,7 +22,7 @@
 | T009 | `3a25e7d` | App-proxy public delivery · **R4 APP PROXY** |
 | T010 | `05ef0ac` | Consumer reference proof · **R5 CONTRACT-ONLY** |
 | T011 | `8b0de5a` | Admin Media operational baseline (upload/inspect/alt/focal) |
-| T012 | *(this task)* | Hardening battery + evidence pack for gate prep |
+| T012 | `8981312` | Hardening battery + evidence pack for gate prep |
 
 ## 2. Ownership invariants
 

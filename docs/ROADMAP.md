@@ -339,7 +339,7 @@ Invariant: Media مالک بایت/متادیتای دارایی است؛ معن
 
 **Consumer reference proof:** [`plans/P06-T010-consumer-reference-contract-proof.md`](plans/P06-T010-consumer-reference-contract-proof.md)
 
-**Evidence pack:** [`plans/P06-T012-hardening-and-evidence-pack.md`](plans/P06-T012-hardening-and-evidence-pack.md)
+**Evidence pack:** [`plans/P06-T012-hardening-and-evidence-pack.md`](plans/P06-T012-hardening-and-evidence-pack.md) (`8981312`)
 
 ---
 
