@@ -329,7 +329,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T002 | SeoRoute + localized path binding baseline | COMPLETE / ACCEPTED | `796e013` |
 | TC-P05-T003 | Slug history / reservation coordination | COMPLETE / ACCEPTED | `8fb6ede` |
 | TC-P05-T003-R1 | Reconcile P05 R1 Decision State | COMPLETE / ACCEPTED | `fb00313` |
-| TC-P05-T004 | Canonical + Redirect engine baseline | AWAITING_ARCHITECT_REVIEW | _(pending commit)_ |
+| TC-P05-T004 | Canonical + Redirect engine baseline | AWAITING_ARCHITECT_REVIEW | `1573baf` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
