@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test:quality": "node --test --experimental-strip-types scripts/tests/money.test.ts && node scripts/p02-quality-checks.mjs",
+    "test:quality": "node --test --experimental-strip-types scripts/tests/money.test.ts scripts/tests/hreflang.test.ts && node scripts/p02-quality-checks.mjs",
     "quality": "npm run lint && npm run typecheck && npm run build && npm run test:quality"
   },
   "dependencies": {

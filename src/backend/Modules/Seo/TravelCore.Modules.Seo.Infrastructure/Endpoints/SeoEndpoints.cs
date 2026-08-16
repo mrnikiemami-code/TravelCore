@@ -82,6 +82,47 @@ internal static class SeoEndpoints
             }
         });
 
+        // Public hreflang bindings — genuine SeoRoute locales only (T006 / ADR 0008).
+        group.MapGet("/hreflang/{resourceType}/{resourceId:guid}", async Task<IResult> (
+            string resourceType,
+            Guid resourceId,
+            ISeoHreflangService hreflang,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var bindings = await hreflang.GetByResourceAsync(resourceType, resourceId, cancellationToken);
+                return bindings is null ? Results.NotFound() : Results.Ok(bindings);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "resourceType"] = [ex.Message]
+                });
+            }
+        });
+
+        group.MapGet("/hreflang/by-path/{locale}/{*path}", async Task<IResult> (
+            string locale,
+            string path,
+            ISeoHreflangService hreflang,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var bindings = await hreflang.GetByPathAsync(locale, path, cancellationToken);
+                return bindings is null ? Results.NotFound() : Results.Ok(bindings);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "path"] = [ex.Message]
+                });
+            }
+        });
+
         return endpoints;
     }
 

@@ -6,6 +6,7 @@ import { DestinationLandingView } from "@/features/destination-landing/destinati
 import { loadDestinationLandingPage } from "@/features/destination-landing/load-destination-landing";
 import { isApiOk } from "@/lib/api/result";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
+import { loadSeoHreflangLanguagesByPath } from "@/lib/seo/load-hreflang";
 
 type PageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -14,9 +15,9 @@ type PageProps = {
 /**
  * Public Destination detail baseline (TC-P04-T009).
  * R3 RESOLVED: page may exist for humans; robots = noindex, follow.
- * TC-P05-T005: IndexPolicy API/contract exists (`/api/seo/indexability/...` +
- * `lib/seo/indexability-contract.ts`) but this page keeps hardcoded noindex
- * until metadata composition (T007+) consumes SEO evaluation — no mass flip.
+ * TC-P05-T005: IndexPolicy API/contract exists but this page keeps hardcoded
+ * noindex until metadata composition (T007+) — no mass flip.
+ * TC-P05-T006: hreflang alternates from SEO bindings only (no fabricated locales).
  */
 export async function generateMetadata({
   params,
@@ -32,9 +33,17 @@ export async function generateMetadata({
   }
 
   const vm = loaded.data;
+  const languages = await loadSeoHreflangLanguagesByPath(
+    localeParam,
+    `destinations/${slug}`,
+  );
+
   return {
     title: vm.name,
     description: vm.description ?? undefined,
+    ...(Object.keys(languages).length > 0
+      ? { alternates: { languages } }
+      : {}),
     robots: {
       index: false,
       follow: true,

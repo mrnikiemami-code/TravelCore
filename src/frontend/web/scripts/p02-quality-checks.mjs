@@ -217,7 +217,16 @@ function main() {
   );
   assert.doesNotMatch(landingView, /['"]use client['"]/);
   assert.doesNotMatch(landingView, /\/destinations\/\$\{[^}]*id/);
+  // T006: languages alternates allowed; canonical still deferred (T007+)
   assert.doesNotMatch(publicDest, /alternates:\s*\{[\s\S]*canonical/);
+  assert.match(publicDest, /loadSeoHreflangLanguagesByPath/);
+  assert.match(publicDest, /alternates:\s*\{\s*languages/);
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "lib", "seo", "hreflang-contract.ts")),
+  );
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "lib", "seo", "load-hreflang.ts")),
+  );
 
   // 11) P04 T010 ReferenceData Admin read surface (job catalog, not silo CMS)
   const referencePage = path.join(
