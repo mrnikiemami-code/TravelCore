@@ -327,7 +327,7 @@ SeoRoute · localized route · slug history · Redirect · Canonical · hreflang
 
 **Status:** IN_PROGRESS
 
-**Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — AWAITING_ARCHITECT_REVIEW)
+**Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — AWAITING_ARCHITECT_REVIEW · `87069e4`)
 
 **Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan drafted · T001 NOT_STARTED · P07 NOT_STARTED
 
