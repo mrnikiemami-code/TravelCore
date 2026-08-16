@@ -43,7 +43,7 @@
 | Last Accepted Commit | `576b7fa` (`TC-P08-GATE` ACCEPTED) · prior P07 `84a0a48` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P09-T002`; then Auto-Execute |
+| Current Next Task | Formal `TC-P09-T003` Auto-Execute (clarify localization vs classification scope) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -394,7 +394,7 @@ Invariant: Content مالک editorial است؛ SEO محتوا را duplicate ن�
 
 **Authoritative plan:** [`plans/P09-implementation-plan.md`](plans/P09-implementation-plan.md) (`TC-P09-PLAN` — COMPLETE / ACCEPTED · `7de2518`)
 
-**Progress:** plan ACCEPTED · T001 ACCEPTED · **T002 AWAITING_ARCHITECT_REVIEW** · **R1/R7 RESOLVED** · R2–R6 UNRESOLVED
+**Progress:** T001–T002 ACCEPTED (`a70331c`) · T003 pending formal Auto-Execute · **R1/R7 RESOLVED** · R2–R6 UNRESOLVED
 
 مبانی مشترک Tour: TourProduct · Classification · Origin · Destinations · Agency references · Services · Policies · Requirements · Media · Publishing lifecycle · Translations · SEO integration.
 
