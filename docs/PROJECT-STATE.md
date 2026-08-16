@@ -257,7 +257,7 @@
 | TC-P06-T006 | **COMPLETE / ACCEPTED** (`166e9db`; R1 `b6f0cfb`) |
 | TC-P06-T007 | **COMPLETE / ACCEPTED** (`85c8e7a`) |
 | TC-P06-T008 | **COMPLETE / ACCEPTED** (`f50cce3`; hygiene `1736a66`) |
-| TC-P06-T009 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T009 | **AWAITING_ARCHITECT_REVIEW** (`3a25e7d`) |
 | P06-R1 | **RESOLVED — DEFER** (no WebP/AVIF conversion pipeline in P06; same-format variants only) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R3 | **RESOLVED** (SYNCHRONOUS variant generation; sizing 1600/960/320 fit-within; GIF fail-closed) |
