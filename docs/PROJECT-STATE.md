@@ -225,7 +225,7 @@
 | TC-P05-T009 | COMPLETE / ACCEPTED (`09d6f5d`; hygiene `6dfc38c`/`a0fd6b7`) |
 | TC-P05-T010 | COMPLETE / ACCEPTED (`78caf4b`; hygiene `28cfb41`/`84c7ab2`) |
 | TC-P05-T011 | COMPLETE / ACCEPTED (`8a9c4b7`; hygiene `61dd8c1`/`9258479`/`85ac421`) |
-| TC-P05-T012 | AWAITING_ARCHITECT_REVIEW (evidence pack) |
+| TC-P05-T012 | AWAITING_ARCHITECT_REVIEW (`0c8ab0a`; hygiene `3351755`) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
 | Required Human Token | none for T012; GATE later needs `TRAVELCORE_TASK_CONFIRM: TC-P05-GATE` |
