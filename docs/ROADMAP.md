@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P05 — SEO Engine** (**IN_PROGRESS**) |
-| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 COMPLETE · P03 COMPLETE · P04 COMPLETE · P05 IN_PROGRESS · P06 NOT_STARTED |
+| Current Phase | **P06 — Media** (**IN_PROGRESS**) |
+| Phase Status | P00 COMPLETE · P01 COMPLETE · P02 COMPLETE · P03 COMPLETE · P04 COMPLETE · P05 COMPLETE · P06 IN_PROGRESS · P07 NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `37637bf` (`TC-P05-GATE` / `TC-P05-GATE-R1` ACCEPTED) |
+| Last Accepted Commit | `37637bf` (`TC-P05-GATE` / `TC-P05-GATE-R1` ACCEPTED) · docs sync `02e06d3` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P06` then architect P06 plan |
+| Current Next Task | Architect review/accept `TC-P06-PLAN` then issue `TC-P06-T001` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -105,7 +105,8 @@
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
 - **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
-- **P06–P29 و Post-P29** = PLANNED / NOT_STARTED (P06 awaits `TRAVELCORE_PHASE_CONFIRM: P06`)
+- **P06** = IN_PROGRESS (`TC-P06-PLAN` AWAITING_ARCHITECT_REVIEW; T001 NOT_STARTED)
+- **P07–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -306,7 +307,7 @@ Invariant: Destination مالک Hotel/Tour/Article/Booking نیست؛ ReferenceD
 
 **Authoritative plan:** [`plans/P05-implementation-plan.md`](plans/P05-implementation-plan.md) (`TC-P05-PLAN`)
 
-**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P05-GATE` COMPLETE / ACCEPTED** · **`TC-P05-GATE-R1` COMPLETE / ACCEPTED** · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED
+**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P05-GATE` COMPLETE / ACCEPTED** · **`TC-P05-GATE-R1` COMPLETE / ACCEPTED** · **P05-R1/R2 RESOLVED** · P06 IN_PROGRESS
 
 **Evidence pack:** [`plans/P05-T012-evidence-pack.md`](plans/P05-T012-evidence-pack.md)  
 **Gate evidence:** [`plans/P05-GATE-acceptance-evidence.md`](plans/P05-GATE-acceptance-evidence.md)  
@@ -324,15 +325,21 @@ SeoRoute · localized route · slug history · Redirect · Canonical · hreflang
 
 ## P06 — Media
 
-**Status:** PLANNED
+**Status:** IN_PROGRESS
+
+**Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — AWAITING_ARCHITECT_REVIEW)
+
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan drafted · T001 NOT_STARTED · P07 NOT_STARTED
 
 Media Asset · object storage · upload · validation · variants · dimensions · focal point · alt/caption translations · WebP/AVIF pipeline در صورت تأیید · قرارداد بهینه‌سازی تصویر.
+
+Invariant: Media مالک بایت/متادیتای دارایی است؛ معنای رابطهٔ گالری (ترتیب/نقش) متعلق به ماژول مصرف‌کننده است.
 
 ---
 
 ## P07 — Place Catalog
 
-**Status:** PLANNED
+**Status:** PLANNED / NOT_STARTED
 
 Place · Hotel · Restaurant · Attraction با localization، رابطه با Destination، geo، facilities، media، وضعیت عملیاتی، جزئیات عمومی، Admin، یکپارچگی SEO.
 
@@ -639,9 +646,9 @@ P26 = Advanced SEO.
 | P02 | Frontend Foundation + Walking Skeleton | COMPLETE |
 | P03 | Identity + Access + Party | COMPLETE |
 | P04 | Reference Data + Destination | COMPLETE |
-| P05 | SEO Engine | IN_PROGRESS |
-| P06 | Media | PLANNED |
-| P07 | Place Catalog | PLANNED |
+| P05 | SEO Engine | COMPLETE |
+| P06 | Media | IN_PROGRESS |
+| P07 | Place Catalog | PLANNED / NOT_STARTED |
 | P08 | Content CMS | PLANNED |
 | P09 | Tour Core | PLANNED |
 | P10 | Experience Tour | PLANNED |
