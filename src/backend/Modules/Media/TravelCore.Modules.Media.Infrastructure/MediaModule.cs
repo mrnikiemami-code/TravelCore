@@ -7,6 +7,7 @@ using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Media.Contracts;
 using TravelCore.Modules.Media.Infrastructure.Services;
+using TravelCore.Modules.Media.Infrastructure.Storage;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Media.Infrastructure;
@@ -34,7 +35,23 @@ public sealed class MediaModule : ITravelCoreModule
                 migrationsHistorySchema: MediaDbContext.SchemaName);
         });
 
+        services.AddOptions<MediaObjectStorageOptions>()
+            .Bind(configuration.GetSection(MediaObjectStorageOptions.SectionName));
+
+        var useInMemory = configuration.GetValue(
+            $"{MediaObjectStorageOptions.SectionName}:UseInMemory",
+            defaultValue: false);
+        if (useInMemory)
+        {
+            services.AddSingleton<IMediaObjectStorage, InMemoryMediaObjectStorage>();
+        }
+        else
+        {
+            services.AddSingleton<IMediaObjectStorage, LocalFileSystemMediaObjectStorage>();
+        }
+
         services.AddScoped<IMediaAssetService, MediaAssetApplicationService>();
+        services.AddScoped<IMediaObjectBindingService, MediaObjectBindingService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

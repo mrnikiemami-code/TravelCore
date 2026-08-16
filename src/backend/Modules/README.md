@@ -40,8 +40,9 @@ Business and capability modules live under this directory.
 |--------|----------|--------|
 | Media | `Media/TravelCore.Modules.Media.{Domain,Contracts,Infrastructure}` | `media` |
 
-- **Media:** MediaAsset metadata SoR (`TC-P06-T002`) — storage/upload/variants/Admin deferred to T003+.
+- **Media:** MediaAsset metadata SoR (`TC-P06-T002`) + Media-owned object-storage port (`TC-P06-T003`; local/dev adapter; no vendor lock-in).
 - Invariant: **Media owns technical asset truth**; consumers own relationship meaning (gallery/hero/order). Media ≠ SEO authority.
+- **P06-R2 RESOLVED:** storage abstraction is Media-owned first (not Platform-wide `IObjectStorage`).
 
 ## Naming
 

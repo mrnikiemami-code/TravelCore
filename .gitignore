@@ -369,6 +369,9 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+# TravelCore local development data (e.g. Media object-storage root)
+.local/
+
 # Visual Studio History (VSHistory) files
 .vshistory/
 

@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P06-T002` (**AWAITING_ARCHITECT_REVIEW** after implementation) |
+| Current Active Product Task | `TC-P06-T003` (**AWAITING_ARCHITECT_REVIEW** after implementation) |
 | Current Next Product Phase | P06 — Media (**IN_PROGRESS**) |
-| Current Next Task | Architect review/accept `TC-P06-T002` then issue `TC-P06-T003` |
+| Current Next Task | Architect review/accept `TC-P06-T003` then issue `TC-P06-T004` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -97,7 +97,9 @@
 | P06 | **IN_PROGRESS** (authorized via USER `TRAVELCORE_PHASE_CONFIRM: P06`) |
 | P06 Plan | `TC-P06-PLAN` **COMPLETE / ACCEPTED** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
 | P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`) |
-| P06-T002 | **AWAITING_ARCHITECT_REVIEW** (`020ce99`) |
+| P06-T002 | **COMPLETE / ACCEPTED** (`020ce99`) |
+| P06-T003 | **AWAITING_ARCHITECT_REVIEW** |
+| P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
 | P07 | **NOT_STARTED** |
 | P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
 | P04 Implementation Started | **YES** (`TC-P04-T001`) |
@@ -117,14 +119,14 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P06_IN_PROGRESS** · PLAN ACCEPTED · T001 ACCEPTED · T002 AWAITING_ARCHITECT_REVIEW · T003 NOT_STARTED · P07 NOT_STARTED |
+| Phase Transition State | **P06_IN_PROGRESS** · T001–T002 ACCEPTED · T003 AWAITING_ARCHITECT_REVIEW · T004 NOT_STARTED · P06-R2 RESOLVED · P07 NOT_STARTED |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
 | P05 Phase Gate | **TC-P05-GATE** COMPLETE / ACCEPTED (`7f234e8`; R1 `bde6661`) |
 | Human Phase Confirmation | P06 entered via USER `TRAVELCORE_PHASE_CONFIRM: P06` (P05 previously via P05 token) |
-| Pipeline Product Execution | **AWAITING_ARCHITECT_REVIEW** (`TC-P06-T002`) |
+| Pipeline Product Execution | **AWAITING_ARCHITECT_REVIEW** (`TC-P06-T003`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -237,8 +239,10 @@
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
 | TC-P06-PLAN | **COMPLETE / ACCEPTED** (`87069e4`; hygiene `f323857`/`1b2877b`) |
 | TC-P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`; hygiene `8e8fb63`) |
-| TC-P06-T002 | **AWAITING_ARCHITECT_REVIEW** (`020ce99`) |
-| TC-P06-T003 | **NOT_STARTED** |
+| TC-P06-T002 | **COMPLETE / ACCEPTED** (`020ce99`; hygiene `6100891`) |
+| TC-P06-T003 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T004 | **NOT_STARTED** |
+| P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | Required Human Token | none |
 
 ### P00 Exit Summary

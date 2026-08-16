@@ -62,6 +62,31 @@ public sealed class MediaAsset
 
     public Instant UpdatedAt { get; private set; }
 
+    /// <summary>
+    /// Binds an opaque storage key after binary put (TC-P06-T003). Does not imply public delivery.
+    /// </summary>
+    public void BindStorageKey(string storageKey, Instant now, MediaAssetStatus? status = null)
+    {
+        if (!string.IsNullOrWhiteSpace(StorageKey))
+        {
+            throw new InvalidOperationException("MediaAsset already has a StorageKey binding.");
+        }
+
+        StorageKey = NormalizeStorageKey(storageKey)
+            ?? throw new ArgumentException("StorageKey is required.", nameof(storageKey));
+        if (status is not null)
+        {
+            if (!Enum.IsDefined(status.Value))
+            {
+                throw new ArgumentOutOfRangeException(nameof(status), status, "Unsupported MediaAssetStatus.");
+            }
+
+            Status = status.Value;
+        }
+
+        UpdatedAt = now;
+    }
+
     public static MediaAsset Create(
         string contentType,
         long byteSize,
