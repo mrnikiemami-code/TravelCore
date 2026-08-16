@@ -43,7 +43,7 @@
 | Last Accepted Commit | `37637bf` (`TC-P05-GATE` / `TC-P05-GATE-R1` ACCEPTED) · docs sync `02e06d3` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review/accept `TC-P06-T003` then issue `TC-P06-T004` |
+| Current Next Task | Architect review/accept `TC-P06-T004` then issue `TC-P06-T005` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -105,7 +105,7 @@
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
 - **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
-- **P06** = IN_PROGRESS (`TC-P06-T001`/`T002` ACCEPTED; `TC-P06-T003` AWAITING_ARCHITECT_REVIEW; **P06-R2 RESOLVED**; T004 NOT_STARTED)
+- **P06** = IN_PROGRESS (`TC-P06-T001`/`T002`/`T003` ACCEPTED; `TC-P06-T004` AWAITING_ARCHITECT_REVIEW; **P06-R2/R6 RESOLVED**; T005 NOT_STARTED)
 - **P07–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -329,7 +329,7 @@ SeoRoute · localized route · slug history · Redirect · Canonical · hreflang
 
 **Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — COMPLETE / ACCEPTED · `87069e4`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`/`T002` ACCEPTED · `TC-P06-T003` AWAITING_ARCHITECT_REVIEW (`cf95e5c`) · **P06-R2 RESOLVED** (Media-owned storage) · T004 NOT_STARTED · P07 NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`/`T002`/`T003` ACCEPTED · `TC-P06-T004` AWAITING_ARCHITECT_REVIEW · **P06-R2 RESOLVED** (Media-owned storage) · **P06-R6 RESOLVED** (SVG DENY) · T005 NOT_STARTED · P07 NOT_STARTED
 
 Media Asset · object storage · upload · validation · variants · dimensions · focal point · alt/caption translations · WebP/AVIF pipeline در صورت تأیید · قرارداد بهینه‌سازی تصویر.
 

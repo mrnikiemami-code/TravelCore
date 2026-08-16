@@ -7,6 +7,7 @@ using TravelCore.Modules.Identity.Infrastructure;
 using TravelCore.Modules.Party.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Destination.Infrastructure;
+using TravelCore.Modules.Media.Infrastructure;
 using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Persistence.PostgreSql;
 using Xunit;
@@ -44,6 +45,9 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
 
         await using var seo = CreateSeoDb();
         await SeoMigrator.MigrateAsync(seo);
+
+        await using var media = CreateMediaDb();
+        await MediaMigrator.MigrateAsync(media);
     }
 
     public async ValueTask DisposeAsync() => await _container.DisposeAsync();
@@ -96,6 +100,14 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
         return new SeoDbContext(options);
     }
 
+    public MediaDbContext CreateMediaDb()
+    {
+        var options = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<MediaDbContext>()
+            .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: MediaDbContext.SchemaName)
+            .Options;
+        return new MediaDbContext(options);
+    }
+
     public TravelCoreApiFactory CreateFactory(string environmentName) =>
         new(environmentName, ConnectionString);
 }
@@ -127,7 +139,8 @@ public sealed class TravelCoreApiFactory : WebApplicationFactory<Program>
             {
                 config.AddInMemoryCollection(new Dictionary<string, string?>
                 {
-                    [$"ConnectionStrings:{TravelCoreConnectionStrings.TravelCore}"] = _connectionString
+                    [$"ConnectionStrings:{TravelCoreConnectionStrings.TravelCore}"] = _connectionString,
+                    ["Media:ObjectStorage:UseInMemory"] = "true"
                 });
             });
         }

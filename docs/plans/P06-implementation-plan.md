@@ -161,11 +161,11 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P06`.
 
 ### TC-P06-T004 — Upload + validation lifecycle
 
-- **Purpose:** Access-backed upload; MIME/size validation; status transitions (Uploading→Ready/Failed).
-- **Prerequisites:** T003 · Access patterns from P03.
-- **Allowed:** Admin/API upload endpoints · ProblemDetails.
-- **Forbidden:** unauthenticated public upload product · UGC free-for-all.
-- **Validation:** host tests · authz.
+- **Purpose:** Access-backed upload; MIME/size validation; status transitions (PendingStorage→Ready/Failed; plan “Uploading” maps to existing `PendingStorage`).
+- **Prerequisites:** T003 · Access patterns from P03 · **P06-R6 RESOLVED (SVG DENY)**.
+- **Allowed:** Admin/API upload endpoints · ProblemDetails · technical blob compensation on failed upload.
+- **Forbidden:** unauthenticated public upload product · UGC free-for-all · inventing SVG accept · closing P06-R8 domain delete.
+- **Validation:** host tests · authz · SVG deny (type/extension/payload) · allowlisted raster MIME.
 - **Done-when:** authenticated upload yields Ready asset or explicit failure.
 
 ### TC-P06-T005 — Variants + dimensions
@@ -293,11 +293,11 @@ TC-P06-PLAN (architect accept)
 | ID | Item | Classification |
 |----|------|----------------|
 | R1 | Whether WebP/AVIF generation pipeline ships in P06 | **OPEN** — ROADMAP: «در صورت تأیید»; decide by T008 (ship or explicit defer) |
-| R2 | Object-storage ownership (Platform abstraction vs Media.Infrastructure-first) | **OPEN** — decide by T003; prefer provider abstraction + env portability |
+| R2 | Object-storage ownership (Platform abstraction vs Media.Infrastructure-first) | **RESOLVED** — Media-owned `IMediaObjectStorage` first; local FS + in-memory adapters; not Platform-wide |
 | R3 | Sync vs async variant generation | **OPEN** — decide by T005; sync baseline acceptable if async not justified |
 | R4 | Public URL strategy (direct object URL vs app proxy vs signed URL) | **OPEN** — decide by T009; drives `remotePatterns` |
 | R5 | Whether Destination schema gets optional MediaAssetId in P06 or contract-only proof | **OPEN** — decide by T010; Destination relationship meaning stays Destination-owned either way |
-| R6 | SVG acceptance policy | **OPEN** — decide by T004 (likely deny/restrict by default unless architect expands) |
+| R6 | SVG acceptance policy | **RESOLVED** — DENY `image/svg+xml` / `.svg` / detected SVG-XML payload (Option A); B deferred; C rejected |
 | R7 | Malware/AV scanning | **DEFERRED** unless architect expands; record security requirement |
 | R8 | Physical delete vs soft-delete + orphan cleanup | **OPEN** — decide by T002/T004; document lifecycle |
 | R9 | Context-specific consumer alt override vs Media-owned alt only | **DEFERRED** to consumer phases; P06 Media owns default alt/caption translations |

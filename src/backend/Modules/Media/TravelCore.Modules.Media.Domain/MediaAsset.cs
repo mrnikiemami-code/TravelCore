@@ -87,6 +87,16 @@ public sealed class MediaAsset
         UpdatedAt = now;
     }
 
+    /// <summary>
+    /// Marks the asset as Failed after upload/validation/storage error (TC-P06-T004).
+    /// Does not decide domain delete lifecycle (P06-R8 remains open).
+    /// </summary>
+    public void MarkFailed(Instant now)
+    {
+        Status = MediaAssetStatus.Failed;
+        UpdatedAt = now;
+    }
+
     public static MediaAsset Create(
         string contentType,
         long byteSize,

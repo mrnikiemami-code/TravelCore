@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Media.Contracts;
+using TravelCore.Modules.Media.Infrastructure.Endpoints;
 using TravelCore.Modules.Media.Infrastructure.Services;
 using TravelCore.Modules.Media.Infrastructure.Storage;
 using TravelCore.Persistence.PostgreSql;
@@ -37,6 +38,8 @@ public sealed class MediaModule : ITravelCoreModule
 
         services.AddOptions<MediaObjectStorageOptions>()
             .Bind(configuration.GetSection(MediaObjectStorageOptions.SectionName));
+        services.AddOptions<MediaUploadOptions>()
+            .Bind(configuration.GetSection(MediaUploadOptions.SectionName));
 
         var useInMemory = configuration.GetValue(
             $"{MediaObjectStorageOptions.SectionName}:UseInMemory",
@@ -52,11 +55,12 @@ public sealed class MediaModule : ITravelCoreModule
 
         services.AddScoped<IMediaAssetService, MediaAssetApplicationService>();
         services.AddScoped<IMediaObjectBindingService, MediaObjectBindingService>();
+        services.AddScoped<IMediaUploadService, MediaUploadApplicationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // Product Media HTTP endpoints deferred (upload/Admin = later P06 tasks).
+        endpoints.MapMediaEndpoints();
     }
 }

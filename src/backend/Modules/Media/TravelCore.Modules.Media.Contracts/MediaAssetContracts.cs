@@ -40,3 +40,16 @@ public interface IMediaAssetService
         int take = 50,
         CancellationToken cancellationToken = default);
 }
+
+/// <summary>
+/// Access-backed Admin upload orchestration (TC-P06-T004). Not a public UGC endpoint.
+/// </summary>
+public interface IMediaUploadService
+{
+    Task<MediaAssetResponse> UploadAsync(
+        Stream content,
+        string contentType,
+        string? fileName = null,
+        long? contentLength = null,
+        CancellationToken cancellationToken = default);
+}
