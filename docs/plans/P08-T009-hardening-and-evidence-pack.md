@@ -18,7 +18,7 @@
 | T006 | `4e9c94e` | Destination logical links 0..N (R5; no cross-schema FK) |
 | T007 | `6a56a0d` | Access `content.items.write` + Admin Content baseline |
 | T008 | `4924892` | Public Article/LandingPage + SEO hooks · slug SoR · default noindex,follow |
-| T009 | *(this commit)* | Hardening battery + evidence pack for gate prep |
+| T009 | `2f9552f` | Hardening battery + evidence pack for gate prep |
 
 Architect acceptance of T001–T008 remains as issued (`AWAITING_ARCHITECT_REVIEW` until ACCEPT for T009). T009 prepares gate evidence; it does **not** auto-ACCEPT prior tasks or execute `TC-P08-GATE`.
 
