@@ -4,12 +4,16 @@ namespace TravelCore.Modules.Place.Contracts;
 /// Public DTO for a Place catalog entry. Never exposes EF entities.
 /// Canonical identity is PlaceId only (P07-R1) — no independent HotelId/RestaurantId/AttractionId.
 /// DestinationId is optional association only (P07-R2) — not Place identity / address / geo / slug SoR.
+/// CatalogStatus / ClassificationCode / Facilities are catalog ops (T004) — not delete/archive, not bookable-now.
 /// </summary>
 public sealed record PlaceResponse(
     Guid Id,
     string Kind,
     string Code,
     string EnglishName,
+    string CatalogStatus,
+    string? ClassificationCode,
+    IReadOnlyList<string> Facilities,
     Guid? DestinationId,
     decimal? Latitude,
     decimal? Longitude,
@@ -40,6 +44,7 @@ public sealed record AttractionDetailsResponse(string? CategoryCode);
 /// <summary>
 /// Create a Place of one kind. Only the specialization fields for that kind may be set.
 /// Optional DestinationId is validated via Destination.Contracts when supplied.
+/// New Places start as CatalogStatus Draft unless overridden later via SetCatalogStatus.
 /// </summary>
 public sealed record CreatePlaceRequest(
     string Kind,
@@ -74,8 +79,15 @@ public sealed record SetPlaceAddressRequest(
     string? PostalCode,
     string? CountryCode);
 
+public sealed record SetPlaceCatalogStatusRequest(string CatalogStatus);
+
+public sealed record SetPlaceClassificationRequest(string? ClassificationCode);
+
+public sealed record SetPlaceFacilitiesRequest(IReadOnlyList<string> FacilityCodes);
+
 /// <summary>
-/// Cross-module contract for Place create/get/list + localization / Destination link / geo-address (TC-P07-T003).
+/// Cross-module contract for Place create/get/list + localization / Destination link / geo-address /
+/// facilities · classification · catalog status (TC-P07-T004).
 /// </summary>
 public interface IPlaceService
 {
@@ -120,5 +132,20 @@ public interface IPlaceService
     Task<PlaceResponse> SetAddressAsync(
         Guid placeId,
         SetPlaceAddressRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<PlaceResponse> SetCatalogStatusAsync(
+        Guid placeId,
+        SetPlaceCatalogStatusRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<PlaceResponse> SetClassificationAsync(
+        Guid placeId,
+        SetPlaceClassificationRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<PlaceResponse> SetFacilitiesAsync(
+        Guid placeId,
+        SetPlaceFacilitiesRequest request,
         CancellationToken cancellationToken = default);
 }

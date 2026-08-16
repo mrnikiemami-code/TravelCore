@@ -43,6 +43,15 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
             .HasColumnName("longitude")
             .HasPrecision(9, 6);
 
+        builder.Property(x => x.CatalogStatus)
+            .HasColumnName("catalog_status")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.ClassificationCode)
+            .HasColumnName("classification_code")
+            .HasMaxLength(PlaceAggregate.ClassificationCodeMaxLength);
+
         builder.Property(x => x.CreatedAt)
             .HasColumnName("created_at")
             .IsRequired();
@@ -88,6 +97,12 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
         builder.HasIndex(x => x.DestinationId)
             .HasDatabaseName("ix_places_destination_id");
 
+        builder.HasIndex(x => x.CatalogStatus)
+            .HasDatabaseName("ix_places_catalog_status");
+
+        builder.HasIndex(x => x.ClassificationCode)
+            .HasDatabaseName("ix_places_classification_code");
+
         // Same-schema 1:1 specializations — never a cross-schema FK.
         builder.HasOne(x => x.Hotel)
             .WithOne()
@@ -109,6 +124,11 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
             .HasForeignKey(x => x.PlaceId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(x => x.Facilities)
+            .WithOne()
+            .HasForeignKey(x => x.PlaceId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Navigation(x => x.Hotel).AutoInclude();
         builder.Navigation(x => x.Restaurant).AutoInclude();
         builder.Navigation(x => x.Attraction).AutoInclude();
@@ -116,6 +136,31 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
             .HasField("_translations")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
+        builder.Navigation(x => x.Facilities)
+            .HasField("_facilities")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+    }
+}
+
+internal sealed class PlaceFacilityConfiguration : IEntityTypeConfiguration<PlaceFacility>
+{
+    public void Configure(EntityTypeBuilder<PlaceFacility> builder)
+    {
+        builder.ToTable("place_facilities");
+        builder.HasKey(x => new { x.PlaceId, x.Code });
+
+        builder.Property(x => x.PlaceId)
+            .HasColumnName("place_id")
+            .HasConversion(id => id.Value, value => PlaceId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(PlaceFacility.CodeMaxLength)
+            .IsRequired();
+
+        builder.HasIndex(x => x.Code)
+            .HasDatabaseName("ix_place_facilities_code");
     }
 }
 

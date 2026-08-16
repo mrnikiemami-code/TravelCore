@@ -9,7 +9,8 @@ using PlaceAggregate = TravelCore.Modules.Place.Domain.Place;
 namespace TravelCore.Modules.Place.Infrastructure.Services;
 
 /// <summary>
-/// Application service implementing Place create/get/list + localization / Destination link / geo-address.
+/// Application service implementing Place create/get/list + localization / Destination link / geo-address /
+/// facilities · classification · catalog status (TC-P07-T004).
 /// </summary>
 public sealed class PlaceApplicationService : IPlaceService
 {
@@ -224,6 +225,49 @@ public sealed class PlaceApplicationService : IPlaceService
         return Map(place);
     }
 
+    public async Task<PlaceResponse> SetCatalogStatusAsync(
+        Guid placeId,
+        SetPlaceCatalogStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        place.SetCatalogStatus(ParseCatalogStatus(request.CatalogStatus), now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(place);
+    }
+
+    public async Task<PlaceResponse> SetClassificationAsync(
+        Guid placeId,
+        SetPlaceClassificationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        place.SetClassificationCode(request.ClassificationCode, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(place);
+    }
+
+    public async Task<PlaceResponse> SetFacilitiesAsync(
+        Guid placeId,
+        SetPlaceFacilitiesRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(request.FacilityCodes);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        place.ReplaceFacilities(request.FacilityCodes, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(place);
+    }
+
     private async Task<PlaceAggregate> LoadTrackedAsync(Guid placeId, CancellationToken cancellationToken)
     {
         var id = PlaceId.From(placeId);
@@ -271,6 +315,20 @@ public sealed class PlaceApplicationService : IPlaceService
         }
 
         throw new ArgumentException($"Unsupported PlaceKind '{kind}'.", nameof(kind));
+    }
+
+    private static PlaceCatalogStatus ParseCatalogStatus(string status)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(status);
+        if (Enum.TryParse<PlaceCatalogStatus>(status.Trim(), ignoreCase: true, out var parsed)
+            && Enum.IsDefined(parsed))
+        {
+            return parsed;
+        }
+
+        throw new ArgumentException(
+            $"Unsupported PlaceCatalogStatus '{status}'. Allowed: Draft, Active, Inactive.",
+            nameof(status));
     }
 
     /// <summary>
@@ -341,6 +399,12 @@ public sealed class PlaceApplicationService : IPlaceService
             place.Kind.ToString(),
             place.Code,
             place.EnglishName,
+            place.CatalogStatus.ToString(),
+            place.ClassificationCode,
+            place.Facilities
+                .Select(f => f.Code)
+                .OrderBy(c => c, StringComparer.Ordinal)
+                .ToList(),
             place.DestinationId,
             place.Latitude,
             place.Longitude,

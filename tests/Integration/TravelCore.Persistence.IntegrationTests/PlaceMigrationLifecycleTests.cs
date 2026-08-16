@@ -11,7 +11,8 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Place migration + Place catalog / localization / Destination link / geo (TC-P07-T003).
+/// Real-PostgreSQL Place migration + catalog / localization / Destination link / geo /
+/// facilities · classification · catalog status (TC-P07-T004).
 /// </summary>
 [Collection(nameof(PlaceMigrationLifecycleCollection))]
 public sealed class PlaceMigrationLifecycleTests
@@ -32,10 +33,11 @@ public sealed class PlaceMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(3, expectedMigrations.Length);
+            Assert.Equal(4, expectedMigrations.Length);
             Assert.EndsWith("_InitialPlaceScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPlaceCatalogTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_PlaceTranslationsDestinationLinkAndGeo", expectedMigrations[2], StringComparison.Ordinal);
+            Assert.EndsWith("_PlaceFacilitiesClassificationAndCatalogStatus", expectedMigrations[3], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -51,11 +53,11 @@ public sealed class PlaceMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'place';
                 """, ct));
-            Assert.Equal(6, await ScalarIntAsync(conn, """
+            Assert.Equal(7, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'place'
-                  AND table_name IN ('places', 'hotels', 'restaurants', 'attractions', 'place_translations', '__EFMigrationsHistory');
+                  AND table_name IN ('places', 'hotels', 'restaurants', 'attractions', 'place_translations', 'place_facilities', '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
@@ -93,6 +95,9 @@ public sealed class PlaceMigrationLifecycleTests
             Assert.Equal("Hotel", created.Kind);
             Assert.Equal("HTL-DEMO-1", created.Code);
             Assert.Equal("Demo Grand Hotel", created.EnglishName);
+            Assert.Equal("Draft", created.CatalogStatus);
+            Assert.Null(created.ClassificationCode);
+            Assert.Empty(created.Facilities);
             Assert.Equal(knownDestinationId, created.DestinationId);
             Assert.NotNull(created.Hotel);
             Assert.Equal((short)5, created.Hotel.StarRating);
@@ -153,6 +158,36 @@ public sealed class PlaceMigrationLifecycleTests
             Assert.Equal("Tehran", withAddress.Address.Locality);
             Assert.Equal("IR", withAddress.Address.CountryCode);
 
+            var activated = await service.SetCatalogStatusAsync(
+                createdId,
+                new SetPlaceCatalogStatusRequest("Active"),
+                ct);
+            Assert.Equal("Active", activated.CatalogStatus);
+
+            var classified = await service.SetClassificationAsync(
+                createdId,
+                new SetPlaceClassificationRequest("boutique-hotel"),
+                ct);
+            Assert.Equal("boutique-hotel", classified.ClassificationCode);
+
+            var withFacilities = await service.SetFacilitiesAsync(
+                createdId,
+                new SetPlaceFacilitiesRequest(["WiFi", "parking", "wifi", "pool"]),
+                ct);
+            Assert.Equal(["parking", "pool", "wifi"], withFacilities.Facilities);
+
+            var readBack = await service.GetByIdAsync(createdId, ct);
+            Assert.NotNull(readBack);
+            Assert.Equal("Active", readBack.CatalogStatus);
+            Assert.Equal("boutique-hotel", readBack.ClassificationCode);
+            Assert.Equal(["parking", "pool", "wifi"], readBack.Facilities);
+
+            await Assert.ThrowsAsync<ArgumentException>(() =>
+                service.SetCatalogStatusAsync(
+                    createdId,
+                    new SetPlaceCatalogStatusRequest("Archived"),
+                    ct));
+
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 service.SetDestinationLinkAsync(
                     createdId,
@@ -212,6 +247,9 @@ public sealed class PlaceMigrationLifecycleTests
             Assert.Equal(2, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM place.place_translations WHERE place_id = @id;
                 """, ct, createdId));
+            Assert.Equal(3, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int FROM place.place_facilities WHERE place_id = @id;
+                """, ct, createdId));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM place.restaurants;
                 """, ct));
@@ -229,7 +267,7 @@ public sealed class PlaceMigrationLifecycleTests
                 FROM information_schema.columns
                 WHERE table_schema = 'place'
                   AND table_name = 'places'
-                  AND column_name IN ('name_fa', 'name_en', 'rooms', 'availability', 'reservation_id');
+                  AND column_name IN ('name_fa', 'name_en', 'rooms', 'availability', 'reservation_id', 'is_deleted', 'deleted_at', 'archived_at');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -237,6 +275,13 @@ public sealed class PlaceMigrationLifecycleTests
                 WHERE table_schema = 'place'
                   AND table_name = 'places'
                   AND column_name = 'destination_id';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'place'
+                  AND table_name = 'places'
+                  AND column_name = 'catalog_status';
                 """, ct));
         }
     }

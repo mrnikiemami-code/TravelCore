@@ -6,13 +6,17 @@ namespace TravelCore.Modules.Place.Domain;
 /// Place catalog aggregate root (P07-R1).
 /// Shared catalog facts live here; type-specific facts live on Hotel/Restaurant/Attraction rows (1:1).
 /// DestinationId is an optional logical association only (P07-R2) — not Place identity, not address/geo/slug SoR.
+/// CatalogStatus / ClassificationCode / Facilities are catalog ops baseline (T004) — not R3 delete/archive.
 /// </summary>
 public sealed class Place
 {
     public const int CodeMaxLength = 64;
     public const int NameMaxLength = 200;
+    public const int ClassificationCodeMaxLength = 64;
+    public const int MaxFacilities = 64;
 
     private readonly List<PlaceTranslation> _translations = [];
+    private readonly List<PlaceFacility> _facilities = [];
 
     private Place()
     {
@@ -34,6 +38,7 @@ public sealed class Place
         Kind = kind;
         Code = code;
         EnglishName = englishName;
+        CatalogStatus = PlaceCatalogStatus.Draft;
         CreatedAt = createdAt;
         UpdatedAt = createdAt;
         Hotel = hotel;
@@ -67,6 +72,17 @@ public sealed class Place
     /// <summary>Optional Place-owned postal/street address (independent of Destination).</summary>
     public PlaceAddress? Address { get; private set; }
 
+    /// <summary>
+    /// Catalog operational status (Draft/Active/Inactive). Not delete/archive (P07-R3) and not bookable-now.
+    /// </summary>
+    public PlaceCatalogStatus CatalogStatus { get; private set; }
+
+    /// <summary>
+    /// Optional Place-owned classification code (opaque). Not a ReferenceData taxonomy product;
+    /// distinct from kind specialization fields (CuisineType / CategoryCode / StarRating).
+    /// </summary>
+    public string? ClassificationCode { get; private set; }
+
     public Instant CreatedAt { get; private set; }
 
     public Instant UpdatedAt { get; private set; }
@@ -78,6 +94,8 @@ public sealed class Place
     public Attraction? Attraction { get; private set; }
 
     public IReadOnlyCollection<PlaceTranslation> Translations => _translations;
+
+    public IReadOnlyCollection<PlaceFacility> Facilities => _facilities;
 
     public static Place CreateHotel(
         string code,
@@ -154,7 +172,10 @@ public sealed class Place
         decimal? latitude = null,
         decimal? longitude = null,
         PlaceAddress? address = null,
-        IEnumerable<PlaceTranslation>? translations = null)
+        IEnumerable<PlaceTranslation>? translations = null,
+        PlaceCatalogStatus catalogStatus = PlaceCatalogStatus.Draft,
+        string? classificationCode = null,
+        IEnumerable<PlaceFacility>? facilities = null)
     {
         var place = new Place(
             id,
@@ -168,6 +189,9 @@ public sealed class Place
         {
             UpdatedAt = updatedAt
         };
+
+        place.SetCatalogStatus(catalogStatus, updatedAt);
+        place.SetClassificationCode(classificationCode, updatedAt);
 
         if (destinationId is not null)
         {
@@ -187,6 +211,11 @@ public sealed class Place
         if (translations is not null)
         {
             place._translations.AddRange(translations);
+        }
+
+        if (facilities is not null)
+        {
+            place.ReplaceFacilities(facilities.Select(f => f.Code), updatedAt);
         }
 
         return place;
@@ -243,6 +272,81 @@ public sealed class Place
     {
         Address = address;
         UpdatedAt = now;
+    }
+
+    /// <summary>
+    /// Sets catalog operational status. Closed set Draft/Active/Inactive only —
+    /// does not invent Deleted/Archived/Retired and does not resolve P07-R3.
+    /// </summary>
+    public void SetCatalogStatus(PlaceCatalogStatus status, Instant now)
+    {
+        if (!Enum.IsDefined(status))
+        {
+            throw new ArgumentOutOfRangeException(nameof(status), status, "Unsupported PlaceCatalogStatus.");
+        }
+
+        CatalogStatus = status;
+        UpdatedAt = now;
+    }
+
+    public void SetClassificationCode(string? classificationCode, Instant now)
+    {
+        ClassificationCode = NormalizeClassificationCode(classificationCode);
+        UpdatedAt = now;
+    }
+
+    /// <summary>
+    /// Replaces the Place facility code set (deduped). Empty clears all facilities.
+    /// </summary>
+    public void ReplaceFacilities(IEnumerable<string> facilityCodes, Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(facilityCodes);
+
+        var normalized = facilityCodes
+            .Select(PlaceFacility.NormalizeCode)
+            .Distinct(StringComparer.Ordinal)
+            .OrderBy(x => x, StringComparer.Ordinal)
+            .ToList();
+
+        if (normalized.Count > MaxFacilities)
+        {
+            throw new ArgumentException(
+                $"A Place may have at most {MaxFacilities} facility codes.",
+                nameof(facilityCodes));
+        }
+
+        _facilities.Clear();
+        foreach (var code in normalized)
+        {
+            _facilities.Add(PlaceFacility.Create(Id, code));
+        }
+
+        UpdatedAt = now;
+    }
+
+    public static string? NormalizeClassificationCode(string? classificationCode)
+    {
+        if (string.IsNullOrWhiteSpace(classificationCode))
+        {
+            return null;
+        }
+
+        var trimmed = classificationCode.Trim().ToLowerInvariant();
+        if (trimmed.Length > ClassificationCodeMaxLength)
+        {
+            throw new ArgumentException(
+                $"Classification code max length is {ClassificationCodeMaxLength}.",
+                nameof(classificationCode));
+        }
+
+        if (trimmed.Any(static c => !(char.IsAsciiLetterOrDigit(c) || c is '-' or '_')))
+        {
+            throw new ArgumentException(
+                "Classification code may contain only a-z, 0-9, hyphen, and underscore.",
+                nameof(classificationCode));
+        }
+
+        return trimmed;
     }
 
     public PlaceTranslation UpsertTranslation(
