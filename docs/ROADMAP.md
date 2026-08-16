@@ -40,10 +40,10 @@
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `f70991f` (`TC-P04-GATE`) |
+| Last Accepted Commit | `37637bf` (`TC-P05-GATE` / `TC-P05-GATE-R1` ACCEPTED) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review `TC-P05-GATE-R1` then `TC-P05-GATE`; P06 needs phase confirm |
+| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P06` then architect P06 plan |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -104,8 +104,8 @@
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
-- **P05** = IN_PROGRESS (`TC-P05-T001`–`T012` ACCEPTED · Gate technical PASS · `TC-P05-GATE-R1` AWAITING · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED)
-- **P06–P29 و Post-P29** = PLANNED / NOT_STARTED
+- **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
+- **P06–P29 و Post-P29** = PLANNED / NOT_STARTED (P06 awaits `TRAVELCORE_PHASE_CONFIRM: P06`)
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -302,11 +302,11 @@ Invariant: Destination مالک Hotel/Tour/Article/Booking نیست؛ ReferenceD
 
 ## P05 — SEO Engine
 
-**Status:** IN_PROGRESS (GATE evidence posted; awaiting architect ACCEPT to mark COMPLETE)
+**Status:** COMPLETE / ACCEPTED
 
 **Authoritative plan:** [`plans/P05-implementation-plan.md`](plans/P05-implementation-plan.md) (`TC-P05-PLAN`)
 
-**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P05-GATE` AWAITING_ARCHITECT_REVIEW** · **`TC-P05-GATE-R1` AWAITING_ARCHITECT_REVIEW** · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED
+**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T012` COMPLETE / ACCEPTED · **`TC-P05-GATE` COMPLETE / ACCEPTED** · **`TC-P05-GATE-R1` COMPLETE / ACCEPTED** · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED
 
 **Evidence pack:** [`plans/P05-T012-evidence-pack.md`](plans/P05-T012-evidence-pack.md)  
 **Gate evidence:** [`plans/P05-GATE-acceptance-evidence.md`](plans/P05-GATE-acceptance-evidence.md)  

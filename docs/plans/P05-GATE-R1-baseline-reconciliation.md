@@ -4,7 +4,7 @@
 |-------|--------|
 | Task-ID | `TC-P05-GATE-R1` |
 | Phase | P05 — SEO Engine |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | COMPLETE / ACCEPTED |
 | Remediation type | Documentation / evidence only |
 | Current baseline at remediation start | `d6bcbfb` (= `origin/main`) |
 | Recommendation | **SAFE_FOR_ARCHITECT_ACCEPTANCE** of Gate technical PASS (docs-only drift) |
