@@ -319,7 +319,7 @@
 | P07-R3 | **UNRESOLVED** (Place delete/archive) — OK for COMPLETE phase; CatalogStatus is catalog ops only; no delete/archive product invented |
 | P07-R4 | **RESOLVED** — PLACE owns current locale-specific `PlaceTranslation.Slug`; SEO owns route binding/reservations/history/redirects/canonical/IndexPolicy |
 | P07-R5 | **RESOLVED** — default Place SEO posture **noindex, follow**; Active/public/publish ≠ Index; no Destination IndexPolicy inheritance |
-| Required Human Token | P08 needs `TRAVELCORE_PHASE_CONFIRM: P08` |
+| Required Human Token | none for PLAN review; GATE later needs `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` |
 
 ### P00 Exit Summary
 
@@ -330,7 +330,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P07-R1/R2/R4/R5 RESOLVED**; R3 UNRESOLVED (honest); P08 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P08`
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 IN_PROGRESS** (`TC-P08-PLAN` AWAITING_ARCHITECT_REVIEW · `7012fe0`); **P08-R1–R8 UNRESOLVED**; P09 NOT_STARTED
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
