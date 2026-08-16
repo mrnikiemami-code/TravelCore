@@ -333,7 +333,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T003-R1 | Reconcile P05 R1 Decision State | COMPLETE / ACCEPTED | `fb00313` |
 | TC-P05-T004 | Canonical + Redirect engine baseline | COMPLETE / ACCEPTED | `1573baf` |
 | TC-P05-T005 | IndexPolicy + robots posture | COMPLETE / ACCEPTED | `95c79da` (+ `77b0b82`) |
-| TC-P05-T006 | hreflang / alternate locale bindings | AWAITING_ARCHITECT_REVIEW | pending |
+| TC-P05-T006 | hreflang / alternate locale bindings | AWAITING_ARCHITECT_REVIEW | `0cba002` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
