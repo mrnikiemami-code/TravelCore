@@ -303,7 +303,7 @@ Exact parallelization may be adjusted by architect on accept; Cursor must not in
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
 | **P09-R1** | TourProduct model shape | **RESOLVED** | Core TourProduct + Typed Specialization · canonical `TourProductId` · Experience/Package = future typed specialization · TourDeparture = separate future aggregate |
-| **P09-R2** | Destination / Origin link cardinality (0..1 / 1..1 / 1..N; requiredness) | **UNRESOLVED** | ROADMAP lists Origin · Destinations; exact cardinalities not locked. |
+| **P09-R2** | Destination / Origin link cardinality (0..1 / 1..1 / 1..N; requiredness) | **RESOLVED** | Destination links: **0..N** logical `DestinationId` via Tour-owned join (`tour_product_destinations`); Origin: **0..1** nullable `OriginDestinationId` on TourProduct; reference logical only; **no** cross-schema FK/write; existence via `Destination.Contracts` (`IDestinationExistenceQuery`). |
 | **P09-R3** | Agency reference shape (single PartyId vs role-typed refs / offering agency semantics) | **UNRESOLVED** | Do not merge Party into Tour. |
 | **P09-R4** | Publishing/catalog status vs delete-archive lifecycle | **UNRESOLVED** | Do not invent hard-delete product; publication status may suffice — architect lock. |
 | **P09-R5** | Slug ownership (Tour-localized current slug vs SEO-only route key) | **UNRESOLVED** | Expect P05/P07/P08 pattern (Tour owns current locale slug; SEO owns history/IndexPolicy) but **do not assume** until locked. |

@@ -2,13 +2,17 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Tour.Contracts;
+using TravelCore.Modules.Tour.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Tour.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Tour module (scaffolding — TC-P09-T001).
+/// Host composition entry for the Tour module.
 /// </summary>
 public sealed class TourModule : ITravelCoreModule
 {
@@ -27,11 +31,14 @@ public sealed class TourModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: TourDbContext.SchemaName);
         });
+
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
+        services.AddScoped<ITourProductSemanticLinkService, TourProductSemanticLinkService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // Product endpoints belong to later P09 tasks.
+        // Product endpoints belong to later P09 tasks (Admin / public).
     }
 }

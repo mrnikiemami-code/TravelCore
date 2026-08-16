@@ -7,14 +7,17 @@ namespace TravelCore.Modules.Tour.Domain;
 /// Shared Tour facts live here; Experience/Package specialty tables are deferred (P09-R7 → P10/P11).
 /// TourDeparture is a separate future aggregate (P11) — never collapsed into TourProduct.
 /// Localized title/description: TourProductTranslation rows (TC-P09-T003 / ADR 0008). Slug deferred (P09-R5).
-/// Classification / agency / media / publishing belong to later P09 tasks.
+/// Classification + Origin (0..1) + Destination links (0..N) — TC-P09-T004 / P09-R2.
+/// Agency / media / publishing belong to later P09 tasks.
 /// </summary>
 public sealed class TourProduct
 {
     public const int CodeMaxLength = 64;
     public const int NameMaxLength = 200;
+    public const int ClassificationCodeMaxLength = 64;
 
     private readonly List<TourProductTranslation> _translations = [];
+    private readonly List<TourProductDestination> _destinations = [];
 
     private TourProduct()
     {
@@ -57,11 +60,23 @@ public sealed class TourProduct
     /// <summary>Baseline English display name (localized titles live in translation rows).</summary>
     public string EnglishName { get; private set; }
 
+    /// <summary>
+    /// Tour-owned opaque classification code (catalog facet). Not TourKind and not a lookup-owned FK.
+    /// </summary>
+    public string? ClassificationCode { get; private set; }
+
+    /// <summary>
+    /// Optional logical Origin Destination identity (0..1). Distinct from Destinations join (P09-R2).
+    /// </summary>
+    public Guid? OriginDestinationId { get; private set; }
+
     public Instant CreatedAt { get; private set; }
 
     public Instant UpdatedAt { get; private set; }
 
     public IReadOnlyCollection<TourProductTranslation> Translations => _translations;
+
+    public IReadOnlyCollection<TourProductDestination> Destinations => _destinations;
 
     public static TourProduct CreateExperience(
         string code,
@@ -134,6 +149,91 @@ public sealed class TourProduct
         var normalizedLocale = TourProductTranslation.NormalizeLocaleCode(localeCode);
         return _translations.FirstOrDefault(x =>
             string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+    }
+
+    public void SetClassificationCode(string? classificationCode, Instant now)
+    {
+        ClassificationCode = NormalizeClassificationCode(classificationCode);
+        UpdatedAt = now;
+    }
+
+    /// <summary>
+    /// Sets Origin Destination logical link (0..1). Null clears; empty Guid rejected.
+    /// </summary>
+    public void SetOriginLink(Guid? originDestinationId, Instant now)
+    {
+        if (originDestinationId == Guid.Empty)
+        {
+            throw new ArgumentException(
+                "OriginDestinationId cannot be empty. Use null to clear the Origin link.",
+                nameof(originDestinationId));
+        }
+
+        OriginDestinationId = originDestinationId;
+        UpdatedAt = now;
+    }
+
+    public TourProductDestination AssignDestination(Guid destinationId, Instant now)
+    {
+        if (destinationId == Guid.Empty)
+        {
+            throw new ArgumentException("DestinationId cannot be empty.", nameof(destinationId));
+        }
+
+        var existing = _destinations.FirstOrDefault(x => x.DestinationId == destinationId);
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        if (_destinations.Count >= TourProductDestination.MaxLinksPerTourProduct)
+        {
+            throw new InvalidOperationException(
+                $"A TourProduct may have at most {TourProductDestination.MaxLinksPerTourProduct} Destination links.");
+        }
+
+        var link = TourProductDestination.Create(Id, destinationId);
+        _destinations.Add(link);
+        UpdatedAt = now;
+        return link;
+    }
+
+    public bool RemoveDestination(Guid destinationId, Instant now)
+    {
+        var existing = _destinations.FirstOrDefault(x => x.DestinationId == destinationId);
+        if (existing is null)
+        {
+            return false;
+        }
+
+        _destinations.Remove(existing);
+        UpdatedAt = now;
+        return true;
+    }
+
+    public static string? NormalizeClassificationCode(string? classificationCode)
+    {
+        if (string.IsNullOrWhiteSpace(classificationCode))
+        {
+            return null;
+        }
+
+        var trimmed = classificationCode.Trim().ToLowerInvariant();
+        if (trimmed.Length > ClassificationCodeMaxLength)
+        {
+            throw new ArgumentException(
+                $"Classification code max length is {ClassificationCodeMaxLength}.",
+                nameof(classificationCode));
+        }
+
+        if (trimmed.Any(static c => !(char.IsAsciiLetterOrDigit(c) || c is '-' or '_')))
+        {
+            throw new ArgumentException(
+                "Classification code may contain only a-z, 0-9, hyphen, and underscore.",
+                nameof(classificationCode));
+        }
+
+        return trimmed;
     }
 
     private static TourProduct Create(
