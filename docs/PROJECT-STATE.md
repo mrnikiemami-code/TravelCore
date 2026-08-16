@@ -106,7 +106,7 @@
 | P06-T008 | **COMPLETE / ACCEPTED** (`f50cce3`; hygiene `1736a66`) — optimization contract + **P06-R1 RESOLVED DEFER** |
 | P06-T009 | **COMPLETE / ACCEPTED** (`3a25e7d`; hygiene `d3ce295`/`71b2886`) — app-proxy public delivery; **P06-R4 RESOLVED APP PROXY** |
 | P06-T010 | **AWAITING_ARCHITECT_REVIEW** (`05ef0ac`) — contract-only consumer reference proof; **P06-R5 RESOLVED CONTRACT-ONLY** |
-| P06-T011 | **AWAITING_ARCHITECT_REVIEW** — Admin Media operational baseline (upload/inspect/alt/focal; R8 no-delete; R9 no consumer alt override; R5 no Destination assign) |
+| P06-T011 | **AWAITING_ARCHITECT_REVIEW** (`8b0de5a`) — Admin Media operational baseline (upload/inspect/alt/focal; R8 no-delete; R9 no consumer alt override; R5 no Destination assign) |
 | P06 Focal Coordinate Policy | **RESOLVED** — normalized [0,1] top-left (`TC-P06-T006-R1`) |
 | P06-R1 (WebP/AVIF pipeline) | **RESOLVED — DEFER** — out of P06; evidence [`plans/P06-T008-optimization-contract-and-r1-defer.md`](plans/P06-T008-optimization-contract-and-r1-defer.md) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
@@ -262,7 +262,7 @@
 | TC-P06-T008 | **COMPLETE / ACCEPTED** (`f50cce3`; hygiene `1736a66`) |
 | TC-P06-T009 | **COMPLETE / ACCEPTED** (`3a25e7d`; hygiene `d3ce295`/`71b2886`) |
 | TC-P06-T010 | **AWAITING_ARCHITECT_REVIEW** (`05ef0ac`) |
-| TC-P06-T011 | **AWAITING_ARCHITECT_REVIEW** (Admin Media operational baseline) |
+| TC-P06-T011 | **AWAITING_ARCHITECT_REVIEW** (`8b0de5a`) |
 | P06-R1 | **RESOLVED — DEFER** (no WebP/AVIF conversion pipeline in P06; same-format variants only) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R3 | **RESOLVED** (SYNCHRONOUS variant generation; sizing 1600/960/320 fit-within; GIF fail-closed) |
