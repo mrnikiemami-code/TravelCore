@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.Tour.Domain;
 
 namespace TravelCore.Modules.Tour.Infrastructure;
 
 /// <summary>
 /// Tour-owned DbContext. Owns PostgreSQL schema <c>tour</c>.
-/// Scaffolding only — no product entities yet (TC-P09-T001).
 /// </summary>
 public sealed class TourDbContext : DbContext
 {
@@ -14,6 +14,8 @@ public sealed class TourDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<TourProduct> TourProducts => Set<TourProduct>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

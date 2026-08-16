@@ -68,7 +68,7 @@ Business and capability modules live under this directory.
 |--------|----------|--------|
 | Tour | `Tour/TravelCore.Modules.Tour.{Domain,Contracts,Infrastructure}` | `tour` |
 
-- **Tour:** module scaffolding only (`TC-P09-T001`) — schema `tour` ownership; no TourProduct aggregate yet (T002 / P09-R1).
+- **Tour:** TourProduct shared-core (`TC-P09-T002`) — `TourProductId` canonical; `TourKind` Experience/Package on core; specialty tables deferred (P09-R7 → P10/P11); no TourDeparture in P09.
 - Invariant: **TourProduct ≠ TourDeparture**; Experience itinerary = P10; Departure/Flight/TourHotelOption product = P11; Tour ≠ Pricing/Booking/Search/Content ownership.
 
 ## Naming

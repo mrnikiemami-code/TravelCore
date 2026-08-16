@@ -6,7 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Tour.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Tour.Domain</AssemblyName>
-    <Description>Tour domain scaffolding marker only (TC-P09-T001). No aggregate until T002/R1.</Description>
+    <Description>Tour domain: TourProduct shared-core aggregate (P09-R1). Specialty tables deferred (P09-R7). No EF/ASP.NET.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 
 </Project>
