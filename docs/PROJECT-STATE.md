@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P09-T001` — AWAITING_ARCHITECT_REVIEW |
+| Current Active Product Task | `TC-P09-T002` — BLOCKED_ARCHITECT_DECISION_REQUIRED (P09-R1) |
 | Current Next Product Phase | P09 — Tour Core (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P09-T001`; then Auto-Execute next issued task |
+| Current Next Task | Architect lock **P09-R1** (TourProduct model shape); then resume T002 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -142,7 +142,7 @@
 | P08 | **COMPLETE** (closed by `TC-P08-GATE` ACCEPTED `576b7fa`; hygiene `6b72e60`) |
 | P09 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P09` + continuity override) |
 | P09 Plan | `TC-P09-PLAN` **COMPLETE / ACCEPTED** (`7de2518`) — [`docs/plans/P09-implementation-plan.md`](plans/P09-implementation-plan.md) |
-| P09-T001 | **AWAITING_ARCHITECT_REVIEW** — Tour module scaffolding (`tour` schema) |
+| P09-T001 | **COMPLETE / ACCEPTED** (`4794e6e`) — Tour module scaffolding (`tour` schema) |`n| P09-T002 | **BLOCKED** — needs **P09-R1** RESOLVED (TourProduct model shape); R7 if specialty fields would be invented |
 | P08 Plan | `TC-P08-PLAN` **COMPLETE / ACCEPTED** (`7012fe0`) — [`docs/plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) |
 | P08-T001 | **COMPLETE / ACCEPTED** (`1b4a871`; hygiene `002cf2c`) — Content module scaffolding |
 | P08-T002 | **COMPLETE / ACCEPTED** (`300b86b`; hygiene `d5e1a9f`) — ContentItem + Article/LandingPage/Guide persistence (P08-R1) |
@@ -181,7 +181,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P09_IN_PROGRESS** · `TC-P09-PLAN` ACCEPTED `7de2518` · `TC-P09-T001` AWAITING_ARCHITECT_REVIEW · baseline `7de2518` |
+| Phase Transition State | **P09_IN_PROGRESS** · T001 ACCEPTED `4794e6e` · T002 BLOCKED on **P09-R1** · baseline `4794e6e` |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -190,7 +190,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P09-T001`) |
+| Pipeline Product Execution | **BLOCKED_ARCHITECT_DECISION_REQUIRED** (`TC-P09-T002` · **P09-R1**) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
