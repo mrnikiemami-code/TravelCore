@@ -12,6 +12,7 @@
     <ProjectReference Include="..\Modules\ReferenceData\TravelCore.Modules.ReferenceData.Infrastructure\TravelCore.Modules.ReferenceData.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Destination\TravelCore.Modules.Destination.Infrastructure\TravelCore.Modules.Destination.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Seo\TravelCore.Modules.Seo.Infrastructure\TravelCore.Modules.Seo.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Media\TravelCore.Modules.Media.Infrastructure\TravelCore.Modules.Media.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

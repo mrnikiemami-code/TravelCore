@@ -31,8 +31,17 @@ Business and capability modules live under this directory.
 |--------|----------|--------|
 | Seo | `Seo/TravelCore.Modules.Seo.{Domain,Contracts,Infrastructure}` | `seo` |
 
-- **Seo:** Module scaffolding only (`TC-P05-T001`) — SeoRoute/IndexPolicy product behavior deferred.
+- **Seo:** Route/indexation mechanics complete through P05 Gate (Destination ≠ SEO authority).
 - Invariant: **SEO ≠ Destination content ownership**; Destination ≠ SEO authority.
+
+## Active modules (P06)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Media | `Media/TravelCore.Modules.Media.{Domain,Contracts,Infrastructure}` | `media` |
+
+- **Media:** Module scaffolding only (`TC-P06-T001`) — MediaAsset/storage/upload product behavior deferred to T002+.
+- Invariant: **Media owns technical asset truth**; consumers own relationship meaning (gallery/hero/order). Media ≠ SEO authority.
 
 ## Naming
 
@@ -56,6 +65,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - ReferenceData ≠ Destination.
 - Destination ≠ SEO content ownership; SEO owns route/indexation mechanics only (P05).
 - SEO ≠ Search.
+- Media ≠ consumer gallery/hero semantics; Media ≠ SEO IndexPolicy.
 
 ## Host
 

@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\..\src\backend\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Seo\TravelCore.Modules.Seo.Infrastructure\TravelCore.Modules.Seo.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Media\TravelCore.Modules.Media.Infrastructure\TravelCore.Modules.Media.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\tests\Fixtures\Persistence\TravelCore.PersistenceFixture\TravelCore.PersistenceFixture.csproj" />
   </ItemGroup>
 

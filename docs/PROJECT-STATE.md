@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P06-PLAN` (**AWAITING_ARCHITECT_REVIEW**) |
+| Current Active Product Task | `TC-P06-T001` (**AWAITING_ARCHITECT_REVIEW** after implementation) |
 | Current Next Product Phase | P06 — Media (**IN_PROGRESS**) |
-| Current Next Task | Architect review/accept `TC-P06-PLAN` then issue `TC-P06-T001` (do not start T001 until issued) |
+| Current Next Task | Architect review/accept `TC-P06-T001` then issue `TC-P06-T002` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -95,8 +95,8 @@
 | P05-R1 (slug history ownership) | **RESOLVED** — Destination owns current `DestinationTranslation.Slug`; SEO owns path history/reservation/redirect mechanics |
 | P05-R2 (default IndexPolicy) | **RESOLVED** — default missing policy = `noindex, follow`; explicit Index requires eligibility |
 | P06 | **IN_PROGRESS** (authorized via USER `TRAVELCORE_PHASE_CONFIRM: P06`) |
-| P06 Plan | `TC-P06-PLAN` **AWAITING_ARCHITECT_REVIEW** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
-| P06-T001 | **NOT_STARTED** (await plan accept + Auto-Execute issue) |
+| P06 Plan | `TC-P06-PLAN` **COMPLETE / ACCEPTED** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
+| P06-T001 | **AWAITING_ARCHITECT_REVIEW** |
 | P07 | **NOT_STARTED** |
 | P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
 | P04 Implementation Started | **YES** (`TC-P04-T001`) |
@@ -116,14 +116,14 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P06_IN_PROGRESS** · PLAN AWAITING_ARCHITECT_REVIEW · T001 NOT_STARTED · P07 NOT_STARTED |
+| Phase Transition State | **P06_IN_PROGRESS** · PLAN ACCEPTED · T001 AWAITING_ARCHITECT_REVIEW · T002 NOT_STARTED · P07 NOT_STARTED |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
 | P05 Phase Gate | **TC-P05-GATE** COMPLETE / ACCEPTED (`7f234e8`; R1 `bde6661`) |
 | Human Phase Confirmation | P06 entered via USER `TRAVELCORE_PHASE_CONFIRM: P06` (P05 previously via P05 token) |
-| Pipeline Product Execution | **AWAITING_ARCHITECT_REVIEW** (`TC-P06-PLAN`) |
+| Pipeline Product Execution | **AWAITING_ARCHITECT_REVIEW** (`TC-P06-T001`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -234,9 +234,10 @@
 | TC-P05-GATE-R1 | COMPLETE / ACCEPTED (`bde6661`; hygiene `37637bf`) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
-| TC-P06-PLAN | **AWAITING_ARCHITECT_REVIEW** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
-| TC-P06-T001 | **NOT_STARTED** |
-| Required Human Token | none (phase P06 confirmed; await architect accept of PLAN) |
+| TC-P06-PLAN | **COMPLETE / ACCEPTED** (`87069e4`; hygiene `f323857`/`1b2877b`) |
+| TC-P06-T001 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T002 | **NOT_STARTED** |
+| Required Human Token | none |
 
 ### P00 Exit Summary
 
@@ -247,7 +248,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; **P06 IN_PROGRESS** (`TC-P06-PLAN` AWAITING_ARCHITECT_REVIEW; T001 NOT_STARTED; P07 NOT_STARTED)
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; **P06 IN_PROGRESS** (`TC-P06-PLAN` ACCEPTED; `TC-P06-T001` AWAITING_ARCHITECT_REVIEW; T002 NOT_STARTED; P07 NOT_STARTED)
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
