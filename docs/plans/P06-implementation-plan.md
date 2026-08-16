@@ -21,7 +21,7 @@ P06 باید ماژول **Media** را به‌عنوان SoR دارایی‌ها
 1. **MediaAsset** (هویت · MIME · اندازه · ابعاد · وضعیت پردازش · کلید/مسیر ذخیره‌سازی) متمرکز شود.
 2. بایت‌ها در **S3-compatible object storage** قرار گیرند — نه به‌عنوان payload پیش‌فرض داخل جداول دامنهٔ کسب‌وکار.
 3. **Upload · validation · variants · dimensions · focal point · alt/caption translations** طبق مرز مالکیت Media ساخته شوند.
-4. قرارداد بهینه‌سازی تصویر برای مصرف‌کننده‌ها تعریف شود؛ **WebP/AVIF pipeline فقط در صورت تأیید معمار** (R1).
+4. قرارداد بهینه‌سازی تصویر برای مصرف‌کننده‌ها تعریف شود؛ **WebP/AVIF conversion pipeline از P06 خارج است** (**P06-R1 RESOLVED — DEFER**؛ same-format variants فقط).
 5. Frontend P02 (`MediaImage` / `MediaImagePresentation`) با سیاست remote/allowlist تأییدشده گسترش یابد — بدون جایگزینی بی‌مورد.
 6. Invariant قفل‌شده حفظ شود: **معنای رابطهٔ رسانه متعلق به ماژول مصرف‌کننده است**؛ Media مالک ترتیب/نقش گالری Tour/Place/Content نیست.
 
@@ -73,7 +73,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P06`.
 5. **Variants** baseline (constitution direction: original/large/medium/thumbnail) + per-variant dimensions.
 6. **Focal point** persistence for crop/responsive framing.
 7. **Alt/caption translations** (locale rows — forbid `AltFa`/`AltEn` columns); ADR 0008-compatible publication/fallback.
-8. **Image optimization contract** for consumers; WebP/AVIF only if architect confirms (else explicit defer with evidence).
+8. **Image optimization contract** for consumers; **P06-R1 RESOLVED — DEFER** WebP/AVIF conversion (same-format derived variants only; evidence in T008).
 9. **Public/read presentation contract** mapping MediaAsset → safe URLs for P02 `MediaImagePresentation` + narrow `remotePatterns` allowlist.
 10. **Consumer reference proof** without gallery engines: prove ID-reference pattern (contract/architecture and/or minimal Destination optional `MediaAssetId` smoke — relationship semantics remain Destination-owned).
 11. Minimal **Admin Media operational baseline** (job-based; not silo CRUD for every Media table; no raw-ID primary UX).
@@ -205,6 +205,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P06`.
 - **Forbidden:** shipping unapproved pipeline as done · breaking P02 MediaImage without migration path.
 - **Validation:** tests for approved formats; architecture note if deferred.
 - **Done-when:** contract accepted; pipeline shipped **or** deferred with architect sign-off.
+- **Decision lock (P06-R1 RESOLVED — DEFER):** no JPEG/PNG→WebP, any→AVIF, automatic WebP generation, or content negotiation in P06. Accepted posture = same-format derived variants (JPEG→JPEG, PNG→PNG, WebP→WebP) already shipped by T005. Evidence: [`P06-T008-optimization-contract-and-r1-defer.md`](P06-T008-optimization-contract-and-r1-defer.md).
 
 ### TC-P06-T009 — Public presentation URL contract + frontend remote allowlist
 
@@ -281,7 +282,7 @@ TC-P06-PLAN (architect accept)
 4. Focal point persisted and readable.
 5. Alt/caption localization without `AltFa`-style columns; ADR 0008-compatible.
 6. Bytes in S3-compatible storage; not default domain-table blobs.
-7. Optimization contract accepted; WebP/AVIF shipped **or** explicitly deferred with evidence.
+7. Optimization contract accepted; WebP/AVIF shipped **or** explicitly deferred with evidence (**P06-R1 = DEFER**; see T008 artifact).
 8. Frontend presentation extends P02 foundation with approved remote policy.
 9. Relationship semantics remain with consumers (no Place/Tour gallery engines).
 10. Admin Media baseline is job-based + Access-backed.
@@ -294,7 +295,7 @@ TC-P06-PLAN (architect accept)
 
 | ID | Item | Classification |
 |----|------|----------------|
-| R1 | Whether WebP/AVIF generation pipeline ships in P06 | **OPEN** — ROADMAP: «در صورت تأیید»; decide by T008 (ship or explicit defer) |
+| R1 | Whether WebP/AVIF generation pipeline ships in P06 | **RESOLVED — DEFER** — same-format variants only (T005); no cross-format WebP/AVIF conversion / negotiation in P06; evidence [`P06-T008-optimization-contract-and-r1-defer.md`](P06-T008-optimization-contract-and-r1-defer.md) |
 | R2 | Object-storage ownership (Platform abstraction vs Media.Infrastructure-first) | **RESOLVED** — Media-owned `IMediaObjectStorage` first; local FS + in-memory adapters; not Platform-wide |
 | R3 | Sync vs async variant generation | **RESOLVED** — SYNCHRONOUS baseline; Media-owned processor; HTTP calls sync; no Hangfire/Quartz/queue. Sizing: large=1600 / medium=960 / thumbnail=320 (max longest edge); fit-within; no crop; no upscale. original = logical source MediaAsset (no duplicate original blob). Decode limits: max W/H 12000; max pixels 40_000_000. GIF variant policy unresolved → fail-closed. |
 | R4 | Public URL strategy (direct object URL vs app proxy vs signed URL) | **OPEN** — decide by T009; drives `remotePatterns` |
