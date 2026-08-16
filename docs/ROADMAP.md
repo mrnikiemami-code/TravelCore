@@ -627,7 +627,7 @@ P26 = Advanced SEO.
 | P01 | Platform / Backend Foundation | COMPLETE |
 | P02 | Frontend Foundation + Walking Skeleton | COMPLETE |
 | P03 | Identity + Access + Party | COMPLETE |
-| P04 | Reference Data + Destination | IN_PROGRESS |
+| P04 | Reference Data + Destination | COMPLETE |
 | P05 | SEO Engine | PLANNED |
 | P06 | Media | PLANNED |
 | P07 | Place Catalog | PLANNED |
@@ -653,4 +653,4 @@ P26 = Advanced SEO.
 | P27 | Analytics + Product Intelligence | PLANNED |
 | P28 | Performance & Scale | PLANNED |
 | P29 | Production Hardening | PLANNED |
-| Post-P29 | Continuous Evolution | PLANNE
+| Post-P29 | Continuous Evolution | PLANNED |
