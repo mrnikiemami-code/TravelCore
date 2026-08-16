@@ -441,7 +441,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P07-T005 | Place↔Media relations (gallery meaning) | AWAITING_ARCHITECT_REVIEW | `6246a09` |
 | TC-P07-T006 | Access permissions + Admin Place baseline | AWAITING_ARCHITECT_REVIEW | `74e8540` |
 | TC-P07-T006-R1 | Admin Place media picker UX remediation | AWAITING_ARCHITECT_REVIEW | `e4b5201` |
-| TC-P07-T007 | Public Place detail + SEO integration | AWAITING_ARCHITECT_REVIEW | — |
+| TC-P07-T007 | Public Place detail + SEO integration | AWAITING_ARCHITECT_REVIEW | `1c76f6b` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
