@@ -44,6 +44,14 @@ export default async function AdminDestinationHierarchyPage({
             <li>
               <Link
                 className="min-h-touch inline-flex items-center underline-offset-2 hover:underline"
+                href={`/${locale}/admin/catalog/reference`}
+              >
+                {copy.referencesLink}
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="min-h-touch inline-flex items-center underline-offset-2 hover:underline"
                 href={`/${locale}/admin/accounts`}
               >
                 {copy.accountsJob}

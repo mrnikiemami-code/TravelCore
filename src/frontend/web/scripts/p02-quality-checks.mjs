@@ -17,6 +17,9 @@ const ALLOWED_USE_CLIENT = new Set([
   path.normalize(
     "features/admin-destination-hierarchy/destination-hierarchy-workflow-island.tsx",
   ),
+  path.normalize(
+    "features/admin-reference-data/reference-data-browse-island.tsx",
+  ),
   path.normalize("app/[locale]/error.tsx"),
 ]);
 
@@ -216,10 +219,31 @@ function main() {
   assert.doesNotMatch(landingView, /\/destinations\/\$\{[^}]*id/);
   assert.doesNotMatch(publicDest, /alternates:\s*\{[\s\S]*canonical/);
 
+  // 11) P04 T010 ReferenceData Admin read surface (job catalog, not silo CMS)
+  const referencePage = path.join(
+    srcRoot,
+    "app",
+    "[locale]",
+    "admin",
+    "catalog",
+    "reference",
+    "page.tsx",
+  );
+  assert.ok(fs.existsSync(referencePage));
+  const reference = read(referencePage);
+  assert.doesNotMatch(reference, /['"]use client['"]/);
+  assert.match(reference, /ReferenceDataBrowseIsland/);
+  assert.match(reference, /robots/);
+  assert.ok(
+    fs.existsSync(
+      path.join(srcRoot, "features", "admin-reference-data", "actions.ts"),
+    ),
+  );
+
   console.log("p02-quality-checks: PASS");
   console.log(`  use client allowlist (${ALLOWED_USE_CLIENT.size}): ok`);
   console.log(
-    "  locale/tour/fixtures/metadata/a11y/media/money/admin-workflow/destination-public: ok",
+    "  locale/tour/fixtures/metadata/a11y/media/money/admin-workflow/destination-public/reference-data: ok",
   );
 }
 

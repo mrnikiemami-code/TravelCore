@@ -3,7 +3,6 @@
 import { cookies } from "next/headers";
 import { apiGetJson, apiSendJson } from "@/lib/api/client";
 import type {
-  CountryCatalogView,
   DestinationPathNodeView,
   DestinationPathView,
   DestinationSlugHitView,
@@ -49,13 +48,6 @@ type ApiTranslation = {
   name: string;
   description?: string | null;
   slug?: string | null;
-};
-
-type ApiCountry = {
-  alpha2Code: string;
-  alpha3Code: string;
-  numericCode?: string | null;
-  englishName: string;
 };
 
 type ApiSlugHit = {
@@ -133,26 +125,6 @@ function failMessage(
   result: { message: string; status?: number },
 ): { ok: false; message: string; status?: number } {
   return { ok: false, message: result.message, status: result.status };
-}
-
-export async function listCountriesAction(): Promise<
-  | { ok: true; items: CountryCatalogView[] }
-  | { ok: false; message: string; status?: number }
-> {
-  const result = await apiGetJson<ApiCountry[]>("/api/reference-data/countries", {
-    headers: await authHeaders(),
-    cache: "no-store",
-  });
-  if (!result.ok) return failMessage(result);
-  return {
-    ok: true,
-    items: (result.data ?? []).map((c) => ({
-      alpha2Code: c.alpha2Code,
-      alpha3Code: c.alpha3Code,
-      numericCode: c.numericCode ?? null,
-      englishName: c.englishName,
-    })),
-  };
 }
 
 export async function openBySlugAction(input: {

@@ -40,13 +40,6 @@ export type DestinationTranslationView = {
   slug: string | null;
 };
 
-export type CountryCatalogView = {
-  alpha2Code: string;
-  alpha3Code: string;
-  numericCode: string | null;
-  englishName: string;
-};
-
 export type DestinationSlugHitView = {
   destinationId: string;
   localeCode: string;

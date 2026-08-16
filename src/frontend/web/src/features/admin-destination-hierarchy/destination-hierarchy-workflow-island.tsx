@@ -5,21 +5,21 @@ import type { AppLocale } from "@/lib/i18n";
 import { LtrValue, Stack, Surface, Text } from "@/components/ui";
 import {
   createDestinationAction,
-  listCountriesAction,
   loadDestinationBundleAction,
   openBySlugAction,
   setGeoAction,
   setTranslationSlugAction,
   upsertTranslationAction,
 } from "@/features/admin-destination-hierarchy/actions";
+import { listCountriesAction } from "@/features/admin-reference-data/actions";
 import { getDestinationHierarchyWorkflowCopy } from "@/features/admin-destination-hierarchy/copy";
 import type {
-  CountryCatalogView,
   DestinationPathNodeView,
   DestinationPathView,
   DestinationSummaryView,
   DestinationTranslationView,
 } from "@/features/admin-destination-hierarchy/types";
+import type { CountryCatalogView } from "@/features/admin-reference-data/types";
 
 export type DestinationHierarchyWorkflowIslandProps = {
   locale: AppLocale;

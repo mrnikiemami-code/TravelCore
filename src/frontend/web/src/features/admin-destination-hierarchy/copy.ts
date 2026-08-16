@@ -52,6 +52,7 @@ export type DestinationHierarchyWorkflowCopy = {
   apiMissing: string;
   errorGeneric: string;
   notFound: string;
+  referencesLink: string;
   backToHub: string;
   noCountries: string;
 };
@@ -113,6 +114,7 @@ const COPY: Record<"fa" | "en", DestinationHierarchyWorkflowCopy> = {
     errorGeneric: "عملیات انجام نشد. جزئیات فنی نمایش داده نمی‌شود.",
     notFound: "مقصدی با این اسلاگ پیدا نشد.",
     backToHub: "بازگشت به مرکز کاتالوگ",
+    referencesLink: "مراجع پایدار (ISO و …)",
     noCountries: "کاتالوگ کشور خالی است.",
   },
   en: {
@@ -171,6 +173,7 @@ const COPY: Record<"fa" | "en", DestinationHierarchyWorkflowCopy> = {
     errorGeneric: "The operation failed. Technical details are not shown.",
     notFound: "No destination matched that slug.",
     backToHub: "Back to catalog hub",
+    referencesLink: "Stable references (ISO…)",
     noCountries: "Country catalog is empty.",
   },
 };
