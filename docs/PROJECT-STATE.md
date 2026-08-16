@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P07 — Place Catalog** (**IN_PROGRESS**) |
-| Previous Phase | **P06 — Media** (**COMPLETE**) |
+| Current Phase | **P08 — Content CMS** (**NOT_STARTED** · awaiting `TRAVELCORE_PHASE_CONFIRM: P08`) |
+| Previous Phase | **P07 — Place Catalog** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `da345b5` (`TC-P06-GATE`) · hygiene `0d2edad` · P06 COMPLETE docs `77eb9dd` |
+| Last Accepted Commit | `84a0a48` (`TC-P07-GATE`) · hygiene `8136455`/`003e9e4` · prior P06 `da345b5` |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P07-GATE** (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P07 — Place Catalog (**GATE PASS pending architect**; then P08 needs phase confirm) |
-| Current Next Task | Architect accept of `TC-P07-GATE`; P08 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P08` |
+| Current Active Product Task | none — await USER `TRAVELCORE_PHASE_CONFIRM: P08` |
+| Current Next Product Phase | P08 — Content CMS (**NOT_STARTED**) |
+| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P08` then architect issues `TC-P08-PLAN` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -120,7 +120,7 @@
 | P06-R7 (malware/AV scanning) | **DEFERRED** — security requirement recorded; not in P06 product delivery |
 | P06-R8 (domain delete lifecycle) | **UNRESOLVED** — OK for gate (no delete UX / not in P06 product scope; do not invent) |
 | P06-R9 (consumer alt override) | **DEFERRED** — Media owns default alt/caption only |
-| P07 | **IN_PROGRESS** (GATE PASS evidence posted; awaiting architect accept to mark COMPLETE) |
+| P07 | **COMPLETE** (closed by `TC-P07-GATE` ACCEPTED `84a0a48`; hygiene `8136455`/`003e9e4`) |
 | P07 Plan | `TC-P07-PLAN` **COMPLETE / ACCEPTED** (`5dbc152`) — [`docs/plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) |
 | P07 Gate Evidence | [`docs/plans/P07-GATE-acceptance-evidence.md`](plans/P07-GATE-acceptance-evidence.md) |
 | P07-T001 | **COMPLETE / ACCEPTED** (`108ac34`; hygiene `a245358`) |
@@ -133,7 +133,7 @@
 | P07-T006-R1 | **COMPLETE / ACCEPTED** (`e4b5201`; hygiene `48aaaea`) — Admin Ready-media visual picker |
 | P07-T007 | **COMPLETE / ACCEPTED** (`1c76f6b`; hygiene `b47f6de`) — Public Place detail + SEO hooks |
 | P07-T008 | **COMPLETE / ACCEPTED** (`f7843cc`; hygiene `2d10fbd`/`fcefadd`) — hardening + evidence pack [`plans/P07-T008-hardening-and-evidence-pack.md`](plans/P07-T008-hardening-and-evidence-pack.md) |
-| P07-GATE | **AWAITING_ARCHITECT_REVIEW** (`84a0a48`) |
+| P07-GATE | **COMPLETE / ACCEPTED** (`84a0a48`; hygiene `8136455`/`003e9e4`) |
 | P07-R1 (Place model shape) | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION (`PlaceId` only; Hotel/Restaurant/Attraction 1:1 tables; no TPH; no HotelBooking fields) |
 | P07-R2 (Destination link requiredness) | **RESOLVED** — OPTIONAL SINGLE LOGICAL REFERENCE (0..1; Place-owned nullable DestinationId; no cross-schema FK; Contracts existence validation) |
 | P07-R3 (Place delete/archive) | **UNRESOLVED** — OK for gate (no delete/archive product; do not invent) |
@@ -158,17 +158,17 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P07_IN_PROGRESS** · T001–T008 ACCEPTED · GATE PASS evidence posted / AWAITING_ARCHITECT_REVIEW · **P07-R1/R2/R4/R5 RESOLVED** · R3 UNRESOLVED (honest) · P08 NOT_STARTED |
+| Phase Transition State | **P07_COMPLETE** · `TC-P07-GATE` ACCEPTED · P08 NOT_STARTED (needs `TRAVELCORE_PHASE_CONFIRM: P08`) |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
 | P05 Phase Gate | **TC-P05-GATE** COMPLETE / ACCEPTED (`7f234e8`; R1 `bde6661`) |
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
-| P07 Phase Gate | **TC-P07-GATE** AWAITING_ARCHITECT_REVIEW (`84a0a48`) |
-| Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P07` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P07-GATE`) |
-| Human Confirmation Reason | None for current task |
+| P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
+| Human Phase Confirmation | P07 closed via GATE accept; **P08 requires** USER `TRAVELCORE_PHASE_CONFIRM: P08` |
+| Pipeline Product Execution | **WAITING_HUMAN_CONFIRMATION** (`TRAVELCORE_PHASE_CONFIRM: P08`) |
+| Human Confirmation Reason | Await USER `TRAVELCORE_PHASE_CONFIRM: P08` before any P08 task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
 | TC-P02-T002 | COMPLETE / ACCEPTED (`55ea466`) |
@@ -312,13 +312,13 @@
 | TC-P07-T006-R1 | **COMPLETE / ACCEPTED** (`e4b5201`; hygiene `48aaaea`) — Ready Media visual picker; evidence [`plans/P07-T006-R1-admin-place-media-picker-reconciliation.md`](plans/P07-T006-R1-admin-place-media-picker-reconciliation.md) |
 | TC-P07-T007 | **COMPLETE / ACCEPTED** (`1c76f6b`; hygiene `b47f6de`) — Public Place detail + SEO hooks |
 | TC-P07-T008 | **COMPLETE / ACCEPTED** (`f7843cc`; hygiene `2d10fbd`/`fcefadd`) — evidence pack [`plans/P07-T008-hardening-and-evidence-pack.md`](plans/P07-T008-hardening-and-evidence-pack.md) |
-| TC-P07-GATE | **AWAITING_ARCHITECT_REVIEW** (`84a0a48`) — [`plans/P07-GATE-acceptance-evidence.md`](plans/P07-GATE-acceptance-evidence.md) |
+| TC-P07-GATE | **COMPLETE / ACCEPTED** (`84a0a48`; hygiene `8136455`/`003e9e4`) — [`plans/P07-GATE-acceptance-evidence.md`](plans/P07-GATE-acceptance-evidence.md) |
 | P07-R1 | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION |
 | P07-R2 | **RESOLVED** — OPTIONAL SINGLE LOGICAL REFERENCE Place→Destination (0..1; nullable DestinationId; no cross-schema FK; Contracts existence validation; no DestinationKind restriction in T003) |
-| P07-R3 | **UNRESOLVED** (Place delete/archive) — OK for gate; CatalogStatus is catalog ops only; no delete/archive product invented |
+| P07-R3 | **UNRESOLVED** (Place delete/archive) — OK for COMPLETE phase; CatalogStatus is catalog ops only; no delete/archive product invented |
 | P07-R4 | **RESOLVED** — PLACE owns current locale-specific `PlaceTranslation.Slug`; SEO owns route binding/reservations/history/redirects/canonical/IndexPolicy |
 | P07-R5 | **RESOLVED** — default Place SEO posture **noindex, follow**; Active/public/publish ≠ Index; no Destination IndexPolicy inheritance |
-| Required Human Token | none for GATE review; P08 later needs `TRAVELCORE_PHASE_CONFIRM: P08` |
+| Required Human Token | P08 needs `TRAVELCORE_PHASE_CONFIRM: P08` |
 
 ### P00 Exit Summary
 
@@ -329,7 +329,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); Runtime Mode = PIPELINE; **P07 GATE PASS evidence posted** (`TC-P07-T001`–`T008` ACCEPTED); awaiting architect accept of `TC-P07-GATE`; **P07-R1/R2/R4/R5 RESOLVED**; R3 UNRESOLVED (honest; no delete/archive product); P08 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P08`
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P07-R1/R2/R4/R5 RESOLVED**; R3 UNRESOLVED (honest); P08 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P08`
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 

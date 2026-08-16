@@ -300,7 +300,8 @@ Cursor must **STOP** with `BLOCKED_ARCHITECT_DECISION_REQUIRED` when a task dead
 - [x] Non-goals explicitly exclude HotelBooking / P08+ product
 - [x] Open decisions listed (P07-R1–R5)
 - [x] Task map + gate checklist present
-- [x] `docs/PROJECT-STATE.md` / `docs/ROADMAP.md` updated to P07 IN_PROGRESS (PLAN awaiting review)
-- [x] Commit + push on baseline `77eb9dd`
-- [ ] RESULT envelope returned to architect
+- [x] `docs/PROJECT-STATE.md` / `docs/ROADMAP.md` updated to P07 COMPLETE after `TC-P07-GATE` accept
+- [x] Commit + push on baseline `77eb9dd` (plan) through GATE `84a0a48`
+- [x] RESULT envelopes returned to architect; GATE ACCEPTED
+- [ ] P08 NOT_STARTED until USER `TRAVELCORE_PHASE_CONFIRM: P08`
 )
