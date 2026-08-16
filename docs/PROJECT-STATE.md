@@ -227,7 +227,7 @@
 | TC-P05-T011 | COMPLETE / ACCEPTED (`8a9c4b7`; hygiene `61dd8c1`/`9258479`/`85ac421`) |
 | TC-P05-T012 | COMPLETE / ACCEPTED (`0c8ab0a`; hygiene `3351755`/`be407fc`/`6a02d9d`) |
 | TC-P05-GATE | AWAITING_ARCHITECT_REVIEW (`7f234e8`; hygiene `d6bcbfb`) |
-| TC-P05-GATE-R1 | AWAITING_ARCHITECT_REVIEW (this commit) |
+| TC-P05-GATE-R1 | AWAITING_ARCHITECT_REVIEW (`bde6661`) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
 | Required Human Token | none; P06 later needs `TRAVELCORE_PHASE_CONFIRM: P06` |
@@ -349,7 +349,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T011 | Admin SEO operational baseline | COMPLETE / ACCEPTED | `8a9c4b7` (+ `61dd8c1`/`9258479`/`85ac421`) |
 | TC-P05-T012 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `0c8ab0a` (+ `3351755`/`be407fc`/`6a02d9d`) |
 | TC-P05-GATE | P05 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | `7f234e8` (+ `d6bcbfb`) |
-| TC-P05-GATE-R1 | Reconcile P05 Gate Baseline Drift | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P05-GATE-R1 | Reconcile P05 Gate Baseline Drift | AWAITING_ARCHITECT_REVIEW | `bde6661` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
