@@ -43,7 +43,7 @@
 | Last Accepted Commit | `576b7fa` (`TC-P08-GATE` ACCEPTED) · prior P07 `84a0a48` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P09-T006`; then Auto-Execute |
+| Current Next Task | Await formal Auto-Execute `TC-P09-T007` (Tour↔Media) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -108,7 +108,7 @@
 - **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED**)
 - **P07** = COMPLETE (`TC-P07-GATE` ACCEPTED `84a0a48` · **P07-R1/R2/R4/R5 RESOLVED** · **P07-R3 UNRESOLVED**)
 - **P08** = COMPLETE (`TC-P08-GATE` ACCEPTED `576b7fa` · R1–R5 RESOLVED · R6–R8 UNRESOLVED)
-- **P09** = IN_PROGRESS (`TC-P09-PLAN` ACCEPTED · T001–T005 ACCEPTED · T006 review · **R1/R2/R3/R7 RESOLVED** · R4–R6 UNRESOLVED)
+- **P09** = IN_PROGRESS (`TC-P09-PLAN` ACCEPTED · T001–T006 ACCEPTED · await T007 · **R1/R2/R3/R7 RESOLVED** · R4–R6 UNRESOLVED)
 - **P10–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -394,7 +394,7 @@ Invariant: Content مالک editorial است؛ SEO محتوا را duplicate ن�
 
 **Authoritative plan:** [`plans/P09-implementation-plan.md`](plans/P09-implementation-plan.md) (`TC-P09-PLAN` — COMPLETE / ACCEPTED · `7de2518`)
 
-**Progress:** T001–T005 ACCEPTED · **T006 AWAITING_ARCHITECT_REVIEW** · **R1/R2/R3/R7 RESOLVED** · R4–R6 UNRESOLVED (slug deferred)
+**Progress:** T001–T006 ACCEPTED · **T007 NOT_STARTED** (await Auto-Execute; Media) · **R1/R2/R3/R7 RESOLVED** · R4–R6 UNRESOLVED (slug deferred)
 
 مبانی مشترک Tour: TourProduct · Classification · Origin · Destinations · Agency references · Services · Policies · Requirements · Media · Publishing lifecycle · Translations · SEO integration.
 
