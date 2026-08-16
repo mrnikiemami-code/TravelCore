@@ -4,6 +4,7 @@ using NodaTime;
 using TravelCore.Modules.Content.Contracts;
 using TravelCore.Modules.Content.Infrastructure;
 using TravelCore.Modules.Content.Infrastructure.Services;
+using TravelCore.Modules.Destination.Contracts;
 using TravelCore.Modules.ReferenceData.Contracts;
 using Xunit;
 
@@ -31,12 +32,13 @@ public sealed class ContentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(5, expectedMigrations.Length);
+            Assert.Equal(6, expectedMigrations.Length);
             Assert.EndsWith("_InitialContentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentCatalogTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentItemTranslations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentTaxonomyTables", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentBlocksTables", expectedMigrations[4], StringComparison.Ordinal);
+            Assert.EndsWith("_AddContentDestinationLinks", expectedMigrations[5], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -52,7 +54,7 @@ public sealed class ContentMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'content';
                 """, ct));
-            Assert.Equal(13, await ScalarIntAsync(conn, """
+            Assert.Equal(14, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'content'
@@ -69,6 +71,7 @@ public sealed class ContentMigrationLifecycleTests
                     'content_blocks',
                     'content_block_gallery_items',
                     'content_block_faq_items',
+                    'content_item_destinations',
                     '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
@@ -81,7 +84,8 @@ public sealed class ContentMigrationLifecycleTests
             var service = new ContentItemApplicationService(
                 db,
                 SystemClock.Instance,
-                new StubReferenceDataCatalogQuery());
+                new StubReferenceDataCatalogQuery(),
+                new StubDestinationExistenceQuery());
             var created = await service.CreateAsync(
                 new CreateContentItemRequest(
                     "Article",
@@ -177,6 +181,10 @@ public sealed class ContentMigrationLifecycleTests
             listedBlocks = await blocks.ListAsync(createdId, ct);
             Assert.Equal(paragraph.Id, listedBlocks[0].Id);
             Assert.Equal(0, listedBlocks[0].SortOrder);
+
+            var destinationId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+            var withDest = await service.AssignDestinationAsync(createdId, destinationId, ct);
+            Assert.Contains(destinationId, withDest.DestinationIds!);
 
             // Duplicate create last: a failed SaveChanges leaves the Added entity tracked.
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
@@ -277,5 +285,11 @@ public sealed class ContentMigrationLifecycleTests
             string id,
             CancellationToken cancellationToken = default) =>
             Task.FromResult<TimeZoneCatalogItem?>(null);
+    }
+
+    private sealed class StubDestinationExistenceQuery : IDestinationExistenceQuery
+    {
+        public Task<bool> ExistsAsync(Guid destinationId, CancellationToken cancellationToken = default) =>
+            Task.FromResult(destinationId != Guid.Empty);
     }
 }

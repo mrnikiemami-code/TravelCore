@@ -20,7 +20,8 @@ public sealed record ContentItemResponse(
     string? LocalizedBody = null,
     string? LocalizedExcerpt = null,
     IReadOnlyList<Guid>? CategoryIds = null,
-    IReadOnlyList<Guid>? TagIds = null);
+    IReadOnlyList<Guid>? TagIds = null,
+    IReadOnlyList<Guid>? DestinationIds = null);
 
 /// <summary>Marker details for Article specialization (T002 — no type-specific fields yet).</summary>
 public sealed record ArticleDetailsResponse();
@@ -128,6 +129,16 @@ public interface IContentItemService
     Task<ContentItemResponse> RemoveTagAsync(
         Guid contentItemId,
         Guid tagId,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentItemResponse> AssignDestinationAsync(
+        Guid contentItemId,
+        Guid destinationId,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentItemResponse> RemoveDestinationAsync(
+        Guid contentItemId,
+        Guid destinationId,
         CancellationToken cancellationToken = default);
 }
 

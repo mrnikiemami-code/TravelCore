@@ -80,6 +80,11 @@ internal sealed class ContentItemConfiguration : IEntityTypeConfiguration<Conten
             .HasForeignKey(x => x.ContentItemId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(x => x.Destinations)
+            .WithOne()
+            .HasForeignKey(x => x.ContentItemId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         // ContentBlock relationship is owned on ContentBlockConfiguration (PlaceMediaLink pattern).
 
         builder.Navigation(x => x.Article).AutoInclude();
@@ -99,6 +104,10 @@ internal sealed class ContentItemConfiguration : IEntityTypeConfiguration<Conten
             .AutoInclude();
         builder.Navigation(x => x.Blocks)
             .HasField("_blocks")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+        builder.Navigation(x => x.Destinations)
+            .HasField("_destinations")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
     }
@@ -426,5 +435,26 @@ internal sealed class ContentBlockFaqItemConfiguration : IEntityTypeConfiguratio
         builder.Property(x => x.SortOrder)
             .HasColumnName("sort_order")
             .IsRequired();
+    }
+}
+
+internal sealed class ContentItemDestinationConfiguration : IEntityTypeConfiguration<ContentItemDestination>
+{
+    public void Configure(EntityTypeBuilder<ContentItemDestination> builder)
+    {
+        builder.ToTable("content_item_destinations");
+        builder.HasKey(x => new { x.ContentItemId, x.DestinationId });
+
+        builder.Property(x => x.ContentItemId)
+            .HasColumnName("content_item_id")
+            .HasConversion(id => id.Value, value => ContentItemId.From(value));
+
+        // Logical DestinationId only — deliberately no FK / navigation to Destination.
+        builder.Property(x => x.DestinationId)
+            .HasColumnName("destination_id")
+            .IsRequired();
+
+        builder.HasIndex(x => x.DestinationId)
+            .HasDatabaseName("ix_content_item_destinations_destination_id");
     }
 }

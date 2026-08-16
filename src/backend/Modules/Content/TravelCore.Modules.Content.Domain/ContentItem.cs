@@ -8,7 +8,7 @@ namespace TravelCore.Modules.Content.Domain;
 /// Localized title/body/excerpt live on ContentItemTranslation rows (T003; ADR 0008).
 /// Category/Tag taxonomy links are Content-owned (T004). Author deferred (P08-R7 open).
 /// Content Blocks are relational first-class entities (T005 / P08-R2). Widgets deferred (P08-R6).
-/// Slug / SEO / Destination / Media ownership / delete-archive are later P08 tasks (R3–R5/R8).
+/// Destination links are logical 0..N refs (T006 / P08-R5). Slug/SEO/Author/delete deferred (R3/R4/R7/R8).
 /// </summary>
 public sealed class ContentItem
 {
@@ -22,6 +22,7 @@ public sealed class ContentItem
     private readonly List<ContentItemCategory> _categories = [];
     private readonly List<ContentItemTag> _tags = [];
     private readonly List<ContentBlock> _blocks = [];
+    private readonly List<ContentItemDestination> _destinations = [];
 
     private ContentItem()
     {
@@ -81,6 +82,8 @@ public sealed class ContentItem
 
     public IReadOnlyList<ContentBlock> BlocksOrdered =>
         _blocks.OrderBy(x => x.SortOrder).ThenBy(x => x.Id.Value).ToList();
+
+    public IReadOnlyCollection<ContentItemDestination> Destinations => _destinations;
 
     public static ContentItem CreateArticle(
         string code,
@@ -371,6 +374,44 @@ public sealed class ContentItem
 
         UpdatedAt = now;
         return BlocksOrdered;
+    }
+
+    public ContentItemDestination AssignDestination(Guid destinationId, Instant now)
+    {
+        if (destinationId == Guid.Empty)
+        {
+            throw new ArgumentException("DestinationId cannot be empty.", nameof(destinationId));
+        }
+
+        var existing = _destinations.FirstOrDefault(x => x.DestinationId == destinationId);
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        if (_destinations.Count >= ContentItemDestination.MaxLinksPerContentItem)
+        {
+            throw new InvalidOperationException(
+                $"A ContentItem may have at most {ContentItemDestination.MaxLinksPerContentItem} Destination links.");
+        }
+
+        var link = ContentItemDestination.Create(Id, destinationId);
+        _destinations.Add(link);
+        UpdatedAt = now;
+        return link;
+    }
+
+    public bool RemoveDestination(Guid destinationId, Instant now)
+    {
+        var existing = _destinations.FirstOrDefault(x => x.DestinationId == destinationId);
+        if (existing is null)
+        {
+            return false;
+        }
+
+        _destinations.Remove(existing);
+        UpdatedAt = now;
+        return true;
     }
 
     private ContentBlock AttachBlock(ContentBlock block, Instant now)

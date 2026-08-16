@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using TravelCore.Modules.Content.Contracts;
 using TravelCore.Modules.Content.Domain;
+using TravelCore.Modules.Destination.Contracts;
 using TravelCore.Modules.ReferenceData.Contracts;
 using ContentItemAggregate = TravelCore.Modules.Content.Domain.ContentItem;
 
@@ -17,15 +18,18 @@ public sealed class ContentItemApplicationService : IContentItemService
     private readonly ContentDbContext _db;
     private readonly IClock _clock;
     private readonly IReferenceDataCatalogQuery _referenceData;
+    private readonly IDestinationExistenceQuery _destinations;
 
     public ContentItemApplicationService(
         ContentDbContext db,
         IClock clock,
-        IReferenceDataCatalogQuery referenceData)
+        IReferenceDataCatalogQuery referenceData,
+        IDestinationExistenceQuery destinations)
     {
         _db = db;
         _clock = clock;
         _referenceData = referenceData;
+        _destinations = destinations;
     }
 
     public async Task<ContentItemResponse> CreateAsync(
@@ -216,6 +220,46 @@ public sealed class ContentItemApplicationService : IContentItemService
         return Map(item);
     }
 
+    public async Task<ContentItemResponse> AssignDestinationAsync(
+        Guid contentItemId,
+        Guid destinationId,
+        CancellationToken cancellationToken = default)
+    {
+        await EnsureDestinationExistsAsync(destinationId, cancellationToken);
+        var item = await LoadTrackedAsync(contentItemId, cancellationToken);
+        item.AssignDestination(destinationId, _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(item);
+    }
+
+    public async Task<ContentItemResponse> RemoveDestinationAsync(
+        Guid contentItemId,
+        Guid destinationId,
+        CancellationToken cancellationToken = default)
+    {
+        var item = await LoadTrackedAsync(contentItemId, cancellationToken);
+        item.RemoveDestination(destinationId, _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(item);
+    }
+
+    private async Task EnsureDestinationExistsAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken)
+    {
+        if (destinationId == Guid.Empty)
+        {
+            throw new ArgumentException("DestinationId cannot be empty.", nameof(destinationId));
+        }
+
+        if (!await _destinations.ExistsAsync(destinationId, cancellationToken))
+        {
+            throw new ArgumentException(
+                $"Destination '{destinationId}' was not found.",
+                nameof(destinationId));
+        }
+    }
+
     private async Task<ContentItemAggregate> LoadTrackedAsync(
         Guid contentItemId,
         CancellationToken cancellationToken)
@@ -271,7 +315,8 @@ public sealed class ContentItemApplicationService : IContentItemService
             localizedBody,
             localizedExcerpt,
             item.Categories.Select(x => x.CategoryId.Value).OrderBy(x => x).ToList(),
-            item.Tags.Select(x => x.TagId.Value).OrderBy(x => x).ToList());
+            item.Tags.Select(x => x.TagId.Value).OrderBy(x => x).ToList(),
+            item.Destinations.Select(x => x.DestinationId).OrderBy(x => x).ToList());
     }
 
     private static ContentItemTranslationResponse MapTranslation(ContentItemTranslation translation) =>
