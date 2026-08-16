@@ -1,13 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using TravelCore.Modules.Destination.Contracts;
 using TravelCore.Modules.Place.Contracts;
 using TravelCore.Modules.Place.Domain;
+using TravelCore.Modules.ReferenceData.Contracts;
 using PlaceAggregate = TravelCore.Modules.Place.Domain.Place;
 
 namespace TravelCore.Modules.Place.Infrastructure.Services;
 
 /// <summary>
-/// Application service implementing Place create/get/list (catalog SoR only).
+/// Application service implementing Place create/get/list + localization / Destination link / geo-address.
 /// </summary>
 public sealed class PlaceApplicationService : IPlaceService
 {
@@ -15,11 +17,19 @@ public sealed class PlaceApplicationService : IPlaceService
 
     private readonly PlaceDbContext _db;
     private readonly IClock _clock;
+    private readonly IDestinationExistenceQuery _destinations;
+    private readonly IReferenceDataCatalogQuery _referenceData;
 
-    public PlaceApplicationService(PlaceDbContext db, IClock clock)
+    public PlaceApplicationService(
+        PlaceDbContext db,
+        IClock clock,
+        IDestinationExistenceQuery destinations,
+        IReferenceDataCatalogQuery referenceData)
     {
         _db = db;
         _clock = clock;
+        _destinations = destinations;
+        _referenceData = referenceData;
     }
 
     public async Task<PlaceResponse> CreateAsync(
@@ -30,6 +40,7 @@ public sealed class PlaceApplicationService : IPlaceService
 
         var kind = ParseKind(request.Kind);
         RejectCrossKindPayload(kind, request);
+        await EnsureDestinationLinkValidAsync(request.DestinationId, cancellationToken);
 
         var now = _clock.GetCurrentInstant();
         PlaceAggregate place = kind switch
@@ -52,6 +63,11 @@ public sealed class PlaceApplicationService : IPlaceService
             _ => throw new ArgumentOutOfRangeException(nameof(request.Kind), request.Kind, "Unsupported PlaceKind.")
         };
 
+        if (request.DestinationId is not null)
+        {
+            place.SetDestinationLink(request.DestinationId, now);
+        }
+
         _db.Places.Add(place);
 
         try
@@ -68,14 +84,20 @@ public sealed class PlaceApplicationService : IPlaceService
         return Map(place);
     }
 
+    public Task<PlaceResponse?> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken = default) =>
+        GetByIdAsync(id, locale: null, cancellationToken);
+
     public async Task<PlaceResponse?> GetByIdAsync(
         Guid id,
+        string? locale,
         CancellationToken cancellationToken = default)
     {
         var placeId = PlaceId.From(id);
         var place = await _db.Places.AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == placeId, cancellationToken);
-        return place is null ? null : Map(place);
+        return place is null ? null : Map(place, locale);
     }
 
     public async Task<IReadOnlyList<PlaceResponse>> ListAsync(
@@ -102,7 +124,141 @@ public sealed class PlaceApplicationService : IPlaceService
             .Take(take)
             .ToListAsync(cancellationToken);
 
-        return places.Select(Map).ToList();
+        return places.Select(x => Map(x)).ToList();
+    }
+
+    public async Task<PlaceTranslationResponse> UpsertTranslationAsync(
+        Guid placeId,
+        string localeCode,
+        UpsertPlaceTranslationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var locale = await _referenceData.GetLocaleAsync(localeCode, cancellationToken)
+            ?? throw new ArgumentException(
+                $"Locale '{localeCode}' was not found in ReferenceData locale catalog.",
+                nameof(localeCode));
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var translation = place.UpsertTranslation(locale.Code, request.Name, request.Description, now);
+        await _db.SaveChangesAsync(cancellationToken);
+
+        return new PlaceTranslationResponse(
+            translation.PlaceId.Value,
+            translation.LocaleCode,
+            translation.Name,
+            translation.Description);
+    }
+
+    public async Task<IReadOnlyList<PlaceTranslationResponse>> ListTranslationsAsync(
+        Guid placeId,
+        CancellationToken cancellationToken = default)
+    {
+        var id = PlaceId.From(placeId);
+        var place = await _db.Places.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (place is null)
+        {
+            return [];
+        }
+
+        return place.Translations
+            .OrderBy(x => x.LocaleCode, StringComparer.Ordinal)
+            .Select(x => new PlaceTranslationResponse(
+                x.PlaceId.Value,
+                x.LocaleCode,
+                x.Name,
+                x.Description))
+            .ToList();
+    }
+
+    public async Task<PlaceResponse> SetDestinationLinkAsync(
+        Guid placeId,
+        SetPlaceDestinationLinkRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        await EnsureDestinationLinkValidAsync(request.DestinationId, cancellationToken);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        place.SetDestinationLink(request.DestinationId, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(place);
+    }
+
+    public async Task<PlaceResponse> SetGeoAsync(
+        Guid placeId,
+        SetPlaceGeoRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        place.SetGeographicCoordinates(request.Latitude, request.Longitude, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(place);
+    }
+
+    public async Task<PlaceResponse> SetAddressAsync(
+        Guid placeId,
+        SetPlaceAddressRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var place = await LoadTrackedAsync(placeId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var address = PlaceAddress.Create(
+            request.Line1,
+            request.Line2,
+            request.Locality,
+            request.AdministrativeArea,
+            request.PostalCode,
+            request.CountryCode);
+        place.SetAddress(address, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(place);
+    }
+
+    private async Task<PlaceAggregate> LoadTrackedAsync(Guid placeId, CancellationToken cancellationToken)
+    {
+        var id = PlaceId.From(placeId);
+        var place = await _db.Places.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (place is null)
+        {
+            throw new ArgumentException("Place was not found.", nameof(placeId));
+        }
+
+        return place;
+    }
+
+    /// <summary>
+    /// P07-R2: null is valid; empty Guid invalid; nonexistent Destination identity rejects the mutation.
+    /// </summary>
+    private async Task EnsureDestinationLinkValidAsync(
+        Guid? destinationId,
+        CancellationToken cancellationToken)
+    {
+        if (destinationId is null)
+        {
+            return;
+        }
+
+        if (destinationId == Guid.Empty)
+        {
+            throw new ArgumentException(
+                "DestinationId cannot be empty. Use null to clear the Destination link.",
+                nameof(destinationId));
+        }
+
+        if (!await _destinations.ExistsAsync(destinationId.Value, cancellationToken))
+        {
+            throw new InvalidOperationException("Destination does not exist.");
+        }
     }
 
     private static PlaceKind ParseKind(string kind)
@@ -162,15 +318,48 @@ public sealed class PlaceApplicationService : IPlaceService
         }
     }
 
-    private static PlaceResponse Map(PlaceAggregate place) =>
-        new(
+    private static PlaceResponse Map(PlaceAggregate place, string? locale = null)
+    {
+        string? localizedName = null;
+        string? localizedDescription = null;
+        string? resolvedLocale = null;
+
+        // ADR 0008: exact-locale overlay only — no silent cross-language invent.
+        if (!string.IsNullOrWhiteSpace(locale))
+        {
+            var translation = place.FindTranslation(locale);
+            if (translation is not null)
+            {
+                localizedName = translation.Name;
+                localizedDescription = translation.Description;
+                resolvedLocale = translation.LocaleCode;
+            }
+        }
+
+        return new PlaceResponse(
             place.Id.Value,
             place.Kind.ToString(),
             place.Code,
             place.EnglishName,
+            place.DestinationId,
+            place.Latitude,
+            place.Longitude,
+            place.Address is null
+                ? null
+                : new PlaceAddressResponse(
+                    place.Address.Line1,
+                    place.Address.Line2,
+                    place.Address.Locality,
+                    place.Address.AdministrativeArea,
+                    place.Address.PostalCode,
+                    place.Address.CountryCode),
             place.Hotel is null ? null : new HotelDetailsResponse(place.Hotel.StarRating),
             place.Restaurant is null ? null : new RestaurantDetailsResponse(place.Restaurant.CuisineType),
             place.Attraction is null ? null : new AttractionDetailsResponse(place.Attraction.CategoryCode),
             place.CreatedAt.ToString(),
-            place.UpdatedAt.ToString());
+            place.UpdatedAt.ToString(),
+            localizedName,
+            localizedDescription,
+            resolvedLocale);
+    }
 }

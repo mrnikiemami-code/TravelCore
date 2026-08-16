@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Place.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Place.Infrastructure</AssemblyName>
-    <Description>Place module infrastructure: Place + typed specializations persistence in schema place (TC-P07-T002).</Description>
+    <Description>Place module infrastructure: Place catalog + translations + Destination link + geo/address (TC-P07-T003).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +25,8 @@
   <ItemGroup>
     <ProjectReference Include="..\TravelCore.Modules.Place.Contracts\TravelCore.Modules.Place.Contracts.csproj" />
     <ProjectReference Include="..\TravelCore.Modules.Place.Domain\TravelCore.Modules.Place.Domain.csproj" />
+    <ProjectReference Include="..\..\Destination\TravelCore.Modules.Destination.Contracts\TravelCore.Modules.Destination.Contracts.csproj" />
+    <ProjectReference Include="..\..\ReferenceData\TravelCore.Modules.ReferenceData.Contracts\TravelCore.Modules.ReferenceData.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
     <ProjectReference Include="..\..\..\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
   </ItemGroup>

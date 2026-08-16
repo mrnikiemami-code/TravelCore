@@ -5,12 +5,14 @@ namespace TravelCore.Modules.Place.Domain;
 /// <summary>
 /// Place catalog aggregate root (P07-R1).
 /// Shared catalog facts live here; type-specific facts live on Hotel/Restaurant/Attraction rows (1:1).
-/// Translations / geo / Destination / Media / SEO / slug are later P07 tasks.
+/// DestinationId is an optional logical association only (P07-R2) — not Place identity, not address/geo/slug SoR.
 /// </summary>
 public sealed class Place
 {
     public const int CodeMaxLength = 64;
     public const int NameMaxLength = 200;
+
+    private readonly List<PlaceTranslation> _translations = [];
 
     private Place()
     {
@@ -47,8 +49,23 @@ public sealed class Place
     /// <summary>Stable opaque place code within TravelCore (not SEO slug).</summary>
     public string Code { get; private set; }
 
-    /// <summary>Baseline English display name (localized names arrive in later P07 tasks).</summary>
+    /// <summary>Baseline English display name (localized names live in translations).</summary>
     public string EnglishName { get; private set; }
+
+    /// <summary>
+    /// Optional single logical Destination reference (0..1). Stored as Guid identity only —
+    /// no cross-schema FK, no EF navigation to Destination.
+    /// </summary>
+    public Guid? DestinationId { get; private set; }
+
+    /// <summary>Optional WGS84 latitude. Place catalog geo — not Destination hierarchy.</summary>
+    public decimal? Latitude { get; private set; }
+
+    /// <summary>Optional WGS84 longitude. Place catalog geo — not Destination hierarchy.</summary>
+    public decimal? Longitude { get; private set; }
+
+    /// <summary>Optional Place-owned postal/street address (independent of Destination).</summary>
+    public PlaceAddress? Address { get; private set; }
 
     public Instant CreatedAt { get; private set; }
 
@@ -59,6 +76,8 @@ public sealed class Place
     public Restaurant? Restaurant { get; private set; }
 
     public Attraction? Attraction { get; private set; }
+
+    public IReadOnlyCollection<PlaceTranslation> Translations => _translations;
 
     public static Place CreateHotel(
         string code,
@@ -130,7 +149,12 @@ public sealed class Place
         Instant updatedAt,
         Hotel? hotel,
         Restaurant? restaurant,
-        Attraction? attraction)
+        Attraction? attraction,
+        Guid? destinationId = null,
+        decimal? latitude = null,
+        decimal? longitude = null,
+        PlaceAddress? address = null,
+        IEnumerable<PlaceTranslation>? translations = null)
     {
         var place = new Place(
             id,
@@ -144,7 +168,111 @@ public sealed class Place
         {
             UpdatedAt = updatedAt
         };
+
+        if (destinationId is not null)
+        {
+            place.SetDestinationLink(destinationId, updatedAt);
+        }
+
+        if (latitude is not null || longitude is not null)
+        {
+            place.SetGeographicCoordinates(latitude, longitude, updatedAt);
+        }
+
+        if (address is not null)
+        {
+            place.Address = address;
+        }
+
+        if (translations is not null)
+        {
+            place._translations.AddRange(translations);
+        }
+
         return place;
+    }
+
+    /// <summary>
+    /// Optional single Destination association (P07-R2). Null clears. Empty Guid is invalid.
+    /// Existence of a non-null id is validated at the application boundary via Destination.Contracts.
+    /// </summary>
+    public void SetDestinationLink(Guid? destinationId, Instant now)
+    {
+        if (destinationId == Guid.Empty)
+        {
+            throw new ArgumentException(
+                "DestinationId cannot be empty. Use null to clear the Destination link.",
+                nameof(destinationId));
+        }
+
+        DestinationId = destinationId;
+        UpdatedAt = now;
+    }
+
+    public void SetGeographicCoordinates(decimal? latitude, decimal? longitude, Instant now)
+    {
+        if (latitude is null && longitude is null)
+        {
+            Latitude = null;
+            Longitude = null;
+            UpdatedAt = now;
+            return;
+        }
+
+        if (latitude is null || longitude is null)
+        {
+            throw new ArgumentException("Latitude and Longitude must both be set or both cleared.");
+        }
+
+        if (latitude is < -90m or > 90m)
+        {
+            throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be between -90 and 90.");
+        }
+
+        if (longitude is < -180m or > 180m)
+        {
+            throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be between -180 and 180.");
+        }
+
+        Latitude = decimal.Round(latitude.Value, 6, MidpointRounding.AwayFromZero);
+        Longitude = decimal.Round(longitude.Value, 6, MidpointRounding.AwayFromZero);
+        UpdatedAt = now;
+    }
+
+    public void SetAddress(PlaceAddress? address, Instant now)
+    {
+        Address = address;
+        UpdatedAt = now;
+    }
+
+    public PlaceTranslation UpsertTranslation(
+        string localeCode,
+        string name,
+        string? description,
+        Instant now)
+    {
+        var normalizedLocale = PlaceTranslation.NormalizeLocaleCode(localeCode);
+        var existing = _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+
+        if (existing is null)
+        {
+            var created = PlaceTranslation.Create(Id, normalizedLocale, name, description, now);
+            _translations.Add(created);
+            UpdatedAt = now;
+            return created;
+        }
+
+        existing.Update(name, description, now);
+        UpdatedAt = now;
+        return existing;
+    }
+
+    public PlaceTranslation? FindTranslation(string localeCode)
+    {
+        var normalizedLocale = PlaceTranslation.NormalizeLocaleCode(localeCode);
+        return _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
     }
 
     /// <summary>

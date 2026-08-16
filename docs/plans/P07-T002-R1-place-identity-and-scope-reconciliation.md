@@ -123,7 +123,7 @@ Do **not** remove product code in this remediation task.
 | ID | Status |
 |----|--------|
 | P07-R1 | **RESOLVED** (reinforced by this artifact) |
-| P07-R2 | UNRESOLVED |
+| P07-R2 | **RESOLVED** — OPTIONAL SINGLE LOGICAL REFERENCE (architect lock for T003; see P07 plan §11) |
 | P07-R3 | UNRESOLVED |
 | P07-R4 | UNRESOLVED |
 | P07-R5 | UNRESOLVED |

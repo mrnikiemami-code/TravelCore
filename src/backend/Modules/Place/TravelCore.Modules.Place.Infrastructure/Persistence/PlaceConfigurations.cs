@@ -31,6 +31,18 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
             .HasMaxLength(PlaceAggregate.NameMaxLength)
             .IsRequired();
 
+        // Logical Destination identity only — deliberately no FK / navigation to Destination.
+        builder.Property(x => x.DestinationId)
+            .HasColumnName("destination_id");
+
+        builder.Property(x => x.Latitude)
+            .HasColumnName("latitude")
+            .HasPrecision(9, 6);
+
+        builder.Property(x => x.Longitude)
+            .HasColumnName("longitude")
+            .HasPrecision(9, 6);
+
         builder.Property(x => x.CreatedAt)
             .HasColumnName("created_at")
             .IsRequired();
@@ -38,6 +50,30 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
         builder.Property(x => x.UpdatedAt)
             .HasColumnName("updated_at")
             .IsRequired();
+
+        builder.OwnsOne(x => x.Address, address =>
+        {
+            address.Property(a => a.Line1)
+                .HasColumnName("address_line1")
+                .HasMaxLength(PlaceAddress.LineMaxLength);
+            address.Property(a => a.Line2)
+                .HasColumnName("address_line2")
+                .HasMaxLength(PlaceAddress.LineMaxLength);
+            address.Property(a => a.Locality)
+                .HasColumnName("address_locality")
+                .HasMaxLength(PlaceAddress.LocalityMaxLength);
+            address.Property(a => a.AdministrativeArea)
+                .HasColumnName("address_administrative_area")
+                .HasMaxLength(PlaceAddress.AdministrativeAreaMaxLength);
+            address.Property(a => a.PostalCode)
+                .HasColumnName("address_postal_code")
+                .HasMaxLength(PlaceAddress.PostalCodeMaxLength);
+            address.Property(a => a.CountryCode)
+                .HasColumnName("address_country_code")
+                .HasMaxLength(PlaceAddress.CountryCodeMaxLength);
+        });
+
+        builder.Navigation(x => x.Address).IsRequired(false);
 
         builder.HasIndex(x => x.Code)
             .IsUnique()
@@ -48,6 +84,9 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
 
         builder.HasIndex(x => x.CreatedAt)
             .HasDatabaseName("ix_places_created_at");
+
+        builder.HasIndex(x => x.DestinationId)
+            .HasDatabaseName("ix_places_destination_id");
 
         // Same-schema 1:1 specializations — never a cross-schema FK.
         builder.HasOne(x => x.Hotel)
@@ -65,9 +104,52 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<PlaceAggrega
             .HasForeignKey<Attraction>(x => x.PlaceId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(x => x.Translations)
+            .WithOne()
+            .HasForeignKey(x => x.PlaceId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Navigation(x => x.Hotel).AutoInclude();
         builder.Navigation(x => x.Restaurant).AutoInclude();
         builder.Navigation(x => x.Attraction).AutoInclude();
+        builder.Navigation(x => x.Translations)
+            .HasField("_translations")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+    }
+}
+
+internal sealed class PlaceTranslationConfiguration : IEntityTypeConfiguration<PlaceTranslation>
+{
+    public void Configure(EntityTypeBuilder<PlaceTranslation> builder)
+    {
+        builder.ToTable("place_translations");
+        builder.HasKey(x => new { x.PlaceId, x.LocaleCode });
+
+        builder.Property(x => x.PlaceId)
+            .HasColumnName("place_id")
+            .HasConversion(id => id.Value, value => PlaceId.From(value));
+
+        builder.Property(x => x.LocaleCode)
+            .HasColumnName("locale_code")
+            .HasMaxLength(PlaceTranslation.LocaleCodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Name)
+            .HasColumnName("name")
+            .HasMaxLength(PlaceTranslation.NameMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Description)
+            .HasColumnName("description")
+            .HasMaxLength(PlaceTranslation.DescriptionMaxLength);
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at")
+            .IsRequired();
+
+        builder.HasIndex(x => x.LocaleCode)
+            .HasDatabaseName("ix_place_translations_locale_code");
     }
 }
 
