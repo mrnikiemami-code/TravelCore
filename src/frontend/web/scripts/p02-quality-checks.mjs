@@ -172,10 +172,54 @@ function main() {
   assert.match(destinationsPage, /DestinationHierarchyWorkflowIsland/);
   assert.match(destinationsPage, /robots/);
 
+  // 10) P04 T009 public Destination landing (R3 noindex,follow; Server Component)
+  const publicDestinationPage = path.join(
+    srcRoot,
+    "app",
+    "[locale]",
+    "destinations",
+    "[slug]",
+    "page.tsx",
+  );
+  assert.ok(fs.existsSync(publicDestinationPage));
+  const publicDest = read(publicDestinationPage);
+  assert.doesNotMatch(publicDest, /['"]use client['"]/);
+  assert.match(publicDest, /generateMetadata/);
+  assert.match(publicDest, /index:\s*false/);
+  assert.match(publicDest, /follow:\s*true/);
+  assert.match(publicDest, /loadDestinationLandingPage/);
+  assert.match(publicDest, /PublicShell/);
+  assert.ok(
+    fs.existsSync(
+      path.join(srcRoot, "types", "pages", "destination-landing.ts"),
+    ),
+  );
+  assert.ok(
+    fs.existsSync(
+      path.join(
+        srcRoot,
+        "features",
+        "destination-landing",
+        "destination-landing-view.tsx",
+      ),
+    ),
+  );
+  const landingView = read(
+    path.join(
+      srcRoot,
+      "features",
+      "destination-landing",
+      "destination-landing-view.tsx",
+    ),
+  );
+  assert.doesNotMatch(landingView, /['"]use client['"]/);
+  assert.doesNotMatch(landingView, /\/destinations\/\$\{[^}]*id/);
+  assert.doesNotMatch(publicDest, /alternates:\s*\{[\s\S]*canonical/);
+
   console.log("p02-quality-checks: PASS");
   console.log(`  use client allowlist (${ALLOWED_USE_CLIENT.size}): ok`);
   console.log(
-    "  locale/tour/fixtures/metadata/a11y/media/money/admin-workflow: ok",
+    "  locale/tour/fixtures/metadata/a11y/media/money/admin-workflow/destination-public: ok",
   );
 }
 

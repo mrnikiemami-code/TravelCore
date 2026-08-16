@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P04-T008** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P04-T009** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P04 — Reference Data + Destination (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P04-T008`; then next issued task |
+| Current Next Task | Architect review of `TC-P04-T009`; then next issued task |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -113,7 +113,7 @@
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P04 Phase Gate | NOT_STARTED |
 | Human Phase Confirmation | P04 entered via USER `TRAVELCORE_PHASE_CONFIRM: P04` |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P04-T008`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P04-T009`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -200,8 +200,9 @@
 | TC-P04-T005 | COMPLETE / ACCEPTED (`3dabe6f`) |
 | TC-P04-T006 | COMPLETE / ACCEPTED (`edc201f`; docs `124d57b`) |
 | TC-P04-T007 | COMPLETE / ACCEPTED (`ba04618`; docs `76528e6`) |
-| TC-P04-T008 | AWAITING_ARCHITECT_REVIEW |
-| Required Human Token | none (await architect accept of `TC-P04-T008`) |
+| TC-P04-T008 | COMPLETE / ACCEPTED (`81fd6ce`) |
+| TC-P04-T009 | AWAITING_ARCHITECT_REVIEW |
+| Required Human Token | none (await architect accept of `TC-P04-T009`) |
 
 ### P00 Exit Summary
 
@@ -212,7 +213,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P03 COMPLETE; P04 IN_PROGRESS; `TC-P04-T001`–`T007` ACCEPTED; `TC-P04-T008` AWAITING_ARCHITECT_REVIEW; P05 NOT_STARTED; Runtime Mode = PIPELINE
+- P03 COMPLETE; P04 IN_PROGRESS; `TC-P04-T001`–`T008` ACCEPTED; `TC-P04-T009` AWAITING_ARCHITECT_REVIEW; R3 RESOLVED (P04 public Destination = noindex,follow); P05 NOT_STARTED; Runtime Mode = PIPELINE
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -299,7 +300,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P04-T005 | Hierarchy query + path/ancestors contracts | COMPLETE / ACCEPTED | `3dabe6f` |
 | TC-P04-T006 | Localized Destination slug hooks | COMPLETE / ACCEPTED | `edc201f` (+ `124d57b`) |
 | TC-P04-T007 | Access permissions + Admin Destination authz | COMPLETE / ACCEPTED | `ba04618` (+ `76528e6`) |
-| TC-P04-T008 | Guided Admin Destination hierarchy workflow | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P04-T008 | Guided Admin Destination hierarchy workflow | COMPLETE / ACCEPTED | `81fd6ce` |
+| TC-P04-T009 | Public Destination read model / detail baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -333,6 +335,7 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - Admin is a presentation surface, not a domain module
 - architecture changes require ADR
 - One Task → One Writer
+- P04 R3 RESOLVED: public Destination pages may exist for humans but MUST use robots noindex,follow (SEO/indexation engine deferred to P05)
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 
