@@ -103,7 +103,7 @@
 | P06-T005 | **COMPLETE / ACCEPTED** (`91444ad`) — variants + dimensions; **P06-R3 RESOLVED** (sync + sizing 1600/960/320) |
 | P06-T006 | **COMPLETE / ACCEPTED** (`166e9db`) — focal metadata; coordinate policy reconciled in `TC-P06-T006-R1` (`b6f0cfb`) |
 | P06-T007 | **COMPLETE / ACCEPTED** (`85c8e7a`) — MediaAsset alt/caption translations (ADR 0008; no AltFa/AltEn) |
-| P06-T008 | **AWAITING_ARCHITECT_REVIEW** — optimization contract + **P06-R1 RESOLVED DEFER** (same-format variants; no WebP/AVIF conversion) |
+| P06-T008 | **AWAITING_ARCHITECT_REVIEW** (`f50cce3`) — optimization contract + **P06-R1 RESOLVED DEFER** (same-format variants; no WebP/AVIF conversion) |
 | P06 Focal Coordinate Policy | **RESOLVED** — normalized [0,1] top-left (`TC-P06-T006-R1`) |
 | P06-R1 (WebP/AVIF pipeline) | **RESOLVED — DEFER** — out of P06; evidence [`plans/P06-T008-optimization-contract-and-r1-defer.md`](plans/P06-T008-optimization-contract-and-r1-defer.md) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
@@ -254,7 +254,7 @@
 | TC-P06-T005 | **COMPLETE / ACCEPTED** (`91444ad`) |
 | TC-P06-T006 | **COMPLETE / ACCEPTED** (`166e9db`; R1 `b6f0cfb`) |
 | TC-P06-T007 | **COMPLETE / ACCEPTED** (`85c8e7a`) |
-| TC-P06-T008 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T008 | **AWAITING_ARCHITECT_REVIEW** (`f50cce3`) |
 | P06-R1 | **RESOLVED — DEFER** (no WebP/AVIF conversion pipeline in P06; same-format variants only) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R3 | **RESOLVED** (SYNCHRONOUS variant generation; sizing 1600/960/320 fit-within; GIF fail-closed) |
