@@ -56,7 +56,7 @@
 | Operating Modes | HUMAN (default) / PIPELINE (USER opt-in) |
 | Default Mode | **HUMAN** |
 | Current Runtime Mode | **PIPELINE** |
-| Automatic Pipeline | **ON** (USER `TRAVELCORE_MODE: PIPELINE`; `TRAVELCORE_PHASE_CONFIRM: P07`) |
+| Automatic Pipeline | **ON** (USER re-entered PIPELINE this session; `TRAVELCORE_PHASE_CONFIRM: P08`) |
 | Agent Handoff Envelopes | ACTIVE (ADR 0013) |
 | Protocol | `TRAVELCORE_CURSOR_TASK_V1` · `TRAVELCORE_CURSOR_RESULT_V1` |
 | Future Architecture Transition Map | [`docs/architecture/15-future-architecture-transition-map.md`](architecture/15-future-architecture-transition-map.md) |
@@ -71,8 +71,10 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | TC-P08-GATE — **WAITING_USER_CONFIRM** |\n| Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
-| Current Next Task | USER TRAVELCORE_TASK_CONFIRM: TC-P08-GATE (do not invent) |\n| P01 | **COMPLETE** |
+| Current Active Product Task | `TC-P08-GATE` — **WAITING_USER_CONFIRM** |
+| Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
+| Current Next Task | USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` (PIPELINE ON; GATE not bypassed) |
+| P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
 | Last P01 Implementation Commit | `2370316` (`TC-P01-T019`) |
@@ -184,7 +186,8 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **WAITING_USER_CONFIRM** (TC-P08-GATE) |\n| Human Confirmation Reason | None for current task |
+| Pipeline Product Execution | **WAITING_USER_CONFIRM** (`TC-P08-GATE`) |
+| Human Confirmation Reason | CRITICAL Gate: need USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
 | TC-P02-T002 | COMPLETE / ACCEPTED (`55ea466`) |
