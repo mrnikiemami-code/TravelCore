@@ -1,27 +1,31 @@
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using TravelCore.Modules.Destination.Contracts;
+using TravelCore.Modules.Party.Contracts;
 using TravelCore.Modules.Tour.Contracts;
 using TravelCore.Modules.Tour.Domain;
 
 namespace TravelCore.Modules.Tour.Infrastructure.Services;
 
 /// <summary>
-/// TourProduct classification / Origin / Destination link mutations with Destination.Contracts validation.
+/// TourProduct classification / Origin / Destination / Agency link mutations with Contracts validation.
 /// </summary>
 public sealed class TourProductSemanticLinkService : ITourProductSemanticLinkService
 {
     private readonly TourDbContext _db;
     private readonly IDestinationExistenceQuery _destinations;
+    private readonly IPartyReadQuery _parties;
     private readonly IClock _clock;
 
     public TourProductSemanticLinkService(
         TourDbContext db,
         IDestinationExistenceQuery destinations,
+        IPartyReadQuery parties,
         IClock clock)
     {
         _db = db;
         _destinations = destinations;
+        _parties = parties;
         _clock = clock;
     }
 
@@ -58,6 +62,23 @@ public sealed class TourProductSemanticLinkService : ITourProductSemanticLinkSer
 
         var product = await LoadTrackedAsync(tourProductId, cancellationToken);
         product.SetOriginLink(request.OriginDestinationId, _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(product);
+    }
+
+    public async Task<TourProductSemanticLinksResponse> SetAgencyAsync(
+        Guid tourProductId,
+        SetTourAgencyRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        if (request.AgencyId is Guid agencyId)
+        {
+            await EnsureAgencyExistsAsync(agencyId, cancellationToken);
+        }
+
+        var product = await LoadTrackedAsync(tourProductId, cancellationToken);
+        product.SetAgencyLink(request.AgencyId, _clock.GetCurrentInstant());
         await _db.SaveChangesAsync(cancellationToken);
         return Map(product);
     }
@@ -102,6 +123,30 @@ public sealed class TourProductSemanticLinkService : ITourProductSemanticLinkSer
         }
     }
 
+    private async Task EnsureAgencyExistsAsync(
+        Guid agencyId,
+        CancellationToken cancellationToken)
+    {
+        if (agencyId == Guid.Empty)
+        {
+            throw new ArgumentException("AgencyId cannot be empty.", nameof(agencyId));
+        }
+
+        // Agency is PartyKind.Agency under Party module (no separate Agency.Contracts assembly).
+        var party = await _parties.GetAsync(agencyId, cancellationToken);
+        if (party is null)
+        {
+            throw new ArgumentException($"Agency '{agencyId}' was not found.", nameof(agencyId));
+        }
+
+        if (!string.Equals(party.Kind, "Agency", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new ArgumentException(
+                $"Party '{agencyId}' kind '{party.Kind}' is not Agency.",
+                nameof(agencyId));
+        }
+    }
+
     private async Task<TourProduct?> FindAsync(Guid tourProductId, CancellationToken cancellationToken)
     {
         var id = TourProductId.From(tourProductId);
@@ -120,6 +165,7 @@ public sealed class TourProductSemanticLinkService : ITourProductSemanticLinkSer
             product.Code,
             product.ClassificationCode,
             product.OriginDestinationId,
+            product.AgencyId,
             product.Destinations
                 .Select(x => x.DestinationId)
                 .OrderBy(x => x)

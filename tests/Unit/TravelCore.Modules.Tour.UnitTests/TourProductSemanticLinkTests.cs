@@ -86,4 +86,20 @@ public sealed class TourProductSemanticLinkTests
         Assert.Empty(product.Destinations);
         Assert.False(product.RemoveDestination(dest, Now.Plus(Duration.FromMinutes(2))));
     }
+
+    [Fact]
+    public void SetAgencyLink_AcceptsNullAndRejectsEmpty()
+    {
+        var product = TourProduct.CreatePackage("PKG-AGY-001", "Name", Now);
+        var agency = Guid.Parse("01900000-0000-7000-8000-000000000301");
+
+        product.SetAgencyLink(agency, Now);
+        Assert.Equal(agency, product.AgencyId);
+
+        product.SetAgencyLink(null, Now.Plus(Duration.FromMinutes(1)));
+        Assert.Null(product.AgencyId);
+
+        Assert.ThrowsAny<ArgumentException>(() =>
+            product.SetAgencyLink(Guid.Empty, Now));
+    }
 }

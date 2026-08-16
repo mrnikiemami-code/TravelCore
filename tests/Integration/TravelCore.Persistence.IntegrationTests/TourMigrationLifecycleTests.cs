@@ -29,11 +29,12 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductSemanticLinks", expectedMigrations[3], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourProductAgencyLink", expectedMigrations[4], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -86,7 +87,7 @@ public sealed class TourMigrationLifecycleTests
                  AND tc.table_schema = ccu.table_schema
                 WHERE tc.table_schema = 'tour'
                   AND tc.constraint_type = 'FOREIGN KEY'
-                  AND ccu.table_schema = 'destination';
+                  AND ccu.table_schema IN ('destination', 'party');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
@@ -97,6 +98,7 @@ public sealed class TourMigrationLifecycleTests
         var originId = Guid.Parse("01900000-0000-7000-8000-000000000101");
         var destA = Guid.Parse("01900000-0000-7000-8000-000000000201");
         var destB = Guid.Parse("01900000-0000-7000-8000-000000000202");
+        var agencyId = Guid.Parse("01900000-0000-7000-8000-000000000301");
 
         await using (var db = _postgres.CreateDbContext())
         {
@@ -107,6 +109,7 @@ public sealed class TourMigrationLifecycleTests
             experience.SetOriginLink(originId, now);
             experience.AssignDestination(destA, now);
             experience.AssignDestination(destB, now);
+            experience.SetAgencyLink(agencyId, now);
             var package = TourProduct.CreatePackage("PKG-IT-001", "Istanbul Package", now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
@@ -121,6 +124,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal("Caspian Walk", loaded.EnglishName);
             Assert.Equal("cultural-walk", loaded.ClassificationCode);
             Assert.Equal(originId, loaded.OriginDestinationId);
+            Assert.Equal(agencyId, loaded.AgencyId);
             Assert.Equal(2, loaded.Destinations.Count);
             Assert.Contains(loaded.Destinations, x => x.DestinationId == destA);
             Assert.Contains(loaded.Destinations, x => x.DestinationId == destB);
@@ -132,6 +136,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(TourKind.Package, package.Kind);
             Assert.Null(package.ClassificationCode);
             Assert.Null(package.OriginDestinationId);
+            Assert.Null(package.AgencyId);
             Assert.Empty(package.Destinations);
         }
     }

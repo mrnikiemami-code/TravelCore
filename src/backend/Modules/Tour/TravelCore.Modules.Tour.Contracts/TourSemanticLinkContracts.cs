@@ -9,11 +9,14 @@ public sealed record TourProductSemanticLinksResponse(
     string Code,
     string? ClassificationCode,
     Guid? OriginDestinationId,
+    Guid? AgencyId,
     IReadOnlyList<Guid> DestinationIds);
 
 public sealed record SetTourClassificationRequest(string? ClassificationCode);
 
 public sealed record SetTourOriginRequest(Guid? OriginDestinationId);
+
+public sealed record SetTourAgencyRequest(Guid? AgencyId);
 
 public interface ITourProductSemanticLinkService
 {
@@ -29,6 +32,11 @@ public interface ITourProductSemanticLinkService
     Task<TourProductSemanticLinksResponse> SetOriginAsync(
         Guid tourProductId,
         SetTourOriginRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<TourProductSemanticLinksResponse> SetAgencyAsync(
+        Guid tourProductId,
+        SetTourAgencyRequest request,
         CancellationToken cancellationToken = default);
 
     Task<TourProductSemanticLinksResponse> AssignDestinationAsync(

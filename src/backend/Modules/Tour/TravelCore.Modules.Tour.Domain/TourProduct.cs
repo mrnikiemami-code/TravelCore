@@ -70,6 +70,11 @@ public sealed class TourProduct
     /// </summary>
     public Guid? OriginDestinationId { get; private set; }
 
+    /// <summary>
+    /// Optional logical Agency Party identity (0..1; P09-R3). Party remains SoR — never an EF navigation.
+    /// </summary>
+    public Guid? AgencyId { get; private set; }
+
     public Instant CreatedAt { get; private set; }
 
     public Instant UpdatedAt { get; private set; }
@@ -170,6 +175,22 @@ public sealed class TourProduct
         }
 
         OriginDestinationId = originDestinationId;
+        UpdatedAt = now;
+    }
+
+    /// <summary>
+    /// Sets Agency logical link (0..1; P09-R3). Null clears; empty Guid rejected.
+    /// </summary>
+    public void SetAgencyLink(Guid? agencyId, Instant now)
+    {
+        if (agencyId == Guid.Empty)
+        {
+            throw new ArgumentException(
+                "AgencyId cannot be empty. Use null to clear the Agency link.",
+                nameof(agencyId));
+        }
+
+        AgencyId = agencyId;
         UpdatedAt = now;
     }
 

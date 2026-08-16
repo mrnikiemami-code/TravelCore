@@ -38,6 +38,10 @@ internal sealed class TourProductConfiguration : IEntityTypeConfiguration<TourPr
         builder.Property(x => x.OriginDestinationId)
             .HasColumnName("origin_destination_id");
 
+        // Logical Agency PartyId only — deliberately no FK / navigation to Party.
+        builder.Property(x => x.AgencyId)
+            .HasColumnName("agency_id");
+
         builder.Property(x => x.CreatedAt)
             .HasColumnName("created_at")
             .IsRequired();
@@ -61,6 +65,9 @@ internal sealed class TourProductConfiguration : IEntityTypeConfiguration<TourPr
 
         builder.HasIndex(x => x.OriginDestinationId)
             .HasDatabaseName("ix_tour_products_origin_destination_id");
+
+        builder.HasIndex(x => x.AgencyId)
+            .HasDatabaseName("ix_tour_products_agency_id");
 
         builder.HasMany(x => x.Translations)
             .WithOne()
