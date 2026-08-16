@@ -102,7 +102,7 @@
 | P06-T004 | **COMPLETE / ACCEPTED** (`7f83885`) — upload + validation; P06-R6 DENY SVG |
 | P06-T005 | **COMPLETE / ACCEPTED** (`91444ad`) — variants + dimensions; **P06-R3 RESOLVED** (sync + sizing 1600/960/320) |
 | P06-T006 | **COMPLETE / ACCEPTED** (`166e9db`) — focal metadata; coordinate policy reconciled in `TC-P06-T006-R1` (`b6f0cfb`) |
-| P06-T007 | **AWAITING_ARCHITECT_REVIEW** — MediaAsset alt/caption translations (ADR 0008; no AltFa/AltEn) |
+| P06-T007 | **AWAITING_ARCHITECT_REVIEW** (`85c8e7a`) — MediaAsset alt/caption translations (ADR 0008; no AltFa/AltEn) |
 | P06 Focal Coordinate Policy | **RESOLVED** — normalized [0,1] top-left (`TC-P06-T006-R1`) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
 | P06-R3 (variant generation) | **RESOLVED** — SYNCHRONOUS; sizing large=1600 / medium=960 / thumbnail=320; fit-within; no crop/upscale; GIF fail-closed |
@@ -251,7 +251,7 @@
 | TC-P06-T004 | **COMPLETE / ACCEPTED** (`7f83885`) |
 | TC-P06-T005 | **COMPLETE / ACCEPTED** (`91444ad`) |
 | TC-P06-T006 | **COMPLETE / ACCEPTED** (`166e9db`; R1 `b6f0cfb`) |
-| TC-P06-T007 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T007 | **AWAITING_ARCHITECT_REVIEW** (`85c8e7a`) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R3 | **RESOLVED** (SYNCHRONOUS variant generation; sizing 1600/960/320 fit-within; GIF fail-closed) |
 | P06-R6 | **RESOLVED** (SVG DENY — Option A) |
