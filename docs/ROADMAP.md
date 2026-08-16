@@ -369,7 +369,7 @@ Place · Hotel · Restaurant · Attraction با localization، رابطه با D
 
 **Authoritative plan:** [`plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) (`TC-P08-PLAN` — COMPLETE / ACCEPTED · `7012fe0`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan ACCEPTED (`7012fe0`) · `TC-P08-T001` AWAITING_ARCHITECT_REVIEW · **P08-R1–R8 UNRESOLVED** · P09 NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan ACCEPTED (`7012fe0`) · `TC-P08-T001` ACCEPTED · `TC-P08-T002` AWAITING_ARCHITECT_REVIEW · **P08-R1 RESOLVED** · **P08-R2–R8 UNRESOLVED** · P09 NOT_STARTED
 
 Article · LandingPage · Category · Tag · Author · Content Blocks با پیوند معنادار به Destination.
 

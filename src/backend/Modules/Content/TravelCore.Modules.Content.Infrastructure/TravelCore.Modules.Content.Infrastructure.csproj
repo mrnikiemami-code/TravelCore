@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Content.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Content.Infrastructure</AssemblyName>
-    <Description>Content module infrastructure scaffolding: schema content ownership (TC-P08-T001).</Description>
+    <Description>Content module infrastructure: ContentItem catalog + typed specializations (TC-P08-T002).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>

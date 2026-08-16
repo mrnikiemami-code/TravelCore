@@ -2,13 +2,17 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Content.Contracts;
+using TravelCore.Modules.Content.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Content.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Content module (scaffolding — TC-P08-T001).
+/// Host composition entry for the Content module.
 /// </summary>
 public sealed class ContentModule : ITravelCoreModule
 {
@@ -16,6 +20,8 @@ public sealed class ContentModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
+
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
 
         services.AddDbContext<ContentDbContext>((_, options) =>
         {
@@ -27,11 +33,13 @@ public sealed class ContentModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: ContentDbContext.SchemaName);
         });
+
+        services.AddScoped<IContentItemService, ContentItemApplicationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // Product endpoints belong to later P08 tasks.
+        // Product endpoints belong to later P08 Admin/public tasks.
     }
 }

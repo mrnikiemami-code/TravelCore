@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using ContentItemAggregate = TravelCore.Modules.Content.Domain.ContentItem;
 
 namespace TravelCore.Modules.Content.Infrastructure;
 
 /// <summary>
 /// Content-owned DbContext. Owns PostgreSQL schema <c>content</c>.
-/// Scaffolding only — no product entities yet (TC-P08-T001).
 /// </summary>
 public sealed class ContentDbContext : DbContext
 {
@@ -14,6 +14,8 @@ public sealed class ContentDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<ContentItemAggregate> ContentItems => Set<ContentItemAggregate>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

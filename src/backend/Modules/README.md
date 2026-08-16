@@ -59,8 +59,8 @@ Business and capability modules live under this directory.
 |--------|----------|--------|
 | Content | `Content/TravelCore.Modules.Content.{Domain,Contracts,Infrastructure}` | `content` |
 
-- **Content:** module scaffolding only (`TC-P08-T001`) — schema `content` ownership; no Article/Landing aggregates yet (T002 / P08-R1).
-- Invariant: **Content owns editorial**; SEO owns route/IndexPolicy; Destination/Place/Tour referenced by ID only.
+- **Content:** ContentItem core + typed Article/LandingPage/Guide specializations (`TC-P08-T002`) — `ContentItemId` canonical; 1:1 tables in schema `content` (P08-R1).
+- Invariant: **Content owns editorial**; SEO owns route/IndexPolicy; Destination/Place/Tour referenced by ID only (links deferred).
 
 ## Naming
 

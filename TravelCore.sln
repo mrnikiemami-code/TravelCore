@@ -151,6 +151,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modules.Content.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modules.Content.Infrastructure", "src\backend\Modules\Content\TravelCore.Modules.Content.Infrastructure\TravelCore.Modules.Content.Infrastructure.csproj", "{78B4F312-0601-4F75-826A-1C9AC2E81CAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modules.Content.UnitTests", "tests\Unit\TravelCore.Modules.Content.UnitTests\TravelCore.Modules.Content.UnitTests.csproj", "{BEF65756-5FEA-4510-AE52-56516D80FB4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -749,6 +751,18 @@ Global
 		{78B4F312-0601-4F75-826A-1C9AC2E81CAA}.Release|x64.Build.0 = Release|Any CPU
 		{78B4F312-0601-4F75-826A-1C9AC2E81CAA}.Release|x86.ActiveCfg = Release|Any CPU
 		{78B4F312-0601-4F75-826A-1C9AC2E81CAA}.Release|x86.Build.0 = Release|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Debug|x64.Build.0 = Debug|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Debug|x86.Build.0 = Debug|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Release|x64.ActiveCfg = Release|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Release|x64.Build.0 = Release|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Release|x86.ActiveCfg = Release|Any CPU
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -826,5 +840,6 @@ Global
 		{7F122FA8-D066-4C06-B40D-9360C5ABB220} = {A749668E-CAF1-4989-7228-ED66E8F93B03}
 		{6D44279F-F3F6-44B4-9E3A-8FC52E7037F4} = {A749668E-CAF1-4989-7228-ED66E8F93B03}
 		{78B4F312-0601-4F75-826A-1C9AC2E81CAA} = {A749668E-CAF1-4989-7228-ED66E8F93B03}
+		{BEF65756-5FEA-4510-AE52-56516D80FB4F} = {9D556B49-86D1-93A7-9596-FFAAB74EC556}
 	EndGlobalSection
 EndGlobal
