@@ -429,7 +429,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P07-T002 | Place catalog domain + persistence baseline | AWAITING_ARCHITECT_REVIEW | `83529cf` |
 | TC-P07-T002-R1 | PlaceId identity + T002 scope reconciliation (docs-only) | AWAITING_ARCHITECT_REVIEW | `0b86f05` |
 | TC-P07-T003 | Localization + Destination link + geo/address | AWAITING_ARCHITECT_REVIEW | `3ec0f4c` |
-| TC-P07-T004 | Facilities · classification · catalog status | AWAITING_ARCHITECT_REVIEW | (pending commit SHA) |
+| TC-P07-T004 | Facilities · classification · catalog status | AWAITING_ARCHITECT_REVIEW | `6258003` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
