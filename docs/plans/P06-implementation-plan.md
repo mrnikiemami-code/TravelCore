@@ -186,7 +186,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P06`.
 - **Forbidden:** undocumented frontend-only crop as SoR.
 - **Validation:** unit + contract tests.
 - **Done-when:** focal point stored and returned on reads.
-- **Implementation note (awaiting review):** normalized `FocalX`/`FocalY` doubles in `[0.0, 1.0]` (origin top-left); metadata SoR only — no focal-aware variant crop in T006.
+- **Coordinate policy (TC-P06-T006-R1 RESOLVED):** normalized `FocalX`/`FocalY` in `[0.0, 1.0]`, origin top-left; both null clears; metadata SoR only — no focal-aware variant crop in T006. Evidence: [`P06-T006-R1-focal-coordinate-reconciliation.md`](P06-T006-R1-focal-coordinate-reconciliation.md).
 
 ### TC-P06-T007 — Alt/caption translations
 

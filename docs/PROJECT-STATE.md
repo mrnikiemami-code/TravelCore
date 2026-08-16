@@ -101,7 +101,8 @@
 | P06-T003 | **COMPLETE / ACCEPTED** (`cf95e5c`) |
 | P06-T004 | **AWAITING_ARCHITECT_REVIEW** (`7f83885`) — upload + validation; P06-R6 DENY SVG |
 | P06-T005 | **AWAITING_ARCHITECT_REVIEW** (`91444ad`) — variants + dimensions; **P06-R3 RESOLVED** (sync + sizing 1600/960/320) |
-| P06-T006 | **AWAITING_ARCHITECT_REVIEW** (`166e9db`) — focal point metadata (`FocalX`/`FocalY` normalized 0..1; no crop pipeline) |
+| P06-T006 | **AWAITING_ARCHITECT_REVIEW** (`166e9db`) — focal metadata; coordinate policy reconciled in `TC-P06-T006-R1` |
+| P06 Focal Coordinate Policy | **RESOLVED** — normalized [0,1] top-left (`TC-P06-T006-R1`) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
 | P06-R3 (variant generation) | **RESOLVED** — SYNCHRONOUS; sizing large=1600 / medium=960 / thumbnail=320; fit-within; no crop/upscale; GIF fail-closed |
 | P06-R6 (SVG acceptance) | **RESOLVED** — DENY `image/svg+xml` / `.svg` / detected SVG-XML payload |
