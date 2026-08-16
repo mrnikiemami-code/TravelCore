@@ -1,8 +1,8 @@
 # P07 Evidence Pack — TC-P07-T008
 
-**Task:** TC-P07-T008 — Phase hardening tests & evidence pack  
-**Baseline HEAD:** `b47f6de` (`docs: record TC-P07-T007 commit SHA 1c76f6b`)  
-**Date:** 2026-08-16  
+**Task:** TC-P07-T008 — Phase hardening tests & evidence pack
+**Baseline HEAD:** `b47f6de` (`docs: record TC-P07-T007 commit SHA 1c76f6b`)
+**Date:** 2026-08-16
 **Scope:** Validation / evidence + ArchitectureTests boundary hardening only — **no new product scope**; **gate not executed**; **P08 not started**; **R3 not closed by invention**.
 
 ## 1. Capability matrix (product commits)
