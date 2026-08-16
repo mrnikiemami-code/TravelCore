@@ -104,7 +104,7 @@
 | P06-T006 | **COMPLETE / ACCEPTED** (`166e9db`) — focal metadata; coordinate policy reconciled in `TC-P06-T006-R1` (`b6f0cfb`) |
 | P06-T007 | **COMPLETE / ACCEPTED** (`85c8e7a`) — MediaAsset alt/caption translations (ADR 0008; no AltFa/AltEn) |
 | P06-T008 | **COMPLETE / ACCEPTED** (`f50cce3`; hygiene `1736a66`) — optimization contract + **P06-R1 RESOLVED DEFER** |
-| P06-T009 | **AWAITING_ARCHITECT_REVIEW** — app-proxy public delivery + presentation URLs; **P06-R4 RESOLVED APP PROXY** |
+| P06-T009 | **AWAITING_ARCHITECT_REVIEW** (`3a25e7d`) — app-proxy public delivery + presentation URLs; **P06-R4 RESOLVED APP PROXY** |
 | P06 Focal Coordinate Policy | **RESOLVED** — normalized [0,1] top-left (`TC-P06-T006-R1`) |
 | P06-R1 (WebP/AVIF pipeline) | **RESOLVED — DEFER** — out of P06; evidence [`plans/P06-T008-optimization-contract-and-r1-defer.md`](plans/P06-T008-optimization-contract-and-r1-defer.md) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
