@@ -345,7 +345,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T009 | Sitemap + robots.txt framework | COMPLETE / ACCEPTED | `09d6f5d` (+ `6dfc38c`/`a0fd6b7`) |
 | TC-P05-T010 | Destination public integration + publication rules | COMPLETE / ACCEPTED | `78caf4b` (+ `28cfb41`/`84c7ab2`) |
 | TC-P05-T011 | Admin SEO operational baseline | COMPLETE / ACCEPTED | `8a9c4b7` (+ `61dd8c1`/`9258479`/`85ac421`) |
-| TC-P05-T012 | Phase hardening tests & evidence pack | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P05-T012 | Phase hardening tests & evidence pack | AWAITING_ARCHITECT_REVIEW | `0c8ab0a` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
