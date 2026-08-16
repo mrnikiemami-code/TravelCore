@@ -190,6 +190,8 @@ function main() {
   assert.match(publicDest, /generateMetadata/);
   assert.match(publicDest, /loadComposedSeoMetadata/);
   assert.match(publicDest, /robotsFromComposed/);
+  assert.match(publicDest, /loadSeoBreadcrumbJsonLd/);
+  assert.match(publicDest, /application\/ld\+json/);
   assert.match(publicDest, /loadDestinationLandingPage/);
   assert.match(publicDest, /PublicShell/);
   // T007: SEO-aware composition required (robots may still noindex via R2 evaluation)
@@ -235,6 +237,16 @@ function main() {
   );
   assert.ok(
     fs.existsSync(path.join(srcRoot, "lib", "seo", "indexability-contract.ts")),
+  );
+  assert.ok(
+    fs.existsSync(
+      path.join(srcRoot, "lib", "seo", "structured-data-contract.ts"),
+    ),
+  );
+  assert.ok(
+    fs.existsSync(
+      path.join(srcRoot, "lib", "seo", "load-breadcrumb-jsonld.ts"),
+    ),
   );
 
   // 11) P04 T010 ReferenceData Admin read surface (job catalog, not silo CMS)

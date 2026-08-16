@@ -183,6 +183,26 @@ internal static class SeoEndpoints
             }
         });
 
+        // Truthful breadcrumb JSON-LD projection (T008) — no ratings/prices fabrication.
+        group.MapPost("/structured-data/breadcrumb", async Task<IResult> (
+            ComposeSeoBreadcrumbRequest request,
+            ISeoStructuredDataService structuredData,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var doc = await structuredData.ComposeBreadcrumbAsync(request, cancellationToken);
+                return doc is null ? Results.NoContent() : Results.Ok(doc);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+        });
+
         return endpoints;
     }
 

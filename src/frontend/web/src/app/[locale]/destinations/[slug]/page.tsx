@@ -6,11 +6,13 @@ import { DestinationLandingView } from "@/features/destination-landing/destinati
 import { loadDestinationLandingPage } from "@/features/destination-landing/load-destination-landing";
 import { isApiOk } from "@/lib/api/result";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
+import { loadSeoBreadcrumbJsonLd } from "@/lib/seo/load-breadcrumb-jsonld";
 import { loadComposedSeoMetadata } from "@/lib/seo/load-composed-metadata";
 import {
   languagesFromComposed,
   robotsFromComposed,
 } from "@/lib/seo/metadata-contract";
+import { serializeBreadcrumbJsonLd } from "@/lib/seo/structured-data-contract";
 
 type PageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -18,9 +20,8 @@ type PageProps = {
 
 /**
  * Public Destination detail baseline (TC-P04-T009).
- * TC-P05-T007: metadata composed server-side via SEO (title/description/robots/
- * canonical/hreflang). Missing IndexPolicy remains noindex,follow (R2) —
- * not a mass index flip.
+ * TC-P05-T007: SEO-aware metadata composition (robots via IndexPolicy / R2).
+ * TC-P05-T008: truthful BreadcrumbList JSON-LD via SEO structured-data framework.
  */
 export async function generateMetadata({
   params,
@@ -86,6 +87,14 @@ export default async function DestinationLandingPage({ params }: PageProps) {
   }
 
   const vm = loaded.data;
+  const breadcrumbJsonLd = await loadSeoBreadcrumbJsonLd(
+    locale,
+    vm.breadcrumb.map((crumb) => ({
+      name: crumb.name,
+      publicPath: crumb.slug ? `destinations/${crumb.slug}` : null,
+    })),
+  );
+  const breadcrumbScript = serializeBreadcrumbJsonLd(breadcrumbJsonLd);
 
   return (
     <PublicShell
@@ -103,11 +112,17 @@ export default async function DestinationLandingPage({ params }: PageProps) {
       footer={
         <Text role="caption">
           {locale === "fa"
-            ? "P04 — مقصد عمومی · noindex"
-            : "P04 — public Destination · noindex"}
+            ? "P05 — مقصد عمومی · SEO metadata"
+            : "P05 — public Destination · SEO metadata"}
         </Text>
       }
     >
+      {breadcrumbScript ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: breadcrumbScript }}
+        />
+      ) : null}
       <DestinationLandingView vm={vm} />
     </PublicShell>
   );
