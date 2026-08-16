@@ -71,10 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P08-T009` — AWAITING_ARCHITECT_REVIEW |
-| Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
-| Current Next Task | Architect review `TC-P08-T009` (`2f9552f`); then `TC-P08-GATE` (needs USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE`) |
-| P01 | **COMPLETE** |
+| Current Active Product Task | TC-P08-GATE — **WAITING_USER_CONFIRM** |\n| Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
+| Current Next Task | USER TRAVELCORE_TASK_CONFIRM: TC-P08-GATE (do not invent) |\n| P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
 | Last P01 Implementation Commit | `2370316` (`TC-P01-T019`) |
@@ -149,7 +147,7 @@
 | P08-T006 | **COMPLETE / ACCEPTED** (`4e9c94e`; hygiene `ba391d0`) — Destination logical links 0..N (P08-R5) |
 | P08-T007 | **COMPLETE / ACCEPTED** (`6a56a0d`; hygiene `4de0f93`) — Access + Admin Content baseline (no delete/archive; no slug/SEO; no Author/widgets) |
 | P08-T008 | **COMPLETE / ACCEPTED** (`4924892`; hygiene `19beaca`) — Public Content pages + SEO hooks (R3/R4) |
-| P08-T009 | **AWAITING_ARCHITECT_REVIEW** (`2f9552f`) — hardening + evidence pack [`plans/P08-T009-hardening-and-evidence-pack.md`](plans/P08-T009-hardening-and-evidence-pack.md) |
+| P08-T009 | **COMPLETE / ACCEPTED** (`2f9552f`; hygiene `a588614`) — hardening + evidence pack |
 | P08-GATE | **NOT_STARTED** — requires USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` after T009 ACCEPT |
 | P08-R1 (Content model shape) | **RESOLVED** — Core Content Aggregate + Typed Content Variants (`ContentItemId` only; Article/LandingPage/Guide 1:1) |
 | P08-R2 (Block storage) | **RESOLVED** — Relational Block Storage (`ContentBlock` first-class + ordering) |
@@ -186,8 +184,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P08-T009` · `2f9552f`) |
-| Human Confirmation Reason | None for current task |
+| Pipeline Product Execution | **WAITING_USER_CONFIRM** (TC-P08-GATE) |\n| Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
 | TC-P02-T002 | COMPLETE / ACCEPTED (`55ea466`) |

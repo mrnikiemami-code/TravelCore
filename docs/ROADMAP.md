@@ -43,8 +43,7 @@
 | Last Accepted Commit | `84a0a48` (`TC-P07-GATE` ACCEPTED) · hygiene `8136455`/`003e9e4` · P07 COMPLETE docs `37956ef` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review `TC-P08-T009` (`2f9552f`); then `TC-P08-GATE` (USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE`) |
-| TC-P00-T002 State | COMPLETE / ACCEPTED |
+| Current Next Task | USER TRAVELCORE_TASK_CONFIRM: TC-P08-GATE |\n| TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
 | TC-P00-T005 State | COMPLETE / ACCEPTED |
