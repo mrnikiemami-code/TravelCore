@@ -12,6 +12,31 @@ User remains ultimate authority at phase boundaries and other high-risk stop poi
 
 ---
 
+## Continuity Override (USER 2026-08-17)
+
+USER directed (and architect registered) that under **PIPELINE**:
+
+| Former ceremonial gate | New posture |
+|------------------------|-------------|
+| `TRAVELCORE_TASK_CONFIRM` for phase Gates | **Not required** for routine Gate execution after product tasks are ACCEPTED |
+| `TRAVELCORE_PHASE_CONFIRM` for next phase | **Not required** for starting the next phase PLAN after Gate ACCEPT |
+
+**Still STOP / `HUMAN_CONFIRM_NEEDED` when:**
+
+- an architectural choice is genuinely required
+- multiple valid paths exist and user preference is needed
+- source-of-truth conflict exists
+- unsafe/unresolved repository state exists
+- implementation would silently resolve an unlocked decision
+- USER issues pause / HUMAN mode / explicit stop
+
+Binding machine policy: [`pipeline-runtime-policy.json`](pipeline-runtime-policy.json)  
+(`phaseHumanGateRequired: false`, `criticalTaskHumanGateRequired: false`, `autoContinueAfterTaskAccept: true`, `autoStartNextPhasePlanAfterGateAccept: true`)
+
+Tokens may still be sent by USER and still count when present; they are simply **not blockers** for routine Gate/next-phase continuity under this override.
+
+---
+
 ## 1. Canonical Breakpoint
 
 ```text

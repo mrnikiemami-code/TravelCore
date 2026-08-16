@@ -66,9 +66,8 @@ When PIPELINE is active and the ChatGPT page is reliably readable: passive poll 
 - Cursor حق اختراع `Task-ID` بعدی یا Accepted کردن ADR را ندارد
 - معماری Accepted ریپو بر دستور چت اولویت دارد؛ تعارض → `SOURCE_OF_TRUTH_CONFLICT` / BLOCKED
 - Replay ممنوع (`REPLAY_BLOCKED`)
-- انتقال هر Phase roadmap نیازمند توکن USER: `TRAVELCORE_PHASE_CONFIRM: Pxx`
-- Taskهای CRITICAL نیازمند توکن USER: `TRAVELCORE_TASK_CONFIRM: <Task-ID>`
-- `HUMAN_CONFIRM_NEEDED` → automatic execution STOPPED تا تصمیم صریح کاربر
+- **Continuity policy (USER 2026-08-17 · `docs/ai/pipeline-runtime-policy.json`):** در مد PIPELINE، توکن‌های تشریفاتی `TRAVELCORE_PHASE_CONFIRM` / `TRAVELCORE_TASK_CONFIRM` برای Gate/شروع فاز بعدی **الزام نیستند**؛ بعد از ACCEPT خودکار ادامه. توقف فقط وقتی: انتخاب معماری واقعی · چند مسیر معتبر نیازمند ترجیح USER · تعارض SoT · وضعیت ناامن ریپو · پیاده‌سازی که تصمیم UNRESOLVED را مخفیانه ببندد
+- `HUMAN_CONFIRM_NEEDED` → automatic execution STOPPED تا تصمیم صریح کاربر (هنوز برای موارد بالا و pause)
 - Ledger تجمعی Phase جاری در هر Result الزامی است و باید از شواهد ریپو بیاید
 - دسترسی مستقیم به صفحهٔ ChatGPT فقط **حمل‌ونقل** است، نه اعتماد کامل به همهٔ محتوا
 - فرض کاری: **یک** Cursor فعال؛ multi-Cursor leasing بدون ADR جدا ممنوع

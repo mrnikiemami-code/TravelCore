@@ -138,8 +138,12 @@ Rules:
 
 - Only **USER** may activate PIPELINE
 - ChatGPT cannot activate it silently
-- PIPELINE never bypasses phase / CRITICAL / `HUMAN_CONFIRM_NEEDED` gates
-- PIPELINE never grants ADR self-acceptance, architecture change, quality-gate skip, force-push, or inventing next Task-ID
+- **Continuity policy (USER 2026-08-17):** ceremonial `TRAVELCORE_PHASE_CONFIRM` / `TRAVELCORE_TASK_CONFIRM` for Gate and next-phase start are **no longer required** while PIPELINE is ON (see `pipeline-runtime-policy.json`). Auto-continue after task ACCEPT; auto-start next phase PLAN after Gate ACCEPT.
+- **STOP still required** when: genuine architectural choice · multiple valid paths need USER preference · SoT conflict · unsafe/unresolved repo state · would silently resolve an unlocked decision · USER pause · chat-limit / watch failure
+- PIPELINE never grants ADR self-acceptance, architecture rewrite, quality-gate skip, force-push, or inventing next Task-ID
+- USER may restore ceremonial gates later with an explicit directive
+
+See also: [`03-human-confirmation-gates.md`](03-human-confirmation-gates.md) § Continuity Override.
 
 ---
 

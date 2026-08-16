@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P08 — Content CMS** (**COMPLETE**) |
+| Current Phase | **P09 — Tour Core** (**IN_PROGRESS**) |
 | Previous Phase | **P07 — Place Catalog** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | none — P08 COMPLETE; await USER `TRAVELCORE_PHASE_CONFIRM: P09` |
-| Current Next Product Phase | P09 — Tour Catalog (**NOT_STARTED**) |
-| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P09` (do not invent) |
+| Current Active Product Task | `TC-P09-PLAN` — AWAITING_ARCHITECT_REVIEW |
+| Current Next Product Phase | P09 — Tour Core (**IN_PROGRESS**) |
+| Current Next Task | Architect review of `TC-P09-PLAN`; then Auto-Execute T001 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -140,6 +140,8 @@
 | P07-R4 (Slug ownership) | **RESOLVED** — PLACE owns current `PlaceTranslation.Slug`; SEO owns route history/redirects/IndexPolicy |
 | P07-R5 (Public IndexPolicy default) | **RESOLVED** — default **noindex, follow**; Active/public ≠ Index |
 | P08 | **COMPLETE** (closed by `TC-P08-GATE` ACCEPTED `576b7fa`; hygiene `6b72e60`) |
+| P09 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P09` + continuity override) |
+| P09 Plan | `TC-P09-PLAN` **AWAITING_ARCHITECT_REVIEW** — [`docs/plans/P09-implementation-plan.md`](plans/P09-implementation-plan.md) |
 | P08 Plan | `TC-P08-PLAN` **COMPLETE / ACCEPTED** (`7012fe0`) — [`docs/plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) |
 | P08-T001 | **COMPLETE / ACCEPTED** (`1b4a871`; hygiene `002cf2c`) — Content module scaffolding |
 | P08-T002 | **COMPLETE / ACCEPTED** (`300b86b`; hygiene `d5e1a9f`) — ContentItem + Article/LandingPage/Guide persistence (P08-R1) |
@@ -178,7 +180,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P08_COMPLETE** · `TC-P08-GATE` ACCEPTED `576b7fa` · P09 NOT_STARTED (needs `TRAVELCORE_PHASE_CONFIRM: P09`) |
+| Phase Transition State | **P09_IN_PROGRESS** · USER `TRAVELCORE_PHASE_CONFIRM: P09` · `TC-P09-PLAN` AWAITING_ARCHITECT_REVIEW · baseline `f9ab2e8` |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -187,8 +189,8 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — WAITING_PHASE_CONFIRM** (P09) |
-| Human Confirmation Reason | Need USER `TRAVELCORE_PHASE_CONFIRM: P09` to start next phase |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P09-PLAN`) |
+| Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
 | TC-P02-T002 | COMPLETE / ACCEPTED (`55ea466`) |
@@ -338,7 +340,7 @@
 | P07-R3 | **UNRESOLVED** (Place delete/archive) — OK for COMPLETE phase; CatalogStatus is catalog ops only; no delete/archive product invented |
 | P07-R4 | **RESOLVED** — PLACE owns current locale-specific `PlaceTranslation.Slug`; SEO owns route binding/reservations/history/redirects/canonical/IndexPolicy |
 | P07-R5 | **RESOLVED** — default Place SEO posture **noindex, follow**; Active/public/publish ≠ Index; no Destination IndexPolicy inheritance |
-| Required Human Token | USER `TRAVELCORE_PHASE_CONFIRM: P09` (P08 COMPLETE; do not invent) |
+| Required Human Token | ceremonial phase/gate tokens not required under continuity override; USER `TRAVELCORE_PHASE_CONFIRM: P09` already received |
 
 ### P00 Exit Summary
 

@@ -12,8 +12,19 @@
   "historicalChatExecutable": false,
   "resultEnvelopeExecutable": false,
   "repositoryIsSourceOfTruth": true,
-  "phaseHumanGateRequired": true,
-  "criticalTaskHumanGateRequired": true,
+  "phaseHumanGateRequired": false,
+  "criticalTaskHumanGateRequired": false,
+  "autoContinueAfterTaskAccept": true,
+  "autoStartNextPhasePlanAfterGateAccept": true,
+  "continuityPolicyEffectiveAt": "2026-08-17",
+  "continuityPolicySource": "USER chat directive + architect registration; tokens TRAVELCORE_PHASE_CONFIRM / TRAVELCORE_TASK_CONFIRM no longer required for routine Gate/next-phase ceremonial confirm",
+  "stopOnlyWhen": [
+    "architectural_choice_genuinely_required",
+    "multiple_valid_paths_need_user_preference",
+    "source_of_truth_conflict",
+    "unsafe_or_unresolved_repository_state",
+    "implementation_would_silently_resolve_unlocked_decision"
+  ],
   "chatContextLimitRequiresStop": true,
   "automaticRecoveryAfterChatLimit": false,
   "recoveryDefaultMode": "HUMAN"
