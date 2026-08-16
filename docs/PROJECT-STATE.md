@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P05-GATE** (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P05 — SEO Engine (**GATE PASS pending architect**; then P06 needs phase confirm) |
-| Current Next Task | Architect accept of `TC-P05-GATE`; P06 NOT_STARTED until `TRAVELCORE_PHASE_CONFIRM: P06` |
+| Current Active Product Task | **TC-P05-GATE-R1** (AWAITING_ARCHITECT_REVIEW) + **TC-P05-GATE** (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Product Phase | P05 — SEO Engine (**IN_PROGRESS**; Gate technical PASS pending R1+Gate accept) |
+| Current Next Task | Architect review of `TC-P05-GATE-R1` then accept `TC-P05-GATE`; P06 NOT_STARTED |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -119,7 +119,7 @@
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
 | P05 Phase Gate | **TC-P05-GATE** AWAITING_ARCHITECT_REVIEW |
 | Human Phase Confirmation | P05 entered via USER `TRAVELCORE_PHASE_CONFIRM: P05` (P04 previously via P04 token) |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P05-GATE`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P05-GATE-R1` + `TC-P05-GATE`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -226,10 +226,11 @@
 | TC-P05-T010 | COMPLETE / ACCEPTED (`78caf4b`; hygiene `28cfb41`/`84c7ab2`) |
 | TC-P05-T011 | COMPLETE / ACCEPTED (`8a9c4b7`; hygiene `61dd8c1`/`9258479`/`85ac421`) |
 | TC-P05-T012 | COMPLETE / ACCEPTED (`0c8ab0a`; hygiene `3351755`/`be407fc`/`6a02d9d`) |
-| TC-P05-GATE | AWAITING_ARCHITECT_REVIEW (evidence this commit) |
+| TC-P05-GATE | AWAITING_ARCHITECT_REVIEW (`7f234e8`; hygiene `d6bcbfb`) |
+| TC-P05-GATE-R1 | AWAITING_ARCHITECT_REVIEW (this commit) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
-| Required Human Token | none for GATE review; P06 later needs `TRAVELCORE_PHASE_CONFIRM: P06` |
+| Required Human Token | none; P06 later needs `TRAVELCORE_PHASE_CONFIRM: P06` |
 
 ### P00 Exit Summary
 
@@ -347,7 +348,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T010 | Destination public integration + publication rules | COMPLETE / ACCEPTED | `78caf4b` (+ `28cfb41`/`84c7ab2`) |
 | TC-P05-T011 | Admin SEO operational baseline | COMPLETE / ACCEPTED | `8a9c4b7` (+ `61dd8c1`/`9258479`/`85ac421`) |
 | TC-P05-T012 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `0c8ab0a` (+ `3351755`/`be407fc`/`6a02d9d`) |
-| TC-P05-GATE | P05 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | `7f234e8` |
+| TC-P05-GATE | P05 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | `7f234e8` (+ `d6bcbfb`) |
+| TC-P05-GATE-R1 | Reconcile P05 Gate Baseline Drift | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
