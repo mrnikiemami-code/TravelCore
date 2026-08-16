@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P05-T008** (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | **TC-P05-T009** (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P05 — SEO Engine (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P05-T008`; then `TC-P05-T009` when issued |
+| Current Next Task | Architect review of `TC-P05-T009`; then `TC-P05-T010` when issued |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -119,7 +119,7 @@
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
 | P05 Phase Gate | NOT_STARTED |
 | Human Phase Confirmation | P05 entered via USER `TRAVELCORE_PHASE_CONFIRM: P05` (P04 previously via P04 token) |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P05-T008`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P05-T009`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -221,10 +221,11 @@
 | TC-P05-T005 | COMPLETE / ACCEPTED (`95c79da`; hygiene `77b0b82`) |
 | TC-P05-T006 | COMPLETE / ACCEPTED (`0cba002`; hygiene `40253b4`/`fbc6fb1`) |
 | TC-P05-T007 | COMPLETE / ACCEPTED (`d611263`; hygiene `e1eae24`/`e8544dc`) |
-| TC-P05-T008 | AWAITING_ARCHITECT_REVIEW (`1a98601`) |
+| TC-P05-T008 | COMPLETE / ACCEPTED (`1a98601`; hygiene `a4bf89a`) |
+| TC-P05-T009 | AWAITING_ARCHITECT_REVIEW (`09d6f5d`) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
-| Required Human Token | none (await architect accept of `TC-P05-T008`) |
+| Required Human Token | none (await architect accept of `TC-P05-T009`) |
 
 ### P00 Exit Summary
 
@@ -235,7 +236,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 IN_PROGRESS**; `TC-P05-T001`–`T007` ACCEPTED; `TC-P05-T008` AWAITING_ARCHITECT_REVIEW; **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; P06 NOT_STARTED
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 IN_PROGRESS**; `TC-P05-T001`–`T008` ACCEPTED; `TC-P05-T009` AWAITING_ARCHITECT_REVIEW; **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; P06 NOT_STARTED
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -337,7 +338,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T005 | IndexPolicy + robots posture | COMPLETE / ACCEPTED | `95c79da` (+ `77b0b82`) |
 | TC-P05-T006 | hreflang / alternate locale bindings | COMPLETE / ACCEPTED | `0cba002` (+ `40253b4`/`fbc6fb1`) |
 | TC-P05-T007 | Metadata composition framework | COMPLETE / ACCEPTED | `d611263` (+ `e1eae24`/`e8544dc`) |
-| TC-P05-T008 | Breadcrumb + structured data framework | AWAITING_ARCHITECT_REVIEW | `1a98601` |
+| TC-P05-T008 | Breadcrumb + structured data framework | COMPLETE / ACCEPTED | `1a98601` (+ `a4bf89a`) |
+| TC-P05-T009 | Sitemap + robots.txt framework | AWAITING_ARCHITECT_REVIEW | pending |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
