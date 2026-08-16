@@ -38,6 +38,7 @@ public sealed class SeoModule : ITravelCoreModule
         services.AddScoped<SeoRedirectApplicationService>();
         services.AddScoped<ISeoRedirectService>(sp => sp.GetRequiredService<SeoRedirectApplicationService>());
         services.AddScoped<ISeoRouteService, SeoRouteApplicationService>();
+        services.AddScoped<ISeoIndexPolicyService, SeoIndexPolicyApplicationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

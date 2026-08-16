@@ -43,7 +43,7 @@
 | Last Accepted Commit | `f70991f` (`TC-P04-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P05-T004`; then `TC-P05-T005` when issued |
+| Current Next Task | Architect review of `TC-P05-T005`; then `TC-P05-T006` when issued |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -104,7 +104,7 @@
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
-- **P05** = IN_PROGRESS (`TC-P05-T001`–`T003-R1` ACCEPTED · `TC-P05-T004` AWAITING_ARCHITECT_REVIEW · **P05-R1 RESOLVED**)
+- **P05** = IN_PROGRESS (`TC-P05-T001`–`T004` ACCEPTED · `TC-P05-T005` AWAITING_ARCHITECT_REVIEW · **P05-R1/R2 RESOLVED**)
 - **P06–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -306,7 +306,7 @@ Invariant: Destination مالک Hotel/Tour/Article/Booking نیست؛ ReferenceD
 
 **Authoritative plan:** [`plans/P05-implementation-plan.md`](plans/P05-implementation-plan.md) (`TC-P05-PLAN`)
 
-**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`/`T002`/`T003`/`T003-R1` COMPLETE / ACCEPTED · `TC-P05-T004` AWAITING_ARCHITECT_REVIEW · **P05-R1 RESOLVED** · P05-R2 UNRESOLVED · P06 NOT_STARTED
+**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T004` COMPLETE / ACCEPTED · `TC-P05-T005` AWAITING_ARCHITECT_REVIEW · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED
 
 **Remediation evidence:** [`plans/P05-PLAN-R1-baseline-reconciliation.md`](plans/P05-PLAN-R1-baseline-reconciliation.md) · [`plans/P05-T003-R1-r1-decision-reconciliation.md`](plans/P05-T003-R1-r1-decision-reconciliation.md)
 

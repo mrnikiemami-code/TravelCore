@@ -14,7 +14,9 @@ type PageProps = {
 /**
  * Public Destination detail baseline (TC-P04-T009).
  * R3 RESOLVED: page may exist for humans; robots = noindex, follow.
- * Not a SEO engine — no canonical/hreflang/sitemap platform.
+ * TC-P05-T005: IndexPolicy API/contract exists (`/api/seo/indexability/...` +
+ * `lib/seo/indexability-contract.ts`) but this page keeps hardcoded noindex
+ * until metadata composition (T007+) consumes SEO evaluation — no mass flip.
  */
 export async function generateMetadata({
   params,

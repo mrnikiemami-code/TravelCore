@@ -283,11 +283,11 @@ TC-P05-PLAN (architect accept)
 | ID | Item | Classification |
 |----|------|----------------|
 | R1 | Exact persistence shape for LocalizedSlug history vs Destination.Translation.Slug | **RESOLVED** (architect at T003): `DestinationTranslation.Slug` = authoritative **current** localized Destination slug (Destination-owned/mutated). SEO does **not** own/write it. SEO owns SeoRoute binding, historical public path records, path reservation, redirect candidate/history mechanics (preferred redirect-chain: A→C, B→C — not A→B→C). Historical path ≠ current Destination slug. |
-| R2 | Default IndexPolicy for existing Destination pages after integration | **REQUIRES_ARCHITECT_CONFIRMATION_AT_T005/T010** (proposal: remain noindex until explicit publish) |
+| R2 | Default IndexPolicy for existing Destination pages after integration | **RESOLVED** (architect at T005): default missing policy = `noindex, follow`; explicit Index requires eligibility (current route + canonical + not historical/redirect/gone); no mass-enable of existing Destination pages |
 | R3 | Whether sitemap generation is on-request endpoint vs background job in P05 | **RESOLVED_BY_PLAN_DEFAULT**: framework first; job runner optional if host already supports |
 | R4 | Multi-resource SEO beyond Destination in P05 | **DEFERRED** unless architect expands; Destination-first validation |
 
-If R2 blocks a task, Cursor must **STOP** with `BLOCKED_ARCHITECTURE_CONFLICT` rather than inventing policy. R1 is closed; do not reopen Destination.Translation.Slug ownership.
+If R2 blocks a task, Cursor must **STOP** with `BLOCKED_ARCHITECTURE_CONFLICT` rather than inventing policy. R1 and R2 are closed; do not reopen Destination.Translation.Slug ownership or reverse the conservative IndexPolicy default.
 
 ---
 

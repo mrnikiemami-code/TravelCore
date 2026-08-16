@@ -25,6 +25,8 @@ public sealed class SeoDbContext : DbContext
 
     public DbSet<SeoRedirect> SeoRedirects => Set<SeoRedirect>();
 
+    public DbSet<SeoIndexPolicy> SeoIndexPolicies => Set<SeoIndexPolicy>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

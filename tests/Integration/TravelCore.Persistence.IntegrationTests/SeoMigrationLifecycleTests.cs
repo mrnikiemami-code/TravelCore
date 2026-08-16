@@ -31,11 +31,12 @@ public sealed class SeoMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.EndsWith("_InitialSeoScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoRoutes", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoPathHistoryAndReservations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoRedirectsAndCanonicalBaseline", expectedMigrations[3], StringComparison.Ordinal);
+            Assert.EndsWith("_AddSeoIndexPolicies", expectedMigrations[4], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -51,7 +52,7 @@ public sealed class SeoMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'seo';
                 """, ct));
-            Assert.Equal(6, await ScalarIntAsync(conn, """
+            Assert.Equal(7, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'seo'
@@ -61,6 +62,7 @@ public sealed class SeoMigrationLifecycleTests
                     'seo_path_reservations',
                     'seo_redirect_candidates',
                     'seo_redirects',
+                    'seo_index_policies',
                     '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));

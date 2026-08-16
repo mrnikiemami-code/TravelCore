@@ -61,6 +61,27 @@ internal static class SeoEndpoints
             }
         });
 
+        // Public IndexPolicy evaluation for SSR/robots consumers (T005 metadata integration contract).
+        group.MapGet("/indexability/{locale}/{*path}", async Task<IResult> (
+            string locale,
+            string path,
+            ISeoIndexPolicyService policies,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var evaluation = await policies.EvaluatePathAsync(locale, path, cancellationToken);
+                return Results.Ok(evaluation);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "path"] = [ex.Message]
+                });
+            }
+        });
+
         return endpoints;
     }
 
