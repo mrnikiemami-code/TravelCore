@@ -315,7 +315,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P04-T011 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `13b36b0` |
 | TC-P04-GATE | P04 Acceptance Gate | COMPLETE / ACCEPTED | `f70991f` |
 | TC-P05-PLAN | P05 SEO Engine Implementation Plan | AWAITING_ARCHITECT_REVIEW | `032dabc` |
-| TC-P05-PLAN-R1 | P05 Plan Baseline Reconciliation & Architect Review Evidence | AWAITING_ARCHITECT_REVIEW | `d614e53` |
+| TC-P05-PLAN-R1 | P05 Plan Baseline Reconciliation & Architect Review Evidence | AWAITING_ARCHITECT_REVIEW | `31c3283` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
