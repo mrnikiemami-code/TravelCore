@@ -43,7 +43,7 @@
 | Last Accepted Commit | `f70991f` (`TC-P04-GATE`) |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P05-T009`; then `TC-P05-T010` when issued |
+| Current Next Task | Architect review of `TC-P05-T010`; then `TC-P05-T011` when issued |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -104,7 +104,7 @@
 - **P02** = COMPLETE (`TC-P02-GATE` ACCEPTED `4eacff5`)
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
-- **P05** = IN_PROGRESS (`TC-P05-T001`–`T008` ACCEPTED · `TC-P05-T009` AWAITING_ARCHITECT_REVIEW · **P05-R1/R2 RESOLVED**)
+- **P05** = IN_PROGRESS (`TC-P05-T001`–`T009` ACCEPTED · `TC-P05-T010` AWAITING_ARCHITECT_REVIEW · **P05-R1/R2 RESOLVED**)
 - **P06–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
