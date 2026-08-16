@@ -80,4 +80,62 @@ public sealed class MediaAssetTests
     {
         Assert.Throws<ArgumentException>(() => MediaAssetId.From(Guid.Empty));
     }
+
+    [Fact]
+    public void SetFocalPoint_StoresNormalizedCoordinates()
+    {
+        var asset = MediaAsset.Create("image/png", 10, Now);
+        var later = Instant.FromUtc(2026, 8, 16, 9, 0);
+
+        asset.SetFocalPoint(0.25, 0.75, later);
+
+        Assert.Equal(0.25, asset.FocalX);
+        Assert.Equal(0.75, asset.FocalY);
+        Assert.Equal(later, asset.UpdatedAt);
+    }
+
+    [Theory]
+    [InlineData(0.0, 0.0)]
+    [InlineData(1.0, 1.0)]
+    [InlineData(0.5, 0.5)]
+    public void SetFocalPoint_AcceptsInclusiveBounds(double x, double y)
+    {
+        var asset = MediaAsset.Create("image/png", 10, Now);
+        asset.SetFocalPoint(x, y, Now);
+        Assert.Equal(x, asset.FocalX);
+        Assert.Equal(y, asset.FocalY);
+    }
+
+    [Theory]
+    [InlineData(-0.01, 0.5)]
+    [InlineData(0.5, 1.01)]
+    [InlineData(double.NaN, 0.5)]
+    [InlineData(0.5, double.PositiveInfinity)]
+    public void SetFocalPoint_RejectsOutOfRange(double x, double y)
+    {
+        var asset = MediaAsset.Create("image/png", 10, Now);
+        Assert.Throws<ArgumentOutOfRangeException>(() => asset.SetFocalPoint(x, y, Now));
+    }
+
+    [Fact]
+    public void SetFocalPoint_RejectsPartialPair()
+    {
+        var asset = MediaAsset.Create("image/png", 10, Now);
+        Assert.Throws<ArgumentException>(() => asset.SetFocalPoint(0.5, null, Now));
+        Assert.Throws<ArgumentException>(() => asset.SetFocalPoint(null, 0.5, Now));
+    }
+
+    [Fact]
+    public void SetFocalPoint_ClearsWhenBothNull()
+    {
+        var asset = MediaAsset.Create("image/png", 10, Now);
+        asset.SetFocalPoint(0.3, 0.4, Now);
+        var later = Instant.FromUtc(2026, 8, 16, 10, 0);
+
+        asset.SetFocalPoint(null, null, later);
+
+        Assert.Null(asset.FocalX);
+        Assert.Null(asset.FocalY);
+        Assert.Equal(later, asset.UpdatedAt);
+    }
 }

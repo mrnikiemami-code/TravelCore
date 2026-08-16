@@ -121,6 +121,42 @@ internal static class MediaEndpoints
             return Results.Ok(list);
         }).RequireAuthorization(MediaAssetsWritePolicy);
 
+        group.MapPut("/{id:guid}/focal-point", async Task<IResult> (
+            Guid id,
+            UpsertFocalPointRequest request,
+            IMediaFocalPointService focalPoints,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var updated = await focalPoints.SetAsync(id, request, cancellationToken);
+                return Results.Ok(updated);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "focalPoint"] = [ex.Message]
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.Problem(
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status404NotFound,
+                    title: "Media asset not found");
+            }
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
+        group.MapGet("/{id:guid}/focal-point", async Task<IResult> (
+            Guid id,
+            IMediaFocalPointService focalPoints,
+            CancellationToken cancellationToken) =>
+        {
+            var focal = await focalPoints.GetAsync(id, cancellationToken);
+            return focal is null ? Results.NotFound() : Results.Ok(focal);
+        }).RequireAuthorization(MediaAssetsWritePolicy);
+
         return endpoints;
     }
 }

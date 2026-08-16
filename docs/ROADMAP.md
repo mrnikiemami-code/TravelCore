@@ -43,7 +43,7 @@
 | Last Accepted Commit | `37637bf` (`TC-P05-GATE` / `TC-P05-GATE-R1` ACCEPTED) · docs sync `02e06d3` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review/accept `TC-P06-T005` then issue `TC-P06-T006` |
+| Current Next Task | Architect review/accept `TC-P06-T006` then issue `TC-P06-T007` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -329,7 +329,7 @@ SeoRoute · localized route · slug history · Redirect · Canonical · hreflang
 
 **Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — COMPLETE / ACCEPTED · `87069e4`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`/`T002`/`T003` ACCEPTED · `TC-P06-T004`/`T005` AWAITING_ARCHITECT_REVIEW · **P06-R2 RESOLVED** (Media-owned storage) · **P06-R3 RESOLVED** (sync variants; sizing 1600/960/320) · **P06-R6 RESOLVED** (SVG DENY) · T006 NOT_STARTED · P07 NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`/`T002`/`T003` ACCEPTED · `TC-P06-T004`/`T005`/`T006` AWAITING_ARCHITECT_REVIEW · **P06-R2 RESOLVED** (Media-owned storage) · **P06-R3 RESOLVED** (sync variants; sizing 1600/960/320) · **P06-R6 RESOLVED** (SVG DENY) · T007 NOT_STARTED · P07 NOT_STARTED
 
 Media Asset · object storage · upload · validation · variants · dimensions · focal point · alt/caption translations · WebP/AVIF pipeline در صورت تأیید · قرارداد بهینه‌سازی تصویر.
 

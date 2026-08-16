@@ -59,6 +59,8 @@ public sealed class MediaObjectBindingService : IMediaObjectBindingService
             asset.ByteSize,
             asset.Width,
             asset.Height,
+            asset.FocalX,
+            asset.FocalY,
             asset.StorageKey,
             asset.Status.ToString(),
             asset.CreatedAt.ToString(),

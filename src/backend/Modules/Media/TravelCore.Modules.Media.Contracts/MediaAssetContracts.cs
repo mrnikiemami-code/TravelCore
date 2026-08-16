@@ -2,6 +2,7 @@ namespace TravelCore.Modules.Media.Contracts;
 
 /// <summary>
 /// Public DTO for a MediaAsset. Never exposes EF entities or consumer relationship fields.
+/// FocalX/FocalY are normalized [0.0, 1.0] relative coordinates (origin top-left) when set.
 /// </summary>
 public sealed record MediaAssetResponse(
     Guid Id,
@@ -9,6 +10,8 @@ public sealed record MediaAssetResponse(
     long ByteSize,
     int? Width,
     int? Height,
+    double? FocalX,
+    double? FocalY,
     string? StorageKey,
     string Status,
     string CreatedAt,

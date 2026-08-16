@@ -115,6 +115,8 @@ public sealed class MediaAssetApplicationService : IMediaAssetService
             asset.ByteSize,
             asset.Width,
             asset.Height,
+            asset.FocalX,
+            asset.FocalY,
             asset.StorageKey,
             asset.Status.ToString(),
             asset.CreatedAt.ToString(),

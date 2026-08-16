@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P06-T005` (**AWAITING_ARCHITECT_REVIEW** after implementation) |
+| Current Active Product Task | `TC-P06-T006` (**AWAITING_ARCHITECT_REVIEW** after implementation) |
 | Current Next Product Phase | P06 — Media (**IN_PROGRESS**) |
-| Current Next Task | Architect review/accept `TC-P06-T005` then issue `TC-P06-T006` |
+| Current Next Task | Architect review/accept `TC-P06-T006` then issue `TC-P06-T007` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -101,6 +101,7 @@
 | P06-T003 | **COMPLETE / ACCEPTED** (`cf95e5c`) |
 | P06-T004 | **AWAITING_ARCHITECT_REVIEW** (`7f83885`) — upload + validation; P06-R6 DENY SVG |
 | P06-T005 | **AWAITING_ARCHITECT_REVIEW** (`91444ad`) — variants + dimensions; **P06-R3 RESOLVED** (sync + sizing 1600/960/320) |
+| P06-T006 | **AWAITING_ARCHITECT_REVIEW** — focal point metadata (`FocalX`/`FocalY` normalized 0..1; no crop pipeline) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
 | P06-R3 (variant generation) | **RESOLVED** — SYNCHRONOUS; sizing large=1600 / medium=960 / thumbnail=320; fit-within; no crop/upscale; GIF fail-closed |
 | P06-R6 (SVG acceptance) | **RESOLVED** — DENY `image/svg+xml` / `.svg` / detected SVG-XML payload |
@@ -123,14 +124,14 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P06_IN_PROGRESS** · T001–T003 ACCEPTED · T004/T005 AWAITING_ARCHITECT_REVIEW · P06-R2/R3/R6 RESOLVED · P07 NOT_STARTED |
+| Phase Transition State | **P06_IN_PROGRESS** · T001–T003 ACCEPTED · T004/T005/T006 AWAITING_ARCHITECT_REVIEW · P06-R2/R3/R6 RESOLVED · P07 NOT_STARTED |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
 | P04 Phase Gate | **TC-P04-GATE** COMPLETE / ACCEPTED (`f70991f`) |
 | P05 Phase Gate | **TC-P05-GATE** COMPLETE / ACCEPTED (`7f234e8`; R1 `bde6661`) |
 | Human Phase Confirmation | P06 entered via USER `TRAVELCORE_PHASE_CONFIRM: P06` (P05 previously via P05 token) |
-| Pipeline Product Execution | **AWAITING_ARCHITECT_REVIEW** (`TC-P06-T005`) |
+| Pipeline Product Execution | **AWAITING_ARCHITECT_REVIEW** (`TC-P06-T006`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -247,6 +248,7 @@
 | TC-P06-T003 | **COMPLETE / ACCEPTED** (`cf95e5c`; hygiene `1d4e497`) |
 | TC-P06-T004 | **AWAITING_ARCHITECT_REVIEW** (`7f83885`) |
 | TC-P06-T005 | **AWAITING_ARCHITECT_REVIEW** (`91444ad`) |
+| TC-P06-T006 | **AWAITING_ARCHITECT_REVIEW** (SHA pending product commit) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R3 | **RESOLVED** (SYNCHRONOUS variant generation; sizing 1600/960/320 fit-within; GIF fail-closed) |
 | P06-R6 | **RESOLVED** (SVG DENY — Option A) |
@@ -261,7 +263,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; **P06 IN_PROGRESS** (`TC-P06-PLAN` ACCEPTED; T001–T003 ACCEPTED; `TC-P06-T004`/`T005` AWAITING_ARCHITECT_REVIEW; P06-R2/R3/R6 RESOLVED; P07 NOT_STARTED)
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P05-R1/R2 RESOLVED**; Runtime Mode = PIPELINE; **P06 IN_PROGRESS** (`TC-P06-PLAN` ACCEPTED; T001–T003 ACCEPTED; `TC-P06-T004`/`T005`/`T006` AWAITING_ARCHITECT_REVIEW; P06-R2/R3/R6 RESOLVED; P07 NOT_STARTED)
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 

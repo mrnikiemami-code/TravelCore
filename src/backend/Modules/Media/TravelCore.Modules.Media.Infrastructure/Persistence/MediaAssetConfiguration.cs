@@ -30,6 +30,12 @@ internal sealed class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAs
         builder.Property(x => x.Height)
             .HasColumnName("height");
 
+        builder.Property(x => x.FocalX)
+            .HasColumnName("focal_x");
+
+        builder.Property(x => x.FocalY)
+            .HasColumnName("focal_y");
+
         builder.Property(x => x.StorageKey)
             .HasColumnName("storage_key")
             .HasMaxLength(MediaAsset.StorageKeyMaxLength);

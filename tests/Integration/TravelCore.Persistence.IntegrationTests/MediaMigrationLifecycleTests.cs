@@ -30,10 +30,11 @@ public sealed class MediaMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(3, expectedMigrations.Length);
+            Assert.Equal(4, expectedMigrations.Length);
             Assert.EndsWith("_InitialMediaScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddMediaAssets", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddMediaVariants", expectedMigrations[2], StringComparison.Ordinal);
+            Assert.EndsWith("_AddMediaAssetFocalPoint", expectedMigrations[3], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -78,6 +79,8 @@ public sealed class MediaMigrationLifecycleTests
             Assert.Equal(4096, created.ByteSize);
             Assert.Equal(1200, created.Width);
             Assert.Equal(800, created.Height);
+            Assert.Null(created.FocalX);
+            Assert.Null(created.FocalY);
             Assert.Equal("originals/demo/hero.webp", created.StorageKey);
             Assert.Equal("Ready", created.Status);
 
@@ -115,6 +118,13 @@ public sealed class MediaMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'media'
                   AND table_name = 'media_variants';
+                """, ct));
+            Assert.Equal(2, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'media'
+                  AND table_name = 'media_assets'
+                  AND column_name IN ('focal_x', 'focal_y');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

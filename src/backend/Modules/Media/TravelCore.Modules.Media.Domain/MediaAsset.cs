@@ -52,6 +52,18 @@ public sealed class MediaAsset
     public int? Height { get; private set; }
 
     /// <summary>
+    /// Normalized focal X in [0.0, 1.0] relative to image width (origin top-left, +X right).
+    /// Null when unset. Metadata SoR only — does not drive variant crop in T006.
+    /// </summary>
+    public double? FocalX { get; private set; }
+
+    /// <summary>
+    /// Normalized focal Y in [0.0, 1.0] relative to image height (origin top-left, +Y down).
+    /// Null when unset. Paired with <see cref="FocalX"/> (both set or both null).
+    /// </summary>
+    public double? FocalY { get; private set; }
+
+    /// <summary>
     /// Opaque storage object key/URI placeholder. Provider wiring is TC-P06-T003+.
     /// </summary>
     public string? StorageKey { get; private set; }
@@ -104,6 +116,31 @@ public sealed class MediaAsset
     {
         Width = NormalizeDimension(width, nameof(width));
         Height = NormalizeDimension(height, nameof(height));
+        UpdatedAt = now;
+    }
+
+    /// <summary>
+    /// Persists or clears the focal point (TC-P06-T006). Both coordinates required together,
+    /// or both null to clear. Does not regenerate variants or apply crop.
+    /// </summary>
+    public void SetFocalPoint(double? focalX, double? focalY, Instant now)
+    {
+        if (focalX is null && focalY is null)
+        {
+            FocalX = null;
+            FocalY = null;
+            UpdatedAt = now;
+            return;
+        }
+
+        if (focalX is null || focalY is null)
+        {
+            throw new ArgumentException(
+                "FocalX and FocalY must both be provided, or both null to clear.");
+        }
+
+        FocalX = NormalizeFocalCoordinate(focalX.Value, nameof(focalX));
+        FocalY = NormalizeFocalCoordinate(focalY.Value, nameof(focalY));
         UpdatedAt = now;
     }
 
@@ -204,5 +241,29 @@ public sealed class MediaAsset
         }
 
         return normalized;
+    }
+
+    /// <summary>
+    /// Validates a normalized focal coordinate in [0.0, 1.0] inclusive (finite only).
+    /// </summary>
+    public static double NormalizeFocalCoordinate(double value, string paramName)
+    {
+        if (double.IsNaN(value) || double.IsInfinity(value))
+        {
+            throw new ArgumentOutOfRangeException(
+                paramName,
+                value,
+                "Focal coordinate must be a finite number in [0.0, 1.0].");
+        }
+
+        if (value < 0.0 || value > 1.0)
+        {
+            throw new ArgumentOutOfRangeException(
+                paramName,
+                value,
+                "Focal coordinate must be in [0.0, 1.0] inclusive.");
+        }
+
+        return value;
     }
 }

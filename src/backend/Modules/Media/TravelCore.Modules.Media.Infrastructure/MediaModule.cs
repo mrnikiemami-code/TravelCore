@@ -57,6 +57,7 @@ public sealed class MediaModule : ITravelCoreModule
         services.AddScoped<IMediaAssetService, MediaAssetApplicationService>();
         services.AddScoped<IMediaObjectBindingService, MediaObjectBindingService>();
         services.AddScoped<IMediaUploadService, MediaUploadApplicationService>();
+        services.AddScoped<IMediaFocalPointService, MediaFocalPointApplicationService>();
         services.AddSingleton<ImageSharpMediaVariantProcessor>();
         services.AddScoped<IMediaVariantProcessingService, MediaVariantApplicationService>();
     }
