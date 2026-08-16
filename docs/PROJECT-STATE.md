@@ -95,7 +95,7 @@
 | P05-R1 (slug history ownership) | **RESOLVED** — Destination owns current `DestinationTranslation.Slug`; SEO owns path history/reservation/redirect mechanics |
 | P05-R2 (default IndexPolicy) | **RESOLVED** — default missing policy = `noindex, follow`; explicit Index requires eligibility |
 | P06 | **IN_PROGRESS** (authorized via USER `TRAVELCORE_PHASE_CONFIRM: P06`) |
-| P06 Plan | `TC-P06-PLAN` **AWAITING_ARCHITECT_REVIEW** — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
+| P06 Plan | `TC-P06-PLAN` **AWAITING_ARCHITECT_REVIEW** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
 | P06-T001 | **NOT_STARTED** (await plan accept + Auto-Execute issue) |
 | P07 | **NOT_STARTED** |
 | P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
@@ -234,7 +234,7 @@
 | TC-P05-GATE-R1 | COMPLETE / ACCEPTED (`bde6661`; hygiene `37637bf`) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
-| TC-P06-PLAN | **AWAITING_ARCHITECT_REVIEW** — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
+| TC-P06-PLAN | **AWAITING_ARCHITECT_REVIEW** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
 | TC-P06-T001 | **NOT_STARTED** |
 | Required Human Token | none (phase P06 confirmed; await architect accept of PLAN) |
 
