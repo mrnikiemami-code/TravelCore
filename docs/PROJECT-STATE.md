@@ -101,7 +101,7 @@
 | P06-T003 | **COMPLETE / ACCEPTED** (`cf95e5c`) |
 | P06-T004 | **AWAITING_ARCHITECT_REVIEW** (`7f83885`) — upload + validation; P06-R6 DENY SVG |
 | P06-T005 | **AWAITING_ARCHITECT_REVIEW** (`91444ad`) — variants + dimensions; **P06-R3 RESOLVED** (sync + sizing 1600/960/320) |
-| P06-T006 | **AWAITING_ARCHITECT_REVIEW** — focal point metadata (`FocalX`/`FocalY` normalized 0..1; no crop pipeline) |
+| P06-T006 | **AWAITING_ARCHITECT_REVIEW** (`166e9db`) — focal point metadata (`FocalX`/`FocalY` normalized 0..1; no crop pipeline) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
 | P06-R3 (variant generation) | **RESOLVED** — SYNCHRONOUS; sizing large=1600 / medium=960 / thumbnail=320; fit-within; no crop/upscale; GIF fail-closed |
 | P06-R6 (SVG acceptance) | **RESOLVED** — DENY `image/svg+xml` / `.svg` / detected SVG-XML payload |
@@ -248,7 +248,7 @@
 | TC-P06-T003 | **COMPLETE / ACCEPTED** (`cf95e5c`; hygiene `1d4e497`) |
 | TC-P06-T004 | **AWAITING_ARCHITECT_REVIEW** (`7f83885`) |
 | TC-P06-T005 | **AWAITING_ARCHITECT_REVIEW** (`91444ad`) |
-| TC-P06-T006 | **AWAITING_ARCHITECT_REVIEW** (SHA pending product commit) |
+| TC-P06-T006 | **AWAITING_ARCHITECT_REVIEW** (`166e9db`) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R3 | **RESOLVED** (SYNCHRONOUS variant generation; sizing 1600/960/320 fit-within; GIF fail-closed) |
 | P06-R6 | **RESOLVED** (SVG DENY — Option A) |
