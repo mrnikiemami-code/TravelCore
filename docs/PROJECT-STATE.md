@@ -96,7 +96,7 @@
 | P05-R2 (default IndexPolicy) | **RESOLVED** — default missing policy = `noindex, follow`; explicit Index requires eligibility |
 | P06 | **IN_PROGRESS** (authorized via USER `TRAVELCORE_PHASE_CONFIRM: P06`) |
 | P06 Plan | `TC-P06-PLAN` **COMPLETE / ACCEPTED** (`87069e4`) — [`docs/plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) |
-| P06-T001 | **AWAITING_ARCHITECT_REVIEW** |
+| P06-T001 | **AWAITING_ARCHITECT_REVIEW** (`e5bfd39`) |
 | P07 | **NOT_STARTED** |
 | P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
 | P04 Implementation Started | **YES** (`TC-P04-T001`) |
@@ -235,7 +235,7 @@
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | **RESOLVED** (default missing policy = noindex, follow; explicit Index requires eligibility) |
 | TC-P06-PLAN | **COMPLETE / ACCEPTED** (`87069e4`; hygiene `f323857`/`1b2877b`) |
-| TC-P06-T001 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P06-T001 | **AWAITING_ARCHITECT_REVIEW** (`e5bfd39`) |
 | TC-P06-T002 | **NOT_STARTED** |
 | Required Human Token | none |
 

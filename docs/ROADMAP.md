@@ -329,7 +329,7 @@ SeoRoute · localized route · slug history · Redirect · Canonical · hreflang
 
 **Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — COMPLETE / ACCEPTED · `87069e4`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001` AWAITING_ARCHITECT_REVIEW · T002 NOT_STARTED · P07 NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001` AWAITING_ARCHITECT_REVIEW (`e5bfd39`) · T002 NOT_STARTED · P07 NOT_STARTED
 
 Media Asset · object storage · upload · validation · variants · dimensions · focal point · alt/caption translations · WebP/AVIF pipeline در صورت تأیید · قرارداد بهینه‌سازی تصویر.
 
