@@ -99,7 +99,7 @@
 | P06-T001 | **COMPLETE / ACCEPTED** (`e5bfd39`) |
 | P06-T002 | **COMPLETE / ACCEPTED** (`020ce99`) |
 | P06-T003 | **COMPLETE / ACCEPTED** (`cf95e5c`) |
-| P06-T004 | **AWAITING_ARCHITECT_REVIEW** (upload + validation; P06-R6 DENY SVG) |
+| P06-T004 | **AWAITING_ARCHITECT_REVIEW** (`7f83885`) — upload + validation; P06-R6 DENY SVG |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
 | P06-R6 (SVG acceptance) | **RESOLVED** — DENY `image/svg+xml` / `.svg` / detected SVG-XML payload |
 | P07 | **NOT_STARTED** |
