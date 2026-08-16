@@ -291,7 +291,7 @@
 | P06-R9 | **DEFERRED** (consumer alt override; Media owns default alt/caption only) |
 | TC-P07-PLAN | **COMPLETE / ACCEPTED** (`5dbc152`; hygiene `768a2c5`) |
 | TC-P07-T001 | **COMPLETE / ACCEPTED** (`108ac34`; hygiene `a245358`) |
-| TC-P07-T002 | **AWAITING_ARCHITECT_REVIEW** (commit pending at task close) |
+| TC-P07-T002 | **AWAITING_ARCHITECT_REVIEW** (`83529cf`) |
 | P07-R1 | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION |
 | P07-R2 | **UNRESOLVED** (Destination link requiredness) |
 | P07-R3 | **UNRESOLVED** (Place delete/archive) |
@@ -420,7 +420,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P06-GATE | P06 Acceptance Gate | COMPLETE / ACCEPTED | `da345b5` |
 | TC-P07-PLAN | P07 Place Catalog Implementation Plan | COMPLETE / ACCEPTED | `5dbc152` |
 | TC-P07-T001 | Place module scaffolding | COMPLETE / ACCEPTED | `108ac34` |
-| TC-P07-T002 | Place catalog domain + persistence baseline | AWAITING_ARCHITECT_REVIEW | (pending commit) |
+| TC-P07-T002 | Place catalog domain + persistence baseline | AWAITING_ARCHITECT_REVIEW | `83529cf` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
