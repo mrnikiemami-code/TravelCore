@@ -21,6 +21,7 @@ export type ContentTranslationView = {
   title: string;
   body: string | null;
   excerpt: string | null;
+  slug: string | null;
   updatedAt: string;
 };
 

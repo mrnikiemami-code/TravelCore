@@ -43,3 +43,47 @@ public interface ISeoPlacePublicationService
         PublishPlaceSeoRouteRequest request,
         CancellationToken cancellationToken = default);
 }
+
+/// <summary>
+/// Publish Article content-owned slug into SEO namespace as articles/{slug} (TC-P08-T008 / P08-R3).
+/// Does not write Content tables; does not flip IndexPolicy (P08-R4 default remains noindex,follow).
+/// </summary>
+public sealed record PublishArticleSeoRouteRequest(
+    Guid ContentItemId,
+    string Locale,
+    string Slug);
+
+public sealed record PublishArticleSeoRouteResponse(
+    SeoRouteResponse Route,
+    bool Created,
+    bool PathChanged,
+    string PublicPath);
+
+public interface ISeoArticlePublicationService
+{
+    Task<PublishArticleSeoRouteResponse> PublishAsync(
+        PublishArticleSeoRouteRequest request,
+        CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// Publish LandingPage content-owned slug into SEO namespace as landing-pages/{slug} (TC-P08-T008 / P08-R3).
+/// Does not write Content tables; does not flip IndexPolicy (P08-R4 default remains noindex,follow).
+/// </summary>
+public sealed record PublishLandingPageSeoRouteRequest(
+    Guid ContentItemId,
+    string Locale,
+    string Slug);
+
+public sealed record PublishLandingPageSeoRouteResponse(
+    SeoRouteResponse Route,
+    bool Created,
+    bool PathChanged,
+    string PublicPath);
+
+public interface ISeoLandingPagePublicationService
+{
+    Task<PublishLandingPageSeoRouteResponse> PublishAsync(
+        PublishLandingPageSeoRouteRequest request,
+        CancellationToken cancellationToken = default);
+}

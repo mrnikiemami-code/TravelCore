@@ -153,6 +153,69 @@ public sealed class ContentItemApplicationService : IContentItemService
         return MapTranslation(translation);
     }
 
+    public async Task<ContentSlugLookupResponse?> FindBySlugAsync(
+        string localeCode,
+        string slug,
+        bool publicOnly = true,
+        CancellationToken cancellationToken = default)
+    {
+        var normalizedLocale = ContentItemTranslation.NormalizeLocaleCode(localeCode);
+        var normalizedSlug = ContentItemTranslation.NormalizeSlug(slug)
+            ?? throw new ArgumentException("Slug is required.", nameof(slug));
+
+        var hit = await _db.ContentItems.AsNoTracking()
+            .SelectMany(p => p.Translations.Select(t => new { Item = p, Translation = t }))
+            .FirstOrDefaultAsync(
+                x => x.Translation.LocaleCode == normalizedLocale && x.Translation.Slug == normalizedSlug,
+                cancellationToken);
+
+        if (hit is null)
+        {
+            return null;
+        }
+
+        // P08-R3/R4: no CatalogStatus invent — public gate = locale translation with title + slug.
+        if (publicOnly
+            && (string.IsNullOrWhiteSpace(hit.Translation.Title)
+                || string.IsNullOrWhiteSpace(hit.Translation.Slug)))
+        {
+            return null;
+        }
+
+        return new ContentSlugLookupResponse(
+            hit.Item.Id.Value,
+            hit.Translation.LocaleCode,
+            hit.Translation.Slug!,
+            hit.Item.Kind.ToString(),
+            hit.Item.Code,
+            hit.Item.EnglishName);
+    }
+
+    public async Task<ContentItemTranslationResponse> SetTranslationSlugAsync(
+        Guid contentItemId,
+        string localeCode,
+        SetContentItemTranslationSlugRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var locale = await _referenceData.GetLocaleAsync(localeCode, cancellationToken)
+            ?? throw new ArgumentException(
+                $"Locale '{localeCode}' was not found in ReferenceData locale catalog.",
+                nameof(localeCode));
+
+        var item = await LoadTrackedAsync(contentItemId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var translation = item.SetTranslationSlug(locale.Code, request.Slug, now);
+        if (translation.Slug is not null)
+        {
+            await EnsureSlugUniqueAsync(locale.Code, translation.Slug, item.Id, cancellationToken);
+        }
+
+        await _db.SaveChangesAsync(cancellationToken);
+        return MapTranslation(translation);
+    }
+
     public async Task<IReadOnlyList<ContentItemTranslationResponse>> ListTranslationsAsync(
         Guid contentItemId,
         CancellationToken cancellationToken = default)
@@ -254,6 +317,26 @@ public sealed class ContentItemApplicationService : IContentItemService
         return Map(item);
     }
 
+    private async Task EnsureSlugUniqueAsync(
+        string localeCode,
+        string slug,
+        ContentItemId ownerId,
+        CancellationToken cancellationToken)
+    {
+        var conflict = await _db.ContentItems.AsNoTracking()
+            .SelectMany(p => p.Translations.Select(t => new { ContentItemId = p.Id, t.LocaleCode, t.Slug }))
+            .FirstOrDefaultAsync(
+                x => x.LocaleCode == localeCode && x.Slug == slug && x.ContentItemId != ownerId,
+                cancellationToken);
+
+        if (conflict is not null)
+        {
+            throw new ArgumentException(
+                $"Slug '{slug}' is already used for locale '{localeCode}'.",
+                nameof(slug));
+        }
+    }
+
     private async Task EnsureDestinationExistsAsync(
         Guid destinationId,
         CancellationToken cancellationToken)
@@ -337,5 +420,6 @@ public sealed class ContentItemApplicationService : IContentItemService
             translation.Title,
             translation.Body,
             translation.Excerpt,
+            translation.Slug,
             translation.UpdatedAt.ToString());
 }

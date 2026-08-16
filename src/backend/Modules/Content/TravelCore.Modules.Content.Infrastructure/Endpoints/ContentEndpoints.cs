@@ -6,8 +6,9 @@ using TravelCore.Modules.Content.Contracts;
 namespace TravelCore.Modules.Content.Infrastructure.Endpoints;
 
 /// <summary>
-/// Admin Content HTTP surface (TC-P08-T007). Mutations require Access.Content.Items.Write.
-/// No Delete/Archive (P08-R8). No slug/SEO controls (P08-R3/R4). No widgets (P08-R6).
+/// Admin Content HTTP surface (TC-P08-T007/T008). Mutations require Access.Content.Items.Write.
+/// No Delete/Archive (P08-R8). Content owns current translation Slug (P08-R3); SEO owns IndexPolicy (P08-R4).
+/// No widgets (P08-R6).
 /// </summary>
 internal static class ContentEndpoints
 {
@@ -17,6 +18,29 @@ internal static class ContentEndpoints
     {
         var items = endpoints.MapGroup("/api/content/items")
             .WithTags("Content");
+
+        // Public-facing slug lookup defaults to title+slug gate (no CatalogStatus invent).
+        items.MapGet("/by-slug/{localeCode}/{slug}", async Task<IResult> (
+            string localeCode,
+            string slug,
+            bool? publicOnly,
+            IContentItemService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var hit = await service.FindBySlugAsync(
+                    localeCode,
+                    slug,
+                    publicOnly ?? true,
+                    cancellationToken);
+                return hit is null ? Results.NotFound() : Results.Ok(hit);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
 
         items.MapPost("/", async Task<IResult> (
             CreateContentItemRequest request,
@@ -99,6 +123,28 @@ internal static class ContentEndpoints
             try
             {
                 var translation = await service.UpsertTranslationAsync(id, localeCode, request, cancellationToken);
+                return Results.Ok(translation);
+            }
+            catch (KeyNotFoundException)
+            {
+                return Results.NotFound();
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        }).RequireAuthorization(ContentItemsWritePolicy);
+
+        items.MapPut("/{id:guid}/translations/{localeCode}/slug", async Task<IResult> (
+            Guid id,
+            string localeCode,
+            SetContentItemTranslationSlugRequest request,
+            IContentItemService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var translation = await service.SetTranslationSlugAsync(id, localeCode, request, cancellationToken);
                 return Results.Ok(translation);
             }
             catch (KeyNotFoundException)

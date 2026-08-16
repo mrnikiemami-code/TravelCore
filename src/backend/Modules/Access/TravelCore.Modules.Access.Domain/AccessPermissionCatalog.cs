@@ -20,7 +20,8 @@ public static class AccessPermissionCatalog
         ("media.assets.write", "Upload and mutate MediaAsset technical metadata"),
         ("place.places.write", "Create/update Place catalog entries and owned fields"),
         ("seo.place-posture.write", "Publish Place SEO routes (IndexPolicy remains explicit / default noindex)"),
-        ("content.items.write", "Create/update ContentItem editorial entries and owned fields")
+        ("content.items.write", "Create/update ContentItem editorial entries and owned fields"),
+        ("seo.content-posture.write", "Publish Content SEO routes (IndexPolicy remains explicit / default noindex)")
     ];
 
     public const string AdminRoleCode = "admin";

@@ -32,7 +32,7 @@ public sealed class ContentLocalizationGuardrailTests
     }
 
     [Fact]
-    public void ContentItemTranslation_ExistsWithoutSlugUntilP08R3()
+    public void ContentItemTranslation_OwnsLocalizedCurrentSlug_P08R3()
     {
         var translationPath = Path.Combine(
             RepoRoot,
@@ -48,8 +48,8 @@ public sealed class ContentLocalizationGuardrailTests
         Assert.Contains("public string Title", text, StringComparison.Ordinal);
         Assert.Contains("public string? Body", text, StringComparison.Ordinal);
         Assert.Contains("public string? Excerpt", text, StringComparison.Ordinal);
-        // P08-R3 UNRESOLVED — do not invent Content-owned slug yet.
-        Assert.DoesNotContain("public string? Slug", text, StringComparison.Ordinal);
-        Assert.DoesNotContain("NormalizeSlug", text, StringComparison.Ordinal);
+        Assert.Contains("public string? Slug", text, StringComparison.Ordinal);
+        Assert.Contains("NormalizeSlug", text, StringComparison.Ordinal);
+        Assert.Contains("P08-R3", text, StringComparison.Ordinal);
     }
 }

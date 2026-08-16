@@ -81,6 +81,11 @@ public sealed class AccessModule : ITravelCoreModule
             {
                 policy.RequireAuthenticatedUser();
                 policy.AddRequirements(new PermissionRequirement("content.items.write"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.SeoContentPostureWrite, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("seo.content-posture.write"));
             });
     }
 

@@ -36,6 +36,11 @@ export type AdminContentWorkflowCopy = {
   bodyLabel: string;
   excerptLabel: string;
   saveTranslation: string;
+  slugLabel: string;
+  slugHint: string;
+  saveSlug: string;
+  publishSeoRoute: string;
+  publishSeoHint: string;
   categoryCodeLabel: string;
   tagCodeLabel: string;
   createCategory: string;
@@ -75,7 +80,7 @@ export type AdminContentWorkflowCopy = {
 const fa: AdminContentWorkflowCopy = {
   pageTitle: "مدیریت محتوا",
   pageIntro:
-    "ایجاد و ویرایش Article / LandingPage / Guide با ترجمه، رده/برچسب، بلوک‌های پایه و لینک مقصد. حذف/آرشیو، اسلاگ و SEO هنوز قفل نشده‌اند.",
+    "ایجاد و ویرایش Article / LandingPage / Guide با ترجمه، اسلاگ محلی، رده/برچسب، بلوک‌های پایه و لینک مقصد. حذف/آرشیو و قابلیت‌های بازِ R6/R7/R8 هنوز قفل‌نشده‌اند.",
   navLabel: "محتوا",
   backToHub: "بازگشت به کاتالوگ",
   placesLink: "مکان‌ها",
@@ -109,6 +114,12 @@ const fa: AdminContentWorkflowCopy = {
   bodyLabel: "بدنه",
   excerptLabel: "خلاصه",
   saveTranslation: "ذخیره ترجمه",
+  slugLabel: "Slug محلی",
+  slugHint: "مالکیت فعلی با Content است؛ تاریخچه/ریدایرکت با SEO.",
+  saveSlug: "ذخیرهٔ slug",
+  publishSeoRoute: "ثبت مسیر SEO",
+  publishSeoHint:
+    "برای Article مسیر articles/{slug} و برای LandingPage مسیر landing-pages/{slug} را ثبت می‌کند. IndexPolicy پیش‌فرض noindex,follow می‌ماند مگر صریحاً تنظیم شود.",
   categoryCodeLabel: "کد رده",
   tagCodeLabel: "کد برچسب",
   createCategory: "ایجاد رده",
@@ -148,7 +159,7 @@ const fa: AdminContentWorkflowCopy = {
 const en: AdminContentWorkflowCopy = {
   pageTitle: "Content admin",
   pageIntro:
-    "Create and edit Article / LandingPage / Guide with translations, category/tag, baseline blocks, and destination links. Delete/archive, slug, and SEO controls remain locked open.",
+    "Create and edit Article / LandingPage / Guide with translations, locale slug, category/tag, baseline blocks, and destination links. Delete/archive and open R6/R7/R8 capabilities remain locked out of this baseline.",
   navLabel: "Content",
   backToHub: "Back to catalog",
   placesLink: "Places",
@@ -182,6 +193,12 @@ const en: AdminContentWorkflowCopy = {
   bodyLabel: "Body",
   excerptLabel: "Excerpt",
   saveTranslation: "Save translation",
+  slugLabel: "Localized slug",
+  slugHint: "Content owns current slug; SEO owns history/redirects.",
+  saveSlug: "Save slug",
+  publishSeoRoute: "Publish SEO route",
+  publishSeoHint:
+    "Registers articles/{slug} or landing-pages/{slug} in the SEO namespace. Default IndexPolicy stays noindex,follow until set explicitly.",
   categoryCodeLabel: "Category code",
   tagCodeLabel: "Tag code",
   createCategory: "Create category",

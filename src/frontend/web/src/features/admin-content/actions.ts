@@ -34,6 +34,7 @@ type ApiTranslation = {
   title: string;
   body?: string | null;
   excerpt?: string | null;
+  slug?: string | null;
   updatedAt: string;
 };
 
@@ -100,6 +101,7 @@ function mapTranslation(t: ApiTranslation): ContentTranslationView {
     title: t.title,
     body: t.body ?? null,
     excerpt: t.excerpt ?? null,
+    slug: t.slug ?? null,
     updatedAt: t.updatedAt,
   };
 }
@@ -285,6 +287,64 @@ export async function upsertContentTranslationAction(input: {
   );
   if (!result.ok) return failMessage(result);
   return { ok: true, translation: mapTranslation(result.data) };
+}
+
+export async function setContentTranslationSlugAction(input: {
+  contentItemId: string;
+  localeCode: string;
+  slug: string | null;
+}): Promise<
+  | { ok: true; translation: ContentTranslationView }
+  | { ok: false; message: string; status?: number }
+> {
+  const id = encodeURIComponent(input.contentItemId.trim());
+  const locale = encodeURIComponent(input.localeCode.trim());
+  const result = await apiSendJson<ApiTranslation>(
+    `/api/content/items/${id}/translations/${locale}/slug`,
+    {
+      method: "PUT",
+      headers: await authHeaders(),
+      body: { slug: input.slug },
+    },
+  );
+  if (!result.ok) return failMessage(result);
+  return { ok: true, translation: mapTranslation(result.data) };
+}
+
+export async function publishContentSeoRouteAction(input: {
+  contentItemId: string;
+  localeCode: string;
+  slug: string;
+  kind: string;
+}): Promise<
+  | { ok: true; publicPath: string }
+  | { ok: false; message: string; status?: number }
+> {
+  const kind = input.kind.trim();
+  const path =
+    kind === "Article"
+      ? "/api/seo/publication/article"
+      : kind === "LandingPage"
+        ? "/api/seo/publication/landing-page"
+        : null;
+  if (!path) {
+    return {
+      ok: false,
+      message: "SEO publish is only available for Article and LandingPage.",
+    };
+  }
+
+  const result = await apiSendJson<{ publicPath: string }>(path, {
+    method: "POST",
+    headers: await authHeaders(),
+    body: {
+      contentItemId: input.contentItemId,
+      locale: input.localeCode,
+      slug: input.slug,
+    },
+  });
+  if (!result.ok) return failMessage(result);
+  return { ok: true, publicPath: result.data.publicPath };
 }
 
 export async function listContentCategoriesAction(input?: {

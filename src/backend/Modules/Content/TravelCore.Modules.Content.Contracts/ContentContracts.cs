@@ -41,12 +41,14 @@ public sealed record CreateContentItemRequest(
     string EnglishName);
 
 /// <summary>
-/// Upsert locale row for title/body/excerpt. Slug omitted until P08-R3 locks ownership.
+/// Upsert locale row for title/body/excerpt. Slug is set via SetTranslationSlug (P08-R3).
 /// </summary>
 public sealed record UpsertContentItemTranslationRequest(
     string Title,
     string? Body = null,
     string? Excerpt = null);
+
+public sealed record SetContentItemTranslationSlugRequest(string? Slug);
 
 public sealed record ContentItemTranslationResponse(
     Guid ContentItemId,
@@ -54,7 +56,20 @@ public sealed record ContentItemTranslationResponse(
     string Title,
     string? Body,
     string? Excerpt,
+    string? Slug,
     string UpdatedAt);
+
+/// <summary>
+/// Public slug lookup hit (P08-R3). When publicOnly, requires a locale translation with title + slug.
+/// Route existence ≠ indexing (P08-R4); SEO owns IndexPolicy.
+/// </summary>
+public sealed record ContentSlugLookupResponse(
+    Guid ContentItemId,
+    string LocaleCode,
+    string Slug,
+    string Kind,
+    string Code,
+    string EnglishName);
 
 public sealed record ContentCategoryResponse(
     Guid Id,
@@ -110,6 +125,22 @@ public interface IContentItemService
         Guid contentItemId,
         string localeCode,
         UpsertContentItemTranslationRequest request,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Locale-specific slug lookup (P08-R3). When <paramref name="publicOnly"/> is true,
+    /// only items with a non-empty title and slug for that locale are returned.
+    /// </summary>
+    Task<ContentSlugLookupResponse?> FindBySlugAsync(
+        string localeCode,
+        string slug,
+        bool publicOnly = true,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentItemTranslationResponse> SetTranslationSlugAsync(
+        Guid contentItemId,
+        string localeCode,
+        SetContentItemTranslationSlugRequest request,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<ContentItemTranslationResponse>> ListTranslationsAsync(

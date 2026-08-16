@@ -354,6 +354,56 @@ internal static class SeoEndpoints
             }
         }).RequireAuthorization("Access.Seo.PlacePosture.Write");
 
+        // Article public-path publication (TC-P08-T008) — SEO namespace; Access-backed write.
+        // Does not set IndexPolicy (P08-R4: default missing policy remains noindex,follow).
+        group.MapPost("/publication/article", async Task<IResult> (
+            PublishArticleSeoRouteRequest request,
+            ISeoArticlePublicationService publication,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var result = await publication.PublishAsync(request, cancellationToken);
+                return Results.Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+            catch (SeoRouteConflictException ex)
+            {
+                return Results.Conflict(new { title = "SeoRoute conflict", detail = ex.Message });
+            }
+        }).RequireAuthorization("Access.Seo.ContentPosture.Write");
+
+        // LandingPage public-path publication (TC-P08-T008) — SEO namespace; Access-backed write.
+        // Does not set IndexPolicy (P08-R4: default missing policy remains noindex,follow).
+        group.MapPost("/publication/landing-page", async Task<IResult> (
+            PublishLandingPageSeoRouteRequest request,
+            ISeoLandingPagePublicationService publication,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var result = await publication.PublishAsync(request, cancellationToken);
+                return Results.Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+            catch (SeoRouteConflictException ex)
+            {
+                return Results.Conflict(new { title = "SeoRoute conflict", detail = ex.Message });
+            }
+        }).RequireAuthorization("Access.Seo.ContentPosture.Write");
+
         return endpoints;
     }
 

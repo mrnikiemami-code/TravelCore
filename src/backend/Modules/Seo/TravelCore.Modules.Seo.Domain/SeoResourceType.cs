@@ -8,4 +8,6 @@ public enum SeoResourceType : short
 {
     Destination = 1,
     Place = 2,
+    Article = 3,
+    LandingPage = 4,
 }

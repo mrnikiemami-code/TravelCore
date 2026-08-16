@@ -41,4 +41,9 @@ public static class AccessAuthorizationPolicies
     /// Content Admin editorial mutations: Access-backed <c>content.items.write</c>.
     /// </summary>
     public const string ContentItemsWrite = "Access.Content.Items.Write";
+
+    /// <summary>
+    /// Content SEO route publication: Access-backed <c>seo.content-posture.write</c>.
+    /// </summary>
+    public const string SeoContentPostureWrite = "Access.Seo.ContentPosture.Write";
 }

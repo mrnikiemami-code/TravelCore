@@ -32,13 +32,14 @@ public sealed class ContentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(6, expectedMigrations.Length);
+            Assert.Equal(7, expectedMigrations.Length);
             Assert.EndsWith("_InitialContentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentCatalogTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentItemTranslations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentTaxonomyTables", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentBlocksTables", expectedMigrations[4], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentDestinationLinks", expectedMigrations[5], StringComparison.Ordinal);
+            Assert.EndsWith("_AddContentItemTranslationSlugs", expectedMigrations[6], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -214,10 +215,26 @@ public sealed class ContentMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'content'
-                  AND table_name IN ('content_items', 'content_item_translations')
+                  AND table_name = 'content_items'
                   AND column_name IN (
                     'title_fa', 'title_en', 'body_fa', 'body_en',
                     'slug', 'body_json', 'index_policy');
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'content'
+                  AND table_name = 'content_item_translations'
+                  AND column_name IN (
+                    'title_fa', 'title_en', 'body_fa', 'body_en',
+                    'body_json', 'index_policy');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'content'
+                  AND table_name = 'content_item_translations'
+                  AND column_name = 'slug';
                 """, ct));
         }
     }

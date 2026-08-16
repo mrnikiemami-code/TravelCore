@@ -36,8 +36,9 @@ public sealed class ContentAdminAccessGuardrailTests
         Assert.DoesNotContain("ArchivedAt", text, StringComparison.Ordinal);
         Assert.DoesNotContain("IsDeleted", text, StringComparison.Ordinal);
 
-        // Slug / IndexPolicy remain unresolved (P08-R3/R4) — Admin baseline must not invent.
-        Assert.DoesNotContain("by-slug", text, StringComparison.OrdinalIgnoreCase);
+        // Slug lookup is Content-owned (P08-R3); indexability stays SEO-owned (P08-R4).
+        Assert.Contains("by-slug", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("/slug", text, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("SetIndexPolicy", text, StringComparison.Ordinal);
         Assert.DoesNotContain("ISeoIndexPolicy", text, StringComparison.Ordinal);
         Assert.DoesNotContain("AuthorId", text, StringComparison.Ordinal);
@@ -60,6 +61,7 @@ public sealed class ContentAdminAccessGuardrailTests
             "AccessPermissionCatalog.cs");
         var text = File.ReadAllText(catalogPath);
         Assert.Contains("content.items.write", text, StringComparison.Ordinal);
+        Assert.Contains("seo.content-posture.write", text, StringComparison.Ordinal);
 
         var policiesPath = Path.Combine(
             RepoRoot,
@@ -72,10 +74,11 @@ public sealed class ContentAdminAccessGuardrailTests
             "AccessAuthorizationPolicies.cs");
         var policies = File.ReadAllText(policiesPath);
         Assert.Contains("Access.Content.Items.Write", policies, StringComparison.Ordinal);
+        Assert.Contains("Access.Seo.ContentPosture.Write", policies, StringComparison.Ordinal);
     }
 
     [Fact]
-    public void AdminContentFrontend_Omits_DeleteArchiveSlugSeoAuthorAndWidgets()
+    public void AdminContentFrontend_Omits_DeleteArchiveAuthorWidgetsAndIndexPolicy()
     {
         var featureRoot = Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "admin-content");
         Assert.True(Directory.Exists(featureRoot), featureRoot);
@@ -95,7 +98,7 @@ public sealed class ContentAdminAccessGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "Admin Content must not invent R8 delete/archive, R3/R4 SEO/slug, R7 Author, or R6 widgets:\n" + string.Join('\n', hits));
+            "Admin Content must not invent R8 delete/archive, R4 IndexPolicy mutation, R7 Author, or R6 widgets:\n" + string.Join('\n', hits));
     }
 
     [Fact]

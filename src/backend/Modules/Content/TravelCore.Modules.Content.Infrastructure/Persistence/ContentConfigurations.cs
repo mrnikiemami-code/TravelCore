@@ -142,12 +142,21 @@ internal sealed class ContentItemTranslationConfiguration : IEntityTypeConfigura
             .HasColumnName("excerpt")
             .HasMaxLength(ContentItemTranslation.ExcerptMaxLength);
 
+        builder.Property(x => x.Slug)
+            .HasColumnName("slug")
+            .HasMaxLength(ContentItemTranslation.SlugMaxLength);
+
         builder.Property(x => x.UpdatedAt)
             .HasColumnName("updated_at")
             .IsRequired();
 
         builder.HasIndex(x => x.LocaleCode)
             .HasDatabaseName("ix_content_item_translations_locale_code");
+
+        builder.HasIndex(x => new { x.LocaleCode, x.Slug })
+            .IsUnique()
+            .HasFilter("slug IS NOT NULL")
+            .HasDatabaseName("ux_content_item_translations_locale_slug");
     }
 }
 

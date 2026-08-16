@@ -24,8 +24,38 @@ public sealed class ContentItemTranslationTests
         Assert.Equal("عنوان فارسی", translation.Title);
         Assert.Equal("متن بدنه", translation.Body);
         Assert.Equal("خلاصه", translation.Excerpt);
+        Assert.Null(translation.Slug);
         Assert.Single(item.Translations);
         Assert.Equal(item.Id, translation.ContentItemId);
+    }
+
+    [Fact]
+    public void SetTranslationSlug_RequiresExistingTranslation_AndNormalizes()
+    {
+        var item = ContentItemAggregate.CreateArticle("ART-LOC-SLUG", "Demo", Now);
+        item.UpsertTranslation("en", "Title", null, null, Now);
+        var translation = item.SetTranslationSlug("EN", "  Summer-Tips  ", Now.Plus(Duration.FromMinutes(1)));
+
+        Assert.Equal("summer-tips", translation.Slug);
+        Assert.Equal("en", translation.LocaleCode);
+    }
+
+    [Fact]
+    public void SetTranslationSlug_RejectsMissingTranslation()
+    {
+        var item = ContentItemAggregate.CreateArticle("ART-LOC-MISS", "Demo", Now);
+        Assert.ThrowsAny<ArgumentException>(() =>
+            item.SetTranslationSlug("en", "missing-row", Now));
+    }
+
+    [Fact]
+    public void NormalizeSlug_RejectsInvalidShapes()
+    {
+        Assert.Null(ContentItemTranslation.NormalizeSlug("  "));
+        Assert.Equal("ok-slug", ContentItemTranslation.NormalizeSlug("Ok-Slug"));
+        Assert.ThrowsAny<ArgumentException>(() => ContentItemTranslation.NormalizeSlug("-bad"));
+        Assert.ThrowsAny<ArgumentException>(() => ContentItemTranslation.NormalizeSlug("bad--slug"));
+        Assert.ThrowsAny<ArgumentException>(() => ContentItemTranslation.NormalizeSlug("bad_slug"));
     }
 
     [Fact]

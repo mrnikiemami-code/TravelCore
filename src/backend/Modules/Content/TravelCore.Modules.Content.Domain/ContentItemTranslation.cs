@@ -3,10 +3,11 @@ using NodaTime;
 namespace TravelCore.Modules.Content.Domain;
 
 /// <summary>
-/// Locale-specific title/body/excerpt for a ContentItem (TC-P08-T003).
+/// Locale-specific title/body/excerpt/slug for a ContentItem (TC-P08-T003 / T008).
 /// Uses locale rows (ADR 0008) — never per-language columns on the aggregate root.
 /// Locale codes are ReferenceData-owned; Content stores the opaque code only (no cross-schema FK).
-/// Slug ownership is P08-R3 — deliberately omitted until architect lock.
+/// P08-R3: ContentItemTranslation owns localized current slug; SEO owns route binding,
+/// redirect history, canonical/history, and publication SEO state. No global slug engine in Content.
 /// </summary>
 public sealed class ContentItemTranslation
 {
@@ -14,6 +15,7 @@ public sealed class ContentItemTranslation
     public const int TitleMaxLength = 300;
     public const int ExcerptMaxLength = 1000;
     public const int BodyMaxLength = 50_000;
+    public const int SlugMaxLength = 120;
 
     private ContentItemTranslation()
     {
@@ -27,6 +29,7 @@ public sealed class ContentItemTranslation
         string title,
         string? body,
         string? excerpt,
+        string? slug,
         Instant updatedAt)
     {
         ContentItemId = contentItemId;
@@ -34,6 +37,7 @@ public sealed class ContentItemTranslation
         Title = title;
         Body = body;
         Excerpt = excerpt;
+        Slug = slug;
         UpdatedAt = updatedAt;
     }
 
@@ -51,6 +55,11 @@ public sealed class ContentItemTranslation
 
     public string? Excerpt { get; private set; }
 
+    /// <summary>
+    /// Current locale-specific public slug SoR (P08-R3). Not SEO history / redirect / IndexPolicy.
+    /// </summary>
+    public string? Slug { get; private set; }
+
     public Instant UpdatedAt { get; private set; }
 
     internal static ContentItemTranslation Create(
@@ -59,7 +68,8 @@ public sealed class ContentItemTranslation
         string title,
         string? body,
         string? excerpt,
-        Instant now)
+        Instant now,
+        string? slug = null)
     {
         return new ContentItemTranslation(
             contentItemId,
@@ -67,6 +77,7 @@ public sealed class ContentItemTranslation
             NormalizeTitle(title),
             NormalizeBody(body),
             NormalizeExcerpt(excerpt),
+            NormalizeSlug(slug),
             now);
     }
 
@@ -75,6 +86,12 @@ public sealed class ContentItemTranslation
         Title = NormalizeTitle(title);
         Body = NormalizeBody(body);
         Excerpt = NormalizeExcerpt(excerpt);
+        UpdatedAt = now;
+    }
+
+    internal void SetSlug(string? slug, Instant now)
+    {
+        Slug = NormalizeSlug(slug);
         UpdatedAt = now;
     }
 
@@ -138,6 +155,35 @@ public sealed class ContentItemTranslation
             throw new ArgumentException(
                 $"Translation excerpt max length is {ExcerptMaxLength}.",
                 nameof(excerpt));
+        }
+
+        return trimmed;
+    }
+
+    /// <summary>
+    /// Same opaque URL-segment rules as PlaceTranslation / DestinationTranslation (P04 / SEO conventions).
+    /// </summary>
+    public static string? NormalizeSlug(string? slug)
+    {
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            return null;
+        }
+
+        var trimmed = slug.Trim().ToLowerInvariant();
+        if (trimmed.Length > SlugMaxLength)
+        {
+            throw new ArgumentException($"Slug max length is {SlugMaxLength}.", nameof(slug));
+        }
+
+        if (trimmed.Any(static c => !(char.IsAsciiLetterOrDigit(c) || c == '-')))
+        {
+            throw new ArgumentException("Slug may contain only a-z, 0-9, and hyphen.", nameof(slug));
+        }
+
+        if (trimmed.StartsWith('-') || trimmed.EndsWith('-') || trimmed.Contains("--", StringComparison.Ordinal))
+        {
+            throw new ArgumentException("Slug must not start/end with hyphen or contain consecutive hyphens.", nameof(slug));
         }
 
         return trimmed;

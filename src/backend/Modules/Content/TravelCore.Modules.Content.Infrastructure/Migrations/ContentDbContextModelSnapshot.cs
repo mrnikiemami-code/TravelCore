@@ -295,6 +295,11 @@ namespace TravelCore.Modules.Content.Infrastructure.Migrations
                         .HasColumnType("character varying(1000)")
                         .HasColumnName("excerpt");
 
+                    b.Property<string>("Slug")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("slug");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -309,6 +314,11 @@ namespace TravelCore.Modules.Content.Infrastructure.Migrations
 
                     b.HasIndex("LocaleCode")
                         .HasDatabaseName("ix_content_item_translations_locale_code");
+
+                    b.HasIndex("LocaleCode", "Slug")
+                        .IsUnique()
+                        .HasDatabaseName("ux_content_item_translations_locale_slug")
+                        .HasFilter("slug IS NOT NULL");
 
                     b.ToTable("content_item_translations", "content");
                 });

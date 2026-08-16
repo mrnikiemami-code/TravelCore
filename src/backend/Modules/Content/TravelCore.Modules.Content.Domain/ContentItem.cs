@@ -8,7 +8,9 @@ namespace TravelCore.Modules.Content.Domain;
 /// Localized title/body/excerpt live on ContentItemTranslation rows (T003; ADR 0008).
 /// Category/Tag taxonomy links are Content-owned (T004). Author deferred (P08-R7 open).
 /// Content Blocks are relational first-class entities (T005 / P08-R2). Widgets deferred (P08-R6).
-/// Destination links are logical 0..N refs (T006 / P08-R5). Slug/SEO/Author/delete deferred (R3/R4/R7/R8).
+/// Destination links are logical 0..N refs (T006 / P08-R5).
+/// P08-R3: locale slug lives on ContentItemTranslation; SEO owns route/history/IndexPolicy (P08-R4).
+/// Author/delete deferred (R7/R8).
 /// </summary>
 public sealed class ContentItem
 {
@@ -203,6 +205,23 @@ public sealed class ContentItem
         var normalizedLocale = ContentItemTranslation.NormalizeLocaleCode(localeCode);
         return _translations.FirstOrDefault(x =>
             string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    /// Sets current locale slug on an existing translation row (P08-R3). Translation must already exist.
+    /// </summary>
+    public ContentItemTranslation SetTranslationSlug(string localeCode, string? slug, Instant now)
+    {
+        var normalizedLocale = ContentItemTranslation.NormalizeLocaleCode(localeCode);
+        var existing = _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal))
+            ?? throw new ArgumentException(
+                $"Translation for locale '{normalizedLocale}' was not found.",
+                nameof(localeCode));
+
+        existing.SetSlug(slug, now);
+        UpdatedAt = now;
+        return existing;
     }
 
     public ContentItemCategory AssignCategory(ContentCategoryId categoryId, Instant now)

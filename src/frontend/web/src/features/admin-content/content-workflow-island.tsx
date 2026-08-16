@@ -26,6 +26,8 @@ import {
   removeContentDestinationAction,
   removeContentTagAction,
   reorderContentBlocksAction,
+  setContentTranslationSlugAction,
+  publishContentSeoRouteAction,
   upsertContentTranslationAction,
 } from "@/features/admin-content/actions";
 import { getAdminContentWorkflowCopy } from "@/features/admin-content/copy";
@@ -69,6 +71,7 @@ export function ContentWorkflowIsland({
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [excerpt, setExcerpt] = useState("");
+  const [contentSlug, setContentSlug] = useState("");
   const [categories, setCategories] = useState<ContentCategoryView[]>([]);
   const [tags, setTags] = useState<ContentTagView[]>([]);
   const [categoryCode, setCategoryCode] = useState("");
@@ -118,6 +121,7 @@ export function ContentWorkflowIsland({
     setTitle(row?.title ?? "");
     setBody(row?.body ?? "");
     setExcerpt(row?.excerpt ?? "");
+    setContentSlug(row?.slug ?? "");
     setResolvedDestination(null);
     setDestSlug("");
   }
@@ -422,6 +426,7 @@ export function ContentWorkflowIsland({
                     setTitle(row?.title ?? "");
                     setBody(row?.body ?? "");
                     setExcerpt(row?.excerpt ?? "");
+                    setContentSlug(row?.slug ?? "");
                   }}
                 >
                   <option value="fa">fa</option>
@@ -478,6 +483,70 @@ export function ContentWorkflowIsland({
               >
                 {copy.saveTranslation}
               </button>
+              <form
+                className="grid gap-3 sm:grid-cols-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  run(async () => {
+                    const result = await setContentTranslationSlugAction({
+                      contentItemId: selected.id,
+                      localeCode: translationLocale,
+                      slug: contentSlug.trim() || null,
+                    });
+                    if (!result.ok) {
+                      setError(mapAuthError(result.status));
+                      return;
+                    }
+                    await reloadSelected();
+                  });
+                }}
+              >
+                <label className="flex flex-col gap-1 text-sm sm:col-span-2">
+                  <span>{copy.slugLabel}</span>
+                  <input
+                    value={contentSlug}
+                    onChange={(e) => setContentSlug(e.target.value)}
+                    className="min-h-touch rounded-md border border-border bg-background px-3"
+                  />
+                  <Text role="caption">{copy.slugHint}</Text>
+                </label>
+                <div className="flex flex-wrap gap-2 sm:col-span-2">
+                  <button
+                    type="submit"
+                    disabled={pending}
+                    className="min-h-touch rounded-md bg-foreground px-4 text-background disabled:opacity-50"
+                  >
+                    {copy.saveSlug}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={
+                      pending ||
+                      !contentSlug.trim() ||
+                      (selected.kind !== "Article" &&
+                        selected.kind !== "LandingPage")
+                    }
+                    className="min-h-touch rounded-md border border-border px-4 disabled:opacity-50"
+                    onClick={() =>
+                      run(async () => {
+                        const result = await publishContentSeoRouteAction({
+                          contentItemId: selected.id,
+                          localeCode: translationLocale,
+                          slug: contentSlug.trim(),
+                          kind: selected.kind,
+                        });
+                        if (!result.ok) {
+                          setError(mapAuthError(result.status));
+                          return;
+                        }
+                      })
+                    }
+                  >
+                    {copy.publishSeoRoute}
+                  </button>
+                </div>
+                <Text role="caption">{copy.publishSeoHint}</Text>
+              </form>
             </Stack>
           </Surface>
 
