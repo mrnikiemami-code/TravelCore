@@ -1,4 +1,4 @@
-# TravelCore Project State
+﻿# TravelCore Project State
 
 این سند نقطهٔ ورود سریع برای بازیابی وضعیت پروژه است تا ChatGPT، Cursor، Hermes یا توسعه‌دهندهٔ جدید بدون اتکا به تاریخچهٔ چت، وضعیت فعلی را بفهمد.
 
@@ -317,7 +317,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P04-GATE | P04 Acceptance Gate | COMPLETE / ACCEPTED | `f70991f` |
 | TC-P05-PLAN | P05 SEO Engine Implementation Plan | COMPLETE / ACCEPTED | `032dabc` |
 | TC-P05-PLAN-R1 | P05 Plan Baseline Reconciliation & Architect Review Evidence | COMPLETE / ACCEPTED | `31c3283` |
-| TC-P05-T001 | SEO module scaffolding | AWAITING_ARCHITECT_REVIEW | `bf957ae` |
+| TC-P05-T001 | SEO module scaffolding | AWAITING_ARCHITECT_REVIEW | `a65fcc8` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
