@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P08-T008` — awaiting architect Auto-Execute (R3/R4 gate check) |
+| Current Active Product Task | `TC-P08-T008` — **AWAITING_ARCHITECT_REVIEW** (`4924892`) |
 | Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
-| Current Next Task | Architect: lock P08-R3/R4 if required for `TC-P08-T008`, then Auto-Execute |
+| Current Next Task | Architect review `TC-P08-T008`; then T009 / next P08 task |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -148,12 +148,12 @@
 | P08-T005 | **COMPLETE / ACCEPTED** (`f66458b`; hygiene `3220d58`) — Relational Content Blocks engine (P08-R2; no widgets / P08-R6) |
 | P08-T006 | **COMPLETE / ACCEPTED** (`4e9c94e`; hygiene `ba391d0`) — Destination logical links 0..N (P08-R5) |
 | P08-T007 | **COMPLETE / ACCEPTED** (`6a56a0d`; hygiene `4de0f93`) — Access + Admin Content baseline (no delete/archive; no slug/SEO; no Author/widgets) |
-| P08-T008 | **NOT_STARTED** — Public Content pages + SEO hooks (requires R3/R4 check before execute) |
+| P08-T008 | **AWAITING_ARCHITECT_REVIEW** (`4924892`) — Public Content pages + SEO hooks (slug SoR + noindex,follow) |
 | P08-R1 (Content model shape) | **RESOLVED** — Core Content Aggregate + Typed Content Variants (`ContentItemId` only; Article/LandingPage/Guide 1:1) |
 | P08-R2 (Block storage) | **RESOLVED** — Relational Block Storage (`ContentBlock` first-class + ordering) |
 | P08-R5 (Destination link) | **RESOLVED** — Content→Destination logical refs · cardinality 0..N · no cross-schema FK · contract existence validation |
-| P08-R3 (Slug) | **UNRESOLVED** — do not invent |
-| P08-R4 (IndexPolicy) | **UNRESOLVED** — do not invent |
+| P08-R3 (Slug) | **RESOLVED** — `ContentItemTranslation` owns localized current slug; SEO owns route binding, redirect history, canonical/history, publication SEO state; no global slug engine in Content |
+| P08-R4 (IndexPolicy) | **RESOLVED** — default IndexPolicy = **noindex, follow**; public route existence ≠ indexing; SEO owns final IndexPolicy; Content only exposes SEO hooks; publication services do not set IndexPolicy |
 | P08-R6 (Widgets) | **UNRESOLVED** — no Tour/Hotel/Attraction widgets |
 | P08-R7 (Author) | **UNRESOLVED** — Category/Tag only; no Author |
 | P08-R8 (Delete/archive) | **UNRESOLVED** — no ContentItem delete/archive product |
@@ -184,7 +184,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — awaiting Auto-Execute** (`TC-P08-T008`; R3/R4 gate) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P08-T008` · `4924892`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -346,7 +346,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 IN_PROGRESS** (`TC-P08-PLAN` ACCEPTED · `7012fe0`); **P08-R1/R2/R5 RESOLVED** · **P08-R3/R4/R6–R8 UNRESOLVED**; P09 NOT_STARTED
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 IN_PROGRESS** (`TC-P08-PLAN` ACCEPTED · `7012fe0`); **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED**; `TC-P08-T008` AWAITING_ARCHITECT_REVIEW (`4924892`); P09 NOT_STARTED
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -467,6 +467,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P07-T006-R1 | Admin Place media picker UX remediation | AWAITING_ARCHITECT_REVIEW | `e4b5201` |
 | TC-P07-T007 | Public Place detail + SEO integration | AWAITING_ARCHITECT_REVIEW | `1c76f6b` |
 | TC-P07-T008 | Phase hardening tests & evidence pack | AWAITING_ARCHITECT_REVIEW | `f7843cc` |
+| TC-P08-T008 | Public Content pages + SEO integration hooks | AWAITING_ARCHITECT_REVIEW | `4924892` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -508,6 +509,8 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - **P06-R1 RESOLVED — DEFER:** no WebP/AVIF conversion / automatic WebP generation / content negotiation in P06; accepted optimization posture = same-format derived variants (T005/T008)
 - **P06-R4 RESOLVED — APP PROXY:** Browser → TravelCore Media delivery → `IMediaObjectStorage.OpenRead`; anonymous Ready-only; StorageKey never public; Signed URL deferred; Direct object URL rejected for P06
 - **P06-R5 RESOLVED — CONTRACT-ONLY:** consumer MediaAssetId reference proven via Media.Contracts + ArchitectureTests; no Destination MediaAssetId/role in P06
+- **P08-R3 RESOLVED:** `ContentItemTranslation` owns localized current slug; SEO owns route binding, redirect history, canonical/history, publication SEO state; no global slug engine in Content
+- **P08-R4 RESOLVED:** default IndexPolicy = **noindex, follow**; public route existence ≠ indexing; SEO owns final IndexPolicy; Content only exposes SEO hooks; publication services do not set IndexPolicy
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 
