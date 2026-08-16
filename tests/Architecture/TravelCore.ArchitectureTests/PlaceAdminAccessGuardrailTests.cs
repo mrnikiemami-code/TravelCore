@@ -92,4 +92,29 @@ public sealed class PlaceAdminAccessGuardrailTests
             hits.Count == 0,
             "Admin Place must not invent R3/R4/R5 surfaces:\n" + string.Join('\n', hits));
     }
+
+    [Fact]
+    public void AdminPlaceFrontend_Uses_ReadyMediaPicker_Not_RawIdPaste()
+    {
+        var islandPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "admin-place",
+            "place-workflow-island.tsx");
+        Assert.True(File.Exists(islandPath), islandPath);
+        var text = File.ReadAllText(islandPath);
+
+        Assert.Contains("listMediaAssetsAction", text, StringComparison.Ordinal);
+        Assert.Contains("status: \"Ready\"", text, StringComparison.Ordinal);
+        Assert.Contains("useAsCover", text, StringComparison.Ordinal);
+        Assert.Contains("addToGallery", text, StringComparison.Ordinal);
+        Assert.Contains("mediaVariantContentPath", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("setCoverMediaId", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("setGalleryMediaId", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("StorageKey", text, StringComparison.Ordinal);
+    }
 }

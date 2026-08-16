@@ -3,6 +3,8 @@
 import { useId, useState, useTransition } from "react";
 import type { AppLocale } from "@/lib/i18n";
 import { LtrValue, Stack, Surface, Text } from "@/components/ui";
+import { listMediaAssetsAction } from "@/features/admin-media/actions";
+import type { MediaAssetSummaryView } from "@/features/admin-media/types";
 import {
   addPlaceGalleryItemAction,
   createPlaceAction,
@@ -24,6 +26,11 @@ import type {
   PlaceDetailView,
   PlaceSummaryView,
 } from "@/features/admin-place/types";
+import {
+  mediaOriginalContentPath,
+  mediaVariantContentPath,
+  resolveMediaAppProxySrc,
+} from "@/lib/media/media-presentation";
 
 export type PlaceWorkflowIslandProps = {
   locale: AppLocale;
@@ -78,8 +85,8 @@ export function PlaceWorkflowIsland({
   const [catalogStatus, setCatalogStatus] = useState("Draft");
   const [classificationCode, setClassificationCode] = useState("");
   const [facilitiesText, setFacilitiesText] = useState("");
-  const [coverMediaId, setCoverMediaId] = useState("");
-  const [galleryMediaId, setGalleryMediaId] = useState("");
+  const [readyMedia, setReadyMedia] = useState<MediaAssetSummaryView[]>([]);
+  const [readyMediaLoaded, setReadyMediaLoaded] = useState(false);
 
   function mapAuthError(status?: number) {
     if (status === 401 || status === 403) return copy.unauthorizedBody;
@@ -118,8 +125,27 @@ export function PlaceWorkflowIsland({
     setFacilitiesText(place.facilities.join(", "));
     setResolvedDestination(null);
     setDestSlug("");
-    setCoverMediaId("");
-    setGalleryMediaId("");
+  }
+
+  async function refreshReadyMedia() {
+    const result = await listMediaAssetsAction({ status: "Ready", take: 48 });
+    if (!result.ok) {
+      setError(mapAuthError(result.status));
+      return;
+    }
+    setReadyMedia(result.items);
+    setReadyMediaLoaded(true);
+  }
+
+  function mediaPreviewSrc(assetId: string): string {
+    // Prefer thumbnail app-proxy; original remains available if variant missing (img onError).
+    return resolveMediaAppProxySrc(
+      mediaVariantContentPath(assetId, "thumbnail"),
+    );
+  }
+
+  function mediaOriginalSrc(assetId: string): string {
+    return resolveMediaAppProxySrc(mediaOriginalContentPath(assetId));
   }
 
   async function refreshList() {
@@ -897,93 +923,158 @@ export function PlaceWorkflowIsland({
               <Text as="h2" role="heading">
                 {copy.stepMedia}
               </Text>
-              <form
-                className="flex flex-col gap-3 sm:flex-row sm:items-end"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  run(async () => {
-                    const result = await setPlaceCoverAction({
-                      placeId: selected.id,
-                      mediaAssetId: coverMediaId.trim(),
-                    });
-                    if (!result.ok) {
-                      setError(mapAuthError(result.status));
-                      return;
-                    }
-                    await reloadSelected();
-                  });
-                }}
-              >
-                <label className="flex min-w-0 flex-1 flex-col gap-1 text-sm">
-                  <span>{copy.coverMediaLabel}</span>
-                  <input
-                    required
-                    value={coverMediaId}
-                    onChange={(e) => setCoverMediaId(e.target.value)}
-                    className="min-h-touch rounded-md border border-border bg-background px-3"
-                  />
-                </label>
-                <button
-                  type="submit"
-                  disabled={pending}
-                  className="min-h-touch rounded-md bg-foreground px-4 text-background disabled:opacity-50"
-                >
-                  {copy.setCover}
-                </button>
+              <Text role="caption">{copy.mediaPickerHint}</Text>
+
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   disabled={pending}
                   className="min-h-touch rounded-md border border-border px-4 disabled:opacity-50"
                   onClick={() =>
                     run(async () => {
-                      const result = await removePlaceCoverAction(selected.id);
-                      if (!result.ok) {
-                        setError(mapAuthError(result.status));
-                        return;
-                      }
-                      await reloadSelected();
+                      await refreshReadyMedia();
                     })
                   }
                 >
-                  {copy.removeCover}
+                  {copy.refreshReadyMedia}
                 </button>
-              </form>
-
-              <form
-                className="flex flex-col gap-3 sm:flex-row sm:items-end"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  run(async () => {
-                    const result = await addPlaceGalleryItemAction({
-                      placeId: selected.id,
-                      mediaAssetId: galleryMediaId.trim(),
-                    });
-                    if (!result.ok) {
-                      setError(mapAuthError(result.status));
-                      return;
+                {detail?.mediaLinks.some((l) => l.role === "Cover") ? (
+                  <button
+                    type="button"
+                    disabled={pending}
+                    className="min-h-touch rounded-md border border-border px-4 disabled:opacity-50"
+                    onClick={() =>
+                      run(async () => {
+                        const result = await removePlaceCoverAction(selected.id);
+                        if (!result.ok) {
+                          setError(mapAuthError(result.status));
+                          return;
+                        }
+                        await reloadSelected();
+                      })
                     }
-                    setGalleryMediaId("");
-                    await reloadSelected();
-                  });
-                }}
-              >
-                <label className="flex min-w-0 flex-1 flex-col gap-1 text-sm">
-                  <span>{copy.galleryMediaLabel}</span>
-                  <input
-                    required
-                    value={galleryMediaId}
-                    onChange={(e) => setGalleryMediaId(e.target.value)}
-                    className="min-h-touch rounded-md border border-border bg-background px-3"
-                  />
-                </label>
-                <button
-                  type="submit"
-                  disabled={pending}
-                  className="min-h-touch rounded-md bg-foreground px-4 text-background disabled:opacity-50"
+                  >
+                    {copy.removeCover}
+                  </button>
+                ) : null}
+              </div>
+
+              {!readyMediaLoaded ? (
+                <Text role="caption">{copy.mediaPickerHeading}</Text>
+              ) : readyMedia.length === 0 ? (
+                <Text role="caption">{copy.noReadyMedia}</Text>
+              ) : (
+                <ul
+                  className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+                  aria-label={copy.mediaPickerHeading}
                 >
-                  {copy.addGallery}
-                </button>
-              </form>
+                  {readyMedia.map((asset) => {
+                    const isCover = detail?.mediaLinks.some(
+                      (l) =>
+                        l.role === "Cover" && l.mediaAssetId === asset.id,
+                    );
+                    const inGallery = detail?.mediaLinks.some(
+                      (l) =>
+                        l.role === "Gallery" && l.mediaAssetId === asset.id,
+                    );
+                    const dims =
+                      asset.width && asset.height
+                        ? `${asset.width}×${asset.height}`
+                        : null;
+                    return (
+                      <li
+                        key={asset.id}
+                        className={`flex flex-col gap-2 rounded-md border px-3 py-3 ${
+                          isCover
+                            ? "border-foreground"
+                            : "border-border"
+                        }`}
+                      >
+                        <div className="relative overflow-hidden rounded-md bg-surface-muted">
+                          {/* eslint-disable-next-line @next/next/no-img-element -- Admin picker; app-proxy URL may be cross-origin */}
+                          <img
+                            src={mediaPreviewSrc(asset.id)}
+                            alt={copy.mediaPreviewAlt}
+                            width={320}
+                            height={180}
+                            className="aspect-video w-full object-contain"
+                            onError={(e) => {
+                              const el = e.currentTarget;
+                              const fallback = mediaOriginalSrc(asset.id);
+                              if (el.src !== fallback) {
+                                el.src = fallback;
+                              }
+                            }}
+                          />
+                          {isCover ? (
+                            <span className="absolute start-2 top-2 rounded bg-foreground px-2 py-0.5 text-xs text-background">
+                              {copy.currentCoverBadge}
+                            </span>
+                          ) : null}
+                        </div>
+                        <Text role="caption">
+                          <LtrValue>{asset.contentType}</LtrValue>
+                          {dims ? (
+                            <>
+                              {" · "}
+                              <LtrValue>{dims}</LtrValue>
+                            </>
+                          ) : null}
+                          {" · Ready"}
+                        </Text>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            disabled={pending || isCover}
+                            aria-pressed={isCover}
+                            className="min-h-touch rounded-md bg-foreground px-3 text-background disabled:opacity-50"
+                            onClick={() =>
+                              run(async () => {
+                                const result = await setPlaceCoverAction({
+                                  placeId: selected.id,
+                                  mediaAssetId: asset.id,
+                                });
+                                if (!result.ok) {
+                                  setError(mapAuthError(result.status));
+                                  return;
+                                }
+                                await reloadSelected();
+                              })
+                            }
+                          >
+                            {isCover
+                              ? copy.currentCoverBadge
+                              : copy.useAsCover}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={pending || inGallery || isCover}
+                            className="min-h-touch rounded-md border border-border px-3 disabled:opacity-50"
+                            onClick={() =>
+                              run(async () => {
+                                if (inGallery) return;
+                                const result = await addPlaceGalleryItemAction({
+                                  placeId: selected.id,
+                                  mediaAssetId: asset.id,
+                                });
+                                if (!result.ok) {
+                                  setError(mapAuthError(result.status));
+                                  return;
+                                }
+                                await reloadSelected();
+                              })
+                            }
+                          >
+                            {inGallery
+                              ? copy.alreadyInGallery
+                              : copy.addToGallery}
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
 
               <Text as="h3" role="heading">
                 {copy.mediaLinksHeading}
@@ -995,19 +1086,34 @@ export function PlaceWorkflowIsland({
                   {detail.mediaLinks.map((link) => (
                     <li
                       key={`${link.role}-${link.mediaAssetId}`}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border px-3 py-2"
+                      className="flex flex-wrap items-center gap-3 rounded-md border border-border px-3 py-2"
                     >
-                      <Text as="p">
-                        {link.role}
-                        {" · "}
-                        <LtrValue>{link.mediaAssetId}</LtrValue>
-                        {link.role === "Gallery" ? (
-                          <>
-                            {" · #"}
-                            {link.sortOrder}
-                          </>
-                        ) : null}
-                      </Text>
+                      {/* eslint-disable-next-line @next/next/no-img-element -- linked media preview */}
+                      <img
+                        src={mediaPreviewSrc(link.mediaAssetId)}
+                        alt={copy.mediaPreviewAlt}
+                        width={72}
+                        height={48}
+                            className="h-12 w-20 rounded object-cover"
+                        onError={(e) => {
+                          const el = e.currentTarget;
+                          const fallback = mediaOriginalSrc(link.mediaAssetId);
+                          if (el.src !== fallback) {
+                            el.src = fallback;
+                          }
+                        }}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <Text as="p">
+                          {link.role}
+                          {link.role === "Gallery" ? (
+                            <>
+                              {" · #"}
+                              {link.sortOrder}
+                            </>
+                          ) : null}
+                        </Text>
+                      </div>
                       {link.role === "Gallery" ? (
                         <button
                           type="button"

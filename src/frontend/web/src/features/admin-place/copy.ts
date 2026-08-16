@@ -69,6 +69,15 @@ export type AdminPlaceWorkflowCopy = {
   galleryMediaLabel: string;
   addGallery: string;
   removeGalleryItem: string;
+  mediaPickerHeading: string;
+  mediaPickerHint: string;
+  refreshReadyMedia: string;
+  noReadyMedia: string;
+  currentCoverBadge: string;
+  alreadyInGallery: string;
+  useAsCover: string;
+  addToGallery: string;
+  mediaPreviewAlt: string;
   mediaLinksHeading: string;
   noMediaLinks: string;
   catalogDraft: string;
@@ -145,12 +154,22 @@ const COPY: Record<"fa" | "en", AdminPlaceWorkflowCopy> = {
     countryCodeLabel: "کد کشور (ISO alpha-2)",
     saveAddress: "ذخیرهٔ آدرس",
     clearAddress: "پاک کردن آدرس",
-    coverMediaLabel: "MediaAsset برای Cover",
+    coverMediaLabel: "Cover",
     setCover: "تنظیم Cover",
     removeCover: "برداشتن Cover",
-    galleryMediaLabel: "MediaAsset برای Gallery",
+    galleryMediaLabel: "Gallery",
     addGallery: "افزودن به Gallery",
     removeGalleryItem: "حذف از Gallery",
+    mediaPickerHeading: "انتخاب از رسانه‌های Ready",
+    mediaPickerHint:
+      "بدون کپی GUID: پیش‌نمایش را ببینید و Cover یا Gallery را انتخاب کنید. شناسه فقط داخلی ارسال می‌شود.",
+    refreshReadyMedia: "بارگذاری رسانه‌های Ready",
+    noReadyMedia: "رسانهٔ Ready نیست — ابتدا در مدیریت رسانه بارگذاری کنید.",
+    currentCoverBadge: "Cover فعلی",
+    alreadyInGallery: "در Gallery هست",
+    useAsCover: "استفاده به‌عنوان Cover",
+    addToGallery: "افزودن به Gallery",
+    mediaPreviewAlt: "پیش‌نمایش رسانه",
     mediaLinksHeading: "پیوندهای رسانه",
     noMediaLinks: "پیوند رسانه‌ای ثبت نشده.",
     catalogDraft: "Draft",
@@ -227,12 +246,22 @@ const COPY: Record<"fa" | "en", AdminPlaceWorkflowCopy> = {
     countryCodeLabel: "Country code (ISO alpha-2)",
     saveAddress: "Save address",
     clearAddress: "Clear address",
-    coverMediaLabel: "MediaAsset for Cover",
+    coverMediaLabel: "Cover",
     setCover: "Set Cover",
     removeCover: "Remove Cover",
-    galleryMediaLabel: "MediaAsset for Gallery",
+    galleryMediaLabel: "Gallery",
     addGallery: "Add to Gallery",
     removeGalleryItem: "Remove from Gallery",
+    mediaPickerHeading: "Choose from Ready media",
+    mediaPickerHint:
+      "No GUID paste: preview assets and set Cover or add to Gallery. MediaAssetId is submitted internally only.",
+    refreshReadyMedia: "Load Ready media",
+    noReadyMedia: "No Ready media yet — upload in Media admin first.",
+    currentCoverBadge: "Current Cover",
+    alreadyInGallery: "Already in Gallery",
+    useAsCover: "Use as Cover",
+    addToGallery: "Add to Gallery",
+    mediaPreviewAlt: "Media preview",
     mediaLinksHeading: "Media links",
     noMediaLinks: "No media links yet.",
     catalogDraft: "Draft",
