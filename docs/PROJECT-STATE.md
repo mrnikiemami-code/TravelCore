@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P07 — Place Catalog** (**IN_PROGRESS** · `TC-P07-PLAN` awaiting review) |
+| Current Phase | **P07 — Place Catalog** (**IN_PROGRESS**) |
 | Previous Phase | **P06 — Media** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P07-T001` — AWAITING_ARCHITECT_REVIEW |
+| Current Active Product Task | `TC-P07-T002` — AWAITING_ARCHITECT_REVIEW |
 | Current Next Product Phase | P07 — Place Catalog (**IN_PROGRESS**) |
-| Current Next Task | Architect accept of `TC-P07-T001` then Auto-Execute `TC-P07-T002` |
+| Current Next Task | Architect accept of `TC-P07-T002` then Auto-Execute `TC-P07-T003` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -120,10 +120,11 @@
 | P06-R7 (malware/AV scanning) | **DEFERRED** — security requirement recorded; not in P06 product delivery |
 | P06-R8 (domain delete lifecycle) | **UNRESOLVED** — OK for gate (no delete UX / not in P06 product scope; do not invent) |
 | P06-R9 (consumer alt override) | **DEFERRED** — Media owns default alt/caption only |
-| P07 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P07`; plan awaiting review) |
+| P07 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P07`) |
 | P07 Plan | `TC-P07-PLAN` **COMPLETE / ACCEPTED** (`5dbc152`) — [`docs/plans/P07-implementation-plan.md`](plans/P07-implementation-plan.md) |
-| P07-T001 | **AWAITING_ARCHITECT_REVIEW** (Place module scaffolding) |
-| P07-R1 (Place model shape) | **UNRESOLVED** |
+| P07-T001 | **COMPLETE / ACCEPTED** (`108ac34`; hygiene `a245358`) |
+| P07-T002 | **AWAITING_ARCHITECT_REVIEW** (Place catalog domain + persistence baseline) |
+| P07-R1 (Place model shape) | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION (`PlaceId` only; Hotel/Restaurant/Attraction 1:1 tables; no TPH; no HotelBooking fields) |
 | P07-R2 (Destination link requiredness) | **UNRESOLVED** |
 | P07-R3 (Place delete/archive) | **UNRESOLVED** |
 | P07-R4 (Slug ownership) | **UNRESOLVED** |
@@ -146,7 +147,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P07_IN_PROGRESS** · `TC-P07-PLAN` ACCEPTED · `TC-P07-T001` AWAITING_ARCHITECT_REVIEW (`108ac34`) |
+| Phase Transition State | **P07_IN_PROGRESS** · `TC-P07-PLAN` ACCEPTED · `TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002` AWAITING_ARCHITECT_REVIEW · **P07-R1 RESOLVED** |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -289,13 +290,14 @@
 | P06-R8 | **UNRESOLVED** (no Admin delete UI/actions; OK for gate — deletion not in P06 product scope) |
 | P06-R9 | **DEFERRED** (consumer alt override; Media owns default alt/caption only) |
 | TC-P07-PLAN | **COMPLETE / ACCEPTED** (`5dbc152`; hygiene `768a2c5`) |
-| TC-P07-T001 | **AWAITING_ARCHITECT_REVIEW** (`108ac34`) |
-| P07-R1 | **UNRESOLVED** (Place model shape) |
+| TC-P07-T001 | **COMPLETE / ACCEPTED** (`108ac34`; hygiene `a245358`) |
+| TC-P07-T002 | **AWAITING_ARCHITECT_REVIEW** (commit pending at task close) |
+| P07-R1 | **RESOLVED** — CORE PLACE + TYPED SPECIALIZATION |
 | P07-R2 | **UNRESOLVED** (Destination link requiredness) |
 | P07-R3 | **UNRESOLVED** (Place delete/archive) |
 | P07-R4 | **UNRESOLVED** (Slug ownership) |
 | P07-R5 | **UNRESOLVED** (Public IndexPolicy default) |
-| Required Human Token | none while PLAN under review; GATE later needs `TRAVELCORE_TASK_CONFIRM: TC-P07-GATE` |
+| Required Human Token | GATE later needs `TRAVELCORE_TASK_CONFIRM: TC-P07-GATE` |
 
 ### P00 Exit Summary
 
@@ -306,7 +308,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); Runtime Mode = PIPELINE; **P07 IN_PROGRESS** (`TC-P07-PLAN` AWAITING_ARCHITECT_REVIEW · USER `TRAVELCORE_PHASE_CONFIRM: P07`); P07-R1–R5 UNRESOLVED; product tasks NOT_STARTED
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); Runtime Mode = PIPELINE; **P07 IN_PROGRESS** (`TC-P07-T001` COMPLETE / ACCEPTED · `TC-P07-T002` AWAITING_ARCHITECT_REVIEW · **P07-R1 RESOLVED**; R2–R5 UNRESOLVED)
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -417,7 +419,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-GATE-R1 | Reconcile P05 Gate Baseline Drift | COMPLETE / ACCEPTED | `bde6661` (+ `37637bf`) |
 | TC-P06-GATE | P06 Acceptance Gate | COMPLETE / ACCEPTED | `da345b5` |
 | TC-P07-PLAN | P07 Place Catalog Implementation Plan | COMPLETE / ACCEPTED | `5dbc152` |
-| TC-P07-T001 | Place module scaffolding | AWAITING_ARCHITECT_REVIEW | (pending commit) |
+| TC-P07-T001 | Place module scaffolding | COMPLETE / ACCEPTED | `108ac34` |
+| TC-P07-T002 | Place catalog domain + persistence baseline | AWAITING_ARCHITECT_REVIEW | (pending commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -437,6 +440,7 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - Destination-centric travel knowledge graph
 - **P05-R1 RESOLVED:** `DestinationTranslation.Slug` = authoritative current localized Destination slug (Destination-owned); SEO owns public route/path history, reservation, and redirect mechanics only (not Destination content SoR)
 - Place separates Hotel / Restaurant / Attraction catalog concepts
+- **P07-R1 RESOLVED:** Place = aggregate root; canonical catalog id = `PlaceId` only; closed PlaceKind; typed specialization tables 1:1 (no TPH; no HotelBooking fields)
 - Hotel Catalog ≠ Hotel Booking
 - TourProduct ≠ TourDeparture
 - Experience Tour و Foreign Package Tour کهن‌الگوهای متمایزند

@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Place.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Place.Infrastructure</AssemblyName>
-    <Description>Place module infrastructure scaffolding: schema place ownership (TC-P07-T001).</Description>
+    <Description>Place module infrastructure: Place + typed specializations persistence in schema place (TC-P07-T002).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>

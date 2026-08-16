@@ -6,7 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Place.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Place.Domain</AssemblyName>
-    <Description>Place domain scaffolding marker only (TC-P07-T001). No aggregate until T002/R1.</Description>
+    <Description>Place catalog domain: Place aggregate + Hotel/Restaurant/Attraction specializations (P07-R1). No EF/ASP.NET.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 
 </Project>

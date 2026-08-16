@@ -50,8 +50,8 @@ Business and capability modules live under this directory.
 |--------|----------|--------|
 | Place | `Place/TravelCore.Modules.Place.{Domain,Contracts,Infrastructure}` | `place` |
 
-- **Place:** Module scaffolding (`TC-P07-T001`) — schema ownership only; catalog aggregates in later P07 tasks.
-- Invariant: **Hotel Catalog ≠ Hotel Booking**; Place.Hotel = canonical hotel catalog (when modeled); Destination ≠ Place.
+- **Place:** Place core + typed specializations (`TC-P07-T002`) — `PlaceId` canonical; Hotel/Restaurant/Attraction 1:1 tables in schema `place` (P07-R1).
+- Invariant: **Hotel Catalog ≠ Hotel Booking**; Place.Hotel = canonical hotel catalog; Destination ≠ Place; no independent public HotelId/RestaurantId/AttractionId.
 
 ## Naming
 

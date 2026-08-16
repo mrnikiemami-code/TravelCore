@@ -141,6 +141,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modules.Place.Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modules.Place.Infrastructure", "src\backend\Modules\Place\TravelCore.Modules.Place.Infrastructure\TravelCore.Modules.Place.Infrastructure.csproj", "{2759186C-F580-4462-9AFD-DA0890C8236A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modules.Place.UnitTests", "tests\Unit\TravelCore.Modules.Place.UnitTests\TravelCore.Modules.Place.UnitTests.csproj", "{53B641EC-B7CD-45C6-869D-15F2B3E6B855}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -691,6 +693,18 @@ Global
 		{2759186C-F580-4462-9AFD-DA0890C8236A}.Release|x64.Build.0 = Release|Any CPU
 		{2759186C-F580-4462-9AFD-DA0890C8236A}.Release|x86.ActiveCfg = Release|Any CPU
 		{2759186C-F580-4462-9AFD-DA0890C8236A}.Release|x86.Build.0 = Release|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Debug|x64.Build.0 = Debug|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Debug|x86.Build.0 = Debug|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Release|x64.ActiveCfg = Release|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Release|x64.Build.0 = Release|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Release|x86.ActiveCfg = Release|Any CPU
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -763,5 +777,6 @@ Global
 		{02D5C87B-8F7C-4A1C-A6BF-F0D8BA1BD9BD} = {30E7F43B-0FC8-4768-6F20-7EFBA8ACE16B}
 		{E9890B17-61BC-4FDF-A407-A122F3CB242C} = {30E7F43B-0FC8-4768-6F20-7EFBA8ACE16B}
 		{2759186C-F580-4462-9AFD-DA0890C8236A} = {30E7F43B-0FC8-4768-6F20-7EFBA8ACE16B}
+		{53B641EC-B7CD-45C6-869D-15F2B3E6B855} = {9D556B49-86D1-93A7-9596-FFAAB74EC556}
 	EndGlobalSection
 EndGlobal

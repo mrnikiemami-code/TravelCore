@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using PlaceAggregate = TravelCore.Modules.Place.Domain.Place;
 
 namespace TravelCore.Modules.Place.Infrastructure;
 
 /// <summary>
 /// Place-owned DbContext. Owns PostgreSQL schema <c>place</c>.
-/// Scaffolding only — no product entities yet (TC-P07-T001).
 /// </summary>
 public sealed class PlaceDbContext : DbContext
 {
@@ -14,6 +14,8 @@ public sealed class PlaceDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<PlaceAggregate> Places => Set<PlaceAggregate>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -2,13 +2,17 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Place.Contracts;
+using TravelCore.Modules.Place.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Place.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Place module (scaffolding — TC-P07-T001).
+/// Host composition entry for the Place module.
 /// </summary>
 public sealed class PlaceModule : ITravelCoreModule
 {
@@ -16,6 +20,8 @@ public sealed class PlaceModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
+
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
 
         services.AddDbContext<PlaceDbContext>((_, options) =>
         {
@@ -27,11 +33,13 @@ public sealed class PlaceModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: PlaceDbContext.SchemaName);
         });
+
+        services.AddScoped<IPlaceService, PlaceApplicationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // Product endpoints belong to later P07 tasks.
+        // Product HTTP endpoints belong to later P07 Admin/public tasks.
     }
 }

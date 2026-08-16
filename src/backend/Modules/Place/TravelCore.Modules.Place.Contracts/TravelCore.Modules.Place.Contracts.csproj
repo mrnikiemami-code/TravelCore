@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Place.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Place.Contracts</AssemblyName>
-    <Description>Place module contracts (scaffolding). No EF entities. TC-P07-T001.</Description>
+    <Description>Place module contracts: create/get/list DTOs. No EF entities. TC-P07-T002.</Description>
   </PropertyGroup>
 
 </Project>
