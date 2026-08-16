@@ -31,11 +31,12 @@ public sealed class ContentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.EndsWith("_InitialContentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentCatalogTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentItemTranslations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentTaxonomyTables", expectedMigrations[3], StringComparison.Ordinal);
+            Assert.EndsWith("_AddContentBlocksTables", expectedMigrations[4], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -51,7 +52,7 @@ public sealed class ContentMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'content';
                 """, ct));
-            Assert.Equal(10, await ScalarIntAsync(conn, """
+            Assert.Equal(13, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'content'
@@ -65,6 +66,9 @@ public sealed class ContentMigrationLifecycleTests
                     'content_tags',
                     'content_item_categories',
                     'content_item_tags',
+                    'content_blocks',
+                    'content_block_gallery_items',
+                    'content_block_faq_items',
                     '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
@@ -152,6 +156,27 @@ public sealed class ContentMigrationLifecycleTests
             assigned = await service.AssignTagAsync(createdId, tag.Id, ct);
             Assert.Contains(category.Id, assigned.CategoryIds!);
             Assert.Contains(tag.Id, assigned.TagIds!);
+
+            var blocks = new ContentBlockApplicationService(db, SystemClock.Instance);
+            var heading = await blocks.AddHeadingAsync(
+                createdId,
+                new AddContentHeadingBlockRequest("Intro", 2),
+                ct);
+            var paragraph = await blocks.AddParagraphAsync(
+                createdId,
+                new AddContentParagraphBlockRequest("Hello blocks"),
+                ct);
+            Assert.Equal("Heading", heading.Kind);
+            Assert.Equal("Paragraph", paragraph.Kind);
+            var listedBlocks = await blocks.ListAsync(createdId, ct);
+            Assert.Equal(2, listedBlocks.Count);
+            await blocks.ReorderAsync(
+                createdId,
+                new ReorderContentBlocksRequest([paragraph.Id, heading.Id]),
+                ct);
+            listedBlocks = await blocks.ListAsync(createdId, ct);
+            Assert.Equal(paragraph.Id, listedBlocks[0].Id);
+            Assert.Equal(0, listedBlocks[0].SortOrder);
 
             // Duplicate create last: a failed SaveChanges leaves the Added entity tracked.
             await Assert.ThrowsAsync<InvalidOperationException>(() =>

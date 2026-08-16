@@ -80,6 +80,8 @@ internal sealed class ContentItemConfiguration : IEntityTypeConfiguration<Conten
             .HasForeignKey(x => x.ContentItemId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // ContentBlock relationship is owned on ContentBlockConfiguration (PlaceMediaLink pattern).
+
         builder.Navigation(x => x.Article).AutoInclude();
         builder.Navigation(x => x.LandingPage).AutoInclude();
         builder.Navigation(x => x.Guide).AutoInclude();
@@ -93,6 +95,10 @@ internal sealed class ContentItemConfiguration : IEntityTypeConfiguration<Conten
             .AutoInclude();
         builder.Navigation(x => x.Tags)
             .HasField("_tags")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+        builder.Navigation(x => x.Blocks)
+            .HasField("_blocks")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
     }
@@ -292,5 +298,133 @@ internal sealed class ContentItemTagConfiguration : IEntityTypeConfiguration<Con
 
         builder.HasIndex(x => x.TagId)
             .HasDatabaseName("ix_content_item_tags_tag_id");
+    }
+}
+
+internal sealed class ContentBlockConfiguration : IEntityTypeConfiguration<ContentBlock>
+{
+    public void Configure(EntityTypeBuilder<ContentBlock> builder)
+    {
+        builder.ToTable("content_blocks");
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .HasConversion(id => id.Value, value => ContentBlockId.From(value));
+
+        builder.Property(x => x.ContentItemId)
+            .HasColumnName("content_item_id")
+            .HasConversion(id => id.Value, value => ContentItemId.From(value))
+            .IsRequired();
+
+        builder.HasOne<ContentItemAggregate>()
+            .WithMany(x => x.Blocks)
+            .HasForeignKey(x => x.ContentItemId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+
+        builder.Property(x => x.Kind)
+            .HasColumnName("kind")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.SortOrder)
+            .HasColumnName("sort_order")
+            .IsRequired();
+
+        builder.Property(x => x.Text)
+            .HasColumnName("text")
+            .HasMaxLength(ContentBlock.TextMaxLength);
+
+        builder.Property(x => x.HeadingLevel)
+            .HasColumnName("heading_level");
+
+        // Logical MediaAssetId only — deliberately no FK / navigation to Media.
+        builder.Property(x => x.MediaAssetId)
+            .HasColumnName("media_asset_id");
+
+        builder.Property(x => x.Href)
+            .HasColumnName("href")
+            .HasMaxLength(ContentBlock.HrefMaxLength);
+
+        builder.HasMany(x => x.GalleryItems)
+            .WithOne()
+            .HasForeignKey(x => x.BlockId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.FaqItems)
+            .WithOne()
+            .HasForeignKey(x => x.BlockId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.GalleryItems)
+            .HasField("_galleryItems")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+        builder.Navigation(x => x.FaqItems)
+            .HasField("_faqItems")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasIndex(x => new { x.ContentItemId, x.SortOrder })
+            .HasDatabaseName("ix_content_blocks_item_sort");
+
+        builder.HasIndex(x => x.Kind)
+            .HasDatabaseName("ix_content_blocks_kind");
+
+        builder.HasIndex(x => x.MediaAssetId)
+            .HasDatabaseName("ix_content_blocks_media_asset_id");
+    }
+}
+
+internal sealed class ContentBlockGalleryItemConfiguration : IEntityTypeConfiguration<ContentBlockGalleryItem>
+{
+    public void Configure(EntityTypeBuilder<ContentBlockGalleryItem> builder)
+    {
+        builder.ToTable("content_block_gallery_items");
+        builder.HasKey(x => new { x.BlockId, x.MediaAssetId });
+
+        builder.Property(x => x.BlockId)
+            .HasColumnName("block_id")
+            .HasConversion(id => id.Value, value => ContentBlockId.From(value));
+
+        builder.Property(x => x.MediaAssetId)
+            .HasColumnName("media_asset_id")
+            .IsRequired();
+
+        builder.Property(x => x.SortOrder)
+            .HasColumnName("sort_order")
+            .IsRequired();
+
+        builder.HasIndex(x => new { x.BlockId, x.SortOrder })
+            .IsUnique()
+            .HasDatabaseName("ux_content_block_gallery_items_sort");
+    }
+}
+
+internal sealed class ContentBlockFaqItemConfiguration : IEntityTypeConfiguration<ContentBlockFaqItem>
+{
+    public void Configure(EntityTypeBuilder<ContentBlockFaqItem> builder)
+    {
+        builder.ToTable("content_block_faq_items");
+        builder.HasKey(x => new { x.BlockId, x.SortOrder });
+
+        builder.Property(x => x.BlockId)
+            .HasColumnName("block_id")
+            .HasConversion(id => id.Value, value => ContentBlockId.From(value));
+
+        builder.Property(x => x.Question)
+            .HasColumnName("question")
+            .HasMaxLength(ContentBlockFaqItem.QuestionMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Answer)
+            .HasColumnName("answer")
+            .HasMaxLength(ContentBlockFaqItem.AnswerMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.SortOrder)
+            .HasColumnName("sort_order")
+            .IsRequired();
     }
 }

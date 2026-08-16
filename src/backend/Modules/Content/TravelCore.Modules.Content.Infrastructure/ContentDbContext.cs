@@ -27,5 +27,27 @@ public sealed class ContentDbContext : DbContext
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.HasDefaultSchema(SchemaName);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ContentDbContext).Assembly);
+        RemoveStrongIdShadowForeignKeys(modelBuilder);
+    }
+
+    /// <summary>
+    /// EF can emit a duplicate shadow FK (e.g. ContentItemId1) for strong-typed id FKs on
+    /// aggregates that also expose an Id-typed primary key. Keep the real ContentItemId FK only.
+    /// </summary>
+    private static void RemoveStrongIdShadowForeignKeys(ModelBuilder modelBuilder)
+    {
+        var block = modelBuilder.Entity<ContentBlock>().Metadata;
+        foreach (var fk in block.GetForeignKeys()
+                     .Where(x => x.Properties.Any(p => p.Name == "ContentItemId1"))
+                     .ToList())
+        {
+            block.RemoveForeignKey(fk);
+        }
+
+        var shadow = block.FindProperty("ContentItemId1");
+        if (shadow is not null)
+        {
+            block.RemoveProperty(shadow);
+        }
     }
 }

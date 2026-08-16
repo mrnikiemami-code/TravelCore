@@ -7,7 +7,8 @@ namespace TravelCore.Modules.Content.Domain;
 /// Shared editorial facts live here; type-specific facts live on Article/LandingPage/Guide rows (1:1).
 /// Localized title/body/excerpt live on ContentItemTranslation rows (T003; ADR 0008).
 /// Category/Tag taxonomy links are Content-owned (T004). Author deferred (P08-R7 open).
-/// Blocks / slug / SEO / Destination / Media / delete-archive are later P08 tasks (R2–R6/R8).
+/// Content Blocks are relational first-class entities (T005 / P08-R2). Widgets deferred (P08-R6).
+/// Slug / SEO / Destination / Media ownership / delete-archive are later P08 tasks (R3–R5/R8).
 /// </summary>
 public sealed class ContentItem
 {
@@ -15,10 +16,12 @@ public sealed class ContentItem
     public const int NameMaxLength = 200;
     public const int MaxCategories = 32;
     public const int MaxTags = 64;
+    public const int MaxBlocks = 200;
 
     private readonly List<ContentItemTranslation> _translations = [];
     private readonly List<ContentItemCategory> _categories = [];
     private readonly List<ContentItemTag> _tags = [];
+    private readonly List<ContentBlock> _blocks = [];
 
     private ContentItem()
     {
@@ -73,6 +76,11 @@ public sealed class ContentItem
     public IReadOnlyCollection<ContentItemCategory> Categories => _categories;
 
     public IReadOnlyCollection<ContentItemTag> Tags => _tags;
+
+    public IReadOnlyCollection<ContentBlock> Blocks => _blocks;
+
+    public IReadOnlyList<ContentBlock> BlocksOrdered =>
+        _blocks.OrderBy(x => x.SortOrder).ThenBy(x => x.Id.Value).ToList();
 
     public static ContentItem CreateArticle(
         string code,
@@ -266,6 +274,134 @@ public sealed class ContentItem
         _tags.Remove(existing);
         UpdatedAt = now;
         return true;
+    }
+
+    public ContentBlock AddHeadingBlock(string text, short level, Instant now, int? sortOrder = null)
+    {
+        var block = ContentBlock.CreateHeading(Id, ResolveInsertSortOrder(sortOrder), text, level);
+        return AttachBlock(block, now);
+    }
+
+    public ContentBlock AddParagraphBlock(string text, Instant now, int? sortOrder = null)
+    {
+        var block = ContentBlock.CreateParagraph(Id, ResolveInsertSortOrder(sortOrder), text);
+        return AttachBlock(block, now);
+    }
+
+    public ContentBlock AddImageBlock(Guid mediaAssetId, Instant now, string? caption = null, int? sortOrder = null)
+    {
+        var block = ContentBlock.CreateImage(Id, ResolveInsertSortOrder(sortOrder), mediaAssetId, caption);
+        return AttachBlock(block, now);
+    }
+
+    public ContentBlock AddGalleryBlock(IReadOnlyList<Guid> mediaAssetIds, Instant now, int? sortOrder = null)
+    {
+        var block = ContentBlock.CreateGallery(Id, ResolveInsertSortOrder(sortOrder), mediaAssetIds);
+        return AttachBlock(block, now);
+    }
+
+    public ContentBlock AddFaqBlock(
+        IReadOnlyList<(string Question, string Answer)> items,
+        Instant now,
+        int? sortOrder = null)
+    {
+        var block = ContentBlock.CreateFaq(Id, ResolveInsertSortOrder(sortOrder), items);
+        return AttachBlock(block, now);
+    }
+
+    public ContentBlock AddTableBlock(string text, Instant now, int? sortOrder = null)
+    {
+        var block = ContentBlock.CreateTable(Id, ResolveInsertSortOrder(sortOrder), text);
+        return AttachBlock(block, now);
+    }
+
+    public ContentBlock AddVideoBlock(Guid mediaAssetId, Instant now, string? caption = null, int? sortOrder = null)
+    {
+        var block = ContentBlock.CreateVideo(Id, ResolveInsertSortOrder(sortOrder), mediaAssetId, caption);
+        return AttachBlock(block, now);
+    }
+
+    public ContentBlock AddCtaBlock(string label, string href, Instant now, int? sortOrder = null)
+    {
+        var block = ContentBlock.CreateCta(Id, ResolveInsertSortOrder(sortOrder), label, href);
+        return AttachBlock(block, now);
+    }
+
+    public bool RemoveBlock(ContentBlockId blockId, Instant now)
+    {
+        var existing = _blocks.FirstOrDefault(x => x.Id == blockId);
+        if (existing is null)
+        {
+            return false;
+        }
+
+        _blocks.Remove(existing);
+        CompactBlockSortOrders();
+        UpdatedAt = now;
+        return true;
+    }
+
+    public IReadOnlyList<ContentBlock> ReorderBlocks(IReadOnlyList<ContentBlockId> orderedBlockIds, Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(orderedBlockIds);
+        if (orderedBlockIds.Count != _blocks.Count)
+        {
+            throw new ArgumentException(
+                "Reorder must include every existing block exactly once.",
+                nameof(orderedBlockIds));
+        }
+
+        if (orderedBlockIds.Distinct().Count() != orderedBlockIds.Count)
+        {
+            throw new ArgumentException("Reorder ids must be unique.", nameof(orderedBlockIds));
+        }
+
+        var byId = _blocks.ToDictionary(x => x.Id);
+        for (var i = 0; i < orderedBlockIds.Count; i++)
+        {
+            if (!byId.TryGetValue(orderedBlockIds[i], out var block))
+            {
+                throw new ArgumentException(
+                    $"Unknown ContentBlockId '{orderedBlockIds[i]}'.",
+                    nameof(orderedBlockIds));
+            }
+
+            block.SetSortOrder(i);
+        }
+
+        UpdatedAt = now;
+        return BlocksOrdered;
+    }
+
+    private ContentBlock AttachBlock(ContentBlock block, Instant now)
+    {
+        if (_blocks.Count >= MaxBlocks)
+        {
+            throw new InvalidOperationException($"A ContentItem may have at most {MaxBlocks} blocks.");
+        }
+
+        _blocks.Add(block);
+        UpdatedAt = now;
+        return block;
+    }
+
+    private int ResolveInsertSortOrder(int? sortOrder)
+    {
+        if (sortOrder is not null)
+        {
+            return sortOrder.Value;
+        }
+
+        return _blocks.Count == 0 ? 0 : _blocks.Max(x => x.SortOrder) + 1;
+    }
+
+    private void CompactBlockSortOrders()
+    {
+        var ordered = _blocks.OrderBy(x => x.SortOrder).ThenBy(x => x.Id.Value).ToList();
+        for (var i = 0; i < ordered.Count; i++)
+        {
+            ordered[i].SetSortOrder(i);
+        }
     }
 
     /// <summary>

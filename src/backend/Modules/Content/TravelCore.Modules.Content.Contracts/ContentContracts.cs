@@ -131,6 +131,102 @@ public interface IContentItemService
         CancellationToken cancellationToken = default);
 }
 
+public sealed record ContentBlockGalleryItemResponse(Guid MediaAssetId, int SortOrder);
+
+public sealed record ContentBlockFaqItemResponse(string Question, string Answer, int SortOrder);
+
+public sealed record ContentBlockResponse(
+    Guid Id,
+    Guid ContentItemId,
+    string Kind,
+    int SortOrder,
+    string? Text,
+    short? HeadingLevel,
+    Guid? MediaAssetId,
+    string? Href,
+    IReadOnlyList<ContentBlockGalleryItemResponse> GalleryItems,
+    IReadOnlyList<ContentBlockFaqItemResponse> FaqItems);
+
+public sealed record AddContentHeadingBlockRequest(string Text, short Level, int? SortOrder = null);
+
+public sealed record AddContentParagraphBlockRequest(string Text, int? SortOrder = null);
+
+public sealed record AddContentImageBlockRequest(Guid MediaAssetId, string? Caption = null, int? SortOrder = null);
+
+public sealed record AddContentGalleryBlockRequest(IReadOnlyList<Guid> MediaAssetIds, int? SortOrder = null);
+
+public sealed record ContentFaqItemRequest(string Question, string Answer);
+
+public sealed record AddContentFaqBlockRequest(IReadOnlyList<ContentFaqItemRequest> Items, int? SortOrder = null);
+
+public sealed record AddContentTableBlockRequest(string Text, int? SortOrder = null);
+
+public sealed record AddContentVideoBlockRequest(Guid MediaAssetId, string? Caption = null, int? SortOrder = null);
+
+public sealed record AddContentCtaBlockRequest(string Label, string Href, int? SortOrder = null);
+
+public sealed record ReorderContentBlocksRequest(IReadOnlyList<Guid> OrderedBlockIds);
+
+/// <summary>
+/// Content-owned relational blocks API (TC-P08-T005 / P08-R2). No Tour/Place widgets (P08-R6 open).
+/// </summary>
+public interface IContentBlockService
+{
+    Task<ContentBlockResponse> AddHeadingAsync(
+        Guid contentItemId,
+        AddContentHeadingBlockRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentBlockResponse> AddParagraphAsync(
+        Guid contentItemId,
+        AddContentParagraphBlockRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentBlockResponse> AddImageAsync(
+        Guid contentItemId,
+        AddContentImageBlockRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentBlockResponse> AddGalleryAsync(
+        Guid contentItemId,
+        AddContentGalleryBlockRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentBlockResponse> AddFaqAsync(
+        Guid contentItemId,
+        AddContentFaqBlockRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentBlockResponse> AddTableAsync(
+        Guid contentItemId,
+        AddContentTableBlockRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentBlockResponse> AddVideoAsync(
+        Guid contentItemId,
+        AddContentVideoBlockRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<ContentBlockResponse> AddCtaAsync(
+        Guid contentItemId,
+        AddContentCtaBlockRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<ContentBlockResponse>> ListAsync(
+        Guid contentItemId,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<ContentBlockResponse>> ReorderAsync(
+        Guid contentItemId,
+        ReorderContentBlocksRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task RemoveAsync(
+        Guid contentItemId,
+        Guid blockId,
+        CancellationToken cancellationToken = default);
+}
+
 /// <summary>
 /// Content-owned Category/Tag catalog (TC-P08-T004). Author deliberately omitted (P08-R7 open).
 /// </summary>
