@@ -217,7 +217,7 @@
 | TC-P05-T002 | COMPLETE / ACCEPTED (`796e013`; hygiene `50ec735`) |
 | TC-P05-T003 | COMPLETE / ACCEPTED (`8fb6ede`; hygiene `7226451`) |
 | TC-P05-T003-R1 | COMPLETE / ACCEPTED (`fb00313`; hygiene `e24d09a`) |
-| TC-P05-T004 | AWAITING_ARCHITECT_REVIEW |
+| TC-P05-T004 | AWAITING_ARCHITECT_REVIEW (`1573baf`) |
 | P05-R1 | **RESOLVED** (Destination current slug SoR; SEO path history/reservation/redirect mechanics) |
 | P05-R2 | UNRESOLVED (deadline T005/T010) |
 | Required Human Token | none (await architect accept of `TC-P05-T004`) |
