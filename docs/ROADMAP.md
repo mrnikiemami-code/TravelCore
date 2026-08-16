@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P08 — Content CMS** (**NOT_STARTED** · awaiting `TRAVELCORE_PHASE_CONFIRM: P08`) |
-| Phase Status | P00–P07 COMPLETE · P08 NOT_STARTED |
+| Current Phase | **P08 — Content CMS** (**IN_PROGRESS** · PLAN awaiting review) |
+| Phase Status | P00–P07 COMPLETE · P08 IN_PROGRESS |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `84a0a48` (`TC-P07-GATE` ACCEPTED) · hygiene `8136455`/`003e9e4` |
+| Last Accepted Commit | `84a0a48` (`TC-P07-GATE` ACCEPTED) · hygiene `8136455`/`003e9e4` · P07 COMPLETE docs `37956ef` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P08` then architect issues `TC-P08-PLAN` |
+| Current Next Task | Architect review/accept `TC-P08-PLAN` → then `TC-P08-T001` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -107,7 +107,8 @@
 - **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
 - **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED**)
 - **P07** = COMPLETE (`TC-P07-GATE` ACCEPTED `84a0a48` · **P07-R1/R2/R4/R5 RESOLVED** · **P07-R3 UNRESOLVED**)
-- **P08–P29 و Post-P29** = PLANNED / NOT_STARTED (P08 needs `TRAVELCORE_PHASE_CONFIRM: P08`)
+- **P08** = IN_PROGRESS (`TC-P08-PLAN` AWAITING_ARCHITECT_REVIEW · baseline `37956ef` · USER `TRAVELCORE_PHASE_CONFIRM: P08`)
+- **P09–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -364,13 +365,19 @@ Place · Hotel · Restaurant · Attraction با localization، رابطه با D
 
 ## P08 — Content CMS
 
-**Status:** PLANNED
+**Status:** IN_PROGRESS
+
+**Authoritative plan:** [`plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) (`TC-P08-PLAN` — AWAITING_ARCHITECT_REVIEW)
+
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan authored · AWAITING_ARCHITECT_REVIEW · **P08-R1–R8 UNRESOLVED** · `TC-P08-T001` NOT_STARTED · P09 NOT_STARTED
 
 Article · LandingPage · Category · Tag · Author · Content Blocks با پیوند معنادار به Destination.
 
 بلوک‌های برنامه‌ریزی‌شده: heading · paragraph · image · gallery · FAQ · table · video · CTA · Tour/Hotel/Attraction widget.
 
 جایی که ارزش واقعی دارد از محتوای ساخت‌یافته استفاده کنید.
+
+Invariant: Content مالک editorial است؛ SEO محتوا را duplicate نمی‌کند.
 
 ---
 
@@ -664,7 +671,7 @@ P26 = Advanced SEO.
 | P05 | SEO Engine | COMPLETE |
 | P06 | Media | **COMPLETE** (`TC-P06-GATE` ACCEPTED) |
 | P07 | Place Catalog | **COMPLETE** (`TC-P07-GATE` ACCEPTED) |
-| P08 | Content CMS | PLANNED / NOT_STARTED |
+| P08 | Content CMS | **IN_PROGRESS** (`TC-P08-PLAN` awaiting review) |
 | P09 | Tour Core | PLANNED |
 | P10 | Experience Tour | PLANNED |
 | P11 | Foreign Package Tour | PLANNED |

@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P08 — Content CMS** (**NOT_STARTED** · awaiting `TRAVELCORE_PHASE_CONFIRM: P08`) |
+| Current Phase | **P08 — Content CMS** (**IN_PROGRESS**) |
 | Previous Phase | **P07 — Place Catalog** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | none — await USER `TRAVELCORE_PHASE_CONFIRM: P08` |
-| Current Next Product Phase | P08 — Content CMS (**NOT_STARTED**) |
-| Current Next Task | USER `TRAVELCORE_PHASE_CONFIRM: P08` then architect issues `TC-P08-PLAN` |
+| Current Active Product Task | `TC-P08-PLAN` — AWAITING_ARCHITECT_REVIEW |
+| Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
+| Current Next Task | Architect review/accept of `TC-P08-PLAN`; then Auto-Execute `TC-P08-T001` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -139,7 +139,8 @@
 | P07-R3 (Place delete/archive) | **UNRESOLVED** — OK for gate (no delete/archive product; do not invent) |
 | P07-R4 (Slug ownership) | **RESOLVED** — PLACE owns current `PlaceTranslation.Slug`; SEO owns route history/redirects/IndexPolicy |
 | P07-R5 (Public IndexPolicy default) | **RESOLVED** — default **noindex, follow**; Active/public ≠ Index |
-| P08 | **NOT_STARTED** (requires USER `TRAVELCORE_PHASE_CONFIRM: P08`) |
+| P08 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P08`) |
+| P08 Plan | `TC-P08-PLAN` **AWAITING_ARCHITECT_REVIEW** — [`docs/plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) |
 | P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
 | P04 Implementation Started | **YES** (`TC-P04-T001`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
@@ -158,7 +159,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P07_COMPLETE** · `TC-P07-GATE` ACCEPTED · P08 NOT_STARTED (needs `TRAVELCORE_PHASE_CONFIRM: P08`) |
+| Phase Transition State | **P08_IN_PROGRESS** · `TC-P08-PLAN` AWAITING_ARCHITECT_REVIEW · baseline `37956ef` · USER `TRAVELCORE_PHASE_CONFIRM: P08` · P09 NOT_STARTED |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -166,9 +167,9 @@
 | P05 Phase Gate | **TC-P05-GATE** COMPLETE / ACCEPTED (`7f234e8`; R1 `bde6661`) |
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
-| Human Phase Confirmation | P07 closed via GATE accept; **P08 requires** USER `TRAVELCORE_PHASE_CONFIRM: P08` |
-| Pipeline Product Execution | **WAITING_HUMAN_CONFIRMATION** (`TRAVELCORE_PHASE_CONFIRM: P08`) |
-| Human Confirmation Reason | Await USER `TRAVELCORE_PHASE_CONFIRM: P08` before any P08 task |
+| Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P08-PLAN`) |
+| Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
 | TC-P02-T002 | COMPLETE / ACCEPTED (`55ea466`) |
