@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P08-T006` — AWAITING_ARCHITECT_REVIEW |
+| Current Active Product Task | `TC-P08-T007` — AWAITING_ARCHITECT_REVIEW |
 | Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P08-T006`; then next Auto-Execute |
+| Current Next Task | Architect review of `TC-P08-T007`; then next Auto-Execute |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -146,10 +146,16 @@
 | P08-T003 | **COMPLETE / ACCEPTED** (`ec3ad71`; hygiene `332a969`) — Localization title/body/excerpt locale rows (no slug; P08-R3 still open) |
 | P08-T004 | **COMPLETE / ACCEPTED** (`c2b17a2`; hygiene `1a774b2`) — Category/Tag taxonomy baseline (Author deferred; P08-R7 open) |
 | P08-T005 | **COMPLETE / ACCEPTED** (`f66458b`; hygiene `3220d58`) — Relational Content Blocks engine (P08-R2; no widgets / P08-R6) |
-| P08-T006 | **AWAITING_ARCHITECT_REVIEW** — Destination logical links 0..N (P08-R5) |
+| P08-T006 | **COMPLETE / ACCEPTED** (`4e9c94e`; hygiene `ba391d0`) — Destination logical links 0..N (P08-R5) |
+| P08-T007 | **AWAITING_ARCHITECT_REVIEW** (`6a56a0d`) — Access + Admin Content baseline (no delete/archive; no slug/SEO; no Author/widgets) |
 | P08-R1 (Content model shape) | **RESOLVED** — Core Content Aggregate + Typed Content Variants (`ContentItemId` only; Article/LandingPage/Guide 1:1) |
 | P08-R2 (Block storage) | **RESOLVED** — Relational Block Storage (`ContentBlock` first-class + ordering) |
 | P08-R5 (Destination link) | **RESOLVED** — Content→Destination logical refs · cardinality 0..N · no cross-schema FK · contract existence validation |
+| P08-R3 (Slug) | **UNRESOLVED** — do not invent |
+| P08-R4 (IndexPolicy) | **UNRESOLVED** — do not invent |
+| P08-R6 (Widgets) | **UNRESOLVED** — no Tour/Hotel/Attraction widgets |
+| P08-R7 (Author) | **UNRESOLVED** — Category/Tag only; no Author |
+| P08-R8 (Delete/archive) | **UNRESOLVED** — no ContentItem delete/archive product |
 | P04 Plan | `TC-P04-PLAN` COMPLETE / ACCEPTED (`9d264e6`) — [`docs/plans/P04-implementation-plan.md`](plans/P04-implementation-plan.md) |
 | P04 Implementation Started | **YES** (`TC-P04-T001`) |
 | Backend Physical Structure Doc | [`docs/architecture/18-backend-physical-structure.md`](architecture/18-backend-physical-structure.md) |
@@ -177,7 +183,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P08-T006`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P08-T007`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -339,7 +345,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 IN_PROGRESS** (`TC-P08-PLAN` ACCEPTED · `7012fe0`); **P08-R1/R2 RESOLVED** · **P08-R3–R8 UNRESOLVED**; P09 NOT_STARTED
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 IN_PROGRESS** (`TC-P08-PLAN` ACCEPTED · `7012fe0`); **P08-R1/R2/R5 RESOLVED** · **P08-R3/R4/R6–R8 UNRESOLVED**; P09 NOT_STARTED
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
