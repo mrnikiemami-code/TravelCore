@@ -14,6 +14,9 @@ const srcRoot = path.join(webRoot, "src");
 const ALLOWED_USE_CLIENT = new Set([
   path.normalize("features/foreign-tour-detail/booking-cta-island.tsx"),
   path.normalize("features/admin-identity-party/identity-party-workflow-island.tsx"),
+  path.normalize(
+    "features/admin-destination-hierarchy/destination-hierarchy-workflow-island.tsx",
+  ),
   path.normalize("app/[locale]/error.tsx"),
 ]);
 
@@ -137,9 +140,43 @@ function main() {
   assert.match(onboard, /IdentityPartyWorkflowIsland/);
   assert.match(onboard, /robots/);
 
+  // 9) P04 T008 guided Admin Destination hierarchy workflow (job-based catalog)
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "app", "[locale]", "admin", "catalog", "page.tsx")),
+  );
+  assert.ok(
+    fs.existsSync(
+      path.join(
+        srcRoot,
+        "app",
+        "[locale]",
+        "admin",
+        "catalog",
+        "destinations",
+        "page.tsx",
+      ),
+    ),
+  );
+  const destinationsPage = read(
+    path.join(
+      srcRoot,
+      "app",
+      "[locale]",
+      "admin",
+      "catalog",
+      "destinations",
+      "page.tsx",
+    ),
+  );
+  assert.doesNotMatch(destinationsPage, /['"]use client['"]/);
+  assert.match(destinationsPage, /DestinationHierarchyWorkflowIsland/);
+  assert.match(destinationsPage, /robots/);
+
   console.log("p02-quality-checks: PASS");
   console.log(`  use client allowlist (${ALLOWED_USE_CLIENT.size}): ok`);
-  console.log("  locale/tour/fixtures/metadata/a11y/media/money/admin-workflow: ok");
+  console.log(
+    "  locale/tour/fixtures/metadata/a11y/media/money/admin-workflow: ok",
+  );
 }
 
 main();
