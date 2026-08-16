@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P04 — Reference Data + Destination** (**IN_PROGRESS**) |
+| Current Phase | **P04 — Reference Data + Destination** (**IN_PROGRESS** — gate PASS pending architect accept) |
 | Previous Phase | P03 — Identity + Access + Party (COMPLETE) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **TC-P04-T011** (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P04 — Reference Data + Destination (**IN_PROGRESS**) |
-| Current Next Task | Architect review of `TC-P04-T011`; then `TC-P04-GATE` if issued |
+| Current Active Product Task | **TC-P04-GATE** (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Product Phase | P04 — Reference Data + Destination (gate pending accept; then P05 NOT_STARTED) |
+| Current Next Task | Architect review of `TC-P04-GATE`; then USER `TRAVELCORE_PHASE_CONFIRM: P05` before any P05 work |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -111,9 +111,9 @@
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
-| P04 Phase Gate | NOT_STARTED |
+| P04 Phase Gate | **TC-P04-GATE** AWAITING_ARCHITECT_REVIEW (Cursor PASS; evidence this commit) |
 | Human Phase Confirmation | P04 entered via USER `TRAVELCORE_PHASE_CONFIRM: P04` |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P04-T011`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P04-GATE`) |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -203,8 +203,9 @@
 | TC-P04-T008 | COMPLETE / ACCEPTED (`81fd6ce`) |
 | TC-P04-T009 | COMPLETE / ACCEPTED (`660d2c4`) |
 | TC-P04-T010 | COMPLETE / ACCEPTED (`dc9d00d`) |
-| TC-P04-T011 | AWAITING_ARCHITECT_REVIEW |
-| Required Human Token | none (await architect accept of `TC-P04-T011`) |
+| TC-P04-T011 | COMPLETE / ACCEPTED (`13b36b0`) |
+| TC-P04-GATE | AWAITING_ARCHITECT_REVIEW |
+| Required Human Token | none (await architect accept of `TC-P04-GATE`; P05 needs `TRAVELCORE_PHASE_CONFIRM: P05`) |
 
 ### P00 Exit Summary
 
@@ -215,7 +216,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P03 COMPLETE; P04 IN_PROGRESS; `TC-P04-T001`–`T010` ACCEPTED; `TC-P04-T011` AWAITING_ARCHITECT_REVIEW; R3 RESOLVED (P04 public Destination = noindex,follow); P05 NOT_STARTED; Runtime Mode = PIPELINE
+- P03 COMPLETE; P04 IN_PROGRESS (Cursor GATE PASS pending architect accept); `TC-P04-T001`–`T011` ACCEPTED; `TC-P04-GATE` AWAITING_ARCHITECT_REVIEW; R3 RESOLVED (public Destination = noindex,follow); P05 NOT_STARTED; Runtime Mode = PIPELINE
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -305,7 +306,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P04-T008 | Guided Admin Destination hierarchy workflow | COMPLETE / ACCEPTED | `81fd6ce` |
 | TC-P04-T009 | Public Destination read model / detail baseline | COMPLETE / ACCEPTED | `660d2c4` |
 | TC-P04-T010 | ReferenceData Admin/read UX baseline (minimal) | COMPLETE / ACCEPTED | `dc9d00d` |
-| TC-P04-T011 | Phase hardening tests & evidence pack | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P04-T011 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `13b36b0` |
+| TC-P04-GATE | P04 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
