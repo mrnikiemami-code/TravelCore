@@ -105,7 +105,7 @@
 | P06-T007 | **COMPLETE / ACCEPTED** (`85c8e7a`) — MediaAsset alt/caption translations (ADR 0008; no AltFa/AltEn) |
 | P06-T008 | **COMPLETE / ACCEPTED** (`f50cce3`; hygiene `1736a66`) — optimization contract + **P06-R1 RESOLVED DEFER** |
 | P06-T009 | **COMPLETE / ACCEPTED** (`3a25e7d`; hygiene `d3ce295`/`71b2886`) — app-proxy public delivery; **P06-R4 RESOLVED APP PROXY** |
-| P06-T010 | **AWAITING_ARCHITECT_REVIEW** — contract-only consumer reference proof; **P06-R5 RESOLVED CONTRACT-ONLY** |
+| P06-T010 | **AWAITING_ARCHITECT_REVIEW** (`05ef0ac`) — contract-only consumer reference proof; **P06-R5 RESOLVED CONTRACT-ONLY** |
 | P06 Focal Coordinate Policy | **RESOLVED** — normalized [0,1] top-left (`TC-P06-T006-R1`) |
 | P06-R1 (WebP/AVIF pipeline) | **RESOLVED — DEFER** — out of P06; evidence [`plans/P06-T008-optimization-contract-and-r1-defer.md`](plans/P06-T008-optimization-contract-and-r1-defer.md) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
