@@ -339,7 +339,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T006 | hreflang / alternate locale bindings | COMPLETE / ACCEPTED | `0cba002` (+ `40253b4`/`fbc6fb1`) |
 | TC-P05-T007 | Metadata composition framework | COMPLETE / ACCEPTED | `d611263` (+ `e1eae24`/`e8544dc`) |
 | TC-P05-T008 | Breadcrumb + structured data framework | COMPLETE / ACCEPTED | `1a98601` (+ `a4bf89a`) |
-| TC-P05-T009 | Sitemap + robots.txt framework | AWAITING_ARCHITECT_REVIEW | pending |
+| TC-P05-T009 | Sitemap + robots.txt framework | AWAITING_ARCHITECT_REVIEW | `09d6f5d` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
