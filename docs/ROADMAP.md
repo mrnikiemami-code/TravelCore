@@ -306,7 +306,7 @@ Invariant: Destination مالک Hotel/Tour/Article/Booking نیست؛ ReferenceD
 
 **Authoritative plan:** [`plans/P05-implementation-plan.md`](plans/P05-implementation-plan.md) (`TC-P05-PLAN`)
 
-**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T008` COMPLETE / ACCEPTED · `TC-P05-T009` AWAITING_ARCHITECT_REVIEW · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED
+**Progress:** `TC-P05-PLAN` ACCEPTED · `TC-P05-T001`–`T009` COMPLETE / ACCEPTED · `TC-P05-T010` AWAITING_ARCHITECT_REVIEW · **P05-R1/R2 RESOLVED** · P06 NOT_STARTED
 
 **Remediation evidence:** [`plans/P05-PLAN-R1-baseline-reconciliation.md`](plans/P05-PLAN-R1-baseline-reconciliation.md) · [`plans/P05-T003-R1-r1-decision-reconciliation.md`](plans/P05-T003-R1-r1-decision-reconciliation.md)
 
