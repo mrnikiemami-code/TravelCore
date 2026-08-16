@@ -54,6 +54,45 @@ public sealed class SeoRoute
 
     public Instant UpdatedAt { get; private set; }
 
+    /// <summary>
+    /// Changes the SEO-bound public path for this route identity.
+    /// Does not touch Destination.Translation.Slug (Destination remains content-slug SoR).
+    /// Caller must persist returned history + redirect-candidate hooks.
+    /// </summary>
+    public SeoRoutePathChange ChangePath(string newPath, Instant now)
+    {
+        var normalizedNew = NormalizePath(newPath);
+        if (string.Equals(Path, normalizedNew, StringComparison.Ordinal))
+        {
+            throw new ArgumentException("New path must differ from the current path.", nameof(newPath));
+        }
+
+        var fromPath = Path;
+        Path = normalizedNew;
+        UpdatedAt = now;
+
+        var history = SeoPathHistoryEntry.Record(
+            Id,
+            ResourceType,
+            ResourceId,
+            Locale,
+            fromPath,
+            normalizedNew,
+            now);
+
+        // T003: candidate only — full Redirect engine (301/410) is TC-P05-T004.
+        var candidate = SeoRedirectCandidate.CreatePending(
+            Id,
+            ResourceType,
+            ResourceId,
+            Locale,
+            fromPath,
+            normalizedNew,
+            now);
+
+        return new SeoRoutePathChange(history, candidate);
+    }
+
     public static SeoRoute Create(
         SeoResourceType resourceType,
         Guid resourceId,

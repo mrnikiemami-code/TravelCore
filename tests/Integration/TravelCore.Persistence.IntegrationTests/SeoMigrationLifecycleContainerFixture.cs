@@ -7,7 +7,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Dedicated clean PostgreSQL for SEO module migration lifecycle (TC-P05-T002).
+/// Dedicated clean PostgreSQL for SEO module migration lifecycle (TC-P05-T002/T003).
 /// </summary>
 public sealed class SeoMigrationLifecycleContainerFixture : IAsyncLifetime
 {

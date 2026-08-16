@@ -17,6 +17,12 @@ public sealed class SeoDbContext : DbContext
 
     public DbSet<SeoRoute> SeoRoutes => Set<SeoRoute>();
 
+    public DbSet<SeoPathHistoryEntry> SeoPathHistory => Set<SeoPathHistoryEntry>();
+
+    public DbSet<SeoPathReservation> SeoPathReservations => Set<SeoPathReservation>();
+
+    public DbSet<SeoRedirectCandidate> SeoRedirectCandidates => Set<SeoRedirectCandidate>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

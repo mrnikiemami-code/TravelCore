@@ -10,7 +10,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL SEO migration + SeoRoute create/get/list smoke (TC-P05-T002).
+/// Real-PostgreSQL SEO migration + SeoRoute / path-history / reservation smoke (TC-P05-T002/T003).
 /// </summary>
 [Collection(nameof(SeoMigrationLifecycleCollection))]
 public sealed class SeoMigrationLifecycleTests
@@ -23,7 +23,7 @@ public sealed class SeoMigrationLifecycleTests
     }
 
     [Fact]
-    public async Task SeoMigrationLifecycle_Apply_CreateGetList_And_SchemaSeo()
+    public async Task SeoMigrationLifecycle_Apply_RouteBinding_PathHistory_And_Reservations()
     {
         var ct = TestContext.Current.CancellationToken;
         string[] expectedMigrations;
@@ -31,9 +31,10 @@ public sealed class SeoMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.EndsWith("_InitialSeoScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoRoutes", expectedMigrations[1], StringComparison.Ordinal);
+            Assert.EndsWith("_AddSeoPathHistoryAndReservations", expectedMigrations[2], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -49,11 +50,16 @@ public sealed class SeoMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'seo';
                 """, ct));
-            Assert.Equal(2, await ScalarIntAsync(conn, """
+            Assert.Equal(5, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'seo'
-                  AND table_name IN ('seo_routes', '__EFMigrationsHistory');
+                  AND table_name IN (
+                    'seo_routes',
+                    'seo_path_history',
+                    'seo_path_reservations',
+                    'seo_redirect_candidates',
+                    '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
@@ -118,11 +124,59 @@ public sealed class SeoMigrationLifecycleTests
 
             listed = await service.ListByResourceAsync("Destination", destinationId, ct);
             Assert.Equal(2, listed.Count);
+
+            // T003: reservation + path change → history + redirect-candidate (same ResourceId).
+            var reserved = await service.ReservePathAsync(
+                new ReserveSeoPathRequest(
+                    "Destination",
+                    destinationId,
+                    "en",
+                    "destinations/istanbul-metropolis"),
+                ct);
+            Assert.Equal("destinations/istanbul-metropolis", reserved.Path);
+
+            await Assert.ThrowsAsync<SeoRouteConflictException>(() =>
+                service.ReservePathAsync(
+                    new ReserveSeoPathRequest(
+                        "Destination",
+                        otherDestinationId,
+                        "en",
+                        "destinations/istanbul-metropolis"),
+                    ct));
+
+            var change = await service.ChangePathAsync(
+                createdId,
+                new ChangeSeoRoutePathRequest("destinations/istanbul-metropolis"),
+                ct);
+
+            Assert.Equal("destinations/istanbul-metropolis", change.Route.Path);
+            Assert.Equal(destinationId, change.Route.ResourceId);
+            Assert.Equal(destinationId, change.History.ResourceId);
+            Assert.Equal(createdId, change.History.SeoRouteId);
+            Assert.Equal("destinations/istanbul", change.History.Path);
+            Assert.Equal("destinations/istanbul-metropolis", change.History.SucceededByPath);
+            Assert.Equal("Pending", change.RedirectCandidate.Status);
+            Assert.Equal("destinations/istanbul", change.RedirectCandidate.FromPath);
+            Assert.Equal("destinations/istanbul-metropolis", change.RedirectCandidate.ToPath);
+
+            var history = await service.ListPathHistoryByResourceAsync("Destination", destinationId, ct);
+            Assert.Single(history);
+            Assert.Equal(change.History.Id, history[0].Id);
+
+            var candidates = await service.ListRedirectCandidatesByResourceAsync("Destination", destinationId, ct);
+            Assert.Single(candidates);
+            Assert.Equal(change.RedirectCandidate.Id, candidates[0].Id);
+
+            Assert.All(history, h => Assert.Equal(destinationId, h.ResourceId));
+            Assert.All(candidates, c => Assert.Equal(destinationId, c.ResourceId));
+            Assert.Equal(0, await db.SeoPathReservations.CountAsync(ct));
         }
 
         await using (var db = _postgres.CreateDbContext())
         {
             Assert.Equal(2, await db.SeoRoutes.CountAsync(ct));
+            Assert.Equal(1, await db.SeoPathHistory.CountAsync(ct));
+            Assert.Equal(1, await db.SeoRedirectCandidates.CountAsync(ct));
             var conn = db.Database.GetDbConnection();
             await db.Database.OpenConnectionAsync(ct);
             Assert.Equal(1, await ScalarIntAsync(conn, """
@@ -131,11 +185,21 @@ public sealed class SeoMigrationLifecycleTests
                 WHERE table_schema = 'seo'
                   AND table_name = 'seo_routes';
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'seo'
+                  AND table_name = 'seo_path_history';
+                """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'destination'
-                  AND table_name = 'seo_routes';
+                  AND table_name IN (
+                    'seo_routes',
+                    'seo_path_history',
+                    'seo_path_reservations',
+                    'seo_redirect_candidates');
                 """, ct));
         }
 
@@ -143,6 +207,7 @@ public sealed class SeoMigrationLifecycleTests
         {
             await SeoMigrator.MigrateAsync(db, ct);
             Assert.Equal(2, await db.SeoRoutes.CountAsync(ct));
+            Assert.Equal(1, await db.SeoPathHistory.CountAsync(ct));
         }
     }
 
