@@ -6,14 +6,19 @@ namespace TravelCore.Modules.Content.Domain;
 /// Content editorial aggregate root (P08-R1).
 /// Shared editorial facts live here; type-specific facts live on Article/LandingPage/Guide rows (1:1).
 /// Localized title/body/excerpt live on ContentItemTranslation rows (T003; ADR 0008).
-/// Blocks / slug / SEO / Destination / Author / Media / delete-archive are later P08 tasks (R2–R8).
+/// Category/Tag taxonomy links are Content-owned (T004). Author deferred (P08-R7 open).
+/// Blocks / slug / SEO / Destination / Media / delete-archive are later P08 tasks (R2–R6/R8).
 /// </summary>
 public sealed class ContentItem
 {
     public const int CodeMaxLength = 64;
     public const int NameMaxLength = 200;
+    public const int MaxCategories = 32;
+    public const int MaxTags = 64;
 
     private readonly List<ContentItemTranslation> _translations = [];
+    private readonly List<ContentItemCategory> _categories = [];
+    private readonly List<ContentItemTag> _tags = [];
 
     private ContentItem()
     {
@@ -64,6 +69,10 @@ public sealed class ContentItem
     public Guide? Guide { get; private set; }
 
     public IReadOnlyCollection<ContentItemTranslation> Translations => _translations;
+
+    public IReadOnlyCollection<ContentItemCategory> Categories => _categories;
+
+    public IReadOnlyCollection<ContentItemTag> Tags => _tags;
 
     public static ContentItem CreateArticle(
         string code,
@@ -183,6 +192,80 @@ public sealed class ContentItem
         var normalizedLocale = ContentItemTranslation.NormalizeLocaleCode(localeCode);
         return _translations.FirstOrDefault(x =>
             string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+    }
+
+    public ContentItemCategory AssignCategory(ContentCategoryId categoryId, Instant now)
+    {
+        if (categoryId.Value == Guid.Empty)
+        {
+            throw new ArgumentException("ContentCategoryId cannot be empty.", nameof(categoryId));
+        }
+
+        var existing = _categories.FirstOrDefault(x => x.CategoryId == categoryId);
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        if (_categories.Count >= MaxCategories)
+        {
+            throw new InvalidOperationException($"A ContentItem may have at most {MaxCategories} categories.");
+        }
+
+        var link = ContentItemCategory.Create(Id, categoryId);
+        _categories.Add(link);
+        UpdatedAt = now;
+        return link;
+    }
+
+    public bool RemoveCategory(ContentCategoryId categoryId, Instant now)
+    {
+        var existing = _categories.FirstOrDefault(x => x.CategoryId == categoryId);
+        if (existing is null)
+        {
+            return false;
+        }
+
+        _categories.Remove(existing);
+        UpdatedAt = now;
+        return true;
+    }
+
+    public ContentItemTag AssignTag(ContentTagId tagId, Instant now)
+    {
+        if (tagId.Value == Guid.Empty)
+        {
+            throw new ArgumentException("ContentTagId cannot be empty.", nameof(tagId));
+        }
+
+        var existing = _tags.FirstOrDefault(x => x.TagId == tagId);
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        if (_tags.Count >= MaxTags)
+        {
+            throw new InvalidOperationException($"A ContentItem may have at most {MaxTags} tags.");
+        }
+
+        var link = ContentItemTag.Create(Id, tagId);
+        _tags.Add(link);
+        UpdatedAt = now;
+        return link;
+    }
+
+    public bool RemoveTag(ContentTagId tagId, Instant now)
+    {
+        var existing = _tags.FirstOrDefault(x => x.TagId == tagId);
+        if (existing is null)
+        {
+            return false;
+        }
+
+        _tags.Remove(existing);
+        UpdatedAt = now;
+        return true;
     }
 
     /// <summary>

@@ -8,7 +8,7 @@ using ContentItemAggregate = TravelCore.Modules.Content.Domain.ContentItem;
 namespace TravelCore.Modules.Content.Infrastructure.Services;
 
 /// <summary>
-/// Application service implementing ContentItem create/get/list + localization (editorial SoR only).
+/// Application service implementing ContentItem create/get/list + localization + taxonomy links.
 /// </summary>
 public sealed class ContentItemApplicationService : IContentItemService
 {
@@ -156,6 +156,66 @@ public sealed class ContentItemApplicationService : IContentItemService
             .ToList();
     }
 
+    public async Task<ContentItemResponse> AssignCategoryAsync(
+        Guid contentItemId,
+        Guid categoryId,
+        CancellationToken cancellationToken = default)
+    {
+        var categoryKey = ContentCategoryId.From(categoryId);
+        var categoryExists = await _db.ContentCategories.AsNoTracking()
+            .AnyAsync(x => x.Id == categoryKey, cancellationToken);
+        if (!categoryExists)
+        {
+            throw new KeyNotFoundException($"ContentCategory '{categoryId}' was not found.");
+        }
+
+        var item = await LoadTrackedAsync(contentItemId, cancellationToken);
+        item.AssignCategory(categoryKey, _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(item);
+    }
+
+    public async Task<ContentItemResponse> RemoveCategoryAsync(
+        Guid contentItemId,
+        Guid categoryId,
+        CancellationToken cancellationToken = default)
+    {
+        var item = await LoadTrackedAsync(contentItemId, cancellationToken);
+        item.RemoveCategory(ContentCategoryId.From(categoryId), _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(item);
+    }
+
+    public async Task<ContentItemResponse> AssignTagAsync(
+        Guid contentItemId,
+        Guid tagId,
+        CancellationToken cancellationToken = default)
+    {
+        var tagKey = ContentTagId.From(tagId);
+        var tagExists = await _db.ContentTags.AsNoTracking()
+            .AnyAsync(x => x.Id == tagKey, cancellationToken);
+        if (!tagExists)
+        {
+            throw new KeyNotFoundException($"ContentTag '{tagId}' was not found.");
+        }
+
+        var item = await LoadTrackedAsync(contentItemId, cancellationToken);
+        item.AssignTag(tagKey, _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(item);
+    }
+
+    public async Task<ContentItemResponse> RemoveTagAsync(
+        Guid contentItemId,
+        Guid tagId,
+        CancellationToken cancellationToken = default)
+    {
+        var item = await LoadTrackedAsync(contentItemId, cancellationToken);
+        item.RemoveTag(ContentTagId.From(tagId), _clock.GetCurrentInstant());
+        await _db.SaveChangesAsync(cancellationToken);
+        return Map(item);
+    }
+
     private async Task<ContentItemAggregate> LoadTrackedAsync(
         Guid contentItemId,
         CancellationToken cancellationToken)
@@ -209,7 +269,9 @@ public sealed class ContentItemApplicationService : IContentItemService
             item.UpdatedAt.ToString(),
             localizedTitle,
             localizedBody,
-            localizedExcerpt);
+            localizedExcerpt,
+            item.Categories.Select(x => x.CategoryId.Value).OrderBy(x => x).ToList(),
+            item.Tags.Select(x => x.TagId.Value).OrderBy(x => x).ToList());
     }
 
     private static ContentItemTranslationResponse MapTranslation(ContentItemTranslation translation) =>

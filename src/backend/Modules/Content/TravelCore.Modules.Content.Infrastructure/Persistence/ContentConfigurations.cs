@@ -70,11 +70,29 @@ internal sealed class ContentItemConfiguration : IEntityTypeConfiguration<Conten
             .HasForeignKey(x => x.ContentItemId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(x => x.Categories)
+            .WithOne()
+            .HasForeignKey(x => x.ContentItemId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Tags)
+            .WithOne()
+            .HasForeignKey(x => x.ContentItemId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Navigation(x => x.Article).AutoInclude();
         builder.Navigation(x => x.LandingPage).AutoInclude();
         builder.Navigation(x => x.Guide).AutoInclude();
         builder.Navigation(x => x.Translations)
             .HasField("_translations")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+        builder.Navigation(x => x.Categories)
+            .HasField("_categories")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+        builder.Navigation(x => x.Tags)
+            .HasField("_tags")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
     }
@@ -154,5 +172,125 @@ internal sealed class GuideConfiguration : IEntityTypeConfiguration<Guide>
         builder.Property(x => x.ContentItemId)
             .HasColumnName("content_item_id")
             .HasConversion(id => id.Value, value => ContentItemId.From(value));
+    }
+}
+
+internal sealed class ContentCategoryConfiguration : IEntityTypeConfiguration<ContentCategory>
+{
+    public void Configure(EntityTypeBuilder<ContentCategory> builder)
+    {
+        builder.ToTable("content_categories");
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .HasConversion(id => id.Value, value => ContentCategoryId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(ContentCategory.CodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.EnglishName)
+            .HasColumnName("english_name")
+            .HasMaxLength(ContentCategory.NameMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.CreatedAt)
+            .HasColumnName("created_at")
+            .IsRequired();
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at")
+            .IsRequired();
+
+        builder.HasIndex(x => x.Code)
+            .IsUnique()
+            .HasDatabaseName("ux_content_categories_code");
+    }
+}
+
+internal sealed class ContentTagConfiguration : IEntityTypeConfiguration<ContentTag>
+{
+    public void Configure(EntityTypeBuilder<ContentTag> builder)
+    {
+        builder.ToTable("content_tags");
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .HasConversion(id => id.Value, value => ContentTagId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(ContentTag.CodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.EnglishName)
+            .HasColumnName("english_name")
+            .HasMaxLength(ContentTag.NameMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.CreatedAt)
+            .HasColumnName("created_at")
+            .IsRequired();
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at")
+            .IsRequired();
+
+        builder.HasIndex(x => x.Code)
+            .IsUnique()
+            .HasDatabaseName("ux_content_tags_code");
+    }
+}
+
+internal sealed class ContentItemCategoryConfiguration : IEntityTypeConfiguration<ContentItemCategory>
+{
+    public void Configure(EntityTypeBuilder<ContentItemCategory> builder)
+    {
+        builder.ToTable("content_item_categories");
+        builder.HasKey(x => new { x.ContentItemId, x.CategoryId });
+
+        builder.Property(x => x.ContentItemId)
+            .HasColumnName("content_item_id")
+            .HasConversion(id => id.Value, value => ContentItemId.From(value));
+
+        builder.Property(x => x.CategoryId)
+            .HasColumnName("category_id")
+            .HasConversion(id => id.Value, value => ContentCategoryId.From(value));
+
+        builder.HasOne<ContentCategory>()
+            .WithMany()
+            .HasForeignKey(x => x.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => x.CategoryId)
+            .HasDatabaseName("ix_content_item_categories_category_id");
+    }
+}
+
+internal sealed class ContentItemTagConfiguration : IEntityTypeConfiguration<ContentItemTag>
+{
+    public void Configure(EntityTypeBuilder<ContentItemTag> builder)
+    {
+        builder.ToTable("content_item_tags");
+        builder.HasKey(x => new { x.ContentItemId, x.TagId });
+
+        builder.Property(x => x.ContentItemId)
+            .HasColumnName("content_item_id")
+            .HasConversion(id => id.Value, value => ContentItemId.From(value));
+
+        builder.Property(x => x.TagId)
+            .HasColumnName("tag_id")
+            .HasConversion(id => id.Value, value => ContentTagId.From(value));
+
+        builder.HasOne<ContentTag>()
+            .WithMany()
+            .HasForeignKey(x => x.TagId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => x.TagId)
+            .HasDatabaseName("ix_content_item_tags_tag_id");
     }
 }

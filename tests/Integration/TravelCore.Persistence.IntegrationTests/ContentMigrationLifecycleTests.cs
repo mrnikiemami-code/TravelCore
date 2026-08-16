@@ -31,10 +31,11 @@ public sealed class ContentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(3, expectedMigrations.Length);
+            Assert.Equal(4, expectedMigrations.Length);
             Assert.EndsWith("_InitialContentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentCatalogTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentItemTranslations", expectedMigrations[2], StringComparison.Ordinal);
+            Assert.EndsWith("_AddContentTaxonomyTables", expectedMigrations[3], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -50,7 +51,7 @@ public sealed class ContentMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'content';
                 """, ct));
-            Assert.Equal(6, await ScalarIntAsync(conn, """
+            Assert.Equal(10, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'content'
@@ -60,6 +61,10 @@ public sealed class ContentMigrationLifecycleTests
                     'landing_pages',
                     'guides',
                     'content_item_translations',
+                    'content_categories',
+                    'content_tags',
+                    'content_item_categories',
+                    'content_item_tags',
                     '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
@@ -132,6 +137,21 @@ public sealed class ContentMigrationLifecycleTests
             var missingLocale = await service.GetByIdAsync(createdId, "en", ct);
             Assert.NotNull(missingLocale);
             Assert.Null(missingLocale.LocalizedTitle);
+
+            var taxonomy = new ContentTaxonomyApplicationService(db, SystemClock.Instance);
+            var category = await taxonomy.CreateCategoryAsync(
+                new CreateContentCategoryRequest("tips", "Travel Tips"),
+                ct);
+            var tag = await taxonomy.CreateTagAsync(
+                new CreateContentTagRequest("visa", "Visa"),
+                ct);
+            Assert.Equal("tips", category.Code);
+            Assert.Equal("visa", tag.Code);
+
+            var assigned = await service.AssignCategoryAsync(createdId, category.Id, ct);
+            assigned = await service.AssignTagAsync(createdId, tag.Id, ct);
+            Assert.Contains(category.Id, assigned.CategoryIds!);
+            Assert.Contains(tag.Id, assigned.TagIds!);
 
             // Duplicate create last: a failed SaveChanges leaves the Added entity tracked.
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
