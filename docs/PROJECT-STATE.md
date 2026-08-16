@@ -312,7 +312,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P04-T010 | ReferenceData Admin/read UX baseline (minimal) | COMPLETE / ACCEPTED | `dc9d00d` |
 | TC-P04-T011 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `13b36b0` |
 | TC-P04-GATE | P04 Acceptance Gate | COMPLETE / ACCEPTED | `f70991f` |
-| TC-P05-PLAN | P05 SEO Engine Implementation Plan | AWAITING_ARCHITECT_REVIEW | `16241a4` |
+| TC-P05-PLAN | P05 SEO Engine Implementation Plan | AWAITING_ARCHITECT_REVIEW | `032dabc` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
