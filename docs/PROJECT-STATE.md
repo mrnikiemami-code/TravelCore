@@ -146,7 +146,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P07_IN_PROGRESS** · `TC-P07-PLAN` AWAITING_ARCHITECT_REVIEW · product tasks NOT_STARTED |
+| Phase Transition State | **P07_IN_PROGRESS** · `TC-P07-PLAN` ACCEPTED · `TC-P07-T001` AWAITING_ARCHITECT_REVIEW (`108ac34`) |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -154,7 +154,7 @@
 | P05 Phase Gate | **TC-P05-GATE** COMPLETE / ACCEPTED (`7f234e8`; R1 `bde6661`) |
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P07` received |
-| Pipeline Product Execution | **ACTIVE** (PLANNING — await architect accept of `TC-P07-PLAN`) |
+| Pipeline Product Execution | **ACTIVE** |
 | Human Confirmation Reason | None for current task |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -289,7 +289,7 @@
 | P06-R8 | **UNRESOLVED** (no Admin delete UI/actions; OK for gate — deletion not in P06 product scope) |
 | P06-R9 | **DEFERRED** (consumer alt override; Media owns default alt/caption only) |
 | TC-P07-PLAN | **COMPLETE / ACCEPTED** (`5dbc152`; hygiene `768a2c5`) |
-| TC-P07-T001 | **AWAITING_ARCHITECT_REVIEW** |
+| TC-P07-T001 | **AWAITING_ARCHITECT_REVIEW** (`108ac34`) |
 | P07-R1 | **UNRESOLVED** (Place model shape) |
 | P07-R2 | **UNRESOLVED** (Destination link requiredness) |
 | P07-R3 | **UNRESOLVED** (Place delete/archive) |
