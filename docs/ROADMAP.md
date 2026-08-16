@@ -43,7 +43,7 @@
 | Last Accepted Commit | `37637bf` (`TC-P05-GATE` / `TC-P05-GATE-R1` ACCEPTED) · docs sync `02e06d3` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review/accept `TC-P06-T011` (then `TC-P06-T012` / gate path) |
+| Current Next Task | Architect review/accept `TC-P06-T012` (then `TC-P06-GATE`; GATE **NOT_STARTED**; P07 **NOT_STARTED**) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -105,7 +105,7 @@
 - **P03** = COMPLETE (`TC-P03-GATE` ACCEPTED `6a8a5ce`)
 - **P04** = COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`; R3 RESOLVED = noindex,follow)
 - **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
-- **P06** = IN_PROGRESS (`TC-P06-T001`–`T006` ACCEPTED; `TC-P06-T007` AWAITING_ARCHITECT_REVIEW; **P06-R2/R3/R6 RESOLVED**; P06-R9 DEFERRED)
+- **P06** = IN_PROGRESS (`TC-P06-T001`–`T009` ACCEPTED; `TC-P06-T010`/`T011`/`T012` AWAITING_ARCHITECT_REVIEW; `TC-P06-GATE` NOT_STARTED; **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED**)
 - **P07–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -329,15 +329,17 @@ SeoRoute · localized route · slug history · Redirect · Canonical · hreflang
 
 **Authoritative plan:** [`plans/P06-implementation-plan.md`](plans/P06-implementation-plan.md) (`TC-P06-PLAN` — COMPLETE / ACCEPTED · `87069e4`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`–`T009` ACCEPTED · `TC-P06-T010`/`TC-P06-T011` AWAITING_ARCHITECT_REVIEW · **P06-R1 DEFER** · **P06-R2/R3/R4/R5/R6 RESOLVED** · **P06-R8 UNRESOLVED** · **P06-R9 DEFERRED** · T012 NOT_STARTED · P07 NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P06` · plan ACCEPTED · `TC-P06-T001`–`T009` ACCEPTED · `TC-P06-T010`/`T011`/`T012` AWAITING_ARCHITECT_REVIEW · **P06-R1 DEFER** · **P06-R2/R3/R4/R5/R6 RESOLVED** · **P06-R7 DEFERRED** · **P06-R8 UNRESOLVED** · **P06-R9 DEFERRED** · `TC-P06-GATE` **NOT_STARTED** · P07 **NOT_STARTED**
 
-Media Asset · object storage · upload · validation · variants · dimensions · focal point · alt/caption translations · optimization contract (same-format; WebP/AVIF DEFERRED) · app-proxy presentation · consumer reference proof (contract-only).
+Media Asset · object storage · upload · validation · variants · dimensions · focal point · alt/caption translations · optimization contract (same-format; WebP/AVIF DEFERRED) · app-proxy presentation · consumer reference proof (contract-only) · Admin Media baseline · hardening evidence pack.
 
 Invariant: Media مالک بایت/متادیتای دارایی است؛ معنای رابطهٔ گالری (ترتیب/نقش) متعلق به ماژول مصرف‌کننده است.
 
 **Optimization contract:** [`plans/P06-T008-optimization-contract-and-r1-defer.md`](plans/P06-T008-optimization-contract-and-r1-defer.md)
 
 **Consumer reference proof:** [`plans/P06-T010-consumer-reference-contract-proof.md`](plans/P06-T010-consumer-reference-contract-proof.md)
+
+**Evidence pack:** [`plans/P06-T012-hardening-and-evidence-pack.md`](plans/P06-T012-hardening-and-evidence-pack.md)
 
 ---
 
