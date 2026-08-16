@@ -367,7 +367,7 @@ Place · Hotel · Restaurant · Attraction با localization، رابطه با D
 
 **Status:** IN_PROGRESS
 
-**Authoritative plan:** [`plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) (`TC-P08-PLAN` — AWAITING_ARCHITECT_REVIEW)
+**Authoritative plan:** [`plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) (`TC-P08-PLAN` — COMPLETE / ACCEPTED · `7012fe0`)
 
 **Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan ACCEPTED (`7012fe0`) · `TC-P08-T001` AWAITING_ARCHITECT_REVIEW · **P08-R1–R8 UNRESOLVED** · P09 NOT_STARTED
 
