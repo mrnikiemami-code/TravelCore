@@ -4,12 +4,13 @@ using NodaTime;
 using TravelCore.Modules.Content.Contracts;
 using TravelCore.Modules.Content.Infrastructure;
 using TravelCore.Modules.Content.Infrastructure.Services;
+using TravelCore.Modules.ReferenceData.Contracts;
 using Xunit;
 
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Content migration + ContentItem catalog persistence smoke (TC-P08-T002).
+/// Real-PostgreSQL Content migration + ContentItem catalog + localization smoke (TC-P08-T003).
 /// </summary>
 [Collection(nameof(ContentMigrationLifecycleCollection))]
 public sealed class ContentMigrationLifecycleTests
@@ -30,9 +31,10 @@ public sealed class ContentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.EndsWith("_InitialContentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddContentCatalogTables", expectedMigrations[1], StringComparison.Ordinal);
+            Assert.EndsWith("_AddContentItemTranslations", expectedMigrations[2], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -48,11 +50,17 @@ public sealed class ContentMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'content';
                 """, ct));
-            Assert.Equal(5, await ScalarIntAsync(conn, """
+            Assert.Equal(6, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'content'
-                  AND table_name IN ('content_items', 'articles', 'landing_pages', 'guides', '__EFMigrationsHistory');
+                  AND table_name IN (
+                    'content_items',
+                    'articles',
+                    'landing_pages',
+                    'guides',
+                    'content_item_translations',
+                    '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
@@ -61,7 +69,10 @@ public sealed class ContentMigrationLifecycleTests
         Guid createdId;
         await using (var db = _postgres.CreateDbContext())
         {
-            var service = new ContentItemApplicationService(db, SystemClock.Instance);
+            var service = new ContentItemApplicationService(
+                db,
+                SystemClock.Instance,
+                new StubReferenceDataCatalogQuery());
             var created = await service.CreateAsync(
                 new CreateContentItemRequest(
                     "Article",
@@ -95,6 +106,34 @@ public sealed class ContentMigrationLifecycleTests
             Assert.Contains(articles, x => x.Id == createdId);
             Assert.DoesNotContain(articles, x => x.Id == landing.Id);
 
+            var translation = await service.UpsertTranslationAsync(
+                createdId,
+                "fa",
+                new UpsertContentItemTranslationRequest(
+                    "عنوان آزمایشی",
+                    "بدنه آزمایشی",
+                    "خلاصه آزمایشی"),
+                ct);
+            Assert.Equal("fa", translation.LocaleCode);
+            Assert.Equal("عنوان آزمایشی", translation.Title);
+            Assert.Equal("بدنه آزمایشی", translation.Body);
+            Assert.Equal("خلاصه آزمایشی", translation.Excerpt);
+
+            var listed = await service.ListTranslationsAsync(createdId, ct);
+            Assert.Single(listed);
+            Assert.Equal("fa", listed[0].LocaleCode);
+
+            var localized = await service.GetByIdAsync(createdId, "fa", ct);
+            Assert.NotNull(localized);
+            Assert.Equal("عنوان آزمایشی", localized.LocalizedTitle);
+            Assert.Equal("بدنه آزمایشی", localized.LocalizedBody);
+            Assert.Equal("خلاصه آزمایشی", localized.LocalizedExcerpt);
+
+            var missingLocale = await service.GetByIdAsync(createdId, "en", ct);
+            Assert.NotNull(missingLocale);
+            Assert.Null(missingLocale.LocalizedTitle);
+
+            // Duplicate create last: a failed SaveChanges leaves the Added entity tracked.
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 service.CreateAsync(
                     new CreateContentItemRequest("Article", "ART-DEMO-1", "Duplicate Code"),
@@ -115,12 +154,17 @@ public sealed class ContentMigrationLifecycleTests
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM content.guides;
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int FROM content.content_item_translations WHERE content_item_id = @id;
+                """, ct, createdId));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'content'
-                  AND table_name = 'content_items'
-                  AND column_name IN ('title_fa', 'title_en', 'slug', 'body_json', 'index_policy');
+                  AND table_name IN ('content_items', 'content_item_translations')
+                  AND column_name IN (
+                    'title_fa', 'title_en', 'body_fa', 'body_en',
+                    'slug', 'body_json', 'index_policy');
                 """, ct));
         }
     }
@@ -143,5 +187,50 @@ public sealed class ContentMigrationLifecycleTests
 
         var result = await cmd.ExecuteScalarAsync(cancellationToken);
         return Convert.ToInt32(result);
+    }
+
+    private sealed class StubReferenceDataCatalogQuery : IReferenceDataCatalogQuery
+    {
+        public Task<IReadOnlyList<CurrencyCatalogItem>> ListCurrenciesAsync(
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<CurrencyCatalogItem>>([]);
+
+        public Task<CurrencyCatalogItem?> GetCurrencyAsync(
+            string code,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<CurrencyCatalogItem?>(null);
+
+        public Task<IReadOnlyList<LocaleCatalogItem>> ListLocalesAsync(
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<LocaleCatalogItem>>([new("fa", "Persian"), new("en", "English")]);
+
+        public Task<LocaleCatalogItem?> GetLocaleAsync(
+            string code,
+            CancellationToken cancellationToken = default)
+        {
+            var normalized = code.Trim().ToLowerInvariant();
+            return Task.FromResult<LocaleCatalogItem?>(
+                normalized is "fa" or "en"
+                    ? new LocaleCatalogItem(normalized, normalized == "fa" ? "Persian" : "English")
+                    : null);
+        }
+
+        public Task<IReadOnlyList<CountryCatalogItem>> ListCountriesAsync(
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<CountryCatalogItem>>([]);
+
+        public Task<CountryCatalogItem?> GetCountryAsync(
+            string alpha2Code,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<CountryCatalogItem?>(null);
+
+        public Task<IReadOnlyList<TimeZoneCatalogItem>> ListTimeZonesAsync(
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<TimeZoneCatalogItem>>([]);
+
+        public Task<TimeZoneCatalogItem?> GetTimeZoneAsync(
+            string id,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<TimeZoneCatalogItem?>(null);
     }
 }

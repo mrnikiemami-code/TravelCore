@@ -2,12 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using TravelCore.Modules.Content.Contracts;
 using TravelCore.Modules.Content.Domain;
+using TravelCore.Modules.ReferenceData.Contracts;
 using ContentItemAggregate = TravelCore.Modules.Content.Domain.ContentItem;
 
 namespace TravelCore.Modules.Content.Infrastructure.Services;
 
 /// <summary>
-/// Application service implementing ContentItem create/get/list (editorial SoR only).
+/// Application service implementing ContentItem create/get/list + localization (editorial SoR only).
 /// </summary>
 public sealed class ContentItemApplicationService : IContentItemService
 {
@@ -15,11 +16,16 @@ public sealed class ContentItemApplicationService : IContentItemService
 
     private readonly ContentDbContext _db;
     private readonly IClock _clock;
+    private readonly IReferenceDataCatalogQuery _referenceData;
 
-    public ContentItemApplicationService(ContentDbContext db, IClock clock)
+    public ContentItemApplicationService(
+        ContentDbContext db,
+        IClock clock,
+        IReferenceDataCatalogQuery referenceData)
     {
         _db = db;
         _clock = clock;
+        _referenceData = referenceData;
     }
 
     public async Task<ContentItemResponse> CreateAsync(
@@ -63,14 +69,20 @@ public sealed class ContentItemApplicationService : IContentItemService
         return Map(item);
     }
 
+    public Task<ContentItemResponse?> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken = default) =>
+        GetByIdAsync(id, locale: null, cancellationToken);
+
     public async Task<ContentItemResponse?> GetByIdAsync(
         Guid id,
+        string? locale,
         CancellationToken cancellationToken = default)
     {
         var contentItemId = ContentItemId.From(id);
         var item = await _db.ContentItems.AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == contentItemId, cancellationToken);
-        return item is null ? null : Map(item);
+        return item is null ? null : Map(item, locale);
     }
 
     public async Task<IReadOnlyList<ContentItemResponse>> ListAsync(
@@ -97,7 +109,62 @@ public sealed class ContentItemApplicationService : IContentItemService
             .Take(take)
             .ToListAsync(cancellationToken);
 
-        return items.Select(Map).ToList();
+        return items.Select(x => Map(x)).ToList();
+    }
+
+    public async Task<ContentItemTranslationResponse> UpsertTranslationAsync(
+        Guid contentItemId,
+        string localeCode,
+        UpsertContentItemTranslationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var locale = await _referenceData.GetLocaleAsync(localeCode, cancellationToken)
+            ?? throw new ArgumentException(
+                $"Locale '{localeCode}' was not found in ReferenceData locale catalog.",
+                nameof(localeCode));
+
+        var item = await LoadTrackedAsync(contentItemId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var translation = item.UpsertTranslation(
+            locale.Code,
+            request.Title,
+            request.Body,
+            request.Excerpt,
+            now);
+
+        await _db.SaveChangesAsync(cancellationToken);
+        return MapTranslation(translation);
+    }
+
+    public async Task<IReadOnlyList<ContentItemTranslationResponse>> ListTranslationsAsync(
+        Guid contentItemId,
+        CancellationToken cancellationToken = default)
+    {
+        var id = ContentItemId.From(contentItemId);
+        var item = await _db.ContentItems.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (item is null)
+        {
+            return [];
+        }
+
+        return item.Translations
+            .OrderBy(x => x.LocaleCode, StringComparer.Ordinal)
+            .Select(MapTranslation)
+            .ToList();
+    }
+
+    private async Task<ContentItemAggregate> LoadTrackedAsync(
+        Guid contentItemId,
+        CancellationToken cancellationToken)
+    {
+        var id = ContentItemId.From(contentItemId);
+        var item = await _db.ContentItems
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return item
+            ?? throw new KeyNotFoundException($"ContentItem '{contentItemId}' was not found.");
     }
 
     private static ContentKind ParseKind(string kind)
@@ -112,8 +179,25 @@ public sealed class ContentItemApplicationService : IContentItemService
         throw new ArgumentException($"Unsupported ContentKind '{kind}'.", nameof(kind));
     }
 
-    private static ContentItemResponse Map(ContentItemAggregate item) =>
-        new(
+    private static ContentItemResponse Map(ContentItemAggregate item, string? locale = null)
+    {
+        string? localizedTitle = null;
+        string? localizedBody = null;
+        string? localizedExcerpt = null;
+
+        // ADR 0008: exact-locale overlay only — no silent cross-language invent.
+        if (!string.IsNullOrWhiteSpace(locale))
+        {
+            var translation = item.FindTranslation(locale);
+            if (translation is not null)
+            {
+                localizedTitle = translation.Title;
+                localizedBody = translation.Body;
+                localizedExcerpt = translation.Excerpt;
+            }
+        }
+
+        return new ContentItemResponse(
             item.Id.Value,
             item.Kind.ToString(),
             item.Code,
@@ -122,5 +206,18 @@ public sealed class ContentItemApplicationService : IContentItemService
             item.LandingPage is null ? null : new LandingPageDetailsResponse(),
             item.Guide is null ? null : new GuideDetailsResponse(),
             item.CreatedAt.ToString(),
-            item.UpdatedAt.ToString());
+            item.UpdatedAt.ToString(),
+            localizedTitle,
+            localizedBody,
+            localizedExcerpt);
+    }
+
+    private static ContentItemTranslationResponse MapTranslation(ContentItemTranslation translation) =>
+        new(
+            translation.ContentItemId.Value,
+            translation.LocaleCode,
+            translation.Title,
+            translation.Body,
+            translation.Excerpt,
+            translation.UpdatedAt.ToString());
 }

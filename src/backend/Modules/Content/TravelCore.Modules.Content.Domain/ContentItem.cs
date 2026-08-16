@@ -5,12 +5,15 @@ namespace TravelCore.Modules.Content.Domain;
 /// <summary>
 /// Content editorial aggregate root (P08-R1).
 /// Shared editorial facts live here; type-specific facts live on Article/LandingPage/Guide rows (1:1).
+/// Localized title/body/excerpt live on ContentItemTranslation rows (T003; ADR 0008).
 /// Blocks / slug / SEO / Destination / Author / Media / delete-archive are later P08 tasks (R2–R8).
 /// </summary>
 public sealed class ContentItem
 {
     public const int CodeMaxLength = 64;
     public const int NameMaxLength = 200;
+
+    private readonly List<ContentItemTranslation> _translations = [];
 
     private ContentItem()
     {
@@ -47,7 +50,7 @@ public sealed class ContentItem
     /// <summary>Stable opaque content code within TravelCore (not SEO slug).</summary>
     public string Code { get; private set; }
 
-    /// <summary>Baseline English display name (localized titles arrive in later P08 tasks).</summary>
+    /// <summary>Baseline English display name (localized titles live in translations).</summary>
     public string EnglishName { get; private set; }
 
     public Instant CreatedAt { get; private set; }
@@ -59,6 +62,8 @@ public sealed class ContentItem
     public LandingPage? LandingPage { get; private set; }
 
     public Guide? Guide { get; private set; }
+
+    public IReadOnlyCollection<ContentItemTranslation> Translations => _translations;
 
     public static ContentItem CreateArticle(
         string code,
@@ -141,6 +146,43 @@ public sealed class ContentItem
             UpdatedAt = updatedAt
         };
         return item;
+    }
+
+    public ContentItemTranslation UpsertTranslation(
+        string localeCode,
+        string title,
+        string? body,
+        string? excerpt,
+        Instant now)
+    {
+        var normalizedLocale = ContentItemTranslation.NormalizeLocaleCode(localeCode);
+        var existing = _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+
+        if (existing is null)
+        {
+            var created = ContentItemTranslation.Create(
+                Id,
+                normalizedLocale,
+                title,
+                body,
+                excerpt,
+                now);
+            _translations.Add(created);
+            UpdatedAt = now;
+            return created;
+        }
+
+        existing.Update(title, body, excerpt, now);
+        UpdatedAt = now;
+        return existing;
+    }
+
+    public ContentItemTranslation? FindTranslation(string localeCode)
+    {
+        var normalizedLocale = ContentItemTranslation.NormalizeLocaleCode(localeCode);
+        return _translations.FirstOrDefault(x =>
+            string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
     }
 
     /// <summary>

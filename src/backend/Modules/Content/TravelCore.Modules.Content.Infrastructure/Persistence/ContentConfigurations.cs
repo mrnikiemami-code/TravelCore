@@ -65,9 +65,56 @@ internal sealed class ContentItemConfiguration : IEntityTypeConfiguration<Conten
             .HasForeignKey<Guide>(x => x.ContentItemId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(x => x.Translations)
+            .WithOne()
+            .HasForeignKey(x => x.ContentItemId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Navigation(x => x.Article).AutoInclude();
         builder.Navigation(x => x.LandingPage).AutoInclude();
         builder.Navigation(x => x.Guide).AutoInclude();
+        builder.Navigation(x => x.Translations)
+            .HasField("_translations")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+    }
+}
+
+internal sealed class ContentItemTranslationConfiguration : IEntityTypeConfiguration<ContentItemTranslation>
+{
+    public void Configure(EntityTypeBuilder<ContentItemTranslation> builder)
+    {
+        builder.ToTable("content_item_translations");
+        builder.HasKey(x => new { x.ContentItemId, x.LocaleCode });
+
+        builder.Property(x => x.ContentItemId)
+            .HasColumnName("content_item_id")
+            .HasConversion(id => id.Value, value => ContentItemId.From(value));
+
+        builder.Property(x => x.LocaleCode)
+            .HasColumnName("locale_code")
+            .HasMaxLength(ContentItemTranslation.LocaleCodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Title)
+            .HasColumnName("title")
+            .HasMaxLength(ContentItemTranslation.TitleMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Body)
+            .HasColumnName("body")
+            .HasMaxLength(ContentItemTranslation.BodyMaxLength);
+
+        builder.Property(x => x.Excerpt)
+            .HasColumnName("excerpt")
+            .HasMaxLength(ContentItemTranslation.ExcerptMaxLength);
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at")
+            .IsRequired();
+
+        builder.HasIndex(x => x.LocaleCode)
+            .HasDatabaseName("ix_content_item_translations_locale_code");
     }
 }
 
