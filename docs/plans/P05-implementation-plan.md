@@ -282,12 +282,12 @@ TC-P05-PLAN (architect accept)
 
 | ID | Item | Classification |
 |----|------|----------------|
-| R1 | Exact persistence shape for LocalizedSlug history vs Destination.Translation.Slug | **REQUIRES_ARCHITECT_CONFIRMATION_AT_T003** if conflict with P04 ownership |
+| R1 | Exact persistence shape for LocalizedSlug history vs Destination.Translation.Slug | **RESOLVED** (architect at T003): `DestinationTranslation.Slug` = authoritative **current** localized Destination slug (Destination-owned/mutated). SEO does **not** own/write it. SEO owns SeoRoute binding, historical public path records, path reservation, redirect candidate/history mechanics (preferred redirect-chain: A→C, B→C — not A→B→C). Historical path ≠ current Destination slug. |
 | R2 | Default IndexPolicy for existing Destination pages after integration | **REQUIRES_ARCHITECT_CONFIRMATION_AT_T005/T010** (proposal: remain noindex until explicit publish) |
 | R3 | Whether sitemap generation is on-request endpoint vs background job in P05 | **RESOLVED_BY_PLAN_DEFAULT**: framework first; job runner optional if host already supports |
 | R4 | Multi-resource SEO beyond Destination in P05 | **DEFERRED** unless architect expands; Destination-first validation |
 
-If R1/R2 block a task, Cursor must **STOP** with `BLOCKED_ARCHITECTURE_CONFLICT` rather than inventing policy.
+If R2 blocks a task, Cursor must **STOP** with `BLOCKED_ARCHITECTURE_CONFLICT` rather than inventing policy. R1 is closed; do not reopen Destination.Translation.Slug ownership.
 
 ---
 
