@@ -262,7 +262,7 @@ public sealed class ArchitectureGuardrailTests
         Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
         Assert.Equal("seo", TravelCore.Modules.Seo.Infrastructure.SeoDbContext.SchemaName);
 
-        // Scaffolding has no product entities yet; default schema ownership must still be seo.
+        // Product entities (e.g. SeoRoute) must remain under schema seo.
         Assert.Equal("seo", db.Model.GetDefaultSchema());
         foreach (var entity in db.Model.GetEntityTypes())
         {

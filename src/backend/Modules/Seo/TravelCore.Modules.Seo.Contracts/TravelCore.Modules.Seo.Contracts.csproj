@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Seo.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Seo.Contracts</AssemblyName>
-    <Description>SEO module contracts (route/indexation mechanics). No EF entities. TC-P05-T001 scaffolding.</Description>
+    <Description>SEO module contracts (SeoRoute create/get/list). No EF entities.</Description>
   </PropertyGroup>
 
 </Project>

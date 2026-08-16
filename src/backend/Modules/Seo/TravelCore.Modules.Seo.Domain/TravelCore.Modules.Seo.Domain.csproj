@@ -6,7 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Seo.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Seo.Domain</AssemblyName>
-    <Description>SEO domain layer shell. SeoRoute product entities deferred to TC-P05-T002+. No EF/ASP.NET.</Description>
+    <Description>SEO domain: SeoRoute binding ResourceType+ResourceId to locale paths. No EF/ASP.NET. No Destination content fields.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 
 </Project>

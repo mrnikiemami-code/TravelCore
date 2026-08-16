@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Seo.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Seo.Infrastructure</AssemblyName>
-    <Description>SEO module infrastructure: DbContext schema seo, migrations, host registration (TC-P05-T001).</Description>
+    <Description>SEO module infrastructure: SeoRoute persistence in schema seo, migrations, host registration.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,7 @@
 namespace TravelCore.Modules.Seo.Contracts;
 
 /// <summary>
-/// Contracts assembly marker for the SEO module (TC-P05-T001 scaffolding).
-/// Product contracts (SeoRoute, IndexPolicy, etc.) arrive in later P05 tasks.
+/// Contracts assembly marker for the SEO module.
 /// </summary>
 public static class SeoContractsAssemblyMarker
 {

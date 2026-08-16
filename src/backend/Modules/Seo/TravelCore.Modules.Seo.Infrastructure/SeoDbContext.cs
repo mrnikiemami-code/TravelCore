@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.Seo.Domain;
 
 namespace TravelCore.Modules.Seo.Infrastructure;
 
 /// <summary>
 /// SEO-owned DbContext. Owns PostgreSQL schema <c>seo</c>.
-/// Product entities (SeoRoute, redirects, policies) are deferred to later P05 tasks.
 /// </summary>
 public sealed class SeoDbContext : DbContext
 {
@@ -14,6 +14,8 @@ public sealed class SeoDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<SeoRoute> SeoRoutes => Set<SeoRoute>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
