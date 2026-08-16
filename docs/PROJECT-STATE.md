@@ -109,7 +109,7 @@
 | P06-T010 | **COMPLETE / ACCEPTED** (`05ef0ac`) — contract-only consumer reference proof; **P06-R5 RESOLVED CONTRACT-ONLY** |
 | P06-T011 | **COMPLETE / ACCEPTED** (`8b0de5a`) — Admin Media operational baseline (upload/inspect/alt/focal; R8 no-delete; R9 no consumer alt override; R5 no Destination assign) |
 | P06-T012 | **COMPLETE / ACCEPTED** (`8981312`; hygiene `acfed76`) — hardening + evidence pack [`plans/P06-T012-hardening-and-evidence-pack.md`](plans/P06-T012-hardening-and-evidence-pack.md) |
-| P06-GATE | **AWAITING_ARCHITECT_REVIEW** (evidence this commit) |
+| P06-GATE | **AWAITING_ARCHITECT_REVIEW** (`da345b5`) |
 | P06 Focal Coordinate Policy | **RESOLVED** — normalized [0,1] top-left (`TC-P06-T006-R1`) |
 | P06-R1 (WebP/AVIF pipeline) | **RESOLVED — DEFER** — out of P06; evidence [`plans/P06-T008-optimization-contract-and-r1-defer.md`](plans/P06-T008-optimization-contract-and-r1-defer.md) |
 | P06-R2 (object-storage ownership) | **RESOLVED** — Media-owned storage abstraction first; not Platform-wide `IObjectStorage` |
@@ -271,7 +271,7 @@
 | TC-P06-T010 | **COMPLETE / ACCEPTED** (`05ef0ac`) |
 | TC-P06-T011 | **COMPLETE / ACCEPTED** (`8b0de5a`) |
 | TC-P06-T012 | **COMPLETE / ACCEPTED** (`8981312`; hygiene `acfed76`) — evidence pack `docs/plans/P06-T012-hardening-and-evidence-pack.md` |
-| TC-P06-GATE | **AWAITING_ARCHITECT_REVIEW** (evidence this commit) |
+| TC-P06-GATE | **AWAITING_ARCHITECT_REVIEW** (`da345b5`) |
 | P06-R1 | **RESOLVED — DEFER** (no WebP/AVIF conversion pipeline in P06; same-format variants only) |
 | P06-R2 | **RESOLVED** (Media-owned storage abstraction; local filesystem + in-memory test adapters; vendor deferred) |
 | P06-R3 | **RESOLVED** (SYNCHRONOUS variant generation; sizing 1600/960/320 fit-within; GIF fail-closed) |
@@ -401,6 +401,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P05-T012 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `0c8ab0a` (+ `3351755`/`be407fc`/`6a02d9d`) |
 | TC-P05-GATE | P05 Acceptance Gate | COMPLETE / ACCEPTED | `7f234e8` (+ `d6bcbfb`) |
 | TC-P05-GATE-R1 | Reconcile P05 Gate Baseline Drift | COMPLETE / ACCEPTED | `bde6661` (+ `37637bf`) |
+| TC-P06-GATE | P06 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | `da345b5` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
