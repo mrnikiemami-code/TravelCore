@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P08-GATE` — **WAITING_USER_CONFIRM** |
-| Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS**) |
-| Current Next Task | USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` (PIPELINE ON; GATE not bypassed) |
+| Current Active Product Task | `TC-P08-GATE` — **AWAITING_ARCHITECT_REVIEW** |
+| Current Next Product Phase | P08 — Content CMS (**IN_PROGRESS** · gate evidence ready) |
+| Current Next Task | Architect review of `TC-P08-GATE`; then P08 COMPLETE (no P09 without phase confirm) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -150,7 +150,8 @@
 | P08-T007 | **COMPLETE / ACCEPTED** (`6a56a0d`; hygiene `4de0f93`) — Access + Admin Content baseline (no delete/archive; no slug/SEO; no Author/widgets) |
 | P08-T008 | **COMPLETE / ACCEPTED** (`4924892`; hygiene `19beaca`) — Public Content pages + SEO hooks (R3/R4) |
 | P08-T009 | **COMPLETE / ACCEPTED** (`2f9552f`; hygiene `a588614`) — hardening + evidence pack |
-| P08-GATE | **NOT_STARTED** — requires USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` after T009 ACCEPT |
+| P08-T009 | **COMPLETE / ACCEPTED** (`2f9552f`; hygiene `a588614`) — hardening + evidence pack |
+| P08-GATE | **AWAITING_ARCHITECT_REVIEW** — evidence [`plans/P08-GATE-acceptance-evidence.md`](plans/P08-GATE-acceptance-evidence.md); USER confirm received; Cursor verdict PASS |
 | P08-R1 (Content model shape) | **RESOLVED** — Core Content Aggregate + Typed Content Variants (`ContentItemId` only; Article/LandingPage/Guide 1:1) |
 | P08-R2 (Block storage) | **RESOLVED** — Relational Block Storage (`ContentBlock` first-class + ordering) |
 | P08-R5 (Destination link) | **RESOLVED** — Content→Destination logical refs · cardinality 0..N · no cross-schema FK · contract existence validation |
@@ -186,8 +187,8 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **WAITING_USER_CONFIRM** (`TC-P08-GATE`) |
-| Human Confirmation Reason | CRITICAL Gate: need USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P08-GATE`) |
+| Human Confirmation Reason | USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` received; awaiting architect ACCEPT |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
 | TC-P02-T002 | COMPLETE / ACCEPTED (`55ea466`) |
@@ -337,7 +338,7 @@
 | P07-R3 | **UNRESOLVED** (Place delete/archive) — OK for COMPLETE phase; CatalogStatus is catalog ops only; no delete/archive product invented |
 | P07-R4 | **RESOLVED** — PLACE owns current locale-specific `PlaceTranslation.Slug`; SEO owns route binding/reservations/history/redirects/canonical/IndexPolicy |
 | P07-R5 | **RESOLVED** — default Place SEO posture **noindex, follow**; Active/public/publish ≠ Index; no Destination IndexPolicy inheritance |
-| Required Human Token | none for PLAN review; GATE later needs `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` |
+| Required Human Token | USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE` **received**; GATE awaiting architect ACCEPT |
 
 ### P00 Exit Summary
 
@@ -348,7 +349,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 IN_PROGRESS** (`TC-P08-PLAN` ACCEPTED · `7012fe0`); **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED**; `TC-P08-T009` AWAITING_ARCHITECT_REVIEW (`2f9552f` · evidence [`plans/P08-T009-hardening-and-evidence-pack.md`](plans/P08-T009-hardening-and-evidence-pack.md)); GATE later needs USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE`; P09 NOT_STARTED
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 IN_PROGRESS** (`TC-P08-PLAN` ACCEPTED · `7012fe0`); **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED**; `TC-P08-T001`–`T009` ACCEPTED; `TC-P08-GATE` AWAITING_ARCHITECT_REVIEW (evidence [`plans/P08-GATE-acceptance-evidence.md`](plans/P08-GATE-acceptance-evidence.md)); P09 NOT_STARTED
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -470,7 +471,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P07-T007 | Public Place detail + SEO integration | AWAITING_ARCHITECT_REVIEW | `1c76f6b` |
 | TC-P07-T008 | Phase hardening tests & evidence pack | AWAITING_ARCHITECT_REVIEW | `f7843cc` |
 | TC-P08-T008 | Public Content pages + SEO integration hooks | COMPLETE / ACCEPTED | `4924892` |
-| TC-P08-T009 | Phase hardening tests & evidence pack | AWAITING_ARCHITECT_REVIEW | `2f9552f` |
+| TC-P08-T009 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `2f9552f` |
+| TC-P08-GATE | P08 Acceptance Gate | AWAITING_ARCHITECT_REVIEW | evidence `docs/plans/P08-GATE-acceptance-evidence.md` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

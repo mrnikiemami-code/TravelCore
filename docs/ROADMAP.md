@@ -43,7 +43,8 @@
 | Last Accepted Commit | `84a0a48` (`TC-P07-GATE` ACCEPTED) · hygiene `8136455`/`003e9e4` · P07 COMPLETE docs `37956ef` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | USER TRAVELCORE_TASK_CONFIRM: TC-P08-GATE |\n| TC-P00-T002 State | COMPLETE / ACCEPTED |
+| Current Next Task | Architect review of `TC-P08-GATE` (USER confirm received; Cursor PASS) |
+| TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
 | TC-P00-T005 State | COMPLETE / ACCEPTED |
@@ -106,7 +107,7 @@
 - **P05** = COMPLETE (`TC-P05-GATE` ACCEPTED · `TC-P05-GATE-R1` ACCEPTED · **P05-R1/R2 RESOLVED**)
 - **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED**)
 - **P07** = COMPLETE (`TC-P07-GATE` ACCEPTED `84a0a48` · **P07-R1/R2/R4/R5 RESOLVED** · **P07-R3 UNRESOLVED**)
-- **P08** = IN_PROGRESS (`TC-P08-T008` ACCEPTED · `TC-P08-T009` AWAITING_ARCHITECT_REVIEW `2f9552f` · **P08-R1/R2/R3/R4/R5 RESOLVED** · R6–R8 UNRESOLVED · GATE needs USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE`)
+- **P08** = IN_PROGRESS (`TC-P08-T009` ACCEPTED · `TC-P08-GATE` AWAITING_ARCHITECT_REVIEW · **P08-R1/R2/R3/R4/R5 RESOLVED** · R6–R8 UNRESOLVED)
 - **P09–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -368,7 +369,7 @@ Place · Hotel · Restaurant · Attraction با localization، رابطه با D
 
 **Authoritative plan:** [`plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) (`TC-P08-PLAN` — COMPLETE / ACCEPTED · `7012fe0`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan ACCEPTED (`7012fe0`) · `TC-P08-T001`–`T008` ACCEPTED · `TC-P08-T009` **AWAITING_ARCHITECT_REVIEW** (`2f9552f`) · evidence [`plans/P08-T009-hardening-and-evidence-pack.md`](plans/P08-T009-hardening-and-evidence-pack.md) · **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED** · `TC-P08-GATE` NOT_STARTED (needs USER `TRAVELCORE_TASK_CONFIRM: TC-P08-GATE`) · P09 NOT_STARTED
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan ACCEPTED (`7012fe0`) · `TC-P08-T001`–`T009` ACCEPTED · `TC-P08-GATE` **AWAITING_ARCHITECT_REVIEW** · evidence [`plans/P08-GATE-acceptance-evidence.md`](plans/P08-GATE-acceptance-evidence.md) · **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED** · P09 NOT_STARTED
 
 **P08-R3 RESOLVED:** `ContentItemTranslation` owns localized current slug; SEO owns route binding, redirect history, canonical/history, publication SEO state; no global slug engine in Content.
 
@@ -676,7 +677,7 @@ P26 = Advanced SEO.
 | P05 | SEO Engine | COMPLETE |
 | P06 | Media | **COMPLETE** (`TC-P06-GATE` ACCEPTED) |
 | P07 | Place Catalog | **COMPLETE** (`TC-P07-GATE` ACCEPTED) |
-| P08 | Content CMS | **IN_PROGRESS** (`TC-P08-T009` AWAITING_ARCHITECT_REVIEW · R6–R8 UNRESOLVED) |
+| P08 | Content CMS | **IN_PROGRESS** (`TC-P08-GATE` AWAITING_ARCHITECT_REVIEW · R6–R8 UNRESOLVED) |
 | P09 | Tour Core | PLANNED |
 | P10 | Experience Tour | PLANNED |
 | P11 | Foreign Package Tour | PLANNED |
