@@ -27,13 +27,16 @@ public sealed class UgcMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_InitialUgcScaffolding", StringComparison.Ordinal));
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_AddReviewRatingBaseline", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddReviewTargetAttachment", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -80,11 +83,25 @@ public sealed class UgcMigrationLifecycleTests
                   AND table_name = 'reviews'
                   AND column_name = 'overall_rating';
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'reviews'
+                  AND column_name = 'target_type';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'reviews'
+                  AND column_name = 'target_id';
+                """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'ugc'
-                  AND column_name IN ('hotel_rating', 'guide_rating', 'food_rating', 'service_rating', 'target_id', 'target_type');
+                  AND column_name IN ('hotel_rating', 'guide_rating', 'food_rating', 'service_rating');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -94,7 +111,7 @@ public sealed class UgcMigrationLifecycleTests
                  AND tc.constraint_name = ccu.constraint_name
                 WHERE tc.table_schema = 'ugc'
                   AND tc.constraint_type = 'FOREIGN KEY'
-                  AND ccu.table_schema IN ('identity', 'party', 'tour', 'place', 'destination', 'content', 'media', 'seo', 'search');
+                  AND ccu.table_schema IN ('identity', 'party', 'tour', 'place', 'destination', 'content', 'media', 'seo', 'search', 'agency_marketplace');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());

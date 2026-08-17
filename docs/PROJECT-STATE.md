@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P16 — UGC** (**IN PROGRESS** — T002 Review/rating baseline) |
+| Current Phase | **P16 — UGC** (**IN PROGRESS** — T003 target attachment) |
 | Previous Phase | **P15 — Search & Discovery** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P16-T002` — Review and rating model baseline (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P16-T003` — Review target attachment baseline (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P16 — UGC |
-| Current Next Task | Architect review of T002 → next locked task (do not invent R3–R8) |
+| Current Next Task | Architect review of T003 → next locked task (do not invent R4–R8) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -206,12 +206,14 @@
 | P15-T008 | **VACANT** — no independent product scope |
 | P15-T009 | **COMPLETE / ACCEPTED** (`b741bc5`) — Search hardening and evidence pack |
 | P15-GATE | **COMPLETE / ACCEPTED** (`4e2098d`) — Acceptance evidence |
-| P16 | **IN PROGRESS** — Plan ACCEPTED · **P16-R1 RESOLVED** · **P16-R2 RESOLVED** · T002 Review/rating |
+| P16 | **IN PROGRESS** — Plan ACCEPTED · **P16-R1–R3 RESOLVED** · T003 target attachment |
 | P16 Plan | `TC-P16-PLAN` COMPLETE / ACCEPTED (`bac626b`) — [`docs/plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md) |
 | P16-T001 | **COMPLETE / ACCEPTED** (`e5fa578`) — UGC module scaffolding (`ugc` schema) |
-| P16-T002 | **AWAITING_ARCHITECT_REVIEW** — Review aggregate + structured dimension ratings |
+| P16-T002 | **COMPLETE / ACCEPTED** (`a5cccb2`) — Review aggregate + structured dimension ratings |
+| P16-T003 | **AWAITING_ARCHITECT_REVIEW** — Review logical target attachment |
 | P16-R1 (UGC ownership) | **RESOLVED** — independent UGC module · schema `ugc` · owns user-generated content lifecycle · does not own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, Payment · actor = opaque logical id |
-| P16-R2 (Review / Rating) | **RESOLVED** — Review is the aggregate. OverallRating (1..5) is part of Review. Dimension ratings are children (`DimensionCode` + `Value` 1..5, unique/normalized). Rating is not an independent aggregate. No hardcoded Hotel/Guide/Food/Service columns. No target attachment in T002. |
+| P16-R2 (Review / Rating) | **RESOLVED** — Review is the aggregate. OverallRating (1..5) is part of Review. Dimension ratings are children (`DimensionCode` + `Value` 1..5, unique/normalized). Rating is not an independent aggregate. No hardcoded Hotel/Guide/Food/Service columns. |
+| P16-R3 (Target attachment) | **RESOLVED** — Each Review owns exactly one logical target (`TargetType` + `TargetId`). Controlled: TourProduct · Place · Agency. No peer-schema FK. Structural `IReviewTargetValidator` only. |
 | P15-R1 (Search ownership) | **RESOLVED** — Search = Discovery Owner · schema `search` · owns query/result contracts and future read models · does not own Tour/Content/Pricing/Agency facts or SEO IndexPolicy · Read Model/Projection later, not SoT · no LLM/business rules inside Search · T001: no projection tables / FTS / Elasticsearch / ranking / faceting |
 | P15-R2 (Index / read model) | **RESOLVED** — Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS in T002. SearchDocument is not a domain entity. |
 | P15-R3 (Synchronization) | **RESOLVED** — Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003. |
@@ -306,7 +308,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P16_T002_DELIVERED** · PLAN ACCEPTED · P16-R1/R2 RESOLVED · T002 awaiting review · R3–R8 UNRESOLVED |
+| Phase Transition State | **P16_T003_DELIVERED** · PLAN ACCEPTED · P16-R1–R3 RESOLVED · T003 awaiting review · R4–R8 UNRESOLVED |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -315,7 +317,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P16-T002`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P16-T003`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -657,7 +659,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P15-GATE | P15 Search Acceptance Gate | COMPLETE / ACCEPTED | `4e2098d` |
 | TC-P16-PLAN | UGC Architecture Plan | COMPLETE / ACCEPTED | `bac626b` |
 | TC-P16-T001 | UGC module scaffolding | COMPLETE / ACCEPTED | `e5fa578` |
-| TC-P16-T002 | Review / rating model baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P16-T002 | Review / rating model baseline | COMPLETE / ACCEPTED | `a5cccb2` |
+| TC-P16-T003 | Review target attachment baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

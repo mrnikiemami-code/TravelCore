@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TravelCore.Modularity;
+using TravelCore.Modules.Ugc.Contracts;
+using TravelCore.Modules.Ugc.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Ugc.Infrastructure;
@@ -27,6 +29,8 @@ public sealed class UgcModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: UgcDbContext.SchemaName);
         });
+
+        services.AddSingleton<IReviewTargetValidator, StructuralReviewTargetValidator>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

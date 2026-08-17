@@ -45,7 +45,9 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.True(UgcOwnershipBoundary.DimensionRatingsAreReviewChildren);
         Assert.False(UgcOwnershipBoundary.TravelogueImplemented);
         Assert.False(UgcOwnershipBoundary.LikeImplemented);
-        Assert.False(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
+        Assert.True(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
+        Assert.True(UgcOwnershipBoundary.ReviewTargetIsLogicalReferenceOnly);
+        Assert.False(UgcOwnershipBoundary.OwnsTargetFacts);
     }
 
     [Fact]
@@ -146,6 +148,7 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.Contains("UGC != Search", text, StringComparison.Ordinal);
         Assert.Contains("P16-R1", text, StringComparison.Ordinal);
         Assert.Contains("P16-R2", text, StringComparison.Ordinal);
+        Assert.Contains("P16-R3", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

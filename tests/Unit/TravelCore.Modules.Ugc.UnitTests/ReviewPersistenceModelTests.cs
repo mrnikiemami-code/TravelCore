@@ -27,8 +27,11 @@ public sealed class ReviewPersistenceModelTests
         Assert.Equal("reviews", reviewType.GetTableName());
         Assert.Equal(UgcDbContext.SchemaName, reviewType.GetSchema());
         Assert.Equal("overall_rating", reviewType.FindProperty(nameof(Review.OverallRating))!.GetColumnName());
-        Assert.Null(reviewType.FindProperty("TargetId"));
-        Assert.Null(reviewType.FindProperty("TargetType"));
+        Assert.Equal("target_type", reviewType.FindProperty(nameof(Review.TargetType))!.GetColumnName());
+        Assert.Equal("target_id", reviewType.FindProperty(nameof(Review.TargetId))!.GetColumnName());
+        Assert.Contains(
+            reviewType.GetIndexes(),
+            i => i.GetDatabaseName() == "ix_reviews_target_type_target_id");
 
         var dimensionType = model.FindEntityType(typeof(ReviewDimensionRating));
         Assert.NotNull(dimensionType);
@@ -48,7 +51,7 @@ public sealed class ReviewPersistenceModelTests
             {
                 var schema = f.PrincipalEntityType.GetSchema();
                 return schema is "identity" or "party" or "tour" or "place" or "destination"
-                    or "content" or "media" or "seo" or "search";
+                    or "content" or "media" or "seo" or "search" or "agency_marketplace";
             });
 
         var columns = model.GetEntityTypes()
@@ -60,8 +63,13 @@ public sealed class ReviewPersistenceModelTests
         Assert.DoesNotContain("guide_rating", columns);
         Assert.DoesNotContain("food_rating", columns);
         Assert.DoesNotContain("service_rating", columns);
-        Assert.DoesNotContain("target_id", columns);
-        Assert.DoesNotContain("target_type", columns);
+        Assert.Contains("target_id", columns);
+        Assert.Contains("target_type", columns);
+        Assert.DoesNotContain(
+            model.GetEntityTypes().SelectMany(e => e.GetNavigations()),
+            n => n.TargetEntityType.Name.Contains(".Tour.", StringComparison.Ordinal)
+                 || n.TargetEntityType.Name.Contains(".Place.", StringComparison.Ordinal)
+                 || n.TargetEntityType.Name.Contains(".AgencyMarketplace.", StringComparison.Ordinal));
         Assert.Null(model.GetEntityTypes().FirstOrDefault(e =>
             string.Equals(e.GetTableName(), "ratings", StringComparison.OrdinalIgnoreCase)));
 

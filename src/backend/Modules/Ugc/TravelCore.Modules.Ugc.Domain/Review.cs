@@ -3,9 +3,9 @@ using NodaTime;
 namespace TravelCore.Modules.Ugc.Domain;
 
 /// <summary>
-/// User-authored feedback aggregate (TC-P16-T002 / P16-R2).
+/// User-authored feedback aggregate (TC-P16-T002 / P16-R2, TC-P16-T003 / P16-R3).
 /// OverallRating is part of Review. Dimension ratings are children. Rating is not an independent aggregate.
-/// Target attachment is out of scope (P16-R3 UNRESOLVED).
+/// Each Review owns exactly one polymorphic logical target (type + id). No peer FK.
 /// </summary>
 public sealed class Review
 {
@@ -16,11 +16,13 @@ public sealed class Review
 
     private Review()
     {
+        TargetType = null!;
     }
 
     private Review(
         ReviewId id,
         Guid actorId,
+        ReviewTarget target,
         RatingValue overallRating,
         string? title,
         string? body,
@@ -38,6 +40,8 @@ public sealed class Review
 
         Id = id;
         ActorId = actorId;
+        TargetType = target.TargetType;
+        TargetId = target.TargetId;
         OverallRating = overallRating;
         Title = NormalizeOptional(title, TitleMaxLength, nameof(title));
         Body = NormalizeOptional(body, BodyMaxLength, nameof(body));
@@ -49,6 +53,14 @@ public sealed class Review
 
     /// <summary>Opaque logical actor id. Not Identity/Party ownership.</summary>
     public Guid ActorId { get; private set; }
+
+    /// <summary>Logical target discriminator. Not a Tour/Place/Agency CLR type.</summary>
+    public ReviewTargetType TargetType { get; private set; }
+
+    /// <summary>Logical target identity. No EF FK to peer schemas.</summary>
+    public Guid TargetId { get; private set; }
+
+    public ReviewTarget Target => new(TargetType, TargetId);
 
     public RatingValue OverallRating { get; private set; }
 
@@ -66,6 +78,8 @@ public sealed class Review
         Guid actorId,
         int overallRating,
         Instant now,
+        string targetType,
+        Guid targetId,
         string? title = null,
         string? body = null,
         IReadOnlyDictionary<string, int>? dimensionRatings = null)
@@ -73,6 +87,7 @@ public sealed class Review
         var review = new Review(
             ReviewId.New(),
             actorId,
+            ReviewTarget.Create(targetType, targetId),
             RatingValue.From(overallRating),
             title,
             body,
@@ -89,6 +104,14 @@ public sealed class Review
         }
 
         return review;
+    }
+
+    public void SetTarget(string targetType, Guid targetId, Instant now)
+    {
+        var target = ReviewTarget.Create(targetType, targetId);
+        TargetType = target.TargetType;
+        TargetId = target.TargetId;
+        Touch(now);
     }
 
     public void SetOverallRating(int overallRating, Instant now)

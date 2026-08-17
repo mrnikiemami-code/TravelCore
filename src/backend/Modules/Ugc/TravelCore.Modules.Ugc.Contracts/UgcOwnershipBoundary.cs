@@ -26,6 +26,8 @@ public static class UgcOwnershipBoundary
     public const bool OwnsSearch = false;
     public const bool OwnsBooking = false;
     public const bool OwnsPayment = false;
+    public const bool OwnsTargetFacts = false;
+    public const bool ReviewTargetIsLogicalReferenceOnly = true;
     public const bool ReviewImplemented = true;
     public const bool RatingImplemented = false;
     public const bool RatingIsIndependentAggregate = false;
@@ -36,5 +38,5 @@ public static class UgcOwnershipBoundary
     public const bool LikeImplemented = false;
     public const bool ReportImplemented = false;
     public const bool ModerationWorkflowImplemented = false;
-    public const bool TargetAttachmentModelCommitted = false;
+    public const bool TargetAttachmentModelCommitted = true;
 }

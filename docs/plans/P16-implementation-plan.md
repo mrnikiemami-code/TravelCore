@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P16-PLAN` |
 | Phase | P16 — UGC |
-| Status | PLAN ACCEPTED; P16-R1 RESOLVED; P16-R2 RESOLVED; T001–T002 delivered (R3–R8 UNRESOLVED) |
+| Status | PLAN ACCEPTED; P16-R1–R3 RESOLVED; T001–T003 delivered (R4–R8 UNRESOLVED) |
 | Baseline | `4e2098d` (`docs(search): P15 acceptance gate evidence [TC-P15-GATE]` — **TC-P15-GATE** ACCEPTED; P15 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P16 · `docs/architecture/15-future-architecture-transition-map.md` § P · `04-module-boundaries.md` § UGC · `05-dependency-rules.md` Knowledge/UGC · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` (Review · Travelogue) · P08 Content (UGC ≠ Content) · P06 Media (consumer owns relationship meaning) · P05 SEO (IndexPolicy) · P14 PublicExperience (composition only) · P15 Search (retrieval ≠ UGC SoT) |
 | Backend root | `src/backend` |
@@ -94,7 +94,8 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 
 ### TC-P16-T003 — Target attachment boundary
 - Purpose: How UGC attaches to Destination / Place / Tour (and Content only if locked).
-- Invariant: target entity is not UGC aggregate owner.
+- Delivered: Each Review owns exactly one logical `TargetType` + `TargetId` (controlled: TourProduct · Place · Agency). `IReviewTargetValidator` structural port. No peer-schema FK. Target entity is not UGC aggregate owner.
+- Forbidden kept: peer FK · cloning Tour/Place/Agency · multiple targets · ReviewForTour duplicates · arbitrary target strings · RatingSummary · Travelogue · inventing R4–R8.
 
 ### TC-P16-T004 — Travelogue baseline
 - Purpose: Travelogue as UGC narrative, not editorial Article.
@@ -128,7 +129,7 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 |----|-------|--------|-------|
 | **P16-R1** | UGC ownership / module / schema | **RESOLVED** | Independent UGC module. Schema `ugc`. Owns user-generated content lifecycle. Does **not** own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, or Payment. Actor = opaque logical id only. T001: no Review/Rating/Travelogue/Comment/Like/Report product types, no target-attachment model, no peer FKs. |
 | **P16-R2** | Review vs Rating vs RatingDimension | **RESOLVED** | Review is the aggregate. OverallRating is part of Review (range 1..5, domain-validated). Dimension ratings are children (`ReviewDimensionRating`: normalized `DimensionCode` + `Value` 1..5, unique per Review, no independent lifecycle). Do **not** hardcode Hotel/Guide/Food/Service columns. Rating is **not** an independent aggregate. No target attachment in T002 (P16-R3 remains open). UGC owns review/rating facts; not Tour/Search/Agency ranking, SEO, or commercial policy. |
-| **P16-R3** | Target attachment | **UNRESOLVED** | Targets: Destination · Place · Tour; Content only if later confirmed. Do not invent polymorphic vs per-target tables before lock. Target must not own UGC aggregates. |
+| **P16-R3** | Target attachment | **RESOLVED** | Each Review owns exactly one polymorphic logical target (`TargetType` + `TargetId`). Controlled types: TourProduct · Place · Agency. Logical reference only — no FK to tour/place/agency_marketplace/party. UGC owns the targeting relationship; peer modules own target facts. Structural `IReviewTargetValidator` port; no peer-query orchestration in T003. |
 | **P16-R4** | Travelogue vs Content | **UNRESOLVED** | UGC ≠ Content is already an invariant. Exact Travelogue aggregate/publication vs Article remains architect lock. |
 | **P16-R5** | UserPhoto vs Media | **UNRESOLVED** | Media owns bytes/variants. UGC owns relationship meaning. Do not invent a second media store. |
 | **P16-R6** | Like / Comment scope | **UNRESOLVED** | ROADMAP: Like only «در صورت تأیید». Comment listed; do not invent social graph. |

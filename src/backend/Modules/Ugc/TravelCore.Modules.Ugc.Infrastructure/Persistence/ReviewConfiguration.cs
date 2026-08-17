@@ -19,6 +19,18 @@ internal sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
             .HasColumnName("actor_id")
             .IsRequired();
 
+        builder.Property(x => x.TargetType)
+            .HasColumnName("target_type")
+            .HasMaxLength(ReviewTargetType.MaxLength)
+            .HasConversion(type => type.Value, value => ReviewTargetType.Parse(value))
+            .IsRequired();
+
+        builder.Property(x => x.TargetId)
+            .HasColumnName("target_id")
+            .IsRequired();
+
+        builder.Ignore(x => x.Target);
+
         builder.Property(x => x.OverallRating)
             .HasColumnName("overall_rating")
             .HasConversion(v => (short)v.Value, v => RatingValue.From(v))
@@ -53,5 +65,8 @@ internal sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
 
         builder.HasIndex(x => x.ActorId)
             .HasDatabaseName("ix_reviews_actor_id");
+
+        builder.HasIndex(x => new { x.TargetType, x.TargetId })
+            .HasDatabaseName("ix_reviews_target_type_target_id");
     }
 }

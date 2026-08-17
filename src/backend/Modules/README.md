@@ -164,9 +164,10 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Ugc | `Ugc/TravelCore.Modules.Ugc.{Domain,Contracts,Infrastructure}` | `ugc` |
 
-- **Ugc:** Review aggregate + structured dimension ratings (`TC-P16-T002`) — schema `ugc`; `ugc.reviews` + `ugc.review_dimension_ratings`; opaque logical actor id; Rating is not an independent aggregate.
+- **Ugc:** Review aggregate + structured dimension ratings + logical target attachment (`TC-P16-T003`) — schema `ugc`; `target_type` + `target_id` only; no peer FK.
 - **P16-R1 RESOLVED:** independent UGC module with schema `ugc`. Owns user-generated content lifecycle. Does not own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, or Payment.
-- **P16-R2 RESOLVED:** Review owns OverallRating (1..5) and child dimension ratings. No hardcoded Hotel/Guide/Food/Service columns. No target attachment (R3 open).
+- **P16-R2 RESOLVED:** Review owns OverallRating (1..5) and child dimension ratings. No hardcoded Hotel/Guide/Food/Service columns.
+- **P16-R3 RESOLVED:** Each Review has exactly one logical target (TourProduct · Place · Agency). No peer-schema FK. Target entity is not UGC owner.
 - Invariant: **UGC != Content · UGC != Media · UGC != target domain owner · UGC != SEO · UGC != Search**.
 
 ## Host

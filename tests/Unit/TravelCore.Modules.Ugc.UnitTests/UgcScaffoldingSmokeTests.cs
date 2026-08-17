@@ -54,7 +54,9 @@ public sealed class UgcScaffoldingSmokeTests
         Assert.False(UgcOwnershipBoundary.LikeImplemented);
         Assert.False(UgcOwnershipBoundary.ReportImplemented);
         Assert.False(UgcOwnershipBoundary.ModerationWorkflowImplemented);
-        Assert.False(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
+        Assert.True(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
+        Assert.True(UgcOwnershipBoundary.ReviewTargetIsLogicalReferenceOnly);
+        Assert.False(UgcOwnershipBoundary.OwnsTargetFacts);
     }
 
     [Fact]
