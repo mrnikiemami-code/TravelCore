@@ -43,7 +43,7 @@
 | Last Accepted Commit | `576b7fa` (`TC-P08-GATE` ACCEPTED) · prior P07 `84a0a48` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Complete `TC-P09-T010` validation → RESULT → await ACCEPT / P09-GATE |
+| Current Next Task | Await architect ACCEPT of `TC-P09-GATE` → then auto-start `TC-P10-PLAN` (continuity) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
