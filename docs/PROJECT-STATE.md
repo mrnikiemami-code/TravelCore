@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `e3dbea6` (`TC-P10-T006`) · prior T005 `f7ce58c` · P09 Gate `67fc580` |
+| Last Accepted Commit | `e3dbea6` (`TC-P10-T006`) · T007 product `f262084` awaiting review · P09 Gate `67fc580` |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -225,7 +225,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — IMPLEMENTING** (`TC-P10-T006`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P10-T007`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -518,7 +518,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P10-T003 | Experience Stop semantic references | COMPLETE / ACCEPTED | `85553b7` |
 | TC-P10-T004 | Experience meals + accommodation plan | COMPLETE / ACCEPTED | `7589ad1` |
 | TC-P10-T005 | Difficulty · Eligibility · Equipment · LocalTransport | COMPLETE / ACCEPTED | `f7ce58c` |
-| TC-P10-T006 | Experience Guide relation baseline | IN_PROGRESS | (this commit) |
+| TC-P10-T006 | Experience Guide relation baseline | COMPLETE / ACCEPTED | `e3dbea6` |
+| TC-P10-T007 | Experience Media relations baseline | AWAITING_ARCHITECT_REVIEW | `f262084` |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
