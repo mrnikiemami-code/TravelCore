@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P13-PLAN` |
 | Phase | P13 — Agency Marketplace |
-| Status | IN PROGRESS — P13-R1/R2/R3/R4 RESOLVED; T004 commercial terms delivered |
+| Status | IN PROGRESS — P13-R1–R5 RESOLVED; T005 capacity boundary delivered |
 | Baseline | `b372367` (`docs: P12 acceptance gate evidence [TC-P12-GATE]` — **TC-P12-GATE** ACCEPTED; P12 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P13 · P09-R3 AgencyId · P03 Agency Panel non-ownership · P12 R1–R8 · ADR 0001 · ADR 0011–0014 · architect P12 Gate ACCEPT narrative (Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking) |
 | Backend root | `src/backend` |
@@ -92,9 +92,11 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 - Forbidden: Price override · Discount engine · Commission calculation · Currency · Quote · Booking.
 - Note: original plan T004 (Tour offering linkage) is **not** this task. Do not invent that work until architect re-issues it.
 
-### TC-P13-T005 — Agency commercial rules / rate-override posture
-- P13-R4 was locked and delivered in T004. Do not invent a replacement T005 until Auto-Execute.
-- Forbidden: second price SoR · FX conversion · Booking Amount.
+### TC-P13-T005 — Agency offer capacity boundary baseline
+- Purpose: Marketplace capacity posture without owning departure capacity (P13-R5 RESOLVED).
+- Architect lock: Agency does **not** own capacity. TourDeparture remains Min/Max Pax SoR.
+- Delivered: `AgencyOfferSalesAvailability` (SalesOpen) · optional logical `MarketplaceTourDepartureId` · OpenSales requires Active · no seats.
+- Forbidden: Seat inventory · Capacity ownership · Reservation · Booking · Pricing · Allocation engine.
 
 ### TC-P13-T006 — Capacity / availability policies (commercial, not reservation)
 - Purpose: Agency-side capacity/availability **policy** (P13-R5) — not booked-seat counts.
@@ -125,7 +127,7 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 | **P13-R2** | Marketplace profile vs Party Agency identity | **RESOLVED** | Party = identity SoR. Agency Marketplace owns AgencyProfile (0..1 per Agency PartyId). Logical PartyId only. No Party schema change. |
 | **P13-R3** | Offer aggregate vs TourProduct remaining SoR | **RESOLVED** | AgencyOffer owns the sales relationship. TourProduct remains catalog SoR. Logical TourProduct Guid. No Tour FK / Price / Booking. |
 | **P13-R4** | Agency override of rates | **RESOLVED** | Agency must NOT override Price. Commercial terms = Notes + SalesRules metadata. No Money / Discount / Commission / Currency / Quote. |
-| **P13-R5** | Capacity/availability policy owner | **UNRESOLVED** | TourDeparture owns Min/Max Pax (P11-R3). Booking owns consumption later. Marketplace policy vs reuse — lock required. |
+| **P13-R5** | Capacity/availability policy owner | **RESOLVED** | Agency does NOT own capacity. TourDeparture remains capacity SoR. Offer may hold SalesAvailability metadata + optional logical TourDeparture Guid. No seats / reservation / allocation. |
 | **P13-R6** | Agency Panel ownership for Marketplace ops | **UNRESOLVED** | P03 Panel is presentation-only. P12 set Admin Pricing inside Pricing module, not Tour Admin. |
 | **P13-R7** | Publishing / moderation of agency offers | **UNRESOLVED** | Roadmap says «در صورت نیاز». DEFER is valid. |
 

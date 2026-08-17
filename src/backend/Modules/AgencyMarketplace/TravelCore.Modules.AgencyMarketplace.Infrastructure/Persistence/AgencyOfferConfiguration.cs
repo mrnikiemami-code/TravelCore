@@ -47,6 +47,20 @@ internal sealed class AgencyOfferConfiguration : IEntityTypeConfiguration<Agency
             .HasForeignKey(x => x.AgencyProfileId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Property(x => x.ReferencedTourDepartureId)
+            .HasColumnName("referenced_tour_departure_id")
+            .HasConversion(
+                id => id.HasValue ? id.Value.Value : (Guid?)null,
+                value => value.HasValue ? MarketplaceTourDepartureId.From(value.Value) : null);
+
+        builder.OwnsOne(x => x.SalesAvailability, availability =>
+        {
+            availability.Property(p => p.SalesOpen)
+                .HasColumnName("sales_open")
+                .IsRequired();
+        });
+        builder.Navigation(x => x.SalesAvailability).IsRequired();
+
         builder.OwnsOne(x => x.Display, display =>
         {
             display.Property(p => p.TitleOverride)

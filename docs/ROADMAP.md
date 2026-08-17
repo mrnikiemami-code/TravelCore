@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P13-T004` → next Auto-Execute |
+| Current Next Task | Architect review of `TC-P13-T005` → next Auto-Execute |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -476,7 +476,7 @@ Gate ACCEPTED (`b372367`). Continuity auto-started **P13 PLAN** (Agency Marketpl
 
 ## P13 — Agency Marketplace
 
-**Status:** IN_PROGRESS — PLAN ACCEPTED · **P13-R1/R2/R3/R4 RESOLVED** · `TC-P13-T004` commercial terms delivered [`plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md)
+**Status:** IN_PROGRESS — PLAN ACCEPTED · **P13-R1–R5 RESOLVED** · `TC-P13-T005` capacity boundary delivered [`plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md)
 
 Agency business profile · Offer ownership · Tour offering · Capacity/availability policies · Agency-specific commercial rules · Agency Panel · Publishing/moderation در صورت نیاز.
 
@@ -731,7 +731,7 @@ P26 = Advanced SEO.
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
 | P12 | Pricing | **COMPLETE** (`TC-P12-GATE` ACCEPTED `b372367` · R1–R8 RESOLVED) |
-| P13 | Agency Marketplace | **IN_PROGRESS** (R1–R4 RESOLVED · T004) |
+| P13 | Agency Marketplace | **IN_PROGRESS** (R1–R5 RESOLVED · T005) |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |
 | P16 | UGC | PLANNED |

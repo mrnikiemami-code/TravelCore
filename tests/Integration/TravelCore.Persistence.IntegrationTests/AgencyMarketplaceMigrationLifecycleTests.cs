@@ -27,7 +27,7 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_InitialAgencyMarketplaceScaffolding", StringComparison.Ordinal));
@@ -40,6 +40,9 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_AddAgencyOfferCommercialBoundary", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddAgencyOfferCapacityBoundary", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -91,7 +94,21 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
                 FROM information_schema.columns
                 WHERE table_schema = 'agency_marketplace'
                   AND table_name = 'agency_offers'
-                  AND column_name IN ('price_id', 'quote_id', 'commission_rate', 'departure_id', 'amount', 'currency_code', 'discount', 'price_override');
+                  AND column_name IN ('price_id', 'quote_id', 'commission_rate', 'departure_id', 'amount', 'currency_code', 'discount', 'price_override', 'available_seats', 'reserved_seats', 'capacity');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_offers'
+                  AND column_name = 'sales_open';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_offers'
+                  AND column_name = 'referenced_tour_departure_id';
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

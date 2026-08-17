@@ -8,7 +8,7 @@ namespace TravelCore.ArchitectureTests;
 /// TC-P13-T001 / P13-R1: Agency Marketplace is an independent module owning schema <c>agency_marketplace</c>.
 /// TC-P13-T002 / P13-R2: AgencyProfile is the commercial layer over Party identity (logical PartyId, 0..1).
 /// TC-P13-T003 / P13-R3: AgencyOffer is the market listing (logical TourProduct Guid; same-schema AgencyProfile FK).
-/// TC-P13-T004 / P13-R4: AgencyOffer commercial terms are Notes + SalesRules metadata — no Price override.
+/// TC-P13-T005 / P13-R5: AgencyOffer does not own capacity — SalesAvailability + optional logical TourDeparture Guid only.
 /// </summary>
 public sealed class AgencyMarketplaceBoundaryGuardrailTests
 {
@@ -182,14 +182,15 @@ public sealed class AgencyMarketplaceBoundaryGuardrailTests
         {
             typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer),
             typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOfferCommercialTerms),
-            typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOfferSalesRules)
+            typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOfferSalesRules),
+            typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOfferSalesAvailability)
         };
 
         var forbidden = types
             .SelectMany(t => t.GetProperties()
                 .Where(p => Regex.IsMatch(
                     p.Name,
-                    "Price|Amount|Currency|Discount|Commission|Quote|RateOverride",
+                    "Price|Amount|Currency|Discount|Commission|Quote|RateOverride|AvailableSeats|ReservedSeats|^Capacity$|Allocation",
                     RegexOptions.IgnoreCase))
                 .Select(p => $"{t.Name}.{p.Name}"))
             .ToList();
@@ -205,6 +206,9 @@ public sealed class AgencyMarketplaceBoundaryGuardrailTests
         Assert.NotNull(rules.GetProperty("RequiresManualConfirmation"));
         Assert.NotNull(rules.GetProperty("ExclusiveListing"));
         Assert.NotNull(typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer).GetMethod("Deactivate"));
+        Assert.NotNull(typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer).GetProperty("SalesAvailability"));
+        Assert.NotNull(typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer).GetProperty("ReferencedTourDepartureId"));
+        Assert.True(typeof(TravelCore.Modules.AgencyMarketplace.Domain.MarketplaceTourDepartureId).IsValueType);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

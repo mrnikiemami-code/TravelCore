@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P13 — Agency Marketplace** (**IN PROGRESS** — T004 commercial terms) |
+| Current Phase | **P13 — Agency Marketplace** (**IN PROGRESS** — T005 capacity boundary) |
 | Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P13-T004` — Agency commercial terms boundary baseline (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P13-T005` — Agency offer capacity boundary baseline (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P13 — Agency Marketplace |
-| Current Next Task | Architect review of T004 → next Auto-Execute (do not invent R5–R7) |
+| Current Next Task | Architect review of T005 → next Auto-Execute (do not invent R6–R7) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -169,14 +169,16 @@
 | P12-T008 | **COMPLETE / ACCEPTED** (`520a46d`) — Public read-only price summary query (currency, components, occupancy prices) by logical target |
 | P12-T009 | **COMPLETE / ACCEPTED** (`a522dd5`) — Hardening + evidence pack [`plans/P12-T009-hardening-and-evidence-pack.md`](plans/P12-T009-hardening-and-evidence-pack.md) |
 | P12-GATE | **COMPLETE / ACCEPTED** (`b372367`) — evidence [`plans/P12-GATE-acceptance-evidence.md`](plans/P12-GATE-acceptance-evidence.md) |
-| P13 | **IN PROGRESS** — Plan ACCEPTED · **P13-R1/R2/R3/R4 RESOLVED** |
+| P13 | **IN PROGRESS** — Plan ACCEPTED · **P13-R1/R2/R3/R4/R5 RESOLVED** |
 | P13 Plan | `TC-P13-PLAN` COMPLETE / ACCEPTED — [`docs/plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md) |
 | P13-T001 | **COMPLETE / ACCEPTED** (`9f61763`) — Agency Marketplace module scaffolding (`agency_marketplace` schema) |
 | P13-T002 | **COMPLETE / ACCEPTED** (`809eb49`) — AgencyProfile commercial layer over Party identity |
 | P13-T003 | **COMPLETE / ACCEPTED** (`a665272`) — AgencyOffer marketplace listing (logical TourProduct Guid) |
-| P13-T004 | **AWAITING_ARCHITECT_REVIEW** — AgencyOffer commercial terms boundary (no Price override) |
+| P13-T004 | **COMPLETE / ACCEPTED** (`87931d9`) — AgencyOffer commercial terms boundary (no Price override) |
+| P13-T005 | **AWAITING_ARCHITECT_REVIEW** — AgencyOffer capacity boundary (no seat inventory) |
 | P13-R3 (Offer vs TourProduct) | **RESOLVED** — AgencyOffer owns the sales relationship; TourProduct remains catalog SoR; logical TourProduct Guid; no Tour FK / Price / Booking |
 | P13-R4 (Agency rate override) | **RESOLVED** — Agency must NOT override Price. Commercial terms = Notes + SalesRules metadata. No Money/Discount/Commission/Currency/Quote |
+| P13-R5 (Capacity/availability policy) | **RESOLVED** — Agency does NOT own capacity. TourDeparture remains capacity SoR. Offer may hold SalesAvailability metadata + optional logical TourDeparture Guid. No seats/reservation/allocation |
 | P13-R1 (Marketplace ownership) | **RESOLVED** — Independent Agency Marketplace module owns Agency commercial relationship · schema `agency_marketplace` · Party remains identity SoR (`PartyKind.Agency`) · logical PartyId Guid only · no Party/Tour/Pricing merge · no Offer in T001 |
 | P13-R2 (Marketplace profile vs Party identity) | **RESOLVED** — Party = identity SoR; Agency Marketplace owns AgencyProfile (0..1 per Agency PartyId); logical PartyId only; no Party schema change |
 | P12-R1 (Pricing ownership) | **RESOLVED** — Independent Pricing module · schema `pricing` · logical TourDeparture Guid refs only · no Tour table ownership / no shared DbContext |
@@ -251,7 +253,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P13_T004_DELIVERED** · PLAN ACCEPTED · P13-R1/R2/R3/R4 RESOLVED · T004 commercial terms awaiting review |
+| Phase Transition State | **P13_T005_DELIVERED** · PLAN ACCEPTED · P13-R1–R5 RESOLVED · T005 capacity boundary awaiting review |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -260,7 +262,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P13-T004`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P13-T005`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -570,7 +572,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P13-T001 | Agency Marketplace scaffolding | COMPLETE / ACCEPTED | `9f61763` |
 | TC-P13-T002 | Agency Marketplace profile baseline | COMPLETE / ACCEPTED | `809eb49` |
 | TC-P13-T003 | Agency Offer relationship baseline | COMPLETE / ACCEPTED | `a665272` |
-| TC-P13-T004 | Agency commercial terms boundary baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P13-T004 | Agency commercial terms boundary baseline | COMPLETE / ACCEPTED | `87931d9` |
+| TC-P13-T005 | Agency offer capacity boundary baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -618,6 +621,7 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - **P13-R2 RESOLVED:** Party remains identity SoR. Agency Marketplace owns AgencyProfile (0..1 per Agency PartyId). Logical PartyId Guid only — no Party schema change.
 - **P13-R3 RESOLVED:** AgencyOffer owns the marketplace sales relationship. TourProduct remains catalog SoR. Logical TourProduct Guid only — no Tour FK, no Price/Booking/Payment/Inventory/Departure ownership.
 - **P13-R4 RESOLVED:** Agency must NOT override Price. AgencyOffer commercial terms = Notes + SalesRules metadata only — no Money, Discount, Commission, Currency, or Quote.
+- **P13-R5 RESOLVED:** Agency does NOT own capacity. TourDeparture remains capacity SoR. AgencyOffer may hold SalesAvailability metadata + optional logical TourDeparture Guid — no seats, reservation, or allocation.
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 
@@ -639,7 +643,7 @@ Content · UGC
 
 ### Commerce
 
-Tour · Pricing (Price + Quote baseline · public read-only price summary · requested display-currency metadata · FX boundary contracts · PriceComponent · occupancy rules · Admin Pricing API · Money · schema `pricing` · P12-R1/R2/R3/R4/R5/R6/R7/R8) · AgencyMarketplace (AgencyProfile + AgencyOffer · commercial terms without Price · schema `agency_marketplace` · P13-R1/R2/R3/R4) · Visa · Booking · Payment
+Tour · Pricing (Price + Quote baseline · public read-only price summary · requested display-currency metadata · FX boundary contracts · PriceComponent · occupancy rules · Admin Pricing API · Money · schema `pricing` · P12-R1/R2/R3/R4/R5/R6/R7/R8) · AgencyMarketplace (AgencyProfile + AgencyOffer · commercial terms without Price · sales availability without capacity · schema `agency_marketplace` · P13-R1–R5) · Visa · Booking · Payment
 
 ### External Inventory / Booking
 

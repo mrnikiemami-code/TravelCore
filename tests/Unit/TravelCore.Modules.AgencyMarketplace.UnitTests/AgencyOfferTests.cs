@@ -75,6 +75,29 @@ public sealed class AgencyOfferTests
     }
 
     [Fact]
+    public void OpenSales_Requires_Active_And_Does_Not_Own_Capacity()
+    {
+        var offer = AgencyOffer.Create(Profile(), Tour());
+        Assert.False(offer.SalesAvailability.SalesOpen);
+        Assert.Null(offer.ReferencedTourDepartureId);
+        Assert.Throws<InvalidOperationException>(offer.OpenSales);
+
+        offer.Activate();
+        offer.OpenSales();
+        Assert.True(offer.SalesAvailability.SalesOpen);
+
+        var departure = MarketplaceTourDepartureId.From(Guid.Parse("0198b3e0-0000-7000-8000-0000000000ee"));
+        offer.SetReferencedTourDeparture(departure);
+        Assert.Equal(departure, offer.ReferencedTourDepartureId);
+
+        offer.Deactivate();
+        Assert.False(offer.SalesAvailability.SalesOpen);
+        Assert.Null(typeof(AgencyOffer).GetProperty("AvailableSeats"));
+        Assert.Null(typeof(AgencyOffer).GetProperty("ReservedSeats"));
+        Assert.Null(typeof(AgencyOffer).GetProperty("Capacity"));
+    }
+
+    [Fact]
     public void Create_Rejects_Empty_TourProductId()
     {
         Assert.Throws<ArgumentException>(() => AgencyOffer.Create(Profile(), Guid.Empty));

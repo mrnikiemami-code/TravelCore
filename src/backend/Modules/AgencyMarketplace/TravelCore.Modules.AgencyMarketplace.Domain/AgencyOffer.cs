@@ -3,6 +3,7 @@ namespace TravelCore.Modules.AgencyMarketplace.Domain;
 /// <summary>
 /// Marketplace relationship between an AgencyProfile and a TourProduct (TC-P13-T003 / P13-R3).
 /// Commercial terms are non-price metadata only (TC-P13-T004 / P13-R4).
+/// Sales availability is not capacity (TC-P13-T005 / P13-R5).
 /// </summary>
 public sealed class AgencyOffer
 {
@@ -10,6 +11,7 @@ public sealed class AgencyOffer
     {
         Display = null!;
         CommercialTerms = null!;
+        SalesAvailability = null!;
     }
 
     private AgencyOffer(
@@ -39,6 +41,7 @@ public sealed class AgencyOffer
         TourProductId = tourProductId;
         Display = display;
         CommercialTerms = commercialTerms;
+        SalesAvailability = AgencyOfferSalesAvailability.Closed();
         Status = AgencyOfferStatus.Draft;
         Visibility = AgencyOfferVisibility.Unlisted;
     }
@@ -53,6 +56,11 @@ public sealed class AgencyOffer
     public AgencyOfferDisplaySettings Display { get; private set; }
 
     public AgencyOfferCommercialTerms CommercialTerms { get; private set; }
+
+    public AgencyOfferSalesAvailability SalesAvailability { get; private set; }
+
+    /// <summary>Optional logical TourDeparture identity. No Tour schema FK and no capacity ownership.</summary>
+    public MarketplaceTourDepartureId? ReferencedTourDepartureId { get; private set; }
 
     public AgencyOfferStatus Status { get; private set; }
 
@@ -103,6 +111,29 @@ public sealed class AgencyOffer
         Visibility = AgencyOfferVisibility.Listed;
     }
 
+    public void OpenSales()
+    {
+        EnsureNotArchived();
+        if (Status != AgencyOfferStatus.Active)
+        {
+            throw new InvalidOperationException("Only an Active AgencyOffer can open sales.");
+        }
+
+        SalesAvailability = AgencyOfferSalesAvailability.Open();
+    }
+
+    public void CloseSales()
+    {
+        EnsureNotArchived();
+        SalesAvailability = AgencyOfferSalesAvailability.Closed();
+    }
+
+    public void SetReferencedTourDeparture(MarketplaceTourDepartureId? tourDepartureId)
+    {
+        EnsureNotArchived();
+        ReferencedTourDepartureId = tourDepartureId;
+    }
+
     public void Unlist()
     {
         EnsureNotArchived();
@@ -115,12 +146,14 @@ public sealed class AgencyOffer
     public void Deactivate()
     {
         EnsureNotArchived();
+        SalesAvailability = AgencyOfferSalesAvailability.Closed();
         Visibility = AgencyOfferVisibility.Unlisted;
         Status = AgencyOfferStatus.Draft;
     }
 
     public void Archive()
     {
+        SalesAvailability = AgencyOfferSalesAvailability.Closed();
         Visibility = AgencyOfferVisibility.Unlisted;
         Status = AgencyOfferStatus.Archived;
     }
