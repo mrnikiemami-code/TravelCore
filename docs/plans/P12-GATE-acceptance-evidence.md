@@ -75,4 +75,4 @@ Agency override of rates remains **UNRESOLVED** (prefer DEFER to P13) — not in
 
 ## 7. Gate outcome
 
-**READY FOR ARCHITECT ACCEPT** → P12 COMPLETE pending architect ACCEPT → continuity may auto-start **P13 PLAN** (Agency Marketplace) after Gate ACCEPT.
+**ACCEPTED** (`b372367`) · P12 COMPLETE · P13 PLAN auto-started (no ceremonial Gate wait).

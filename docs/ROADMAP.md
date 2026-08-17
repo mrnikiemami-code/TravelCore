@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P12 — Pricing** (**COMPLETE pending architect ACCEPT** of `TC-P12-GATE`) |
+| Current Phase | **P13 — Agency Marketplace** (**IN PROGRESS** — PLAN authored) |
 | Phase Status | P00–P11 COMPLETE · P12-R1…R8 RESOLVED · T001–T009 ACCEPTED · GATE evidence |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `a522dd5` (`TC-P12-T009`) · Pricing hardening + evidence pack accepted |
+| Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await `TC-P12-GATE` ACCEPT → continuity may auto-start **P13 PLAN** |
+| Current Next Task | Architect ACCEPT `TC-P13-PLAN` + lock P13-R1 → Auto-Execute `TC-P13-T001` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -111,8 +111,9 @@
 - **P09** = COMPLETE (`TC-P09-GATE` ACCEPTED `67fc580` · T001–T010 ACCEPTED · **R1–R8 RESOLVED** · product T010 `0334bae`)
 - **P10** = COMPLETE (`TC-P10-GATE` ACCEPTED `c351bf9` · **R1–R8 RESOLVED**)
 - **P11** = COMPLETE (`TC-P11-GATE` ACCEPTED `6f7ea12` · **R1–R8 RESOLVED**)
-- **P12** = COMPLETE pending architect ACCEPT (**R1–R8 RESOLVED** · T001–T009 ACCEPTED `a522dd5` · GATE evidence [`plans/P12-GATE-acceptance-evidence.md`](plans/P12-GATE-acceptance-evidence.md) — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
-- **P13–P29 و Post-P29** = PLANNED / NOT_STARTED (P13 PLAN may auto-start after Gate ACCEPT; no P13 product invented here)
+- **P12** = COMPLETE / ACCEPTED (`b372367`) (**R1–R8 RESOLVED** · T001–T009 ACCEPTED — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
+- **P13** = IN_PROGRESS — PLAN authored [`plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md)
+- **P14–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -439,7 +440,7 @@ TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Fli
 
 ## P12 — Pricing
 
-**Status:** COMPLETE pending architect ACCEPT — **P12-R1…R8 RESOLVED** · T001–T009 ACCEPTED (`a522dd5`) · **`TC-P12-GATE` AWAITING_ARCHITECT_REVIEW**
+**Status:** COMPLETE / ACCEPTED — **P12-R1…R8 RESOLVED** · T001–T009 ACCEPTED · **`TC-P12-GATE` ACCEPTED** (`b372367`)
 
 Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passenger category · Occupancy · Age policy · Exchange rates · Conversion policy · Quote · Quote expiration در صورت نیاز · Price snapshot.
 
@@ -469,13 +470,13 @@ Plan: [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md
 
 **Gate evidence:** [`plans/P12-GATE-acceptance-evidence.md`](plans/P12-GATE-acceptance-evidence.md)
 
-After Gate ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marketplace). No P13 product in this gate.
+Gate ACCEPTED (`b372367`). Continuity auto-started **P13 PLAN** (Agency Marketplace). Ceremonial Gate wait is not a pipeline stop.
 
 ---
 
 ## P13 — Agency Marketplace
 
-**Status:** PLANNED — may auto-start **P13 PLAN** after `TC-P12-GATE` ACCEPT (no Agency Marketplace product invented in this gate).
+**Status:** IN_PROGRESS — Plan authored [`plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md) · awaiting architect ACCEPT + P13-R1 lock.
 
 Agency business profile · Offer ownership · Tour offering · Capacity/availability policies · Agency-specific commercial rules · Agency Panel · Publishing/moderation در صورت نیاز.
 
@@ -725,8 +726,8 @@ P26 = Advanced SEO.
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
-| P12 | Pricing | **COMPLETE pending architect ACCEPT** (`TC-P12-GATE` · R1–R8 RESOLVED · T001–T009) |
-| P13 | Agency Marketplace | PLANNED |
+| P12 | Pricing | **COMPLETE** (`TC-P12-GATE` ACCEPTED `b372367` · R1–R8 RESOLVED) |
+| P13 | Agency Marketplace | **IN_PROGRESS** (PLAN authored) |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |
 | P16 | UGC | PLANNED |

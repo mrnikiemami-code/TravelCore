@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | COMPLETE pending architect ACCEPT of `TC-P12-GATE` — P12-R1…R8 RESOLVED; T001–T009 ACCEPTED; next may auto-start P13 PLAN after Gate ACCEPT |
+| Status | COMPLETE / ACCEPTED (`TC-P12-GATE` `b372367`) — P12-R1…R8 RESOLVED; T001–T009 ACCEPTED; P13 PLAN auto-started |
 | Baseline | `a522dd5` (T009 ACCEPTED baseline for GATE) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
@@ -105,7 +105,7 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 - **Delivered / ACCEPTED:** `a522dd5` — architecture hardening + evidence pack only — [`P12-T009-hardening-and-evidence-pack.md`](P12-T009-hardening-and-evidence-pack.md). Extra phase-boundary guardrails (`PricingPhaseBoundaryGuardrailTests`). No new pricing features · no Booking · no Payment · no FX engine · no Checkout.
 
 ### TC-P12-GATE — Acceptance Gate
-- **Delivered:** [`P12-GATE-acceptance-evidence.md`](P12-GATE-acceptance-evidence.md) — gate checklist + validation re-run. **AWAITING_ARCHITECT_REVIEW.** P12 COMPLETE pending ACCEPT. Does **not** start P13 product.
+- **Delivered / ACCEPTED:** `b372367` — [`P12-GATE-acceptance-evidence.md`](P12-GATE-acceptance-evidence.md). P12 COMPLETE. Continuity auto-starts **P13 PLAN** (no ceremonial Gate wait).
 
 ---
 
