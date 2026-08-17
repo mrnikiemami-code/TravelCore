@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P09 — Tour Core** (**IN_PROGRESS**) |
-| Phase Status | P00–P08 COMPLETE · P09 IN_PROGRESS |
+| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — PLAN) |
+| Phase Status | P00–P09 COMPLETE · P10 IN_PROGRESS (PLAN) |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `576b7fa` (`TC-P08-GATE` ACCEPTED) · prior P07 `84a0a48` |
+| Last Accepted Commit | `67fc580` (`TC-P09-GATE` ACCEPTED) · product T010 `0334bae` · prior P08 `576b7fa` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await architect ACCEPT of `TC-P09-GATE` → then auto-start `TC-P10-PLAN` (continuity) |
+| Current Next Task | Await architect ACCEPT of `TC-P10-PLAN` / Auto-Execute T001 |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -108,8 +108,9 @@
 - **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED**)
 - **P07** = COMPLETE (`TC-P07-GATE` ACCEPTED `84a0a48` · **P07-R1/R2/R4/R5 RESOLVED** · **P07-R3 UNRESOLVED**)
 - **P08** = COMPLETE (`TC-P08-GATE` ACCEPTED `576b7fa` · R1–R5 RESOLVED · R6–R8 UNRESOLVED)
-- **P09** = GATE_REVIEW (`TC-P09-PLAN` ACCEPTED · T001–T010 ACCEPTED · **TC-P09-GATE** evidence ready · **R1–R8 RESOLVED**)
-- **P10–P29 و Post-P29** = PLANNED / NOT_STARTED
+- **P09** = COMPLETE (`TC-P09-GATE` ACCEPTED `67fc580` · T001–T010 ACCEPTED · **R1–R8 RESOLVED** · product T010 `0334bae`)
+- **P10** = IN_PROGRESS (`TC-P10-PLAN` AWAITING_ARCHITECT_REVIEW — [`plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md))
+- **P11–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -370,7 +371,7 @@ Place · Hotel · Restaurant · Attraction با localization، رابطه با D
 
 **Authoritative plan:** [`plans/P08-implementation-plan.md`](plans/P08-implementation-plan.md) (`TC-P08-PLAN` — COMPLETE / ACCEPTED · `7012fe0`)
 
-**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan ACCEPTED · T001–T009 ACCEPTED · **`TC-P08-GATE` COMPLETE / ACCEPTED** (`576b7fa`) · evidence [`plans/P08-GATE-acceptance-evidence.md`](plans/P08-GATE-acceptance-evidence.md) · R1–R5 RESOLVED · R6–R8 UNRESOLVED · **P09 STARTED**
+**Progress:** USER `TRAVELCORE_PHASE_CONFIRM: P08` · plan ACCEPTED · T001–T009 ACCEPTED · **`TC-P08-GATE` COMPLETE / ACCEPTED** (`576b7fa`) · evidence [`plans/P08-GATE-acceptance-evidence.md`](plans/P08-GATE-acceptance-evidence.md) · R1–R5 RESOLVED · R6–R8 UNRESOLVED · **P09 COMPLETE**
 
 **P08-R3 RESOLVED:** `ContentItemTranslation` owns localized current slug; SEO owns route binding, redirect history, canonical/history, publication SEO state; no global slug engine in Content.
 
@@ -390,13 +391,13 @@ Invariant: Content مالک editorial است؛ SEO محتوا را duplicate ن�
 
 ## P09 — Tour Core
 
-**Status:** IN_PROGRESS
+**Status:** COMPLETE
 
 **Authoritative plan:** [`plans/P09-implementation-plan.md`](plans/P09-implementation-plan.md) (`TC-P09-PLAN` — COMPLETE / ACCEPTED · `7de2518`)
 
-**Progress:** T001–T010 ACCEPTED · **TC-P09-GATE** evidence [`plans/P09-GATE-acceptance-evidence.md`](plans/P09-GATE-acceptance-evidence.md) · **R1–R8 RESOLVED** · P10 NOT_STARTED until Gate ACCEPT
+**Progress:** T001–T010 ACCEPTED · **`TC-P09-GATE` COMPLETE / ACCEPTED** (`67fc580`) · evidence [`plans/P09-GATE-acceptance-evidence.md`](plans/P09-GATE-acceptance-evidence.md) · **R1–R8 RESOLVED** · **P10 STARTED** (PLAN)
 
-**Evidence pack (in progress):** [`plans/P09-T010-hardening-and-evidence-pack.md`](plans/P09-T010-hardening-and-evidence-pack.md)
+**Evidence pack:** [`plans/P09-T010-hardening-and-evidence-pack.md`](plans/P09-T010-hardening-and-evidence-pack.md) (`0334bae`)
 
 مبانی مشترک Tour: TourProduct · Classification · Origin · Destinations · Agency references · Services · Policies · Requirements · Media · Publishing lifecycle · Translations · SEO integration.
 
@@ -406,11 +407,17 @@ ExperienceTour و PackageTour را به یک مجموعهٔ غول‌پیکر pr
 
 ## P10 — Experience Tour
 
-**Status:** PLANNED
+**Status:** IN_PROGRESS (PLAN)
+
+**Authoritative plan:** [`plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) (`TC-P10-PLAN` — AWAITING_ARCHITECT_REVIEW)
+
+**Progress:** P09 Gate ACCEPTED (`67fc580`) · PLAN authored · await architect ACCEPT / Auto-Execute T001 · ceremonial phase token not required under PIPELINE continuity
 
 Itinerary · ItineraryDay · Stop · Destination/Attraction linking · Meals · Accommodation plan · Local transport · Equipment · Difficulty · Eligibility · Guide information.
 
 اعتبارسنجی از طریق archetype صفحهٔ Experience Tour Detail.
+
+P09 delivered shared TourProduct; P10 extends Tour with Experience specialization / itinerary structures (no new module scaffold).
 
 ---
 
@@ -685,8 +692,8 @@ P26 = Advanced SEO.
 | P06 | Media | **COMPLETE** (`TC-P06-GATE` ACCEPTED) |
 | P07 | Place Catalog | **COMPLETE** (`TC-P07-GATE` ACCEPTED) |
 | P08 | Content CMS | **COMPLETE** (`TC-P08-GATE` `576b7fa` · R6–R8 UNRESOLVED) |
-| P09 | Tour Core | **IN_PROGRESS** (`TC-P09-PLAN` ACCEPTED `7de2518` · T001 review) |
-| P10 | Experience Tour | PLANNED |
+| P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
+| P10 | Experience Tour | **IN_PROGRESS** (`TC-P10-PLAN` AWAITING_ARCHITECT_REVIEW) |
 | P11 | Foreign Package Tour | PLANNED |
 | P12 | Pricing | PLANNED |
 | P13 | Agency Marketplace | PLANNED |

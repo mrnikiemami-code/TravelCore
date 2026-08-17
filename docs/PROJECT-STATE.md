@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P09 — Tour Core** (**IN_PROGRESS**) |
-| Previous Phase | **P07 — Place Catalog** (**COMPLETE**) |
+| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — PLAN) |
+| Previous Phase | **P09 — Tour Core** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `576b7fa` (`TC-P08-GATE`) · prior P07 `84a0a48` |
+| Last Accepted Commit | `67fc580` (`TC-P09-GATE`) · product T010 `0334bae` · prior P08 `576b7fa` |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P09-GATE` — AWAITING_ARCHITECT_REVIEW (evidence this commit) |
-| Current Next Product Phase | P09 — Tour Core (**IN_PROGRESS**) |
-| Current Next Task | Await architect ACCEPT of `TC-P09-GATE` → then auto-start `TC-P10-PLAN` (continuity) |
+| Current Active Product Task | `TC-P10-PLAN` — AWAITING_ARCHITECT_REVIEW |
+| Current Next Product Phase | P10 — Experience Tour (**IN_PROGRESS** — PLAN) |
+| Current Next Task | Await architect ACCEPT of `TC-P10-PLAN` / Auto-Execute T001 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -140,7 +140,7 @@
 | P07-R4 (Slug ownership) | **RESOLVED** — PLACE owns current `PlaceTranslation.Slug`; SEO owns route history/redirects/IndexPolicy |
 | P07-R5 (Public IndexPolicy default) | **RESOLVED** — default **noindex, follow**; Active/public ≠ Index |
 | P08 | **COMPLETE** (closed by `TC-P08-GATE` ACCEPTED `576b7fa`; hygiene `6b72e60`) |
-| P09 | **IN_PROGRESS** (AUTHORIZED via `TRAVELCORE_PHASE_CONFIRM: P09` + continuity override) |
+| P09 | **COMPLETE** (closed by `TC-P09-GATE` ACCEPTED `67fc580`; product T010 `0334bae`) |
 | P09 Plan | `TC-P09-PLAN` **COMPLETE / ACCEPTED** (`7de2518`) — [`docs/plans/P09-implementation-plan.md`](plans/P09-implementation-plan.md) |
 | P09-T001 | **COMPLETE / ACCEPTED** (`4794e6e`) — Tour module scaffolding (`tour` schema) |
 | P09-T002 | **COMPLETE / ACCEPTED** (`a70331c`) — TourProduct shared-core + persistence (`tour_products`; P09-R1/R7) |
@@ -152,7 +152,9 @@
 | P09-T008 | **COMPLETE / ACCEPTED** (`69e8f38`) — Publishing + localized slug + public/SEO hooks (P09-R4/R5/R6) |
 | P09-T009 | **COMPLETE / ACCEPTED** (`e1fc751`) — Access-backed Admin Tour catalog baseline |
 | P09-T010 | **COMPLETE / ACCEPTED** (`0334bae`) — Public Tour hardening + evidence pack |
-| P09-GATE | **AWAITING_ARCHITECT_REVIEW** — evidence [`plans/P09-GATE-acceptance-evidence.md`](plans/P09-GATE-acceptance-evidence.md) |
+| P09-GATE | **COMPLETE / ACCEPTED** (`67fc580`) — evidence [`plans/P09-GATE-acceptance-evidence.md`](plans/P09-GATE-acceptance-evidence.md) |
+| P10 | **IN_PROGRESS** (PLAN — continuity after P09 Gate ACCEPT; ceremonial phase token not required under PIPELINE) |
+| P10 Plan | `TC-P10-PLAN` **AWAITING_ARCHITECT_REVIEW** — [`docs/plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) |
 | P09-R1 (TourProduct model shape) | **RESOLVED** — Core TourProduct + Typed Specialization; canonical `TourProductId`; Experience/Package = future typed specialization; TourDeparture = separate future aggregate |
 | P09-R2 (Destination / Origin links) | **RESOLVED** — Destinations **0..N** logical join; Origin **0..1** nullable `OriginDestinationId`; no cross-schema FK; Contracts existence validation |
 | P09-R3 (Agency reference) | **RESOLVED** — optional logical `AgencyId` **0..1**; PartyKind.Agency via Party.Contracts; no cross-schema FK |
@@ -199,7 +201,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P09_GATE_REVIEW** · T001–T010 ACCEPTED · GATE evidence ready · R1–R8 RESOLVED |
+| Phase Transition State | **P10_PLAN_REVIEW** · P09 COMPLETE (`TC-P09-GATE` `67fc580`) · `TC-P10-PLAN` awaiting architect ACCEPT · Auto-Execute T001 pending |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -208,7 +210,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P09-GATE`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P10-PLAN`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -359,7 +361,7 @@
 | P07-R3 | **UNRESOLVED** (Place delete/archive) — OK for COMPLETE phase; CatalogStatus is catalog ops only; no delete/archive product invented |
 | P07-R4 | **RESOLVED** — PLACE owns current locale-specific `PlaceTranslation.Slug`; SEO owns route binding/reservations/history/redirects/canonical/IndexPolicy |
 | P07-R5 | **RESOLVED** — default Place SEO posture **noindex, follow**; Active/public/publish ≠ Index; no Destination IndexPolicy inheritance |
-| Required Human Token | ceremonial phase/gate tokens not required under continuity override; USER `TRAVELCORE_PHASE_CONFIRM: P09` already received |
+| Required Human Token | ceremonial phase/gate tokens not required under continuity override; P09 Gate ACCEPTED → P10 PLAN auto-started |
 
 ### P00 Exit Summary
 
@@ -370,7 +372,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 COMPLETE** (`TC-P08-GATE` ACCEPTED `576b7fa`); **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED**; **P09 IN_PROGRESS** (T001–T009 ACCEPTED · T010 IN_PROGRESS · R1–R8 RESOLVED)
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 COMPLETE** (`TC-P08-GATE` ACCEPTED `576b7fa`); **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED**; **P09 COMPLETE** (`TC-P09-GATE` ACCEPTED `67fc580` · T010 `0334bae` · R1–R8 RESOLVED); **P10 IN_PROGRESS** (`TC-P10-PLAN` AWAITING_ARCHITECT_REVIEW)
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -494,6 +496,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P08-T008 | Public Content pages + SEO integration hooks | COMPLETE / ACCEPTED | `4924892` |
 | TC-P08-T009 | Phase hardening tests & evidence pack | COMPLETE / ACCEPTED | `2f9552f` |
 | TC-P08-GATE | P08 Acceptance Gate | COMPLETE / ACCEPTED | `576b7fa` |
+| TC-P09-GATE | P09 Acceptance Gate | COMPLETE / ACCEPTED | `67fc580` |
+| TC-P10-PLAN | P10 Experience Tour Implementation Plan | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
