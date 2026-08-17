@@ -23,6 +23,8 @@ public static class AccessPermissionCatalog
         ("content.items.write", "Create/update ContentItem editorial entries and owned fields"),
         ("seo.content-posture.write", "Publish Content SEO routes (IndexPolicy remains explicit / default noindex)"),
         ("tour.products.write", "Create/update TourProduct catalog entries and owned fields"),
+        ("tour.departures.read", "Read TourDeparture execution catalog"),
+        ("tour.departures.write", "Create/update TourDeparture execution fields"),
         ("seo.tour-posture.write", "Publish TourProduct SEO routes (IndexPolicy remains explicit / default noindex)")
     ];
 

@@ -53,6 +53,16 @@ public static class AccessAuthorizationPolicies
     public const string TourProductsWrite = "Access.Tour.Products.Write";
 
     /// <summary>
+    /// TourDeparture Admin reads: Access-backed <c>tour.departures.read</c>.
+    /// </summary>
+    public const string TourDeparturesRead = "Access.Tour.Departures.Read";
+
+    /// <summary>
+    /// TourDeparture Admin mutations: Access-backed <c>tour.departures.write</c>.
+    /// </summary>
+    public const string TourDeparturesWrite = "Access.Tour.Departures.Write";
+
+    /// <summary>
     /// TourProduct SEO route publication: Access-backed <c>seo.tour-posture.write</c>.
     /// </summary>
     public const string SeoTourPostureWrite = "Access.Seo.TourPosture.Write";

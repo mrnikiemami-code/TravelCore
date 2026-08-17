@@ -36,14 +36,14 @@
 |------|--------|
 | Project | TravelCore |
 | Current Phase | **P11 — Foreign Package / Departure** (**IN PROGRESS**) |
-| Phase Status | P00–P10 COMPLETE · P11 PLAN ACCEPTED · P11-R1 RESOLVED · T001 |
+| Phase Status | P00–P10 COMPLETE · P11 PLAN ACCEPTED · P11-R1..R7 RESOLVED · T008 |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `67fc580` (`TC-P09-GATE` ACCEPTED) · product T010 `0334bae` · prior P08 `576b7fa` |
+| Last Accepted Commit | `20ffbc9` (`TC-P11-T007`) · PLAN `66cab9b` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Complete `TC-P11-T007` passenger occupancy rules |
+| Current Next Task | Complete `TC-P11-T008` Access + Admin Departure baseline |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -423,7 +423,7 @@ P09 delivered shared TourProduct; P10 extends Tour with Experience specializatio
 
 ## P11 — Foreign Package Tour
 
-**Status:** IN PROGRESS (`TC-P11-PLAN` ACCEPTED · P11-R1 RESOLVED · T001)
+**Status:** IN PROGRESS (`TC-P11-PLAN` ACCEPTED · P11-R1..R7 RESOLVED · T008 Admin)
 
 **Progress:** TourDeparture scaffolding · baseline `66cab9b` (PLAN) · prior Gate `c351bf9`
 

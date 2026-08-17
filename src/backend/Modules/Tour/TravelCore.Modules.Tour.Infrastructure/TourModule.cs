@@ -38,6 +38,7 @@ public sealed class TourModule : ITravelCoreModule
         services.AddScoped<ITourProductCatalogFactService, TourProductCatalogFactService>();
         services.AddScoped<ITourProductMediaService, TourProductMediaService>();
         services.AddScoped<ITourProductService, TourProductService>();
+        services.AddScoped<ITourDepartureAdminService, TourDepartureAdminService>();
         services.AddScoped<IExperienceItineraryStopLinkService, ExperienceItineraryStopLinkService>();
         services.AddScoped<IExperienceGuideAssignmentService, ExperienceGuideAssignmentService>();
         services.AddScoped<IExperienceMediaService, ExperienceMediaService>();
@@ -48,5 +49,6 @@ public sealed class TourModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         endpoints.MapTourEndpoints();
+        endpoints.MapTourDepartureEndpoints();
     }
 }
