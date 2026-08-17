@@ -8,10 +8,13 @@ namespace TravelCore.Modules.Tour.Domain;
 /// Schedule: <see cref="TourDepartureSchedule"/> (P11-R2 · TC-P11-T002).
 /// Capacity rules: <see cref="TourDepartureCapacity"/> (P11-R3 · TC-P11-T003).
 /// Lifecycle: <see cref="TourDepartureStatus"/> (P11-R4 · TC-P11-T004) — ≠ CatalogStatus / SEO / Booking.
-/// Flight / hotel / pricing / booking later.
+/// Transport: descriptive <see cref="TourDepartureTransportSegment"/> (P11-R5 · TC-P11-T005) — ≠ Flight domain.
+/// Hotel / pricing / booking later.
 /// </summary>
 public sealed class TourDeparture
 {
+    private readonly List<TourDepartureTransportSegment> _transportSegments = [];
+
     private TourDeparture()
     {
     }
@@ -51,6 +54,12 @@ public sealed class TourDeparture
 
     /// <summary>Optional capacity rules until attached (P11-R3). Not booked/available seats.</summary>
     public TourDepartureCapacity? Capacity { get; private set; }
+
+    /// <summary>Descriptive transport segments (P11-R5). Not Flight inventory.</summary>
+    public IReadOnlyCollection<TourDepartureTransportSegment> TransportSegments => _transportSegments;
+
+    public IReadOnlyList<TourDepartureTransportSegment> TransportSegmentsOrdered =>
+        _transportSegments.OrderBy(x => x.Sequence).ToList();
 
     public Instant CreatedAt { get; private set; }
 
@@ -106,6 +115,33 @@ public sealed class TourDeparture
         UpdatedAt = now;
     }
 
+    /// <summary>
+    /// Adds a descriptive transport segment (Air/Ground/Other). Sequence must be unique per Departure.
+    /// </summary>
+    public TourDepartureTransportSegment AddTransportSegment(
+        int sequence,
+        TourDepartureTransportMode transportMode,
+        string origin,
+        string destination,
+        Instant now)
+    {
+        if (_transportSegments.Any(x => x.Sequence == sequence))
+        {
+            throw new InvalidOperationException(
+                $"Transport segment sequence {sequence} already exists on this Departure.");
+        }
+
+        var segment = TourDepartureTransportSegment.Create(
+            Id,
+            sequence,
+            transportMode,
+            origin,
+            destination);
+        _transportSegments.Add(segment);
+        UpdatedAt = now;
+        return segment;
+    }
+
     private static bool IsTransitionAllowed(TourDepartureStatus from, TourDepartureStatus to) =>
         (from, to) switch
         {
@@ -124,14 +160,24 @@ public sealed class TourDeparture
         Instant updatedAt,
         TourDepartureStatus status = TourDepartureStatus.Draft,
         TourDepartureSchedule? schedule = null,
-        TourDepartureCapacity? capacity = null)
+        TourDepartureCapacity? capacity = null,
+        IEnumerable<TourDepartureTransportSegment>? transportSegments = null)
     {
-        return new TourDeparture(id, tourProductId, createdAt)
+        var departure = new TourDeparture(id, tourProductId, createdAt)
         {
             Status = status,
             UpdatedAt = updatedAt,
             Schedule = schedule,
             Capacity = capacity
         };
+        if (transportSegments is not null)
+        {
+            foreach (var segment in transportSegments.OrderBy(x => x.Sequence))
+            {
+                departure._transportSegments.Add(segment);
+            }
+        }
+
+        return departure;
     }
 }

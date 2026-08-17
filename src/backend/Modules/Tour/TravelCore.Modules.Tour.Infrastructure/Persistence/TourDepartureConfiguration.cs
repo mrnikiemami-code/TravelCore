@@ -64,6 +64,18 @@ internal sealed class TourDepartureConfiguration : IEntityTypeConfiguration<Tour
 
         builder.Navigation(x => x.Capacity).IsRequired(false);
 
+        builder.HasMany(x => x.TransportSegments)
+            .WithOne()
+            .HasForeignKey(x => x.TourDepartureId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.TransportSegments)
+            .HasField("_transportSegments")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.Ignore(x => x.TransportSegmentsOrdered);
+
         builder.HasOne<TourProduct>()
             .WithMany()
             .HasForeignKey(x => x.TourProductId)

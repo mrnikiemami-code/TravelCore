@@ -66,7 +66,7 @@ public sealed class TourDepartureBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T001 scaffolding must not introduce Booking/Pricing/Flight/HotelOption product:\n"
+            "Departure scaffolding must not introduce Booking/Pricing/Flight entity/HotelOption product:\n"
             + string.Join('\n', hits));
     }
 
