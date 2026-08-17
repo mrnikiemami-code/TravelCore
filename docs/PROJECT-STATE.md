@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P17 — Visa** (**IN PROGRESS** — PLAN awaiting review) |
+| Current Phase | **P17 — Visa** (**IN PROGRESS** — T001 scaffolding) |
 | Previous Phase | **P16 — UGC** (**COMPLETE** — `TC-P16-GATE` ACCEPTED `538f3fc`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P17-PLAN` — Visa Architecture Plan (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P17-T001` — Visa module foundation and ownership boundary (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P17 — Visa |
-| Current Next Task | Architect review of P17 PLAN → Auto-Execute first locked task (do not invent R1–R8) |
+| Current Next Task | Architect review of T001 → next locked task (do not invent R2–R8) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -218,9 +218,10 @@
 | P16-T008 | **COMPLETE / ACCEPTED** (`62a1d7b`) — Public UGC composition / read contracts |
 | P16-T009 | **COMPLETE / ACCEPTED** (`ee02dd8`) — Hardening and evidence pack |
 | P16-GATE | **COMPLETE / ACCEPTED** (`538f3fc`) — Acceptance evidence (no new product capability) |
-| P17 | **IN PROGRESS** — Plan authored · **P17-R1–R8 OPEN** · no product code |
-| P17 Plan | `TC-P17-PLAN` AWAITING_ARCHITECT_REVIEW — [`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md) |
-| P17-R1 (Visa ownership) | **OPEN** — independent Visa module / schema / aggregate boundary |
+| P17 | **IN PROGRESS** — Plan ACCEPTED · **P17-R1 RESOLVED** · T001 scaffolding |
+| P17 Plan | `TC-P17-PLAN` COMPLETE / ACCEPTED (`1b5c8ea`) — [`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md) |
+| P17-T001 | **AWAITING_ARCHITECT_REVIEW** — Visa module scaffolding (`visa` schema) |
+| P17-R1 (Visa ownership) | **RESOLVED** — independent Visa module · schema `visa` · owns structured visa-domain facts/lifecycle · does not own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, Identity/Party · geographic refs = opaque logical id · T001: no VisaDefinition/requirement/document/fee/application product types |
 | P17-R2 (Definition vs requirement) | **OPEN** — VisaDefinition vs Destination-specific VisaRequirement |
 | P17-R3 (Applicability) | **OPEN** — country/destination/applicant context |
 | P17-R4 (Documents / eligibility) | **OPEN** — required documents and eligibility facts |
@@ -330,7 +331,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P17_PLAN_DELIVERED** · P16 COMPLETE / ACCEPTED `538f3fc` · P17-R1–R8 UNRESOLVED · PLAN awaiting review |
+| Phase Transition State | **P17_T001_DELIVERED** · PLAN ACCEPTED · P17-R1 RESOLVED · T001 awaiting review · R2–R8 UNRESOLVED |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -339,7 +340,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P17-PLAN`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P17-T001`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -690,7 +691,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P16-T008 | Public composition / read contracts | COMPLETE / ACCEPTED | `62a1d7b` |
 | TC-P16-T009 | Hardening and evidence pack | COMPLETE / ACCEPTED | `ee02dd8` |
 | TC-P16-GATE | P16 UGC Acceptance Gate | COMPLETE / ACCEPTED | `538f3fc` |
-| TC-P17-PLAN | Visa Architecture Plan | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P17-PLAN | Visa Architecture Plan | COMPLETE / ACCEPTED | `1b5c8ea` |
+| TC-P17-T001 | Visa module scaffolding | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -755,6 +757,7 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - **P16-R6 RESOLVED:** Comment = IN (flat comments on Review/Travelogue). Like = DEFERRED. No threading, ranking, or moderation.
 - **P16-R7 RESOLVED:** ModerationStatus (Pending/Approved/Rejected) is distinct from PublicationStatus (Draft/Published/Hidden/Archived). Approved != Published. Published != SEO Indexed. Public eligibility = Approved + Published. Rejected never public. UgcReport is UGC-owned moderation input only — no automatic hide/reject/ban/ranking/SEO.
 - **P16-R8 RESOLVED:** UGC is the user-generated fact owner, including public-eligibility truth. PublicExperience owns composition/presentation only. Search is a retrieval projection (T008 must not build a Search engine). SEO owns IndexPolicy. Publicly Eligible != SEO Indexed. Publicly Eligible != Automatically Search Indexed. Rating summary is a derived rebuildable read model, not an independent Average Rating engine.
+- **P17-R1 RESOLVED:** Independent Visa module (schema `visa`). Owns structured visa-domain facts and their lifecycle. Does not own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, or Identity/Party. Geographic references are opaque logical ids only. T001: no VisaDefinition/requirement/document/fee/application product types.
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 
@@ -776,7 +779,7 @@ Content · UGC (Review + Travelogue + UserPhoto + Comment + public composition r
 
 ### Commerce
 
-Tour · Pricing (Price + Quote baseline · public read-only price summary · requested display-currency metadata · FX boundary contracts · PriceComponent · occupancy rules · Admin Pricing API · Money · schema `pricing` · P12-R1/R2/R3/R4/R5/R6/R7/R8) · AgencyMarketplace (AgencyProfile + AgencyOffer · commercial terms without Price · sales availability without capacity · schema `agency_marketplace` · P13-R1–R5) · Visa · Booking · Payment
+Tour · Pricing (Price + Quote baseline · public read-only price summary · requested display-currency metadata · FX boundary contracts · PriceComponent · occupancy rules · Admin Pricing API · Money · schema `pricing` · P12-R1/R2/R3/R4/R5/R6/R7/R8) · AgencyMarketplace (AgencyProfile + AgencyOffer · commercial terms without Price · sales availability without capacity · schema `agency_marketplace` · P13-R1–R5) · Visa (scaffolded · schema `visa` · P17-R1) · Booking · Payment
 
 ### External Inventory / Booking
 

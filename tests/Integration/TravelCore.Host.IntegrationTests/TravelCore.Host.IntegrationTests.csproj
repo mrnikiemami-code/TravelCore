@@ -44,6 +44,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Infrastructure\TravelCore.Modules.Search.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Contracts\TravelCore.Modules.Search.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Ugc\TravelCore.Modules.Ugc.Infrastructure\TravelCore.Modules.Ugc.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Infrastructure\TravelCore.Modules.Visa.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

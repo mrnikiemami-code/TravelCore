@@ -456,6 +456,28 @@ public sealed class ArchitectureGuardrailTests
     }
 
     [Fact]
+    public void VisaPersistence_MustUseOwnedSchema_visa()
+    {
+        var options = new DbContextOptionsBuilder<TravelCore.Modules.Visa.Infrastructure.VisaDbContext>()
+            .UseTravelCorePostgreSql(
+                "Host=127.0.0.1;Database=architecture_guard_visa_design;Username=architecture;Password=not-a-real-secret",
+                migrationsHistorySchema: TravelCore.Modules.Visa.Infrastructure.VisaDbContext.SchemaName)
+            .Options;
+
+        using var db = new TravelCore.Modules.Visa.Infrastructure.VisaDbContext(options);
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+        Assert.Equal("visa", TravelCore.Modules.Visa.Infrastructure.VisaDbContext.SchemaName);
+
+        Assert.Equal("visa", db.Model.GetDefaultSchema());
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            Assert.Equal("visa", entity.GetSchema());
+        }
+
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+    }
+
+    [Fact]
     public void FixtureMigrations_MustRemainUnderFixtureProject()
     {
         var migrationsDir = Path.Combine(

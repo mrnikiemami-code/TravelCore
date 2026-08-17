@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Infrastructure\TravelCore.Modules.AgencyMarketplace.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Search\TravelCore.Modules.Search.Infrastructure\TravelCore.Modules.Search.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Ugc\TravelCore.Modules.Ugc.Infrastructure\TravelCore.Modules.Ugc.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Visa\TravelCore.Modules.Visa.Infrastructure\TravelCore.Modules.Visa.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

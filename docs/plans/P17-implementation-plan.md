@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P17-PLAN` |
 | Phase | P17 — Visa |
-| Status | **PLAN — AWAITING ARCHITECT ACCEPT** · P17-R1–R8 **OPEN** |
+| Status | PLAN ACCEPTED; P17-R1 RESOLVED; T001 delivered (R2–R8 UNRESOLVED) |
 | Baseline | `538f3fc` (`docs(ugc): add P16 acceptance gate evidence [TC-P16-GATE]` — **TC-P16-GATE** ACCEPTED; P16 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P17 · `docs/architecture/15-future-architecture-transition-map.md` § Q · `04-module-boundaries.md` § Visa · `05-dependency-rules.md` Commerce/Visa · `docs/architecture/07-data-architecture.md` schema `visa` · `docs/domain/module-ownership-matrix.md` · `docs/pages/07-visa.md` · `docs/pages/00-page-archetype-registry.md` · P04 Destination/ReferenceData · P05 SEO · P06 Media · P08 Content · P12 Pricing · P14 PublicExperience · P15 Search · P16 UGC · P19 Booking · P20 Payment |
 | Backend root | `src/backend` |
@@ -92,9 +92,9 @@ P17 اضافه می‌کند: **Visa module** برای کاتالوگ/الزام
 ### TC-P17-PLAN — this document
 
 ### TC-P17-T001 — Visa module scaffolding / ownership boundary
-- Purpose: Independent Visa module + ownership contracts (**requires P17-R1 lock**).
-- Expected lean from SoT (not locked here): Contracts/Domain/Infrastructure scaffolding; schema `visa` (`07-data-architecture.md`); no peer FKs; Destination/ReferenceData/Media by logical id/contracts only (`05-dependency-rules.md`).
-- Forbidden until R1 lock + later R#: VisaType/offering/requirement tables beyond scaffolding that R1 allows · Tour bidirectional package · Booking · Payment · SEO IndexPolicy · Search engine · embassy APIs · inventing R2–R8.
+- Purpose: Independent Visa module + ownership contracts (**P17-R1 RESOLVED**).
+- Delivered: Contracts/Domain/Infrastructure scaffolding; schema `visa`; `VisaOwnershipBoundary`; opaque `VisaGeographicReference`; host registration; no peer FKs; no product aggregates. Foundation does not block future effective period / provenance / verification / jurisdiction metadata and does not implement a regulatory engine.
+- Forbidden kept: VisaDefinition/VisaRequirement/RequiredDocument/eligibility/processing/fee/application tables · Country/Destination clone · peer-schema FK · SEO IndexPolicy · Search · Booking · Payment · inventing R2–R8.
 
 ### TC-P17-T002 — VisaDefinition vs destination-specific requirement
 - Purpose: Separate reusable visa definition from destination/country requirement facts (**P17-R2**).
@@ -141,7 +141,7 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 
 | ID | Topic | Status | SoT notes (not a lock) |
 |----|-------|--------|------------------------|
-| **P17-R1** | Visa module ownership / schema / aggregate boundary | **OPEN** | SoT names an independent Visa module (Commerce). Data architecture lists schema `visa`. Allowed deps: Destination, ReferenceData, Media. Does not own Tour product, Content CMS, SEO IndexPolicy, Search, Booking, Payment. Exact aggregate root(s) are **not** locked. |
+| **P17-R1** | Visa module ownership / schema / aggregate boundary | **RESOLVED** | Independent Visa module. Schema `visa`. Owns structured visa-domain facts and their lifecycle. Does **not** own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, or Identity/Party. Geographic references are opaque logical ids only. T001: no VisaDefinition/requirement/document/fee/application product types, no geo clone, no peer FKs, no regulatory engine. |
 | **P17-R2** | VisaDefinition vs Destination-specific VisaRequirement | **OPEN** | Boundaries own both VisaType and requirements. Whether these are one aggregate, two, or definition+applicability children is **not** locked. Destination remains geo SoT. |
 | **P17-R3** | Applicability model (country / destination / applicant context) | **OPEN** | Ownership matrix: Visa → Destination = B (applicability). Applicant-category dimensions are useful for AI-readiness but not yet locked. No peer FK. |
 | **P17-R4** | Required documents and eligibility facts | **OPEN** | Visa owns requirements/documents. Page archetype lists documents as supporting, not invented checklists. Provenance / effective dates / last verification must remain possible without a legal engine. |

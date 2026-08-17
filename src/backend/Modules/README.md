@@ -173,6 +173,16 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P16-R6 RESOLVED:** Comment = IN (flat, Review/Travelogue). Like = DEFERRED.
 - Invariant: **UGC != Content · UGC != Media · UGC != target domain owner · UGC != SEO · UGC != Search**.
 
+## Active modules (P17)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Visa | `Visa/TravelCore.Modules.Visa.{Domain,Contracts,Infrastructure}` | `visa` |
+
+- **Visa:** scaffolding only (`TC-P17-T001`) — schema `visa`; no VisaDefinition/requirement/document/fee/application tables; no peer FK.
+- **P17-R1 RESOLVED:** independent Visa module with schema `visa`. Owns structured visa-domain facts/lifecycle. Does not own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, or Identity/Party.
+- Invariant: **Visa != Destination · Visa != ReferenceData · Visa != Content · Visa != Pricing · Visa != Booking · Visa != SEO · Visa != Search**. Geographic references are logical ids only.
+
 ## Host
 
 `TravelCore.Api` remains the composition host. Modules register explicitly via `ITravelCoreModule` (no assembly scanning).

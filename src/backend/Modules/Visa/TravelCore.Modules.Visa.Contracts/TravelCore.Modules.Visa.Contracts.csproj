@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Visa.Contracts</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Visa.Contracts</AssemblyName>
+    <Description>Visa module contracts (scaffolding). No VisaDefinition/requirement types. TC-P17-T001 / P17-R1.</Description>
+  </PropertyGroup>
+
+</Project>

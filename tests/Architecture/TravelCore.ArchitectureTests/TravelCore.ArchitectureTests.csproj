@@ -44,6 +44,9 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Ugc\TravelCore.Modules.Ugc.Contracts\TravelCore.Modules.Ugc.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Ugc\TravelCore.Modules.Ugc.Domain\TravelCore.Modules.Ugc.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Ugc\TravelCore.Modules.Ugc.Infrastructure\TravelCore.Modules.Ugc.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Contracts\TravelCore.Modules.Visa.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Domain\TravelCore.Modules.Visa.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Infrastructure\TravelCore.Modules.Visa.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Domain\TravelCore.Modules.Search.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Infrastructure\TravelCore.Modules.Search.Infrastructure.csproj" />
   </ItemGroup>
