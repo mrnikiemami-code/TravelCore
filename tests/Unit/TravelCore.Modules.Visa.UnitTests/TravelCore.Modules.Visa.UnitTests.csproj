@@ -10,11 +10,13 @@
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <RootNamespace>TravelCore.Modules.Visa.UnitTests</RootNamespace>
     <AssemblyName>TravelCore.Modules.Visa.UnitTests</AssemblyName>
-    <Description>Visa module scaffolding unit tests (TC-P17-T001 / P17-R1).</Description>
+    <Description>Visa Definition/RequirementSet unit tests (TC-P17-T002 / P17-R2).</Description>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NodaTime" Version="3.3.3" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
 
@@ -22,6 +24,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Contracts\TravelCore.Modules.Visa.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Domain\TravelCore.Modules.Visa.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Infrastructure\TravelCore.Modules.Visa.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
   </ItemGroup>
 
 </Project>

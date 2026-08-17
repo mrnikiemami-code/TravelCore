@@ -6,7 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Visa.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Visa.Domain</AssemblyName>
-    <Description>Visa domain scaffolding (TC-P17-T001 / P17-R1). No product aggregates yet.</Description>
+    <Description>Visa domain: VisaDefinition + VisaRequirementSet (TC-P17-T002 / P17-R2). No EF/ASP.NET.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 
 </Project>

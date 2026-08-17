@@ -1,14 +1,19 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.Visa.Domain;
 
 namespace TravelCore.Modules.Visa.Infrastructure;
 
 /// <summary>
 /// Visa-owned DbContext. Owns PostgreSQL schema <c>visa</c>.
-/// No VisaDefinition/requirement tables in T001 (P17-R1 scaffolding only).
+/// VisaDefinition + VisaRequirementSet (TC-P17-T002 / P17-R2). No peer-schema FK.
 /// </summary>
 public sealed class VisaDbContext : DbContext
 {
     public const string SchemaName = "visa";
+
+    public DbSet<VisaDefinition> VisaDefinitions => Set<VisaDefinition>();
+
+    public DbSet<VisaRequirementSet> VisaRequirementSets => Set<VisaRequirementSet>();
 
     public VisaDbContext(DbContextOptions<VisaDbContext> options)
         : base(options)

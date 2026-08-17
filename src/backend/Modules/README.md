@@ -179,8 +179,9 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Visa | `Visa/TravelCore.Modules.Visa.{Domain,Contracts,Infrastructure}` | `visa` |
 
-- **Visa:** scaffolding only (`TC-P17-T001`) — schema `visa`; no VisaDefinition/requirement/document/fee/application tables; no peer FK.
+- **Visa:** VisaDefinition + VisaRequirementSet (`TC-P17-T002`) — schema `visa`; **VisaDefinition != VisaRequirementSet**; no applicability/docs/fees/application tables; no peer FK.
 - **P17-R1 RESOLVED:** independent Visa module with schema `visa`. Owns structured visa-domain facts/lifecycle. Does not own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, or Identity/Party.
+- **P17-R2 RESOLVED:** VisaDefinition = stable visa-type identity; VisaRequirementSet = context-dependent facts; 1 → 0..N; no applicability/docs/fees in T002.
 - Invariant: **Visa != Destination · Visa != ReferenceData · Visa != Content · Visa != Pricing · Visa != Booking · Visa != SEO · Visa != Search**. Geographic references are logical ids only.
 
 ## Host

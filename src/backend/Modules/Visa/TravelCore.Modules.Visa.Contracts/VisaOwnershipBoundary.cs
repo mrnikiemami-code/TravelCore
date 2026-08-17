@@ -37,7 +37,8 @@ public static class VisaOwnershipBoundary
     public const bool FutureVerificationTimestampAllowed = true;
     public const bool FutureJurisdictionContextAllowed = true;
     public const bool RegulatoryEngineImplemented = false;
-    public const bool VisaDefinitionImplemented = false;
+    public const bool VisaDefinitionImplemented = true;
+    public const bool VisaRequirementSetImplemented = true;
     public const bool VisaRequirementImplemented = false;
     public const bool RequiredDocumentImplemented = false;
     public const bool EligibilityModelImplemented = false;

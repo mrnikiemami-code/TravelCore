@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P17-PLAN` |
 | Phase | P17 — Visa |
-| Status | PLAN ACCEPTED; P17-R1 RESOLVED; T001 delivered (R2–R8 UNRESOLVED) |
+| Status | PLAN ACCEPTED; P17-R1/R2 RESOLVED; T002 delivered (R3–R8 UNRESOLVED) |
 | Baseline | `538f3fc` (`docs(ugc): add P16 acceptance gate evidence [TC-P16-GATE]` — **TC-P16-GATE** ACCEPTED; P16 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P17 · `docs/architecture/15-future-architecture-transition-map.md` § Q · `04-module-boundaries.md` § Visa · `05-dependency-rules.md` Commerce/Visa · `docs/architecture/07-data-architecture.md` schema `visa` · `docs/domain/module-ownership-matrix.md` · `docs/pages/07-visa.md` · `docs/pages/00-page-archetype-registry.md` · P04 Destination/ReferenceData · P05 SEO · P06 Media · P08 Content · P12 Pricing · P14 PublicExperience · P15 Search · P16 UGC · P19 Booking · P20 Payment |
 | Backend root | `src/backend` |
@@ -97,7 +97,8 @@ P17 اضافه می‌کند: **Visa module** برای کاتالوگ/الزام
 - Forbidden kept: VisaDefinition/VisaRequirement/RequiredDocument/eligibility/processing/fee/application tables · Country/Destination clone · peer-schema FK · SEO IndexPolicy · Search · Booking · Payment · inventing R2–R8.
 
 ### TC-P17-T002 — VisaDefinition vs destination-specific requirement
-- Purpose: Separate reusable visa definition from destination/country requirement facts (**P17-R2**).
+- Purpose: Separate reusable visa definition from destination/country requirement facts (**P17-R2 RESOLVED**).
+- Delivered: `VisaDefinition` (stable visa-type identity/meaning) 1 → 0..N `VisaRequirementSet` (context-dependent requirement facts). Invariant: **VisaDefinition != VisaRequirementSet**. Locale rows, not per-language columns. No applicability, documents, processing, or fees.
 - Forbidden kept: cloning Destination aggregate · treating ContentItem as VisaType · inventing R3–R8.
 
 ### TC-P17-T003 — Applicability model
@@ -142,7 +143,7 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 | ID | Topic | Status | SoT notes (not a lock) |
 |----|-------|--------|------------------------|
 | **P17-R1** | Visa module ownership / schema / aggregate boundary | **RESOLVED** | Independent Visa module. Schema `visa`. Owns structured visa-domain facts and their lifecycle. Does **not** own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, or Identity/Party. Geographic references are opaque logical ids only. T001: no VisaDefinition/requirement/document/fee/application product types, no geo clone, no peer FKs, no regulatory engine. |
-| **P17-R2** | VisaDefinition vs Destination-specific VisaRequirement | **OPEN** | Boundaries own both VisaType and requirements. Whether these are one aggregate, two, or definition+applicability children is **not** locked. Destination remains geo SoT. |
+| **P17-R2** | VisaDefinition vs VisaRequirementSet | **RESOLVED** | VisaDefinition = stable visa-type identity/meaning (conceptual Tourist/Business/Transit; no hardcoded country catalog). VisaRequirementSet = context-dependent requirement facts for one definition. Relationship: VisaDefinition 1 → 0..N VisaRequirementSet; each set references exactly one definition. **VisaDefinition != VisaRequirementSet**. Do not dump all requirements into VisaDefinition. Applicability (R3), documents/eligibility (R4), processing/validity (R5), and fees (R6) remain OPEN. Destination remains geo SoT. No peer-schema FK. |
 | **P17-R3** | Applicability model (country / destination / applicant context) | **OPEN** | Ownership matrix: Visa → Destination = B (applicability). Applicant-category dimensions are useful for AI-readiness but not yet locked. No peer FK. |
 | **P17-R4** | Required documents and eligibility facts | **OPEN** | Visa owns requirements/documents. Page archetype lists documents as supporting, not invented checklists. Provenance / effective dates / last verification must remain possible without a legal engine. |
 | **P17-R5** | Processing time / validity / stay-duration semantics | **OPEN** | Boundaries own “processing info”. Temporal model exists (NodaTime). Do not hardcode regulatory durations in PLAN. |
@@ -168,6 +169,7 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 12. Structured, attributable, locale-aware facts first. No AI infrastructure in P17.
 13. No Booking/Payment modules in P17 unless a later lock says otherwise.
 14. Do not invent unlocked R# closures.
+15. VisaDefinition != VisaRequirementSet.
 
 ---
 
