@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T007) |
+| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T009) |
 | Previous Phase | **P09 — Tour Core** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P10-T007` — Experience Media posture (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P10-T009` — Hardening + evidence pack |
 | Current Next Product Phase | P10 — Experience Tour (**IN_PROGRESS**) |
-| Current Next Task | Await ACCEPT of `TC-P10-T007` → Publishability (R8) / T008 Admin |
+| Current Next Task | T009 ACCEPT → `TC-P10-GATE` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -162,7 +162,8 @@
 | P10-T005 | **COMPLETE / ACCEPTED** (`f7ce58c`) — Difficulty · Eligibility · Equipment · LocalTransport (P10-R6) |
 | P10-T006 | **COMPLETE / ACCEPTED** (`e3dbea6`) — Experience Guide assignments (P10-R7) |
 | P10-T007 | **COMPLETE / ACCEPTED** (`f262084`) — Experience Media posture (P10-R4) |
-| P10-T008 | **IN_PROGRESS** — Experience publishability (P10-R8) |
+| P10-T008 | **COMPLETE / ACCEPTED** (`0b6f191`) — Experience publishability (P10-R8) |
+| P10-T009 | **IN_PROGRESS** — Hardening + evidence pack |
 | P10-R1 (Experience specialization + Itinerary ownership) | **RESOLVED** — Experience owns Itinerary (0..1 child); Day/Stop under Itinerary |
 | P10-R2 (Stop Destination/Place links) | **RESOLVED** — DestinationId 0..1 · PlaceId 0..1 (Attraction-kind) · logical · no exclusivity · no FK |
 | P10-R3 (Accommodation plan) | **RESOLVED** — Experience accommodation plan 0..N · optional Place Hotel logical ref · no TourHotelOption/HotelBooking |
