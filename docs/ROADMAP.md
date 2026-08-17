@@ -35,8 +35,8 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T006) |
-| Phase Status | P00–P09 COMPLETE · P10 IN_PROGRESS (T001–T005 ACCEPTED · T006 · R1–R3/R5–R7 RESOLVED · R4/R8 open) |
+| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T008) |
+| Phase Status | P00–P09 COMPLETE · P10 IN_PROGRESS (T001–T007 ACCEPTED · T008 · R1–R8 RESOLVED) |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
