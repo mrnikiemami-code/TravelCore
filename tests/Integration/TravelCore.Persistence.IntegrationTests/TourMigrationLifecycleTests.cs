@@ -29,7 +29,7 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(19, expectedMigrations.Length);
+            Assert.Equal(20, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
@@ -49,6 +49,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.EndsWith("_AddTourDepartureCapacity", expectedMigrations[16], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourDepartureStatus", expectedMigrations[17], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourDepartureTransportSegments", expectedMigrations[18], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourDepartureAccommodationOptions", expectedMigrations[19], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -64,7 +65,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'tour';
                 """, ct));
-            Assert.Equal(20, await ScalarIntAsync(conn, """
+            Assert.Equal(21, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'tour'
@@ -88,9 +89,10 @@ public sealed class TourMigrationLifecycleTests
                     'tour_experience_guide_assignments',
                     'tour_departures',
                     'tour_departure_transport_segments',
+                    'tour_departure_accommodation_options',
                     '__EFMigrationsHistory');
                 """, ct));
-            // No Package specialty / Flight entity / HotelOption product tables yet.
+            // No Package specialty / Flight entity / TourHotelOption product tables.
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
@@ -177,7 +179,7 @@ public sealed class TourMigrationLifecycleTests
                  AND tc.table_schema = ccu.table_schema
                 WHERE tc.table_schema = 'tour'
                   AND tc.constraint_type = 'FOREIGN KEY'
-                  AND ccu.table_schema IN ('destination', 'party', 'media');
+                  AND ccu.table_schema IN ('destination', 'party', 'media', 'place');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
@@ -234,6 +236,8 @@ public sealed class TourMigrationLifecycleTests
             departure.SetCapacity(4, 20, now);
             departure.SetStatus(TourDepartureStatus.Published, now);
             departure.AddTransportSegment(1, TourDepartureTransportMode.Air, "Tehran", "Istanbul", now);
+            var departureHotelPlace = Guid.Parse("01900000-0000-7000-8000-000000000901");
+            departure.AddAccommodationOption(departureHotelPlace, 5, TourDepartureBoardType.Breakfast, now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
             db.ExperienceSpecializations.Add(experienceSpec);
@@ -312,6 +316,10 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(TourDepartureTransportMode.Air, loadedDeparture.TransportSegmentsOrdered[0].TransportMode);
             Assert.Equal("Tehran", loadedDeparture.TransportSegmentsOrdered[0].Origin);
             Assert.Equal("Istanbul", loadedDeparture.TransportSegmentsOrdered[0].Destination);
+            Assert.Single(loadedDeparture.AccommodationOptions);
+            Assert.Equal(Guid.Parse("01900000-0000-7000-8000-000000000901"), loadedDeparture.AccommodationOptions.Single().PlaceId);
+            Assert.Equal(5, loadedDeparture.AccommodationOptions.Single().Nights);
+            Assert.Equal(TourDepartureBoardType.Breakfast, loadedDeparture.AccommodationOptions.Single().BoardType);
         }
     }
 

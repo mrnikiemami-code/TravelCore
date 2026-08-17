@@ -147,10 +147,11 @@ Exact task titles/order may be adjusted by architect on PLAN ACCEPT; Cursor must
 | **P11-R3** | Departure capacity ownership | **RESOLVED** | TourDeparture owns Min/Max Pax capacity rules; Booking owns reservation consumption later; no booked/available counts in P11 (TC-P11-T003) |
 | **P11-R4** | Departure lifecycle status | **RESOLVED** | TourDepartureStatus: Draft/Published/Closed/Cancelled/Completed; ≠ CatalogStatus/SEO/Booking; transitions Draft→Published→Closed→Completed and Published→Cancelled (TC-P11-T004) |
 | **P11-R5** | Departure transport segment ownership | **RESOLVED** | Descriptive TourDepartureTransportSegment (Sequence/Mode/Origin/Destination labels); Tour ≠ Flight; no airline/flight number/ticket/seat inventory (TC-P11-T005) |
-| **P11-R6** | Booking boundary | **UNRESOLVED** | What availability signal is allowed without Booking module |
+| **P11-R6** | Departure accommodation option ownership | **RESOLVED** | TourDepartureAccommodationOption (logical PlaceId + Nights + BoardType); Place owns hotel identity; HotelBooking deferred; intentionally not named TourHotelOption (TC-P11-T006) |
 | Pricing boundary | What P11 may store vs must DEFER to P12 | **UNRESOLVED** | Deferred (was draft-plan R5; architect remapped R5 → transport) |
+| Booking boundary | Availability signal without Booking module | **UNRESOLVED** | Deferred (was draft-plan R6; architect remapped R6 → accommodation) |
 | Flight / transport relation | Segment ownership; airport/carrier reference shape | **SUPERSEDED by R5** | Descriptive segments locked; real Flight domain deferred |
-| Hotel option relation | TourHotelOption cardinality; Place Hotel link rules | **UNRESOLVED** | Deferred to later T00x lock (was draft-plan R4; architect remapped R4 → lifecycle) |
+| Hotel option relation | TourHotelOption cardinality; Place Hotel link rules | **SUPERSEDED by R6** | AccommodationOption locked; TourHotelOption name avoided |
 
 Under **ARCHITECT AUTONOMY**, normal alternatives are decided by architect without stopping the human; Cursor STOPs only on SoT contradiction / unsafe / missing external business fact / corruption.
 

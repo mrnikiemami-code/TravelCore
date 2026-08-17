@@ -9,11 +9,13 @@ namespace TravelCore.Modules.Tour.Domain;
 /// Capacity rules: <see cref="TourDepartureCapacity"/> (P11-R3 · TC-P11-T003).
 /// Lifecycle: <see cref="TourDepartureStatus"/> (P11-R4 · TC-P11-T004) — ≠ CatalogStatus / SEO / Booking.
 /// Transport: descriptive <see cref="TourDepartureTransportSegment"/> (P11-R5 · TC-P11-T005) — ≠ Flight domain.
-/// Hotel / pricing / booking later.
+/// Accommodation: <see cref="TourDepartureAccommodationOption"/> (P11-R6 · TC-P11-T006) — ≠ Place ownership / HotelBooking.
+/// Pricing / booking later.
 /// </summary>
 public sealed class TourDeparture
 {
     private readonly List<TourDepartureTransportSegment> _transportSegments = [];
+    private readonly List<TourDepartureAccommodationOption> _accommodationOptions = [];
 
     private TourDeparture()
     {
@@ -60,6 +62,9 @@ public sealed class TourDeparture
 
     public IReadOnlyList<TourDepartureTransportSegment> TransportSegmentsOrdered =>
         _transportSegments.OrderBy(x => x.Sequence).ToList();
+
+    /// <summary>Descriptive accommodation options (P11-R6). Logical Place refs only.</summary>
+    public IReadOnlyCollection<TourDepartureAccommodationOption> AccommodationOptions => _accommodationOptions;
 
     public Instant CreatedAt { get; private set; }
 
@@ -142,6 +147,21 @@ public sealed class TourDeparture
         return segment;
     }
 
+    /// <summary>
+    /// Adds a descriptive accommodation option (logical PlaceId + nights + board).
+    /// </summary>
+    public TourDepartureAccommodationOption AddAccommodationOption(
+        Guid placeId,
+        int nights,
+        TourDepartureBoardType boardType,
+        Instant now)
+    {
+        var option = TourDepartureAccommodationOption.Create(Id, placeId, nights, boardType);
+        _accommodationOptions.Add(option);
+        UpdatedAt = now;
+        return option;
+    }
+
     private static bool IsTransitionAllowed(TourDepartureStatus from, TourDepartureStatus to) =>
         (from, to) switch
         {
@@ -161,7 +181,8 @@ public sealed class TourDeparture
         TourDepartureStatus status = TourDepartureStatus.Draft,
         TourDepartureSchedule? schedule = null,
         TourDepartureCapacity? capacity = null,
-        IEnumerable<TourDepartureTransportSegment>? transportSegments = null)
+        IEnumerable<TourDepartureTransportSegment>? transportSegments = null,
+        IEnumerable<TourDepartureAccommodationOption>? accommodationOptions = null)
     {
         var departure = new TourDeparture(id, tourProductId, createdAt)
         {
@@ -175,6 +196,14 @@ public sealed class TourDeparture
             foreach (var segment in transportSegments.OrderBy(x => x.Sequence))
             {
                 departure._transportSegments.Add(segment);
+            }
+        }
+
+        if (accommodationOptions is not null)
+        {
+            foreach (var option in accommodationOptions)
+            {
+                departure._accommodationOptions.Add(option);
             }
         }
 
