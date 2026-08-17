@@ -111,4 +111,4 @@ Frontend `tsc --noEmit`: N/A — no frontend TypeScript project in this reposito
 
 ## 8. Carry-forward invariants into GATE
 
-- Listing ≠ SEO Landing · Filter UI ≠ Faceting · Related ≠ Recommendation · PublicExperience ≠ Search Owner · Search API ≠ Search Engine API · Search Read Model ≠ Domain Model · Ranking ≠ Business Priority · Search ≠ AI Platform.
+- Listing ≠ SEO Landing · Filter UI ≠ Faceting · Related ≠ Recommendation · PublicExperience ≠ Search Owner · Search API ≠ Search Engine API · Search API != Search Engine API · Search Read Model ≠ Domain Model · Ranking ≠ Business Priority · Search ≠ AI Platform.
