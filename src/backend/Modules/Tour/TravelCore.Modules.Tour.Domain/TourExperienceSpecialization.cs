@@ -3,9 +3,10 @@ using NodaTime;
 namespace TravelCore.Modules.Tour.Domain;
 
 /// <summary>
-/// Experience typed specialization on TourProduct (P09-R1 · P10-R1/R3/R5/R6/R7 · TC-P10-T001…T006).
+/// Experience typed specialization on TourProduct (P09-R1 · P10-R1/R3/R4/R5/R6/R7 · TC-P10-T001…T007).
 /// 1:1 with <see cref="TourProductId"/>. Owns itinerary, accommodation, meals (via days),
-/// difficulty/eligibility/equipment/local-transport facts, and guide assignments. Publishing deferred. Package = P11.
+/// difficulty/eligibility/equipment/local-transport facts, and guide assignments.
+/// Media Cover/Gallery = TourProduct media links (P09-R8 / P10-R4); Day/Stop media deferred. Package = P11.
 /// </summary>
 public sealed class TourExperienceSpecialization
 {

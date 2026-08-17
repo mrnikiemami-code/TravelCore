@@ -40,6 +40,7 @@ public sealed class TourModule : ITravelCoreModule
         services.AddScoped<ITourProductService, TourProductService>();
         services.AddScoped<IExperienceItineraryStopLinkService, ExperienceItineraryStopLinkService>();
         services.AddScoped<IExperienceGuideAssignmentService, ExperienceGuideAssignmentService>();
+        services.AddScoped<IExperienceMediaService, ExperienceMediaService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

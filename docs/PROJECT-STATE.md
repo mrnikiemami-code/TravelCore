@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T006) |
+| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T007) |
 | Previous Phase | **P09 — Tour Core** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `f7ce58c` (`TC-P10-T005`) · prior T004 `7589ad1` · P09 Gate `67fc580` |
+| Last Accepted Commit | `e3dbea6` (`TC-P10-T006`) · prior T005 `f7ce58c` · P09 Gate `67fc580` |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P10-T006` — Experience Guide assignments (implementing / AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P10-T007` — Experience Media posture (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P10 — Experience Tour (**IN_PROGRESS**) |
-| Current Next Task | Complete `TC-P10-T006` RESULT → ACCEPT → Media/Publishability (T007/R4 · R8) |
+| Current Next Task | Await ACCEPT of `TC-P10-T007` → Publishability (R8) / T008 Admin |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -160,14 +160,15 @@
 | P10-T003 | **COMPLETE / ACCEPTED** (`85553b7`) — Stop Destination/Place semantic links (P10-R2) |
 | P10-T004 | **COMPLETE / ACCEPTED** (`7589ad1`) — Meals + Accommodation plan (P10-R3/R5) |
 | P10-T005 | **COMPLETE / ACCEPTED** (`f7ce58c`) — Difficulty · Eligibility · Equipment · LocalTransport (P10-R6) |
-| P10-T006 | **IN_PROGRESS** — Experience Guide assignments (P10-R7) |
+| P10-T006 | **COMPLETE / ACCEPTED** (`e3dbea6`) — Experience Guide assignments (P10-R7) |
+| P10-T007 | **IN_PROGRESS** — Experience Media posture (P10-R4) |
 | P10-R1 (Experience specialization + Itinerary ownership) | **RESOLVED** — Experience owns Itinerary (0..1 child); Day/Stop under Itinerary |
 | P10-R2 (Stop Destination/Place links) | **RESOLVED** — DestinationId 0..1 · PlaceId 0..1 (Attraction-kind) · logical · no exclusivity · no FK |
 | P10-R3 (Accommodation plan) | **RESOLVED** — Experience accommodation plan 0..N · optional Place Hotel logical ref · no TourHotelOption/HotelBooking |
 | P10-R5 (Meals) | **RESOLVED** — Meals on Day · Breakfast/Lunch/Dinner/Other · unique per day+type |
 | P10-R6 (Difficulty/Eligibility/Equipment) | **RESOLVED** — Difficulty enum · Eligibility code/value/detail · Equipment Required/Recommended |
 | P10-R7 (Guide) | **RESOLVED** — ExperienceGuideAssignment · logical GuidePartyId (Person) · Role Primary/Assistant · optional note |
-| P10-R4 (Itinerary media) | **UNRESOLVED** |
+| P10-R4 (Experience media) | **RESOLVED** — Cover/Gallery via TourProductMediaLink (P09-R8); Day/Stop media DEFERRED |
 | P10-R8 (Experience publishability) | **UNRESOLVED** |
 | P09-R1 (TourProduct model shape) | **RESOLVED** — Core TourProduct + Typed Specialization; canonical `TourProductId`; Experience/Package = future typed specialization; TourDeparture = separate future aggregate |
 | P09-R2 (Destination / Origin links) | **RESOLVED** — Destinations **0..N** logical join; Origin **0..1** nullable `OriginDestinationId`; no cross-schema FK; Contracts existence validation |
