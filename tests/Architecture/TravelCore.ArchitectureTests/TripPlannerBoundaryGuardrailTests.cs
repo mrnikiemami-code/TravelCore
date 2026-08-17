@@ -46,7 +46,8 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.True(TripPlannerOwnershipBoundary.AuthenticatedAssociationOptional);
         Assert.True(TripPlannerOwnershipBoundary.LeadContactSnapshotImplemented);
         Assert.False(TripPlannerOwnershipBoundary.IdentityOrPartyCloneImplemented);
-        Assert.False(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
+        Assert.True(TripPlannerPreferenceBoundary.TravelPreferencesImplemented);
         Assert.False(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);
         Assert.False(TripPlannerOwnershipBoundary.SearchEngineImplemented);
@@ -97,7 +98,7 @@ public sealed class TripPlannerBoundaryGuardrailTests
     }
 
     [Fact]
-    public void TripPlanner_T003_MustNotImplement_Deferred_Identity_Crm_Or_Preference_Types()
+    public void TripPlanner_T003_MustNotImplement_Deferred_Identity_Or_Crm_Types()
     {
         var roots = new[]
         {
@@ -105,7 +106,7 @@ public sealed class TripPlannerBoundaryGuardrailTests
         };
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(PlannerContact|TravelPreferences|AgencyAssignment|PlannerUser|PlannerPerson|AnonymousUser|GuestAccount|Customer|Opportunity|SalesPipeline|Booking|Reservation|Checkout|Quote|Price|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine|CrmContact|Account|User|Person|Party)\b",
+            @"\b(class|record|enum|struct|interface)\s+(PlannerContact|AgencyAssignment|PlannerUser|PlannerPerson|AnonymousUser|GuestAccount|Customer|Opportunity|SalesPipeline|Booking|Reservation|Checkout|Quote|Price|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine|CrmContact|Account|User|Person|Party|BookingPassenger|Passenger)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -133,7 +134,26 @@ public sealed class TripPlannerBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T003 forbids Identity/Party/CRM/preference product types:\n" + string.Join('\n', hits));
+            "T003 forbids Identity/Party/CRM/deferred product types:\n" + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void TripPlanner_T004_Implements_Structured_TravelPreferences_Without_Peer_Types()
+    {
+        Assert.True(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
+        Assert.True(TripPlannerPreferenceBoundary.TravelPreferencesImplemented);
+        Assert.NotNull(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.TravelPreferences"));
+        Assert.NotNull(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.BudgetPreference"));
+        Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.BookingPassenger"));
+        Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.Price"));
+        Assert.Equal(TripPlannerPreferenceBoundary.BudgetPreferenceNotEqualPrice, "BudgetPreference != Price");
+        Assert.Equal(
+            TripPlannerPreferenceBoundary.PlannerTravelerCompositionNotEqualBookingPassenger,
+            "PlannerTravelerComposition != BookingPassenger");
     }
 
     [Fact]
@@ -199,6 +219,9 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.Contains("P18-R1", text, StringComparison.Ordinal);
         Assert.Contains("P18-R2", text, StringComparison.Ordinal);
         Assert.Contains("P18-R3", text, StringComparison.Ordinal);
+        Assert.Contains("P18-R4", text, StringComparison.Ordinal);
+        Assert.Contains("BudgetPreference != Price", text, StringComparison.Ordinal);
+        Assert.Contains("PlannerTravelerComposition != Booking Passenger", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

@@ -44,8 +44,8 @@ public static class TripPlannerOwnershipBoundary
     public const bool AnonymousTripIntentSupported = true;
     public const bool AuthenticatedAssociationOptional = true;
     public const bool IdentityOrPartyCloneImplemented = false;
+    public const bool TravelPreferencesImplemented = true;
     public const bool LeadContactSnapshotImplemented = true;
-    public const bool TravelPreferencesImplemented = false;
     public const bool LeadLifecycleImplemented = false;
     public const bool AgencyRoutingImplemented = false;
     public const bool ConsentModelImplemented = false;

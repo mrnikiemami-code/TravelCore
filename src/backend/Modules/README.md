@@ -196,6 +196,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P18-R1 RESOLVED:** independent TripPlanner module with schema `trip_planner`. Owns future trip-intent/lead facts and lifecycle. Does not own Destination/Tour/Place facts, Pricing/Quote, Booking, Payment, CRM, Search, AgencyMarketplace commercial allocation, Notification delivery, or Party/Identity master data. Product references are opaque logical ids only.
 - **P18-R2 RESOLVED:** TripIntent = mutable planning intent; Lead = submitted follow-up request; **TripIntent != Lead**; **Lead != Booking**; submission snapshot preserves submitted context independently from later TripIntent mutation; T002: no full preferences/identity/lifecycle/routing.
 - **P18-R3 RESOLVED:** anonymous-first TripIntent without Account requirement; optional opaque `PlannerActorReference`; `LeadContactSnapshot` at Lead submission; **Lead contact != Party master identity**; minimal `TripIntentDraftAccessToken` for anonymous draft retrieval; no Identity/Party/Customer clone; consent deferred (R7).
+- **P18-R4 RESOLVED:** structured `TravelPreferences` on TripIntent with submission-time `TravelPreferenceSnapshot`; **BudgetPreference != Price/Quote**; **PlannerTravelerComposition != BookingPassenger**; logical destination refs only; no Search facet / Booking passenger clone.
 - Invariant: **TripPlanner != Booking · TripPlanner != Payment · TripPlanner != Pricing · TripPlanner != CRM · TripPlanner != Search · TripPlanner != Notification delivery · TripPlanner != Party/Identity**.
 
 ## Host

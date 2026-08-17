@@ -15,6 +15,7 @@ public static class TripIntentLeadSubmissionBoundary
         PlannerActorReference? actorReference = null)
     {
         ArgumentNullException.ThrowIfNull(intent);
+        intent.Preferences.ValidateForLeadSubmission();
         var resolvedContact = contact ?? LeadContactSnapshot.Empty;
         var resolvedActor = actorReference ?? intent.ActorReference;
         return Lead.CreateFromTripIntent(intent, submittedAt, resolvedContact, resolvedActor);

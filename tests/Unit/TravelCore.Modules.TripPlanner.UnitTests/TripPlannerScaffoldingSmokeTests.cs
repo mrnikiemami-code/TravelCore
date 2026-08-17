@@ -70,7 +70,8 @@ public sealed class TripPlannerScaffoldingSmokeTests
         Assert.False(TripPlannerIdentityBoundary.PersistentAnonymousUserPlatform);
         Assert.True(TripPlannerIdentityBoundary.LeadContactSnapshotImplemented);
         Assert.False(TripPlannerIdentityBoundary.ConsentModelImplemented);
-        Assert.False(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
+        Assert.True(TripPlannerPreferenceBoundary.TravelPreferencesImplemented);
         Assert.False(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);
         Assert.False(TripPlannerOwnershipBoundary.ConsentModelImplemented);

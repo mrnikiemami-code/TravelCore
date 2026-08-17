@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\TripPlanner\TravelCore.Modules.TripPlanner.Contracts\TravelCore.Modules.TripPlanner.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\TripPlanner\TravelCore.Modules.TripPlanner.Domain\TravelCore.Modules.TripPlanner.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\TripPlanner\TravelCore.Modules.TripPlanner.Infrastructure\TravelCore.Modules.TripPlanner.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
   </ItemGroup>
 

@@ -46,6 +46,8 @@ internal sealed class TripIntentConfiguration : IEntityTypeConfiguration<TripInt
             .HasColumnName("updated_at")
             .IsRequired();
 
+        builder.OwnsTravelPreferences(x => x.Preferences, "preference");
+
         builder.HasIndex(x => x.DraftAccessToken)
             .IsUnique()
             .HasDatabaseName("ux_trip_intents_draft_access_token");

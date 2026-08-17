@@ -4,8 +4,7 @@ using TravelCore.Modules.TripPlanner.Contracts;
 namespace TravelCore.Modules.TripPlanner.Domain;
 
 /// <summary>
-/// Mutable planning intent owned by TripPlanner (TC-P18-T002 / P18-R2; identity P18-R3).
-/// Not a Lead, Booking, Quote, CRM opportunity, or Party identity record.
+/// Mutable planning intent owned by TripPlanner (TC-P18-T002 / P18-R2; identity P18-R3; preferences P18-R4).
 /// </summary>
 public sealed class TripIntent
 {
@@ -14,12 +13,14 @@ public sealed class TripIntent
     private TripIntent()
     {
         DraftAccessToken = null!;
+        Preferences = null!;
     }
 
     private TripIntent(TripIntentId id, TripIntentDraftAccessToken draftAccessToken, Instant createdAt)
     {
         Id = id;
         DraftAccessToken = draftAccessToken;
+        Preferences = TravelPreferences.Empty();
         PlanningRevision = 1;
         CreatedAt = createdAt;
         UpdatedAt = createdAt;
@@ -33,7 +34,10 @@ public sealed class TripIntent
 
     public int PlanningRevision { get; private set; }
 
+    /// <summary>Supplementary note; structured preferences remain primary (P18-R4).</summary>
     public string? PlanningNote { get; private set; }
+
+    public TravelPreferences Preferences { get; private set; }
 
     public Instant CreatedAt { get; private set; }
 
@@ -64,8 +68,7 @@ public sealed class TripIntent
         }
 
         ActorReference = actorReference;
-        PlanningRevision++;
-        UpdatedAt = now;
+        Touch(now);
     }
 
     public void UpdatePlanningNote(string? planningNote, Instant now)
@@ -76,8 +79,19 @@ public sealed class TripIntent
         }
 
         PlanningNote = NormalizePlanningNote(planningNote);
-        PlanningRevision++;
-        UpdatedAt = now;
+        Touch(now);
+    }
+
+    public void UpdatePreferences(Action<TravelPreferences> configure, Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(configure);
+        if (now == default)
+        {
+            throw new ArgumentException("UpdatedAt cannot be default.", nameof(now));
+        }
+
+        configure(Preferences);
+        Touch(now);
     }
 
     public Lead SubmitAsLead(Instant submittedAt, LeadContactSnapshot? contact = null)
@@ -106,5 +120,12 @@ public sealed class TripIntent
         return trimmed;
     }
 
-    internal LeadSubmissionSnapshot CaptureSubmissionSnapshot() => LeadSubmissionSnapshot.CaptureFrom(this);
+    internal LeadSubmissionSnapshot CaptureSubmissionSnapshot() =>
+        LeadSubmissionSnapshot.CaptureFrom(this);
+
+    private void Touch(Instant now)
+    {
+        PlanningRevision++;
+        UpdatedAt = now;
+    }
 }

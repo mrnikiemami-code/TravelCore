@@ -59,6 +59,14 @@ internal sealed class LeadConfiguration : IEntityTypeConfiguration<Lead>
                 snapshot.Property(x => x.CapturedPlanningNote)
                     .HasColumnName("captured_planning_note")
                     .HasMaxLength(TripIntent.PlanningNoteMaxLength);
+
+                snapshot.OwnsOne(
+                    s => s.Preferences,
+                    preferences => TravelPreferencesMapping.ConfigureTravelPreferenceSnapshotOwned(
+                        preferences,
+                        "captured_preference"));
+
+                snapshot.Navigation(s => s.Preferences).IsRequired();
             });
 
         builder.OwnsOne(
