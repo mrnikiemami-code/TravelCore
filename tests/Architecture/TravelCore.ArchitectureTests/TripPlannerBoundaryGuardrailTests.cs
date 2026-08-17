@@ -42,6 +42,10 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.False(TripPlannerOwnershipBoundary.OwnsIdentityOrParty);
         Assert.True(TripPlannerOwnershipBoundary.TripIntentImplemented);
         Assert.True(TripPlannerOwnershipBoundary.LeadImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.AnonymousTripIntentSupported);
+        Assert.True(TripPlannerOwnershipBoundary.AuthenticatedAssociationOptional);
+        Assert.True(TripPlannerOwnershipBoundary.LeadContactSnapshotImplemented);
+        Assert.False(TripPlannerOwnershipBoundary.IdentityOrPartyCloneImplemented);
         Assert.False(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
         Assert.False(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);
@@ -93,7 +97,7 @@ public sealed class TripPlannerBoundaryGuardrailTests
     }
 
     [Fact]
-    public void TripPlanner_T002_MustNotImplement_Deferred_Product_Types()
+    public void TripPlanner_T003_MustNotImplement_Deferred_Identity_Crm_Or_Preference_Types()
     {
         var roots = new[]
         {
@@ -101,7 +105,7 @@ public sealed class TripPlannerBoundaryGuardrailTests
         };
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(PlannerContact|TravelPreferences|AgencyAssignment|PlannerUser|PlannerPerson|Customer|Opportunity|SalesPipeline|Booking|Reservation|Checkout|Quote|Price|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine|CrmContact)\b",
+            @"\b(class|record|enum|struct|interface)\s+(PlannerContact|TravelPreferences|AgencyAssignment|PlannerUser|PlannerPerson|AnonymousUser|GuestAccount|Customer|Opportunity|SalesPipeline|Booking|Reservation|Checkout|Quote|Price|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine|CrmContact|Account|User|Person|Party)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -129,7 +133,7 @@ public sealed class TripPlannerBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T002 forbids preferences/CRM/Booking product types:\n" + string.Join('\n', hits));
+            "T003 forbids Identity/Party/CRM/preference product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -190,9 +194,11 @@ public sealed class TripPlannerBoundaryGuardrailTests
         var text = File.ReadAllText(plan);
         Assert.Contains("TripIntent != Lead", text, StringComparison.Ordinal);
         Assert.Contains("Lead != Booking", text, StringComparison.Ordinal);
-        Assert.Contains("Lead != Quote", text, StringComparison.Ordinal);
+        Assert.Contains("Lead contact != Party master identity", text, StringComparison.Ordinal);
+        Assert.Contains("LeadContactSnapshot != Party", text, StringComparison.Ordinal);
         Assert.Contains("P18-R1", text, StringComparison.Ordinal);
         Assert.Contains("P18-R2", text, StringComparison.Ordinal);
+        Assert.Contains("P18-R3", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

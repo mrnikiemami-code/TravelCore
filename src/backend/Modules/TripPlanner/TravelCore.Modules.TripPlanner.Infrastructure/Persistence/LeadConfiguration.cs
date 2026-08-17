@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TravelCore.Modules.TripPlanner.Contracts;
 using TravelCore.Modules.TripPlanner.Domain;
 
 namespace TravelCore.Modules.TripPlanner.Infrastructure.Persistence;
@@ -19,6 +20,12 @@ internal sealed class LeadConfiguration : IEntityTypeConfiguration<Lead>
             .HasColumnName("source_trip_intent_id")
             .HasConversion(id => id.Value, value => TripIntentId.From(value))
             .IsRequired();
+
+        builder.Property(x => x.ActorReference)
+            .HasColumnName("actor_reference_id")
+            .HasConversion(
+                reference => reference.HasValue ? reference.Value.ActorId : (Guid?)null,
+                value => value.HasValue ? new PlannerActorReference(value.Value) : null);
 
         builder.Property(x => x.Status)
             .HasColumnName("status")
@@ -54,7 +61,29 @@ internal sealed class LeadConfiguration : IEntityTypeConfiguration<Lead>
                     .HasMaxLength(TripIntent.PlanningNoteMaxLength);
             });
 
+        builder.OwnsOne(
+            x => x.Contact,
+            contact =>
+            {
+                contact.Property(x => x.DisplayName)
+                    .HasColumnName("contact_display_name")
+                    .HasMaxLength(LeadContactSnapshot.DisplayNameMaxLength);
+
+                contact.Property(x => x.Email)
+                    .HasColumnName("contact_email")
+                    .HasMaxLength(LeadContactSnapshot.EmailMaxLength);
+
+                contact.Property(x => x.NormalizedEmail)
+                    .HasColumnName("contact_normalized_email")
+                    .HasMaxLength(LeadContactSnapshot.EmailMaxLength);
+
+                contact.Property(x => x.Phone)
+                    .HasColumnName("contact_phone")
+                    .HasMaxLength(LeadContactSnapshot.PhoneMaxLength);
+            });
+
         builder.Navigation(x => x.Snapshot).IsRequired();
+        builder.Navigation(x => x.Contact).IsRequired();
 
         builder.HasIndex(x => x.SourceTripIntentId)
             .HasDatabaseName("ix_leads_source_trip_intent_id");

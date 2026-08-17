@@ -32,7 +32,13 @@ public sealed class TripIntentLeadPersistenceModelTests
         Assert.Equal("planning_note", intentType.FindProperty(nameof(TripIntent.PlanningNote))!.GetColumnName());
         Assert.Null(intentType.FindProperty("DestinationId"));
         Assert.Null(intentType.FindProperty("Budget"));
-        Assert.Null(intentType.FindProperty("Email"));
+        Assert.Equal("draft_access_token", intentType.FindProperty(nameof(TripIntent.DraftAccessToken))!.GetColumnName());
+        Assert.Equal("actor_reference_id", intentType.FindProperty(nameof(TripIntent.ActorReference))!.GetColumnName());
+        Assert.Null(intentType.FindProperty("AccountId"));
+        Assert.Null(intentType.FindProperty("PartyId"));
+        Assert.Contains(
+            intentType.GetIndexes(),
+            i => i.GetDatabaseName() == "ux_trip_intents_draft_access_token" && i.IsUnique);
 
         var leadType = model.FindEntityType(typeof(Lead));
         Assert.NotNull(leadType);
@@ -41,11 +47,13 @@ public sealed class TripIntentLeadPersistenceModelTests
         Assert.Equal(
             "source_trip_intent_id",
             leadType.FindProperty(nameof(Lead.SourceTripIntentId))!.GetColumnName());
+        Assert.Equal("actor_reference_id", leadType.FindProperty(nameof(Lead.ActorReference))!.GetColumnName());
         Assert.Null(leadType.FindProperty("BookingId"));
         Assert.Null(leadType.FindProperty("QuoteId"));
         Assert.Null(leadType.FindProperty("OpportunityId"));
-        Assert.Null(leadType.FindProperty("Email"));
-        Assert.Null(leadType.FindProperty("Phone"));
+        Assert.Null(leadType.FindProperty("AccountId"));
+        Assert.Null(leadType.FindProperty("PartyId"));
+        Assert.Null(leadType.FindProperty("CustomerId"));
         Assert.Null(leadType.FindProperty("AgencyId"));
 
         var leadFk = leadType.GetForeignKeys().Single();
@@ -58,6 +66,14 @@ public sealed class TripIntentLeadPersistenceModelTests
             .TargetEntityType;
         Assert.Equal("leads", snapshotType.GetTableName());
         Assert.Equal("captured_planning_revision", snapshotType.FindProperty(nameof(LeadSubmissionSnapshot.CapturedPlanningRevision))!.GetColumnName());
+        var contactType = model.FindEntityType(typeof(Lead))!
+            .FindNavigation(nameof(Lead.Contact))!
+            .TargetEntityType;
+        Assert.Equal("leads", contactType.GetTableName());
+        Assert.Equal("contact_display_name", contactType.FindProperty(nameof(LeadContactSnapshot.DisplayName))!.GetColumnName());
+        Assert.Equal("contact_email", contactType.FindProperty(nameof(LeadContactSnapshot.Email))!.GetColumnName());
+        Assert.Equal("contact_normalized_email", contactType.FindProperty(nameof(LeadContactSnapshot.NormalizedEmail))!.GetColumnName());
+        Assert.Equal("contact_phone", contactType.FindProperty(nameof(LeadContactSnapshot.Phone))!.GetColumnName());
         Assert.Equal("captured_planning_note", snapshotType.FindProperty(nameof(LeadSubmissionSnapshot.CapturedPlanningNote))!.GetColumnName());
 
         Assert.Equal(2, model.GetEntityTypes().Count(e => !e.IsOwned()));
@@ -80,9 +96,12 @@ public sealed class TripIntentLeadPersistenceModelTests
         Assert.DoesNotContain("quote", columns);
         Assert.DoesNotContain("booking_id", columns);
         Assert.DoesNotContain("party_id", columns);
-        Assert.DoesNotContain("email", columns);
-        Assert.DoesNotContain("phone", columns);
-        Assert.DoesNotContain("agency_id", columns);
+        Assert.DoesNotContain("account_id", columns);
+        Assert.DoesNotContain("customer_id", columns);
+        Assert.DoesNotContain("passport", columns);
+        Assert.DoesNotContain("national_id", columns);
+        Assert.Contains("contact_email", columns);
+        Assert.Contains("draft_access_token", columns);
         Assert.False(db.Database.HasPendingModelChanges());
     }
 }

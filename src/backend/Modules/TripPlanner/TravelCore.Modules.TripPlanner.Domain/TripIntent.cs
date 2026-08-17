@@ -1,9 +1,10 @@
 using NodaTime;
+using TravelCore.Modules.TripPlanner.Contracts;
 
 namespace TravelCore.Modules.TripPlanner.Domain;
 
 /// <summary>
-/// Mutable planning intent owned by TripPlanner (TC-P18-T002 / P18-R2).
+/// Mutable planning intent owned by TripPlanner (TC-P18-T002 / P18-R2; identity P18-R3).
 /// Not a Lead, Booking, Quote, CRM opportunity, or Party identity record.
 /// </summary>
 public sealed class TripIntent
@@ -12,11 +13,13 @@ public sealed class TripIntent
 
     private TripIntent()
     {
+        DraftAccessToken = null!;
     }
 
-    private TripIntent(TripIntentId id, Instant createdAt)
+    private TripIntent(TripIntentId id, TripIntentDraftAccessToken draftAccessToken, Instant createdAt)
     {
         Id = id;
+        DraftAccessToken = draftAccessToken;
         PlanningRevision = 1;
         CreatedAt = createdAt;
         UpdatedAt = createdAt;
@@ -24,14 +27,12 @@ public sealed class TripIntent
 
     public TripIntentId Id { get; private set; }
 
-    /// <summary>
-    /// Increments when mutable planning context changes. Used for submission snapshots.
-    /// </summary>
+    public TripIntentDraftAccessToken DraftAccessToken { get; private set; }
+
+    public PlannerActorReference? ActorReference { get; private set; }
+
     public int PlanningRevision { get; private set; }
 
-    /// <summary>
-    /// Neutral mutable placeholder until P18-R4 preference model is locked.
-    /// </summary>
     public string? PlanningNote { get; private set; }
 
     public Instant CreatedAt { get; private set; }
@@ -45,9 +46,26 @@ public sealed class TripIntent
             throw new ArgumentException("CreatedAt cannot be default.", nameof(now));
         }
 
-        var intent = new TripIntent(TripIntentId.New(), now);
+        var intent = new TripIntent(TripIntentId.New(), TripIntentDraftAccessToken.Generate(), now);
         intent.PlanningNote = NormalizePlanningNote(planningNote);
         return intent;
+    }
+
+    public void AssociateActor(PlannerActorReference actorReference, Instant now)
+    {
+        if (actorReference.ActorId == Guid.Empty)
+        {
+            throw new ArgumentException("Actor id cannot be empty.", nameof(actorReference));
+        }
+
+        if (now == default)
+        {
+            throw new ArgumentException("UpdatedAt cannot be default.", nameof(now));
+        }
+
+        ActorReference = actorReference;
+        PlanningRevision++;
+        UpdatedAt = now;
     }
 
     public void UpdatePlanningNote(string? planningNote, Instant now)
@@ -62,7 +80,8 @@ public sealed class TripIntent
         UpdatedAt = now;
     }
 
-    public Lead SubmitAsLead(Instant now) => TripIntentLeadSubmissionBoundary.Submit(this, now);
+    public Lead SubmitAsLead(Instant submittedAt, LeadContactSnapshot? contact = null)
+        => TripIntentLeadSubmissionBoundary.Submit(this, submittedAt, contact);
 
     internal static string? NormalizePlanningNote(string? planningNote)
     {

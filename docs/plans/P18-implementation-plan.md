@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P18-PLAN` |
 | Phase | P18 — Trip Planner / Lead Experience |
-| Status | PLAN ACCEPTED; **P18-R1–R2 RESOLVED**; T001–T002 delivered; **P18-R3–R8 OPEN** |
+| Status | PLAN ACCEPTED; **P18-R1–R3 RESOLVED**; T001–T003 delivered; **P18-R4–R8 OPEN** |
 | Baseline | `1826013` (`docs(tripplanner): add P18 implementation plan [TC-P18-PLAN]`) · T001 on top |
 | Authoritative sources | `docs/ROADMAP.md` § P18 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `13-reference-page-archetypes.md` · `docs/pages/00-page-archetype-registry.md` · `docs/pages/09-page-state-and-composition-rules.md` · P04 Destination/ReferenceData · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace · P14 PublicExperience · P15 Search · P16 UGC · P17 Visa · P19 Booking · P20 Payment · `15-future-architecture-transition-map.md` § V Notification |
 | Backend root | `src/backend` |
@@ -152,9 +152,10 @@ P18 اضافه می‌کند: **Trip Planner / Lead capability** — **بدون*
 - Forbidden kept: full preferences (R4) · identity/contact (R3) · lifecycle pipeline (R5) · routing (R6) · consent/notification (R7) · public UI/API (R8) · inventing R3–R8.
 
 ### TC-P18-T003 — Anonymous vs authenticated planner / contact identity
-- Purpose: Who may submit; how contact relates to Party/Identity (**P18-R3**).
-- Preserve: **Lead contact ≠ Party master identity** unless explicitly locked.
-- Forbidden kept: auto Party provisioning · Identity clone · inventing R4–R8.
+- Purpose: Anonymous-first TripIntent + optional actor + submission-time contact (**P18-R3 RESOLVED**).
+- Delivered: `PlannerActorReference`; `LeadContactSnapshot`; `TripIntentDraftAccessToken`; optional actor on TripIntent/Lead; contact snapshot on Lead; no Identity/Party clone.
+- Preserve: **Lead contact != Party master identity** · **LeadContactSnapshot != Party** · **LeadContactSnapshot != Identity Account**.
+- Forbidden kept: consent (R7) · preferences (R4) · lifecycle (R5) · routing (R6) · public UI/API (R8) · inventing R4–R8.
 
 ### TC-P18-T004 — Travel preference model
 - Purpose: Structured destination/date/travelers/interests/budget/accommodation/transport/visa-assistance preferences (**P18-R4**).
@@ -199,7 +200,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 |----|-------|--------|------------------------|
 | **P18-R1** | Trip Planner / Lead module ownership and schema | **RESOLVED** | Independent TripPlanner module. Schema `trip_planner`. Owns future trip-intent/lead facts and lifecycle — not Tour, Destination, Place, Pricing, AgencyMarketplace, Search, SEO, Booking, Payment, Notification delivery, CRM, or Party/Identity master data. No peer-schema FK. T001: no TripIntent/Lead/preferences/lifecycle/routing/notification provider/identity product types. |
 | **P18-R2** | TripIntent vs Lead aggregate boundary | **RESOLVED** | **TripIntent** = mutable planning intent. **Lead** = submitted request for follow-up. **Lead ≠ Booking**. Do not collapse. Submission copies snapshot; later TripIntent mutation must not change existing Lead. T002: no full preferences/identity/lifecycle/routing. |
-| **P18-R3** | Anonymous vs authenticated planner / contact identity | **OPEN** | Anonymous submission likely allowed. **Lead contact ≠ Party master identity**. Evaluate client/session draft vs persisted anonymous draft vs account-owned draft. Do not auto-create Party merely on form submit unless locked. |
+| **P18-R3** | Anonymous vs authenticated planner / contact identity | **RESOLVED** | Anonymous-first TripIntent without Account requirement. Optional `PlannerActorReference` (opaque logical id). `LeadContactSnapshot` at submission — **Lead contact != Party master identity**; **LeadContactSnapshot != Party/Identity**. Minimal `TripIntentDraftAccessToken` for anonymous draft retrieval. No Party/Identity clone, no AnonymousUser platform, no consent finalization (R7). |
 | **P18-R4** | Travel preference model | **OPEN** | Destination/date/travelers/interests/budget/accommodation/transport/visa-assistance. **BudgetPreference ≠ Price/Quote**. **PlannerTravelerPreference ≠ Booking Passenger**. Date semantics: exact · flexible range · season · undecided. Logical refs to Destination/Tour — no clone. |
 | **P18-R5** | Lead lifecycle / qualification boundary | **OPEN** | Minimal baseline likely starts at **Submitted**. Full qualification pipeline / CRM stages remain **DEFER** unless locked. No generic workflow engine. |
 | **P18-R6** | Agency routing / assignment boundary | **OPEN** | Future lead may route to agencies — **DEFER** by default. **Lead ≠ AgencyOffer**. No ranking/commission/commercial allocation in P18 unless locked. |
@@ -214,7 +215,8 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 2. TripIntent != Lead · Lead != Booking.
 3. Lead Experience != CRM by default.
 4. Lead contact != Party master identity (until R3 lock says otherwise).
-5. BudgetPreference != Price · BudgetPreference != Quote.
+5. LeadContactSnapshot != Party · LeadContactSnapshot != Identity Account.
+6. BudgetPreference != Price · BudgetPreference != Quote.
 6. **PlannerTravelerPreference ≠ Booking Passenger**.
 7. **Visa assistance preference ≠ VisaApplication** (P17-R8 deferred).
 8. **PublicExperience ≠ Lead Source of Truth**.

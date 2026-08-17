@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T002 delivered; **P18-R1–R2 RESOLVED**) |
+| Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T003 delivered; **P18-R1–R3 RESOLVED**) |
 | Previous Phase | **P17 — Visa** (**COMPLETE** — `TC-P17-GATE` ACCEPTED `f439924`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P18-T002` — TripIntent vs Lead boundary (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Architect review of `TC-P18-T002` → T003 only after R3 lock |
+| Current Active Product Task | `TC-P18-T003` — anonymous-first identity/contact boundary (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P18-T003` → T004 only after R4 lock |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -219,12 +219,14 @@
 | P16-GATE | **COMPLETE / ACCEPTED** (`538f3fc`) — Acceptance evidence (no new product capability) |
 | P17 | **COMPLETE / ACCEPTED** — Plan ACCEPTED · **P17-R1–R8 RESOLVED** · T001–T009 ACCEPTED · `TC-P17-GATE` `f439924` |
 | P17-GATE | **COMPLETE / ACCEPTED** (`f439924`) — Acceptance evidence (no new product capability) |
-| P18 | **IN PROGRESS** — **P18-R1–R2 RESOLVED** · T001–T002 delivered · **P18-R3–R8 OPEN** |
+| P18 | **IN PROGRESS** — **P18-R1–R3 RESOLVED** · T001–T003 delivered · **P18-R4–R8 OPEN** |
 | P18 Plan | [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md) |
 | P18-T001 | **COMPLETE / ACCEPTED** (`d29ab8e`) — TripPlanner module scaffolding (`trip_planner` schema) |
-| P18-T002 | **DELIVERED** — TripIntent vs Lead aggregate boundary |
+| P18-T002 | **COMPLETE / ACCEPTED** (`1163e47`) — TripIntent vs Lead aggregate boundary |
+| P18-T003 | **DELIVERED** — anonymous-first identity/contact boundary |
 | P18-R1 (TripPlanner ownership) | **RESOLVED** — independent TripPlanner module · schema `trip_planner` · owns trip-intent/lead facts/lifecycle · does not own Destination/Tour/Place facts, Pricing/Quote, Booking, Payment, CRM, Search, AgencyMarketplace commercial allocation, Notification delivery, or Party/Identity master data · product refs = opaque logical id |
-| P18-R2 (TripIntent vs Lead) | **RESOLVED** — TripIntent = mutable planning intent · Lead = submitted follow-up request · **TripIntent != Lead** · **Lead != Booking** · submission snapshot invariant · T002: no preferences/identity/lifecycle/routing |
+| P18-R2 (TripIntent vs Lead) | **RESOLVED** — TripIntent = mutable planning intent · Lead = submitted follow-up request · **TripIntent != Lead** · **Lead != Booking** · submission snapshot invariant |
+| P18-R3 (Identity/contact) | **RESOLVED** — anonymous-first TripIntent · optional PlannerActorReference · LeadContactSnapshot at submission · Lead contact != Party/Identity master · draft access token · no Identity/Party clone |
 | P17 Plan | `TC-P17-PLAN` COMPLETE / ACCEPTED (`1b5c8ea`) — [`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md) |
 | P17-T001 | **COMPLETE / ACCEPTED** (`5f18f83`) — Visa module scaffolding (`visa` schema) |
 | P17-T002 | **COMPLETE / ACCEPTED** (`12f19e7`) — VisaDefinition + VisaRequirementSet baseline |

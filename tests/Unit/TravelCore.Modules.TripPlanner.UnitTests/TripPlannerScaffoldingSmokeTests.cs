@@ -59,6 +59,17 @@ public sealed class TripPlannerScaffoldingSmokeTests
         Assert.False(TripPlannerOwnershipBoundary.ProductReferencesAreSourceOfTruth);
         Assert.True(TripPlannerOwnershipBoundary.TripIntentImplemented);
         Assert.True(TripPlannerOwnershipBoundary.LeadImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.AnonymousTripIntentSupported);
+        Assert.True(TripPlannerOwnershipBoundary.AuthenticatedAssociationOptional);
+        Assert.True(TripPlannerOwnershipBoundary.LeadContactSnapshotImplemented);
+        Assert.False(TripPlannerOwnershipBoundary.IdentityOrPartyCloneImplemented);
+        Assert.True(TripPlannerIdentityBoundary.AnonymousTripIntentSupported);
+        Assert.True(TripPlannerIdentityBoundary.AuthenticatedAssociationOptional);
+        Assert.False(TripPlannerIdentityBoundary.IdentityAuthorityDuplicated);
+        Assert.False(TripPlannerIdentityBoundary.PartyMasterDuplicated);
+        Assert.False(TripPlannerIdentityBoundary.PersistentAnonymousUserPlatform);
+        Assert.True(TripPlannerIdentityBoundary.LeadContactSnapshotImplemented);
+        Assert.False(TripPlannerIdentityBoundary.ConsentModelImplemented);
         Assert.False(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
         Assert.False(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);

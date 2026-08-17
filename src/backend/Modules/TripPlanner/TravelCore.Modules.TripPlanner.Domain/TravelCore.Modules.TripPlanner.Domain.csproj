@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TravelCore.Modules.TripPlanner.Contracts\TravelCore.Modules.TripPlanner.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
   </ItemGroup>
 </Project>

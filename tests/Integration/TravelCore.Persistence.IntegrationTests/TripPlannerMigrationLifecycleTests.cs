@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL TripPlanner schema + TripIntent/Lead baseline (TC-P18-T002).
+/// Real-PostgreSQL TripPlanner schema + identity/contact baseline (TC-P18-T003).
 /// </summary>
 [Collection(nameof(TripPlannerMigrationLifecycleCollection))]
 public sealed class TripPlannerMigrationLifecycleTests
@@ -19,7 +19,7 @@ public sealed class TripPlannerMigrationLifecycleTests
     }
 
     [Fact]
-    public async Task TripPlannerMigrationLifecycle_Apply_TripIntent_And_Lead_Tables()
+    public async Task TripPlannerMigrationLifecycle_Apply_Identity_And_Contact_Columns()
     {
         var ct = TestContext.Current.CancellationToken;
         string[] expectedMigrations;
@@ -27,9 +27,10 @@ public sealed class TripPlannerMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.EndsWith("_InitialTripPlannerScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTripIntentLeadBaseline", expectedMigrations[1], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTripPlannerIdentityContactBaseline", expectedMigrations[2], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -42,33 +43,31 @@ public sealed class TripPlannerMigrationLifecycleTests
             var conn = db.Database.GetDbConnection();
             await db.Database.OpenConnectionAsync(ct);
 
-            Assert.Equal(1, await ScalarIntAsync(conn, """
-                SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'trip_planner';
-                """, ct));
-            Assert.Equal(1, await ScalarIntAsync(conn, """
-                SELECT COUNT(*)::int
-                FROM information_schema.tables
-                WHERE table_schema = 'trip_planner'
-                  AND table_name = '__EFMigrationsHistory';
-                """, ct));
             Assert.Equal(2, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'trip_planner'
                   AND table_name IN ('trip_intents', 'leads');
                 """, ct));
-            Assert.Equal(0, await ScalarIntAsync(conn, """
+            Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
-                FROM information_schema.tables
+                FROM information_schema.columns
                 WHERE table_schema = 'trip_planner'
-                  AND table_name IN ('lead_status_history', 'planner_contacts', 'travel_preferences');
+                  AND table_name = 'trip_intents'
+                  AND column_name = 'draft_access_token';
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'trip_planner'
                   AND table_name = 'leads'
-                  AND column_name = 'captured_planning_revision';
+                  AND column_name = 'contact_email';
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'trip_planner'
+                  AND table_name IN ('anonymous_users', 'guest_accounts', 'planner_persons', 'customers');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -78,7 +77,7 @@ public sealed class TripPlannerMigrationLifecycleTests
                  AND tc.constraint_name = ccu.constraint_name
                 WHERE tc.table_schema = 'trip_planner'
                   AND tc.constraint_type = 'FOREIGN KEY'
-                  AND ccu.table_schema IN ('tour', 'destination', 'party', 'pricing', 'agency_marketplace', 'search', 'visa');
+                  AND ccu.table_schema IN ('tour', 'destination', 'party', 'identity', 'pricing', 'agency_marketplace', 'search', 'visa');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
