@@ -268,4 +268,42 @@ public sealed class PublicExperienceBoundaryGuardrailTests
         Assert.DoesNotContain("pg_trgm", endpoints, StringComparison.Ordinal);
         Assert.DoesNotContain("ts_rank", endpoints, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Related_Content_Is_Composition_Not_Copied_Into_Tour()
+    {
+        var listPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "related-content-list.tsx");
+        Assert.True(File.Exists(listPath), listPath);
+        var list = File.ReadAllText(listPath);
+        Assert.Contains("Related content", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/tour/products/", list, StringComparison.Ordinal);
+
+        var endpoints = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Content",
+            "TravelCore.Modules.Content.Infrastructure",
+            "Endpoints",
+            "ContentEndpoints.cs"));
+        Assert.Contains("related-published", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("SetIndexPolicy", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("TourProduct", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", endpoints, StringComparison.Ordinal);
+
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceRelatedContentBoundary.CopyContentIntoTourAllowed);
+        Assert.Equal("Content", TravelCore.Modules.PublicExperience.Contracts.PublicExperienceRelatedContentBoundary.FactOwner);
+        Assert.Equal("Seo", TravelCore.Modules.PublicExperience.Contracts.PublicExperienceRelatedContentBoundary.IndexPolicyOwner);
+    }
 }

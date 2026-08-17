@@ -38,6 +38,7 @@ public sealed class ContentModule : ITravelCoreModule
         services.AddScoped<IContentItemService, ContentItemApplicationService>();
         services.AddScoped<IContentTaxonomyService, ContentTaxonomyApplicationService>();
         services.AddScoped<IContentBlockService, ContentBlockApplicationService>();
+        services.AddScoped<IRelatedContentPublicQuery, RelatedContentPublicQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

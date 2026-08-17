@@ -14,7 +14,7 @@ export const DETAIL_ROUTE_PATTERN = "/tours/{slug}" as const;
 
 export const LISTING_COMPOSITION = "FilterSlot+SortSlot+Selection" as const;
 export const LANDING_COMPOSITION =
-  "CuratedContent+RelatedToursSlot+SeoMetadata+UserIntent" as const;
+  "CuratedContent+RelatedToursSlot+SeoMetadata+UserIntent+ContentEnrichment" as const;
 
 export const SEARCH_ENGINE_OWNER = "Search" as const;
 export const INDEX_POLICY_OWNER = "Seo" as const;
@@ -29,4 +29,20 @@ export function landingPath(locale: string, topic: string, intent: string): stri
 
 export function detailPath(locale: string, slug: string): string {
   return `/${locale}/tours/${encodeURIComponent(slug)}`;
+}
+
+export function contentPublicPath(
+  locale: string,
+  kind: string,
+  slug: string,
+): string | null {
+  const encoded = encodeURIComponent(slug);
+  switch (kind) {
+    case "Article":
+      return `/${locale}/articles/${encoded}`;
+    case "LandingPage":
+      return `/${locale}/landing-pages/${encoded}`;
+    default:
+      return null;
+  }
 }

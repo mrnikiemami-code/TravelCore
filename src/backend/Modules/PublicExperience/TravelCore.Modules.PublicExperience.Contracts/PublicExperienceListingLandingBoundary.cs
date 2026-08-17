@@ -17,7 +17,7 @@ public static class PublicExperienceListingLandingBoundary
     public const string DetailRoutePattern = "/tours/{slug}";
 
     public const string ListingComposition = "FilterSlot+SortSlot+Selection";
-    public const string LandingComposition = "CuratedContent+RelatedToursSlot+SeoMetadata+UserIntent";
+    public const string LandingComposition = "CuratedContent+RelatedToursSlot+SeoMetadata+UserIntent+ContentEnrichment";
 
     public const string SearchEngineOwnerModule = "Search";
     public const string IndexPolicyOwnerModule = "Seo";

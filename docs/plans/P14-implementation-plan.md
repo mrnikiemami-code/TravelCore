@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P14-PLAN` |
 | Phase | P14 — Public Tour Experience |
-| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1–R5 RESOLVED; T005 related tours composition delivered |
+| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1–R6 RESOLVED; T006 content enrichment composition delivered |
 | Baseline | `c0bcd78` (`docs: P13 acceptance gate evidence [TC-P13-GATE]` — **TC-P13-GATE** ACCEPTED; P13 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P14 · P09–P13 Gates · P05 SEO · P08 Content · P11-R8 Published ≠ Bookable · P12-R8 public price read · P13-R7 Published Offer ≠ SEO Indexed · architect P13 Gate ACCEPT (Public Experience ≠ Booking · SEO Page ≠ Commercial Transaction · Content ≠ Catalog Ownership) |
 | Backend root | `src/backend` |
@@ -100,9 +100,11 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 - Delivered: `PublicExperienceRelatedToursBoundary` · Tour `related-published` public read · compact cards on Detail + Landing.
 - Forbidden: Recommendation engine · Ranking · FTS · `pg_trgm` · popularity/personalization · Booking.
 
-### TC-P14-T006 — Content enrichment hooks
-- Purpose: Content enrichment without stealing catalog (needs **P14-R6**).
-- Forbidden: Content owning TourProduct · Search recommendations engine.
+### TC-P14-T006 — Public Tour content enrichment composition
+- Purpose: Enrich Detail and SEO Landing with relevant editorial Content (**P14-R6 RESOLVED**).
+- Architect lock: Content = editorial SoT. Tour = tour-facts SoT. PublicExperience = composition only. Prefer Destination-based links. Do not invent TourProduct→ArticleId[]. Eligible = Relevant + publicly eligible (locale title+slug) + locale-correct. Content publication ≠ SEO IndexPolicy.
+- Delivered: `PublicExperienceRelatedContentBoundary` · Content `related-published` public read · compact cards on Detail + Landing curated slot.
+- Forbidden: Copying CMS into TourProduct · IndexPolicy ownership · Booking · Search engine · inventing R7/R8.
 
 ### TC-P14-T007 — Public AgencyOffer display (if locked)
 - Purpose: Show published marketplace offers on public tour experience **only if P14-R7 locked**.
@@ -124,7 +126,7 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 | **P14-R3** | Listing URL vs SEO landing URL ownership | **RESOLVED** | Listing and SEO Landing are two surfaces. Listing = Discovery. Landing = Search Intent. Landing ≠ filtered listing. P15 owns Query/Ranking/FTS. SEO owns IndexPolicy. |
 | **P14-R4** | Shared Tour public detail vs Foreign/Experience specialized pages | **RESOLVED** | Shared Shell + kind-specific sections. Not independent pages. Not a giant union ViewModel. Package specialty is future contributor only. |
 | **P14-R5** | Related tours owner | **RESOLVED** | Public Experience owns presentation only. Deterministic shared-destination retrieval behind Tour public-read. Related ≠ Recommendation. P15 may replace retrieval. |
-| **P14-R6** | Content enrichment vs Content CMS ownership | **UNRESOLVED** | Content ≠ Catalog. Editorial blocks may display; TourProduct remains SoR. |
+| **P14-R6** | Content enrichment vs Content CMS ownership | **RESOLVED** | Content = editorial SoT. Tour = tour-facts SoT. PublicExperience = composition only. Destination-based semantic links. No TourProduct→ArticleId[]. Content publication ≠ SEO IndexPolicy. |
 | **P14-R7** | Public AgencyOffer on tour experience | **UNRESOLVED** | P13 publication exists. Public seller listing may be DEFER. Published Offer ≠ SEO Indexed. |
 | **P14-R8** | Filters/facets implementation vs P15 | **UNRESOLVED** | Simple catalog filters in P14 vs faceting engine in P15. |
 

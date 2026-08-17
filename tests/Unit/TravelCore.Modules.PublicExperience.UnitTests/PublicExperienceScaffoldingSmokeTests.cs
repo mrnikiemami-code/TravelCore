@@ -68,4 +68,16 @@ public sealed class PublicExperienceScaffoldingSmokeTests
         Assert.False(PublicExperienceRelatedToursBoundary.SearchRankingAllowed);
         Assert.Equal(6, PublicExperienceRelatedToursBoundary.MaxItems);
     }
+
+    [Fact]
+    public void Related_Content_Is_Composition_Not_Copied_Into_Tour()
+    {
+        Assert.Equal("PublicExperience", PublicExperienceRelatedContentBoundary.PresentationOwner);
+        Assert.Equal("Content", PublicExperienceRelatedContentBoundary.FactOwner);
+        Assert.Equal("Tour", PublicExperienceRelatedContentBoundary.CatalogFactOwner);
+        Assert.Equal("Seo", PublicExperienceRelatedContentBoundary.IndexPolicyOwner);
+        Assert.False(PublicExperienceRelatedContentBoundary.CopyContentIntoTourAllowed);
+        Assert.False(PublicExperienceRelatedContentBoundary.ContentPublicationOwnsIndexPolicy);
+        Assert.Equal(6, PublicExperienceRelatedContentBoundary.MaxItems);
+    }
 }

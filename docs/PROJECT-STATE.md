@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T005 related tours composition) |
+| Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T006 content enrichment composition) |
 | Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P14-T005` — Related Tours composition baseline (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P14-T006` — Public Tour content enrichment composition (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P14 — Public Tour Experience |
-| Current Next Task | Architect review of T005 → next Auto-Execute (do not invent R6–R8) |
+| Current Next Task | Architect review of T006 → next Auto-Execute (do not invent R7–R8) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -181,14 +181,16 @@
 | P13-T008 | **VACANT** — original publishing slot delivered as T007; no independent capability invented |
 | P13-T009 | **COMPLETE / ACCEPTED** (`d813dbd`) — hardening + evidence pack [`plans/P13-T009-hardening-and-evidence-pack.md`](plans/P13-T009-hardening-and-evidence-pack.md) |
 | P13-GATE | **COMPLETE / ACCEPTED** (`c0bcd78`) — evidence [`plans/P13-GATE-acceptance-evidence.md`](plans/P13-GATE-acceptance-evidence.md) |
-| P14 | **IN PROGRESS** — Plan ACCEPTED · **P14-R1/R2/R3/R4/R5 RESOLVED** |
+| P14 | **IN PROGRESS** — Plan ACCEPTED · **P14-R1/R2/R3/R4/R5/R6 RESOLVED** |
 | P14 Plan | `TC-P14-PLAN` COMPLETE / ACCEPTED — [`docs/plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md) |
 | P14-T001 | **COMPLETE / ACCEPTED** (`a7bd549`) — Public Experience surface inventory (Detail/Listing/Landing; no Search/catalog ownership) |
 | P14-T002 | **COMPLETE / ACCEPTED** (`99818dd`) — public detail sticky presentation (P14-R2; Sticky Action ≠ Booking) |
 | P14-T003 | **COMPLETE / ACCEPTED** (`f0e3df3`) — listing vs SEO landing boundary (P14-R3) |
 | P14-SYNC001 | **COMPLETE / ACCEPTED** — origin/main synchronized at `f0e3df3` |
 | P14-T004 | **COMPLETE / ACCEPTED** (`0b4fcbe`) — shared Detail shell + Experience specialized sections (P14-R4) |
-| P14-T005 | **AWAITING_ARCHITECT_REVIEW** — Related Tours composition (P14-R5; same-destination; not recommendation) |
+| P14-T005 | **COMPLETE / ACCEPTED** (`c34e5b0`) — Related Tours composition (P14-R5; same-destination; not recommendation) |
+| P14-T006 | **AWAITING_ARCHITECT_REVIEW** — Content enrichment composition (P14-R6; Destination-based; Content remains CMS SoT) |
+| P14-R6 (Content enrichment) | **RESOLVED** — Content = editorial SoT. Tour = tour-facts SoT. PE = composition only. Destination-based links. No TourProduct→ArticleId[]. Content publication ≠ SEO IndexPolicy. |
 | P14-R5 (Related Tours) | **RESOLVED** — PE owns presentation only. Deterministic shared-destination retrieval behind Tour public-read. Related ≠ Recommendation. P15 may replace retrieval later. |
 | P14-R4 (Shared vs specialized Detail) | **RESOLVED** — Shared Shell + kind-specific sections. Not independent Experience/Package pages. Not a giant union ViewModel. |
 | P14-R3 (Listing vs SEO Landing) | **RESOLVED** — Listing = Discovery; Landing = Search Intent; Landing ≠ filtered listing; P15 owns Query/Ranking/FTS; SEO owns IndexPolicy |
@@ -273,7 +275,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P14_T005_DELIVERED** · PLAN ACCEPTED · P14-R1–R5 RESOLVED · T005 awaiting review |
+| Phase Transition State | **P14_T006_DELIVERED** · PLAN ACCEPTED · P14-R1–R6 RESOLVED · T006 awaiting review |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -282,7 +284,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P14-T005`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P14-T006`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -605,7 +607,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P14-T003 | Public Tour Listing and SEO Landing boundary baseline | COMPLETE / ACCEPTED | `f0e3df3` |
 | TC-P14-SYNC001 | Synchronize accepted main with origin/main | COMPLETE / ACCEPTED | `f0e3df3` |
 | TC-P14-T004 | Shared and specialized Tour Detail composition | COMPLETE / ACCEPTED | `0b4fcbe` |
-| TC-P14-T005 | Related Tours composition baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P14-T005 | Related Tours composition baseline | COMPLETE / ACCEPTED | `c34e5b0` |
+| TC-P14-T006 | Public Tour content enrichment composition | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

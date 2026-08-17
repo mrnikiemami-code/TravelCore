@@ -7,6 +7,8 @@ import {
   mediaOriginalContentPath,
   resolveMediaAppProxySrc,
 } from "@/lib/media/media-presentation";
+import type { RelatedContentView } from "@/features/public-experience/load-related-content";
+import { loadRelatedContentByDestinations } from "@/features/public-experience/load-related-content";
 import type { RelatedTourView } from "@/features/public-experience/load-related-tours";
 import { loadRelatedToursByProduct } from "@/features/public-experience/load-related-tours";
 
@@ -144,6 +146,7 @@ export type TourDetailPageViewModel = {
   requirements: TourCatalogFactView[];
   experience: ExperiencePresentationView | null;
   relatedTours: RelatedTourView[];
+  relatedContent: RelatedContentView[];
 };
 
 type ApiSlugHit = {
@@ -446,6 +449,10 @@ export async function loadTourDetailPage(
     experience = await loadExperiencePresentation(id);
   }
   const relatedTours = await loadRelatedToursByProduct(id, locale);
+  const relatedContent = await loadRelatedContentByDestinations(
+    links?.destinationIds ?? [],
+    locale,
+  );
 
   return {
     ok: true,
@@ -475,6 +482,7 @@ export async function loadTourDetailPage(
       })),
       experience,
       relatedTours,
+      relatedContent,
     }),
   };
 }

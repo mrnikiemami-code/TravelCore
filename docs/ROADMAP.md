@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T005 related tours composition) |
-| Phase Status | P00–P13 COMPLETE · P14-R1–R5 RESOLVED · `TC-P14-T005` delivered |
+| Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T006 content enrichment composition) |
+| Phase Status | P00–P13 COMPLETE · P14-R1–R6 RESOLVED · `TC-P14-T006` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P14-T005` → next Auto-Execute |
+| Current Next Task | Architect review of `TC-P14-T006` → next Auto-Execute |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -493,7 +493,7 @@ Agency business profile · Offer ownership · Tour offering · Capacity/availabi
 
 ## P14 — Public Tour Experience
 
-**Status:** IN_PROGRESS — PLAN ACCEPTED · **P14-R1–R5 RESOLVED** · T005 related tours composition [`plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md)
+**Status:** IN_PROGRESS — PLAN ACCEPTED · **P14-R1–R6 RESOLVED** · T006 content enrichment composition [`plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md)
 
 UX عمومی production برای: Tour Landing · Destination Tour Landing · Tour Listing/Search · Foreign Tour Detail · Experience Tour Detail · Filters · Sorting · Pagination · Mobile filters · Sticky/mobile booking actions · Related tours · تمایز SEO landing.
 

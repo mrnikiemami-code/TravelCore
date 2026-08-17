@@ -86,6 +86,26 @@ internal static class ContentEndpoints
             }
         });
 
+        items.MapGet("/related-published", async Task<IResult> (
+            Guid destinationId,
+            string? locale,
+            IRelatedContentPublicQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var related = await query.GetByDestinationAsync(
+                    destinationId,
+                    locale ?? "en",
+                    cancellationToken);
+                return Results.Ok(related);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
         items.MapGet("/{id:guid}", async Task<IResult> (
             Guid id,
             string? locale,

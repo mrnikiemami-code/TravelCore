@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/shell";
 import { LtrValue, Text } from "@/components/ui";
 import { PublicTourLandingView } from "@/features/public-experience/landing-view";
+import { loadRelatedContentByDestination } from "@/features/public-experience/load-related-content";
 import { loadRelatedToursByDestination } from "@/features/public-experience/load-related-tours";
 import { apiGetJson } from "@/lib/api/client";
 import { isApiOk } from "@/lib/api/result";
@@ -72,6 +73,9 @@ export default async function PublicTourLandingPage({ params }: PageProps) {
   const relatedTours = isApiOk(destination)
     ? await loadRelatedToursByDestination(destination.data.destinationId, locale)
     : [];
+  const relatedContent = isApiOk(destination)
+    ? await loadRelatedContentByDestination(destination.data.destinationId, locale)
+    : [];
 
   return (
     <PublicShell
@@ -101,6 +105,7 @@ export default async function PublicTourLandingPage({ params }: PageProps) {
         topic={slug}
         intent={intent}
         relatedTours={relatedTours}
+        relatedContent={relatedContent}
       />
     </PublicShell>
   );

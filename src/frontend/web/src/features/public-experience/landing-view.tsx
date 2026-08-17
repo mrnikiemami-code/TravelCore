@@ -1,7 +1,9 @@
 import { Container, LtrValue, Stack, Text } from "@/components/ui";
 import type { AppLocale } from "@/lib/i18n";
 import { LANDING_PURPOSE, LANDING_ROUTE_PATTERN } from "./listing-landing";
+import { RelatedContentList } from "./related-content-list";
 import { RelatedToursList } from "./related-tours-list";
+import type { RelatedContentView } from "./load-related-content";
 import type { RelatedTourView } from "./load-related-tours";
 
 export function PublicTourLandingView({
@@ -9,11 +11,13 @@ export function PublicTourLandingView({
   topic,
   intent,
   relatedTours,
+  relatedContent,
 }: {
   locale: AppLocale;
   topic: string;
   intent: string;
   relatedTours: RelatedTourView[];
+  relatedContent: RelatedContentView[];
 }) {
   return (
     <div className="py-6 sm:py-8">
@@ -50,9 +54,10 @@ export function PublicTourLandingView({
             </Text>
             <Text>
               {locale === "fa"
-                ? "جای محتوای گزینشی لندینگ · مالک CMS جدا می‌ماند."
-                : "Curated landing copy slot · CMS ownership stays outside this surface."}
+                ? "ترکیب محتوای تحریری از CMS · مالک کاتالوگ تور اینجا نیست."
+                : "Editorial CMS composition · Tour catalog ownership stays outside this surface."}
             </Text>
+            <RelatedContentList locale={locale} items={relatedContent} />
           </Stack>
 
           <RelatedToursList locale={locale} items={relatedTours} />
