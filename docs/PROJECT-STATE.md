@@ -161,7 +161,8 @@
 | P10-T004 | **COMPLETE / ACCEPTED** (`7589ad1`) — Meals + Accommodation plan (P10-R3/R5) |
 | P10-T005 | **COMPLETE / ACCEPTED** (`f7ce58c`) — Difficulty · Eligibility · Equipment · LocalTransport (P10-R6) |
 | P10-T006 | **COMPLETE / ACCEPTED** (`e3dbea6`) — Experience Guide assignments (P10-R7) |
-| P10-T007 | **IN_PROGRESS** — Experience Media posture (P10-R4) |
+| P10-T007 | **COMPLETE / ACCEPTED** (`f262084`) — Experience Media posture (P10-R4) |
+| P10-T008 | **IN_PROGRESS** — Experience publishability (P10-R8) |
 | P10-R1 (Experience specialization + Itinerary ownership) | **RESOLVED** — Experience owns Itinerary (0..1 child); Day/Stop under Itinerary |
 | P10-R2 (Stop Destination/Place links) | **RESOLVED** — DestinationId 0..1 · PlaceId 0..1 (Attraction-kind) · logical · no exclusivity · no FK |
 | P10-R3 (Accommodation plan) | **RESOLVED** — Experience accommodation plan 0..N · optional Place Hotel logical ref · no TourHotelOption/HotelBooking |
@@ -169,7 +170,7 @@
 | P10-R6 (Difficulty/Eligibility/Equipment) | **RESOLVED** — Difficulty enum · Eligibility code/value/detail · Equipment Required/Recommended |
 | P10-R7 (Guide) | **RESOLVED** — ExperienceGuideAssignment · logical GuidePartyId (Person) · Role Primary/Assistant · optional note |
 | P10-R4 (Experience media) | **RESOLVED** — Cover/Gallery via TourProductMediaLink (P09-R8); Day/Stop media DEFERRED |
-| P10-R8 (Experience publishability) | **UNRESOLVED** |
+| P10-R8 (Experience publishability) | **RESOLVED** — Reuse TourCatalogStatus; publish gate title/cover/destination/facts; ≠ bookable |
 | P09-R1 (TourProduct model shape) | **RESOLVED** — Core TourProduct + Typed Specialization; canonical `TourProductId`; Experience/Package = future typed specialization; TourDeparture = separate future aggregate |
 | P09-R2 (Destination / Origin links) | **RESOLVED** — Destinations **0..N** logical join; Origin **0..1** nullable `OriginDestinationId`; no cross-schema FK; Contracts existence validation |
 | P09-R3 (Agency reference) | **RESOLVED** — optional logical `AgencyId` **0..1**; PartyKind.Agency via Party.Contracts; no cross-schema FK |

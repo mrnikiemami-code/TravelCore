@@ -310,7 +310,7 @@ Exact parallelization may be adjusted by architect on accept; Cursor must not in
 | **P10-R5** | Meals model shape | **RESOLVED** | Meal items belong to ItineraryDay; closed enum Breakfast/Lunch/Dinner/Other; unique per day+type; no Pricing / surcharge. Locked architect 2026-08-17 (T004). |
 | **P10-R6** | Difficulty / Eligibility taxonomy | **RESOLVED** | Difficulty = closed UX enum (Easy/Moderate/Challenging/Strenuous) on Experience. Eligibility = structured code/value/detail facts (not Booking rule engine). Equipment = structured code + Required/Recommended + optional detail. Locked by architect 2026-08-17 (T005 · ARCHITECT AUTONOMY). |
 | **P10-R7** | Guide information shape | **RESOLVED** | Experience owns `ExperienceGuideAssignment` (0..N): logical `GuidePartyId` (Party Person via Contracts) + Role Primary/Assistant + optional English baseline note. No Tour-owned person · no marketplace/profile/payment/scheduling · no Booking. Unique (Experience, GuidePartyId). Locked by architect 2026-08-17 (T006 · ARCHITECT AUTONOMY). |
-| **P10-R8** | Experience-only publishability rules | **UNRESOLVED** | Whether Experience specialization (itinerary completeness) gates catalog visibility beyond P09 Draft/Published/Inactive — or P09 lifecycle stands unchanged. |
+| **P10-R8** | Experience-only publishability rules | **RESOLVED** | Experience reuses **TourProduct.CatalogStatus** (Draft\|Published\|Inactive · P09-R4) — no second status. Published = catalog visibility ≠ bookable/priced/available. Publish gate: localized title · Cover · ≥1 Destination · meaningful Experience facts (itinerary day(s) and/or operational attributes). Locked architect 2026-08-17 (T008 · ARCHITECT AUTONOMY). |
 
 Inherited (out of P10 invent scope):
 
