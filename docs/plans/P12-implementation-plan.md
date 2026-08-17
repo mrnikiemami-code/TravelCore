@@ -4,8 +4,8 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED; T001–T008 delivered |
-| Baseline | `87b5dac` (T007 ACCEPTED baseline for T008) |
+| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED; T001–T008 ACCEPTED; T009 evidence pack delivered; next = GATE |
+| Baseline | `520a46d` (T008 ACCEPTED baseline for T009) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
@@ -98,12 +98,14 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 - Original FX-authority wording previously parked under old R5 remains deferred as **implementation of FX Service** (not invented here).
 
 ### TC-P12-T008 — Public Pricing read model baseline
-- **Delivered:** public read-only query (`IPublicPricingQuery`) + Price Summary DTO (currency, components kind+money, occupancy prices categories+money) by logical `TargetType`+`TargetId` (thin helper for TourDeparture). Anonymous GET `/api/pricing/public`. Optional tour-detail display of starting price / occupancy lines. No Booking, Payment, Checkout, Availability, Reservation, or FX conversion. No Quote mutation.
+- **Delivered / ACCEPTED:** `520a46d` — public read-only query (`IPublicPricingQuery`) + Price Summary DTO (currency, components kind+money, occupancy prices categories+money) by logical `TargetType`+`TargetId` (thin helper for TourDeparture). Anonymous GET `/api/pricing/public`. Optional tour-detail display of starting price / occupancy lines. No Booking, Payment, Checkout, Availability, Reservation, or FX conversion. No Quote mutation.
 - **P12-R8 RESOLVED:** Pricing provides a public read-only query for price summary (currency, components, occupancy prices) by logical target (initial: TourDepartureId). No Booking, Payment, Checkout, Availability, Reservation, or FX conversion.
 
 ### TC-P12-T009 — Hardening + evidence
+- **Delivered:** architecture hardening + evidence pack only — [`P12-T009-hardening-and-evidence-pack.md`](P12-T009-hardening-and-evidence-pack.md). Extra phase-boundary guardrails (`PricingPhaseBoundaryGuardrailTests`). No new pricing features · no Booking · no Payment · no FX engine · no Checkout. Does **not** execute GATE.
 
 ### TC-P12-GATE — Acceptance Gate
+- Next after T009 ACCEPT. Not executed in T009.
 
 ---
 

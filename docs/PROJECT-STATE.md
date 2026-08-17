@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T008 public pricing read model) |
+| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T009 hardening + evidence pack; next = GATE) |
 | Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `87b5dac` (`TC-P12-T007`) · Pricing currency context and FX boundary accepted |
+| Last Accepted Commit | `520a46d` (`TC-P12-T008`) · Public pricing read model baseline accepted |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P12-T008` — Public Pricing read model baseline (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P12-T009` — Pricing hardening and evidence pack (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P12 — Pricing |
-| Current Next Task | Architect review of T008 public pricing read model |
+| Current Next Task | Architect review of T009 evidence pack → then **TC-P12-GATE** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -157,8 +157,8 @@
 | P10-GATE | **COMPLETE / ACCEPTED** (`c351bf9`) — evidence [`plans/P10-GATE-acceptance-evidence.md`](plans/P10-GATE-acceptance-evidence.md) |
 | P10-R1…R8 | **ALL RESOLVED** |
 | P11 | **COMPLETE** — GATE ACCEPTED (`6f7ea12`) · R1..R8 RESOLVED |
-| P12 | **IN PROGRESS** — Plan authored · **P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED** |
-| P12 Plan | `TC-P12-PLAN` — [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md) |
+| P12 | **IN PROGRESS** — Plan authored · **P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED** · T001–T008 ACCEPTED · T009 evidence pack delivered · next = GATE |
+| P12 Plan | `TC-P12-PLAN` COMPLETE / ACCEPTED (`d26078d`) — [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md) |
 | P12-T001 | **COMPLETE / ACCEPTED** (`7c2e488`) — Pricing module scaffolding (`pricing` schema) |
 | P12-T002 | **COMPLETE / ACCEPTED** (`6c1b4ce`) — Money / Currency baseline (platform Money reuse · EF owned mapping) |
 | P12-T003 | **COMPLETE / ACCEPTED** (`58de552`) — Price + PriceComponent (polymorphic TargetType+TargetId · Base/Fee/Tax) |
@@ -166,7 +166,8 @@
 | P12-T005 | **COMPLETE / ACCEPTED** (`c90931d`) — Occupancy/passenger category pricing baseline (`PriceOccupancyRule`) |
 | P12-T006 | **COMPLETE / ACCEPTED** (`e1d01c4`) — Admin Pricing baseline (Pricing-owned Admin API + Access `pricing.prices.read`/`write`) |
 | P12-T007 | **COMPLETE / ACCEPTED** (`87b5dac`) — Quote requested-display-currency metadata + FX boundary contracts (no ExchangeRate table / no FX calculation) |
-| P12-T008 | **AWAITING_ARCHITECT_REVIEW** — Public read-only price summary query (currency, components, occupancy prices) by logical target |
+| P12-T008 | **COMPLETE / ACCEPTED** (`520a46d`) — Public read-only price summary query (currency, components, occupancy prices) by logical target |
+| P12-T009 | **AWAITING_ARCHITECT_REVIEW** — Hardening + evidence pack [`plans/P12-T009-hardening-and-evidence-pack.md`](plans/P12-T009-hardening-and-evidence-pack.md) · next = **TC-P12-GATE** |
 | P12-R1 (Pricing ownership) | **RESOLVED** — Independent Pricing module · schema `pricing` · logical TourDeparture Guid refs only · no Tour table ownership / no shared DbContext |
 | P12-R2 (Money / currency posture) | **RESOLVED** — Reuse `TravelCore.Money`; one authoritative currency per price value; no twin SoR; no FX/Quote/Payment in T002 |
 | P12-R3 (Price attachment target) | **RESOLVED** — Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now). |
@@ -239,7 +240,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P10_T006_IN_PROGRESS** · T001–T005 ACCEPTED · P10-R1/R2/R3/R5/R6/R7 RESOLVED · R4/R8 UNRESOLVED |
+| Phase Transition State | **P12_T009_IN_PROGRESS** · T001–T008 ACCEPTED · P12-R1…R8 RESOLVED · next = GATE |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -248,7 +249,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P10-T007`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P12-T009`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -543,7 +544,7 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P10-T005 | Difficulty · Eligibility · Equipment · LocalTransport | COMPLETE / ACCEPTED | `f7ce58c` |
 | TC-P10-T006 | Experience Guide relation baseline | COMPLETE / ACCEPTED | `e3dbea6` |
 | TC-P10-T007 | Experience Media relations baseline | AWAITING_ARCHITECT_REVIEW | `f262084` |
-| TC-P12-PLAN | P12 Pricing Implementation Plan | ACTIVE · R1–R8 locked | see `docs/plans/P12-implementation-plan.md` |
+| TC-P12-PLAN | P12 Pricing Implementation Plan | COMPLETE / ACCEPTED | `d26078d` |
 | TC-P12-T001 | Pricing module scaffolding | COMPLETE / ACCEPTED | `7c2e488` |
 | TC-P12-T002 | Money / Currency baseline | COMPLETE / ACCEPTED | `6c1b4ce` |
 | TC-P12-T003 | Price + PriceComponent model | COMPLETE / ACCEPTED | `58de552` |
@@ -551,7 +552,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P12-T005 | Pricing occupancy/passenger category baseline | COMPLETE / ACCEPTED | `c90931d` |
 | TC-P12-T006 | Admin Pricing baseline | COMPLETE / ACCEPTED | `e1d01c4` |
 | TC-P12-T007 | Pricing currency context and FX boundary | COMPLETE / ACCEPTED | `87b5dac` |
-| TC-P12-T008 | Public Pricing read model baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P12-T008 | Public Pricing read model baseline | COMPLETE / ACCEPTED | `520a46d` |
+| TC-P12-T009 | Pricing hardening and evidence pack | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

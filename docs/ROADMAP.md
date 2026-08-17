@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T008 public pricing read model) |
-| Phase Status | P00–P11 COMPLETE · P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED · `TC-P12-T008` delivered |
+| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T009 hardening + evidence; next = GATE) |
+| Phase Status | P00–P11 COMPLETE · P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED · T001–T008 ACCEPTED · `TC-P12-T009` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `87b5dac` (`TC-P12-T007`) · Pricing currency context and FX boundary accepted |
+| Last Accepted Commit | `520a46d` (`TC-P12-T008`) · Public pricing read model baseline accepted |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of T008 public pricing read model |
+| Current Next Task | Architect review of T009 evidence pack → then **TC-P12-GATE** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -109,8 +109,10 @@
 - **P07** = COMPLETE (`TC-P07-GATE` ACCEPTED `84a0a48` · **P07-R1/R2/R4/R5 RESOLVED** · **P07-R3 UNRESOLVED**)
 - **P08** = COMPLETE (`TC-P08-GATE` ACCEPTED `576b7fa` · R1–R5 RESOLVED · R6–R8 UNRESOLVED)
 - **P09** = COMPLETE (`TC-P09-GATE` ACCEPTED `67fc580` · T001–T010 ACCEPTED · **R1–R8 RESOLVED** · product T010 `0334bae`)
-- **P10** = IN_PROGRESS (`TC-P10-T001`…`T005` ACCEPTED · `TC-P10-T006` Guide · **P10-R1/R2/R3/R5/R6/R7 RESOLVED** · R4/R8 UNRESOLVED — [`plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md))
-- **P11–P29 و Post-P29** = PLANNED / NOT_STARTED
+- **P10** = COMPLETE (`TC-P10-GATE` ACCEPTED `c351bf9` · **R1–R8 RESOLVED**)
+- **P11** = COMPLETE (`TC-P11-GATE` ACCEPTED `6f7ea12` · **R1–R8 RESOLVED**)
+- **P12** = IN_PROGRESS (**R1–R8 RESOLVED** · T001–T008 ACCEPTED `520a46d` · T009 evidence pack · next = GATE — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
+- **P13–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -437,7 +439,7 @@ TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Fli
 
 ## P12 — Pricing
 
-**Status:** IN PROGRESS — **P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED** · `TC-P12-T008` public pricing read model delivered
+**Status:** IN PROGRESS — **P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED** · T001–T008 ACCEPTED (`520a46d`) · T009 evidence pack delivered · next = **TC-P12-GATE**
 
 Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passenger category · Occupancy · Age policy · Exchange rates · Conversion policy · Quote · Quote expiration در صورت نیاز · Price snapshot.
 
@@ -462,6 +464,8 @@ Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passe
 مثال طبیعی: `1290 USD` + مؤلفهٔ ارز محلی.
 
 Plan: [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md)
+
+**Evidence pack:** [`plans/P12-T009-hardening-and-evidence-pack.md`](plans/P12-T009-hardening-and-evidence-pack.md) (T009; Gate not executed)
 
 ---
 
@@ -717,7 +721,7 @@ P26 = Advanced SEO.
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
-| P12 | Pricing | **IN PROGRESS** (R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED · T008) |
+| P12 | Pricing | **IN PROGRESS** (R1–R8 RESOLVED · T001–T008 ACCEPTED · T009 evidence · next = GATE) |
 | P13 | Agency Marketplace | PLANNED |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |
