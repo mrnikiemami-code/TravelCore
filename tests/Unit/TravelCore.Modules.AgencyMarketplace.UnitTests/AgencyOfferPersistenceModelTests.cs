@@ -41,6 +41,20 @@ public sealed class AgencyOfferPersistenceModelTests
                  || string.Equals(f.PrincipalEntityType.GetSchema(), "party", StringComparison.OrdinalIgnoreCase)
                  || string.Equals(f.PrincipalEntityType.GetSchema(), "pricing", StringComparison.OrdinalIgnoreCase));
 
+        var columns = model.GetEntityTypes()
+            .SelectMany(e => e.GetProperties())
+            .Select(p => p.GetColumnName())
+            .Where(n => n is not null)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        Assert.Contains("requires_manual_confirmation", columns);
+        Assert.Contains("exclusive_listing", columns);
+        Assert.Contains("commercial_notes", columns);
+        Assert.DoesNotContain("amount", columns);
+        Assert.DoesNotContain("currency_code", columns);
+        Assert.DoesNotContain("price_id", columns);
+        Assert.DoesNotContain("discount", columns);
+        Assert.DoesNotContain("commission_rate", columns);
+
         Assert.False(db.Database.HasPendingModelChanges());
     }
 }

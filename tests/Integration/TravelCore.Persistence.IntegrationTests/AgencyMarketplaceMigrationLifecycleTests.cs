@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Agency Marketplace schema + AgencyProfile + AgencyOffer (TC-P13-T001..T003).
+/// Real-PostgreSQL Agency Marketplace schema + AgencyProfile + AgencyOffer + commercial terms (TC-P13-T001..T004).
 /// </summary>
 [Collection(nameof(AgencyMarketplaceMigrationLifecycleCollection))]
 public sealed class AgencyMarketplaceMigrationLifecycleTests
@@ -27,7 +27,7 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(3, expectedMigrations.Length);
+            Assert.Equal(4, expectedMigrations.Length);
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_InitialAgencyMarketplaceScaffolding", StringComparison.Ordinal));
@@ -37,6 +37,9 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_AddAgencyOffer", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddAgencyOfferCommercialBoundary", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -88,7 +91,21 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
                 FROM information_schema.columns
                 WHERE table_schema = 'agency_marketplace'
                   AND table_name = 'agency_offers'
-                  AND column_name IN ('price_id', 'quote_id', 'commission_rate', 'departure_id', 'amount', 'currency_code');
+                  AND column_name IN ('price_id', 'quote_id', 'commission_rate', 'departure_id', 'amount', 'currency_code', 'discount', 'price_override');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_offers'
+                  AND column_name = 'requires_manual_confirmation';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_offers'
+                  AND column_name = 'exclusive_listing';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

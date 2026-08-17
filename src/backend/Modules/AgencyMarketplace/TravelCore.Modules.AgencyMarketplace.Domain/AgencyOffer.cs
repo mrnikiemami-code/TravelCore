@@ -2,8 +2,7 @@ namespace TravelCore.Modules.AgencyMarketplace.Domain;
 
 /// <summary>
 /// Marketplace relationship between an AgencyProfile and a TourProduct (TC-P13-T003 / P13-R3).
-/// TourProduct remains catalog SoR; AgencyOffer is the market listing. Logical TourProduct Guid only.
-/// No Price, Booking, Payment, Inventory, Departure ownership, or commission engine.
+/// Commercial terms are non-price metadata only (TC-P13-T004 / P13-R4).
 /// </summary>
 public sealed class AgencyOffer
 {
@@ -108,6 +107,16 @@ public sealed class AgencyOffer
     {
         EnsureNotArchived();
         Visibility = AgencyOfferVisibility.Unlisted;
+    }
+
+    /// <summary>
+    /// Return an Active listing to Draft and unlist. Archived offers cannot be reopened here.
+    /// </summary>
+    public void Deactivate()
+    {
+        EnsureNotArchived();
+        Visibility = AgencyOfferVisibility.Unlisted;
+        Status = AgencyOfferStatus.Draft;
     }
 
     public void Archive()

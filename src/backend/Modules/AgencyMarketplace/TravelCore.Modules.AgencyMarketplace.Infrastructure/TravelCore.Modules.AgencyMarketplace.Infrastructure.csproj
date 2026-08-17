@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.AgencyMarketplace.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.AgencyMarketplace.Infrastructure</AssemblyName>
-    <Description>Agency Marketplace infrastructure: schema agency_marketplace + AgencyProfile persistence (TC-P13-T002).</Description>
+    <Description>Agency Marketplace infrastructure: schema agency_marketplace + AgencyProfile + AgencyOffer (TC-P13-T003/T004).</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -63,6 +63,16 @@ internal sealed class AgencyOfferConfiguration : IEntityTypeConfiguration<Agency
             terms.Property(p => p.Notes)
                 .HasColumnName("commercial_notes")
                 .HasMaxLength(AgencyOfferCommercialTerms.NotesMaxLength);
+            terms.OwnsOne(t => t.SalesRules, rules =>
+            {
+                rules.Property(r => r.RequiresManualConfirmation)
+                    .HasColumnName("requires_manual_confirmation")
+                    .IsRequired();
+                rules.Property(r => r.ExclusiveListing)
+                    .HasColumnName("exclusive_listing")
+                    .IsRequired();
+            });
+            terms.Navigation(t => t.SalesRules).IsRequired();
         });
         builder.Navigation(x => x.CommercialTerms).IsRequired();
     }

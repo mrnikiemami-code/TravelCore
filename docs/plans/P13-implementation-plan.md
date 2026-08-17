@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P13-PLAN` |
 | Phase | P13 — Agency Marketplace |
-| Status | IN PROGRESS — P13-R1/R2/R3 RESOLVED; T003 AgencyOffer delivered |
+| Status | IN PROGRESS — P13-R1/R2/R3/R4 RESOLVED; T004 commercial terms delivered |
 | Baseline | `b372367` (`docs: P12 acceptance gate evidence [TC-P12-GATE]` — **TC-P12-GATE** ACCEPTED; P12 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P13 · P09-R3 AgencyId · P03 Agency Panel non-ownership · P12 R1–R8 · ADR 0001 · ADR 0011–0014 · architect P12 Gate ACCEPT narrative (Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking) |
 | Backend root | `src/backend` |
@@ -85,13 +85,15 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 - Delivered: `AgencyOffer` aggregate · same-schema FK to AgencyProfile · logical TourProduct Guid · Draft/Active/Archived + Listed/Unlisted · display/commercial metadata without Price.
 - Forbidden: Pricing ownership · Booking · Payment · Departure creation · Inventory · Commission engine.
 
-### TC-P13-T004 — Tour offering linkage
-- Purpose: Connect Marketplace offering to existing Tour facts (product/departure) without merging modules.
-- Forbidden: Tour FK from Marketplace schema · rewriting P09-R3 unless architect reopens it.
+### TC-P13-T004 — Agency commercial terms boundary baseline
+- Purpose: Define AgencyOffer commercial posture without owning price (P13-R4 RESOLVED).
+- Architect lock: Agency must **not** override Price. Commercial terms = Notes + SalesRules metadata. No Money.
+- Delivered: `AgencyOfferSalesRules` (RequiresManualConfirmation · ExclusiveListing) · `Deactivate()` lifecycle refinement · persistence columns without Price/Discount/Commission/Currency.
+- Forbidden: Price override · Discount engine · Commission calculation · Currency · Quote · Booking.
+- Note: original plan T004 (Tour offering linkage) is **not** this task. Do not invent that work until architect re-issues it.
 
 ### TC-P13-T005 — Agency commercial rules / rate-override posture
-- Purpose: P12 leftover — Agency override of rates (P13-R4).
-- Pricing stays owner of Price/Quote/Money. Marketplace may only reference or request commercial posture as locked.
+- P13-R4 was locked and delivered in T004. Do not invent a replacement T005 until Auto-Execute.
 - Forbidden: second price SoR · FX conversion · Booking Amount.
 
 ### TC-P13-T006 — Capacity / availability policies (commercial, not reservation)
@@ -122,7 +124,7 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 | **P13-R1** | Marketplace ownership (new module vs Party-owned vs Tour-owned) | **RESOLVED** | Independent Agency Marketplace module owns Agency commercial relationship · schema `agency_marketplace` · Party remains identity SoR · logical PartyId Guid only · no Party/Tour/Pricing merge · no Offer in T001 |
 | **P13-R2** | Marketplace profile vs Party Agency identity | **RESOLVED** | Party = identity SoR. Agency Marketplace owns AgencyProfile (0..1 per Agency PartyId). Logical PartyId only. No Party schema change. |
 | **P13-R3** | Offer aggregate vs TourProduct remaining SoR | **RESOLVED** | AgencyOffer owns the sales relationship. TourProduct remains catalog SoR. Logical TourProduct Guid. No Tour FK / Price / Booking. |
-| **P13-R4** | Agency override of rates | **UNRESOLVED** | Deferred from P12. Pricing owns Price/Quote; `TourMarketPriceType.Agency` already exists. Do not invent a twin price SoR. |
+| **P13-R4** | Agency override of rates | **RESOLVED** | Agency must NOT override Price. Commercial terms = Notes + SalesRules metadata. No Money / Discount / Commission / Currency / Quote. |
 | **P13-R5** | Capacity/availability policy owner | **UNRESOLVED** | TourDeparture owns Min/Max Pax (P11-R3). Booking owns consumption later. Marketplace policy vs reuse — lock required. |
 | **P13-R6** | Agency Panel ownership for Marketplace ops | **UNRESOLVED** | P03 Panel is presentation-only. P12 set Admin Pricing inside Pricing module, not Tour Admin. |
 | **P13-R7** | Publishing / moderation of agency offers | **UNRESOLVED** | Roadmap says «در صورت نیاز». DEFER is valid. |
