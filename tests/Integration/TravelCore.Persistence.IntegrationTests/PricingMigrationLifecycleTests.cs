@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Pricing schema + Price/Quote tables (TC-P12-T001 / T003 / T004).
+/// Real-PostgreSQL Pricing schema + Price/Quote + occupancy rule tables (TC-P12-T001 / T003 / T004 / T005).
 /// </summary>
 [Collection(nameof(PricingMigrationLifecycleCollection))]
 public sealed class PricingMigrationLifecycleTests
@@ -27,10 +27,19 @@ public sealed class PricingMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(3, expectedMigrations.Length);
-            Assert.EndsWith("_InitialPricingScaffolding", expectedMigrations[0], StringComparison.Ordinal);
-            Assert.EndsWith("_AddPriceAndPriceComponents", expectedMigrations[1], StringComparison.Ordinal);
-            Assert.EndsWith("_AddQuoteAndPriceSnapshot", expectedMigrations[2], StringComparison.Ordinal);
+            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_InitialPricingScaffolding", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddPriceAndPriceComponents", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddQuoteAndPriceSnapshot", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddPriceOccupancyRules", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -63,6 +72,12 @@ public sealed class PricingMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'pricing'
                   AND table_name = 'price_components';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'pricing'
+                  AND table_name = 'price_occupancy_rules';
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

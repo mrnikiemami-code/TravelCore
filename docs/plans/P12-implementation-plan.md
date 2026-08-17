@@ -4,8 +4,8 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | IN PROGRESS — P12-R1/R2/R3/R4 RESOLVED; T001–T004 delivered |
-| Baseline | `6f7ea12` (`docs: P11 acceptance gate evidence [TC-P11-GATE]` — **TC-P11-GATE** ACCEPTED; P11 COMPLETE) |
+| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5 RESOLVED; T001–T005 delivered |
+| Baseline | `81a3f26` (T004 ACCEPTED baseline for T005) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
@@ -84,7 +84,8 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 - **P12-R4 RESOLVED:** Quote owned by Pricing; Quote is calculation snapshot; No Booking ownership; No Payment; No Customer/Passenger; No checkout flow.
 
 ### TC-P12-T005 — Passenger / occupancy / age commercial rules
-- Pricing-side category rules — distinct from P11 passenger *acceptance* rules.
+- **Delivered:** Pricing-owned structured occupancy/passenger pricing rules attached to `Price` (`PriceOccupancyRule`) with explicit dimensions: `TourMarketPriceType` + `PassengerCategory` + `OccupancyCategory` + `Money`; baseline categories include Adult / ChildWithBed / ChildWithoutBed and SingleRoom (plus DoubleRoom/TwinRoom support); persistence in `pricing.price_occupancy_rules`; no Booking passenger entity; no reservation calc; no inventory.
+- **P12-R5 RESOLVED:** Pricing occupancy and passenger category baseline.
 
 ### TC-P12-T006 — (was Quote baseline — moved)
 - Original plan slot for Quote; **architect moved Quote baseline to T004**. Slot retained for future sequencing (e.g. departure pricing attachment / admin link) if still needed after T005+.
@@ -109,7 +110,7 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 | **P12-R2** | Mixed-currency / conversion policy SoT | **RESOLVED** | Reuse platform Money/Currency (ADR 0003). One authoritative currency per price value; no twin SoR duplicates (e.g. USD+IRR for same amount). Currency required; amount rules follow Money ADR. FX conversion / exchange-rate provider / Quote conversion / Payment currency / FX tables = deferred (not T002). Never silent single-currency wipe. |
 | **P12-R3** | Pricing attaches to Departure vs Product vs both | **RESOLVED** | Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now). |
 | **P12-R4** | Quote model (required in P12? expiration? snapshot fields) | **RESOLVED** | Quote owned by Pricing · Quote is calculation snapshot · No Booking ownership · No Payment · No Customer/Passenger · No checkout flow. Price = defined system price; Quote = calculated price for a specific request (snapshot + expiration). Ownership: Pricing → Quote → PriceSnapshot + Expiration. |
-| **P12-R5** | Exchange rate source / authority | **UNRESOLVED** | Defer invention — do not invent in T004 |
+| **P12-R5** | Pricing occupancy and passenger category baseline | **RESOLVED** | **Pricing owns occupancy categories; Support tour market price types; No Booking passenger entity; No reservation calculation; No inventory.** Previous FX-authority phrasing ("Exchange rate source / authority") is deferred to a future pricing/FX decision and is not solved in T005. |
 | Agency override of rates | Marketplace (P13) vs P12 | **UNRESOLVED** | Prefer DEFER to P13 |
 
 ---
@@ -141,5 +142,5 @@ After `TC-P12-GATE` ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marke
 - [x] Architect lock **P12-R2** (platform Money reuse · one currency per value · no twin SoR · no FX in T002)
 - [x] Architect lock **P12-R3** (buyable Price → TourDeparture via polymorphic `TargetType`+`TargetId`; Pricing generic; no FK; product-level DEFER; no Quote/Booking)
 - [x] Architect lock **P12-R4** (Quote owned by Pricing; calculation snapshot + expiration; no Booking/Payment/Customer/Passenger/checkout)
-- [ ] Architect ACCEPT remaining R5 as needed for later tasks
+- [x] Architect lock **P12-R5** (Pricing occupancy and passenger category baseline; no Booking passenger entity/reservation/inventory)
 - [ ] Architect ACCEPT + Auto-Execute subsequent product tasks

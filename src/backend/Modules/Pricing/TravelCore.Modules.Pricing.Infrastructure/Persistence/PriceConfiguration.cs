@@ -30,6 +30,7 @@ internal sealed class PriceConfiguration : IEntityTypeConfiguration<Price>
 
         builder.Ignore(x => x.Currency);
         builder.Ignore(x => x.ComponentsOrdered);
+        builder.Ignore(x => x.OccupancyRulesOrdered);
 
         builder.HasMany(x => x.Components)
             .WithOne()
@@ -38,6 +39,16 @@ internal sealed class PriceConfiguration : IEntityTypeConfiguration<Price>
 
         builder.Navigation(x => x.Components)
             .HasField("_components")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasMany(x => x.OccupancyRules)
+            .WithOne()
+            .HasForeignKey(x => x.PriceId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.OccupancyRules)
+            .HasField("_occupancyRules")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
 

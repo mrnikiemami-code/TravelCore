@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T003 PriceComponent) |
+| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T005 occupancy/passenger baseline) |
 | Phase Status | P00–P11 COMPLETE · P12-R1/R2/R3 RESOLVED · `TC-P12-T003` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `6f7ea12` (`TC-P11-GATE`) · P11 COMPLETE |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of T004 → next P12 product task |
+| Current Next Task | Architect review of T005 occupancy/passenger baseline |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -437,7 +437,7 @@ TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Fli
 
 ## P12 — Pricing
 
-**Status:** IN PROGRESS — **P12-R1/R2/R3/R4 RESOLVED** · `TC-P12-T004` Quote baseline delivered
+**Status:** IN PROGRESS — **P12-R1/R2/R3/R4/R5 RESOLVED** · `TC-P12-T005` occupancy/passenger baseline delivered
 
 Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passenger category · Occupancy · Age policy · Exchange rates · Conversion policy · Quote · Quote expiration در صورت نیاز · Price snapshot.
 
@@ -450,6 +450,8 @@ Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passe
 **P12-R3:** Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now).
 
 **P12-R4:** Quote owned by Pricing · Quote is calculation snapshot · No Booking ownership · No Payment · No Customer/Passenger · No checkout flow.
+
+**P12-R5:** **Pricing owns occupancy categories; Support tour market price types; No Booking passenger entity; No reservation calculation; No inventory.** Previous R5 wording around FX authority is deferred/renamed and remains outside T005 scope (no FX solution introduced).
 
 مثال طبیعی: `1290 USD` + مؤلفهٔ ارز محلی.
 
@@ -709,7 +711,7 @@ P26 = Advanced SEO.
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
-| P12 | Pricing | **IN PROGRESS** (R1/R2/R3 RESOLVED · T003) |
+| P12 | Pricing | **IN PROGRESS** (R1/R2/R3/R4/R5 RESOLVED · T005) |
 | P13 | Agency Marketplace | PLANNED |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |

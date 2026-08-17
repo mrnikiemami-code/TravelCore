@@ -10,6 +10,7 @@ namespace TravelCore.ArchitectureTests;
 /// TC-P12-T003 / P12-R3: Price + PriceComponent with polymorphic TargetType+TargetId (TourDeparture initial);
 /// no Tour.Domain/Infrastructure refs; no Booking/Payment/FX.
 /// TC-P12-T004 / P12-R4: Quote owned by Pricing (snapshot + expiration); no Booking/Payment/Customer/Passenger.
+/// TC-P12-T005 / P12-R5: Occupancy/passenger category pricing baseline in Pricing model; no Booking passenger entity.
 /// </summary>
 public sealed class PricingBoundaryGuardrailTests
 {
@@ -202,6 +203,31 @@ public sealed class PricingBoundaryGuardrailTests
         Assert.Contains("Base", kindText, StringComparison.Ordinal);
         Assert.Contains("Fee", kindText, StringComparison.Ordinal);
         Assert.Contains("Tax", kindText, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void PricingDomain_Exposes_Occupancy_And_Passenger_Pricing_Rules()
+    {
+        var domainRoot = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Domain");
+
+        Assert.True(File.Exists(Path.Combine(domainRoot, "PriceOccupancyRule.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "PriceOccupancyRuleDefinition.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "PassengerCategory.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "OccupancyCategory.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "TourMarketPriceType.cs")));
+
+        var priceText = File.ReadAllText(Path.Combine(domainRoot, "Price.cs"));
+        Assert.Contains("OccupancyRules", priceText, StringComparison.Ordinal);
+        Assert.Contains("AddOccupancyRule", priceText, StringComparison.Ordinal);
+        Assert.Contains("PassengerCategory", priceText, StringComparison.Ordinal);
+        Assert.Contains("OccupancyCategory", priceText, StringComparison.Ordinal);
+        Assert.Contains("TourMarketPriceType", priceText, StringComparison.Ordinal);
     }
 
     [Fact]

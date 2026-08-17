@@ -5,7 +5,7 @@ namespace TravelCore.Modules.Pricing.Infrastructure;
 
 /// <summary>
 /// Pricing-owned DbContext. Owns PostgreSQL schema <c>pricing</c>.
-/// Maps Price / PriceComponent and Quote / QuoteSnapshotComponent (no Tour/Booking/Payment FK).
+/// Maps Price / PriceComponent / PriceOccupancyRule and Quote / QuoteSnapshotComponent (no Tour/Booking/Payment FK).
 /// </summary>
 public sealed class PricingDbContext : DbContext
 {
@@ -19,6 +19,7 @@ public sealed class PricingDbContext : DbContext
     public DbSet<Price> Prices => Set<Price>();
 
     public DbSet<PriceComponent> PriceComponents => Set<PriceComponent>();
+    public DbSet<PriceOccupancyRule> PriceOccupancyRules => Set<PriceOccupancyRule>();
 
     public DbSet<Quote> Quotes => Set<Quote>();
 

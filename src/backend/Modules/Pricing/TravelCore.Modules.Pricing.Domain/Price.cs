@@ -12,6 +12,7 @@ namespace TravelCore.Modules.Pricing.Domain;
 public sealed class Price
 {
     private readonly List<PriceComponent> _components = [];
+    private readonly List<PriceOccupancyRule> _occupancyRules = [];
 
     private Price()
     {
@@ -46,9 +47,12 @@ public sealed class Price
     public Guid TargetId { get; private set; }
 
     public IReadOnlyCollection<PriceComponent> Components => _components;
+    public IReadOnlyCollection<PriceOccupancyRule> OccupancyRules => _occupancyRules;
 
     public IReadOnlyList<PriceComponent> ComponentsOrdered =>
         _components.OrderBy(x => x.SortOrder).ThenBy(x => x.Id.Value).ToList();
+    public IReadOnlyList<PriceOccupancyRule> OccupancyRulesOrdered =>
+        _occupancyRules.OrderBy(x => x.SortOrder).ThenBy(x => x.Id.Value).ToList();
 
     /// <summary>Authoritative currency shared by every component on this Price.</summary>
     public CurrencyCode Currency =>
@@ -63,7 +67,8 @@ public sealed class Price
     public static Price Create(
         string targetType,
         Guid targetId,
-        IReadOnlyList<PriceComponentDefinition> components)
+        IReadOnlyList<PriceComponentDefinition> components,
+        IReadOnlyList<PriceOccupancyRuleDefinition>? occupancyRules = null)
     {
         ArgumentNullException.ThrowIfNull(components);
 
@@ -86,6 +91,8 @@ public sealed class Price
         }
 
         EnsureComponentDefinitionsValid(components);
+        var rules = occupancyRules ?? [];
+        EnsureOccupancyRuleDefinitionsValid(rules, components[0].Money.Currency);
 
         var price = new Price(PriceId.New(), parsedType, targetId);
         foreach (var definition in components)
@@ -98,6 +105,18 @@ public sealed class Price
                     definition.SortOrder,
                     definition.Code,
                     definition.Label));
+        }
+
+        foreach (var rule in rules)
+        {
+            price._occupancyRules.Add(
+                PriceOccupancyRule.Create(
+                    price.Id,
+                    rule.MarketPriceType,
+                    rule.PassengerCategory,
+                    rule.OccupancyCategory,
+                    rule.Money,
+                    rule.SortOrder));
         }
 
         return price;
@@ -128,6 +147,45 @@ public sealed class Price
         var component = PriceComponent.Create(Id, kind, money, sortOrder, code, label);
         _components.Add(component);
         return component;
+    }
+
+    /// <summary>
+    /// Adds one pricing rule across market type + passenger category + occupancy category.
+    /// Rule money must match the Price currency; tuple/sort uniqueness is enforced per Price.
+    /// </summary>
+    public PriceOccupancyRule AddOccupancyRule(
+        TourMarketPriceType marketPriceType,
+        PassengerCategory passengerCategory,
+        OccupancyCategory occupancyCategory,
+        MoneyValue money,
+        int sortOrder = 0)
+    {
+        ArgumentNullException.ThrowIfNull(money);
+
+        if (_components.Count == 0)
+        {
+            throw new InvalidOperationException("Price must have components before occupancy rules.");
+        }
+
+        if (!money.Currency.Equals(Currency))
+        {
+            throw new ArgumentException(
+                $"Rule currency {money.Currency.Value} does not match Price currency {Currency.Value}.",
+                nameof(money));
+        }
+
+        EnsureOccupancySortOrderAvailable(sortOrder);
+        EnsureOccupancyTupleAvailable(marketPriceType, passengerCategory, occupancyCategory);
+
+        var rule = PriceOccupancyRule.Create(
+            Id,
+            marketPriceType,
+            passengerCategory,
+            occupancyCategory,
+            money,
+            sortOrder);
+        _occupancyRules.Add(rule);
+        return rule;
     }
 
     private static void EnsureComponentDefinitionsValid(IReadOnlyList<PriceComponentDefinition> components)
@@ -172,6 +230,41 @@ public sealed class Price
         }
     }
 
+    private static void EnsureOccupancyRuleDefinitionsValid(
+        IReadOnlyList<PriceOccupancyRuleDefinition> rules,
+        CurrencyCode currency)
+    {
+        var sortOrders = new HashSet<int>();
+        var tuples = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var rule in rules)
+        {
+            ArgumentNullException.ThrowIfNull(rule.Money);
+
+            if (!rule.Money.Currency.Equals(currency))
+            {
+                throw new ArgumentException(
+                    "All occupancy rules within one Price must share the same currency as Price components.",
+                    nameof(rules));
+            }
+
+            if (!sortOrders.Add(rule.SortOrder))
+            {
+                throw new ArgumentException(
+                    $"Duplicate occupancy rule SortOrder {rule.SortOrder} within one Price.",
+                    nameof(rules));
+            }
+
+            var key = $"{(short)rule.MarketPriceType}:{(short)rule.PassengerCategory}:{(short)rule.OccupancyCategory}";
+            if (!tuples.Add(key))
+            {
+                throw new ArgumentException(
+                    "Duplicate occupancy rule tuple (MarketPriceType + PassengerCategory + OccupancyCategory).",
+                    nameof(rules));
+            }
+        }
+    }
+
     private void EnsureSortOrderAvailable(int sortOrder)
     {
         if (_components.Any(x => x.SortOrder == sortOrder))
@@ -195,6 +288,30 @@ public sealed class Price
         {
             throw new InvalidOperationException(
                 $"Code '{normalized}' already exists on this Price.");
+        }
+    }
+
+    private void EnsureOccupancySortOrderAvailable(int sortOrder)
+    {
+        if (_occupancyRules.Any(x => x.SortOrder == sortOrder))
+        {
+            throw new InvalidOperationException(
+                $"Occupancy rule SortOrder {sortOrder} already exists on this Price.");
+        }
+    }
+
+    private void EnsureOccupancyTupleAvailable(
+        TourMarketPriceType marketPriceType,
+        PassengerCategory passengerCategory,
+        OccupancyCategory occupancyCategory)
+    {
+        if (_occupancyRules.Any(x =>
+                x.MarketPriceType == marketPriceType
+                && x.PassengerCategory == passengerCategory
+                && x.OccupancyCategory == occupancyCategory))
+        {
+            throw new InvalidOperationException(
+                "Occupancy rule tuple already exists on this Price.");
         }
     }
 }

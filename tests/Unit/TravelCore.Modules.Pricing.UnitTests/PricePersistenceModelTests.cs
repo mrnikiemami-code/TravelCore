@@ -26,13 +26,17 @@ public sealed class PricePersistenceModelTests
         var model = db.Model;
         var priceType = model.FindEntityType(typeof(Price));
         var componentType = model.FindEntityType(typeof(PriceComponent));
+        var occupancyRuleType = model.FindEntityType(typeof(PriceOccupancyRule));
         Assert.NotNull(priceType);
         Assert.NotNull(componentType);
+        Assert.NotNull(occupancyRuleType);
 
         Assert.Equal("prices", priceType.GetTableName());
         Assert.Equal(PricingDbContext.SchemaName, priceType.GetSchema());
         Assert.Equal("price_components", componentType.GetTableName());
         Assert.Equal(PricingDbContext.SchemaName, componentType.GetSchema());
+        Assert.Equal("price_occupancy_rules", occupancyRuleType.GetTableName());
+        Assert.Equal(PricingDbContext.SchemaName, occupancyRuleType.GetSchema());
 
         var targetType = priceType.FindProperty(nameof(Price.TargetType));
         var targetId = priceType.FindProperty(nameof(Price.TargetId));
@@ -58,6 +62,18 @@ public sealed class PricePersistenceModelTests
         // FK must stay inside pricing schema — never tour.
         var fk = componentType.GetForeignKeys().Single(f => f.PrincipalEntityType.ClrType == typeof(Price));
         Assert.Equal(PricingDbContext.SchemaName, fk.PrincipalEntityType.GetSchema());
+        var occupancyFk = occupancyRuleType.GetForeignKeys().Single(f => f.PrincipalEntityType.ClrType == typeof(Price));
+        Assert.Equal(PricingDbContext.SchemaName, occupancyFk.PrincipalEntityType.GetSchema());
+
+        var marketPriceType = occupancyRuleType.FindProperty(nameof(PriceOccupancyRule.MarketPriceType));
+        var passengerCategory = occupancyRuleType.FindProperty(nameof(PriceOccupancyRule.PassengerCategory));
+        var occupancyCategory = occupancyRuleType.FindProperty(nameof(PriceOccupancyRule.OccupancyCategory));
+        Assert.NotNull(marketPriceType);
+        Assert.NotNull(passengerCategory);
+        Assert.NotNull(occupancyCategory);
+        Assert.Equal("market_price_type", marketPriceType.GetColumnName());
+        Assert.Equal("passenger_category", passengerCategory.GetColumnName());
+        Assert.Equal("occupancy_category", occupancyCategory.GetColumnName());
 
         Assert.DoesNotContain(
             model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()),

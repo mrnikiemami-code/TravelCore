@@ -184,4 +184,82 @@ public sealed class PriceAggregateTests
         Assert.Equal("TourDeparture", PriceTargetType.Parse("TourDeparture").Value);
         Assert.Same(PriceTargetType.TourDeparture, PriceTargetType.Parse("TourDeparture"));
     }
+
+    [Fact]
+    public void Create_Accepts_Occupancy_Rules_For_Adult_And_Child_Categories()
+    {
+        var price = Price.Create(
+            PriceTargetType.TourDepartureValue,
+            NonEmptyTargetId,
+            [new PriceComponentDefinition(PriceComponentKind.Base, PricingMoney.Create(100m, "USD"))],
+            [
+                new PriceOccupancyRuleDefinition(
+                    TourMarketPriceType.Public,
+                    PassengerCategory.Adult,
+                    OccupancyCategory.SingleRoom,
+                    PricingMoney.Create(120m, "USD"),
+                    SortOrder: 0),
+                new PriceOccupancyRuleDefinition(
+                    TourMarketPriceType.Public,
+                    PassengerCategory.ChildWithBed,
+                    OccupancyCategory.DoubleRoom,
+                    PricingMoney.Create(90m, "USD"),
+                    SortOrder: 1),
+                new PriceOccupancyRuleDefinition(
+                    TourMarketPriceType.Public,
+                    PassengerCategory.ChildWithoutBed,
+                    OccupancyCategory.DoubleRoom,
+                    PricingMoney.Create(60m, "USD"),
+                    SortOrder: 2)
+            ]);
+
+        Assert.Equal(3, price.OccupancyRules.Count);
+        Assert.Contains(price.OccupancyRules, r => r.PassengerCategory == PassengerCategory.Adult);
+        Assert.Contains(price.OccupancyRules, r => r.PassengerCategory == PassengerCategory.ChildWithBed);
+        Assert.Contains(price.OccupancyRules, r => r.PassengerCategory == PassengerCategory.ChildWithoutBed);
+        Assert.Contains(price.OccupancyRules, r => r.OccupancyCategory == OccupancyCategory.SingleRoom);
+    }
+
+    [Fact]
+    public void Create_Rejects_Occupancy_Rule_When_Currency_Differs_From_Price()
+    {
+        var ex = Assert.Throws<ArgumentException>(() =>
+            Price.Create(
+                PriceTargetType.TourDepartureValue,
+                NonEmptyTargetId,
+                [new PriceComponentDefinition(PriceComponentKind.Base, PricingMoney.Create(100m, "USD"))],
+                [
+                    new PriceOccupancyRuleDefinition(
+                        TourMarketPriceType.Public,
+                        PassengerCategory.Adult,
+                        OccupancyCategory.SingleRoom,
+                        PricingMoney.Create(1000000m, "IRR"))
+                ]));
+
+        Assert.Equal("rules", ex.ParamName);
+    }
+
+    [Fact]
+    public void AddOccupancyRule_Rejects_Duplicate_MarketPassengerOccupancy_Tuple()
+    {
+        var price = Price.Create(
+            PriceTargetType.TourDepartureValue,
+            NonEmptyTargetId,
+            [new PriceComponentDefinition(PriceComponentKind.Base, PricingMoney.Create(10m, "USD"))]);
+
+        price.AddOccupancyRule(
+            TourMarketPriceType.Public,
+            PassengerCategory.Adult,
+            OccupancyCategory.SingleRoom,
+            PricingMoney.Create(12m, "USD"),
+            sortOrder: 1);
+
+        Assert.Throws<InvalidOperationException>(() =>
+            price.AddOccupancyRule(
+                TourMarketPriceType.Public,
+                PassengerCategory.Adult,
+                OccupancyCategory.SingleRoom,
+                PricingMoney.Create(13m, "USD"),
+                sortOrder: 2));
+    }
 }
