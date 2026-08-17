@@ -10,6 +10,7 @@ namespace TravelCore.Modules.Tour.Domain;
 /// Lifecycle: <see cref="TourDepartureStatus"/> (P11-R4 · TC-P11-T004) — ≠ CatalogStatus / SEO / Booking.
 /// Transport: descriptive <see cref="TourDepartureTransportSegment"/> (P11-R5 · TC-P11-T005) — ≠ Flight domain.
 /// Accommodation: <see cref="TourDepartureAccommodationOption"/> (P11-R6 · TC-P11-T006) — ≠ Place ownership / HotelBooking.
+/// Passenger rules: <see cref="TourDeparturePassengerRule"/> (P11-R7 · TC-P11-T007) — ≠ Passenger / Booking.
 /// Pricing / booking later.
 /// </summary>
 public sealed class TourDeparture
@@ -65,6 +66,9 @@ public sealed class TourDeparture
 
     /// <summary>Descriptive accommodation options (P11-R6). Logical Place refs only.</summary>
     public IReadOnlyCollection<TourDepartureAccommodationOption> AccommodationOptions => _accommodationOptions;
+
+    /// <summary>Optional passenger acceptance rules (P11-R7). Not actual travellers.</summary>
+    public TourDeparturePassengerRule? PassengerRule { get; private set; }
 
     public Instant CreatedAt { get; private set; }
 
@@ -162,6 +166,22 @@ public sealed class TourDeparture
         return option;
     }
 
+    /// <summary>Attaches or replaces passenger acceptance rules (not travellers/reservations).</summary>
+    public void SetPassengerRule(
+        int minimumAdults,
+        bool childAllowed,
+        bool infantAllowed,
+        int maximumPassengers,
+        Instant now)
+    {
+        PassengerRule = TourDeparturePassengerRule.Create(
+            minimumAdults,
+            childAllowed,
+            infantAllowed,
+            maximumPassengers);
+        UpdatedAt = now;
+    }
+
     private static bool IsTransitionAllowed(TourDepartureStatus from, TourDepartureStatus to) =>
         (from, to) switch
         {
@@ -182,14 +202,16 @@ public sealed class TourDeparture
         TourDepartureSchedule? schedule = null,
         TourDepartureCapacity? capacity = null,
         IEnumerable<TourDepartureTransportSegment>? transportSegments = null,
-        IEnumerable<TourDepartureAccommodationOption>? accommodationOptions = null)
+        IEnumerable<TourDepartureAccommodationOption>? accommodationOptions = null,
+        TourDeparturePassengerRule? passengerRule = null)
     {
         var departure = new TourDeparture(id, tourProductId, createdAt)
         {
             Status = status,
             UpdatedAt = updatedAt,
             Schedule = schedule,
-            Capacity = capacity
+            Capacity = capacity,
+            PassengerRule = passengerRule
         };
         if (transportSegments is not null)
         {

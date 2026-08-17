@@ -86,6 +86,32 @@ internal sealed class TourDepartureConfiguration : IEntityTypeConfiguration<Tour
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
 
+        builder.OwnsOne(x => x.PassengerRule, rule =>
+        {
+            rule.ToTable("tour_departure_passenger_rules");
+
+            rule.WithOwner()
+                .HasForeignKey("tour_departure_id");
+
+            rule.Property(r => r.MinimumAdults)
+                .HasColumnName("minimum_adults")
+                .IsRequired();
+
+            rule.Property(r => r.ChildAllowed)
+                .HasColumnName("child_allowed")
+                .IsRequired();
+
+            rule.Property(r => r.InfantAllowed)
+                .HasColumnName("infant_allowed")
+                .IsRequired();
+
+            rule.Property(r => r.MaximumPassengers)
+                .HasColumnName("maximum_passengers")
+                .IsRequired();
+        });
+
+        builder.Navigation(x => x.PassengerRule).IsRequired(false);
+
         builder.HasOne<TourProduct>()
             .WithMany()
             .HasForeignKey(x => x.TourProductId)

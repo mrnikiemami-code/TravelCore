@@ -29,7 +29,7 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(20, expectedMigrations.Length);
+            Assert.Equal(21, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
@@ -50,6 +50,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.EndsWith("_AddTourDepartureStatus", expectedMigrations[17], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourDepartureTransportSegments", expectedMigrations[18], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourDepartureAccommodationOptions", expectedMigrations[19], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourDeparturePassengerRules", expectedMigrations[20], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -65,7 +66,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'tour';
                 """, ct));
-            Assert.Equal(21, await ScalarIntAsync(conn, """
+            Assert.Equal(22, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'tour'
@@ -90,6 +91,7 @@ public sealed class TourMigrationLifecycleTests
                     'tour_departures',
                     'tour_departure_transport_segments',
                     'tour_departure_accommodation_options',
+                    'tour_departure_passenger_rules',
                     '__EFMigrationsHistory');
                 """, ct));
             // No Package specialty / Flight entity / TourHotelOption product tables.
@@ -238,6 +240,7 @@ public sealed class TourMigrationLifecycleTests
             departure.AddTransportSegment(1, TourDepartureTransportMode.Air, "Tehran", "Istanbul", now);
             var departureHotelPlace = Guid.Parse("01900000-0000-7000-8000-000000000901");
             departure.AddAccommodationOption(departureHotelPlace, 5, TourDepartureBoardType.Breakfast, now);
+            departure.SetPassengerRule(1, childAllowed: true, infantAllowed: false, maximumPassengers: 4, now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
             db.ExperienceSpecializations.Add(experienceSpec);
@@ -320,6 +323,11 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(Guid.Parse("01900000-0000-7000-8000-000000000901"), loadedDeparture.AccommodationOptions.Single().PlaceId);
             Assert.Equal(5, loadedDeparture.AccommodationOptions.Single().Nights);
             Assert.Equal(TourDepartureBoardType.Breakfast, loadedDeparture.AccommodationOptions.Single().BoardType);
+            Assert.NotNull(loadedDeparture.PassengerRule);
+            Assert.Equal(1, loadedDeparture.PassengerRule!.MinimumAdults);
+            Assert.True(loadedDeparture.PassengerRule.ChildAllowed);
+            Assert.False(loadedDeparture.PassengerRule.InfantAllowed);
+            Assert.Equal(4, loadedDeparture.PassengerRule.MaximumPassengers);
         }
     }
 
