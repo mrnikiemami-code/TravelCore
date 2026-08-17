@@ -172,6 +172,27 @@ public sealed class TripPlannerBoundaryGuardrailTests
     }
 
     [Fact]
+    public void TripPlanner_T006_Keeps_Agency_Routing_Deferred_Without_Assignment_Model()
+    {
+        Assert.True(TripPlannerAgencyRoutingBoundary.AgencyRoutingDecisionResolved);
+        Assert.False(TripPlannerAgencyRoutingBoundary.AgencyRoutingProductImplemented);
+        Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);
+        Assert.Equal(TripPlannerAgencyRoutingBoundary.AgencyRoutingDeferred, "P18 Agency Routing = DEFERRED");
+        Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.AgencyAssignment"));
+        Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.LeadAssignment"));
+        Assert.Null(typeof(Lead).GetProperty("AssignedAgencyId"));
+        Assert.Null(typeof(Lead).GetProperty("PrimaryAgencyId"));
+
+        var infra = Projects.Single(p => p.Name == "TravelCore.Modules.TripPlanner.Infrastructure");
+        var agencyMarketplaceRef = infra.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .Any(name => name.Contains("AgencyMarketplace", StringComparison.OrdinalIgnoreCase));
+        Assert.False(agencyMarketplaceRef, "TripPlanner.Infrastructure must not reference AgencyMarketplace for routing.");
+    }
+
+    [Fact]
     public void TripPlanner_Module_Keeps_Search_And_Ai_Engines_Out()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "TripPlanner");
@@ -239,6 +260,7 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.Contains("BudgetPreference != Price", text, StringComparison.Ordinal);
         Assert.Contains("PlannerTravelerComposition != Booking Passenger", text, StringComparison.Ordinal);
         Assert.Contains("LeadStatus != CRM Pipeline Stage", text, StringComparison.Ordinal);
+        Assert.Contains("P18 Agency Routing = DEFERRED", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

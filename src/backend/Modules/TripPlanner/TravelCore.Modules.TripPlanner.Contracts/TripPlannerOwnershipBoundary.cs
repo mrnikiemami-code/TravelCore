@@ -47,6 +47,7 @@ public static class TripPlannerOwnershipBoundary
     public const bool TravelPreferencesImplemented = true;
     public const bool LeadContactSnapshotImplemented = true;
     public const bool LeadLifecycleImplemented = true;
+    public const bool AgencyRoutingDecisionResolved = true;
     public const bool AgencyRoutingImplemented = false;
     public const bool ConsentModelImplemented = false;
     public const bool NotificationProviderImplemented = false;

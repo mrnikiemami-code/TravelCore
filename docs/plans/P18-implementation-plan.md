@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P18-PLAN` |
 | Phase | P18 — Trip Planner / Lead Experience |
-| Status | PLAN ACCEPTED; **P18-R1–R5 RESOLVED**; T001–T005 delivered; **P18-R6–R8 OPEN** |
+| Status | PLAN ACCEPTED; **P18-R1–R6 RESOLVED**; T001–T006 delivered; **P18-R7–R8 OPEN** |
 | Baseline | `1826013` (`docs(tripplanner): add P18 implementation plan [TC-P18-PLAN]`) · T001 on top |
 | Authoritative sources | `docs/ROADMAP.md` § P18 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `13-reference-page-archetypes.md` · `docs/pages/00-page-archetype-registry.md` · `docs/pages/09-page-state-and-composition-rules.md` · P04 Destination/ReferenceData · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace · P14 PublicExperience · P15 Search · P16 UGC · P17 Visa · P19 Booking · P20 Payment · `15-future-architecture-transition-map.md` § V Notification |
 | Backend root | `src/backend` |
@@ -170,9 +170,10 @@ P18 اضافه می‌کند: **Trip Planner / Lead capability** — **بدون*
 - Forbidden kept: Qualified/Won/Lost/Converted · agency routing (R6) · consent/notification (R7) · public UI/API (R8).
 
 ### TC-P18-T006 — Agency routing / assignment boundary
-- Purpose: Document deferral or minimal logical routing posture (**P18-R6**).
-- Preserve: **Lead ≠ AgencyMarketplace offer** · no ranking/commission/allocation in P18 unless explicitly locked.
-- May be **docs/boundary-only** if R6 = DEFER. T006 must not manufacture routing product merely to fill numbering.
+- Purpose: Close P18-R6 by explicitly **DEFERRING** agency routing product implementation (**P18-R6 RESOLVED**).
+- Delivered: `TripPlannerAgencyRoutingBoundary`; guardrails proving no AgencyAssignment/AgencyId/routing tables; SoT records **P18 Agency Routing = DEFERRED**.
+- Preserve: **Lead != AgencyAssignment** · **TripPlanner != AgencyMarketplace** · **LeadStatus != AgencyAssignmentStatus** · **Lead Routing != Search Ranking**.
+- Forbidden kept: routing engine · agency ranking · commercial allocation · agency acceptance workflow · notification (R7) · public UI (R8).
 
 ### TC-P18-T007 — Notification / consent / privacy boundary
 - Purpose: Delivery handoff + consent/contact permission + data minimization (**P18-R7**).
@@ -205,7 +206,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 | **P18-R3** | Anonymous vs authenticated planner / contact identity | **RESOLVED** | Anonymous-first TripIntent without Account requirement. Optional `PlannerActorReference` (opaque logical id). `LeadContactSnapshot` at submission — **Lead contact != Party master identity**; **LeadContactSnapshot != Party/Identity**. Minimal `TripIntentDraftAccessToken` for anonymous draft retrieval. No Party/Identity clone, no AnonymousUser platform, no consent finalization (R7). |
 | **P18-R4** | Travel preference model | **RESOLVED** | Destination/date/travelers/interests/budget/accommodation/transport preferences. **BudgetPreference != Price/Quote**. **PlannerTravelerComposition != Booking Passenger**. Date semantics: exact · flexible range · season · undecided. Logical refs to Destination/Tour — no clone. T004 delivered. |
 | **P18-R5** | Lead lifecycle / qualification boundary | **RESOLVED** | Minimal baseline: **Submitted · Contacted · Closed · Cancelled**. Full qualification/CRM pipeline **DEFERRED**. No generic workflow engine. T005 delivered. |
-| **P18-R6** | Agency routing / assignment boundary | **OPEN** | Future lead may route to agencies — **DEFER** by default. **Lead ≠ AgencyOffer**. No ranking/commission/commercial allocation in P18 unless locked. |
+| **P18-R6** | Agency routing / assignment boundary | **RESOLVED (DEFERRED)** | **P18 Agency Routing = DEFERRED**. No routing engine, assignment persistence, agency ranking, commercial allocation, or agency acceptance workflow in P18. Future capability may orchestrate without merging SoT. T006 delivered. |
 | **P18-R7** | Notification / contact / privacy-consent boundary | **OPEN** | Notification owns delivery channels (module not built). Lead may emit semantic events/contracts for acknowledgment/internal alert. Plan consent, retention posture, access control, data minimization. No passport/document collection. |
 | **P18-R8** | PublicExperience composition and Booking/Search/CRM boundary | **OPEN** | PE composes entry points (nav · tour detail · destination · visa · dedicated route). **PublicExperience ≠ Lead SoT**. **TripPlanner ≠ Search**. Honest CTA — no fake Book Now. P14 contact affordance may connect later without PE owning persistence. |
 

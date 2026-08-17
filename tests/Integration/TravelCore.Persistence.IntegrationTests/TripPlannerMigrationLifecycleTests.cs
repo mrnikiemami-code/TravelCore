@@ -91,7 +91,10 @@ public sealed class TripPlannerMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'trip_planner'
-                  AND table_name IN ('anonymous_users', 'guest_accounts', 'planner_persons', 'customers', 'booking_passengers');
+                  AND table_name IN (
+                    'anonymous_users', 'guest_accounts', 'planner_persons', 'customers',
+                    'booking_passengers', 'agency_assignments', 'lead_assignments',
+                    'routing_rules', 'routing_queues', 'assignment_history');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

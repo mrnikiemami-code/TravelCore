@@ -198,6 +198,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P18-R3 RESOLVED:** anonymous-first TripIntent without Account requirement; optional opaque `PlannerActorReference`; `LeadContactSnapshot` at Lead submission; **Lead contact != Party master identity**; minimal `TripIntentDraftAccessToken` for anonymous draft retrieval; no Identity/Party/Customer clone; consent deferred (R7).
 - **P18-R4 RESOLVED:** structured `TravelPreferences` on TripIntent with submission-time `TravelPreferenceSnapshot`; **BudgetPreference != Price/Quote**; **PlannerTravelerComposition != BookingPassenger**; logical destination refs only; no Search facet / Booking passenger clone.
 - **P18-R5 RESOLVED:** minimal Lead lifecycle **Submitted · Contacted · Closed · Cancelled** via `LeadLifecycleBoundary`; **LeadStatus != CRM Pipeline Stage**; full qualification **DEFERRED**; no agency routing/consent/public UI.
+- **P18-R6 RESOLVED (DEFERRED):** **P18 Agency Routing = DEFERRED** via `TripPlannerAgencyRoutingBoundary`; no AgencyAssignment/AgencyId/routing tables; **Lead != AgencyAssignment**; **TripPlanner != AgencyMarketplace ranking/allocation authority**.
 - Invariant: **TripPlanner != Booking · TripPlanner != Payment · TripPlanner != Pricing · TripPlanner != CRM · TripPlanner != Search · TripPlanner != Notification delivery · TripPlanner != Party/Identity**.
 
 ## Host
