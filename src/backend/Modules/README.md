@@ -105,9 +105,10 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Pricing | `Pricing/TravelCore.Modules.Pricing.{Domain,Contracts,Infrastructure}` | `pricing` |
 
-- **Pricing:** scaffolding + money baseline (`TC-P12-T001`/`T002`) — schema `pricing`; platform `TravelCore.Money` binding; EF `MoneyOwnedMapping`; no Rate/Quote/PriceComponent aggregates yet (T003+).
+- **Pricing:** scaffolding + money baseline + Price/PriceComponent (`TC-P12-T001`/`T002`/`T003`) — schema `pricing`; platform `TravelCore.Money`; polymorphic `TargetType`+`TargetId` (initial TourDeparture); structured Base/Fee/Tax; no Quote/Booking/Admin API yet (T004+).
 - **P12-R1 RESOLVED:** independent Pricing module; Tour owns tour facts; Pricing may logically reference TourDeparture identity (Guid) only — no EF FK / no Tour table ownership / no shared DbContext.
 - **P12-R2 RESOLVED:** one authoritative currency per price value; reuse ADR 0003 Money; no twin multi-currency SoR; FX deferred.
+- **P12-R3 RESOLVED:** Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now).
 - Invariant: **Price ≠ Quote ≠ Payment / Booking Amount**; no silent single-currency wipe.
 
 ## Host

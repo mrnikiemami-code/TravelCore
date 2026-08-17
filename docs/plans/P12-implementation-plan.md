@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | IN PROGRESS — P12-R1/R2 RESOLVED; T001–T002 delivered |
+| Status | IN PROGRESS — P12-R1/R2/R3 RESOLVED; T001–T003 delivered |
 | Baseline | `6f7ea12` (`docs: P11 acceptance gate evidence [TC-P11-GATE]` — **TC-P11-GATE** ACCEPTED; P11 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
@@ -71,11 +71,12 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 - Forbidden: Booking/Payment types · price calculation · Quote · FX · Checkout.
 
 ### TC-P12-T002 — Money / Currency baseline binding
-- **Delivered:** Pricing reuses platform `TravelCore.Money` (`Money` + `CurrencyCode`); `PricingMoney` / `PricingCurrency` factories; EF `MoneyOwnedMapping` (Amount + CurrencyCode, `numeric(24,8)`); unit + architecture guardrails.
+- **Delivered / ACCEPTED:** `6c1b4ce` — Pricing reuses platform `TravelCore.Money` (`Money` + `CurrencyCode`); `PricingMoney` / `PricingCurrency` factories; EF `MoneyOwnedMapping` (Amount + CurrencyCode, `numeric(24,8)`); unit + architecture guardrails.
 - **P12-R2:** one authoritative currency per price value; no twin multi-currency SoR; no FX/Quote/Payment in this task.
 
 ### TC-P12-T003 — PriceComponent model
-- Structured components (base / fees / taxes as locked) — not opaque blob.
+- **Delivered:** `Price` aggregate + structured `PriceComponent` (Base / Fee / Tax) with polymorphic logical `TargetType` + `TargetId` (initial: `TourDeparture`); same-currency-within-Price; ≥1 Base; schema `pricing` tables + migration; no Tour FK / no Quote / no Booking / no Admin API.
+- **P12-R3:** buyable Price targets TourDeparture via polymorphic logical reference; Pricing stays generic (no TourDeparture CLR types); product-level pricing DEFER.
 
 ### TC-P12-T004 — Departure pricing attachment
 - Link pricing rules/components to TourDeparture per **P12-R3** (product-level pricing DEFER unless locked).
@@ -104,7 +105,7 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 |----|-------|--------|-------|
 | **P12-R1** | Pricing ownership (new module vs Tour-owned schema) | **RESOLVED** | Independent Pricing module owns schema `pricing`; Tour owns tour facts; Pricing may only logically reference TourDeparture identity (`Guid`) — no EF FK / no Tour table ownership / no shared DbContext |
 | **P12-R2** | Mixed-currency / conversion policy SoT | **RESOLVED** | Reuse platform Money/Currency (ADR 0003). One authoritative currency per price value; no twin SoR duplicates (e.g. USD+IRR for same amount). Currency required; amount rules follow Money ADR. FX conversion / exchange-rate provider / Quote conversion / Payment currency / FX tables = deferred (not T002). Never silent single-currency wipe. |
-| **P12-R3** | Pricing attaches to Departure vs Product vs both | **UNRESOLVED** | Architect P11 Gate narrative focused Departure |
+| **P12-R3** | Pricing attaches to Departure vs Product vs both | **RESOLVED** | Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now). |
 | **P12-R4** | Quote model (required in P12? expiration? snapshot fields) | **UNRESOLVED** | Price ≠ Quote ≠ Booking Amount |
 | **P12-R5** | Exchange rate source / authority | **UNRESOLVED** | Defer invention |
 | Agency override of rates | Marketplace (P13) vs P12 | **UNRESOLVED** | Prefer DEFER to P13 |
@@ -136,5 +137,6 @@ After `TC-P12-GATE` ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marke
 - [x] Baseline = P11 Gate ACCEPT commit
 - [x] Architect lock **P12-R1** (independent Pricing module) · first product task `TC-P12-T001` executable
 - [x] Architect lock **P12-R2** (platform Money reuse · one currency per value · no twin SoR · no FX in T002)
-- [ ] Architect ACCEPT remaining R3–R5 as needed for later tasks
+- [x] Architect lock **P12-R3** (buyable Price → TourDeparture via polymorphic `TargetType`+`TargetId`; Pricing generic; no FK; product-level DEFER; no Quote/Booking)
+- [ ] Architect ACCEPT remaining R4–R5 as needed for later tasks
 - [ ] Architect ACCEPT + Auto-Execute subsequent product tasks

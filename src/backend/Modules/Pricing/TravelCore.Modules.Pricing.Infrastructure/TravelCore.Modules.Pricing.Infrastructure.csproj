@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Pricing.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Pricing.Infrastructure</AssemblyName>
-    <Description>Pricing module infrastructure: schema pricing + Money owned mapping (TC-P12-T002).</Description>
+    <Description>Pricing module infrastructure: schema pricing + Price/PriceComponent persistence (TC-P12-T003).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />
+    <InternalsVisibleTo Include="TravelCore.Modules.Pricing.UnitTests" />
     <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
   </ItemGroup>
 

@@ -10,7 +10,7 @@
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <RootNamespace>TravelCore.Modules.Pricing.UnitTests</RootNamespace>
     <AssemblyName>TravelCore.Modules.Pricing.UnitTests</AssemblyName>
-    <Description>Pricing domain unit tests (TC-P12-T002 money/currency baseline).</Description>
+    <Description>Pricing domain unit tests (TC-P12-T003 Price / PriceComponent).</Description>
   </PropertyGroup>
 
   <ItemGroup>

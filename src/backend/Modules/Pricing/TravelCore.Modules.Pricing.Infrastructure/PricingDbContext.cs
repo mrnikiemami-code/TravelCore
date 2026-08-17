@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.Pricing.Domain;
 
 namespace TravelCore.Modules.Pricing.Infrastructure;
 
 /// <summary>
 /// Pricing-owned DbContext. Owns PostgreSQL schema <c>pricing</c>.
-/// Money persistence uses <see cref="Persistence.MoneyOwnedMapping"/> when product entities arrive (TC-P12-T002).
+/// Maps <see cref="Price"/> / <see cref="PriceComponent"/> with logical TargetType+TargetId (no Tour FK).
 /// </summary>
 public sealed class PricingDbContext : DbContext
 {
@@ -14,6 +15,10 @@ public sealed class PricingDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<Price> Prices => Set<Price>();
+
+    public DbSet<PriceComponent> PriceComponents => Set<PriceComponent>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

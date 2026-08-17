@@ -9,7 +9,7 @@ namespace TravelCore.Modules.Pricing.Infrastructure.Persistence;
 /// <summary>
 /// EF owned mapping helper for platform <see cref="MoneyValue"/> → Amount + CurrencyCode columns.
 /// P12-R2: one authoritative currency per money value; ADR 0003 default precision <c>numeric(24,8)</c>.
-/// Use from future PriceComponent / rate configurations — not an FX or Quote mapping.
+/// Used by <see cref="PriceComponentConfiguration"/> — not an FX or Quote mapping.
 /// </summary>
 public static class MoneyOwnedMapping
 {

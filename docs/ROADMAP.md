@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T002 money baseline) |
-| Phase Status | P00–P11 COMPLETE · P12-R1/R2 RESOLVED · `TC-P12-T002` delivered |
+| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T003 PriceComponent) |
+| Phase Status | P00–P11 COMPLETE · P12-R1/R2/R3 RESOLVED · `TC-P12-T003` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `6f7ea12` (`TC-P11-GATE`) · P11 COMPLETE |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of T002 → `TC-P12-T003` PriceComponent model |
+| Current Next Task | Architect review of T003 → `TC-P12-T004` Departure pricing attachment |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -437,7 +437,7 @@ TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Fli
 
 ## P12 — Pricing
 
-**Status:** IN PROGRESS — **P12-R1/R2 RESOLVED** · `TC-P12-T002` money/currency baseline delivered
+**Status:** IN PROGRESS — **P12-R1/R2/R3 RESOLVED** · `TC-P12-T003` Price + PriceComponent model delivered
 
 Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passenger category · Occupancy · Age policy · Exchange rates · Conversion policy · Quote · Quote expiration در صورت نیاز · Price snapshot.
 
@@ -446,6 +446,8 @@ Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passe
 **P12-R1:** Pricing = independent module (`pricing` schema). Tour owns tour facts; Pricing may logically reference TourDeparture `Guid` only — no Tour table ownership / no shared DbContext.
 
 **P12-R2:** Reuse platform `TravelCore.Money` (ADR 0003). One authoritative currency per price value; no twin multi-currency SoR; FX/Quote/Payment conversion deferred.
+
+**P12-R3:** Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now).
 
 مثال طبیعی: `1290 USD` + مؤلفهٔ ارز محلی.
 
@@ -705,7 +707,7 @@ P26 = Advanced SEO.
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
-| P12 | Pricing | **IN PROGRESS** (R1/R2 RESOLVED · T002) |
+| P12 | Pricing | **IN PROGRESS** (R1/R2/R3 RESOLVED · T003) |
 | P13 | Agency Marketplace | PLANNED |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |

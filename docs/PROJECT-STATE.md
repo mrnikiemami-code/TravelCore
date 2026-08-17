@@ -157,12 +157,14 @@
 | P10-GATE | **COMPLETE / ACCEPTED** (`c351bf9`) — evidence [`plans/P10-GATE-acceptance-evidence.md`](plans/P10-GATE-acceptance-evidence.md) |
 | P10-R1…R8 | **ALL RESOLVED** |
 | P11 | **COMPLETE** — GATE ACCEPTED (`6f7ea12`) · R1..R8 RESOLVED |
-| P12 | **IN PROGRESS** — Plan authored · **P12-R1/R2 RESOLVED** |
+| P12 | **IN PROGRESS** — Plan authored · **P12-R1/R2/R3 RESOLVED** |
 | P12 Plan | `TC-P12-PLAN` — [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md) |
 | P12-T001 | **COMPLETE / ACCEPTED** (`7c2e488`) — Pricing module scaffolding (`pricing` schema) |
-| P12-T002 | **AWAITING_ARCHITECT_REVIEW** — Money / Currency baseline (platform Money reuse · EF owned mapping) |
+| P12-T002 | **COMPLETE / ACCEPTED** (`6c1b4ce`) — Money / Currency baseline (platform Money reuse · EF owned mapping) |
+| P12-T003 | **AWAITING_ARCHITECT_REVIEW** — Price + PriceComponent (polymorphic TargetType+TargetId · Base/Fee/Tax) |
 | P12-R1 (Pricing ownership) | **RESOLVED** — Independent Pricing module · schema `pricing` · logical TourDeparture Guid refs only · no Tour table ownership / no shared DbContext |
 | P12-R2 (Money / currency posture) | **RESOLVED** — Reuse `TravelCore.Money`; one authoritative currency per price value; no twin SoR; no FX/Quote/Payment in T002 |
+| P12-R3 (Price attachment target) | **RESOLVED** — Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now). |
 | P10 Plan | `TC-P10-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) |
 | P10-T001 | **COMPLETE / ACCEPTED** (`e5490ae`) — Experience specialization foundation |
 | P10-T002 | **COMPLETE / ACCEPTED** (`757c9b8`) — Itinerary + Day + Stop (P10-R1) |
@@ -598,7 +600,7 @@ Content · UGC
 
 ### Commerce
 
-Tour · Pricing (scaffolded · Money baseline · schema `pricing` · P12-R1/R2) · Visa · Booking · Payment
+Tour · Pricing (Price + PriceComponent · Money baseline · schema `pricing` · P12-R1/R2/R3) · Visa · Booking · Payment
 
 ### External Inventory / Booking
 

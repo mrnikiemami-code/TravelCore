@@ -7,8 +7,8 @@ namespace TravelCore.ArchitectureTests;
 /// <summary>
 /// TC-P12-T001 / P12-R1: Pricing is an independent module owning schema <c>pricing</c>.
 /// TC-P12-T002 / P12-R2: Pricing reuses TravelCore.Money; no parallel money types; no FX/Quote/Payment yet.
-/// May logically reference TourDeparture identity (Guid) later — must not own Tour/Booking/Payment types
-/// or project-reference Booking/Payment (modules may not exist yet).
+/// TC-P12-T003 / P12-R3: Price + PriceComponent with polymorphic TargetType+TargetId (TourDeparture initial);
+/// no Tour.Domain/Infrastructure refs; no Quote/Booking/Payment/FX.
 /// </summary>
 public sealed class PricingBoundaryGuardrailTests
 {
@@ -109,8 +109,87 @@ public sealed class PricingBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "TC-P12-T002 must not introduce FX/Quote/Payment types:\n"
+            "TC-P12-T002/T003 must not introduce FX/Quote/Payment types:\n"
             + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void PricingDomain_Exposes_Price_And_PriceComponent_With_Polymorphic_Target()
+    {
+        var domainRoot = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Domain");
+
+        Assert.True(File.Exists(Path.Combine(domainRoot, "Price.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "PriceComponent.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "PriceTargetType.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "PriceComponentKind.cs")));
+
+        var priceText = File.ReadAllText(Path.Combine(domainRoot, "Price.cs"));
+        Assert.Contains("TargetType", priceText, StringComparison.Ordinal);
+        Assert.Contains("TargetId", priceText, StringComparison.Ordinal);
+        Assert.Contains("PriceComponent", priceText, StringComparison.Ordinal);
+
+        var targetText = File.ReadAllText(Path.Combine(domainRoot, "PriceTargetType.cs"));
+        Assert.Contains("TourDeparture", targetText, StringComparison.Ordinal);
+
+        var kindText = File.ReadAllText(Path.Combine(domainRoot, "PriceComponentKind.cs"));
+        Assert.Contains("Base", kindText, StringComparison.Ordinal);
+        Assert.Contains("Fee", kindText, StringComparison.Ordinal);
+        Assert.Contains("Tax", kindText, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void PricingInfrastructure_PriceComponent_Uses_MoneyOwnedMapping()
+    {
+        var configPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Infrastructure",
+            "Persistence",
+            "PriceComponentConfiguration.cs");
+
+        Assert.True(File.Exists(configPath), configPath);
+        var text = File.ReadAllText(configPath);
+        Assert.Contains("OwnsRequiredMoney", text, StringComparison.Ordinal);
+        Assert.Contains("amount", text, StringComparison.Ordinal);
+        Assert.Contains("currency_code", text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Pricing_Source_MustNot_Using_Tour_Domain_Or_Infrastructure()
+    {
+        var pricingRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Pricing");
+        var hits = Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(
+                        x.line,
+                        @"using\s+TravelCore\.Modules\.Tour\.(Domain|Infrastructure)\b|TravelCore\.Modules\.Tour\.(Domain|Infrastructure)\.");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "Pricing must not reference Tour.Domain/Infrastructure:\n" + string.Join('\n', hits));
     }
 
     [Fact]
