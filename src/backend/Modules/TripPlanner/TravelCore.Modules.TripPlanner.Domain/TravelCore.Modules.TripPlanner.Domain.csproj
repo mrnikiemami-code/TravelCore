@@ -6,7 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.TripPlanner.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.TripPlanner.Domain</AssemblyName>
-    <Description>TripPlanner domain marker only (TC-P18-T001 / P18-R1). No EF/ASP.NET.</Description>
+    <Description>TripPlanner domain (TC-P18-T002 / P18-R2). TripIntent and Lead aggregates.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 </Project>

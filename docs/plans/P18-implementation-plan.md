@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P18-PLAN` |
 | Phase | P18 — Trip Planner / Lead Experience |
-| Status | PLAN ACCEPTED; **P18-R1 RESOLVED**; T001 delivered; **P18-R2–R8 OPEN** |
+| Status | PLAN ACCEPTED; **P18-R1–R2 RESOLVED**; T001–T002 delivered; **P18-R3–R8 OPEN** |
 | Baseline | `1826013` (`docs(tripplanner): add P18 implementation plan [TC-P18-PLAN]`) · T001 on top |
 | Authoritative sources | `docs/ROADMAP.md` § P18 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `13-reference-page-archetypes.md` · `docs/pages/00-page-archetype-registry.md` · `docs/pages/09-page-state-and-composition-rules.md` · P04 Destination/ReferenceData · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace · P14 PublicExperience · P15 Search · P16 UGC · P17 Visa · P19 Booking · P20 Payment · `15-future-architecture-transition-map.md` § V Notification |
 | Backend root | `src/backend` |
@@ -146,9 +146,10 @@ P18 اضافه می‌کند: **Trip Planner / Lead capability** — **بدون*
 - Forbidden kept: TripIntent/Lead/preferences/lifecycle/routing/notification provider/identity tables · Booking/Payment tables · CRM pipeline · Search engine · peer FK · Party/Identity clone · inventing R2–R8.
 
 ### TC-P18-T002 — TripIntent vs Lead aggregate boundary
-- Purpose: Separate in-progress intent from submitted follow-up request (**P18-R2**).
-- Preserve: **TripIntent ≠ Lead** · **Lead ≠ Booking**.
-- Forbidden kept: collapsing intent + lead + booking into one aggregate · inventing R3–R8.
+- Purpose: Separate mutable planning intent from submitted follow-up request (**P18-R2 RESOLVED**).
+- Delivered: `TripIntent` + `Lead` aggregates; `LeadSubmissionSnapshot`; `TripIntentLeadSubmissionBoundary`; schema tables `trip_intents` + `leads`; snapshot invariant enforced.
+- Preserve: **TripIntent != Lead** · **Lead != Booking** · **Lead != Quote** · **Lead != CRM Opportunity**.
+- Forbidden kept: full preferences (R4) · identity/contact (R3) · lifecycle pipeline (R5) · routing (R6) · consent/notification (R7) · public UI/API (R8) · inventing R3–R8.
 
 ### TC-P18-T003 — Anonymous vs authenticated planner / contact identity
 - Purpose: Who may submit; how contact relates to Party/Identity (**P18-R3**).
@@ -197,7 +198,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 | ID | Topic | Status | SoT notes (not a lock) |
 |----|-------|--------|------------------------|
 | **P18-R1** | Trip Planner / Lead module ownership and schema | **RESOLVED** | Independent TripPlanner module. Schema `trip_planner`. Owns future trip-intent/lead facts and lifecycle — not Tour, Destination, Place, Pricing, AgencyMarketplace, Search, SEO, Booking, Payment, Notification delivery, CRM, or Party/Identity master data. No peer-schema FK. T001: no TripIntent/Lead/preferences/lifecycle/routing/notification provider/identity product types. |
-| **P18-R2** | TripIntent vs Lead aggregate boundary | **OPEN** | **TripIntent** = what traveler wants (may be draft/session). **Lead** = submitted request for follow-up. **Lead ≠ Booking**. Do not collapse without explicit lock. |
+| **P18-R2** | TripIntent vs Lead aggregate boundary | **RESOLVED** | **TripIntent** = mutable planning intent. **Lead** = submitted request for follow-up. **Lead ≠ Booking**. Do not collapse. Submission copies snapshot; later TripIntent mutation must not change existing Lead. T002: no full preferences/identity/lifecycle/routing. |
 | **P18-R3** | Anonymous vs authenticated planner / contact identity | **OPEN** | Anonymous submission likely allowed. **Lead contact ≠ Party master identity**. Evaluate client/session draft vs persisted anonymous draft vs account-owned draft. Do not auto-create Party merely on form submit unless locked. |
 | **P18-R4** | Travel preference model | **OPEN** | Destination/date/travelers/interests/budget/accommodation/transport/visa-assistance. **BudgetPreference ≠ Price/Quote**. **PlannerTravelerPreference ≠ Booking Passenger**. Date semantics: exact · flexible range · season · undecided. Logical refs to Destination/Tour — no clone. |
 | **P18-R5** | Lead lifecycle / qualification boundary | **OPEN** | Minimal baseline likely starts at **Submitted**. Full qualification pipeline / CRM stages remain **DEFER** unless locked. No generic workflow engine. |

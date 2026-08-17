@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL TripPlanner schema scaffolding smoke (TC-P18-T001).
+/// Real-PostgreSQL TripPlanner schema + TripIntent/Lead baseline (TC-P18-T002).
 /// </summary>
 [Collection(nameof(TripPlannerMigrationLifecycleCollection))]
 public sealed class TripPlannerMigrationLifecycleTests
@@ -19,7 +19,7 @@ public sealed class TripPlannerMigrationLifecycleTests
     }
 
     [Fact]
-    public async Task TripPlannerMigrationLifecycle_Apply_EnsureSchema_Only()
+    public async Task TripPlannerMigrationLifecycle_Apply_TripIntent_And_Lead_Tables()
     {
         var ct = TestContext.Current.CancellationToken;
         string[] expectedMigrations;
@@ -27,8 +27,9 @@ public sealed class TripPlannerMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Single(expectedMigrations);
+            Assert.Equal(2, expectedMigrations.Length);
             Assert.EndsWith("_InitialTripPlannerScaffolding", expectedMigrations[0], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTripIntentLeadBaseline", expectedMigrations[1], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -50,17 +51,24 @@ public sealed class TripPlannerMigrationLifecycleTests
                 WHERE table_schema = 'trip_planner'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(0, await ScalarIntAsync(conn, """
+            Assert.Equal(2, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'trip_planner'
-                  AND table_name NOT IN ('__EFMigrationsHistory');
+                  AND table_name IN ('trip_intents', 'leads');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'trip_planner'
-                  AND table_name IN ('trip_intents', 'leads', 'lead_status_history', 'planner_contacts');
+                  AND table_name IN ('lead_status_history', 'planner_contacts', 'travel_preferences');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'trip_planner'
+                  AND table_name = 'leads'
+                  AND column_name = 'captured_planning_revision';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

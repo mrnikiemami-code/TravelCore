@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.TripPlanner.Domain;
 
 namespace TravelCore.Modules.TripPlanner.Infrastructure;
 
 /// <summary>
 /// TripPlanner-owned DbContext. Owns PostgreSQL schema <c>trip_planner</c>.
-/// No product tables in T001 (P18-R1 scaffolding only).
 /// </summary>
 public sealed class TripPlannerDbContext : DbContext
 {
@@ -15,6 +15,9 @@ public sealed class TripPlannerDbContext : DbContext
     {
     }
 
+    public DbSet<TripIntent> TripIntents => Set<TripIntent>();
+
+    public DbSet<Lead> Leads => Set<Lead>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

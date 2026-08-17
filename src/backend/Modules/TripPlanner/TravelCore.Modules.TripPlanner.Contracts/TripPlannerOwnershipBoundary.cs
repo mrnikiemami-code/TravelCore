@@ -39,8 +39,8 @@ public static class TripPlannerOwnershipBoundary
     public const bool OwnsIdentityOrParty = false;
     public const bool ProductReferencesAreLogicalOnly = true;
     public const bool ProductReferencesAreSourceOfTruth = false;
-    public const bool TripIntentImplemented = false;
-    public const bool LeadImplemented = false;
+    public const bool TripIntentImplemented = true;
+    public const bool LeadImplemented = true;
     public const bool TravelPreferencesImplemented = false;
     public const bool LeadLifecycleImplemented = false;
     public const bool AgencyRoutingImplemented = false;

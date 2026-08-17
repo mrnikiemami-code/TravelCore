@@ -194,6 +194,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 
 - **TripPlanner:** TripPlanner module scaffolding (`TC-P18-T001`) — schema `trip_planner`; **TripPlanner != Booking**; **TripPlanner != Search**; **Lead Experience != CRM by default**; **TripIntent != Lead**; **BudgetPreference != Price**; no TripIntent/Lead/preferences/lifecycle/routing/notification provider/identity product types in T001; no peer FK.
 - **P18-R1 RESOLVED:** independent TripPlanner module with schema `trip_planner`. Owns future trip-intent/lead facts and lifecycle. Does not own Destination/Tour/Place facts, Pricing/Quote, Booking, Payment, CRM, Search, AgencyMarketplace commercial allocation, Notification delivery, or Party/Identity master data. Product references are opaque logical ids only.
+- **P18-R2 RESOLVED:** TripIntent = mutable planning intent; Lead = submitted follow-up request; **TripIntent != Lead**; **Lead != Booking**; submission snapshot preserves submitted context independently from later TripIntent mutation; T002: no full preferences/identity/lifecycle/routing.
 - Invariant: **TripPlanner != Booking · TripPlanner != Payment · TripPlanner != Pricing · TripPlanner != CRM · TripPlanner != Search · TripPlanner != Notification delivery · TripPlanner != Party/Identity**.
 
 ## Host

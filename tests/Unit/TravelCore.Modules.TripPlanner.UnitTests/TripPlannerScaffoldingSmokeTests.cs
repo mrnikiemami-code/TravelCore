@@ -57,8 +57,8 @@ public sealed class TripPlannerScaffoldingSmokeTests
         Assert.False(TripPlannerOwnershipBoundary.OwnsIdentityOrParty);
         Assert.True(TripPlannerOwnershipBoundary.ProductReferencesAreLogicalOnly);
         Assert.False(TripPlannerOwnershipBoundary.ProductReferencesAreSourceOfTruth);
-        Assert.False(TripPlannerOwnershipBoundary.TripIntentImplemented);
-        Assert.False(TripPlannerOwnershipBoundary.LeadImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.TripIntentImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.LeadImplemented);
         Assert.False(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
         Assert.False(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);
