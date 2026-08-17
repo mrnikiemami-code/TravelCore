@@ -19,10 +19,11 @@ type PageProps = {
 };
 
 /**
- * Public TourProduct catalog detail (TC-P09-T008).
+ * Public TourProduct catalog detail (TC-P09-T008/T010).
  * P09-R5: Tour translation owns current slug; SEO owns route binding / history / IndexPolicy.
  * P09-R6: default missing IndexPolicy → noindex, follow (compose / fallback).
  * Draft/Inactive → notFound (no Admin state leak). Published ≠ Index.
+ * Media: Cover/Gallery via media/presentation compose (app-proxy only).
  */
 export async function generateMetadata({
   params,

@@ -8,20 +8,24 @@ namespace TravelCore.Modules.Tour.Infrastructure.Services;
 
 /// <summary>
 /// TourProduct Cover/Gallery mutations with Media.Contracts readiness validation (P09-R8).
+/// Public presentation compose (TC-P09-T010) uses IMediaPresentationService (app-proxy URLs).
 /// </summary>
 public sealed class TourProductMediaService : ITourProductMediaService
 {
     private readonly TourDbContext _db;
     private readonly IMediaAssetReadinessQuery _mediaReadiness;
+    private readonly IMediaPresentationService _mediaPresentation;
     private readonly IClock _clock;
 
     public TourProductMediaService(
         TourDbContext db,
         IMediaAssetReadinessQuery mediaReadiness,
+        IMediaPresentationService mediaPresentation,
         IClock clock)
     {
         _db = db;
         _mediaReadiness = mediaReadiness;
+        _mediaPresentation = mediaPresentation;
         _clock = clock;
     }
 
@@ -31,6 +35,46 @@ public sealed class TourProductMediaService : ITourProductMediaService
     {
         var product = await FindAsync(tourProductId, cancellationToken);
         return product is null ? null : Map(product);
+    }
+
+    public async Task<TourMediaPresentationResponse?> GetMediaPresentationAsync(
+        Guid tourProductId,
+        string? locale = null,
+        CancellationToken cancellationToken = default)
+    {
+        var product = await FindAsync(tourProductId, cancellationToken);
+        if (product is null)
+        {
+            return null;
+        }
+
+        TourMediaItemPresentation? cover = null;
+        if (product.Cover is not null)
+        {
+            cover = new TourMediaItemPresentation(
+                product.Cover.MediaAssetId,
+                product.Cover.Role.ToString(),
+                product.Cover.SortOrder,
+                await _mediaPresentation.GetPresentationAsync(
+                    product.Cover.MediaAssetId,
+                    locale,
+                    cancellationToken));
+        }
+
+        var gallery = new List<TourMediaItemPresentation>();
+        foreach (var link in product.GalleryOrdered)
+        {
+            gallery.Add(new TourMediaItemPresentation(
+                link.MediaAssetId,
+                link.Role.ToString(),
+                link.SortOrder,
+                await _mediaPresentation.GetPresentationAsync(
+                    link.MediaAssetId,
+                    locale,
+                    cancellationToken)));
+        }
+
+        return new TourMediaPresentationResponse(product.Id.Value, cover, gallery);
     }
 
     public async Task<TourProductMediaResponse> SetCoverAsync(

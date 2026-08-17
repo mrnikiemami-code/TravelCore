@@ -6,9 +6,9 @@ using TravelCore.Modules.Tour.Contracts;
 namespace TravelCore.Modules.Tour.Infrastructure.Endpoints;
 
 /// <summary>
-/// TourProduct HTTP surface (TC-P09-T008/T009). Mutations require Access.Tour.Products.Write.
+/// TourProduct HTTP surface (TC-P09-T008/T009/T010). Mutations require Access.Tour.Products.Write.
 /// No Delete/Archive (P09-R4 closed as Draft|Published|Inactive). Tour owns current slug (P09-R5);
-/// SEO owns IndexPolicy (P09-R6).
+/// SEO owns IndexPolicy (P09-R6). Media presentation composes via Media.Contracts (app-proxy URLs).
 /// </summary>
 internal static class TourEndpoints
 {
@@ -371,6 +371,24 @@ internal static class TourEndpoints
         {
             var media = await service.GetAsync(id, cancellationToken);
             return media is null ? Results.NotFound() : Results.Ok(media);
+        });
+
+        // Public compose: Tour-owned Cover/Gallery + Media.Contracts presentation (app-proxy).
+        group.MapGet("/{id:guid}/media/presentation", async Task<IResult> (
+            Guid id,
+            string? locale,
+            ITourProductMediaService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var presentation = await service.GetMediaPresentationAsync(id, locale, cancellationToken);
+                return presentation is null ? Results.NotFound() : Results.Ok(presentation);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
         });
 
         group.MapPut("/{id:guid}/media/cover", async Task<IResult> (

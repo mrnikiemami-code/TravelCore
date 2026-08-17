@@ -6,7 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Tour.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Tour.Contracts</AssemblyName>
-    <Description>Tour module contracts (scaffolding). No EF entities. TC-P09-T001.</Description>
+    <Description>Tour module contracts: catalog + Tour↔Media relation/presentation DTOs (TC-P09-T007/T010). No EF entities.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Media\TravelCore.Modules.Media.Contracts\TravelCore.Modules.Media.Contracts.csproj" />
+  </ItemGroup>
 
 </Project>
