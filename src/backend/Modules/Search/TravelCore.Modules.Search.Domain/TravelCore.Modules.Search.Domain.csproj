@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Search.Domain</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Search.Domain</AssemblyName>
+    <Description>Search domain scaffolding (TC-P15-T001 / P15-R1). No FTS/index entities yet.</Description>
+  </PropertyGroup>
+
+</Project>

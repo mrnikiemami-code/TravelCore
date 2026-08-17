@@ -100,6 +100,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - Pricing ≠ Tour catalog ownership; Pricing ≠ Booking/Payment; logical TourDeparture Guid refs only (P12-R1).
 - AgencyMarketplace ≠ Party identity · ≠ Pricing · ≠ Booking · ≠ TourProduct catalog; logical PartyId Guid only (P13-R1).
 - PublicExperience ≠ Tour catalog · ≠ Search engine · ≠ Booking; presentation + SEO composition only (P14-R1).
+- Search ≠ Tour/Content/Pricing/Agency facts · ≠ SEO IndexPolicy · ≠ Booking · ≠ Recommendation; schema `search` only in T001 (P15-R1).
 
 ## Active modules (P12)
 
@@ -139,6 +140,16 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **PublicExperience:** Detail / Listing / Landing surface contracts (`TC-P14-T001`) — presentation + SEO composition. Not Search engine. Not Tour catalog SoR. No Booking/Payment.
 - **P14-R1 RESOLVED:** Public Experience Surface belongs to Public Experience Layer (not Search, not Catalog).
 - Invariant: **Public Experience ≠ Booking · SEO Page ≠ Commercial Transaction · Content ≠ Catalog · Search URL ≠ SEO Landing URL**.
+
+## Active modules (P15)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Search | `Search/TravelCore.Modules.Search.{Domain,Contracts,Infrastructure}` | `search` |
+
+- **Search:** module scaffolding only (`TC-P15-T001`) — schema `search` ownership; query/result contracts; no projection tables / FTS / ranking / faceting / Elasticsearch.
+- **P15-R1 RESOLVED:** Search is an independent Discovery Owner. Tour/Content/Pricing/AgencyMarketplace remain fact SoT. SEO remains IndexPolicy owner. Search is a future read-model/projection, not a second write SoR. No LLM/business rules inside Search. No FTS/index engine in T001.
+- Invariant: **Search ≠ Catalog · Search ≠ Pricing · Search ≠ AgencyOffer · Search ≠ IndexPolicy · Search ≠ Booking · Search ≠ Recommendation**.
 
 ## Host
 

@@ -411,6 +411,29 @@ public sealed class ArchitectureGuardrailTests
     }
 
     [Fact]
+    public void SearchPersistence_MustUseOwnedSchema_search()
+    {
+        var options = new DbContextOptionsBuilder<TravelCore.Modules.Search.Infrastructure.SearchDbContext>()
+            .UseTravelCorePostgreSql(
+                "Host=127.0.0.1;Database=architecture_guard_search_design;Username=architecture;Password=not-a-real-secret",
+                migrationsHistorySchema: TravelCore.Modules.Search.Infrastructure.SearchDbContext.SchemaName)
+            .Options;
+
+        using var db = new TravelCore.Modules.Search.Infrastructure.SearchDbContext(options);
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+        Assert.Equal("search", TravelCore.Modules.Search.Infrastructure.SearchDbContext.SchemaName);
+
+        // Scaffolding has no product entities yet; default schema ownership must still be search.
+        Assert.Equal("search", db.Model.GetDefaultSchema());
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            Assert.Equal("search", entity.GetSchema());
+        }
+
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+    }
+
+    [Fact]
     public void FixtureMigrations_MustRemainUnderFixtureProject()
     {
         var migrationsDir = Path.Combine(

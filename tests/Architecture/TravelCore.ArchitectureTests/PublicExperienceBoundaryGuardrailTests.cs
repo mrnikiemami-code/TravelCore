@@ -79,7 +79,9 @@ public sealed class PublicExperienceBoundaryGuardrailTests
 
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Search")));
+        Assert.True(
+            Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Search")),
+            "P15 Search exists as Discovery owner; PublicExperience must not own it.");
     }
 
     [Fact]

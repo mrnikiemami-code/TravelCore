@@ -56,7 +56,9 @@ public sealed class PublicExperiencePhaseBoundaryGuardrailTests
     {
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Search")));
+        Assert.True(
+            Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Search")),
+            "P15 Search exists as Discovery owner; PublicExperience remains presentation only.");
         Assert.False(Directory.Exists(Path.Combine(
             RepoRoot,
             "src",

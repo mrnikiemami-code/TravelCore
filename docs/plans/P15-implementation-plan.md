@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P15-PLAN` |
 | Phase | P15 — Search & Discovery |
-| Status | AWAITING_ARCHITECT_REVIEW — plan authored; no product code |
+| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1 RESOLVED; T001 scaffolding delivered |
 | Baseline | `608216d` (`docs: P14 acceptance gate evidence [TC-P14-GATE]` — **TC-P14-GATE** ACCEPTED; P14 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P15 · P14 Gate ACCEPT · P14-R3/R5/R8 (Listing ≠ Landing · Related ≠ Recommendation · Filter ≠ Faceting) · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace |
 | Backend root | `src/backend` |
@@ -47,7 +47,7 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 | P00–P14 | COMPLETE |
 | Public listing filters | Presentation/URL only (P14-R8); selection via Tour `related-published` |
 | Related tours | Deterministic replaceable Tour public-read (P14-R5) — P15 may replace retrieval |
-| Search module | **Not implemented** |
+| Search module | Scaffolded (`search` schema · query/result contracts · P15-R1) |
 | Booking / Payment | Modules do not exist |
 
 ---
@@ -70,8 +70,9 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 ### TC-P15-PLAN — this document
 
 ### TC-P15-T001 — Search module scaffolding / ownership boundary
-- Purpose: Independent Search module + ownership contracts (**needs P15-R1**).
-- Expected: Contracts/Domain/Infrastructure scaffolding; schema ownership; no peer FKs; PE remains presentation.
+- Purpose: Independent Search module + ownership contracts (**P15-R1 RESOLVED**).
+- Delivered: Contracts/Domain/Infrastructure scaffolding; schema `search`; query/result contracts; host registration; no peer FKs; PE remains presentation.
+- Forbidden kept: no projection tables / indexing engine / Elasticsearch / FTS / ranking algorithm / faceting engine / Booking / Payment / Recommendation.
 
 ### TC-P15-T002 — Index / read-model strategy baseline
 - Purpose: How Search represents discoverable documents (**needs P15-R2**).
@@ -112,7 +113,7 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
-| **P15-R1** | Search ownership boundary | **UNRESOLVED** | Search = Retrieval + Discovery. Not Catalog. Not SEO IndexPolicy. Not Pricing. Not AgencyOffer SoR. |
+| **P15-R1** | Search ownership boundary | **RESOLVED** | Search = Discovery Owner. Owns query/result contracts and future read models. Does **not** own Tour/Content/Pricing/Agency facts or SEO IndexPolicy. Search is a Read Model / Projection (later), not SoT. No LLM/business rules inside Search. T001: no database projection, no indexing engine, no Elasticsearch, no FTS. |
 | **P15-R2** | Index / read model | **UNRESOLVED** | What documents are indexed; projection vs live query; schema ownership. |
 | **P15-R3** | Data synchronization strategy | **UNRESOLVED** | Push/pull/eventual; no Domain rewrite; no replacing PG SoT. |
 | **P15-R4** | Faceting ownership | **UNRESOLVED** | Facets in Search; PE owns UI only (P14-R8 carry-forward). |

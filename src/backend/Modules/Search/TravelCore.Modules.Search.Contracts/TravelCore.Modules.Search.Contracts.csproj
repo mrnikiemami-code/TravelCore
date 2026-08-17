@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Search.Contracts</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Search.Contracts</AssemblyName>
+    <Description>Search module contracts (scaffolding). No EF entities. TC-P15-T001 / P15-R1.</Description>
+  </PropertyGroup>
+
+</Project>

@@ -14,6 +14,7 @@ using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Modules.Tour.Infrastructure;
 using TravelCore.Modules.Pricing.Infrastructure;
 using TravelCore.Modules.AgencyMarketplace.Infrastructure;
+using TravelCore.Modules.Search.Infrastructure;
 using TravelCore.Persistence.PostgreSql;
 using Xunit;
 
@@ -68,6 +69,9 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
 
         await using var agencyMarketplace = CreateAgencyMarketplaceDb();
         await AgencyMarketplaceMigrator.MigrateAsync(agencyMarketplace);
+
+        await using var search = CreateSearchDb();
+        await SearchMigrator.MigrateAsync(search);
     }
 
     public async ValueTask DisposeAsync() => await _container.DisposeAsync();
@@ -166,6 +170,14 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
             .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: AgencyMarketplaceDbContext.SchemaName)
             .Options;
         return new AgencyMarketplaceDbContext(options);
+    }
+
+    public SearchDbContext CreateSearchDb()
+    {
+        var options = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<SearchDbContext>()
+            .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: SearchDbContext.SchemaName)
+            .Options;
+        return new SearchDbContext(options);
     }
 
     public TravelCoreApiFactory CreateFactory(string environmentName) =>

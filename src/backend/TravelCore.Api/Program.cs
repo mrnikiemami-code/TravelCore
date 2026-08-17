@@ -10,6 +10,7 @@ using TravelCore.Modules.Content.Infrastructure;
 using TravelCore.Modules.Place.Infrastructure;
 using TravelCore.Modules.AgencyMarketplace.Infrastructure;
 using TravelCore.Modules.Pricing.Infrastructure;
+using TravelCore.Modules.Search.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Modules.Tour.Infrastructure;
@@ -44,6 +45,7 @@ IReadOnlyList<ITravelCoreModule> modules =
     new TourModule(),
     new PricingModule(),
     new AgencyMarketplaceModule(),
+    new SearchModule(),
 ];
 builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 

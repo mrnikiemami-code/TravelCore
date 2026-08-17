@@ -287,13 +287,13 @@ Flight live bookable inventory
 
 ## Search
 
-**Purpose:** قابلیت پلتفرم پایین‌دستی برای بازیابی.
+**Purpose:** قابلیت پلتفرم پایین‌دستی برای بازیابی و Discovery (P15-R1).
 
-**Owns:** search index/read model · متن نرمال‌شدهٔ مخصوص جستجو · ranking/config · autocomplete · facets/index projections.
+**Owns:** Search query/result contracts · schema `search` · future replaceable read model / projection (not yet in T001).
 
-**Does Not Own (authoritative):** Tour · Destination · Place · Content · UGC · Visa.
+**Does Not Own (authoritative):** Tour facts · Content facts · Pricing facts · AgencyOffer facts · SEO IndexPolicy · Destination · Place · UGC · Visa · Booking · Payment · Recommendation.
 
-**Technology direction:** PostgreSQL FTS + `pg_trgm` — ماژول‌های کسب‌وکار به این پیاده‌سازی وابسته نمی‌شوند.
+**Technology direction:** PostgreSQL FTS + `pg_trgm` behind abstraction later — ماژول‌های کسب‌وکار به این پیاده‌سازی وابسته نمی‌شوند. **T001 does not implement FTS/`pg_trgm`/Elasticsearch.**
 
 **Forbidden:** Tour → SearchDbContext · Destination → جداول Search برای validation کسب‌وکار.
 

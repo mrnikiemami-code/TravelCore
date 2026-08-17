@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T006 content enrichment composition) |
-| Phase Status | P00–P14 COMPLETE · P15 PLAN delivered · P15-R1–R7 UNRESOLVED |
+| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T001 scaffolding) |
+| Phase Status | P00–P14 COMPLETE · P15-R1 RESOLVED · `TC-P15-T001` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P15-PLAN` → Auto-Execute first locked task |
+| Current Next Task | Architect review of `TC-P15-T001` → next locked task (do not invent R2–R7) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -113,8 +113,9 @@
 - **P11** = COMPLETE (`TC-P11-GATE` ACCEPTED `6f7ea12` · **R1–R8 RESOLVED**)
 - **P12** = COMPLETE / ACCEPTED (`b372367`) (**R1–R8 RESOLVED** · T001–T009 ACCEPTED — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
 - **P13** = COMPLETE (`TC-P13-GATE` ACCEPTED `c0bcd78` · **R1–R7 RESOLVED** · T008 vacant)
-- **P14** = IN_PROGRESS — PLAN ACCEPTED · **P14-R1–R4 RESOLVED** · T004 shared detail [`plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md)
-- **P15–P29 و Post-P29** = PLANNED / NOT_STARTED
+- **P14** = COMPLETE (`TC-P14-GATE` ACCEPTED `608216d` · **R1–R8 RESOLVED**)
+- **P15** = IN_PROGRESS — PLAN ACCEPTED · **P15-R1 RESOLVED** · T001 scaffolding [`plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md)
+- **P16–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -505,7 +506,9 @@ Search URL ≠ SEO Landing URL.
 
 ## P15 — Search
 
-**Status:** IN PROGRESS — PLAN awaiting architect review ([`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md))
+**Status:** IN PROGRESS — PLAN ACCEPTED · **P15-R1 RESOLVED** · `TC-P15-T001` scaffolding delivered ([`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md))
+
+**P15-R1:** Search = independent Discovery Owner (`search` schema). Owns query/result contracts and future read models. Tour/Content/Pricing/AgencyMarketplace remain fact SoT. SEO remains IndexPolicy owner. T001: no projection tables / FTS / Elasticsearch / ranking / faceting.
 
 پیاده‌سازی اولیه: PostgreSQL Full Text Search + `pg_trgm` (behind abstraction; no premature Elasticsearch Domain SoR).
 
@@ -737,8 +740,8 @@ P26 = Advanced SEO.
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
 | P12 | Pricing | **COMPLETE** (`TC-P12-GATE` ACCEPTED `b372367` · R1–R8 RESOLVED) |
 | P13 | Agency Marketplace | **COMPLETE** (`TC-P13-GATE` `c0bcd78` · R1–R7 RESOLVED) |
-| P14 | Public Tour Experience | **IN_PROGRESS** (R1–R4 RESOLVED · T004) |
-| P15 | Search | IN PROGRESS (PLAN) |
+| P14 | Public Tour Experience | **COMPLETE** (`TC-P14-GATE` ACCEPTED `608216d` · R1–R8 RESOLVED) |
+| P15 | Search | **IN_PROGRESS** (R1 RESOLVED · T001) |
 | P16 | UGC | PLANNED |
 | P17 | Visa | PLANNED |
 | P18 | Trip Planner / Lead Experience | PLANNED |
