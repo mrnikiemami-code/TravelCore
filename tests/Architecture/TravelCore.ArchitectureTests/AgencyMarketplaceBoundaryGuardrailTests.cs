@@ -1,0 +1,164 @@
+using System.Text.RegularExpressions;
+using TravelCore.ArchitectureTests.Support;
+using Xunit;
+
+namespace TravelCore.ArchitectureTests;
+
+/// <summary>
+/// TC-P13-T001 / P13-R1: Agency Marketplace is an independent module owning schema <c>agency_marketplace</c>.
+/// May logically reference Party identity (Guid) — must not own Party/Tour/Pricing/Booking/Payment types
+/// or project-reference those modules. Offer / AgencyProfile product types are later P13 tasks.
+/// </summary>
+public sealed class AgencyMarketplaceBoundaryGuardrailTests
+{
+    private static readonly string RepoRoot = ProjectGraph.FindRepoRoot();
+    private static readonly IReadOnlyList<ProjectModel> Projects = ProjectGraph.LoadAll(RepoRoot);
+
+    [Fact]
+    public void AgencyMarketplaceProjects_Exist_WithOwnedSchemaConstant()
+    {
+        Assert.Contains(Projects, p => p.Name == "TravelCore.Modules.AgencyMarketplace.Contracts");
+        Assert.Contains(Projects, p => p.Name == "TravelCore.Modules.AgencyMarketplace.Domain");
+        Assert.Contains(Projects, p => p.Name == "TravelCore.Modules.AgencyMarketplace.Infrastructure");
+
+        Assert.Equal(
+            "agency_marketplace",
+            TravelCore.Modules.AgencyMarketplace.Infrastructure.AgencyMarketplaceDbContext.SchemaName);
+    }
+
+    [Fact]
+    public void AgencyMarketplaceInfrastructure_MustNotProjectReference_PeerBusinessModules()
+    {
+        var infra = Projects.Single(p => p.Name == "TravelCore.Modules.AgencyMarketplace.Infrastructure");
+        var violations = infra.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .Where(IsForbiddenPeerModule)
+            .ToList();
+
+        Assert.True(
+            violations.Count == 0,
+            "AgencyMarketplace.Infrastructure must not project-reference Party/Tour/Pricing/Booking/Payment:\n"
+            + string.Join('\n', violations));
+    }
+
+    [Fact]
+    public void AgencyMarketplaceDomain_MustNotProjectReference_PeerBusinessModules()
+    {
+        var domain = Projects.Single(p => p.Name == "TravelCore.Modules.AgencyMarketplace.Domain");
+        var forbidden = domain.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .Where(name =>
+                name.Contains(".Infrastructure", StringComparison.OrdinalIgnoreCase)
+                || IsForbiddenPeerModule(name))
+            .ToList();
+
+        Assert.True(
+            forbidden.Count == 0,
+            "AgencyMarketplace.Domain must stay free of Party/Tour/Pricing/Booking/Payment and peer Infrastructure:\n"
+            + string.Join('\n', forbidden));
+    }
+
+    [Fact]
+    public void AgencyMarketplaceContracts_MustNotProjectReference_PeerBusinessModules()
+    {
+        var contracts = Projects.Single(p => p.Name == "TravelCore.Modules.AgencyMarketplace.Contracts");
+        var forbidden = contracts.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .Where(IsForbiddenPeerModule)
+            .ToList();
+
+        Assert.True(
+            forbidden.Count == 0,
+            "AgencyMarketplace.Contracts must not project-reference Party/Tour/Pricing/Booking/Payment:\n"
+            + string.Join('\n', forbidden));
+    }
+
+    [Fact]
+    public void AgencyMarketplaceModule_DoesNotOwn_Peer_Or_EarlyProduct_Types()
+    {
+        var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "AgencyMarketplace");
+        Assert.True(Directory.Exists(root), root);
+
+        var hits = Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(
+                               x.line,
+                               @"\b(class|record|enum|struct|interface)\s+(TourProduct|TourDeparture|Booking|Payment|PaymentIntent|Reservation|Checkout|Price|Quote|AgencyProfile|AgencyOffer|CommercialSettings|Party|Person|Organization)\b")
+                           || Regex.IsMatch(
+                               x.line,
+                               @"\b(IBookingService|IPaymentService|IPricingService|ICheckoutService|DbSet<\s*(TourProduct|TourDeparture|Booking|Payment|AgencyProfile|AgencyOffer))\b");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "Agency Marketplace must not own Party/Tour/Pricing/Booking/Payment types or implement Offer/Profile in T001:\n"
+            + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void AgencyMarketplaceModule_Forbids_PeerSchemaFk_And_SharedDbContext()
+    {
+        var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "AgencyMarketplace");
+        var hits = Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x => Regex.IsMatch(
+                    x.line,
+                    @"principalSchema:\s*""(party|tour|pricing)""|HasOne<.*(Party|Tour|Price)|TravelCore\.Modules\.(Party|Tour|Pricing)\.(Domain|Infrastructure)|(Party|Tour|Pricing)DbContext|shared\s+DbContext",
+                    RegexOptions.IgnoreCase)))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "Agency Marketplace must not introduce Party/Tour/Pricing schema FK/nav or share those DbContexts:\n"
+            + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void Booking_And_Payment_Modules_DoNotExist_Yet()
+    {
+        var booking = Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking");
+        var payment = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
+        Assert.False(Directory.Exists(booking), "Booking module must not exist in P13 scaffolding.");
+        Assert.False(Directory.Exists(payment), "Payment module must not exist in P13 scaffolding.");
+    }
+
+    [Fact]
+    public void AgencyMarketplace_Exposes_Logical_Party_Reference_Readiness()
+    {
+        Assert.True(typeof(TravelCore.Modules.AgencyMarketplace.Domain.MarketplacePartyId).IsValueType);
+
+        Assert.Equal(
+            "Party",
+            TravelCore.Modules.AgencyMarketplace.Contracts.AgencyPartyIdentityBoundary.IdentitySourceModule);
+        Assert.Equal(
+            "AgencyMarketplace",
+            TravelCore.Modules.AgencyMarketplace.Contracts.AgencyPartyIdentityBoundary.CommercialLayerModule);
+    }
+
+    private static bool IsForbiddenPeerModule(string name) =>
+        name.StartsWith("TravelCore.Modules.Party.", StringComparison.OrdinalIgnoreCase)
+        || name.StartsWith("TravelCore.Modules.Tour.", StringComparison.OrdinalIgnoreCase)
+        || name.StartsWith("TravelCore.Modules.Pricing.", StringComparison.OrdinalIgnoreCase)
+        || name.StartsWith("TravelCore.Modules.Booking.", StringComparison.OrdinalIgnoreCase)
+        || name.StartsWith("TravelCore.Modules.Payment.", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsGeneratedOrBin(string path) =>
+        path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase)
+        || path.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase);
+}

@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P13 — Agency Marketplace** (**IN PROGRESS** — PLAN authored) |
-| Phase Status | P00–P11 COMPLETE · P12-R1…R8 RESOLVED · T001–T009 ACCEPTED · GATE evidence |
+| Current Phase | **P13 — Agency Marketplace** (**IN PROGRESS** — T001 scaffolding) |
+| Phase Status | P00–P12 COMPLETE · P13-R1 RESOLVED · `TC-P13-T001` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect ACCEPT `TC-P13-PLAN` + lock P13-R1 → Auto-Execute `TC-P13-T001` |
+| Current Next Task | Architect review of `TC-P13-T001` → `TC-P13-T002` (needs P13-R2 lock) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -112,7 +112,7 @@
 - **P10** = COMPLETE (`TC-P10-GATE` ACCEPTED `c351bf9` · **R1–R8 RESOLVED**)
 - **P11** = COMPLETE (`TC-P11-GATE` ACCEPTED `6f7ea12` · **R1–R8 RESOLVED**)
 - **P12** = COMPLETE / ACCEPTED (`b372367`) (**R1–R8 RESOLVED** · T001–T009 ACCEPTED — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
-- **P13** = IN_PROGRESS — PLAN authored [`plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md)
+- **P13** = IN_PROGRESS — PLAN ACCEPTED · **P13-R1 RESOLVED** · T001 scaffolding [`plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md)
 - **P14–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -476,11 +476,13 @@ Gate ACCEPTED (`b372367`). Continuity auto-started **P13 PLAN** (Agency Marketpl
 
 ## P13 — Agency Marketplace
 
-**Status:** IN_PROGRESS — Plan authored [`plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md) · awaiting architect ACCEPT + P13-R1 lock.
+**Status:** IN_PROGRESS — PLAN ACCEPTED · **P13-R1 RESOLVED** · `TC-P13-T001` scaffolding delivered [`plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md)
 
 Agency business profile · Offer ownership · Tour offering · Capacity/availability policies · Agency-specific commercial rules · Agency Panel · Publishing/moderation در صورت نیاز.
 
 معنای Marketplace نباید TourProduct را بی‌ضرورت تکراری کند.
+
+**P13-R1:** Agency Marketplace = independent module (`agency_marketplace` schema). Owns Agency commercial relationship. Party remains identity SoR; Marketplace is the commercial layer. Logical PartyId Guid only — no Party/Tour/Pricing merge, no Offer in T001.
 
 ---
 
@@ -727,7 +729,7 @@ P26 = Advanced SEO.
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
 | P12 | Pricing | **COMPLETE** (`TC-P12-GATE` ACCEPTED `b372367` · R1–R8 RESOLVED) |
-| P13 | Agency Marketplace | **IN_PROGRESS** (PLAN authored) |
+| P13 | Agency Marketplace | **IN_PROGRESS** (R1 RESOLVED · T001) |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |
 | P16 | UGC | PLANNED |

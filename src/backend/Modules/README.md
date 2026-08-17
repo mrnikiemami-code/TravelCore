@@ -98,6 +98,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - Content ≠ SEO substance duplication; Content ≠ Tour/Place/UGC ownership.
 - Tour ≠ TourDeparture (P11); Tour ≠ Pricing/Booking/Search; Tour ≠ Place Hotel ownership.
 - Pricing ≠ Tour catalog ownership; Pricing ≠ Booking/Payment; logical TourDeparture Guid refs only (P12-R1).
+- AgencyMarketplace ≠ Party identity · ≠ Pricing · ≠ Booking · ≠ TourProduct catalog; logical PartyId Guid only (P13-R1).
 
 ## Active modules (P12)
 
@@ -111,6 +112,16 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P12-R3 RESOLVED:** Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote** (at Price attach time). Product-level pricing DEFER (do not invent TourProduct pricing now).
 - **P12-R4 RESOLVED:** Quote owned by Pricing · Quote is calculation snapshot · No Booking ownership · No Payment · No Customer/Passenger · No checkout flow.
 - Invariant: **Price ≠ Quote ≠ Payment / Booking Amount**; no silent single-currency wipe.
+
+## Active modules (P13)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| AgencyMarketplace | `AgencyMarketplace/TravelCore.Modules.AgencyMarketplace.{Domain,Contracts,Infrastructure}` | `agency_marketplace` |
+
+- **AgencyMarketplace:** module scaffolding only (`TC-P13-T001`) — schema `agency_marketplace` ownership; Party logical Guid readiness; no AgencyProfile/Offer/CommercialSettings aggregates yet (T002+).
+- **P13-R1 RESOLVED:** independent Agency Marketplace module owns Agency commercial relationship; Party remains identity SoR; logical PartyId Guid only — no EF FK / no Party table ownership / no shared DbContext / no Offer in T001.
+- Invariant: **Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking · Agency ≠ TourProduct**.
 
 ## Host
 

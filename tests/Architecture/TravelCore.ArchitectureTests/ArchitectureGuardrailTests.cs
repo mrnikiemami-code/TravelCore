@@ -388,6 +388,29 @@ public sealed class ArchitectureGuardrailTests
     }
 
     [Fact]
+    public void AgencyMarketplacePersistence_MustUseOwnedSchema_agency_marketplace()
+    {
+        var options = new DbContextOptionsBuilder<TravelCore.Modules.AgencyMarketplace.Infrastructure.AgencyMarketplaceDbContext>()
+            .UseTravelCorePostgreSql(
+                "Host=127.0.0.1;Database=architecture_guard_agency_marketplace_design;Username=architecture;Password=not-a-real-secret",
+                migrationsHistorySchema: TravelCore.Modules.AgencyMarketplace.Infrastructure.AgencyMarketplaceDbContext.SchemaName)
+            .Options;
+
+        using var db = new TravelCore.Modules.AgencyMarketplace.Infrastructure.AgencyMarketplaceDbContext(options);
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+        Assert.Equal("agency_marketplace", TravelCore.Modules.AgencyMarketplace.Infrastructure.AgencyMarketplaceDbContext.SchemaName);
+
+        // Scaffolding has no product entities yet; default schema ownership must still be agency_marketplace.
+        Assert.Equal("agency_marketplace", db.Model.GetDefaultSchema());
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            Assert.Equal("agency_marketplace", entity.GetSchema());
+        }
+
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+    }
+
+    [Fact]
     public void FixtureMigrations_MustRemainUnderFixtureProject()
     {
         var migrationsDir = Path.Combine(

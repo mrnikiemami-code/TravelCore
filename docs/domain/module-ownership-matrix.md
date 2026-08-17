@@ -22,6 +22,7 @@
 | UGC | Knowledge | Review, Rating, Travelogue, moderation | Identity/Party IDs, Media, target IDs | Target entity aggregates | Being required by Place/Tour/Destination core transactions; Search/SEO/Notification as hard deps |
 | Tour | Commerce | TourProduct, Departure, itinerary, TourHotelOption, package transport facts | Destination, Place, Party, Media, ReferenceData | Hotel catalog, Quote calc, Booking, Payment, Search index, SEO engine | Pricing DbContext, Booking, Payment, Search, SEO, Notification, Flight live inventory |
 | Pricing | Commerce | TourRate, PriceComponent, ExchangeRate, Quote, conversion | TourDeparture identity (Guid) / Tour contracts (logical only); ReferenceData | Tour catalog tables, Booking history, Payment execution | Tour DbContext / Tour EF ownership, Booking, Payment, Search, SEO, Notification; premature Flight/HotelBooking fare ownership |
+| AgencyMarketplace | Commerce | Agency commercial relationship (marketplace) | Party identity (logical Guid) | Party identity SoR, TourProduct catalog, Price/Quote, Booking/Payment | Party/Tour/Pricing DbContext, Booking, Payment, Search, SEO, Notification |
 | Visa | Commerce | Visa offerings / requirements / workflow concepts | Destination, ReferenceData, Media | Tour ownership of visa product | Hard bidirectional Tour dependency; Search/SEO/Notification as hard deps |
 | Booking | Commerce | Reservation/order state, traveler + quote snapshots | Party, Tour contracts, Pricing Quote contracts | Payment execution, live price engine, Tour catalog, Agency profile | Payment DbContext, Pricing DbContext, Tour DbContext, Search, SEO, Notification |
 | Payment | Commerce | Payment lifecycle, attempts, provider results, refund foundation | Booking references/contracts, ReferenceData | Booking business lifecycle, price calculation, Tour, Quote generation | Booking DbContext mutation, Tour, Search, SEO |
@@ -68,6 +69,7 @@
 | Tour | ReferenceData | B | Shared refs |
 | Pricing | Tour | C / B | Priceable product/departure validation |
 | Pricing | ReferenceData | B | Currency refs |
+| AgencyMarketplace | Party | B | Logical Agency identity (Guid); Party remains identity SoR |
 | Visa | Destination | B | Applicability |
 | Booking | Party | B / C | Customer |
 | Booking | Tour | C / B | Product/departure facts |
@@ -119,6 +121,8 @@ Legend: B=ID reference · C=synchronous contract · D=event consumer · E=projec
 | TourProduct / Experience specialization / Itinerary / ExperienceGuideAssignment | Tour |
 | TourDeparture / TourHotelOption / FlightSegment | Tour (P11+: Departure scaffolding started; Flight/HotelOption later) |
 | TourRate / PriceComponent / Quote | Pricing |
+| Agency commercial relationship (marketplace) | AgencyMarketplace |
+| Agency identity (`PartyKind.Agency`) | Party |
 | VisaType / visa requirements | Visa |
 | Booking / accepted quote snapshot | Booking |
 | PaymentAttempt / refund foundation | Payment |

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.AgencyMarketplace.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.AgencyMarketplace.UnitTests</AssemblyName>
+    <Description>Agency Marketplace domain unit tests (TC-P13-T001 scaffolding smoke).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Contracts\TravelCore.Modules.AgencyMarketplace.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Domain\TravelCore.Modules.AgencyMarketplace.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

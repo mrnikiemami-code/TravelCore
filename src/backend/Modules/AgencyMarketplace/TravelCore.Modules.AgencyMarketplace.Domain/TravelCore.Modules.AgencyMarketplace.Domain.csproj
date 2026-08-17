@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.AgencyMarketplace.Domain</RootNamespace>
+    <AssemblyName>TravelCore.Modules.AgencyMarketplace.Domain</AssemblyName>
+    <Description>Agency Marketplace domain scaffolding. No EF/ASP.NET. TC-P13-T001.</Description>
+  </PropertyGroup>
+
+</Project>

@@ -36,6 +36,9 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Content\TravelCore.Modules.Content.Infrastructure\TravelCore.Modules.Content.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Tour\TravelCore.Modules.Tour.Infrastructure\TravelCore.Modules.Tour.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Pricing\TravelCore.Modules.Pricing.Infrastructure\TravelCore.Modules.Pricing.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Contracts\TravelCore.Modules.AgencyMarketplace.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Domain\TravelCore.Modules.AgencyMarketplace.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Infrastructure\TravelCore.Modules.AgencyMarketplace.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
