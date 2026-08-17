@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/shell";
 import { LtrValue, Text } from "@/components/ui";
 import { PublicTourLandingView } from "@/features/public-experience/landing-view";
+import { loadRelatedToursByDestination } from "@/features/public-experience/load-related-tours";
+import { apiGetJson } from "@/lib/api/client";
+import { isApiOk } from "@/lib/api/result";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
 import { loadComposedSeoMetadata } from "@/lib/seo/load-composed-metadata";
 import {
@@ -62,6 +65,13 @@ export default async function PublicTourLandingPage({ params }: PageProps) {
     notFound();
   }
   const locale: AppLocale = localeParam;
+  const destination = await apiGetJson<{ destinationId: string }>(
+    `/api/destination/destinations/by-slug/${encodeURIComponent(locale)}/${encodeURIComponent(slug)}`,
+    { cache: "no-store" },
+  );
+  const relatedTours = isApiOk(destination)
+    ? await loadRelatedToursByDestination(destination.data.destinationId, locale)
+    : [];
 
   return (
     <PublicShell
@@ -86,7 +96,12 @@ export default async function PublicTourLandingPage({ params }: PageProps) {
         </Text>
       }
     >
-      <PublicTourLandingView locale={locale} topic={slug} intent={intent} />
+      <PublicTourLandingView
+        locale={locale}
+        topic={slug}
+        intent={intent}
+        relatedTours={relatedTours}
+      />
     </PublicShell>
   );
 }

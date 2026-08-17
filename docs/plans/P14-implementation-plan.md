@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P14-PLAN` |
 | Phase | P14 — Public Tour Experience |
-| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1–R4 RESOLVED; T004 shared detail shell delivered |
+| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1–R5 RESOLVED; T005 related tours composition delivered |
 | Baseline | `c0bcd78` (`docs: P13 acceptance gate evidence [TC-P13-GATE]` — **TC-P13-GATE** ACCEPTED; P13 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P14 · P09–P13 Gates · P05 SEO · P08 Content · P11-R8 Published ≠ Bookable · P12-R8 public price read · P13-R7 Published Offer ≠ SEO Indexed · architect P13 Gate ACCEPT (Public Experience ≠ Booking · SEO Page ≠ Commercial Transaction · Content ≠ Catalog Ownership) |
 | Backend root | `src/backend` |
@@ -94,12 +94,14 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 - Delivered: `PublicExperienceDetailComposition` · shared `TourDetailView` shell · Experience sections · Tour public `experience/presentation` read of existing facts · destinations/policies compose.
 - Forbidden: Booking · Search engine · Pricing ownership · new Tour domain facts · Package domain implementation · IndexPolicy ownership.
 
-### TC-P14-T005 — Mobile / a11y / sticky action chrome
-- Purpose: RTL/LTR · mobile filters · sticky actions as **presentation** (needs **P14-R2**).
-- Forbidden: Booking engine · Payment.
+### TC-P14-T005 — Related Tours composition baseline
+- Purpose: Related tours as presentation/composition (**P14-R5 RESOLVED**). Sticky/mobile chrome already shipped in T002.
+- Architect lock: Public Experience owns presentation only. Related ≠ Recommendation. Related ≠ Search ranking. Deterministic same-destination retrieval behind a Tour public-read boundary so P15 can replace it later. Published products only. Compact cards (max 6); do not push primary content down.
+- Delivered: `PublicExperienceRelatedToursBoundary` · Tour `related-published` public read · compact cards on Detail + Landing.
+- Forbidden: Recommendation engine · Ranking · FTS · `pg_trgm` · popularity/personalization · Booking.
 
-### TC-P14-T006 — Related tours / enrichment hooks
-- Purpose: Related tours + content enrichment without stealing catalog (needs **P14-R5/R6**).
+### TC-P14-T006 — Content enrichment hooks
+- Purpose: Content enrichment without stealing catalog (needs **P14-R6**).
 - Forbidden: Content owning TourProduct · Search recommendations engine.
 
 ### TC-P14-T007 — Public AgencyOffer display (if locked)
@@ -121,7 +123,7 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 | **P14-R2** | Sticky/mobile booking **actions** vs Published ≠ Bookable | **RESOLVED** | Sticky Action ≠ Booking. Allowed: View Departure · View Price Summary · Contact / Request Information. Forbidden: Book Now · Pay Now · Reserve Seat · Checkout. Published ≠ Bookable. |
 | **P14-R3** | Listing URL vs SEO landing URL ownership | **RESOLVED** | Listing and SEO Landing are two surfaces. Listing = Discovery. Landing = Search Intent. Landing ≠ filtered listing. P15 owns Query/Ranking/FTS. SEO owns IndexPolicy. |
 | **P14-R4** | Shared Tour public detail vs Foreign/Experience specialized pages | **RESOLVED** | Shared Shell + kind-specific sections. Not independent pages. Not a giant union ViewModel. Package specialty is future contributor only. |
-| **P14-R5** | Related tours owner | **UNRESOLVED** | Tour vs Content vs future Search. No recommendation engine unless locked. |
+| **P14-R5** | Related tours owner | **RESOLVED** | Public Experience owns presentation only. Deterministic shared-destination retrieval behind Tour public-read. Related ≠ Recommendation. P15 may replace retrieval. |
 | **P14-R6** | Content enrichment vs Content CMS ownership | **UNRESOLVED** | Content ≠ Catalog. Editorial blocks may display; TourProduct remains SoR. |
 | **P14-R7** | Public AgencyOffer on tour experience | **UNRESOLVED** | P13 publication exists. Public seller listing may be DEFER. Published Offer ≠ SEO Indexed. |
 | **P14-R8** | Filters/facets implementation vs P15 | **UNRESOLVED** | Simple catalog filters in P14 vs faceting engine in P15. |

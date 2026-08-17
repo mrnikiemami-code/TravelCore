@@ -380,6 +380,45 @@ internal static class TourEndpoints
             }
         });
 
+        group.MapGet("/related-published", async Task<IResult> (
+            Guid destinationId,
+            string? locale,
+            Guid? excludeTourProductId,
+            IRelatedTourPublicQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var items = await query.GetByDestinationAsync(
+                    destinationId,
+                    locale ?? "en",
+                    excludeTourProductId,
+                    cancellationToken);
+                return Results.Ok(items);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
+        group.MapGet("/{id:guid}/related-published", async Task<IResult> (
+            Guid id,
+            string? locale,
+            IRelatedTourPublicQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var items = await query.GetByTourProductAsync(id, locale ?? "en", cancellationToken);
+                return Results.Ok(items);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
         group.MapGet("/{id:guid}/media", async Task<IResult> (
             Guid id,
             ITourProductMediaService service,

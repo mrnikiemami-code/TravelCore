@@ -235,4 +235,37 @@ public sealed class PublicExperienceBoundaryGuardrailTests
         Assert.Contains("experience/presentation", endpointText, StringComparison.Ordinal);
         Assert.DoesNotContain("CreateQuote", endpointText, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Related_Tours_Have_Replaceable_Query_Not_Ranking()
+    {
+        var listPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "related-tours-list.tsx");
+        Assert.True(File.Exists(listPath), listPath);
+        var list = File.ReadAllText(listPath);
+        Assert.Contains("Related tours", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("to_tsvector", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", list, StringComparison.Ordinal);
+
+        var endpoints = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Tour",
+            "TravelCore.Modules.Tour.Infrastructure",
+            "Endpoints",
+            "TourEndpoints.cs"));
+        Assert.Contains("related-published", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("ts_rank", endpoints, StringComparison.Ordinal);
+    }
 }

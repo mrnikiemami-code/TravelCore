@@ -45,6 +45,7 @@ public sealed class TourModule : ITravelCoreModule
         services.AddScoped<IExperienceMediaService, ExperienceMediaService>();
         services.AddScoped<IExperienceCatalogService, ExperienceCatalogService>();
         services.AddScoped<IExperiencePublicPresentationQuery, ExperiencePublicPresentationQuery>();
+        services.AddScoped<IRelatedTourPublicQuery, RelatedTourPublicQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

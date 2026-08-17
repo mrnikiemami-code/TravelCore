@@ -1,15 +1,19 @@
 import { Container, LtrValue, Stack, Text } from "@/components/ui";
 import type { AppLocale } from "@/lib/i18n";
 import { LANDING_PURPOSE, LANDING_ROUTE_PATTERN } from "./listing-landing";
+import { RelatedToursList } from "./related-tours-list";
+import type { RelatedTourView } from "./load-related-tours";
 
 export function PublicTourLandingView({
   locale,
   topic,
   intent,
+  relatedTours,
 }: {
   locale: AppLocale;
   topic: string;
   intent: string;
+  relatedTours: RelatedTourView[];
 }) {
   return (
     <div className="py-6 sm:py-8">
@@ -51,16 +55,7 @@ export function PublicTourLandingView({
             </Text>
           </Stack>
 
-          <Stack gap="sm">
-            <Text as="h2" role="heading">
-              {locale === "fa" ? "تورهای مرتبط" : "Related tours"}
-            </Text>
-            <Text>
-              {locale === "fa"
-                ? "جای نمایش مرتبط · بدون موتور پیشنهاد."
-                : "Related-tours slot · no recommendation engine."}
-            </Text>
-          </Stack>
+          <RelatedToursList locale={locale} items={relatedTours} />
 
           <Stack gap="sm">
             <Text as="h2" role="heading">

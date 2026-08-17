@@ -57,4 +57,15 @@ public sealed class PublicExperienceScaffoldingSmokeTests
         Assert.Contains("Itinerary", PublicExperienceDetailComposition.ExperienceSections, StringComparison.Ordinal);
         Assert.Contains("Flight", PublicExperienceDetailComposition.FuturePackageSections, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Related_Tours_Are_Composition_Not_Recommendation()
+    {
+        Assert.Equal("PublicExperience", PublicExperienceRelatedToursBoundary.PresentationOwner);
+        Assert.Equal("Tour", PublicExperienceRelatedToursBoundary.FactOwner);
+        Assert.Equal("Search", PublicExperienceRelatedToursBoundary.FutureRetrievalOwner);
+        Assert.False(PublicExperienceRelatedToursBoundary.RecommendationEngineAllowed);
+        Assert.False(PublicExperienceRelatedToursBoundary.SearchRankingAllowed);
+        Assert.Equal(6, PublicExperienceRelatedToursBoundary.MaxItems);
+    }
 }

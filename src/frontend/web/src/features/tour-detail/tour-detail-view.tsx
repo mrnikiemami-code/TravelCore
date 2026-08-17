@@ -1,6 +1,7 @@
 import { Container, LtrValue, Stack, Text } from "@/components/ui";
 import { PublicDetailStickyActions } from "@/features/public-experience/detail-sticky-actions";
 import { ExperienceTourDetailSections } from "@/features/public-experience/experience-detail-sections";
+import { RelatedToursList } from "@/features/public-experience/related-tours-list";
 import type { AppLocale } from "@/lib/i18n";
 import type {
   PublicPriceSummaryView,
@@ -292,6 +293,8 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
               </Text>
             </Stack>
           </div>
+
+          <RelatedToursList locale={locale} items={vm.relatedTours} />
         </Stack>
       </Container>
       <PublicDetailStickyActions locale={locale} />

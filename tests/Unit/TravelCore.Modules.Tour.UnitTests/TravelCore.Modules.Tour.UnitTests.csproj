@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\backend\Modules\Tour\TravelCore.Modules.Tour.Domain\TravelCore.Modules.Tour.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Tour\TravelCore.Modules.Tour.Contracts\TravelCore.Modules.Tour.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
