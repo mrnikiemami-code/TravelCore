@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P16-T001: UGC independent module + schema ugc. No Review/Rating/Travelogue product types.
+/// TC-P16-T002: UGC owns Review + child dimension ratings. Rating is not an independent aggregate.
 /// UGC != Content · UGC != Media · UGC != target domain owner · UGC != SEO · UGC != Search.
 /// </summary>
 public sealed class UgcBoundaryGuardrailTests
@@ -38,8 +38,11 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.False(UgcOwnershipBoundary.OwnsSearch);
         Assert.False(UgcOwnershipBoundary.OwnsBooking);
         Assert.False(UgcOwnershipBoundary.OwnsPayment);
-        Assert.False(UgcOwnershipBoundary.ReviewImplemented);
+        Assert.True(UgcOwnershipBoundary.ReviewImplemented);
         Assert.False(UgcOwnershipBoundary.RatingImplemented);
+        Assert.False(UgcOwnershipBoundary.RatingIsIndependentAggregate);
+        Assert.True(UgcOwnershipBoundary.OverallRatingOwnedByReview);
+        Assert.True(UgcOwnershipBoundary.DimensionRatingsAreReviewChildren);
         Assert.False(UgcOwnershipBoundary.TravelogueImplemented);
         Assert.False(UgcOwnershipBoundary.LikeImplemented);
         Assert.False(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
@@ -87,15 +90,19 @@ public sealed class UgcBoundaryGuardrailTests
     }
 
     [Fact]
-    public void Ugc_T001_MustNotImplement_ProductAggregates()
+    public void Ugc_MustNotImplement_IndependentRating_Or_DeferredProductAggregates()
     {
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.Review));
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.ReviewDimensionRating));
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.RatingValue));
+
         var roots = new[]
         {
             Path.Combine(RepoRoot, "src", "backend", "Modules", "Ugc"),
         };
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(Review|Rating|RatingDimension|Travelogue|UserPhoto|Comment|Like|Report)\b",
+            @"\b(class|record|enum|struct|interface)\s+(Rating|RatingDimension|Travelogue|UserPhoto|Comment|Like|Report)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -123,7 +130,7 @@ public sealed class UgcBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T001 forbids Review/Rating/Travelogue/Comment/Like/Report product types:\n" + string.Join('\n', hits));
+            "T002 forbids independent Rating aggregate and Travelogue/Comment/Like/Report product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -138,6 +145,7 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.Contains("UGC != SEO", text, StringComparison.Ordinal);
         Assert.Contains("UGC != Search", text, StringComparison.Ordinal);
         Assert.Contains("P16-R1", text, StringComparison.Ordinal);
+        Assert.Contains("P16-R2", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

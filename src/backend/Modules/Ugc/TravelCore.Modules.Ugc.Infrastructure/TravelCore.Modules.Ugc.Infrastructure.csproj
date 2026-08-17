@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Ugc.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Ugc.Infrastructure</AssemblyName>
-    <Description>UGC infrastructure: owned schema ugc (TC-P16-T001). No Review/Rating tables yet.</Description>
+    <Description>UGC infrastructure: schema ugc + Review/rating baseline (TC-P16-T002).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +31,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />
     <InternalsVisibleTo Include="TravelCore.Modules.Ugc.UnitTests" />
+    <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
   </ItemGroup>
 
 </Project>

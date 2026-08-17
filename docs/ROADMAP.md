@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P16 — UGC** (**IN PROGRESS** — T001 scaffolding) |
-| Phase Status | P00–P15 COMPLETE · P16-R1 RESOLVED · `TC-P16-T001` delivered |
+| Current Phase | **P16 — UGC** (**IN PROGRESS** — T002 Review/rating baseline) |
+| Phase Status | P00–P15 COMPLETE · P16-R1/R2 RESOLVED · `TC-P16-T002` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P16-T001` → next locked task (do not invent R2–R8) |
+| Current Next Task | Architect review of `TC-P16-T002` → next locked task (do not invent R3–R8) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -115,7 +115,7 @@
 - **P13** = COMPLETE (`TC-P13-GATE` ACCEPTED `c0bcd78` · **R1–R7 RESOLVED** · T008 vacant)
 - **P14** = COMPLETE (`TC-P14-GATE` ACCEPTED `608216d` · **R1–R8 RESOLVED**)
 - **P15** = COMPLETE (`TC-P15-GATE` ACCEPTED `4e2098d` · **R1–R7 RESOLVED** · T008 vacant)
-- **P16** = IN_PROGRESS — PLAN ACCEPTED · **P16-R1 RESOLVED** · T001 scaffolding [`plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md)
+- **P16** = IN_PROGRESS — PLAN ACCEPTED · **P16-R1 RESOLVED** · **P16-R2 RESOLVED** · T002 Review/rating [`plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md)
 - **P17–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -535,7 +535,7 @@ Ownership carry-forward: Tour = Fact · Content = Editorial · Pricing = Price �
 
 ## P16 — UGC
 
-**Status:** IN PROGRESS — PLAN ACCEPTED · **P16-R1 RESOLVED** · T001 scaffolding ([`docs/plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md))
+**Status:** IN PROGRESS — PLAN ACCEPTED · **P16-R1 RESOLVED** · **P16-R2 RESOLVED** · T002 Review/rating ([`docs/plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md))
 
 Review · Rating · Rating dimensions · Travelogue · User Photo · Comment · Like در صورت تأیید · Report · Moderation · Publication state (Draft/Pending/Published/Rejected/Archived).
 
@@ -755,7 +755,7 @@ P26 = Advanced SEO.
 | P13 | Agency Marketplace | **COMPLETE** (`TC-P13-GATE` `c0bcd78` · R1–R7 RESOLVED) |
 | P14 | Public Tour Experience | **COMPLETE** (`TC-P14-GATE` ACCEPTED `608216d` · R1–R8 RESOLVED) |
 | P15 | Search | **COMPLETE** (`TC-P15-GATE` ACCEPTED `4e2098d` · R1–R7 RESOLVED · T008 VACANT) |
-| P16 | UGC | **IN_PROGRESS** (R1 RESOLVED · T001) |
+| P16 | UGC | **IN_PROGRESS** (R1–R2 RESOLVED · T002) |
 | P17 | Visa | PLANNED |
 | P18 | Trip Planner / Lead Experience | PLANNED |
 | P19 | Tour Booking | PLANNED |

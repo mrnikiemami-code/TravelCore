@@ -44,8 +44,11 @@ public sealed class UgcScaffoldingSmokeTests
         Assert.False(UgcOwnershipBoundary.OwnsSearch);
         Assert.False(UgcOwnershipBoundary.OwnsBooking);
         Assert.False(UgcOwnershipBoundary.OwnsPayment);
-        Assert.False(UgcOwnershipBoundary.ReviewImplemented);
+        Assert.True(UgcOwnershipBoundary.ReviewImplemented);
         Assert.False(UgcOwnershipBoundary.RatingImplemented);
+        Assert.False(UgcOwnershipBoundary.RatingIsIndependentAggregate);
+        Assert.True(UgcOwnershipBoundary.OverallRatingOwnedByReview);
+        Assert.True(UgcOwnershipBoundary.DimensionRatingsAreReviewChildren);
         Assert.False(UgcOwnershipBoundary.TravelogueImplemented);
         Assert.False(UgcOwnershipBoundary.CommentImplemented);
         Assert.False(UgcOwnershipBoundary.LikeImplemented);

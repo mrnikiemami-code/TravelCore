@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL UGC schema scaffolding smoke (TC-P16-T001).
+/// Real-PostgreSQL UGC Review + dimension ratings (TC-P16-T002). Schema ugc only; no peer FK.
 /// </summary>
 [Collection(nameof(UgcMigrationLifecycleCollection))]
 public sealed class UgcMigrationLifecycleTests
@@ -19,7 +19,7 @@ public sealed class UgcMigrationLifecycleTests
     }
 
     [Fact]
-    public async Task UgcMigrationLifecycle_Apply_EnsureSchema_Only()
+    public async Task UgcMigrationLifecycle_Apply_Creates_Review_Tables_Without_Peer_Fk()
     {
         var ct = TestContext.Current.CancellationToken;
         string[] expectedMigrations;
@@ -27,8 +27,13 @@ public sealed class UgcMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Single(expectedMigrations);
-            Assert.EndsWith("_InitialUgcScaffolding", expectedMigrations[0], StringComparison.Ordinal);
+            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_InitialUgcScaffolding", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddReviewRatingBaseline", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -50,17 +55,36 @@ public sealed class UgcMigrationLifecycleTests
                 WHERE table_schema = 'ugc'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(0, await ScalarIntAsync(conn, """
+            Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'ugc'
-                  AND table_name NOT IN ('__EFMigrationsHistory');
+                  AND table_name = 'reviews';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'review_dimension_ratings';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'ugc'
-                  AND table_name IN ('reviews', 'ratings', 'travelogues', 'comments', 'likes', 'reports');
+                  AND table_name IN ('ratings', 'travelogues', 'comments', 'likes', 'reports');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'reviews'
+                  AND column_name = 'overall_rating';
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'ugc'
+                  AND column_name IN ('hotel_rating', 'guide_rating', 'food_rating', 'service_rating', 'target_id', 'target_type');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
