@@ -72,6 +72,57 @@ export type PublishedDepartureView = {
   priceSummary: PublicPriceSummaryView | null;
 };
 
+export type TourCatalogFactView = {
+  code: string;
+  detail: string | null;
+};
+
+export type ExperienceStopView = {
+  sortOrder: number;
+  destinationId: string | null;
+  placeId: string | null;
+};
+
+export type ExperienceItineraryDayView = {
+  dayNumber: number;
+  stops: ExperienceStopView[];
+  meals: string[];
+};
+
+export type ExperienceFactView = {
+  code: string;
+  value: string | null;
+  detail: string | null;
+};
+
+export type ExperienceEquipmentView = {
+  code: string;
+  kind: string;
+  detail: string | null;
+};
+
+export type ExperienceGuideView = {
+  guidePartyId: string;
+  role: string;
+  note: string | null;
+};
+
+export type ExperienceStayView = {
+  sortOrder: number;
+  placeId: string | null;
+};
+
+/** Kind-specific Experience slice — not a union with Package fields (P14-R4). */
+export type ExperiencePresentationView = {
+  difficulty: string | null;
+  itineraryDays: ExperienceItineraryDayView[];
+  eligibility: ExperienceFactView[];
+  equipment: ExperienceEquipmentView[];
+  localTransport: ExperienceFactView[];
+  guides: ExperienceGuideView[];
+  accommodationPlan: ExperienceStayView[];
+};
+
 export type TourDetailPageViewModel = {
   locale: AppLocale;
   tourProductId: string;
@@ -85,6 +136,11 @@ export type TourDetailPageViewModel = {
   cover: TourMediaItemView | null;
   gallery: TourMediaItemView[];
   publishedDepartures: PublishedDepartureView[];
+  destinationIds: string[];
+  originDestinationId: string | null;
+  policies: TourCatalogFactView[];
+  requirements: TourCatalogFactView[];
+  experience: ExperiencePresentationView | null;
 };
 
 type ApiSlugHit = {
@@ -154,6 +210,59 @@ type ApiPublishedDeparture = {
     placeId: string;
     nights: number;
     boardType: string;
+  }> | null;
+};
+
+type ApiCatalogFacts = {
+  id: string;
+  code: string;
+  services?: Array<{ code: string; detail?: string | null }> | null;
+  policies?: Array<{ code: string; detail?: string | null }> | null;
+  requirements?: Array<{ code: string; detail?: string | null }> | null;
+};
+
+type ApiSemanticLinks = {
+  id: string;
+  destinationIds?: string[] | null;
+  originDestinationId?: string | null;
+  agencyId?: string | null;
+};
+
+type ApiExperiencePresentation = {
+  tourProductId: string;
+  difficulty?: string | null;
+  itineraryDays?: Array<{
+    dayNumber: number;
+    stops?: Array<{
+      sortOrder: number;
+      destinationId?: string | null;
+      placeId?: string | null;
+    }> | null;
+    meals?: string[] | null;
+  }> | null;
+  eligibility?: Array<{
+    code: string;
+    value?: string | null;
+    detail?: string | null;
+  }> | null;
+  equipment?: Array<{
+    code: string;
+    kind: string;
+    detail?: string | null;
+  }> | null;
+  localTransport?: Array<{
+    code: string;
+    value?: string | null;
+    detail?: string | null;
+  }> | null;
+  guides?: Array<{
+    guidePartyId: string;
+    role: string;
+    note?: string | null;
+  }> | null;
+  accommodationPlan?: Array<{
+    sortOrder: number;
+    placeId?: string | null;
   }> | null;
 };
 
@@ -235,7 +344,8 @@ export async function loadTourDetailPage(
   }
 
   const id = hitResult.data.tourProductId;
-  const [productResult, mediaResult, departuresResult] = await Promise.all([
+  const [productResult, mediaResult, departuresResult, linksResult, factsResult] =
+    await Promise.all([
     apiGetJson<ApiTourProduct>(`/api/tour/products/${id}?locale=${localeEnc}`, {
       cache: "no-store",
     }),
@@ -247,6 +357,12 @@ export async function loadTourDetailPage(
       `/api/tour/products/${id}/departures/published`,
       { cache: "no-store" },
     ),
+    apiGetJson<ApiSemanticLinks>(`/api/tour/products/${id}/semantic-links`, {
+      cache: "no-store",
+    }),
+    apiGetJson<ApiCatalogFacts>(`/api/tour/products/${id}/catalog-facts`, {
+      cache: "no-store",
+    }),
   ]);
 
   if (!isApiOk(productResult)) {
@@ -257,6 +373,12 @@ export async function loadTourDetailPage(
   }
   if (!isApiOk(departuresResult) && departuresResult.status !== 404) {
     return departuresResult;
+  }
+  if (!isApiOk(linksResult) && linksResult.status !== 404) {
+    return linksResult;
+  }
+  if (!isApiOk(factsResult) && factsResult.status !== 404) {
+    return factsResult;
   }
 
   const product = productResult.data;
@@ -314,6 +436,13 @@ export async function loadTourDetailPage(
     }),
   );
 
+  const links = isApiOk(linksResult) ? linksResult.data : null;
+  const facts = isApiOk(factsResult) ? factsResult.data : null;
+  let experience: ExperiencePresentationView | null = null;
+  if (product.kind === "Experience") {
+    experience = await loadExperiencePresentation(id);
+  }
+
   return {
     ok: true,
     status: 200,
@@ -330,6 +459,17 @@ export async function loadTourDetailPage(
       cover,
       gallery,
       publishedDepartures,
+      destinationIds: links?.destinationIds ?? [],
+      originDestinationId: links?.originDestinationId ?? null,
+      policies: (facts?.policies ?? []).map((item) => ({
+        code: item.code,
+        detail: item.detail ?? null,
+      })),
+      requirements: (facts?.requirements ?? []).map((item) => ({
+        code: item.code,
+        detail: item.detail ?? null,
+      })),
+      experience,
     }),
   };
 }
@@ -370,6 +510,56 @@ async function loadPublicPriceSummary(
       passengerCategory: row.passengerCategory,
       occupancyCategory: row.occupancyCategory,
       money: mapPublicMoney(row.money),
+    })),
+  };
+}
+
+async function loadExperiencePresentation(
+  tourProductId: string,
+): Promise<ExperiencePresentationView | null> {
+  const result = await apiGetJson<ApiExperiencePresentation>(
+    `/api/tour/products/${tourProductId}/experience/presentation`,
+    { cache: "no-store" },
+  );
+  if (!isApiOk(result)) {
+    return null;
+  }
+
+  const data = result.data;
+  return {
+    difficulty: data.difficulty ?? null,
+    itineraryDays: (data.itineraryDays ?? []).map((day) => ({
+      dayNumber: day.dayNumber,
+      stops: (day.stops ?? []).map((stop) => ({
+        sortOrder: stop.sortOrder,
+        destinationId: stop.destinationId ?? null,
+        placeId: stop.placeId ?? null,
+      })),
+      meals: day.meals ?? [],
+    })),
+    eligibility: (data.eligibility ?? []).map((item) => ({
+      code: item.code,
+      value: item.value ?? null,
+      detail: item.detail ?? null,
+    })),
+    equipment: (data.equipment ?? []).map((item) => ({
+      code: item.code,
+      kind: item.kind,
+      detail: item.detail ?? null,
+    })),
+    localTransport: (data.localTransport ?? []).map((item) => ({
+      code: item.code,
+      value: item.value ?? null,
+      detail: item.detail ?? null,
+    })),
+    guides: (data.guides ?? []).map((item) => ({
+      guidePartyId: item.guidePartyId,
+      role: item.role,
+      note: item.note ?? null,
+    })),
+    accommodationPlan: (data.accommodationPlan ?? []).map((item) => ({
+      sortOrder: item.sortOrder,
+      placeId: item.placeId ?? null,
     })),
   };
 }

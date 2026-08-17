@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T003 listing/landing) |
-| Phase Status | P00–P13 COMPLETE · P14-R1/R2/R3 RESOLVED · `TC-P14-T003` delivered |
+| Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T004 shared detail shell) |
+| Phase Status | P00–P13 COMPLETE · P14-R1–R4 RESOLVED · `TC-P14-T004` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P14-T003` → next Auto-Execute |
+| Current Next Task | Architect review of `TC-P14-T004` → next Auto-Execute |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -113,7 +113,7 @@
 - **P11** = COMPLETE (`TC-P11-GATE` ACCEPTED `6f7ea12` · **R1–R8 RESOLVED**)
 - **P12** = COMPLETE / ACCEPTED (`b372367`) (**R1–R8 RESOLVED** · T001–T009 ACCEPTED — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
 - **P13** = COMPLETE (`TC-P13-GATE` ACCEPTED `c0bcd78` · **R1–R7 RESOLVED** · T008 vacant)
-- **P14** = IN_PROGRESS — PLAN ACCEPTED · **P14-R1/R2/R3 RESOLVED** · T003 listing/landing [`plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md)
+- **P14** = IN_PROGRESS — PLAN ACCEPTED · **P14-R1–R4 RESOLVED** · T004 shared detail [`plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md)
 - **P15–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -493,7 +493,7 @@ Agency business profile · Offer ownership · Tour offering · Capacity/availabi
 
 ## P14 — Public Tour Experience
 
-**Status:** IN_PROGRESS — PLAN ACCEPTED · **P14-R1/R2/R3 RESOLVED** · T003 listing vs SEO landing [`plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md)
+**Status:** IN_PROGRESS — PLAN ACCEPTED · **P14-R1–R4 RESOLVED** · T004 shared vs specialized detail [`plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md)
 
 UX عمومی production برای: Tour Landing · Destination Tour Landing · Tour Listing/Search · Foreign Tour Detail · Experience Tour Detail · Filters · Sorting · Pagination · Mobile filters · Sticky/mobile booking actions · Related tours · تمایز SEO landing.
 
@@ -735,7 +735,7 @@ P26 = Advanced SEO.
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
 | P12 | Pricing | **COMPLETE** (`TC-P12-GATE` ACCEPTED `b372367` · R1–R8 RESOLVED) |
 | P13 | Agency Marketplace | **COMPLETE** (`TC-P13-GATE` `c0bcd78` · R1–R7 RESOLVED) |
-| P14 | Public Tour Experience | **IN_PROGRESS** (R1/R2/R3 RESOLVED · T003) |
+| P14 | Public Tour Experience | **IN_PROGRESS** (R1–R4 RESOLVED · T004) |
 | P15 | Search | PLANNED |
 | P16 | UGC | PLANNED |
 | P17 | Visa | PLANNED |

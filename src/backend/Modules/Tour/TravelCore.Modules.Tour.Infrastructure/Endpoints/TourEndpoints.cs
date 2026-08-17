@@ -364,6 +364,22 @@ internal static class TourEndpoints
             }
         }).RequireAuthorization(TourProductsWritePolicy);
 
+        group.MapGet("/{id:guid}/experience/presentation", async Task<IResult> (
+            Guid id,
+            IExperiencePublicPresentationQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var presentation = await query.GetPublishedAsync(id, cancellationToken);
+                return presentation is null ? Results.NotFound() : Results.Ok(presentation);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
         group.MapGet("/{id:guid}/media", async Task<IResult> (
             Guid id,
             ITourProductMediaService service,

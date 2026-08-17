@@ -1,5 +1,6 @@
 import { Container, LtrValue, Stack, Text } from "@/components/ui";
 import { PublicDetailStickyActions } from "@/features/public-experience/detail-sticky-actions";
+import { ExperienceTourDetailSections } from "@/features/public-experience/experience-detail-sections";
 import type { AppLocale } from "@/lib/i18n";
 import type {
   PublicPriceSummaryView,
@@ -7,10 +8,9 @@ import type {
 } from "./load-tour-detail";
 
 /**
- * Server-only public TourProduct catalog detail (TC-P09-T008/T010 · TC-P11-T009 · TC-P12-T008 · TC-P14-T002).
- * Catalog Published ≠ bookable. Published executions ≠ bookable (P11-R8).
- * Public price facts only (P12-R8) — no checkout CTA.
- * Sticky actions are presentation only (P14-R2) — no sales CTA.
+ * Shared public Tour Detail shell (TC-P14-T004 / P14-R4).
+ * Kind-specific Experience sections compose in; Package specialty is not implemented.
+ * Catalog Published ≠ bookable. Sticky actions are presentation only (P14-R2).
  * App-proxy media only. Cover + ordered Gallery (no hero role).
  */
 export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
@@ -65,6 +65,46 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
               <LtrValue>{vm.slug}</LtrValue>
             </Text>
             {vm.description ? <Text as="p">{vm.description}</Text> : null}
+          </Stack>
+
+          <Stack gap="sm">
+            <Text as="h2" role="heading">
+              {locale === "fa" ? "مقصدها" : "Destinations"}
+            </Text>
+            {vm.destinationIds.length === 0 && !vm.originDestinationId ? (
+              <Text role="muted">
+                {locale === "fa" ? "مقصدی ثبت نشده است." : "No destinations published."}
+              </Text>
+            ) : (
+              <ul className="list-inside list-disc">
+                {vm.originDestinationId ? (
+                  <li>
+                    {locale === "fa" ? "مبدأ" : "Origin"}:{" "}
+                    <LtrValue>{vm.originDestinationId}</LtrValue>
+                  </li>
+                ) : null}
+                {vm.destinationIds.map((id) => (
+                  <li key={id}>
+                    <LtrValue>{id}</LtrValue>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Stack>
+
+          {vm.kind === "Experience" ? (
+            <ExperienceTourDetailSections locale={locale} experience={vm.experience} />
+          ) : null}
+
+          <Stack gap="sm">
+            <Text as="h2" role="heading">
+              {locale === "fa" ? "آمادگی عرضه" : "Offer readiness"}
+            </Text>
+            <Text role="caption">
+              {locale === "fa"
+                ? "نمایش آگهی عمومی قفل نشده است."
+                : "Public offer display is not locked yet."}
+            </Text>
           </Stack>
 
           <div id="published-departures">
@@ -213,6 +253,32 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
               )}
             </Stack>
           </div>
+
+          <Stack gap="sm">
+            <Text as="h2" role="heading">
+              {locale === "fa" ? "قوانین و الزامات" : "Policies"}
+            </Text>
+            {vm.policies.length === 0 && vm.requirements.length === 0 ? (
+              <Text role="muted">
+                {locale === "fa" ? "قانونی ثبت نشده است." : "No policies published."}
+              </Text>
+            ) : (
+              <ul className="list-inside list-disc">
+                {vm.policies.map((item) => (
+                  <li key={`p-${item.code}`}>
+                    {item.code}
+                    {item.detail ? ` · ${item.detail}` : ""}
+                  </li>
+                ))}
+                {vm.requirements.map((item) => (
+                  <li key={`r-${item.code}`}>
+                    {item.code}
+                    {item.detail ? ` · ${item.detail}` : ""}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Stack>
 
           <div id="request-information">
             <Stack gap="sm">

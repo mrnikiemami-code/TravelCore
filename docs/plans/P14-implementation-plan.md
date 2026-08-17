@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P14-PLAN` |
 | Phase | P14 — Public Tour Experience |
-| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1/R2/R3 RESOLVED; T003 listing/landing boundary delivered |
+| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1–R4 RESOLVED; T004 shared detail shell delivered |
 | Baseline | `c0bcd78` (`docs: P13 acceptance gate evidence [TC-P13-GATE]` — **TC-P13-GATE** ACCEPTED; P13 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P14 · P09–P13 Gates · P05 SEO · P08 Content · P11-R8 Published ≠ Bookable · P12-R8 public price read · P13-R7 Published Offer ≠ SEO Indexed · architect P13 Gate ACCEPT (Public Experience ≠ Booking · SEO Page ≠ Commercial Transaction · Content ≠ Catalog Ownership) |
 | Backend root | `src/backend` |
@@ -88,9 +88,11 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 - Delivered: listing/landing contracts · `/tours` listing route · `/tours/{topic}/{intent}` landing route · composition slots only.
 - Forbidden: Search engine · Ranking · FTS · Faceting engine · SEO IndexPolicy ownership.
 
-### TC-P14-T004 — Public listing baseline (filters / sort / pagination)
-- Purpose: Listing UX without P15 Search engine (needs **P14-R1/R8**).
-- Forbidden: FTS / ranking engine / autocomplete.
+### TC-P14-T004 — Shared and specialized Tour Detail composition
+- Purpose: Shared public Detail shell with kind-specific section composition (**P14-R4 RESOLVED**).
+- Architect lock: Shared Shell + Common Sections + Kind-specific Sections. Not independent Experience/Package pages. Not a giant union ViewModel. Package specialty remains future contributor.
+- Delivered: `PublicExperienceDetailComposition` · shared `TourDetailView` shell · Experience sections · Tour public `experience/presentation` read of existing facts · destinations/policies compose.
+- Forbidden: Booking · Search engine · Pricing ownership · new Tour domain facts · Package domain implementation · IndexPolicy ownership.
 
 ### TC-P14-T005 — Mobile / a11y / sticky action chrome
 - Purpose: RTL/LTR · mobile filters · sticky actions as **presentation** (needs **P14-R2**).
@@ -118,7 +120,7 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 | **P14-R1** | Which public surfaces are in P14 vs deferred to P15 Search | **RESOLVED** | Public Experience Layer owns Detail/Listing/Landing presentation. Not Search. Not Catalog. P14 = Presentation + SEO composition. P15 owns Query/Ranking/FTS. |
 | **P14-R2** | Sticky/mobile booking **actions** vs Published ≠ Bookable | **RESOLVED** | Sticky Action ≠ Booking. Allowed: View Departure · View Price Summary · Contact / Request Information. Forbidden: Book Now · Pay Now · Reserve Seat · Checkout. Published ≠ Bookable. |
 | **P14-R3** | Listing URL vs SEO landing URL ownership | **RESOLVED** | Listing and SEO Landing are two surfaces. Listing = Discovery. Landing = Search Intent. Landing ≠ filtered listing. P15 owns Query/Ranking/FTS. SEO owns IndexPolicy. |
-| **P14-R4** | Shared Tour public detail vs Foreign/Experience specialized pages | **UNRESOLVED** | Two product kinds exist (P09/P10/P11). Do not invent a third catalog. |
+| **P14-R4** | Shared Tour public detail vs Foreign/Experience specialized pages | **RESOLVED** | Shared Shell + kind-specific sections. Not independent pages. Not a giant union ViewModel. Package specialty is future contributor only. |
 | **P14-R5** | Related tours owner | **UNRESOLVED** | Tour vs Content vs future Search. No recommendation engine unless locked. |
 | **P14-R6** | Content enrichment vs Content CMS ownership | **UNRESOLVED** | Content ≠ Catalog. Editorial blocks may display; TourProduct remains SoR. |
 | **P14-R7** | Public AgencyOffer on tour experience | **UNRESOLVED** | P13 publication exists. Public seller listing may be DEFER. Published Offer ≠ SEO Indexed. |

@@ -202,4 +202,37 @@ public sealed class PublicExperienceBoundaryGuardrailTests
         Assert.Contains("not a filtered listing", landingViewText, StringComparison.Ordinal);
         Assert.DoesNotContain("pg_trgm", landingViewText, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Shared_Detail_Shell_Does_Not_Duplicate_Kind_Pages()
+    {
+        var web = Path.Combine(RepoRoot, "src", "frontend", "web", "src");
+        Assert.False(File.Exists(Path.Combine(web, "features", "tour-detail", "experience-tour-page.tsx")));
+        Assert.False(File.Exists(Path.Combine(web, "features", "tour-detail", "package-tour-page.tsx")));
+
+        var experienceSections = Path.Combine(
+            web,
+            "features",
+            "public-experience",
+            "experience-detail-sections.tsx");
+        Assert.True(File.Exists(experienceSections), experienceSections);
+        var text = File.ReadAllText(experienceSections);
+        Assert.Contains("ExperienceTourDetailSections", text, StringComparison.Ordinal);
+        Assert.Contains("Itinerary", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/booking", text, StringComparison.Ordinal);
+
+        var endpoints = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Tour",
+            "TravelCore.Modules.Tour.Infrastructure",
+            "Endpoints",
+            "TourEndpoints.cs");
+        var endpointText = File.ReadAllText(endpoints);
+        Assert.Contains("experience/presentation", endpointText, StringComparison.Ordinal);
+        Assert.DoesNotContain("CreateQuote", endpointText, StringComparison.Ordinal);
+    }
 }

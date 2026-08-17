@@ -47,4 +47,14 @@ public sealed class PublicExperienceScaffoldingSmokeTests
         Assert.Equal("Search", PublicExperienceListingLandingBoundary.SearchEngineOwnerModule);
         Assert.Equal("Seo", PublicExperienceListingLandingBoundary.IndexPolicyOwnerModule);
     }
+
+    [Fact]
+    public void Detail_Uses_Shared_Shell_Not_Independent_Kind_Pages()
+    {
+        Assert.Equal("SharedShellPlusKindSpecificSections", PublicExperienceDetailComposition.ShellPosture);
+        Assert.False(PublicExperienceDetailComposition.IndependentKindPagesAllowed);
+        Assert.False(PublicExperienceDetailComposition.GiantUnionViewModelAllowed);
+        Assert.Contains("Itinerary", PublicExperienceDetailComposition.ExperienceSections, StringComparison.Ordinal);
+        Assert.Contains("Flight", PublicExperienceDetailComposition.FuturePackageSections, StringComparison.Ordinal);
+    }
 }
