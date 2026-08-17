@@ -35,8 +35,8 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T008) |
-| Phase Status | P00–P09 COMPLETE · P10 IN_PROGRESS (T001–T007 ACCEPTED · T008 · R1–R8 RESOLVED) |
+| Current Phase | **P10 — Experience Tour** (**COMPLETE** — Gate review) |
+| Phase Status | P00–P10 COMPLETE (Gate evidence) · P10-R1–R8 RESOLVED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
@@ -693,7 +693,7 @@ P26 = Advanced SEO.
 | P07 | Place Catalog | **COMPLETE** (`TC-P07-GATE` ACCEPTED) |
 | P08 | Content CMS | **COMPLETE** (`TC-P08-GATE` `576b7fa` · R6–R8 UNRESOLVED) |
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
-| P10 | Experience Tour | **IN_PROGRESS** (T001–T005 ACCEPTED · T006 · R1–R3/R5–R7 RESOLVED) |
+| P10 | Experience Tour | **COMPLETE** (Gate evidence · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | PLANNED |
 | P12 | Pricing | PLANNED |
 | P13 | Agency Marketplace | PLANNED |

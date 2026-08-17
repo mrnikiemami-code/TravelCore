@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T009) |
+| Current Phase | **P10 — Experience Tour** (**COMPLETE** — Gate pending ACCEPT) |
 | Previous Phase | **P09 — Tour Core** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `e3dbea6` (`TC-P10-T006`) · T007 product `f262084` awaiting review · P09 Gate `67fc580` |
+| Last Accepted Commit | `debd4d6` (`TC-P10-T009`) · T008 `0b6f191` · P09 Gate `67fc580` |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P10-T009` — Hardening + evidence pack |
-| Current Next Product Phase | P10 — Experience Tour (**IN_PROGRESS**) |
-| Current Next Task | T009 ACCEPT → `TC-P10-GATE` |
+| Current Active Product Task | `TC-P10-GATE` — AWAITING_ARCHITECT_REVIEW |
+| Current Next Product Phase | P11 — after Gate ACCEPT (continuity may auto-start PLAN) |
+| Current Next Task | Architect ACCEPT of `TC-P10-GATE` → P11 PLAN |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -153,17 +153,19 @@
 | P09-T009 | **COMPLETE / ACCEPTED** (`e1fc751`) — Access-backed Admin Tour catalog baseline |
 | P09-T010 | **COMPLETE / ACCEPTED** (`0334bae`) — Public Tour hardening + evidence pack |
 | P09-GATE | **COMPLETE / ACCEPTED** (`67fc580`) — evidence [`plans/P09-GATE-acceptance-evidence.md`](plans/P09-GATE-acceptance-evidence.md) |
-| P10 | **IN_PROGRESS** (T001–T005 ACCEPTED · T006 in flight; continuity after P09 Gate ACCEPT) |
+| P10 | **COMPLETE** (Gate evidence ready — awaiting ACCEPT) |
 | P10 Plan | `TC-P10-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) |
-| P10-T001 | **COMPLETE / ACCEPTED** (`e5490ae`) — Experience specialization foundation (`tour_experience_specializations` 1:1) |
-| P10-T002 | **COMPLETE / ACCEPTED** (`757c9b8`) — Experience Itinerary + Day + Stop structure (P10-R1) |
-| P10-T003 | **COMPLETE / ACCEPTED** (`85553b7`) — Stop Destination/Place semantic links (P10-R2) |
-| P10-T004 | **COMPLETE / ACCEPTED** (`7589ad1`) — Meals + Accommodation plan (P10-R3/R5) |
+| P10-T001 | **COMPLETE / ACCEPTED** (`e5490ae`) — Experience specialization foundation |
+| P10-T002 | **COMPLETE / ACCEPTED** (`757c9b8`) — Itinerary + Day + Stop (P10-R1) |
+| P10-T003 | **COMPLETE / ACCEPTED** (`85553b7`) — Stop Destination/Place links (P10-R2) |
+| P10-T004 | **COMPLETE / ACCEPTED** (`7589ad1`) — Meals + Accommodation (P10-R3/R5) |
 | P10-T005 | **COMPLETE / ACCEPTED** (`f7ce58c`) — Difficulty · Eligibility · Equipment · LocalTransport (P10-R6) |
-| P10-T006 | **COMPLETE / ACCEPTED** (`e3dbea6`) — Experience Guide assignments (P10-R7) |
-| P10-T007 | **COMPLETE / ACCEPTED** (`f262084`) — Experience Media posture (P10-R4) |
-| P10-T008 | **COMPLETE / ACCEPTED** (`0b6f191`) — Experience publishability (P10-R8) |
-| P10-T009 | **IN_PROGRESS** — Hardening + evidence pack |
+| P10-T006 | **COMPLETE / ACCEPTED** (`e3dbea6`) — Guide assignments (P10-R7) |
+| P10-T007 | **COMPLETE / ACCEPTED** (`f262084`) — Media posture (P10-R4) |
+| P10-T008 | **COMPLETE / ACCEPTED** (`0b6f191`) — Publishability (P10-R8) |
+| P10-T009 | **COMPLETE / ACCEPTED** (`debd4d6`) — Hardening + evidence |
+| P10-GATE | **AWAITING_ARCHITECT_REVIEW** — evidence [`plans/P10-GATE-acceptance-evidence.md`](plans/P10-GATE-acceptance-evidence.md) |
+| P10-R1…R8 | **ALL RESOLVED** |
 | P10-R1 (Experience specialization + Itinerary ownership) | **RESOLVED** — Experience owns Itinerary (0..1 child); Day/Stop under Itinerary |
 | P10-R2 (Stop Destination/Place links) | **RESOLVED** — DestinationId 0..1 · PlaceId 0..1 (Attraction-kind) · logical · no exclusivity · no FK |
 | P10-R3 (Accommodation plan) | **RESOLVED** — Experience accommodation plan 0..N · optional Place Hotel logical ref · no TourHotelOption/HotelBooking |
