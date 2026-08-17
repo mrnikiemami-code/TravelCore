@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P13-GATE` — P13 Acceptance Gate evidence (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P13 — Agency Marketplace |
-| Current Next Task | Architect review of GATE → P14 PLAN on ACCEPT (ceremonial wait is not a stop) |
+| Current Active Product Task | `TC-P14-PLAN` — Public Tour Experience plan (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Product Phase | P14 — Public Tour Experience |
+| Current Next Task | Architect review of P14 PLAN → lock P14-R1 → Auto-Execute T001 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -169,7 +169,7 @@
 | P12-T008 | **COMPLETE / ACCEPTED** (`520a46d`) — Public read-only price summary query (currency, components, occupancy prices) by logical target |
 | P12-T009 | **COMPLETE / ACCEPTED** (`a522dd5`) — Hardening + evidence pack [`plans/P12-T009-hardening-and-evidence-pack.md`](plans/P12-T009-hardening-and-evidence-pack.md) |
 | P12-GATE | **COMPLETE / ACCEPTED** (`b372367`) — evidence [`plans/P12-GATE-acceptance-evidence.md`](plans/P12-GATE-acceptance-evidence.md) |
-| P13 | **IN PROGRESS** — Plan ACCEPTED · **P13-R1/R2/R3/R4/R5/R6/R7 RESOLVED** |
+| P13 | **COMPLETE** — Gate ACCEPTED (`c0bcd78`) · R1–R7 RESOLVED · T008 vacant |
 | P13 Plan | `TC-P13-PLAN` COMPLETE / ACCEPTED — [`docs/plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md) |
 | P13-T001 | **COMPLETE / ACCEPTED** (`9f61763`) — Agency Marketplace module scaffolding (`agency_marketplace` schema) |
 | P13-T002 | **COMPLETE / ACCEPTED** (`809eb49`) — AgencyProfile commercial layer over Party identity |
@@ -180,7 +180,9 @@
 | P13-T007 | **COMPLETE / ACCEPTED** (`98ea1d1`) — AgencyOffer publishing and moderation baseline (not SEO / not CatalogStatus) |
 | P13-T008 | **VACANT** — original publishing slot delivered as T007; no independent capability invented |
 | P13-T009 | **COMPLETE / ACCEPTED** (`d813dbd`) — hardening + evidence pack [`plans/P13-T009-hardening-and-evidence-pack.md`](plans/P13-T009-hardening-and-evidence-pack.md) |
-| P13-GATE | **AWAITING_ARCHITECT_REVIEW** — evidence [`plans/P13-GATE-acceptance-evidence.md`](plans/P13-GATE-acceptance-evidence.md) |
+| P13-GATE | **COMPLETE / ACCEPTED** (`c0bcd78`) — evidence [`plans/P13-GATE-acceptance-evidence.md`](plans/P13-GATE-acceptance-evidence.md) |
+| P14 | **IN PROGRESS** — Plan authored · awaiting ACCEPT |
+| P14 Plan | `TC-P14-PLAN` AWAITING_ARCHITECT_REVIEW — [`docs/plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md) |
 | P13-R7 (Offer publishing / moderation) | **RESOLVED** — Agency Marketplace owns Offer publication status. Draft → Submitted → Approved → Published; Rejected/Archived returns. Published Offer ≠ SEO Indexed. No SEO ownership / ranking / Booking |
 | P13-R6 (Agency Panel ownership) | **RESOLVED** — Agency Panel belongs to Agency Marketplace (not Tour Admin, not Identity). Foundation only: profile/offer management. No Booking/Payment/Commission/CRM |
 | P13-R3 (Offer vs TourProduct) | **RESOLVED** — AgencyOffer owns the sales relationship; TourProduct remains catalog SoR; logical TourProduct Guid; no Tour FK / Price / Booking |
@@ -260,7 +262,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P13_GATE_DELIVERED** · R1–R7 RESOLVED · T008 vacant · T009 ACCEPTED · GATE awaiting review |
+| Phase Transition State | **P14_PLAN_DELIVERED** · P13 COMPLETE · P14 PLAN awaiting ACCEPT · no R# invented |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -269,7 +271,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P13-GATE`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P14-PLAN`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -585,7 +587,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P13-T007 | Agency Offer publishing and moderation baseline | COMPLETE / ACCEPTED | `98ea1d1` |
 | TC-P13-T008 | (vacant — publishing delivered as T007) | VACANT / SKIPPED | — |
 | TC-P13-T009 | Agency Marketplace hardening and evidence pack | COMPLETE / ACCEPTED | `d813dbd` |
-| TC-P13-GATE | P13 Agency Marketplace Acceptance Gate | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P13-GATE | P13 Agency Marketplace Acceptance Gate | COMPLETE / ACCEPTED | `c0bcd78` |
+| TC-P14-PLAN | P14 Public Tour Experience Implementation Plan | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

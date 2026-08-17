@@ -72,4 +72,4 @@
 
 ## 7. Gate outcome
 
-**AWAITING_ARCHITECT_REVIEW** (this commit). After ACCEPT: P13 COMPLETE · P14 PLAN may auto-start (no ceremonial Gate wait).
+**ACCEPTED** (`c0bcd78`) · P13 COMPLETE · P14 PLAN auto-started (no ceremonial Gate wait).
