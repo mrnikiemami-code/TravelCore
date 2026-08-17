@@ -95,7 +95,7 @@ public sealed class VisaDefinitionPersistenceModelTests
         Assert.Equal(VisaDbContext.SchemaName, applicabilityFk.PrincipalEntityType.GetSchema());
         Assert.Equal(DeleteBehavior.Cascade, applicabilityFk.DeleteBehavior);
 
-        Assert.Equal(12, model.GetEntityTypes().Count());
+        Assert.Equal(14, model.GetEntityTypes().Count());
         Assert.DoesNotContain(
             model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()),
             f =>
@@ -111,16 +111,24 @@ public sealed class VisaDefinitionPersistenceModelTests
             .Select(p => p.GetColumnName())
             .Where(n => n is not null)
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
-        Assert.DoesNotContain("amount", columns);
         Assert.DoesNotContain("currency", columns);
         Assert.DoesNotContain("fee", columns);
         Assert.DoesNotContain("price", columns);
+        Assert.DoesNotContain("quote", columns);
+        Assert.DoesNotContain("discount", columns);
+        Assert.DoesNotContain("commission", columns);
+        Assert.DoesNotContain("markup", columns);
         Assert.DoesNotContain("destination_id", columns);
         Assert.DoesNotContain("nationality", columns);
         Assert.DoesNotContain("storage_key", columns);
         Assert.DoesNotContain("mime_type", columns);
         Assert.DoesNotContain("file_size", columns);
         Assert.DoesNotContain("duration", columns);
+        Assert.Contains("amount", columns);
+        Assert.Contains("currency_code", columns);
+        Assert.NotNull(model.FindEntityType(typeof(VisaOfficialFee)));
+        Assert.Equal("visa_official_fees", model.FindEntityType(typeof(VisaOfficialFee))!.GetTableName());
+        Assert.Null(typeof(VisaOfficialFee).GetProperty("Quote"));
         Assert.NotNull(model.FindEntityType(typeof(VisaProcessingTime)));
         Assert.Equal("visa_processing_times", model.FindEntityType(typeof(VisaProcessingTime))!.GetTableName());
         Assert.NotNull(model.FindEntityType(typeof(VisaValidity)));

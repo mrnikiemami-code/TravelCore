@@ -107,5 +107,15 @@ internal sealed class VisaRequirementSetConfiguration : IEntityTypeConfiguration
             .HasField("_entryPolicy")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
+
+        builder.HasMany(x => x.OfficialFees)
+            .WithOne()
+            .HasForeignKey(x => x.VisaRequirementSetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.OfficialFees)
+            .HasField("_officialFees")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
     }
 }

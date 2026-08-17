@@ -27,12 +27,13 @@ public sealed class VisaMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(5, expectedMigrations.Length);
+            Assert.Equal(6, expectedMigrations.Length);
             Assert.EndsWith("_InitialVisaScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddVisaDefinitionBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddVisaApplicabilityBaseline", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddVisaRequirementFactsBaseline", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddVisaProcessingValidityBaseline", expectedMigrations[4], StringComparison.Ordinal);
+            Assert.EndsWith("_AddVisaOfficialFeeBaseline", expectedMigrations[5], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -54,7 +55,7 @@ public sealed class VisaMigrationLifecycleTests
                 WHERE table_schema = 'visa'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(12, await ScalarIntAsync(conn, """
+            Assert.Equal(13, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'visa'
@@ -120,6 +121,12 @@ public sealed class VisaMigrationLifecycleTests
                 WHERE table_schema = 'visa'
                   AND table_name = 'visa_entry_policies';
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'visa'
+                  AND table_name = 'visa_official_fees';
+                """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
@@ -130,7 +137,14 @@ public sealed class VisaMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'visa'
-                  AND column_name IN ('amount', 'currency', 'fee', 'price', 'duration');
+                  AND column_name IN ('price', 'quote', 'discount', 'commission', 'markup', 'duration');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'visa'
+                  AND table_name = 'visa_official_fees'
+                  AND column_name = 'amount';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

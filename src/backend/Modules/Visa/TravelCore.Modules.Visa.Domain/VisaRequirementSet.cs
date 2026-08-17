@@ -5,12 +5,13 @@ namespace TravelCore.Modules.Visa.Domain;
 /// <summary>
 /// Context-dependent requirement facts for one VisaDefinition (TC-P17-T002 / P17-R2).
 /// Owns exactly one VisaApplicability (TC-P17-T003 / P17-R3), document/eligibility children (P17-R4),
-/// and distinct processing/validity/stay/entry facts (TC-P17-T005 / P17-R5). Fees remain later R#.
+/// distinct processing/validity/stay/entry facts (P17-R5), and official fee facts (TC-P17-T006 / P17-R6).
 /// </summary>
 public sealed class VisaRequirementSet
 {
     private readonly List<VisaRequiredDocument> _requiredDocuments = [];
     private readonly List<VisaEligibilityRequirement> _eligibilityRequirements = [];
+    private readonly List<VisaOfficialFee> _officialFees = [];
     private VisaApplicability _applicability = null!;
     private VisaProcessingTime? _processingTime;
     private VisaValidity? _validity;
@@ -77,6 +78,8 @@ public sealed class VisaRequirementSet
     public IReadOnlyList<VisaRequiredDocument> RequiredDocuments => _requiredDocuments;
 
     public IReadOnlyList<VisaEligibilityRequirement> EligibilityRequirements => _eligibilityRequirements;
+
+    public IReadOnlyList<VisaOfficialFee> OfficialFees => _officialFees;
 
     internal static VisaRequirementSet Create(
         VisaRequirementSetId id,
@@ -161,6 +164,34 @@ public sealed class VisaRequirementSet
         _eligibilityRequirements.Add(requirement);
         Touch(now);
         return requirement;
+    }
+
+    public VisaOfficialFee AddOfficialFee(
+        string kind,
+        decimal amount,
+        string currencyCode,
+        Instant now,
+        string? source = null,
+        int sortOrder = 0)
+    {
+        var feeKind = VisaOfficialFeeKind.Parse(kind);
+        if (_officialFees.Any(f => f.Kind == feeKind))
+        {
+            throw new InvalidOperationException($"Official fee '{feeKind.Value}' already exists.");
+        }
+
+        var fee = VisaOfficialFee.Create(
+            VisaOfficialFeeId.New(),
+            Id,
+            feeKind.Value,
+            amount,
+            currencyCode,
+            now,
+            source,
+            sortOrder);
+        _officialFees.Add(fee);
+        Touch(now);
+        return fee;
     }
 
     public VisaProcessingTime SetProcessingTime(int minValue, string unit, Instant now, int? maxValue = null)

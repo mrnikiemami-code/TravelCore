@@ -48,7 +48,7 @@ public sealed class VisaIssuanceSemanticsTests
         Assert.Throws<ArgumentException>(() => set.SetEntryPolicy("Unlimited", Now));
         Assert.Throws<ArgumentOutOfRangeException>(() => set.SetProcessingTime(15, "Days", Now, 7));
         Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
-        Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.True(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
         Assert.False(VisaOwnershipBoundary.RegulatoryEngineImplemented);
     }

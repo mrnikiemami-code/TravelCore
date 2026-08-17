@@ -5,7 +5,7 @@ namespace TravelCore.Modules.Visa.Infrastructure;
 
 /// <summary>
 /// Visa-owned DbContext. Owns PostgreSQL schema <c>visa</c>.
-/// VisaDefinition + RequirementSet + Applicability + requirement facts + processing/validity/stay/entry (TC-P17-T005). No peer-schema FK.
+/// VisaDefinition + RequirementSet + Applicability + requirement facts + processing/validity/stay/entry + official fees (TC-P17-T006). No peer-schema FK.
 /// </summary>
 public sealed class VisaDbContext : DbContext
 {

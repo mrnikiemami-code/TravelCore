@@ -51,7 +51,7 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
         Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
         Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
-        Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.True(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
     }
 
@@ -122,7 +122,7 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
         Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
         Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
-        Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.True(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
     }
 
@@ -183,7 +183,7 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.True(VisaOwnershipBoundary.RequiredDocumentImplemented);
         Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
         Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
-        Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.True(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).Assembly.GetType("TravelCore.Modules.Visa.Domain.Country"));
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).Assembly.GetType("TravelCore.Modules.Visa.Domain.Destination"));
     }
@@ -206,9 +206,29 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaProcessingTime).GetProperty("Amount"));
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaValidity).GetProperty("Fee"));
         Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
-        Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.True(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
         Assert.False(VisaOwnershipBoundary.RegulatoryEngineImplemented);
+    }
+
+    [Fact]
+    public void Visa_T006_OfficialFee_Is_Not_Pricing_Quote_Or_Fx()
+    {
+        Assert.NotNull(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFee));
+        Assert.NotNull(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFeeKind));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFee).GetProperty("Quote"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFee).GetProperty("Discount"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFee).GetProperty("Commission"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFee).GetProperty("Markup"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFee).GetProperty("ExchangeRate"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaRequirementSet).GetProperty("TotalPrice"));
+        Assert.True(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.False(VisaOwnershipBoundary.OwnsPricing);
+        Assert.False(VisaOwnershipBoundary.OwnsQuote);
+        Assert.False(VisaOwnershipBoundary.OwnsPayment);
+        Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFee).Assembly.GetType("TravelCore.Modules.Visa.Domain.Price"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaOfficialFee).Assembly.GetType("TravelCore.Modules.Visa.Domain.Quote"));
     }
 
     [Fact]
@@ -231,6 +251,8 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.Contains("EligibilityRequirement != Rules Engine", text, StringComparison.Ordinal);
         Assert.Contains("ProcessingTime != VisaValidity", text, StringComparison.Ordinal);
         Assert.Contains("VisaValidity != AllowedStay", text, StringComparison.Ordinal);
+        Assert.Contains("OfficialVisaFee != CommercialPrice", text, StringComparison.Ordinal);
+        Assert.Contains("Visa != Pricing", text, StringComparison.Ordinal);
         Assert.Contains("VisaDefinition != VisaRequirementSet", text, StringComparison.Ordinal);
         Assert.Contains("Applicability != Rules Engine", text, StringComparison.Ordinal);
     }

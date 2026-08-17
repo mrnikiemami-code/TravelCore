@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Visa.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Visa.Domain</AssemblyName>
-    <Description>Visa domain: VisaDefinition + VisaRequirementSet (TC-P17-T002 / P17-R2). No EF/ASP.NET.</Description>
+    <Description>Visa domain: visa facts including official fee facts (TC-P17-T006 / P17-R6). No EF/ASP.NET.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
   </ItemGroup>
 
 </Project>
