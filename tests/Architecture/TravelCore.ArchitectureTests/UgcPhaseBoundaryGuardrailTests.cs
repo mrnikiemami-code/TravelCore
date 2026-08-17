@@ -158,4 +158,25 @@ public sealed class UgcPhaseBoundaryGuardrailTests
         Assert.DoesNotContain("SetIndexPolicy", loader, StringComparison.Ordinal);
         Assert.DoesNotContain("/api/search", loader, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void P16_GateEvidence_Exists_And_Closes_Phase()
+    {
+        var path = Path.Combine(RepoRoot, "docs", "plans", "P16-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(path), path);
+        var text = File.ReadAllText(path);
+        Assert.Contains("TC-P16-T001", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P16-T009", text, StringComparison.Ordinal);
+        Assert.Contains("P16-R1", text, StringComparison.Ordinal);
+        Assert.Contains("P16-R8", text, StringComparison.Ordinal);
+        Assert.Contains("UGC != Content", text, StringComparison.Ordinal);
+        Assert.Contains("Travelogue != ContentItem", text, StringComparison.Ordinal);
+        Assert.Contains("UserPhoto != MediaAsset", text, StringComparison.Ordinal);
+        Assert.Contains("Like = DEFERRED", text, StringComparison.Ordinal);
+        Assert.Contains("PublicEligibility = Approved + Published", text, StringComparison.Ordinal);
+        Assert.Contains("Publicly Eligible != Automatically Search Indexed", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P16-GATE COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("P16 COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("no new UGC capability", text, StringComparison.OrdinalIgnoreCase);
+    }
 }
