@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P16-PLAN` |
 | Phase | P16 — UGC |
-| Status | PLAN ACCEPTED; P16-R1–R5 RESOLVED; T001–T005 delivered (R6–R8 UNRESOLVED) |
+| Status | PLAN ACCEPTED; P16-R1–R6 RESOLVED; T001–T006 delivered (R7–R8 UNRESOLVED) |
 | Baseline | `4e2098d` (`docs(search): P15 acceptance gate evidence [TC-P15-GATE]` — **TC-P15-GATE** ACCEPTED; P15 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P16 · `docs/architecture/15-future-architecture-transition-map.md` § P · `04-module-boundaries.md` § UGC · `05-dependency-rules.md` Knowledge/UGC · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` (Review · Travelogue) · P08 Content (UGC ≠ Content) · P06 Media (consumer owns relationship meaning) · P05 SEO (IndexPolicy) · P14 PublicExperience (composition only) · P15 Search (retrieval ≠ UGC SoT) |
 | Backend root | `src/backend` |
@@ -108,7 +108,9 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 - Forbidden kept: media clone · Comment · Like · Report · inventing R6–R8.
 
 ### TC-P16-T006 — Comment + Report/abuse baseline
-- Purpose: Comment and Report/abuse without inventing Like unless R6 locks it.
+- Purpose: Comment IN; Like = DEFERRED (**P16-R6 RESOLVED**).
+- Delivered: Flat `Comment` on Review/Travelogue only (`CommentId`, opaque ActorId, controlled TargetType+TargetId, Body, timestamps). No threading. No Like/Reaction. No publication/moderation (R7 open). No peer FK.
+- Forbidden kept: Like · Report workflow · ParentCommentId · ranking · inventing R7–R8.
 
 ### TC-P16-T007 — Moderation + publication state
 - Purpose: Draft/Pending/Published/Rejected/Archived (exact set may be locked by R7).
@@ -135,7 +137,7 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 | **P16-R3** | Target attachment | **RESOLVED** | Each Review owns exactly one polymorphic logical target (`TargetType` + `TargetId`). Controlled types: TourProduct · Place · Agency. Logical reference only — no FK to tour/place/agency_marketplace/party. UGC owns the targeting relationship; peer modules own target facts. Structural `IReviewTargetValidator` port; no peer-query orchestration in T003. |
 | **P16-R4** | Travelogue vs Content | **RESOLVED** | Travelogue is an independent UGC aggregate (user-authored travel narrative). Article/Guide/LandingPage remain Content CMS. Travelogue != ContentItem. Do not store Travelogue as a ContentItem flag. No peer FK. Publication/moderation remains P16-R7. |
 | **P16-R5** | UserPhoto vs Media | **RESOLVED** | UGC owns the UserPhoto relationship (Actor + logical MediaAssetId). Media owns technical MediaAsset truth (bytes/variants/StorageKey/mime/dimensions/renditions/focal). UserPhoto relationship != MediaAsset. No peer FK. No second media store. Publication/moderation remains P16-R7. |
-| **P16-R6** | Like / Comment scope | **UNRESOLVED** | ROADMAP: Like only «در صورت تأیید». Comment listed; do not invent social graph. |
+| **P16-R6** | Like / Comment scope | **RESOLVED** | Comment = IN (flat comments on Review and Travelogue only). Like = DEFERRED. No threading, no Like/Reaction counts, no ranking. Publication/moderation remains P16-R7. Report remains later. |
 | **P16-R7** | Moderation / publication states | **UNRESOLVED** | ROADMAP lists Draft/Pending/Published/Rejected/Archived. Exact workflow, who moderates, and Published ≠ IndexPolicy remain locks. |
 | **P16-R8** | Public composition vs SEO/Search | **UNRESOLVED** | PE may compose published UGC. SEO owns indexability. Search may retrieve later. Do not invent UGC SEO factory or ranking-from-reviews. |
 

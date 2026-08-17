@@ -16,6 +16,8 @@ public sealed class UgcDbContext : DbContext
 
     public DbSet<TravelCore.Modules.Ugc.Domain.UserPhoto> UserPhotos => Set<TravelCore.Modules.Ugc.Domain.UserPhoto>();
 
+    public DbSet<TravelCore.Modules.Ugc.Domain.Comment> Comments => Set<TravelCore.Modules.Ugc.Domain.Comment>();
+
     public UgcDbContext(DbContextOptions<UgcDbContext> options)
         : base(options)
     {

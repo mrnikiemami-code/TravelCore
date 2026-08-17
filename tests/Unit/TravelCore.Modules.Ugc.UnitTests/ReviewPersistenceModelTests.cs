@@ -100,6 +100,21 @@ public sealed class ReviewPersistenceModelTests
             userPhotoType.GetIndexes(),
             i => i.GetDatabaseName() == "ux_user_photos_media_asset_id" && i.IsUnique);
 
+        var commentType = model.FindEntityType(typeof(Comment));
+        Assert.NotNull(commentType);
+        Assert.Equal("comments", commentType.GetTableName());
+        Assert.Equal(UgcDbContext.SchemaName, commentType.GetSchema());
+        Assert.Equal("target_type", commentType.FindProperty(nameof(Comment.TargetType))!.GetColumnName());
+        Assert.Equal("target_id", commentType.FindProperty(nameof(Comment.TargetId))!.GetColumnName());
+        Assert.Null(commentType.FindProperty("ParentCommentId"));
+        Assert.Null(commentType.FindProperty("LikeCount"));
+        Assert.Null(commentType.FindProperty("PublicationStatus"));
+        Assert.Contains(
+            commentType.GetIndexes(),
+            i => i.GetDatabaseName() == "ix_comments_target_type_target_id");
+        Assert.Null(model.GetEntityTypes().FirstOrDefault(e =>
+            string.Equals(e.GetTableName(), "likes", StringComparison.OrdinalIgnoreCase)));
+
         Assert.False(db.Database.HasPendingModelChanges());
     }
 }

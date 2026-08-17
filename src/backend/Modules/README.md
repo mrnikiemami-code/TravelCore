@@ -164,12 +164,13 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Ugc | `Ugc/TravelCore.Modules.Ugc.{Domain,Contracts,Infrastructure}` | `ugc` |
 
-- **Ugc:** Review + Travelogue + UserPhoto (`TC-P16-T005`) — schema `ugc`; UserPhoto != MediaAsset; logical MediaAssetId only; no peer FK.
+- **Ugc:** Review + Travelogue + UserPhoto + Comment (`TC-P16-T006`) — schema `ugc`; Comment on Review/Travelogue only; Like = DEFERRED; no peer FK.
 - **P16-R1 RESOLVED:** independent UGC module with schema `ugc`. Owns user-generated content lifecycle. Does not own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, or Payment.
 - **P16-R2 RESOLVED:** Review owns OverallRating (1..5) and child dimension ratings. No hardcoded Hotel/Guide/Food/Service columns.
 - **P16-R3 RESOLVED:** Each Review has exactly one logical target (TourProduct · Place · Agency). No peer-schema FK. Target entity is not UGC owner.
 - **P16-R4 RESOLVED:** Travelogue is an independent UGC narrative aggregate. Article/Guide remain Content. Travelogue != ContentItem.
 - **P16-R5 RESOLVED:** UserPhoto is a UGC relationship over logical MediaAssetId. Media remains asset SoT. UserPhoto != MediaAsset.
+- **P16-R6 RESOLVED:** Comment = IN (flat, Review/Travelogue). Like = DEFERRED.
 - Invariant: **UGC != Content · UGC != Media · UGC != target domain owner · UGC != SEO · UGC != Search**.
 
 ## Host

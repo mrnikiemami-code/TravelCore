@@ -37,8 +37,9 @@ public static class UgcOwnershipBoundary
     public const bool TravelogueImplemented = true;
     public const bool UserPhotoImplemented = true;
     public const bool UserPhotoIsNotMediaAsset = true;
-    public const bool CommentImplemented = false;
+    public const bool CommentImplemented = true;
     public const bool LikeImplemented = false;
+    public const bool LikeDeferred = true;
     public const bool ReportImplemented = false;
     public const bool ModerationWorkflowImplemented = false;
     public const bool TargetAttachmentModelCommitted = true;

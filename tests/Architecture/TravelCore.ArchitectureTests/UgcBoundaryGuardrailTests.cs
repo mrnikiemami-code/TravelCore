@@ -47,7 +47,9 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.True(UgcOwnershipBoundary.TravelogueIsNotContentItem);
         Assert.True(UgcOwnershipBoundary.UserPhotoImplemented);
         Assert.True(UgcOwnershipBoundary.UserPhotoIsNotMediaAsset);
+        Assert.True(UgcOwnershipBoundary.CommentImplemented);
         Assert.False(UgcOwnershipBoundary.LikeImplemented);
+        Assert.True(UgcOwnershipBoundary.LikeDeferred);
         Assert.True(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
         Assert.True(UgcOwnershipBoundary.ReviewTargetIsLogicalReferenceOnly);
         Assert.False(UgcOwnershipBoundary.OwnsTargetFacts);
@@ -108,9 +110,10 @@ public sealed class UgcBoundaryGuardrailTests
 
         Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.Travelogue));
         Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.UserPhoto));
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.Comment));
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(Rating|RatingDimension|Comment|Like|Report)\b",
+            @"\b(class|record|enum|struct|interface)\s+(Rating|RatingDimension|Like|Report)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -138,7 +141,7 @@ public sealed class UgcBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T005 forbids independent Rating aggregate and Comment/Like/Report product types:\n" + string.Join('\n', hits));
+            "T006 forbids independent Rating aggregate and Like/Report product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -157,8 +160,10 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.Contains("P16-R3", text, StringComparison.Ordinal);
         Assert.Contains("P16-R4", text, StringComparison.Ordinal);
         Assert.Contains("P16-R5", text, StringComparison.Ordinal);
+        Assert.Contains("P16-R6", text, StringComparison.Ordinal);
         Assert.Contains("Travelogue != ContentItem", text, StringComparison.Ordinal);
         Assert.Contains("UserPhoto relationship != MediaAsset", text, StringComparison.Ordinal);
+        Assert.Contains("Like = DEFERRED", text, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -202,6 +207,8 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.UserPhoto).GetProperty("FocalPoint"));
         Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.UserPhoto).GetProperty("Renditions"));
         Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.UserPhoto).GetProperty("MediaAssetId"));
+        Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Comment).GetProperty("ParentCommentId"));
+        Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Comment).GetProperty("LikeCount"));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>
