@@ -1,12 +1,15 @@
 namespace TravelCore.Modules.Tour.Domain;
 
 /// <summary>
-/// Ordered day under an <see cref="ExperienceItinerary"/> (P10-R1 · TC-P10-T002).
-/// Localized titles deferred; DayNumber is the structured identity within the itinerary.
+/// Ordered day under an <see cref="ExperienceItinerary"/> (P10-R1 · TC-P10-T002/T004).
+/// Owns meal plan items (P10-R5). Localized titles deferred.
 /// </summary>
 public sealed class ExperienceItineraryDay
 {
+    public const int MaxMealsPerDay = 8;
+
     private readonly List<ExperienceItineraryStop> _stops = [];
+    private readonly List<ExperienceDayMeal> _meals = [];
 
     private ExperienceItineraryDay()
     {
@@ -46,6 +49,11 @@ public sealed class ExperienceItineraryDay
     public IReadOnlyList<ExperienceItineraryStop> StopsOrdered =>
         _stops.OrderBy(x => x.SortOrder).ToList();
 
+    public IReadOnlyCollection<ExperienceDayMeal> Meals => _meals;
+
+    public IReadOnlyList<ExperienceDayMeal> MealsOrdered =>
+        _meals.OrderBy(x => x.MealType).ToList();
+
     internal static ExperienceItineraryDay Create(TourProductId tourProductId, ItineraryDayId id, int dayNumber)
         => new(id, tourProductId, dayNumber);
 
@@ -53,7 +61,8 @@ public sealed class ExperienceItineraryDay
         ItineraryDayId id,
         TourProductId tourProductId,
         int dayNumber,
-        IEnumerable<ExperienceItineraryStop>? stops = null)
+        IEnumerable<ExperienceItineraryStop>? stops = null,
+        IEnumerable<ExperienceDayMeal>? meals = null)
     {
         var day = new ExperienceItineraryDay(id, tourProductId, dayNumber);
         if (stops is not null)
@@ -61,6 +70,14 @@ public sealed class ExperienceItineraryDay
             foreach (var stop in stops.OrderBy(x => x.SortOrder))
             {
                 day._stops.Add(stop);
+            }
+        }
+
+        if (meals is not null)
+        {
+            foreach (var meal in meals.OrderBy(x => x.MealType))
+            {
+                day._meals.Add(meal);
             }
         }
 
@@ -102,6 +119,37 @@ public sealed class ExperienceItineraryDay
         }
 
         _stops.Remove(stop);
+        return true;
+    }
+
+    internal ExperienceDayMeal AddMeal(ExperienceMealType mealType, ExperienceDayMealId? id = null)
+    {
+        if (_meals.Count >= MaxMealsPerDay)
+        {
+            throw new InvalidOperationException($"An itinerary day may have at most {MaxMealsPerDay} meals.");
+        }
+
+        if (_meals.Any(x => x.MealType == mealType))
+        {
+            throw new ArgumentException(
+                $"MealType '{mealType}' is already set for this day.",
+                nameof(mealType));
+        }
+
+        var meal = ExperienceDayMeal.Create(id ?? ExperienceDayMealId.New(), Id, mealType);
+        _meals.Add(meal);
+        return meal;
+    }
+
+    public bool RemoveMeal(ExperienceMealType mealType)
+    {
+        var meal = _meals.FirstOrDefault(x => x.MealType == mealType);
+        if (meal is null)
+        {
+            return false;
+        }
+
+        _meals.Remove(meal);
         return true;
     }
 

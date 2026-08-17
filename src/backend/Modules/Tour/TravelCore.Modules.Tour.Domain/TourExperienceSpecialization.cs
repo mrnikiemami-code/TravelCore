@@ -3,14 +3,14 @@ using NodaTime;
 namespace TravelCore.Modules.Tour.Domain;
 
 /// <summary>
-/// Experience typed specialization on TourProduct (P09-R1 · P10-R1 · TC-P10-T001/T002).
-/// 1:1 with <see cref="TourProductId"/>. Owns optional <see cref="ExperienceItinerary"/> (0..1).
-/// Meals · difficulty · guide · publishing rules remain deferred.
-/// Package specialty is out of scope (P11).
+/// Experience typed specialization on TourProduct (P09-R1 · P10-R1 · P10-R3 · TC-P10-T001…T004).
+/// 1:1 with <see cref="TourProductId"/>. Owns optional itinerary (0..1) and accommodation plan (0..N).
+/// Difficulty · guide · publishing remain deferred. Package specialty is out of scope (P11).
 /// </summary>
 public sealed class TourExperienceSpecialization
 {
     private ExperienceItinerary? _itinerary;
+    private readonly List<ExperienceAccommodationPlanEntry> _accommodationPlan = [];
 
     private TourExperienceSpecialization()
     {
@@ -38,6 +38,12 @@ public sealed class TourExperienceSpecialization
     /// <summary>Optional Experience-owned itinerary (P10-R1 · 0..1).</summary>
     public ExperienceItinerary? Itinerary => _itinerary;
 
+    /// <summary>Accommodation plan entries (P10-R3 · 0..N). Not TourHotelOption.</summary>
+    public IReadOnlyCollection<ExperienceAccommodationPlanEntry> AccommodationPlan => _accommodationPlan;
+
+    public IReadOnlyList<ExperienceAccommodationPlanEntry> AccommodationPlanOrdered =>
+        _accommodationPlan.OrderBy(x => x.SortOrder).ToList();
+
     /// <summary>
     /// Attaches Experience specialization to an Experience-kind TourProduct.
     /// Rejects Package (and any non-Experience kind) — no Package specialty in P10.
@@ -60,13 +66,22 @@ public sealed class TourExperienceSpecialization
         TourProductId tourProductId,
         Instant createdAt,
         Instant updatedAt,
-        ExperienceItinerary? itinerary = null)
+        ExperienceItinerary? itinerary = null,
+        IEnumerable<ExperienceAccommodationPlanEntry>? accommodationPlan = null)
     {
         var specialization = new TourExperienceSpecialization(tourProductId, createdAt)
         {
             UpdatedAt = updatedAt
         };
         specialization._itinerary = itinerary;
+        if (accommodationPlan is not null)
+        {
+            foreach (var entry in accommodationPlan.OrderBy(x => x.SortOrder))
+            {
+                specialization._accommodationPlan.Add(entry);
+            }
+        }
+
         return specialization;
     }
 
@@ -85,5 +100,74 @@ public sealed class TourExperienceSpecialization
         return _itinerary;
     }
 
+    public ExperienceAccommodationPlanEntry AddAccommodationPlanEntry(
+        Instant now,
+        Guid? placeId = null,
+        int? sortOrder = null,
+        ExperienceAccommodationPlanId? id = null)
+    {
+        if (_accommodationPlan.Count >= ExperienceAccommodationPlanEntry.MaxEntriesPerExperience)
+        {
+            throw new InvalidOperationException(
+                $"An Experience may have at most {ExperienceAccommodationPlanEntry.MaxEntriesPerExperience} accommodation plan entries.");
+        }
+
+        var resolvedSort = sortOrder ?? NextAccommodationSortOrder();
+        if (resolvedSort < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(sortOrder), resolvedSort, "SortOrder must be >= 0.");
+        }
+
+        if (_accommodationPlan.Any(x => x.SortOrder == resolvedSort))
+        {
+            throw new ArgumentException(
+                $"Accommodation SortOrder {resolvedSort} is already used for this Experience.",
+                nameof(sortOrder));
+        }
+
+        var entry = ExperienceAccommodationPlanEntry.Create(
+            id ?? ExperienceAccommodationPlanId.New(),
+            TourProductId,
+            resolvedSort,
+            placeId);
+        _accommodationPlan.Add(entry);
+        UpdatedAt = now;
+        return entry;
+    }
+
+    public bool RemoveAccommodationPlanEntry(ExperienceAccommodationPlanId entryId, Instant now)
+    {
+        var entry = _accommodationPlan.FirstOrDefault(x => x.Id == entryId);
+        if (entry is null)
+        {
+            return false;
+        }
+
+        _accommodationPlan.Remove(entry);
+        UpdatedAt = now;
+        return true;
+    }
+
+    public ExperienceDayMeal AddDayMeal(ItineraryDayId dayId, ExperienceMealType mealType, Instant now)
+    {
+        var itinerary = _itinerary
+            ?? throw new InvalidOperationException("Experience itinerary was not found. Call EnsureItinerary first.");
+        var day = itinerary.GetDay(dayId);
+        var meal = day.AddMeal(mealType);
+        UpdatedAt = now;
+        itinerary.Touch(now);
+        return meal;
+    }
+
     public void Touch(Instant now) => UpdatedAt = now;
+
+    private int NextAccommodationSortOrder()
+    {
+        if (_accommodationPlan.Count == 0)
+        {
+            return 0;
+        }
+
+        return _accommodationPlan.Max(x => x.SortOrder) + 1;
+    }
 }

@@ -30,7 +30,8 @@ public sealed class TourExperienceSpecializationGuardrailTests
         Assert.Contains("TourProductId", text, StringComparison.Ordinal);
         Assert.Contains("TourKind.Experience", text, StringComparison.Ordinal);
 
-        // T001 identity foundation must not invent deferred business policies (ignore doc comments).
+        // Identity foundation must not invent deferred policies (ignore doc comments).
+        // Meals / accommodation are owned via dedicated child types (T004) — not free-text blob fields here.
         var codeLines = File.ReadAllLines(path)
             .Where(line =>
             {
@@ -44,8 +45,9 @@ public sealed class TourExperienceSpecializationGuardrailTests
         Assert.DoesNotContain("Difficulty", code, StringComparison.Ordinal);
         Assert.DoesNotContain("Eligibility", code, StringComparison.Ordinal);
         Assert.DoesNotContain("Guide", code, StringComparison.Ordinal);
-        Assert.DoesNotContain("Meal", code, StringComparison.Ordinal);
-        Assert.DoesNotContain("Accommodation", code, StringComparison.Ordinal);
+        Assert.DoesNotContain("TourHotelOption", code, StringComparison.Ordinal);
+        Assert.DoesNotContain("HotelBooking", code, StringComparison.Ordinal);
+        Assert.Contains("AccommodationPlan", code, StringComparison.Ordinal);
     }
 
     [Fact]

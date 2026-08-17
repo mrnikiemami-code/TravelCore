@@ -38,6 +38,18 @@ internal sealed class TourExperienceSpecializationConfiguration
             .HasField("_itinerary")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
+
+        builder.Ignore(x => x.AccommodationPlanOrdered);
+
+        builder.HasMany(x => x.AccommodationPlan)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.AccommodationPlan)
+            .HasField("_accommodationPlan")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
     }
 }
 
@@ -99,6 +111,7 @@ internal sealed class ExperienceItineraryDayConfiguration : IEntityTypeConfigura
             .HasDatabaseName("ux_tour_experience_itinerary_days_tour_day");
 
         builder.Ignore(x => x.StopsOrdered);
+        builder.Ignore(x => x.MealsOrdered);
 
         builder.HasMany(x => x.Stops)
             .WithOne()
@@ -107,6 +120,16 @@ internal sealed class ExperienceItineraryDayConfiguration : IEntityTypeConfigura
 
         builder.Navigation(x => x.Stops)
             .HasField("_stops")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasMany(x => x.Meals)
+            .WithOne()
+            .HasForeignKey(x => x.ItineraryDayId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Meals)
+            .HasField("_meals")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
     }
@@ -148,5 +171,66 @@ internal sealed class ExperienceItineraryStopConfiguration : IEntityTypeConfigur
 
         builder.HasIndex(x => x.PlaceId)
             .HasDatabaseName("ix_tour_experience_itinerary_stops_place_id");
+    }
+}
+
+internal sealed class ExperienceDayMealConfiguration : IEntityTypeConfiguration<ExperienceDayMeal>
+{
+    public void Configure(EntityTypeBuilder<ExperienceDayMeal> builder)
+    {
+        builder.ToTable("tour_experience_day_meals");
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .HasConversion(id => id.Value, value => ExperienceDayMealId.From(value));
+
+        builder.Property(x => x.ItineraryDayId)
+            .HasColumnName("itinerary_day_id")
+            .HasConversion(id => id.Value, value => ItineraryDayId.From(value))
+            .IsRequired();
+
+        builder.Property(x => x.MealType)
+            .HasColumnName("meal_type")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.HasIndex(x => new { x.ItineraryDayId, x.MealType })
+            .IsUnique()
+            .HasDatabaseName("ux_tour_experience_day_meals_day_type");
+    }
+}
+
+internal sealed class ExperienceAccommodationPlanEntryConfiguration
+    : IEntityTypeConfiguration<ExperienceAccommodationPlanEntry>
+{
+    public void Configure(EntityTypeBuilder<ExperienceAccommodationPlanEntry> builder)
+    {
+        builder.ToTable("tour_experience_accommodation_plan");
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .HasConversion(id => id.Value, value => ExperienceAccommodationPlanId.From(value));
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value))
+            .IsRequired();
+
+        builder.Property(x => x.SortOrder)
+            .HasColumnName("sort_order")
+            .IsRequired();
+
+        // Logical PlaceId only — deliberately no FK / navigation (P10-R3).
+        builder.Property(x => x.PlaceId)
+            .HasColumnName("place_id");
+
+        builder.HasIndex(x => new { x.TourProductId, x.SortOrder })
+            .IsUnique()
+            .HasDatabaseName("ux_tour_experience_accommodation_plan_tour_sort");
+
+        builder.HasIndex(x => x.PlaceId)
+            .HasDatabaseName("ix_tour_experience_accommodation_plan_place_id");
     }
 }

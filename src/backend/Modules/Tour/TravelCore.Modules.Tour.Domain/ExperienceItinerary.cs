@@ -132,6 +132,26 @@ public sealed class ExperienceItinerary
         return stop;
     }
 
+    public ExperienceDayMeal AddMeal(ItineraryDayId dayId, ExperienceMealType mealType, Instant now)
+    {
+        var day = GetDay(dayId);
+        var meal = day.AddMeal(mealType);
+        UpdatedAt = now;
+        return meal;
+    }
+
+    public bool RemoveMeal(ItineraryDayId dayId, ExperienceMealType mealType, Instant now)
+    {
+        var day = GetDay(dayId);
+        var removed = day.RemoveMeal(mealType);
+        if (removed)
+        {
+            UpdatedAt = now;
+        }
+
+        return removed;
+    }
+
     public bool RemoveDay(ItineraryDayId dayId, Instant now)
     {
         var day = _days.FirstOrDefault(x => x.Id == dayId);
