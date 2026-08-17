@@ -50,6 +50,7 @@ public sealed class TourProduct
         Kind = kind;
         Code = code;
         EnglishName = englishName;
+        CatalogStatus = TourCatalogStatus.Draft;
         CreatedAt = createdAt;
         UpdatedAt = createdAt;
     }
@@ -63,6 +64,11 @@ public sealed class TourProduct
 
     /// <summary>Baseline English display name (localized titles live in translation rows).</summary>
     public string EnglishName { get; private set; }
+
+    /// <summary>
+    /// Catalog publication status (P09-R4). Published = catalog-visible ≠ bookable ≠ Index.
+    /// </summary>
+    public TourCatalogStatus CatalogStatus { get; private set; }
 
     /// <summary>
     /// Tour-owned opaque classification code (catalog facet). Not TourKind and not a lookup-owned FK.
@@ -147,6 +153,17 @@ public sealed class TourProduct
         UpdatedAt = now;
     }
 
+    public void SetCatalogStatus(TourCatalogStatus status, Instant now)
+    {
+        if (!Enum.IsDefined(status))
+        {
+            throw new ArgumentOutOfRangeException(nameof(status), status, "Unsupported TourCatalogStatus.");
+        }
+
+        CatalogStatus = status;
+        UpdatedAt = now;
+    }
+
     public TourProductTranslation UpsertTranslation(
         string localeCode,
         string title,
@@ -175,6 +192,17 @@ public sealed class TourProduct
         var normalizedLocale = TourProductTranslation.NormalizeLocaleCode(localeCode);
         return _translations.FirstOrDefault(x =>
             string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+    }
+
+    public TourProductTranslation SetTranslationSlug(string localeCode, string? slug, Instant now)
+    {
+        var translation = FindTranslation(localeCode)
+            ?? throw new InvalidOperationException(
+                $"Translation for locale '{TourProductTranslation.NormalizeLocaleCode(localeCode)}' was not found.");
+
+        translation.SetSlug(slug, now);
+        UpdatedAt = now;
+        return translation;
     }
 
     public void SetClassificationCode(string? classificationCode, Instant now)

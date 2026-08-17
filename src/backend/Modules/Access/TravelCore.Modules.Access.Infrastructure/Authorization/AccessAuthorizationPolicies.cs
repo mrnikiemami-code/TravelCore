@@ -46,4 +46,9 @@ public static class AccessAuthorizationPolicies
     /// Content SEO route publication: Access-backed <c>seo.content-posture.write</c>.
     /// </summary>
     public const string SeoContentPostureWrite = "Access.Seo.ContentPosture.Write";
+
+    /// <summary>
+    /// TourProduct SEO route publication: Access-backed <c>seo.tour-posture.write</c>.
+    /// </summary>
+    public const string SeoTourPostureWrite = "Access.Seo.TourPosture.Write";
 }

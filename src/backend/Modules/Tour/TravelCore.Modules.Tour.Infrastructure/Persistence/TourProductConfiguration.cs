@@ -30,6 +30,11 @@ internal sealed class TourProductConfiguration : IEntityTypeConfiguration<TourPr
             .HasMaxLength(TourProduct.NameMaxLength)
             .IsRequired();
 
+        builder.Property(x => x.CatalogStatus)
+            .HasColumnName("catalog_status")
+            .HasConversion<short>()
+            .IsRequired();
+
         builder.Property(x => x.ClassificationCode)
             .HasColumnName("classification_code")
             .HasMaxLength(TourProduct.ClassificationCodeMaxLength);
@@ -56,6 +61,9 @@ internal sealed class TourProductConfiguration : IEntityTypeConfiguration<TourPr
 
         builder.HasIndex(x => x.Kind)
             .HasDatabaseName("ix_tour_products_kind");
+
+        builder.HasIndex(x => x.CatalogStatus)
+            .HasDatabaseName("ix_tour_products_catalog_status");
 
         builder.HasIndex(x => x.CreatedAt)
             .HasDatabaseName("ix_tour_products_created_at");
@@ -159,12 +167,21 @@ internal sealed class TourProductTranslationConfiguration : IEntityTypeConfigura
             .HasColumnName("description")
             .HasMaxLength(TourProductTranslation.DescriptionMaxLength);
 
+        builder.Property(x => x.Slug)
+            .HasColumnName("slug")
+            .HasMaxLength(TourProductTranslation.SlugMaxLength);
+
         builder.Property(x => x.UpdatedAt)
             .HasColumnName("updated_at")
             .IsRequired();
 
         builder.HasIndex(x => x.LocaleCode)
             .HasDatabaseName("ix_tour_product_translations_locale_code");
+
+        builder.HasIndex(x => new { x.LocaleCode, x.Slug })
+            .IsUnique()
+            .HasFilter("slug IS NOT NULL")
+            .HasDatabaseName("ux_tour_product_translations_locale_slug");
     }
 }
 

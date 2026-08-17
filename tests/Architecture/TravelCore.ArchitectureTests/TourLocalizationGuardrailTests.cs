@@ -32,7 +32,7 @@ public sealed class TourLocalizationGuardrailTests
     }
 
     [Fact]
-    public void TourProductTranslation_HasLocaleRowsWithoutSlug_UntilP09R5()
+    public void TourProductTranslation_OwnsLocalizedCurrentSlug_P09R5()
     {
         var translationPath = Path.Combine(
             RepoRoot,
@@ -47,7 +47,18 @@ public sealed class TourLocalizationGuardrailTests
         var text = File.ReadAllText(translationPath);
         Assert.Contains("public string Title", text, StringComparison.Ordinal);
         Assert.Contains("public string? Description", text, StringComparison.Ordinal);
-        Assert.DoesNotContain("public string? Slug", text, StringComparison.Ordinal);
-        Assert.Contains("P09-R5", text, StringComparison.Ordinal);
+        Assert.Contains("public string? Slug", text, StringComparison.Ordinal);
+
+        var aggregatePath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Tour",
+            "TravelCore.Modules.Tour.Domain",
+            "TourProduct.cs");
+        var aggregate = File.ReadAllText(aggregatePath);
+        Assert.DoesNotContain("public string? Slug", aggregate, StringComparison.Ordinal);
+        Assert.DoesNotContain("SlugHistory", aggregate, StringComparison.Ordinal);
     }
 }

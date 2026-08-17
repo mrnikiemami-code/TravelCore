@@ -404,6 +404,31 @@ internal static class SeoEndpoints
             }
         }).RequireAuthorization("Access.Seo.ContentPosture.Write");
 
+        // TourProduct public-path publication (TC-P09-T008) — SEO namespace; Access-backed write.
+        // Does not set IndexPolicy (P09-R6: default missing policy remains noindex,follow).
+        group.MapPost("/publication/tour-product", async Task<IResult> (
+            PublishTourProductSeoRouteRequest request,
+            ISeoTourProductPublicationService publication,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var result = await publication.PublishAsync(request, cancellationToken);
+                return Results.Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "request"] = [ex.Message]
+                });
+            }
+            catch (SeoRouteConflictException ex)
+            {
+                return Results.Conflict(new { title = "SeoRoute conflict", detail = ex.Message });
+            }
+        }).RequireAuthorization("Access.Seo.TourPosture.Write");
+
         return endpoints;
     }
 

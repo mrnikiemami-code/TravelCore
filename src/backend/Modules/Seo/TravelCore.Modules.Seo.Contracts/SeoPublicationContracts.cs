@@ -87,3 +87,25 @@ public interface ISeoLandingPagePublicationService
         PublishLandingPageSeoRouteRequest request,
         CancellationToken cancellationToken = default);
 }
+
+/// <summary>
+/// Publish TourProduct translation-owned slug into SEO namespace as tours/{slug} (TC-P09-T008 / P09-R5).
+/// Does not write Tour tables; does not flip IndexPolicy (P09-R6 default remains noindex,follow).
+/// </summary>
+public sealed record PublishTourProductSeoRouteRequest(
+    Guid TourProductId,
+    string Locale,
+    string Slug);
+
+public sealed record PublishTourProductSeoRouteResponse(
+    SeoRouteResponse Route,
+    bool Created,
+    bool PathChanged,
+    string PublicPath);
+
+public interface ISeoTourProductPublicationService
+{
+    Task<PublishTourProductSeoRouteResponse> PublishAsync(
+        PublishTourProductSeoRouteRequest request,
+        CancellationToken cancellationToken = default);
+}

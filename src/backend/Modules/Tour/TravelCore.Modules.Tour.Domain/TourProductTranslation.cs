@@ -3,16 +3,16 @@ using NodaTime;
 namespace TravelCore.Modules.Tour.Domain;
 
 /// <summary>
-/// Locale-specific title/description for a TourProduct (TC-P09-T003 / ADR 0008).
-/// Locale rows only — never per-language columns on the aggregate (ADR 0008).
-/// Locale codes are ReferenceData-owned; Tour stores the opaque code only (no cross-schema FK).
-/// Slug deferred until P09-R5 is locked (architect: no slug in T003).
+/// Locale-specific title/description/slug for a TourProduct (ADR 0008 / P09-R5).
+/// Locale rows only — never per-language columns on the aggregate.
+/// Current localized slug is owned here; SEO owns route history/redirects/IndexPolicy.
 /// </summary>
 public sealed class TourProductTranslation
 {
     public const int LocaleCodeMaxLength = 16;
     public const int TitleMaxLength = 200;
     public const int DescriptionMaxLength = 2000;
+    public const int SlugMaxLength = 120;
 
     private TourProductTranslation()
     {
@@ -25,12 +25,14 @@ public sealed class TourProductTranslation
         string localeCode,
         string title,
         string? description,
+        string? slug,
         Instant updatedAt)
     {
         TourProductId = tourProductId;
         LocaleCode = localeCode;
         Title = title;
         Description = description;
+        Slug = slug;
         UpdatedAt = updatedAt;
     }
 
@@ -42,6 +44,9 @@ public sealed class TourProductTranslation
 
     public string? Description { get; private set; }
 
+    /// <summary>Localized current slug (P09-R5). Null until set; SEO owns history/redirects.</summary>
+    public string? Slug { get; private set; }
+
     public Instant UpdatedAt { get; private set; }
 
     internal static TourProductTranslation Create(
@@ -49,13 +54,15 @@ public sealed class TourProductTranslation
         string localeCode,
         string title,
         string? description,
-        Instant now)
+        Instant now,
+        string? slug = null)
     {
         return new TourProductTranslation(
             tourProductId,
             NormalizeLocaleCode(localeCode),
             NormalizeTitle(title),
             NormalizeDescription(description),
+            NormalizeSlug(slug),
             now);
     }
 
@@ -63,6 +70,12 @@ public sealed class TourProductTranslation
     {
         Title = NormalizeTitle(title);
         Description = NormalizeDescription(description);
+        UpdatedAt = now;
+    }
+
+    internal void SetSlug(string? slug, Instant now)
+    {
+        Slug = NormalizeSlug(slug);
         UpdatedAt = now;
     }
 
@@ -82,6 +95,34 @@ public sealed class TourProductTranslation
         }
 
         return $"{parts[0].ToLowerInvariant()}-{parts[1].ToUpperInvariant()}";
+    }
+
+    public static string? NormalizeSlug(string? slug)
+    {
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            return null;
+        }
+
+        var trimmed = slug.Trim().ToLowerInvariant();
+        if (trimmed.Length > SlugMaxLength)
+        {
+            throw new ArgumentException($"Slug max length is {SlugMaxLength}.", nameof(slug));
+        }
+
+        if (trimmed.Any(static c => !(char.IsAsciiLetterOrDigit(c) || c == '-')))
+        {
+            throw new ArgumentException("Slug may contain only a-z, 0-9, and hyphen.", nameof(slug));
+        }
+
+        if (trimmed.StartsWith('-') || trimmed.EndsWith('-') || trimmed.Contains("--", StringComparison.Ordinal))
+        {
+            throw new ArgumentException(
+                "Slug must not start/end with hyphen or contain consecutive hyphens.",
+                nameof(slug));
+        }
+
+        return trimmed;
     }
 
     private static string NormalizeTitle(string title)

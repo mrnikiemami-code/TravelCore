@@ -8,7 +8,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Tour migration + TourProduct core + translations + semantic links (TC-P09-T002/T003/T004).
+/// Real-PostgreSQL Tour migration + TourProduct core through publishing/slug (TC-P09-T002…T008).
 /// </summary>
 [Collection(nameof(TourMigrationLifecycleCollection))]
 public sealed class TourMigrationLifecycleTests
@@ -29,7 +29,7 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(7, expectedMigrations.Length);
+            Assert.Equal(8, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
@@ -37,6 +37,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.EndsWith("_AddTourProductAgencyLink", expectedMigrations[4], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductCatalogFacts", expectedMigrations[5], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductMediaLinks", expectedMigrations[6], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourProductPublishingAndSlug", expectedMigrations[7], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -78,12 +79,19 @@ public sealed class TourMigrationLifecycleTests
                     'flight_segments',
                     'tour_hotel_options');
                 """, ct));
-            Assert.Equal(0, await ScalarIntAsync(conn, """
+            Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'tour'
                   AND table_name = 'tour_product_translations'
                   AND column_name = 'slug';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'tour'
+                  AND table_name = 'tour_products'
+                  AND column_name = 'catalog_status';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -113,6 +121,8 @@ public sealed class TourMigrationLifecycleTests
             var experience = TourProduct.CreateExperience("EXP-IT-001", "Caspian Walk", now);
             experience.UpsertTranslation("fa", "پیاده‌روی خزر", "توضیح", now);
             experience.UpsertTranslation("en", "Caspian Walk", "A short walk", now);
+            experience.SetTranslationSlug("en", "caspian-walk", now);
+            experience.SetCatalogStatus(TourCatalogStatus.Published, now);
             experience.SetClassificationCode("cultural-walk", now);
             experience.SetOriginLink(originId, now);
             experience.AssignDestination(destA, now);
@@ -137,6 +147,8 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(TourKind.Experience, loaded.Kind);
             Assert.Equal("EXP-IT-001", loaded.Code);
             Assert.Equal("Caspian Walk", loaded.EnglishName);
+            Assert.Equal(TourCatalogStatus.Published, loaded.CatalogStatus);
+            Assert.Equal("caspian-walk", loaded.FindTranslation("en")!.Slug);
             Assert.Equal("cultural-walk", loaded.ClassificationCode);
             Assert.Equal(originId, loaded.OriginDestinationId);
             Assert.Equal(agencyId, loaded.AgencyId);

@@ -10,4 +10,5 @@ public enum SeoResourceType : short
     Place = 2,
     Article = 3,
     LandingPage = 4,
+    TourProduct = 5,
 }

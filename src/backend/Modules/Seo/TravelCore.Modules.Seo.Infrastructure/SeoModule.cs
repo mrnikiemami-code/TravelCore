@@ -47,6 +47,7 @@ public sealed class SeoModule : ITravelCoreModule
         services.AddScoped<ISeoPlacePublicationService, SeoPlacePublicationService>();
         services.AddScoped<ISeoArticlePublicationService, SeoArticlePublicationService>();
         services.AddScoped<ISeoLandingPagePublicationService, SeoLandingPagePublicationService>();
+        services.AddScoped<ISeoTourProductPublicationService, SeoTourProductPublicationService>();
         services.AddScoped<ISeoAdminDestinationPostureService, SeoAdminDestinationPostureService>();
     }
 

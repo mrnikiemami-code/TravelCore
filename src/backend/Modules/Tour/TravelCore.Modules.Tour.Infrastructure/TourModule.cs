@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Tour.Contracts;
+using TravelCore.Modules.Tour.Infrastructure.Endpoints;
 using TravelCore.Modules.Tour.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
@@ -36,11 +37,12 @@ public sealed class TourModule : ITravelCoreModule
         services.AddScoped<ITourProductSemanticLinkService, TourProductSemanticLinkService>();
         services.AddScoped<ITourProductCatalogFactService, TourProductCatalogFactService>();
         services.AddScoped<ITourProductMediaService, TourProductMediaService>();
+        services.AddScoped<ITourProductService, TourProductService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // Product endpoints belong to later P09 tasks (Admin / public).
+        endpoints.MapTourEndpoints();
     }
 }

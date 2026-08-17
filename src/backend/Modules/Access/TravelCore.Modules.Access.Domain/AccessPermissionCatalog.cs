@@ -21,7 +21,8 @@ public static class AccessPermissionCatalog
         ("place.places.write", "Create/update Place catalog entries and owned fields"),
         ("seo.place-posture.write", "Publish Place SEO routes (IndexPolicy remains explicit / default noindex)"),
         ("content.items.write", "Create/update ContentItem editorial entries and owned fields"),
-        ("seo.content-posture.write", "Publish Content SEO routes (IndexPolicy remains explicit / default noindex)")
+        ("seo.content-posture.write", "Publish Content SEO routes (IndexPolicy remains explicit / default noindex)"),
+        ("seo.tour-posture.write", "Publish TourProduct SEO routes (IndexPolicy remains explicit / default noindex)")
     ];
 
     public const string AdminRoleCode = "admin";

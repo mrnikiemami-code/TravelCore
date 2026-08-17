@@ -67,7 +67,7 @@ USER phase token received: `TRAVELCORE_PHASE_CONFIRM: P09`.
 | Place adjacency | P07 — Hotel catalog via `PlaceId`; TourHotelOption product deferred to **P11** |
 | Content adjacency | P08 — Content ≠ Tour product; Tour widgets/content ownership stay separate |
 | Media adjacency | P06 — MediaAssetId refs; Tour owns gallery/relationship meaning |
-| SEO adjacency | P05 R1/R2 · Place/Content resolved slug+IndexPolicy patterns as **adjacent precedent only** (P09-R5/R6 still open) |
+| SEO adjacency | P05 R1/R2 · Place/Content resolved slug+IndexPolicy patterns as **adjacent precedent** (P09-R5/R6 now RESOLVED in T008) |
 | Destination adjacency | P04 — hierarchy SoR; Tour links by ID/contracts |
 | Party/Agency | P03 Party — Agency business identity; Tour refs by ID only |
 | Localization | ADR 0007–0008 |
@@ -305,9 +305,9 @@ Exact parallelization may be adjusted by architect on accept; Cursor must not in
 | **P09-R1** | TourProduct model shape | **RESOLVED** | Core TourProduct + Typed Specialization · canonical `TourProductId` · Experience/Package = future typed specialization · TourDeparture = separate future aggregate |
 | **P09-R2** | Destination / Origin link cardinality (0..1 / 1..1 / 1..N; requiredness) | **RESOLVED** | Destination links: **0..N** logical `DestinationId` via Tour-owned join (`tour_product_destinations`); Origin: **0..1** nullable `OriginDestinationId` on TourProduct; reference logical only; **no** cross-schema FK/write; existence via `Destination.Contracts` (`IDestinationExistenceQuery`). |
 | **P09-R3** | Agency reference shape (single PartyId vs role-typed refs / offering agency semantics) | **RESOLVED** | Single optional logical `AgencyId` on TourProduct (**0..1**); Agency identity is `PartyKind.Agency` under Party SoR; **no** cross-schema FK/write; validate via `Party.Contracts` (`IPartyReadQuery` Kind=Agency). No role-typed multi-agency refs in P09. |
-| **P09-R4** | Publishing/catalog status vs delete-archive lifecycle | **UNRESOLVED** | Do not invent hard-delete product; publication status may suffice — architect lock. |
-| **P09-R5** | Slug ownership (Tour-localized current slug vs SEO-only route key) | **UNRESOLVED** | Expect P05/P07/P08 pattern (Tour owns current locale slug; SEO owns history/IndexPolicy) but **do not assume** until locked. |
-| **P09-R6** | Public IndexPolicy default for Tour | **UNRESOLVED** | Do not invent Index=Active / Published=Index. |
+| **P09-R4** | Publishing/catalog status vs delete-archive lifecycle | **RESOLVED** | Closed catalog status: **Draft \| Published \| Inactive**. **Published = catalog-visible ≠ bookable**. No hard-delete/archive product in P09; Inactive covers withdrawal from catalog. |
+| **P09-R5** | Slug ownership (Tour-localized current slug vs SEO-only route key) | **RESOLVED** | `TourProductTranslation` owns localized **current** Slug; SEO owns public path namespace / history / redirects / IndexPolicy. Path shape: `tours/{slug}`. |
+| **P09-R6** | Public IndexPolicy default for Tour | **RESOLVED** | Default missing IndexPolicy = **noindex, follow**. **Published ≠ Index** (catalog visibility is not SEO indexability). |
 | **P09-R7** | Experience/Package specialty fields in P09 | **RESOLVED** | Specialty fields **DEFERRED** to P10/P11; P09 owns only shared TourProduct facts. |
 | **P09-R8** | TourProduct Media relation policy (roles / cardinality) | **RESOLVED** | Roles **Cover** (0..1) + **Gallery** (0..N); duplicate MediaAssetId forbidden; SortOrder ≥ 0 for Gallery; logical MediaAssetId only; **no** StorageKey in Tour; **no** cross-schema FK; readiness via Media.Contracts; **no** Hero/custom roles. |
 | P08-R6/R7/R8 | Content widgets / Author / delete-archive | UNRESOLVED (Content) | Out of Tour product scope. |
