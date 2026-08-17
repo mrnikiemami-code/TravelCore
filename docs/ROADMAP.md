@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P12 — Pricing** (**PLAN authored**) |
-| Phase Status | P00–P11 COMPLETE · P12 PLAN drafted (`TC-P12-PLAN`) · awaiting ACCEPT |
+| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T001 scaffolding) |
+| Phase Status | P00–P11 COMPLETE · P12-R1 RESOLVED · `TC-P12-T001` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `6f7ea12` (`TC-P11-GATE`) · P11 COMPLETE |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await `TC-P12-PLAN` ACCEPT / Auto-Execute T001 |
+| Current Next Task | `TC-P12-T002` — Money / Currency baseline binding (after T001 review) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -423,7 +423,7 @@ P09 delivered shared TourProduct; P10 extends Tour with Experience specializatio
 
 ## P11 — Foreign Package Tour
 
-**Status:** GATE READY (`TC-P11-PLAN` ACCEPTED · T001–T010 ACCEPTED · P11-R1..R8 RESOLVED)
+**Status:** COMPLETE (`TC-P11-GATE` ACCEPTED · P11-R1..R8 RESOLVED)
 
 **Progress:** TourDeparture scaffolding · baseline `66cab9b` (PLAN) · prior Gate `c351bf9`
 
@@ -437,13 +437,17 @@ TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Fli
 
 ## P12 — Pricing
 
-**Status:** PLANNED
+**Status:** IN PROGRESS — **P12-R1 RESOLVED** · `TC-P12-T001` scaffolding delivered
 
 Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passenger category · Occupancy · Age policy · Exchange rates · Conversion policy · Quote · Quote expiration در صورت نیاز · Price snapshot.
 
 **Price ≠ Quote ≠ Payment.** هرگز همهٔ قیمت‌های تجاری را خاموش به یک ارز تبدیل نکنید.
 
+**P12-R1:** Pricing = independent module (`pricing` schema). Tour owns tour facts; Pricing may logically reference TourDeparture `Guid` only — no Tour table ownership / no shared DbContext.
+
 مثال طبیعی: `1290 USD` + مؤلفهٔ ارز محلی.
+
+Plan: [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md)
 
 ---
 
@@ -699,7 +703,7 @@ P26 = Advanced SEO.
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
-| P12 | Pricing | PLANNED |
+| P12 | Pricing | **IN PROGRESS** (R1 RESOLVED · T001) |
 | P13 | Agency Marketplace | PLANNED |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |

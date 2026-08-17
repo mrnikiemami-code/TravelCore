@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Pricing.Domain</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Pricing.Domain</AssemblyName>
+    <Description>Pricing domain scaffolding. No EF/ASP.NET. TC-P12-T001.</Description>
+  </PropertyGroup>
+
+</Project>

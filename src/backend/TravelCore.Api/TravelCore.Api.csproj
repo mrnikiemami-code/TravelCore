@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Modules\Place\TravelCore.Modules.Place.Infrastructure\TravelCore.Modules.Place.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Content\TravelCore.Modules.Content.Infrastructure\TravelCore.Modules.Content.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Tour\TravelCore.Modules.Tour.Infrastructure\TravelCore.Modules.Tour.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Pricing\TravelCore.Modules.Pricing.Infrastructure\TravelCore.Modules.Pricing.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

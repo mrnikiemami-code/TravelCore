@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | DRAFT — awaiting architect ACCEPT |
+| Status | IN PROGRESS — P12-R1 RESOLVED; T001 scaffolding delivered |
 | Baseline | `6f7ea12` (`docs: P11 acceptance gate evidence [TC-P11-GATE]` — **TC-P11-GATE** ACCEPTED; P11 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
@@ -66,8 +66,9 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 ### TC-P12-PLAN — this document
 
 ### TC-P12-T001 — Pricing module / ownership scaffolding
-- Purpose: Introduce Pricing ownership surface (module or Tour-owned pricing schema per **P12-R1**).
-- Forbidden: Booking/Payment types.
+- Purpose: Introduce Pricing ownership surface as **independent module** (P12-R1 RESOLVED).
+- Delivered: Contracts/Domain/Infrastructure · schema `pricing` · host registration · guardrails · UnitTests smoke.
+- Forbidden: Booking/Payment types · price calculation · Quote · FX · Checkout.
 
 ### TC-P12-T002 — Money / Currency baseline binding
 - Bind ADR money types; multi-currency posture per **P12-R2**.
@@ -100,7 +101,7 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
-| **P12-R1** | Pricing ownership (new module vs Tour-owned schema) | **UNRESOLVED** | Architect must lock before T001 product |
+| **P12-R1** | Pricing ownership (new module vs Tour-owned schema) | **RESOLVED** | Independent Pricing module owns schema `pricing`; Tour owns tour facts; Pricing may only logically reference TourDeparture identity (`Guid`) — no EF FK / no Tour table ownership / no shared DbContext |
 | **P12-R2** | Mixed-currency / conversion policy SoT | **UNRESOLVED** | ROADMAP: never silent single-currency wipe |
 | **P12-R3** | Pricing attaches to Departure vs Product vs both | **UNRESOLVED** | Architect P11 Gate narrative focused Departure |
 | **P12-R4** | Quote model (required in P12? expiration? snapshot fields) | **UNRESOLVED** | Price ≠ Quote ≠ Booking Amount |
@@ -132,4 +133,6 @@ After `TC-P12-GATE` ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marke
 - [x] Task sequence proposed without product code
 - [x] Open decisions listed (R1–R5) — no invention
 - [x] Baseline = P11 Gate ACCEPT commit
-- [ ] Architect ACCEPT + Auto-Execute first product task
+- [x] Architect lock **P12-R1** (independent Pricing module) · first product task `TC-P12-T001` executable
+- [ ] Architect ACCEPT remaining R2–R5 as needed for later tasks
+- [ ] Architect ACCEPT + Auto-Execute subsequent product tasks

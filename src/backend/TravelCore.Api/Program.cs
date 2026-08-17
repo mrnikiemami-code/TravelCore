@@ -8,6 +8,7 @@ using TravelCore.Modules.Media.Infrastructure;
 using TravelCore.Modules.Party.Infrastructure;
 using TravelCore.Modules.Content.Infrastructure;
 using TravelCore.Modules.Place.Infrastructure;
+using TravelCore.Modules.Pricing.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Modules.Tour.Infrastructure;
@@ -40,6 +41,7 @@ IReadOnlyList<ITravelCoreModule> modules =
     new PlaceModule(),
     new ContentModule(),
     new TourModule(),
+    new PricingModule(),
 ];
 builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 

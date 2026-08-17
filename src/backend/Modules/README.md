@@ -97,6 +97,17 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - Place ≠ HotelBooking; Place ≠ Destination hierarchy ownership.
 - Content ≠ SEO substance duplication; Content ≠ Tour/Place/UGC ownership.
 - Tour ≠ TourDeparture (P11); Tour ≠ Pricing/Booking/Search; Tour ≠ Place Hotel ownership.
+- Pricing ≠ Tour catalog ownership; Pricing ≠ Booking/Payment; logical TourDeparture Guid refs only (P12-R1).
+
+## Active modules (P12)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Pricing | `Pricing/TravelCore.Modules.Pricing.{Domain,Contracts,Infrastructure}` | `pricing` |
+
+- **Pricing:** module scaffolding only (`TC-P12-T001`) — schema `pricing` ownership; no Rate/Quote/PriceComponent aggregates yet (T002+).
+- **P12-R1 RESOLVED:** independent Pricing module; Tour owns tour facts; Pricing may logically reference TourDeparture identity (Guid) only — no EF FK / no Tour table ownership / no shared DbContext.
+- Invariant: **Price ≠ Quote ≠ Payment / Booking Amount**; no silent single-currency wipe.
 
 ## Host
 
