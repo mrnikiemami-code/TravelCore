@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P18 — Trip Planner / Lead Experience** (**PLANNING** — `TC-P18-PLAN` delivered) |
+| Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T001 delivered; **P18-R1 RESOLVED**) |
 | Previous Phase | **P17 — Visa** (**COMPLETE** — `TC-P17-GATE` ACCEPTED `f439924`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P18-PLAN` — Trip Planner / Lead architecture plan (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P18-T001` — TripPlanner module scaffolding (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P18 — Trip Planner / Lead Experience |
-| Current Next Task | Architect review of `TC-P18-PLAN` → T001 only after R1 lock |
+| Current Next Task | Architect review of `TC-P18-T001` → T002 only after R2 lock |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -220,8 +220,10 @@
 | P16-GATE | **COMPLETE / ACCEPTED** (`538f3fc`) — Acceptance evidence (no new product capability) |
 | P17 | **COMPLETE / ACCEPTED** — Plan ACCEPTED · **P17-R1–R8 RESOLVED** · T001–T009 ACCEPTED · `TC-P17-GATE` `f439924` |
 | P17-GATE | **COMPLETE / ACCEPTED** (`f439924`) — Acceptance evidence (no new product capability) |
-| P18 | **PLANNING** — `TC-P18-PLAN` delivered · **P18-R1–R8 OPEN** |
+| P18 | **IN PROGRESS** — `TC-P18-PLAN` ACCEPTED · **P18-R1 RESOLVED** · T001 delivered · **P18-R2–R8 OPEN** |
 | P18 Plan | [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md) |
+| P18-T001 | **DELIVERED** — TripPlanner module scaffolding (`trip_planner` schema) |
+| P18-R1 (TripPlanner ownership) | **RESOLVED** — independent TripPlanner module · schema `trip_planner` · owns future trip-intent/lead facts/lifecycle · does not own Destination/Tour/Place facts, Pricing/Quote, Booking, Payment, CRM, Search, AgencyMarketplace commercial allocation, Notification delivery, or Party/Identity master data · product refs = opaque logical id · T001: no TripIntent/Lead/preferences/lifecycle/routing/notification provider/identity product types |
 | P17 Plan | `TC-P17-PLAN` COMPLETE / ACCEPTED (`1b5c8ea`) — [`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md) |
 | P17-T001 | **COMPLETE / ACCEPTED** (`5f18f83`) — Visa module scaffolding (`visa` schema) |
 | P17-T002 | **COMPLETE / ACCEPTED** (`12f19e7`) — VisaDefinition + VisaRequirementSet baseline |

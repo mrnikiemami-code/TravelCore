@@ -4,8 +4,8 @@
 |-------|--------|
 | Plan-ID | `TC-P18-PLAN` |
 | Phase | P18 — Trip Planner / Lead Experience |
-| Status | PLAN authored; **P18-R1–R8 OPEN**; awaiting architect ACCEPT |
-| Baseline | `f439924` (`docs(visa): add P17 acceptance gate evidence [TC-P17-GATE]` — **TC-P17-GATE** ACCEPTED; P17 COMPLETE) |
+| Status | PLAN ACCEPTED; **P18-R1 RESOLVED**; T001 delivered; **P18-R2–R8 OPEN** |
+| Baseline | `1826013` (`docs(tripplanner): add P18 implementation plan [TC-P18-PLAN]`) · T001 on top |
 | Authoritative sources | `docs/ROADMAP.md` § P18 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `13-reference-page-archetypes.md` · `docs/pages/00-page-archetype-registry.md` · `docs/pages/09-page-state-and-composition-rules.md` · P04 Destination/ReferenceData · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace · P14 PublicExperience · P15 Search · P16 UGC · P17 Visa · P19 Booking · P20 Payment · `15-future-architecture-transition-map.md` § V Notification |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
@@ -65,7 +65,7 @@ P18 اضافه می‌کند: **Trip Planner / Lead capability** — **بدون*
 | P17 Plan | ACCEPTED · R1–R8 RESOLVED · T001–T009 ACCEPTED |
 | Baseline HEAD | `f439924` |
 | P00–P17 | COMPLETE |
-| Trip Planner / Lead module | **Not implemented** (ROADMAP + page references only) |
+| Trip Planner / Lead module | **Scaffolding delivered** (`TC-P18-T001` / schema `trip_planner`) |
 | Notification module | **Not implemented** (architecture docs only) |
 | Booking / Payment | Modules do not exist (P19 / P20) |
 | Existing public contact affordance | P14 `Contact / Request Information` anchor — presentation only, no Lead backend |
@@ -141,9 +141,9 @@ P18 اضافه می‌کند: **Trip Planner / Lead capability** — **بدون*
 ### TC-P18-PLAN — this document
 
 ### TC-P18-T001 — Trip Planner / Lead module scaffolding / ownership boundary
-- Purpose: Independent module + schema + ownership contracts (**P18-R1**).
-- Expected direction (not locked): schema candidate `trip_planner` or `lead`; module owns submitted lead / trip-intent facts and lifecycle baseline.
-- Forbidden kept: Booking/Payment tables · CRM pipeline · Search engine · peer FK · Party/Identity clone · inventing R2–R8.
+- Purpose: Independent module + schema + ownership contracts (**P18-R1 RESOLVED**).
+- Delivered: Contracts/Domain/Infrastructure scaffolding; schema `trip_planner`; `TripPlannerOwnershipBoundary`; opaque `TripPlannerLogicalReference`; host registration; architecture guardrails; persistence lifecycle smoke; no peer FKs; no product aggregates.
+- Forbidden kept: TripIntent/Lead/preferences/lifecycle/routing/notification provider/identity tables · Booking/Payment tables · CRM pipeline · Search engine · peer FK · Party/Identity clone · inventing R2–R8.
 
 ### TC-P18-T002 — TripIntent vs Lead aggregate boundary
 - Purpose: Separate in-progress intent from submitted follow-up request (**P18-R2**).
@@ -196,7 +196,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 
 | ID | Topic | Status | SoT notes (not a lock) |
 |----|-------|--------|------------------------|
-| **P18-R1** | Trip Planner / Lead module ownership and schema | **OPEN** | Likely independent module. Candidate schema `trip_planner` or `lead`. Owns trip-intent/lead facts and lifecycle — not Tour, Destination, Party, Pricing, AgencyMarketplace, Search, SEO, Booking, Payment, Notification delivery, or CRM. No peer-schema FK. |
+| **P18-R1** | Trip Planner / Lead module ownership and schema | **RESOLVED** | Independent TripPlanner module. Schema `trip_planner`. Owns future trip-intent/lead facts and lifecycle — not Tour, Destination, Place, Pricing, AgencyMarketplace, Search, SEO, Booking, Payment, Notification delivery, CRM, or Party/Identity master data. No peer-schema FK. T001: no TripIntent/Lead/preferences/lifecycle/routing/notification provider/identity product types. |
 | **P18-R2** | TripIntent vs Lead aggregate boundary | **OPEN** | **TripIntent** = what traveler wants (may be draft/session). **Lead** = submitted request for follow-up. **Lead ≠ Booking**. Do not collapse without explicit lock. |
 | **P18-R3** | Anonymous vs authenticated planner / contact identity | **OPEN** | Anonymous submission likely allowed. **Lead contact ≠ Party master identity**. Evaluate client/session draft vs persisted anonymous draft vs account-owned draft. Do not auto-create Party merely on form submit unless locked. |
 | **P18-R4** | Travel preference model | **OPEN** | Destination/date/travelers/interests/budget/accommodation/transport/visa-assistance. **BudgetPreference ≠ Price/Quote**. **PlannerTravelerPreference ≠ Booking Passenger**. Date semantics: exact · flexible range · season · undecided. Logical refs to Destination/Tour — no clone. |
@@ -209,11 +209,11 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 
 ## 7. Architecture invariants (carry forward)
 
-1. **TripPlanner ≠ Booking** · **TripPlanner ≠ Search** · **Lead ≠ Quote** · **Lead ≠ Payment**.
-2. **TripIntent ≠ Lead** · **Lead ≠ Booking**.
-3. **Lead Experience ≠ CRM by default**.
-4. **Lead contact ≠ Party master identity** (until R3 lock says otherwise).
-5. **BudgetPreference ≠ Price** · **BudgetPreference ≠ Quote**.
+1. TripPlanner != Booking · TripPlanner != Search · Lead != Quote · Lead != Payment.
+2. TripIntent != Lead · Lead != Booking.
+3. Lead Experience != CRM by default.
+4. Lead contact != Party master identity (until R3 lock says otherwise).
+5. BudgetPreference != Price · BudgetPreference != Quote.
 6. **PlannerTravelerPreference ≠ Booking Passenger**.
 7. **Visa assistance preference ≠ VisaApplication** (P17-R8 deferred).
 8. **PublicExperience ≠ Lead Source of Truth**.

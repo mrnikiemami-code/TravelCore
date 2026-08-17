@@ -190,6 +190,12 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P17-R8 RESOLVED:** Visa owns visa policy/facts only. Applicant-specific VisaApplication/case workflow is explicitly deferred outside P17. **Visa != VisaApplication**. **VisaApplication != Booking**. **VisaApplication != Payment**. **RequiredDocument != ApplicantSubmittedDocument**. No applicant PII, upload, appointment, or external integration in P17.
 - Invariant: **Visa != Destination · Visa != ReferenceData · Visa != Content · Visa != Pricing · Visa != Booking · Visa != SEO · Visa != Search · Visa != VisaApplication**. Geographic references are logical ids only.
 
+| TripPlanner | `TripPlanner/TravelCore.Modules.TripPlanner.{Domain,Contracts,Infrastructure}` | `trip_planner` |
+
+- **TripPlanner:** TripPlanner module scaffolding (`TC-P18-T001`) — schema `trip_planner`; **TripPlanner != Booking**; **TripPlanner != Search**; **Lead Experience != CRM by default**; **TripIntent != Lead**; **BudgetPreference != Price**; no TripIntent/Lead/preferences/lifecycle/routing/notification provider/identity product types in T001; no peer FK.
+- **P18-R1 RESOLVED:** independent TripPlanner module with schema `trip_planner`. Owns future trip-intent/lead facts and lifecycle. Does not own Destination/Tour/Place facts, Pricing/Quote, Booking, Payment, CRM, Search, AgencyMarketplace commercial allocation, Notification delivery, or Party/Identity master data. Product references are opaque logical ids only.
+- Invariant: **TripPlanner != Booking · TripPlanner != Payment · TripPlanner != Pricing · TripPlanner != CRM · TripPlanner != Search · TripPlanner != Notification delivery · TripPlanner != Party/Identity**.
+
 ## Host
 
 `TravelCore.Api` remains the composition host. Modules register explicitly via `ITravelCoreModule` (no assembly scanning).

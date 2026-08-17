@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.TripPlanner.Contracts</RootNamespace>
+    <AssemblyName>TravelCore.Modules.TripPlanner.Contracts</AssemblyName>
+    <Description>TripPlanner module contracts. Ownership boundary only in T001 (TC-P18-T001 / P18-R1).</Description>
+  </PropertyGroup>
+
+</Project>

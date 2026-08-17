@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.TripPlanner.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.TripPlanner.UnitTests</AssemblyName>
+    <Description>TripPlanner scaffolding unit tests (TC-P18-T001 / P18-R1).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\TripPlanner\TravelCore.Modules.TripPlanner.Contracts\TravelCore.Modules.TripPlanner.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\TripPlanner\TravelCore.Modules.TripPlanner.Domain\TravelCore.Modules.TripPlanner.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\TripPlanner\TravelCore.Modules.TripPlanner.Infrastructure\TravelCore.Modules.TripPlanner.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
+  </ItemGroup>
+
+</Project>
