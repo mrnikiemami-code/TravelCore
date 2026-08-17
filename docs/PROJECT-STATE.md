@@ -202,7 +202,8 @@
 | P15-T004 | **COMPLETE / ACCEPTED** (`413d6fe`) — Search faceting ownership boundary |
 | P15-T005 | **COMPLETE / ACCEPTED** (`7b22225`) — Search ranking model boundary |
 | P15-T006 | **COMPLETE / ACCEPTED** (`edc176f`) — Search AI-readiness / semantic retrieval boundary |
-| P15-T007 | **AWAITING_ARCHITECT_REVIEW** — Public Search query API contract |
+| P15-T007 | **COMPLETE / ACCEPTED** (`183d09d`) — Public Search query API contract |
+| P15-T009 | **AWAITING_ARCHITECT_REVIEW** — Search hardening and evidence pack (T008 vacant) |
 | P15-R1 (Search ownership) | **RESOLVED** — Search = Discovery Owner · schema `search` · owns query/result contracts and future read models · does not own Tour/Content/Pricing/Agency facts or SEO IndexPolicy · Read Model/Projection later, not SoT · no LLM/business rules inside Search · T001: no projection tables / FTS / Elasticsearch / ranking / faceting |
 | P15-R2 (Index / read model) | **RESOLVED** — Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS in T002. SearchDocument is not a domain entity. |
 | P15-R3 (Synchronization) | **RESOLVED** — Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003. |
@@ -297,7 +298,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P15_T007_DELIVERED** · PLAN ACCEPTED · P15-R1–R7 RESOLVED · T007 query API awaiting review |
+| Phase Transition State | **P15_T009_DELIVERED** · PLAN ACCEPTED · P15-R1–R7 RESOLVED · T009 hardening awaiting review · GATE next |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |

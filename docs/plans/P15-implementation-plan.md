@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P15-PLAN` |
 | Phase | P15 — Search & Discovery |
-| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R7 RESOLVED; T007 public query API delivered |
+| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R7 RESOLVED; T009 hardening evidence delivered (T008 vacant) |
 | Baseline | `608216d` (`docs: P14 acceptance gate evidence [TC-P14-GATE]` — **TC-P14-GATE** ACCEPTED; P14 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P15 · P14 Gate ACCEPT · P14-R3/R5/R8 (Listing ≠ Landing · Related ≠ Recommendation · Filter ≠ Faceting) · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace |
 | Backend root | `src/backend` |
@@ -105,10 +105,11 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 - Forbidden kept: ES/OpenSearch/SQL FTS · provider DSL · recommendation · embeddings · SEO IndexPolicy ownership · domain duplication.
 
 ### TC-P15-T008 — SEO Landing integration boundary
-- Purpose: Search must not conflate Landing with filtered listing URLs.
-- Expected: Preserve Listing ≠ SEO Landing; IndexPolicy stays SEO; no auto-index of every filter combo.
+- Status: **VACANT** — no independent product scope after R7 lock; Listing ≠ SEO Landing already carried from P14. Do not invent filler work.
 
 ### TC-P15-T009 — Hardening + evidence
+- Purpose: Harden P15 boundaries and produce gate evidence (**no new capability**).
+- Delivered: [`docs/plans/P15-T009-hardening-and-evidence-pack.md`](P15-T009-hardening-and-evidence-pack.md) · strengthened architecture matrix assertions.
 
 ### TC-P15-GATE — Acceptance Gate
 - Evidence only. Ceremonial Gate wait is **not** a pipeline stop.

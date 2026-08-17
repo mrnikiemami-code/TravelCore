@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T007 query API) |
-| Phase Status | P00–P14 COMPLETE · P15-R1–R7 RESOLVED · `TC-P15-T007` delivered |
+| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T009 hardening) |
+| Phase Status | P00–P14 COMPLETE · P15-R1–R7 RESOLVED · `TC-P15-T009` hardening delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P15-T007` → Hardening/Evidence then Gate (no new invent) |
+| Current Next Task | Architect review of `TC-P15-T009` → `TC-P15-GATE` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -114,7 +114,7 @@
 - **P12** = COMPLETE / ACCEPTED (`b372367`) (**R1–R8 RESOLVED** · T001–T009 ACCEPTED — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
 - **P13** = COMPLETE (`TC-P13-GATE` ACCEPTED `c0bcd78` · **R1–R7 RESOLVED** · T008 vacant)
 - **P14** = COMPLETE (`TC-P14-GATE` ACCEPTED `608216d` · **R1–R8 RESOLVED**)
-- **P15** = IN_PROGRESS — PLAN ACCEPTED · **P15-R1–R7 RESOLVED** · T007 query API [`plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md)
+- **P15** = IN_PROGRESS — PLAN ACCEPTED · **P15-R1–R7 RESOLVED** · T009 hardening [`plans/P15-T009-hardening-and-evidence-pack.md`](plans/P15-T009-hardening-and-evidence-pack.md)
 - **P16–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
