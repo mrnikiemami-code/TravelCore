@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Pricing.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Pricing.Contracts</AssemblyName>
-    <Description>Pricing module contracts (scaffolding). No EF entities. TC-P12-T001.</Description>
+    <Description>Pricing module contracts: Admin Price DTOs (TC-P12-T006). No EF entities.</Description>
   </PropertyGroup>
 
 </Project>

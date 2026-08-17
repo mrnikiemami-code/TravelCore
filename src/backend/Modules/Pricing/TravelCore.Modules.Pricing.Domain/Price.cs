@@ -188,6 +188,128 @@ public sealed class Price
         return rule;
     }
 
+    /// <summary>
+    /// Replaces components and occupancy rules in one definition write (Admin update).
+    /// TargetType/TargetId stay immutable; Quote/Booking/Payment are out of scope.
+    /// </summary>
+    public void ReplaceDefinition(
+        IReadOnlyList<PriceComponentDefinition> components,
+        IReadOnlyList<PriceOccupancyRuleDefinition>? occupancyRules = null)
+    {
+        ArgumentNullException.ThrowIfNull(components);
+
+        if (components.Count == 0)
+        {
+            throw new ArgumentException("Price requires at least one component.", nameof(components));
+        }
+
+        if (!components.Any(c => c.Kind == PriceComponentKind.Base))
+        {
+            throw new ArgumentException(
+                "Price requires at least one Base component.",
+                nameof(components));
+        }
+
+        EnsureComponentDefinitionsValid(components);
+        var rules = occupancyRules ?? [];
+        EnsureOccupancyRuleDefinitionsValid(rules, components[0].Money.Currency);
+
+        _components.Clear();
+        _occupancyRules.Clear();
+
+        foreach (var definition in components)
+        {
+            _components.Add(
+                PriceComponent.Create(
+                    Id,
+                    definition.Kind,
+                    definition.Money,
+                    definition.SortOrder,
+                    definition.Code,
+                    definition.Label));
+        }
+
+        foreach (var rule in rules)
+        {
+            _occupancyRules.Add(
+                PriceOccupancyRule.Create(
+                    Id,
+                    rule.MarketPriceType,
+                    rule.PassengerCategory,
+                    rule.OccupancyCategory,
+                    rule.Money,
+                    rule.SortOrder));
+        }
+    }
+
+    /// <summary>
+    /// Replaces the component set. Occupancy rules are kept only when they share the new currency.
+    /// </summary>
+    public void ReplaceComponents(IReadOnlyList<PriceComponentDefinition> components)
+    {
+        ArgumentNullException.ThrowIfNull(components);
+
+        if (components.Count == 0)
+        {
+            throw new ArgumentException("Price requires at least one component.", nameof(components));
+        }
+
+        if (!components.Any(c => c.Kind == PriceComponentKind.Base))
+        {
+            throw new ArgumentException(
+                "Price requires at least one Base component.",
+                nameof(components));
+        }
+
+        EnsureComponentDefinitionsValid(components);
+        var nextCurrency = components[0].Money.Currency;
+        if (_occupancyRules.Any(rule => !rule.Money.Currency.Equals(nextCurrency)))
+        {
+            throw new InvalidOperationException(
+                "Cannot replace components with a currency that occupancy rules do not share.");
+        }
+
+        _components.Clear();
+        foreach (var definition in components)
+        {
+            _components.Add(
+                PriceComponent.Create(
+                    Id,
+                    definition.Kind,
+                    definition.Money,
+                    definition.SortOrder,
+                    definition.Code,
+                    definition.Label));
+        }
+    }
+
+    /// <summary>
+    /// Replaces occupancy/passenger commercial rules. Empty list clears all rules.
+    /// </summary>
+    public void ReplaceOccupancyRules(IReadOnlyList<PriceOccupancyRuleDefinition> rules)
+    {
+        ArgumentNullException.ThrowIfNull(rules);
+
+        if (_components.Count == 0)
+        {
+            throw new InvalidOperationException("Price must have components before occupancy rules.");
+        }
+
+        EnsureOccupancyRuleDefinitionsValid(rules, Currency);
+        _occupancyRules.Clear();
+        foreach (var rule in rules)
+        {
+            _occupancyRules.Add(
+                PriceOccupancyRule.Create(
+                    Id,
+                    rule.MarketPriceType,
+                    rule.PassengerCategory,
+                    rule.OccupancyCategory,
+                    rule.Money,
+                    rule.SortOrder));
+        }
+    }
+
     private static void EnsureComponentDefinitionsValid(IReadOnlyList<PriceComponentDefinition> components)
     {
         CurrencyCode? currency = null;

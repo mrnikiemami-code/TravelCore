@@ -66,4 +66,14 @@ public static class AccessAuthorizationPolicies
     /// TourProduct SEO route publication: Access-backed <c>seo.tour-posture.write</c>.
     /// </summary>
     public const string SeoTourPostureWrite = "Access.Seo.TourPosture.Write";
+
+    /// <summary>
+    /// Pricing Admin reads: Access-backed <c>pricing.prices.read</c>.
+    /// </summary>
+    public const string PricingPricesRead = "Access.Pricing.Prices.Read";
+
+    /// <summary>
+    /// Pricing Admin mutations: Access-backed <c>pricing.prices.write</c>.
+    /// </summary>
+    public const string PricingPricesWrite = "Access.Pricing.Prices.Write";
 }

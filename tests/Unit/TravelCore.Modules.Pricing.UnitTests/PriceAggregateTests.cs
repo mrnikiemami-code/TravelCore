@@ -262,4 +262,80 @@ public sealed class PriceAggregateTests
                 PricingMoney.Create(13m, "USD"),
                 sortOrder: 2));
     }
+
+    [Fact]
+    public void ReplaceDefinition_Replaces_Components_And_Occupancy_Rules()
+    {
+        var price = Price.Create(
+            PriceTargetType.TourDepartureValue,
+            NonEmptyTargetId,
+            [new PriceComponentDefinition(PriceComponentKind.Base, PricingMoney.Create(10m, "USD"))],
+            [
+                new PriceOccupancyRuleDefinition(
+                    TourMarketPriceType.Public,
+                    PassengerCategory.Adult,
+                    OccupancyCategory.SingleRoom,
+                    PricingMoney.Create(12m, "USD"))
+            ]);
+
+        price.ReplaceDefinition(
+            [
+                new PriceComponentDefinition(PriceComponentKind.Base, PricingMoney.Create(100m, "EUR"), SortOrder: 0, Code: "BASE"),
+                new PriceComponentDefinition(PriceComponentKind.Tax, PricingMoney.Create(9m, "EUR"), SortOrder: 1, Code: "VAT")
+            ],
+            [
+                new PriceOccupancyRuleDefinition(
+                    TourMarketPriceType.Agency,
+                    PassengerCategory.ChildWithBed,
+                    OccupancyCategory.TwinRoom,
+                    PricingMoney.Create(80m, "EUR"),
+                    SortOrder: 0)
+            ]);
+
+        Assert.Equal("EUR", price.Currency.Value);
+        Assert.Equal(2, price.Components.Count);
+        var rule = Assert.Single(price.OccupancyRules);
+        Assert.Equal(TourMarketPriceType.Agency, rule.MarketPriceType);
+        Assert.Equal(PassengerCategory.ChildWithBed, rule.PassengerCategory);
+        Assert.Equal(OccupancyCategory.TwinRoom, rule.OccupancyCategory);
+    }
+
+    [Fact]
+    public void ReplaceComponents_Rejects_Currency_Mismatch_With_Existing_Occupancy_Rules()
+    {
+        var price = Price.Create(
+            PriceTargetType.TourDepartureValue,
+            NonEmptyTargetId,
+            [new PriceComponentDefinition(PriceComponentKind.Base, PricingMoney.Create(10m, "USD"))],
+            [
+                new PriceOccupancyRuleDefinition(
+                    TourMarketPriceType.Public,
+                    PassengerCategory.Adult,
+                    OccupancyCategory.SingleRoom,
+                    PricingMoney.Create(12m, "USD"))
+            ]);
+
+        Assert.Throws<InvalidOperationException>(() =>
+            price.ReplaceComponents(
+                [new PriceComponentDefinition(PriceComponentKind.Base, PricingMoney.Create(10m, "EUR"))]));
+    }
+
+    [Fact]
+    public void ReplaceOccupancyRules_Empty_Clears_Rules()
+    {
+        var price = Price.Create(
+            PriceTargetType.TourDepartureValue,
+            NonEmptyTargetId,
+            [new PriceComponentDefinition(PriceComponentKind.Base, PricingMoney.Create(10m, "USD"))],
+            [
+                new PriceOccupancyRuleDefinition(
+                    TourMarketPriceType.Public,
+                    PassengerCategory.Adult,
+                    OccupancyCategory.SingleRoom,
+                    PricingMoney.Create(12m, "USD"))
+            ]);
+
+        price.ReplaceOccupancyRules([]);
+        Assert.Empty(price.OccupancyRules);
+    }
 }

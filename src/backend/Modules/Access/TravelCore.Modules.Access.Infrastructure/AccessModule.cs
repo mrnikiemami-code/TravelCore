@@ -106,6 +106,16 @@ public sealed class AccessModule : ITravelCoreModule
             {
                 policy.RequireAuthenticatedUser();
                 policy.AddRequirements(new PermissionRequirement("seo.tour-posture.write"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.PricingPricesRead, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("pricing.prices.read"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.PricingPricesWrite, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("pricing.prices.write"));
             });
     }
 

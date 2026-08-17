@@ -11,6 +11,7 @@ namespace TravelCore.ArchitectureTests;
 /// no Tour.Domain/Infrastructure refs; no Booking/Payment/FX.
 /// TC-P12-T004 / P12-R4: Quote owned by Pricing (snapshot + expiration); no Booking/Payment/Customer/Passenger.
 /// TC-P12-T005 / P12-R5: Occupancy/passenger category pricing baseline in Pricing model; no Booking passenger entity.
+/// TC-P12-T006 / P12-R6: Admin Pricing operational API owned by Pricing (not Tour Admin); no Booking/Payment/Quote workflow.
 /// </summary>
 public sealed class PricingBoundaryGuardrailTests
 {
@@ -391,6 +392,24 @@ public sealed class PricingBoundaryGuardrailTests
             hits.Count == 0,
             "Pricing must not introduce Tour schema FK/nav or share Tour DbContext:\n"
             + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void PricingModule_Maps_Admin_Price_Endpoints()
+    {
+        var modulePath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Infrastructure",
+            "PricingModule.cs");
+        Assert.True(File.Exists(modulePath), modulePath);
+        var text = File.ReadAllText(modulePath);
+        Assert.Contains("IPriceAdminService", text, StringComparison.Ordinal);
+        Assert.Contains("MapPricingAdminEndpoints", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("ITourDepartureAdminService", text, StringComparison.Ordinal);
     }
 
     [Fact]

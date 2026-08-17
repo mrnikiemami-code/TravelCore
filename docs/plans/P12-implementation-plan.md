@@ -4,8 +4,8 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5 RESOLVED; T001–T005 delivered |
-| Baseline | `81a3f26` (T004 ACCEPTED baseline for T005) |
+| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5/R6 RESOLVED; T001–T006 delivered |
+| Baseline | `c90931d` (T005 ACCEPTED baseline for T006) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
@@ -87,11 +87,12 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 - **Delivered:** Pricing-owned structured occupancy/passenger pricing rules attached to `Price` (`PriceOccupancyRule`) with explicit dimensions: `TourMarketPriceType` + `PassengerCategory` + `OccupancyCategory` + `Money`; baseline categories include Adult / ChildWithBed / ChildWithoutBed and SingleRoom (plus DoubleRoom/TwinRoom support); persistence in `pricing.price_occupancy_rules`; no Booking passenger entity; no reservation calc; no inventory.
 - **P12-R5 RESOLVED:** Pricing occupancy and passenger category baseline.
 
-### TC-P12-T006 — (was Quote baseline — moved)
-- Original plan slot for Quote; **architect moved Quote baseline to T004**. Slot retained for future sequencing (e.g. departure pricing attachment / admin link) if still needed after T005+.
+### TC-P12-T006 — Admin Pricing baseline
+- **Delivered:** Pricing-owned Admin API for create/update Price, manage PriceComponent, and manage OccupancyRules; Access permissions `pricing.prices.read` / `pricing.prices.write`; no Tour Admin ownership; no Booking/Payment/Checkout/FX/Quote workflow UI.
+- **P12-R6 RESOLVED:** Admin Pricing is operational UI/API for Pricing. Ownership stays in Pricing module (Admin API + Admin UI). Not Tour Admin ownership.
 
 ### TC-P12-T007 — Access + Admin Pricing baseline
-- Permissions + Admin job for rates/components (Server Component First).
+- Original plan slot for Access + Admin job. **Architect assigned this work to T006 / P12-R6.** Slot retained as absorbed — do not duplicate Admin Pricing here.
 
 ### TC-P12-T008 — Public / composition hooks (read-only price facts)
 - Optional published price display hooks — no book/pay CTA.
@@ -111,6 +112,7 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 | **P12-R3** | Pricing attaches to Departure vs Product vs both | **RESOLVED** | Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now). |
 | **P12-R4** | Quote model (required in P12? expiration? snapshot fields) | **RESOLVED** | Quote owned by Pricing · Quote is calculation snapshot · No Booking ownership · No Payment · No Customer/Passenger · No checkout flow. Price = defined system price; Quote = calculated price for a specific request (snapshot + expiration). Ownership: Pricing → Quote → PriceSnapshot + Expiration. |
 | **P12-R5** | Pricing occupancy and passenger category baseline | **RESOLVED** | **Pricing owns occupancy categories; Support tour market price types; No Booking passenger entity; No reservation calculation; No inventory.** Previous FX-authority phrasing ("Exchange rate source / authority") is deferred to a future pricing/FX decision and is not solved in T005. |
+| **P12-R6** | Admin Pricing ownership | **RESOLVED** | Admin Pricing is operational UI/API for Pricing. Ownership stays in Pricing module (Admin API + Admin UI). Not Tour Admin ownership. |
 | Agency override of rates | Marketplace (P13) vs P12 | **UNRESOLVED** | Prefer DEFER to P13 |
 
 ---
@@ -136,11 +138,12 @@ After `TC-P12-GATE` ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marke
 
 - [x] Phase purpose + non-goals explicit
 - [x] Task sequence proposed without product code
-- [x] Open decisions listed (R1–R5) — no invention
+- [x] Open decisions listed (R1–R6) — no invention
 - [x] Baseline = P11 Gate ACCEPT commit
 - [x] Architect lock **P12-R1** (independent Pricing module) · first product task `TC-P12-T001` executable
 - [x] Architect lock **P12-R2** (platform Money reuse · one currency per value · no twin SoR · no FX in T002)
 - [x] Architect lock **P12-R3** (buyable Price → TourDeparture via polymorphic `TargetType`+`TargetId`; Pricing generic; no FK; product-level DEFER; no Quote/Booking)
 - [x] Architect lock **P12-R4** (Quote owned by Pricing; calculation snapshot + expiration; no Booking/Payment/Customer/Passenger/checkout)
 - [x] Architect lock **P12-R5** (Pricing occupancy and passenger category baseline; no Booking passenger entity/reservation/inventory)
+- [x] Architect lock **P12-R6** (Admin Pricing is operational UI/API for Pricing; ownership stays in Pricing module (Admin API + Admin UI); not Tour Admin ownership)
 - [ ] Architect ACCEPT + Auto-Execute subsequent product tasks

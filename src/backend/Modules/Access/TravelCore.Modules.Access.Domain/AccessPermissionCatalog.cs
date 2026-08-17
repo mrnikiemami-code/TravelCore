@@ -25,7 +25,9 @@ public static class AccessPermissionCatalog
         ("tour.products.write", "Create/update TourProduct catalog entries and owned fields"),
         ("tour.departures.read", "Read TourDeparture execution catalog"),
         ("tour.departures.write", "Create/update TourDeparture execution fields"),
-        ("seo.tour-posture.write", "Publish TourProduct SEO routes (IndexPolicy remains explicit / default noindex)")
+        ("seo.tour-posture.write", "Publish TourProduct SEO routes (IndexPolicy remains explicit / default noindex)"),
+        ("pricing.prices.read", "Read Pricing admin prices"),
+        ("pricing.prices.write", "Create/update Pricing admin prices, components, and occupancy rules")
     ];
 
     public const string AdminRoleCode = "admin";

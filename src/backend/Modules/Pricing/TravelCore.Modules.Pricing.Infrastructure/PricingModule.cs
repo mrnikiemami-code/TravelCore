@@ -3,12 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TravelCore.Modularity;
+using TravelCore.Modules.Pricing.Contracts;
+using TravelCore.Modules.Pricing.Infrastructure.Endpoints;
+using TravelCore.Modules.Pricing.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Pricing.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Pricing module (scaffolding — TC-P12-T001).
+/// Host composition entry for the Pricing module (Admin Pricing — TC-P12-T006).
 /// </summary>
 public sealed class PricingModule : ITravelCoreModule
 {
@@ -27,11 +30,13 @@ public sealed class PricingModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: PricingDbContext.SchemaName);
         });
+
+        services.AddScoped<IPriceAdminService, PriceAdminService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // Product endpoints belong to later P12 tasks.
+        endpoints.MapPricingAdminEndpoints();
     }
 }
