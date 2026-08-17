@@ -186,6 +186,57 @@ public sealed class SearchScaffoldingSmokeTests
             typeof(SearchDocument).GetProperty(nameof(SearchDocument.StructuredAttributes)) is not null);
     }
 
+    [Fact]
+    public void Ranking_Boundary_Is_Deterministic_Not_Business_Policy_Or_Recommendation()
+    {
+        Assert.Equal("Search", SearchRankingBoundary.RankingOwnerModule);
+        Assert.Equal("DeterministicExplainableSignalsPlusStableTieBreak", SearchRankingBoundary.RankingPosture);
+        Assert.True(SearchRankingBoundary.OwnsRankingComposition);
+        Assert.True(SearchRankingBoundary.OwnsRelevanceOrdering);
+        Assert.True(SearchRankingBoundary.OwnsDeterministicTieBreak);
+        Assert.True(SearchRankingBoundary.OwnsRankingResultMetadata);
+        Assert.False(SearchRankingBoundary.OwnsTourBusinessPriority);
+        Assert.False(SearchRankingBoundary.OwnsAgencyCommercialPriority);
+        Assert.False(SearchRankingBoundary.OwnsCommissionPolicy);
+        Assert.False(SearchRankingBoundary.OwnsSponsorshipPolicy);
+        Assert.False(SearchRankingBoundary.OwnsProfitabilityPolicy);
+        Assert.False(SearchRankingBoundary.OwnsCatalogTruth);
+        Assert.False(SearchRankingBoundary.RankingEngineImplemented);
+        Assert.False(SearchRankingBoundary.MachineLearningRankingAllowed);
+        Assert.False(SearchRankingBoundary.AiModelAllowed);
+        Assert.False(SearchRankingBoundary.EmbeddingsAllowed);
+        Assert.False(SearchRankingBoundary.VectorSearchAllowed);
+        Assert.False(SearchRankingBoundary.RecommendationEngineAllowed);
+        Assert.False(SearchRankingBoundary.PersonalizationAllowed);
+        Assert.False(SearchRankingBoundary.UserBehaviorRankingAllowed);
+        Assert.False(SearchRankingBoundary.CollaborativeFilteringAllowed);
+        Assert.False(SearchRankingBoundary.ElasticsearchDependencyAllowed);
+        Assert.False(SearchRankingBoundary.OpenSearchDependencyAllowed);
+        Assert.True(SearchRankingBoundary.ExplainabilityMetadataAllowed);
+        Assert.False(SearchOwnershipBoundary.RankingEngineAllowed);
+        Assert.False(SearchIndexBoundary.RankingEngineAllowed);
+        Assert.False(SearchFacetingBoundary.RankingAllowed);
+    }
+
+    [Fact]
+    public void Ranking_Contracts_Are_Engine_Neutral_Shapes()
+    {
+        var context = new RankingContext(LocaleCode: "fa-IR", QueryText: "istanbul", Criteria: null);
+        var signal = new RankingSignal(Kind: "TextualRelevance", Value: 0.8m, Source: "query");
+        var candidate = new RankedCandidate(
+            Guid.Parse("0198b3e0-0000-7000-8000-000000000031"),
+            [signal]);
+        var result = new RankingResult(
+            candidate.SourceId,
+            Ordinal: 0,
+            new RankingScoreMetadata(Score: 0.8m, TieBreakKey: candidate.SourceId.ToString("N"), Diagnostics: null));
+
+        Assert.Equal("fa-IR", context.LocaleCode);
+        Assert.Equal("TextualRelevance", signal.Kind);
+        Assert.Equal(0, result.Ordinal);
+        Assert.Equal(typeof(ISearchRanker).Namespace, typeof(RankingResult).Namespace);
+    }
+
     private sealed class InMemorySearchProjectionIdempotencyStore : ISearchProjectionIdempotencyStore
     {
         private readonly HashSet<Guid> _processed = [];

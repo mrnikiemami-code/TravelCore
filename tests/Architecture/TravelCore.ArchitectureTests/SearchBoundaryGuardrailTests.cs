@@ -7,8 +7,8 @@ using Xunit;
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P15-T001..T004: Search is Discovery owner with hybrid read-model, outbox projection,
-/// and faceting ownership contracts. No FTS/ranking/facet engine or physical search engine yet.
+/// TC-P15-T001..T005: Search Discovery owner with hybrid read-model, outbox projection,
+/// faceting ownership, and deterministic ranking contracts. No FTS/ML/recommendation engines.
 /// </summary>
 public sealed class SearchBoundaryGuardrailTests
 {
@@ -220,6 +220,71 @@ public sealed class SearchBoundaryGuardrailTests
         Assert.True(
             hits.Count == 0,
             "T004 forbids facet engines, ES aggregations, and domain facet tables:\n" + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void Search_Owns_Deterministic_Ranking_Not_Business_Policy_Or_Recommendation()
+    {
+        Assert.Equal("Search", SearchRankingBoundary.RankingOwnerModule);
+        Assert.Equal("DeterministicExplainableSignalsPlusStableTieBreak", SearchRankingBoundary.RankingPosture);
+        Assert.True(SearchRankingBoundary.OwnsRankingComposition);
+        Assert.True(SearchRankingBoundary.OwnsRelevanceOrdering);
+        Assert.True(SearchRankingBoundary.OwnsDeterministicTieBreak);
+        Assert.True(SearchRankingBoundary.OwnsRankingResultMetadata);
+        Assert.False(SearchRankingBoundary.OwnsTourBusinessPriority);
+        Assert.False(SearchRankingBoundary.OwnsAgencyCommercialPriority);
+        Assert.False(SearchRankingBoundary.OwnsCommissionPolicy);
+        Assert.False(SearchRankingBoundary.OwnsSponsorshipPolicy);
+        Assert.False(SearchRankingBoundary.OwnsProfitabilityPolicy);
+        Assert.False(SearchRankingBoundary.OwnsCatalogTruth);
+        Assert.False(SearchRankingBoundary.RankingEngineImplemented);
+        Assert.False(SearchRankingBoundary.MachineLearningRankingAllowed);
+        Assert.False(SearchRankingBoundary.EmbeddingsAllowed);
+        Assert.False(SearchRankingBoundary.VectorSearchAllowed);
+        Assert.False(SearchRankingBoundary.RecommendationEngineAllowed);
+        Assert.False(SearchRankingBoundary.PersonalizationAllowed);
+        Assert.False(SearchOwnershipBoundary.RankingEngineAllowed);
+        Assert.False(SearchIndexBoundary.RankingEngineAllowed);
+        Assert.False(SearchFacetingBoundary.RankingAllowed);
+        Assert.False(PublicExperienceFilterPresentationBoundary.RankingAllowed);
+    }
+
+    [Fact]
+    public void SearchInfrastructure_MustNotImplement_ISearchRanker_Or_MlRanking()
+    {
+        var infraRoot = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Search",
+            "TravelCore.Modules.Search.Infrastructure");
+        Assert.True(Directory.Exists(infraRoot), infraRoot);
+
+        var hits = Directory.EnumerateFiles(infraRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(x.line, @"\bclass\s+\w+[^{:]*:\s*[^{]*\bISearchRanker\b")
+                           || Regex.IsMatch(
+                               x.line,
+                               @"\b(BestAgency|PreferredSeller|MostProfitable|CommissionBoost|SponsoredWinner|CollaborativeFilter|EmbeddingModel|VectorIndex)\b");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "T005 forbids concrete ranking engines and business-policy invents:\n" + string.Join('\n', hits));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

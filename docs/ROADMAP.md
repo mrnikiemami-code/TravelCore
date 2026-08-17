@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T004 faceting ownership) |
-| Phase Status | P00–P14 COMPLETE · P15-R1–R4 RESOLVED · `TC-P15-T004` delivered |
+| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T005 ranking model) |
+| Phase Status | P00–P14 COMPLETE · P15-R1–R5 RESOLVED · `TC-P15-T005` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P15-T004` → next locked task (do not invent R5–R7) |
+| Current Next Task | Architect review of `TC-P15-T005` → next locked task (do not invent R6–R7) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -114,7 +114,7 @@
 - **P12** = COMPLETE / ACCEPTED (`b372367`) (**R1–R8 RESOLVED** · T001–T009 ACCEPTED — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
 - **P13** = COMPLETE (`TC-P13-GATE` ACCEPTED `c0bcd78` · **R1–R7 RESOLVED** · T008 vacant)
 - **P14** = COMPLETE (`TC-P14-GATE` ACCEPTED `608216d` · **R1–R8 RESOLVED**)
-- **P15** = IN_PROGRESS — PLAN ACCEPTED · **P15-R1–R4 RESOLVED** · T004 faceting ownership [`plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md)
+- **P15** = IN_PROGRESS — PLAN ACCEPTED · **P15-R1–R5 RESOLVED** · T005 ranking model [`plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md)
 - **P16–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -506,7 +506,9 @@ Search URL ≠ SEO Landing URL.
 
 ## P15 — Search
 
-**Status:** IN PROGRESS — PLAN ACCEPTED · **P15-R1–R4 RESOLVED** · `TC-P15-T004` faceting ownership boundary delivered ([`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md))
+**Status:** IN PROGRESS — PLAN ACCEPTED · **P15-R1–R5 RESOLVED** · `TC-P15-T005` ranking model boundary delivered ([`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md))
+
+**P15-R5:** Deterministic explainable signals + stable tie-break. Search owns ranking composition/ordering/metadata. Not business-policy authority. Ranking ≠ Recommendation. No ML/embeddings/personalization in T005.
 
 **P15-R4:** Search owns Aggregation / Counting / Result composition. Domain owns attribute meaning + source facts. PE owns filter UI only. No facet engine / ES aggregations / domain facet tables in T004.
 
