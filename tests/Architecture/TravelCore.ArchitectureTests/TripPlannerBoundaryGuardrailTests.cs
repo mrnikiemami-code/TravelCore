@@ -48,7 +48,8 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.False(TripPlannerOwnershipBoundary.IdentityOrPartyCloneImplemented);
         Assert.True(TripPlannerOwnershipBoundary.TravelPreferencesImplemented);
         Assert.True(TripPlannerPreferenceBoundary.TravelPreferencesImplemented);
-        Assert.False(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
+        Assert.True(TripPlannerLifecycleBoundary.LeadLifecycleImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);
         Assert.False(TripPlannerOwnershipBoundary.SearchEngineImplemented);
         Assert.False(TripPlannerOwnershipBoundary.RecommendationEngineImplemented);
@@ -157,6 +158,20 @@ public sealed class TripPlannerBoundaryGuardrailTests
     }
 
     [Fact]
+    public void TripPlanner_T005_Implements_Minimal_Lead_Lifecycle_Without_Crm_Or_Booking()
+    {
+        Assert.True(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
+        Assert.True(TripPlannerLifecycleBoundary.LeadLifecycleImplemented);
+        Assert.Equal(["Submitted", "Contacted", "Closed", "Cancelled"], Enum.GetNames(typeof(LeadStatus)));
+        Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.Opportunity"));
+        Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.PipelineStage"));
+        Assert.Equal(TripPlannerLifecycleBoundary.LeadStatusNotEqualCrmPipelineStage, "LeadStatus != CRM Pipeline Stage");
+        Assert.Equal(TripPlannerLifecycleBoundary.ContactedNotEqualQualification, "Contacted != Qualification");
+    }
+
+    [Fact]
     public void TripPlanner_Module_Keeps_Search_And_Ai_Engines_Out()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "TripPlanner");
@@ -220,8 +235,10 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.Contains("P18-R2", text, StringComparison.Ordinal);
         Assert.Contains("P18-R3", text, StringComparison.Ordinal);
         Assert.Contains("P18-R4", text, StringComparison.Ordinal);
+        Assert.Contains("P18-R5", text, StringComparison.Ordinal);
         Assert.Contains("BudgetPreference != Price", text, StringComparison.Ordinal);
         Assert.Contains("PlannerTravelerComposition != Booking Passenger", text, StringComparison.Ordinal);
+        Assert.Contains("LeadStatus != CRM Pipeline Stage", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

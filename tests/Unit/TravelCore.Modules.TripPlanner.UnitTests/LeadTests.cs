@@ -32,10 +32,13 @@ public sealed class LeadTests
     }
 
     [Fact]
-    public void LeadStatus_Has_Only_Submitted_Baseline()
+    public void LeadStatus_Has_Controlled_Minimal_Lifecycle()
     {
         var values = Enum.GetNames(typeof(LeadStatus));
-        Assert.Single(values);
-        Assert.Equal(nameof(LeadStatus.Submitted), values[0]);
+        Assert.Equal(4, values.Length);
+        Assert.Contains(nameof(LeadStatus.Submitted), values);
+        Assert.Contains(nameof(LeadStatus.Contacted), values);
+        Assert.Contains(nameof(LeadStatus.Closed), values);
+        Assert.Contains(nameof(LeadStatus.Cancelled), values);
     }
 }

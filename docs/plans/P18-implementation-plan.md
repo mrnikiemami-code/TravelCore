@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P18-PLAN` |
 | Phase | P18 — Trip Planner / Lead Experience |
-| Status | PLAN ACCEPTED; **P18-R1–R4 RESOLVED**; T001–T004 delivered; **P18-R5–R8 OPEN** |
+| Status | PLAN ACCEPTED; **P18-R1–R5 RESOLVED**; T001–T005 delivered; **P18-R6–R8 OPEN** |
 | Baseline | `1826013` (`docs(tripplanner): add P18 implementation plan [TC-P18-PLAN]`) · T001 on top |
 | Authoritative sources | `docs/ROADMAP.md` § P18 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `13-reference-page-archetypes.md` · `docs/pages/00-page-archetype-registry.md` · `docs/pages/09-page-state-and-composition-rules.md` · P04 Destination/ReferenceData · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace · P14 PublicExperience · P15 Search · P16 UGC · P17 Visa · P19 Booking · P20 Payment · `15-future-architecture-transition-map.md` § V Notification |
 | Backend root | `src/backend` |
@@ -164,9 +164,10 @@ P18 اضافه می‌کند: **Trip Planner / Lead capability** — **بدون*
 - Forbidden kept: lifecycle (R5) · routing (R6) · consent/notification (R7) · public UI/API (R8) · inventing R5–R8.
 
 ### TC-P18-T005 — Lead lifecycle / qualification boundary
-- Purpose: Minimal controlled lifecycle vs deferred qualification/CRM (**P18-R5**).
-- Evaluate: Draft · Submitted · Contacted · Qualified · Closed · Cancelled — lock only what architect requires.
-- Forbidden kept: generic workflow engine · full CRM · inventing R6–R8.
+- Purpose: Minimal controlled lifecycle vs deferred qualification/CRM (**P18-R5 RESOLVED**).
+- Delivered: `LeadStatus` = Submitted · Contacted · Closed · Cancelled; `LeadLifecycleBoundary` deterministic transitions; `StatusChangedAt`/`UpdatedAt`; migration `20260818050000_AddLeadLifecycleBaseline`.
+- Preserve: **LeadStatus != CRM Pipeline Stage** · **Lead != CRM Opportunity** · **Contacted != Qualification** · **Closed != Booking conversion**.
+- Forbidden kept: Qualified/Won/Lost/Converted · agency routing (R6) · consent/notification (R7) · public UI/API (R8).
 
 ### TC-P18-T006 — Agency routing / assignment boundary
 - Purpose: Document deferral or minimal logical routing posture (**P18-R6**).
@@ -203,7 +204,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 | **P18-R2** | TripIntent vs Lead aggregate boundary | **RESOLVED** | **TripIntent** = mutable planning intent. **Lead** = submitted request for follow-up. **Lead ≠ Booking**. Do not collapse. Submission copies snapshot; later TripIntent mutation must not change existing Lead. T002: no full preferences/identity/lifecycle/routing. |
 | **P18-R3** | Anonymous vs authenticated planner / contact identity | **RESOLVED** | Anonymous-first TripIntent without Account requirement. Optional `PlannerActorReference` (opaque logical id). `LeadContactSnapshot` at submission — **Lead contact != Party master identity**; **LeadContactSnapshot != Party/Identity**. Minimal `TripIntentDraftAccessToken` for anonymous draft retrieval. No Party/Identity clone, no AnonymousUser platform, no consent finalization (R7). |
 | **P18-R4** | Travel preference model | **RESOLVED** | Destination/date/travelers/interests/budget/accommodation/transport preferences. **BudgetPreference != Price/Quote**. **PlannerTravelerComposition != Booking Passenger**. Date semantics: exact · flexible range · season · undecided. Logical refs to Destination/Tour — no clone. T004 delivered. |
-| **P18-R5** | Lead lifecycle / qualification boundary | **OPEN** | Minimal baseline likely starts at **Submitted**. Full qualification pipeline / CRM stages remain **DEFER** unless locked. No generic workflow engine. |
+| **P18-R5** | Lead lifecycle / qualification boundary | **RESOLVED** | Minimal baseline: **Submitted · Contacted · Closed · Cancelled**. Full qualification/CRM pipeline **DEFERRED**. No generic workflow engine. T005 delivered. |
 | **P18-R6** | Agency routing / assignment boundary | **OPEN** | Future lead may route to agencies — **DEFER** by default. **Lead ≠ AgencyOffer**. No ranking/commission/commercial allocation in P18 unless locked. |
 | **P18-R7** | Notification / contact / privacy-consent boundary | **OPEN** | Notification owns delivery channels (module not built). Lead may emit semantic events/contracts for acknowledgment/internal alert. Plan consent, retention posture, access control, data minimization. No passport/document collection. |
 | **P18-R8** | PublicExperience composition and Booking/Search/CRM boundary | **OPEN** | PE composes entry points (nav · tour detail · destination · visa · dedicated route). **PublicExperience ≠ Lead SoT**. **TripPlanner ≠ Search**. Honest CTA — no fake Book Now. P14 contact affordance may connect later without PE owning persistence. |

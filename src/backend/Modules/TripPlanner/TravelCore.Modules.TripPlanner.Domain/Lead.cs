@@ -4,7 +4,7 @@ using TravelCore.Modules.TripPlanner.Contracts;
 namespace TravelCore.Modules.TripPlanner.Domain;
 
 /// <summary>
-/// Submitted follow-up request derived from a TripIntent (TC-P18-T002 / P18-R2; contact P18-R3).
+/// Submitted follow-up request derived from a TripIntent (TC-P18-T002 / P18-R2; contact P18-R3; lifecycle P18-R5).
 /// Not a Booking, Quote, CRM opportunity, or live alias of TripIntent.
 /// </summary>
 public sealed class Lead
@@ -31,6 +31,8 @@ public sealed class Lead
         Status = LeadStatus.Submitted;
         SubmittedAt = submittedAt;
         CreatedAt = submittedAt;
+        StatusChangedAt = submittedAt;
+        UpdatedAt = submittedAt;
     }
 
     public LeadId Id { get; private set; }
@@ -48,6 +50,10 @@ public sealed class Lead
     public Instant SubmittedAt { get; private set; }
 
     public Instant CreatedAt { get; private set; }
+
+    public Instant StatusChangedAt { get; private set; }
+
+    public Instant UpdatedAt { get; private set; }
 
     internal static Lead CreateFromTripIntent(
         TripIntent intent,
@@ -69,5 +75,12 @@ public sealed class Lead
             contact,
             actorReference,
             submittedAt);
+    }
+
+    internal void ApplyStatusChange(LeadStatus status, Instant now)
+    {
+        Status = status;
+        StatusChangedAt = now;
+        UpdatedAt = now;
     }
 }

@@ -43,6 +43,14 @@ internal sealed class LeadConfiguration : IEntityTypeConfiguration<Lead>
             .HasColumnName("created_at")
             .IsRequired();
 
+        builder.Property(x => x.StatusChangedAt)
+            .HasColumnName("status_changed_at")
+            .IsRequired();
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at")
+            .IsRequired();
+
         builder.HasOne<TripIntent>()
             .WithMany()
             .HasForeignKey(x => x.SourceTripIntentId)
