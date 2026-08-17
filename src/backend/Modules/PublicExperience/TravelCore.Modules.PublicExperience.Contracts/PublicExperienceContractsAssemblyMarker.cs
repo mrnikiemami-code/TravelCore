@@ -1,0 +1,3 @@
+namespace TravelCore.Modules.PublicExperience.Contracts;
+
+public static class PublicExperienceContractsAssemblyMarker;

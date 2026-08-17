@@ -39,6 +39,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Contracts\TravelCore.Modules.AgencyMarketplace.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Domain\TravelCore.Modules.AgencyMarketplace.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Infrastructure\TravelCore.Modules.AgencyMarketplace.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\PublicExperience\TravelCore.Modules.PublicExperience.Contracts\TravelCore.Modules.PublicExperience.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

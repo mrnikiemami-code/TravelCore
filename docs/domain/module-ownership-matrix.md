@@ -23,6 +23,7 @@
 | Tour | Commerce | TourProduct, Departure, itinerary, TourHotelOption, package transport facts | Destination, Place, Party, Media, ReferenceData | Hotel catalog, Quote calc, Booking, Payment, Search index, SEO engine | Pricing DbContext, Booking, Payment, Search, SEO, Notification, Flight live inventory |
 | Pricing | Commerce | TourRate, PriceComponent, ExchangeRate, Quote, conversion | TourDeparture identity (Guid) / Tour contracts (logical only); ReferenceData | Tour catalog tables, Booking history, Payment execution | Tour DbContext / Tour EF ownership, Booking, Payment, Search, SEO, Notification; premature Flight/HotelBooking fare ownership |
 | AgencyMarketplace | Commerce | Agency commercial relationship (marketplace) | Party identity (logical Guid) | Party identity SoR, TourProduct catalog, Price/Quote, Booking/Payment | Party/Tour/Pricing DbContext, Booking, Payment, Search, SEO, Notification |
+| PublicExperience | Experience | Public Detail/Listing/Landing presentation composition | Tour/SEO/Pricing reads (logical) | TourProduct catalog, Search engine, Booking/Payment, IndexPolicy | Booking, Payment, Search engine |
 | Visa | Commerce | Visa offerings / requirements / workflow concepts | Destination, ReferenceData, Media | Tour ownership of visa product | Hard bidirectional Tour dependency; Search/SEO/Notification as hard deps |
 | Booking | Commerce | Reservation/order state, traveler + quote snapshots | Party, Tour contracts, Pricing Quote contracts | Payment execution, live price engine, Tour catalog, Agency profile | Payment DbContext, Pricing DbContext, Tour DbContext, Search, SEO, Notification |
 | Payment | Commerce | Payment lifecycle, attempts, provider results, refund foundation | Booking references/contracts, ReferenceData | Booking business lifecycle, price calculation, Tour, Quote generation | Booking DbContext mutation, Tour, Search, SEO |
@@ -127,6 +128,7 @@ Legend: B=ID reference · C=synchronous contract · D=event consumer · E=projec
 | AgencyOffer publication / moderation lifecycle | AgencyMarketplace |
 | TourProduct catalog status | Tour |
 | SEO IndexPolicy / route indexation | SEO |
+| Public Detail / Listing / Landing surfaces | PublicExperience |
 | Agency identity (`PartyKind.Agency`) | Party |
 | VisaType / visa requirements | Visa |
 | Booking / accepted quote snapshot | Booking |

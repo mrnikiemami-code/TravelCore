@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P14-PLAN` |
 | Phase | P14 — Public Tour Experience |
-| Status | DRAFT — awaiting architect ACCEPT + first R# lock |
+| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1 RESOLVED; T001 Public Experience surfaces delivered |
 | Baseline | `c0bcd78` (`docs: P13 acceptance gate evidence [TC-P13-GATE]` — **TC-P13-GATE** ACCEPTED; P13 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P14 · P09–P13 Gates · P05 SEO · P08 Content · P11-R8 Published ≠ Bookable · P12-R8 public price read · P13-R7 Published Offer ≠ SEO Indexed · architect P13 Gate ACCEPT (Public Experience ≠ Booking · SEO Page ≠ Commercial Transaction · Content ≠ Catalog Ownership) |
 | Backend root | `src/backend` |
@@ -71,7 +71,9 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 ### TC-P14-PLAN — this document
 
 ### TC-P14-T001 — Public experience ownership / surface inventory
-- Purpose: Lock which public surfaces P14 owns vs Tour/SEO/Content/Search (needs **P14-R1**).
+- Purpose: Lock which public surfaces P14 owns vs Tour/SEO/Content/Search (**P14-R1 RESOLVED**).
+- Architect lock: Public Experience Surface belongs to Public Experience Layer — not Search, not Catalog. Surfaces: Detail / Listing / Landing. P14 = Presentation + SEO composition. P15 owns Query/Ranking/FTS.
+- Delivered: `PublicExperience.Contracts` · `PublicExperienceSurfaceKind` · ownership boundary · frontend `features/public-experience` · guardrails. No schema / no Booking / no Search engine.
 - Forbidden: Booking · Search engine · new catalog SoR.
 
 ### TC-P14-T002 — Foreign / Experience public detail production baseline
@@ -109,7 +111,7 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
-| **P14-R1** | Which public surfaces are in P14 vs deferred to P15 Search | **UNRESOLVED** | Roadmap lists Listing/Search in P14; P15 owns Search engine. Do not build FTS here unless locked. |
+| **P14-R1** | Which public surfaces are in P14 vs deferred to P15 Search | **RESOLVED** | Public Experience Layer owns Detail/Listing/Landing presentation. Not Search. Not Catalog. P14 = Presentation + SEO composition. P15 owns Query/Ranking/FTS. |
 | **P14-R2** | Sticky/mobile booking **actions** vs Published ≠ Bookable | **UNRESOLVED** | Display chrome vs live Booking. P11-R8 and P12 public price (no Book Now) must not be silently reversed. |
 | **P14-R3** | Listing URL vs SEO landing URL ownership | **UNRESOLVED** | Search URL ≠ SEO Landing URL. SEO still owns IndexPolicy. |
 | **P14-R4** | Shared Tour public detail vs Foreign/Experience specialized pages | **UNRESOLVED** | Two product kinds exist (P09/P10/P11). Do not invent a third catalog. |
@@ -147,4 +149,4 @@ After `TC-P14-GATE` ACCEPT, continuity may auto-start **P15 PLAN** (Search) unle
 - [x] Task sequence proposed without product code
 - [x] Open decisions listed (R1–R8) — no invention
 - [x] Baseline = P13 Gate ACCEPT commit `c0bcd78`
-- [ ] Architect ACCEPT plan + lock **P14-R1** then Auto-Execute `TC-P14-T001`
+- [x] Architect ACCEPT plan + lock **P14-R1** then Auto-Execute `TC-P14-T001`

@@ -99,6 +99,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - Tour ≠ TourDeparture (P11); Tour ≠ Pricing/Booking/Search; Tour ≠ Place Hotel ownership.
 - Pricing ≠ Tour catalog ownership; Pricing ≠ Booking/Payment; logical TourDeparture Guid refs only (P12-R1).
 - AgencyMarketplace ≠ Party identity · ≠ Pricing · ≠ Booking · ≠ TourProduct catalog; logical PartyId Guid only (P13-R1).
+- PublicExperience ≠ Tour catalog · ≠ Search engine · ≠ Booking; presentation + SEO composition only (P14-R1).
 
 ## Active modules (P12)
 
@@ -128,6 +129,16 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P13-R6 RESOLVED:** Agency Panel belongs to Agency Marketplace (not Tour Admin, not Identity). Profile + offer management only.
 - **P13-R7 RESOLVED:** Agency Marketplace owns Offer publication status. Not SEO IndexPolicy. Not TourProduct CatalogStatus. Published Offer ≠ SEO Indexed.
 - Invariant: **Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking · Agency ≠ TourProduct**.
+
+## Active modules (P14)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| PublicExperience | `PublicExperience/TravelCore.Modules.PublicExperience.Contracts` | none (composition / presentation; no DbContext in T001) |
+
+- **PublicExperience:** Detail / Listing / Landing surface contracts (`TC-P14-T001`) — presentation + SEO composition. Not Search engine. Not Tour catalog SoR. No Booking/Payment.
+- **P14-R1 RESOLVED:** Public Experience Surface belongs to Public Experience Layer (not Search, not Catalog).
+- Invariant: **Public Experience ≠ Booking · SEO Page ≠ Commercial Transaction · Content ≠ Catalog · Search URL ≠ SEO Landing URL**.
 
 ## Host
 

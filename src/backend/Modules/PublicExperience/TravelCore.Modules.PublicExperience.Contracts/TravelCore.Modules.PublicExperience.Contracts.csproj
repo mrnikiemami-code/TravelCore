@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.PublicExperience.Contracts</RootNamespace>
+    <AssemblyName>TravelCore.Modules.PublicExperience.Contracts</AssemblyName>
+    <Description>Public Experience surface contracts (scaffolding). No EF entities. TC-P14-T001 / P14-R1.</Description>
+  </PropertyGroup>
+
+</Project>
