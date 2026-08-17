@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T009 hardening + evidence) |
+| Current Phase | **P14 — Public Tour Experience** (**GATE** — acceptance evidence awaiting review) |
 | Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P14-T009` — Public Experience hardening and evidence pack (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P14 — Public Tour Experience |
-| Current Next Task | Architect review of T009 → Auto-Execute TC-P14-GATE |
+| Current Active Product Task | `TC-P14-GATE` — P14 Public Experience Acceptance Gate (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Product Phase | P15 — Search (after Gate ACCEPT) |
+| Current Next Task | Architect ACCEPT of GATE → Auto-Execute TC-P15-PLAN |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -192,7 +192,8 @@
 | P14-T006 | **COMPLETE / ACCEPTED** (`5258e20`) — Content enrichment composition (P14-R6; Destination-based; Content remains CMS SoT) |
 | P14-T007 | **COMPLETE / ACCEPTED** (`903cd29`) — Public AgencyOffer presentation (P14-R7; inquiry-only; Marketplace owns facts) |
 | P14-T008 | **COMPLETE / ACCEPTED** (`a0209bd`) — Filter presentation boundary (P14-R8; presentation only; faceting = P15) |
-| P14-T009 | **AWAITING_ARCHITECT_REVIEW** — Hardening + evidence pack (no new product capability) |
+| P14-T009 | **COMPLETE / ACCEPTED** (`6c0e218`) — Hardening + evidence pack |
+| P14-GATE | **AWAITING_ARCHITECT_REVIEW** — Acceptance evidence ([`plans/P14-GATE-acceptance-evidence.md`](plans/P14-GATE-acceptance-evidence.md)) |
 | P14-R8 (Filters vs P15) | **RESOLVED** — Filter in P14 = Presentation only (UI/URL/selection). Faceting / retrieval / ranking / FTS = P15 Search. Filtered URLs ≠ SEO landings. |
 | P14-R7 (Public AgencyOffer) | **RESOLVED** — AgencyOffer may be displayed; does not own commercial flow. Marketplace owns facts/publication. PE owns presentation. No agency prices / ranking / Booking. Visibility ≠ CatalogStatus / IndexPolicy. |
 | P14-R6 (Content enrichment) | **RESOLVED** — Content = editorial SoT. Tour = tour-facts SoT. PE = composition only. Destination-based links. No TourProduct→ArticleId[]. Content publication ≠ SEO IndexPolicy. |

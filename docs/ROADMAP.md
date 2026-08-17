@@ -36,7 +36,7 @@
 |------|--------|
 | Project | TravelCore |
 | Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T006 content enrichment composition) |
-| Phase Status | P00–P13 COMPLETE · P14-R1–R8 RESOLVED · `TC-P14-T009` delivered |
+| Phase Status | P00–P13 COMPLETE · P14-R1–R8 RESOLVED · `TC-P14-GATE` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
