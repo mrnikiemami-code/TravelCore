@@ -108,7 +108,7 @@
 - **P06** = COMPLETE (`TC-P06-GATE` ACCEPTED `da345b5` · **P06-R1 DEFER**; **P06-R2/R3/R4/R5/R6 RESOLVED**; **P06-R7 DEFERRED**; **P06-R8 UNRESOLVED**; **P06-R9 DEFERRED**)
 - **P07** = COMPLETE (`TC-P07-GATE` ACCEPTED `84a0a48` · **P07-R1/R2/R4/R5 RESOLVED** · **P07-R3 UNRESOLVED**)
 - **P08** = COMPLETE (`TC-P08-GATE` ACCEPTED `576b7fa` · R1–R5 RESOLVED · R6–R8 UNRESOLVED)
-- **P09** = IN_PROGRESS (`TC-P09-PLAN` ACCEPTED · T001–T009 ACCEPTED · **T010 IN_PROGRESS** · **R1–R8 RESOLVED**)
+- **P09** = GATE_REVIEW (`TC-P09-PLAN` ACCEPTED · T001–T010 ACCEPTED · **TC-P09-GATE** evidence ready · **R1–R8 RESOLVED**)
 - **P10–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -394,7 +394,7 @@ Invariant: Content مالک editorial است؛ SEO محتوا را duplicate ن�
 
 **Authoritative plan:** [`plans/P09-implementation-plan.md`](plans/P09-implementation-plan.md) (`TC-P09-PLAN` — COMPLETE / ACCEPTED · `7de2518`)
 
-**Progress:** T001–T009 ACCEPTED · **T010 IN_PROGRESS** (Public Tour hardening + evidence pack) · **R1–R8 RESOLVED**
+**Progress:** T001–T010 ACCEPTED · **TC-P09-GATE** evidence [`plans/P09-GATE-acceptance-evidence.md`](plans/P09-GATE-acceptance-evidence.md) · **R1–R8 RESOLVED** · P10 NOT_STARTED until Gate ACCEPT
 
 **Evidence pack (in progress):** [`plans/P09-T010-hardening-and-evidence-pack.md`](plans/P09-T010-hardening-and-evidence-pack.md)
 
