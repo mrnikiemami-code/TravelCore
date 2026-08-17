@@ -1,4 +1,4 @@
-﻿# TravelCore Project State
+# TravelCore Project State
 
 این سند نقطهٔ ورود سریع برای بازیابی وضعیت پروژه است تا ChatGPT، Cursor، Hermes یا توسعه‌دهندهٔ جدید بدون اتکا به تاریخچهٔ چت، وضعیت فعلی را بفهمد.
 
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P09-T008` — IN_PROGRESS (publishing + slug + SEO hooks; R4/R5/R6 locked) |
+| Current Active Product Task | `TC-P09-T008` — COMPLETE / ACCEPTED (`69e8f38`) |
 | Current Next Product Phase | P09 — Tour Core (**IN_PROGRESS**) |
-| Current Next Task | Complete `TC-P09-T008` validation → RESULT → await ACCEPT / T009 |
+| Current Next Task | Await formal Auto-Execute `TC-P09-T009` (Admin Tour baseline) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -149,7 +149,7 @@
 | P09-T005 | **COMPLETE / ACCEPTED** (`855f7a3`) — Agency reference (AgencyId 0..1; P09-R3) |
 | P09-T006 | **COMPLETE / ACCEPTED** (`7e7ba6d`) — Services · Policies · Requirements baseline |
 | P09-T007 | **COMPLETE / ACCEPTED** (`f0777f1`) — Tour↔Media Cover/Gallery (P09-R8) |
-| P09-T008 | **IN_PROGRESS** — Publishing + localized slug + public/SEO hooks (P09-R4/R5/R6) |
+| P09-T008 | **COMPLETE / ACCEPTED** (`69e8f38`) — Publishing + localized slug + public/SEO hooks (P09-R4/R5/R6) |
 | P09-R1 (TourProduct model shape) | **RESOLVED** — Core TourProduct + Typed Specialization; canonical `TourProductId`; Experience/Package = future typed specialization; TourDeparture = separate future aggregate |
 | P09-R2 (Destination / Origin links) | **RESOLVED** — Destinations **0..N** logical join; Origin **0..1** nullable `OriginDestinationId`; no cross-schema FK; Contracts existence validation |
 | P09-R3 (Agency reference) | **RESOLVED** — optional logical `AgencyId` **0..1**; PartyKind.Agency via Party.Contracts; no cross-schema FK |
@@ -196,7 +196,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P09_IN_PROGRESS** · T008 IN_PROGRESS · R1–R8 RESOLVED (R4/R5/R6 locked in T008 Auto-Execute) |
+| Phase Transition State | **P09_IN_PROGRESS** · T008 ACCEPTED `69e8f38` · await T009 · R1–R8 RESOLVED |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -205,7 +205,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — EXECUTING** (`TC-P09-T008`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_TASK** (`TC-P09-T009`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
