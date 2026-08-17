@@ -292,7 +292,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P14-GATE`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P15-PLAN`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -620,7 +620,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P14-T007 | Public AgencyOffer presentation baseline | COMPLETE / ACCEPTED | `903cd29` |
 | TC-P14-T008 | Public Experience filter presentation boundary | COMPLETE / ACCEPTED | `a0209bd` |
 | TC-P14-T009 | Public Experience hardening and evidence pack | COMPLETE / ACCEPTED | `6c0e218` |
-| TC-P14-GATE | P14 Public Experience Acceptance Gate | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P14-GATE | P14 Public Experience Acceptance Gate | COMPLETE / ACCEPTED | `608216d` |
+| TC-P15-PLAN | Search & Discovery Architecture Plan | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
