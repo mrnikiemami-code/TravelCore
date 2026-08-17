@@ -4,13 +4,15 @@ namespace TravelCore.Modules.Ugc.Infrastructure;
 
 /// <summary>
 /// UGC-owned DbContext. Owns PostgreSQL schema <c>ugc</c>.
-/// Review + structured dimension ratings (TC-P16-T002). No independent Rating table.
+/// Review + Travelogue (TC-P16-T004). No independent Rating table. Travelogue != ContentItem.
 /// </summary>
 public sealed class UgcDbContext : DbContext
 {
     public const string SchemaName = "ugc";
 
     public DbSet<TravelCore.Modules.Ugc.Domain.Review> Reviews => Set<TravelCore.Modules.Ugc.Domain.Review>();
+
+    public DbSet<TravelCore.Modules.Ugc.Domain.Travelogue> Travelogues => Set<TravelCore.Modules.Ugc.Domain.Travelogue>();
 
     public UgcDbContext(DbContextOptions<UgcDbContext> options)
         : base(options)

@@ -195,7 +195,7 @@
 ### Travelogue
 
 - **Canonical:** Travelogue
-- **فارسی:** سفرنامه/روایت UGC یا editorial مرتبط با مقصد.
+- **فارسی:** سفرنامه/روایت کاربر (UGC). متمایز از Article editorial در Content.
 
 ### Review
 

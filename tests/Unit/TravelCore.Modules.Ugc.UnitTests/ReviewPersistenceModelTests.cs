@@ -70,8 +70,20 @@ public sealed class ReviewPersistenceModelTests
             n => n.TargetEntityType.Name.Contains(".Tour.", StringComparison.Ordinal)
                  || n.TargetEntityType.Name.Contains(".Place.", StringComparison.Ordinal)
                  || n.TargetEntityType.Name.Contains(".AgencyMarketplace.", StringComparison.Ordinal));
-        Assert.Null(model.GetEntityTypes().FirstOrDefault(e =>
-            string.Equals(e.GetTableName(), "ratings", StringComparison.OrdinalIgnoreCase)));
+        var travelogueType = model.FindEntityType(typeof(Travelogue));
+        Assert.NotNull(travelogueType);
+        Assert.Equal("travelogues", travelogueType.GetTableName());
+        Assert.Equal(UgcDbContext.SchemaName, travelogueType.GetSchema());
+        Assert.Equal("locale_code", travelogueType.FindProperty(nameof(Travelogue.LocaleCode))!.GetColumnName());
+        Assert.Null(travelogueType.FindProperty("ContentItemId"));
+        Assert.Null(travelogueType.FindProperty("PublicationStatus"));
+        Assert.Null(travelogueType.FindProperty("IsUserGenerated"));
+        Assert.Contains(
+            travelogueType.GetIndexes(),
+            i => i.GetDatabaseName() == "ix_travelogues_actor_id");
+        Assert.Contains(
+            travelogueType.GetIndexes(),
+            i => i.GetDatabaseName() == "ix_travelogues_locale_code");
 
         Assert.False(db.Database.HasPendingModelChanges());
     }

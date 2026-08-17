@@ -28,12 +28,13 @@ public static class UgcOwnershipBoundary
     public const bool OwnsPayment = false;
     public const bool OwnsTargetFacts = false;
     public const bool ReviewTargetIsLogicalReferenceOnly = true;
+    public const bool TravelogueIsNotContentItem = true;
     public const bool ReviewImplemented = true;
     public const bool RatingImplemented = false;
     public const bool RatingIsIndependentAggregate = false;
     public const bool OverallRatingOwnedByReview = true;
     public const bool DimensionRatingsAreReviewChildren = true;
-    public const bool TravelogueImplemented = false;
+    public const bool TravelogueImplemented = true;
     public const bool CommentImplemented = false;
     public const bool LikeImplemented = false;
     public const bool ReportImplemented = false;

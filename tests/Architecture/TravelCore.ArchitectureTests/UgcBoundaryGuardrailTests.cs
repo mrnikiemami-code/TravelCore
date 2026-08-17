@@ -43,7 +43,8 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.False(UgcOwnershipBoundary.RatingIsIndependentAggregate);
         Assert.True(UgcOwnershipBoundary.OverallRatingOwnedByReview);
         Assert.True(UgcOwnershipBoundary.DimensionRatingsAreReviewChildren);
-        Assert.False(UgcOwnershipBoundary.TravelogueImplemented);
+        Assert.True(UgcOwnershipBoundary.TravelogueImplemented);
+        Assert.True(UgcOwnershipBoundary.TravelogueIsNotContentItem);
         Assert.False(UgcOwnershipBoundary.LikeImplemented);
         Assert.True(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
         Assert.True(UgcOwnershipBoundary.ReviewTargetIsLogicalReferenceOnly);
@@ -103,8 +104,10 @@ public sealed class UgcBoundaryGuardrailTests
             Path.Combine(RepoRoot, "src", "backend", "Modules", "Ugc"),
         };
 
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.Travelogue));
+
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(Rating|RatingDimension|Travelogue|UserPhoto|Comment|Like|Report)\b",
+            @"\b(class|record|enum|struct|interface)\s+(Rating|RatingDimension|UserPhoto|Comment|Like|Report)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -132,7 +135,7 @@ public sealed class UgcBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T002 forbids independent Rating aggregate and Travelogue/Comment/Like/Report product types:\n" + string.Join('\n', hits));
+            "T004 forbids independent Rating aggregate and UserPhoto/Comment/Like/Report product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -149,6 +152,38 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.Contains("P16-R1", text, StringComparison.Ordinal);
         Assert.Contains("P16-R2", text, StringComparison.Ordinal);
         Assert.Contains("P16-R3", text, StringComparison.Ordinal);
+        Assert.Contains("P16-R4", text, StringComparison.Ordinal);
+        Assert.Contains("Travelogue != ContentItem", text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Content_MustNot_Absorb_Travelogue_As_ContentItem_Flag()
+    {
+        var contentRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Content");
+        Assert.True(Directory.Exists(contentRoot), contentRoot);
+        var forbidden = new Regex(@"\b(IsUserGenerated|UgcType)\b", RegexOptions.Compiled);
+        var hits = Directory.EnumerateFiles(contentRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return forbidden.IsMatch(x.line);
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+        Assert.True(
+            hits.Count == 0,
+            "Content must not absorb Travelogue via IsUserGenerated/UgcType:\n" + string.Join('\n', hits));
+        Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Travelogue).GetProperty("ContentItemId"));
+        Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Travelogue).GetProperty("PublicationStatus"));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>
