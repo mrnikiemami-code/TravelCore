@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P17-PLAN` |
 | Phase | P17 — Visa |
-| Status | PLAN ACCEPTED; P17-R1/R2/R3 RESOLVED; T003 delivered (R4–R8 UNRESOLVED) |
+| Status | PLAN ACCEPTED; P17-R1–R4 RESOLVED; T004 delivered (R5–R8 UNRESOLVED) |
 | Baseline | `538f3fc` (`docs(ugc): add P16 acceptance gate evidence [TC-P16-GATE]` — **TC-P16-GATE** ACCEPTED; P16 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P17 · `docs/architecture/15-future-architecture-transition-map.md` § Q · `04-module-boundaries.md` § Visa · `05-dependency-rules.md` Commerce/Visa · `docs/architecture/07-data-architecture.md` schema `visa` · `docs/domain/module-ownership-matrix.md` · `docs/pages/07-visa.md` · `docs/pages/00-page-archetype-registry.md` · P04 Destination/ReferenceData · P05 SEO · P06 Media · P08 Content · P12 Pricing · P14 PublicExperience · P15 Search · P16 UGC · P19 Booking · P20 Payment |
 | Backend root | `src/backend` |
@@ -107,7 +107,8 @@ P17 اضافه می‌کند: **Visa module** برای کاتالوگ/الزام
 - Forbidden kept: peer-schema FK to destination · inventing applicant CRM · inventing R4–R8.
 
 ### TC-P17-T004 — Required documents and eligibility facts
-- Purpose: Structured eligibility + required-document facts (**P17-R4**). Preserve future room for effective dates / source / last verification **without** a legal rules engine.
+- Purpose: Structured eligibility + required-document facts (**P17-R4 RESOLVED**).
+- Delivered: `VisaRequiredDocument` and `VisaEligibilityRequirement` children of `VisaRequirementSet`. **RequiredDocument != EligibilityRequirement**. **EligibilityRequirement != Rules Engine**. Row/code based, not schema flags. No applicant uploads/OCR/MediaAsset.
 - Forbidden kept: inventing competitor checklists as requirements (`docs/pages/07-visa.md`) · OCR · legal-advice engine · inventing R5–R8.
 
 ### TC-P17-T005 — Processing time / validity / stay-duration
@@ -146,7 +147,7 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 | **P17-R1** | Visa module ownership / schema / aggregate boundary | **RESOLVED** | Independent Visa module. Schema `visa`. Owns structured visa-domain facts and their lifecycle. Does **not** own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, or Identity/Party. Geographic references are opaque logical ids only. T001: no VisaDefinition/requirement/document/fee/application product types, no geo clone, no peer FKs, no regulatory engine. |
 | **P17-R2** | VisaDefinition vs VisaRequirementSet | **RESOLVED** | VisaDefinition = stable visa-type identity/meaning (conceptual Tourist/Business/Transit; no hardcoded country catalog). VisaRequirementSet = context-dependent requirement facts for one definition. Relationship: VisaDefinition 1 → 0..N VisaRequirementSet; each set references exactly one definition. **VisaDefinition != VisaRequirementSet**. Do not dump all requirements into VisaDefinition. Applicability (R3), documents/eligibility (R4), processing/validity (R5), and fees (R6) remain OPEN. Destination remains geo SoT. No peer-schema FK. |
 | **P17-R3** | Applicability model (country / destination / applicant context) | **RESOLVED** | Each VisaRequirementSet has exactly one `VisaApplicability` context. Destination/jurisdiction is an opaque logical id. Nationality/residence are optional opaque ISO alpha-2 codes (ReferenceData remains country SoT). Optional controlled ApplicantCategory (Adult/Minor/Other). **Applicability != Rules Engine**. No expression/DSL/policy engine. Different contexts = different RequirementSets. No peer-schema FK. |
-| **P17-R4** | Required documents and eligibility facts | **OPEN** | Visa owns requirements/documents. Page archetype lists documents as supporting, not invented checklists. Provenance / effective dates / last verification must remain possible without a legal engine. |
+| **P17-R4** | Required documents and eligibility facts | **RESOLVED** | VisaRequirementSet owns RequiredDocument 0..N and EligibilityRequirement 0..N. **RequiredDocument != EligibilityRequirement**. Documents are row-based codes + RequirementLevel (Required/Conditional/Optional) + locale names. Eligibility is structured Code/Kind/Value/Unit facts, not an executable engine. **EligibilityRequirement != Rules Engine**. No applicant uploads, MediaAsset, OCR, or peer FK. |
 | **P17-R5** | Processing time / validity / stay-duration semantics | **OPEN** | Boundaries own “processing info”. Temporal model exists (NodaTime). Do not hardcode regulatory durations in PLAN. |
 | **P17-R6** | Visa fee vs Pricing ownership | **OPEN** | ROADMAP mentions pricing as a P17 theme. Pricing module already owns Price/Quote (P12). Commercial Visa service reference is allowed “if needed”. Do **not** assume Visa stores Money. |
 | **P17-R7** | Public Visa presentation / Content / SEO boundary | **OPEN** | `VisaDetailPage` exists as public intent only. SEO = IndexPolicy. Content = editorial FAQ/guides. PublicExperience = composition. Visa = structured fact owner. Published ≠ Indexed. |
@@ -172,6 +173,8 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 14. Do not invent unlocked R# closures.
 15. VisaDefinition != VisaRequirementSet.
 16. Applicability != Rules Engine.
+17. RequiredDocument != EligibilityRequirement.
+18. EligibilityRequirement != Rules Engine.
 
 ---
 

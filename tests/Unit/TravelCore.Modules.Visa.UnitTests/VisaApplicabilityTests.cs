@@ -35,8 +35,9 @@ public sealed class VisaApplicabilityTests
         Assert.False(VisaOwnershipBoundary.OwnsIdentityOrParty);
         Assert.True(VisaOwnershipBoundary.VisaApplicabilityImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicabilityIsRulesEngine);
-        Assert.False(VisaOwnershipBoundary.RequiredDocumentImplemented);
-        Assert.False(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.True(VisaOwnershipBoundary.RequiredDocumentImplemented);
+        Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
         Assert.NotEqual(typeof(VisaApplicability), typeof(VisaRequirementSet));
         Assert.Null(typeof(VisaApplicability).Assembly.GetType("TravelCore.Modules.Visa.Domain.Country"));
         Assert.Null(typeof(VisaApplicability).Assembly.GetType("TravelCore.Modules.Visa.Domain.Destination"));

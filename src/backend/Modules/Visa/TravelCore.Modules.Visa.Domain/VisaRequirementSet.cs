@@ -8,6 +8,8 @@ namespace TravelCore.Modules.Visa.Domain;
 /// </summary>
 public sealed class VisaRequirementSet
 {
+    private readonly List<VisaRequiredDocument> _requiredDocuments = [];
+    private readonly List<VisaEligibilityRequirement> _eligibilityRequirements = [];
     private VisaApplicability _applicability = null!;
 
     private VisaRequirementSet()
@@ -49,6 +51,10 @@ public sealed class VisaRequirementSet
     /// <summary>Exactly one structured applicability context. Not a rules engine.</summary>
     public VisaApplicability Applicability => _applicability;
 
+    public IReadOnlyList<VisaRequiredDocument> RequiredDocuments => _requiredDocuments;
+
+    public IReadOnlyList<VisaEligibilityRequirement> EligibilityRequirements => _eligibilityRequirements;
+
     internal static VisaRequirementSet Create(
         VisaRequirementSetId id,
         VisaDefinitionId visaDefinitionId,
@@ -66,5 +72,81 @@ public sealed class VisaRequirementSet
             residenceCountryCode,
             applicantCategory);
         return set;
+    }
+
+    public VisaRequiredDocument AddRequiredDocument(
+        string code,
+        string requirementLevel,
+        string localeCode,
+        string name,
+        Instant now,
+        string? notes = null,
+        int sortOrder = 0)
+    {
+        var normalized = VisaRequirementCode.Normalize(code, nameof(code));
+        if (_requiredDocuments.Any(d => d.Code == normalized))
+        {
+            throw new InvalidOperationException($"Required document '{normalized}' already exists.");
+        }
+
+        var document = VisaRequiredDocument.Create(
+            VisaRequiredDocumentId.New(),
+            Id,
+            normalized,
+            requirementLevel,
+            sortOrder,
+            localeCode,
+            name,
+            now,
+            notes);
+        _requiredDocuments.Add(document);
+        Touch(now);
+        return document;
+    }
+
+    public VisaEligibilityRequirement AddEligibilityRequirement(
+        string code,
+        string requirementLevel,
+        string localeCode,
+        string name,
+        Instant now,
+        string? kind = null,
+        string? value = null,
+        string? unit = null,
+        string? notes = null,
+        int sortOrder = 0)
+    {
+        var normalized = VisaRequirementCode.Normalize(code, nameof(code));
+        if (_eligibilityRequirements.Any(d => d.Code == normalized))
+        {
+            throw new InvalidOperationException($"Eligibility requirement '{normalized}' already exists.");
+        }
+
+        var requirement = VisaEligibilityRequirement.Create(
+            VisaEligibilityRequirementId.New(),
+            Id,
+            normalized,
+            requirementLevel,
+            sortOrder,
+            localeCode,
+            name,
+            now,
+            kind,
+            value,
+            unit,
+            notes);
+        _eligibilityRequirements.Add(requirement);
+        Touch(now);
+        return requirement;
+    }
+
+    private void Touch(Instant now)
+    {
+        if (now == default)
+        {
+            throw new ArgumentException("UpdatedAt cannot be default.", nameof(now));
+        }
+
+        UpdatedAt = now;
     }
 }

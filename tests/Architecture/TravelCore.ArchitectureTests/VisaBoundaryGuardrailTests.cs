@@ -47,8 +47,9 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.True(VisaOwnershipBoundary.VisaApplicabilityImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicabilityIsRulesEngine);
         Assert.False(VisaOwnershipBoundary.VisaRequirementImplemented);
-        Assert.False(VisaOwnershipBoundary.RequiredDocumentImplemented);
-        Assert.False(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.True(VisaOwnershipBoundary.RequiredDocumentImplemented);
+        Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
         Assert.False(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
         Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
@@ -117,8 +118,9 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.True(VisaOwnershipBoundary.VisaRequirementSetImplemented);
         Assert.True(VisaOwnershipBoundary.VisaApplicabilityImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicabilityIsRulesEngine);
-        Assert.False(VisaOwnershipBoundary.RequiredDocumentImplemented);
-        Assert.False(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.True(VisaOwnershipBoundary.RequiredDocumentImplemented);
+        Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
         Assert.False(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
         Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
@@ -178,8 +180,9 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.False(VisaOwnershipBoundary.OwnsDestinationFacts);
         Assert.False(VisaOwnershipBoundary.OwnsReferenceData);
         Assert.False(VisaOwnershipBoundary.OwnsIdentityOrParty);
-        Assert.False(VisaOwnershipBoundary.RequiredDocumentImplemented);
-        Assert.False(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.True(VisaOwnershipBoundary.RequiredDocumentImplemented);
+        Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
         Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).Assembly.GetType("TravelCore.Modules.Visa.Domain.Country"));
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).Assembly.GetType("TravelCore.Modules.Visa.Domain.Destination"));
@@ -200,6 +203,9 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.Contains("Visa != Search authority", text, StringComparison.Ordinal);
         Assert.Contains("P17-R1", text, StringComparison.Ordinal);
         Assert.Contains("P17-R3", text, StringComparison.Ordinal);
+        Assert.Contains("P17-R4", text, StringComparison.Ordinal);
+        Assert.Contains("RequiredDocument != EligibilityRequirement", text, StringComparison.Ordinal);
+        Assert.Contains("EligibilityRequirement != Rules Engine", text, StringComparison.Ordinal);
         Assert.Contains("VisaDefinition != VisaRequirementSet", text, StringComparison.Ordinal);
         Assert.Contains("Applicability != Rules Engine", text, StringComparison.Ordinal);
     }

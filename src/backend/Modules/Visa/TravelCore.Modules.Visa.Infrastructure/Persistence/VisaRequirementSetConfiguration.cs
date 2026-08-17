@@ -41,5 +41,25 @@ internal sealed class VisaRequirementSetConfiguration : IEntityTypeConfiguration
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .IsRequired()
             .AutoInclude();
+
+        builder.HasMany(x => x.RequiredDocuments)
+            .WithOne()
+            .HasForeignKey(x => x.VisaRequirementSetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.RequiredDocuments)
+            .HasField("_requiredDocuments")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasMany(x => x.EligibilityRequirements)
+            .WithOne()
+            .HasForeignKey(x => x.VisaRequirementSetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.EligibilityRequirements)
+            .HasField("_eligibilityRequirements")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
     }
 }

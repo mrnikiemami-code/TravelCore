@@ -95,7 +95,7 @@ public sealed class VisaDefinitionPersistenceModelTests
         Assert.Equal(VisaDbContext.SchemaName, applicabilityFk.PrincipalEntityType.GetSchema());
         Assert.Equal(DeleteBehavior.Cascade, applicabilityFk.DeleteBehavior);
 
-        Assert.Equal(4, model.GetEntityTypes().Count());
+        Assert.Equal(8, model.GetEntityTypes().Count());
         Assert.DoesNotContain(
             model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()),
             f =>
@@ -117,7 +117,9 @@ public sealed class VisaDefinitionPersistenceModelTests
         Assert.DoesNotContain("price", columns);
         Assert.DoesNotContain("destination_id", columns);
         Assert.DoesNotContain("nationality", columns);
-        Assert.DoesNotContain("slug", columns);
+        Assert.DoesNotContain("storage_key", columns);
+        Assert.DoesNotContain("mime_type", columns);
+        Assert.DoesNotContain("file_size", columns);
         Assert.Null(model.GetEntityTypes().FirstOrDefault(e =>
             string.Equals(e.GetTableName(), "visa_requirements", StringComparison.OrdinalIgnoreCase)));
         Assert.Null(model.GetEntityTypes().FirstOrDefault(e =>

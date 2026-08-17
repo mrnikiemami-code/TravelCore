@@ -42,8 +42,9 @@ public static class VisaOwnershipBoundary
     public const bool VisaApplicabilityImplemented = true;
     public const bool ApplicabilityIsRulesEngine = false;
     public const bool VisaRequirementImplemented = false;
-    public const bool RequiredDocumentImplemented = false;
-    public const bool EligibilityModelImplemented = false;
+    public const bool RequiredDocumentImplemented = true;
+    public const bool EligibilityModelImplemented = true;
+    public const bool EligibilityIsRulesEngine = false;
     public const bool ProcessingValidityModelImplemented = false;
     public const bool FeeModelImplemented = false;
     public const bool ApplicationWorkflowImplemented = false;
