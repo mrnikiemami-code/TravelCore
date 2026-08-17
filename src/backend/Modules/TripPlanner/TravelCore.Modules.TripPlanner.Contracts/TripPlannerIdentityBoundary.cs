@@ -19,5 +19,5 @@ public static class TripPlannerIdentityBoundary
     public const bool PartyMasterDuplicated = false;
     public const bool PersistentAnonymousUserPlatform = false;
     public const bool LeadContactSnapshotImplemented = true;
-    public const bool ConsentModelImplemented = false;
+    public const bool ConsentModelImplemented = true;
 }

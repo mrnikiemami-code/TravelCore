@@ -51,6 +51,8 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.True(TripPlannerOwnershipBoundary.LeadLifecycleImplemented);
         Assert.True(TripPlannerLifecycleBoundary.LeadLifecycleImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.ConsentModelImplemented);
+        Assert.False(TripPlannerOwnershipBoundary.NotificationProviderImplemented);
         Assert.False(TripPlannerOwnershipBoundary.SearchEngineImplemented);
         Assert.False(TripPlannerOwnershipBoundary.RecommendationEngineImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AiInfrastructureImplemented);
@@ -193,6 +195,29 @@ public sealed class TripPlannerBoundaryGuardrailTests
     }
 
     [Fact]
+    public void TripPlanner_T007_Implements_Consent_Snapshot_Without_Notification_Provider()
+    {
+        Assert.True(TripPlannerConsentBoundary.ConsentModelImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.ConsentModelImplemented);
+        Assert.False(TripPlannerConsentBoundary.NotificationProviderImplemented);
+        Assert.False(TripPlannerNotificationBoundary.NotificationProviderImplemented);
+        Assert.NotNull(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.LeadConsentSnapshot"));
+        Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.TripPlanner.Domain.MarketingSubscriber"));
+        Assert.Equal(
+            TripPlannerConsentBoundary.ContactPermissionNotEqualMarketingConsent,
+            "ContactPermission != MarketingConsent");
+        Assert.Equal(TripPlannerConsentBoundary.ConsentNotEqualNotificationDelivery, "Consent != NotificationDelivery");
+
+        var infra = Projects.Single(p => p.Name == "TravelCore.Modules.TripPlanner.Infrastructure");
+        var notificationRef = infra.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .Any(name => name.Contains("Notification", StringComparison.OrdinalIgnoreCase));
+        Assert.False(notificationRef, "TripPlanner.Infrastructure must not reference Notification provider modules.");
+    }
+
+    [Fact]
     public void TripPlanner_Module_Keeps_Search_And_Ai_Engines_Out()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "TripPlanner");
@@ -261,6 +286,9 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.Contains("PlannerTravelerComposition != Booking Passenger", text, StringComparison.Ordinal);
         Assert.Contains("LeadStatus != CRM Pipeline Stage", text, StringComparison.Ordinal);
         Assert.Contains("P18 Agency Routing = DEFERRED", text, StringComparison.Ordinal);
+        Assert.Contains("P18-R7", text, StringComparison.Ordinal);
+        Assert.Contains("ContactPermission != MarketingConsent", text, StringComparison.Ordinal);
+        Assert.Contains("Consent != NotificationDelivery", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

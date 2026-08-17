@@ -94,8 +94,11 @@ public sealed class TripIntent
         Touch(now);
     }
 
-    public Lead SubmitAsLead(Instant submittedAt, LeadContactSnapshot? contact = null)
-        => TripIntentLeadSubmissionBoundary.Submit(this, submittedAt, contact);
+    public Lead SubmitAsLead(
+        Instant submittedAt,
+        LeadContactSnapshot? contact = null,
+        LeadConsentSnapshot? consent = null)
+        => TripIntentLeadSubmissionBoundary.Submit(this, submittedAt, contact, consent);
 
     internal static string? NormalizePlanningNote(string? planningNote)
     {

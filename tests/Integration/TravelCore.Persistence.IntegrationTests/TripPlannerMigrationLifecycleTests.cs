@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL TripPlanner schema + lead lifecycle baseline (TC-P18-T005).
+/// Real-PostgreSQL TripPlanner schema + lead consent baseline (TC-P18-T007).
 /// </summary>
 [Collection(nameof(TripPlannerMigrationLifecycleCollection))]
 public sealed class TripPlannerMigrationLifecycleTests
@@ -19,7 +19,7 @@ public sealed class TripPlannerMigrationLifecycleTests
     }
 
     [Fact]
-    public async Task TripPlannerMigrationLifecycle_Apply_Lifecycle_Columns()
+    public async Task TripPlannerMigrationLifecycle_Apply_Consent_Columns()
     {
         var ct = TestContext.Current.CancellationToken;
         string[] expectedMigrations;
@@ -27,12 +27,13 @@ public sealed class TripPlannerMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(5, expectedMigrations.Length);
+            Assert.Equal(6, expectedMigrations.Length);
             Assert.EndsWith("_InitialTripPlannerScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTripIntentLeadBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTripPlannerIdentityContactBaseline", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddTravelPreferencesBaseline", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddLeadLifecycleBaseline", expectedMigrations[4], StringComparison.Ordinal);
+            Assert.EndsWith("_AddLeadConsentBaseline", expectedMigrations[5], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -79,6 +80,20 @@ public sealed class TripPlannerMigrationLifecycleTests
                   AND table_name = 'leads'
                   AND column_name = 'updated_at';
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'trip_planner'
+                  AND table_name = 'leads'
+                  AND column_name = 'consent_follow_up_contact_allowed';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'trip_planner'
+                  AND table_name = 'leads'
+                  AND column_name = 'consent_captured_at';
+                """, ct));
             Assert.Equal(2, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
@@ -94,7 +109,8 @@ public sealed class TripPlannerMigrationLifecycleTests
                   AND table_name IN (
                     'anonymous_users', 'guest_accounts', 'planner_persons', 'customers',
                     'booking_passengers', 'agency_assignments', 'lead_assignments',
-                    'routing_rules', 'routing_queues', 'assignment_history');
+                    'routing_rules', 'routing_queues', 'assignment_history',
+                    'notification_deliveries', 'marketing_subscribers', 'consent_profiles');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

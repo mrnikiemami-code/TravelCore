@@ -35,8 +35,8 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T006 delivered; **P18-R1–R6 RESOLVED**) |
-| Phase Status | P00–P17 COMPLETE · P18-R1–R6 RESOLVED · P18-R7–R8 OPEN · T001–T006 delivered |
+| Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T007 delivered; **P18-R1–R7 RESOLVED**) |
+| Phase Status | P00–P17 COMPLETE · P18-R1–R7 RESOLVED · P18-R8 OPEN · T001–T007 delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
@@ -117,7 +117,7 @@
 - **P15** = COMPLETE (`TC-P15-GATE` ACCEPTED `4e2098d` · **R1–R7 RESOLVED** · T008 vacant)
 - **P16** = COMPLETE (`TC-P16-GATE` ACCEPTED `538f3fc` · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md)
 - **P17** = COMPLETE — GATE ACCEPTED [`plans/P17-GATE-acceptance-evidence.md`](plans/P17-GATE-acceptance-evidence.md)
-- **P18** = IN PROGRESS — Trip Planner / Lead · T001–T006 delivered · **P18-R1–R6 RESOLVED**
+- **P18** = IN PROGRESS — Trip Planner / Lead · T001–T007 delivered · **P18-R1–R7 RESOLVED**
 - **P18–P29 و Post-P29** = PLANNED / NOT_STARTED (except P18 PLAN authored)
 
 کار آینده را COMPLETE علامت نزنید.
@@ -557,7 +557,7 @@ ROADMAP bullets above are **capability themes**, not ownership transfers. Visa r
 
 ## P18 — Trip Planner / Lead Experience
 
-**Status:** IN PROGRESS — PLAN ACCEPTED · **P18-R1–R6 RESOLVED** · T001–T006 delivered · **P18-R7–R8 OPEN** — [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md)
+**Status:** IN PROGRESS — PLAN ACCEPTED · **P18-R1–R7 RESOLVED** · T001–T007 delivered · **P18-R8 OPEN** — [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md)
 
 مفهوم Travel Planner / «سفرساز»: کمک به بیان نیاز سفر و کشف/درخواست محصول مناسب.
 

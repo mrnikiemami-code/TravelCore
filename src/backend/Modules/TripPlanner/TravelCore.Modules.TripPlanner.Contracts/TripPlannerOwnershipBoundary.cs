@@ -49,7 +49,7 @@ public static class TripPlannerOwnershipBoundary
     public const bool LeadLifecycleImplemented = true;
     public const bool AgencyRoutingDecisionResolved = true;
     public const bool AgencyRoutingImplemented = false;
-    public const bool ConsentModelImplemented = false;
+    public const bool ConsentModelImplemented = true;
     public const bool NotificationProviderImplemented = false;
     public const bool SearchEngineImplemented = false;
     public const bool RecommendationEngineImplemented = false;

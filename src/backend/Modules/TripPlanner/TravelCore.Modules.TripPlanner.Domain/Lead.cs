@@ -4,7 +4,7 @@ using TravelCore.Modules.TripPlanner.Contracts;
 namespace TravelCore.Modules.TripPlanner.Domain;
 
 /// <summary>
-/// Submitted follow-up request derived from a TripIntent (TC-P18-T002 / P18-R2; contact P18-R3; lifecycle P18-R5).
+/// Submitted follow-up request derived from a TripIntent (TC-P18-T002 / P18-R2; contact P18-R3; lifecycle P18-R5; consent P18-R7).
 /// Not a Booking, Quote, CRM opportunity, or live alias of TripIntent.
 /// </summary>
 public sealed class Lead
@@ -13,6 +13,7 @@ public sealed class Lead
     {
         Snapshot = null!;
         Contact = null!;
+        Consent = null!;
     }
 
     private Lead(
@@ -20,6 +21,7 @@ public sealed class Lead
         TripIntentId sourceTripIntentId,
         LeadSubmissionSnapshot snapshot,
         LeadContactSnapshot contact,
+        LeadConsentSnapshot consent,
         PlannerActorReference? actorReference,
         Instant submittedAt)
     {
@@ -27,6 +29,7 @@ public sealed class Lead
         SourceTripIntentId = sourceTripIntentId;
         Snapshot = snapshot;
         Contact = contact;
+        Consent = consent;
         ActorReference = actorReference;
         Status = LeadStatus.Submitted;
         SubmittedAt = submittedAt;
@@ -47,6 +50,8 @@ public sealed class Lead
 
     public LeadContactSnapshot Contact { get; private set; }
 
+    public LeadConsentSnapshot Consent { get; private set; }
+
     public Instant SubmittedAt { get; private set; }
 
     public Instant CreatedAt { get; private set; }
@@ -59,20 +64,25 @@ public sealed class Lead
         TripIntent intent,
         Instant submittedAt,
         LeadContactSnapshot contact,
+        LeadConsentSnapshot consent,
         PlannerActorReference? actorReference)
     {
         ArgumentNullException.ThrowIfNull(intent);
         ArgumentNullException.ThrowIfNull(contact);
+        ArgumentNullException.ThrowIfNull(consent);
         if (submittedAt == default)
         {
             throw new ArgumentException("SubmittedAt cannot be default.", nameof(submittedAt));
         }
+
+        consent.ValidateForLeadSubmission(contact);
 
         return new Lead(
             LeadId.New(),
             intent.Id,
             intent.CaptureSubmissionSnapshot(),
             contact,
+            consent.CaptureCopy(),
             actorReference,
             submittedAt);
     }

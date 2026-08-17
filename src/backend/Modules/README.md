@@ -199,6 +199,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P18-R4 RESOLVED:** structured `TravelPreferences` on TripIntent with submission-time `TravelPreferenceSnapshot`; **BudgetPreference != Price/Quote**; **PlannerTravelerComposition != BookingPassenger**; logical destination refs only; no Search facet / Booking passenger clone.
 - **P18-R5 RESOLVED:** minimal Lead lifecycle **Submitted · Contacted · Closed · Cancelled** via `LeadLifecycleBoundary`; **LeadStatus != CRM Pipeline Stage**; full qualification **DEFERRED**; no agency routing/consent/public UI.
 - **P18-R6 RESOLVED (DEFERRED):** **P18 Agency Routing = DEFERRED** via `TripPlannerAgencyRoutingBoundary`; no AgencyAssignment/AgencyId/routing tables; **Lead != AgencyAssignment**; **TripPlanner != AgencyMarketplace ranking/allocation authority**.
+- **P18-R7 RESOLVED:** `LeadConsentSnapshot` at submission; **ContactPermission != MarketingConsent**; marketing optional; **Consent != NotificationDelivery**; Notification provider **DEFERRED**; no hardcoded retention period.
 - Invariant: **TripPlanner != Booking · TripPlanner != Payment · TripPlanner != Pricing · TripPlanner != CRM · TripPlanner != Search · TripPlanner != Notification delivery · TripPlanner != Party/Identity**.
 
 ## Host

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P18-PLAN` |
 | Phase | P18 — Trip Planner / Lead Experience |
-| Status | PLAN ACCEPTED; **P18-R1–R6 RESOLVED**; T001–T006 delivered; **P18-R7–R8 OPEN** |
+| Status | PLAN ACCEPTED; **P18-R1–R7 RESOLVED**; T001–T007 delivered; **P18-R8 OPEN** |
 | Baseline | `1826013` (`docs(tripplanner): add P18 implementation plan [TC-P18-PLAN]`) · T001 on top |
 | Authoritative sources | `docs/ROADMAP.md` § P18 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `13-reference-page-archetypes.md` · `docs/pages/00-page-archetype-registry.md` · `docs/pages/09-page-state-and-composition-rules.md` · P04 Destination/ReferenceData · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace · P14 PublicExperience · P15 Search · P16 UGC · P17 Visa · P19 Booking · P20 Payment · `15-future-architecture-transition-map.md` § V Notification |
 | Backend root | `src/backend` |
@@ -176,9 +176,10 @@ P18 اضافه می‌کند: **Trip Planner / Lead capability** — **بدون*
 - Forbidden kept: routing engine · agency ranking · commercial allocation · agency acceptance workflow · notification (R7) · public UI (R8).
 
 ### TC-P18-T007 — Notification / consent / privacy boundary
-- Purpose: Delivery handoff + consent/contact permission + data minimization (**P18-R7**).
-- Preserve: **Lead ≠ Notification infrastructure** · no passport/document PII · public vs admin visibility separation.
-- Forbidden kept: SMTP/SMS provider implementation · inventing R8.
+- Purpose: Submission-time consent/privacy facts on Lead; Notification owns delivery (**P18-R7 RESOLVED**).
+- Delivered: `LeadConsentSnapshot` (FollowUpContactAllowed · MarketingAllowed optional · PrivacyNoticeVersion · CapturedAt); `TripPlannerConsentBoundary` + `TripPlannerNotificationBoundary`; migration `20260818060000_AddLeadConsentBaseline`.
+- Preserve: **ContactPermission != MarketingConsent** · **Consent != NotificationDelivery** · **TripPlanner != Notification Provider** · retention policy not hardcoded.
+- Forbidden kept: SMTP/SMS/push providers · marketing automation · agency data sharing · public Lead API (R8).
 
 ### TC-P18-T008 — PublicExperience composition + Search/Booking/CRM boundary
 - Purpose: Public entry points, dedicated planner route composition, honest CTA semantics (**P18-R8**).
@@ -207,7 +208,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 | **P18-R4** | Travel preference model | **RESOLVED** | Destination/date/travelers/interests/budget/accommodation/transport preferences. **BudgetPreference != Price/Quote**. **PlannerTravelerComposition != Booking Passenger**. Date semantics: exact · flexible range · season · undecided. Logical refs to Destination/Tour — no clone. T004 delivered. |
 | **P18-R5** | Lead lifecycle / qualification boundary | **RESOLVED** | Minimal baseline: **Submitted · Contacted · Closed · Cancelled**. Full qualification/CRM pipeline **DEFERRED**. No generic workflow engine. T005 delivered. |
 | **P18-R6** | Agency routing / assignment boundary | **RESOLVED (DEFERRED)** | **P18 Agency Routing = DEFERRED**. No routing engine, assignment persistence, agency ranking, commercial allocation, or agency acceptance workflow in P18. Future capability may orchestrate without merging SoT. T006 delivered. |
-| **P18-R7** | Notification / contact / privacy-consent boundary | **OPEN** | Notification owns delivery channels (module not built). Lead may emit semantic events/contracts for acknowledgment/internal alert. Plan consent, retention posture, access control, data minimization. No passport/document collection. |
+| **P18-R7** | Notification / contact / privacy-consent boundary | **RESOLVED** | Submission-time `LeadConsentSnapshot`; follow-up permission distinct from marketing consent; marketing optional; Notification owns delivery (provider DEFERRED); no hardcoded retention; agency sharing not granted. T007 delivered. |
 | **P18-R8** | PublicExperience composition and Booking/Search/CRM boundary | **OPEN** | PE composes entry points (nav · tour detail · destination · visa · dedicated route). **PublicExperience ≠ Lead SoT**. **TripPlanner ≠ Search**. Honest CTA — no fake Book Now. P14 contact affordance may connect later without PE owning persistence. |
 
 ---

@@ -98,8 +98,35 @@ internal sealed class LeadConfiguration : IEntityTypeConfiguration<Lead>
                     .HasMaxLength(LeadContactSnapshot.PhoneMaxLength);
             });
 
+        builder.OwnsOne(
+            x => x.Consent,
+            consent =>
+            {
+                consent.Property(x => x.FollowUpContactAllowed)
+                    .HasColumnName("consent_follow_up_contact_allowed")
+                    .IsRequired();
+
+                consent.Property(x => x.MarketingAllowed)
+                    .HasColumnName("consent_marketing_allowed")
+                    .IsRequired();
+
+                consent.Property(x => x.PrivacyNoticeVersion)
+                    .HasColumnName("consent_privacy_notice_version")
+                    .HasMaxLength(LeadConsentSnapshot.PrivacyNoticeVersionMaxLength);
+
+                consent.Property(x => x.PreferredContactChannel)
+                    .HasColumnName("consent_preferred_contact_channel")
+                    .HasConversion<string>()
+                    .HasMaxLength(16);
+
+                consent.Property(x => x.CapturedAt)
+                    .HasColumnName("consent_captured_at")
+                    .IsRequired();
+            });
+
         builder.Navigation(x => x.Snapshot).IsRequired();
         builder.Navigation(x => x.Contact).IsRequired();
+        builder.Navigation(x => x.Consent).IsRequired();
 
         builder.HasIndex(x => x.SourceTripIntentId)
             .HasDatabaseName("ix_leads_source_trip_intent_id");
