@@ -106,9 +106,11 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 - Delivered: `PublicExperienceRelatedContentBoundary` · Content `related-published` public read · compact cards on Detail + Landing curated slot.
 - Forbidden: Copying CMS into TourProduct · IndexPolicy ownership · Booking · Search engine · inventing R7/R8.
 
-### TC-P14-T007 — Public AgencyOffer display (if locked)
-- Purpose: Show published marketplace offers on public tour experience **only if P14-R7 locked**.
-- Explicit DEFER allowed. Published Offer ≠ SEO Indexed · ≠ Bookable.
+### TC-P14-T007 — Public AgencyOffer presentation baseline
+- Purpose: Show published marketplace offers on public Tour Detail as inquiry-oriented Agency Information (**P14-R7 RESOLVED**).
+- Architect lock: Agency Marketplace owns AgencyOffer + publication + commercial relationship. PE owns presentation only. AgencyOffer may be displayed but does **not** own commercial flow. No agency prices. No ranking. Visibility does not change CatalogStatus / SEO IndexPolicy / canonical.
+- Delivered: `PublicExperienceAgencyOfferBoundary` · AgencyMarketplace `related-published` public read · Agency Information on Detail before Request information.
+- Forbidden: Book Now · Pay Now · Checkout · Reservation · Commission · PriceOverride · ranking/popularity · Booking CTA · inventing R8.
 
 ### TC-P14-T008 — Hardening + evidence
 
@@ -127,7 +129,7 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 | **P14-R4** | Shared Tour public detail vs Foreign/Experience specialized pages | **RESOLVED** | Shared Shell + kind-specific sections. Not independent pages. Not a giant union ViewModel. Package specialty is future contributor only. |
 | **P14-R5** | Related tours owner | **RESOLVED** | Public Experience owns presentation only. Deterministic shared-destination retrieval behind Tour public-read. Related ≠ Recommendation. P15 may replace retrieval. |
 | **P14-R6** | Content enrichment vs Content CMS ownership | **RESOLVED** | Content = editorial SoT. Tour = tour-facts SoT. PublicExperience = composition only. Destination-based semantic links. No TourProduct→ArticleId[]. Content publication ≠ SEO IndexPolicy. |
-| **P14-R7** | Public AgencyOffer on tour experience | **UNRESOLVED** | P13 publication exists. Public seller listing may be DEFER. Published Offer ≠ SEO Indexed. |
+| **P14-R7** | Public AgencyOffer on tour experience | **RESOLVED** | AgencyOffer may be displayed; does not own commercial flow. Marketplace owns facts/publication. PE owns presentation. Inquiry-oriented. No agency prices / ranking / Booking. Visibility ≠ CatalogStatus / IndexPolicy. |
 | **P14-R8** | Filters/facets implementation vs P15 | **UNRESOLVED** | Simple catalog filters in P14 vs faceting engine in P15. |
 
 ---

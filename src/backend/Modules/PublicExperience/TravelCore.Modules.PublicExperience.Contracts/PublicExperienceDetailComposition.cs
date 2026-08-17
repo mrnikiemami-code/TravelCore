@@ -12,7 +12,7 @@ public static class PublicExperienceDetailComposition
     public const string CatalogFactOwner = "Tour";
 
     public const string SharedSections =
-        "CoverMedia+TitleSummary+Destinations+DepartureSummary+PriceSummary+Policies+OfferReadinessSlot+StickyActions+ContentEnrichment";
+        "CoverMedia+TitleSummary+Destinations+DepartureSummary+PriceSummary+Policies+AgencyOfferPresentation+StickyActions+ContentEnrichment";
 
     public const string ExperienceSections =
         "Itinerary+Difficulty+Eligibility+Equipment+Meals+Guide+AccommodationPlan+LocalTransport";

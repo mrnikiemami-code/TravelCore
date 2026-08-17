@@ -80,4 +80,26 @@ public sealed class PublicExperienceScaffoldingSmokeTests
         Assert.False(PublicExperienceRelatedContentBoundary.ContentPublicationOwnsIndexPolicy);
         Assert.Equal(6, PublicExperienceRelatedContentBoundary.MaxItems);
     }
+
+    [Fact]
+    public void AgencyOffer_Presentation_Is_Inquiry_Only_Not_Commercial_Flow()
+    {
+        Assert.Equal("PublicExperience", PublicExperienceAgencyOfferBoundary.PresentationOwner);
+        Assert.Equal("AgencyMarketplace", PublicExperienceAgencyOfferBoundary.FactOwner);
+        Assert.Equal("Seo", PublicExperienceAgencyOfferBoundary.IndexPolicyOwner);
+        Assert.Equal("Tour", PublicExperienceAgencyOfferBoundary.CatalogStatusOwner);
+        Assert.False(PublicExperienceAgencyOfferBoundary.CommercialFlowAllowed);
+        Assert.False(PublicExperienceAgencyOfferBoundary.AgencyPriceDisplayAllowed);
+        Assert.False(PublicExperienceAgencyOfferBoundary.RankingAllowed);
+        Assert.False(PublicExperienceAgencyOfferBoundary.BookingCtaAllowed);
+        Assert.Equal(6, PublicExperienceAgencyOfferBoundary.MaxItems);
+        Assert.Contains(
+            "AgencyOfferPresentation",
+            PublicExperienceDetailComposition.SharedSections,
+            StringComparison.Ordinal);
+        Assert.DoesNotContain(
+            "OfferReadinessSlot",
+            PublicExperienceDetailComposition.SharedSections,
+            StringComparison.Ordinal);
+    }
 }

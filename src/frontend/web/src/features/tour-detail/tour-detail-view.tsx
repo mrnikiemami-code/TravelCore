@@ -1,4 +1,5 @@
 import { Container, LtrValue, Stack, Text } from "@/components/ui";
+import { AgencyOffersList } from "@/features/public-experience/agency-offers-list";
 import { PublicDetailStickyActions } from "@/features/public-experience/detail-sticky-actions";
 import { ExperienceTourDetailSections } from "@/features/public-experience/experience-detail-sections";
 import { RelatedContentList } from "@/features/public-experience/related-content-list";
@@ -13,7 +14,8 @@ import type {
  * Shared public Tour Detail shell (TC-P14-T004 / P14-R4).
  * Kind-specific Experience sections compose in; Package specialty is not implemented.
  * Catalog Published ≠ bookable. Sticky actions are presentation only (P14-R2).
- * App-proxy media only. Cover + ordered Gallery (no hero role).
+ * AgencyOffer presentation is inquiry-only (P14-R7). App-proxy media only.
+ * Cover + ordered Gallery (no hero role).
  */
 export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
   const locale = vm.locale;
@@ -97,17 +99,6 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
           {vm.kind === "Experience" ? (
             <ExperienceTourDetailSections locale={locale} experience={vm.experience} />
           ) : null}
-
-          <Stack gap="sm">
-            <Text as="h2" role="heading">
-              {locale === "fa" ? "آمادگی عرضه" : "Offer readiness"}
-            </Text>
-            <Text role="caption">
-              {locale === "fa"
-                ? "نمایش آگهی عمومی قفل نشده است."
-                : "Public offer display is not locked yet."}
-            </Text>
-          </Stack>
 
           <div id="published-departures">
             <Stack gap="sm">
@@ -281,6 +272,8 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
               </ul>
             )}
           </Stack>
+
+          <AgencyOffersList locale={locale} items={vm.agencyOffers} />
 
           <div id="request-information">
             <Stack gap="sm">

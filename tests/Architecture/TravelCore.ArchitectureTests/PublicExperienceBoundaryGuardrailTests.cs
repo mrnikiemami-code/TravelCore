@@ -306,4 +306,58 @@ public sealed class PublicExperienceBoundaryGuardrailTests
         Assert.Equal("Content", TravelCore.Modules.PublicExperience.Contracts.PublicExperienceRelatedContentBoundary.FactOwner);
         Assert.Equal("Seo", TravelCore.Modules.PublicExperience.Contracts.PublicExperienceRelatedContentBoundary.IndexPolicyOwner);
     }
+
+    [Fact]
+    public void AgencyOffer_Presentation_Is_Inquiry_Only_Not_Commercial_Flow()
+    {
+        var listPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "agency-offers-list.tsx");
+        Assert.True(File.Exists(listPath), listPath);
+        var list = File.ReadAllText(listPath);
+        Assert.Contains("Agency information", list, StringComparison.Ordinal);
+        Assert.Contains("Request information", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Pay Now", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Checkout", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("PriceOverride", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Commission", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("recommended agency", list, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("best agency", list, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("pg_trgm", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("ts_rank", list, StringComparison.Ordinal);
+
+        var endpoints = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "AgencyMarketplace",
+            "TravelCore.Modules.AgencyMarketplace.Infrastructure",
+            "Endpoints",
+            "AgencyMarketplacePublicEndpoints.cs"));
+        Assert.Contains("related-published", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("RequireAuthorization", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("IndexPolicy", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("CatalogStatus", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("PriceOverride", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("Commission", endpoints, StringComparison.Ordinal);
+
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceAgencyOfferBoundary.CommercialFlowAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceAgencyOfferBoundary.AgencyPriceDisplayAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceAgencyOfferBoundary.RankingAllowed);
+        Assert.Equal(
+            "AgencyMarketplace",
+            TravelCore.Modules.PublicExperience.Contracts.PublicExperienceAgencyOfferBoundary.FactOwner);
+        Assert.Equal(
+            "Seo",
+            TravelCore.Modules.PublicExperience.Contracts.PublicExperienceAgencyOfferBoundary.IndexPolicyOwner);
+    }
 }

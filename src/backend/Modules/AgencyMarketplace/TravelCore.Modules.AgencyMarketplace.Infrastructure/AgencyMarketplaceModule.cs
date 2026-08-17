@@ -11,7 +11,8 @@ using TravelCore.Persistence.PostgreSql;
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Agency Marketplace module (panel — TC-P13-T006).
+/// Host composition entry for the Agency Marketplace module
+/// (panel — TC-P13-T006; public related offers — TC-P14-T007).
 /// </summary>
 public sealed class AgencyMarketplaceModule : ITravelCoreModule
 {
@@ -32,11 +33,13 @@ public sealed class AgencyMarketplaceModule : ITravelCoreModule
         });
 
         services.AddScoped<IAgencyMarketplacePanelService, AgencyMarketplacePanelService>();
+        services.AddScoped<IRelatedAgencyOfferPublicQuery, RelatedAgencyOfferPublicQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         endpoints.MapAgencyMarketplacePanelEndpoints();
+        endpoints.MapAgencyMarketplacePublicEndpoints();
     }
 }
