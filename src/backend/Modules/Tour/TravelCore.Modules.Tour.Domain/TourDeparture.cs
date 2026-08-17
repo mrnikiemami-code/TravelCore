@@ -5,8 +5,7 @@ namespace TravelCore.Modules.Tour.Domain;
 /// <summary>
 /// TourDeparture aggregate root — concrete execution instance of a <see cref="TourProduct"/> (P11-R1 · TC-P11-T001).
 /// Invariant: TourProduct ≠ TourDeparture. Product owns reusable definition; Departure owns execution identity.
-/// Schedule / capacity / status / flight / hotel / pricing / booking are later P11+ tasks — not owned here yet.
-/// Lifecycle-ready: timestamps + product link only (status enum deferred to TC-P11-T004).
+/// Schedule: <see cref="TourDepartureSchedule"/> (P11-R2 · TC-P11-T002). Capacity / status / flight / hotel / pricing / booking later.
 /// </summary>
 public sealed class TourDeparture
 {
@@ -40,13 +39,16 @@ public sealed class TourDeparture
     /// <summary>Owning reusable TourProduct (0..N Departures per product — P11-R1).</summary>
     public TourProductId TourProductId { get; private set; }
 
+    /// <summary>Optional schedule until attached (P11-R2).</summary>
+    public TourDepartureSchedule? Schedule { get; private set; }
+
     public Instant CreatedAt { get; private set; }
 
     public Instant UpdatedAt { get; private set; }
 
     /// <summary>
     /// Creates a Departure execution instance for an existing TourProduct.
-    /// Does not copy product content; does not invent schedule/capacity/status.
+    /// Does not copy product content; does not invent capacity/status.
     /// </summary>
     public static TourDeparture Create(TourProduct product, Instant now)
     {
@@ -54,16 +56,25 @@ public sealed class TourDeparture
         return new TourDeparture(TourDepartureId.New(), product.Id, now);
     }
 
+    /// <summary>Attaches or replaces the travel-date schedule (LocalDate + IANA zone).</summary>
+    public void SetSchedule(LocalDate startDate, LocalDate endDate, string timeZoneId, Instant now)
+    {
+        Schedule = TourDepartureSchedule.Create(startDate, endDate, timeZoneId);
+        UpdatedAt = now;
+    }
+
     /// <summary>Test / reconstitution helper when TourProductId has already been validated.</summary>
     public static TourDeparture Reconstitute(
         TourDepartureId id,
         TourProductId tourProductId,
         Instant createdAt,
-        Instant updatedAt)
+        Instant updatedAt,
+        TourDepartureSchedule? schedule = null)
     {
         return new TourDeparture(id, tourProductId, createdAt)
         {
-            UpdatedAt = updatedAt
+            UpdatedAt = updatedAt,
+            Schedule = schedule
         };
     }
 }

@@ -28,6 +28,24 @@ internal sealed class TourDepartureConfiguration : IEntityTypeConfiguration<Tour
             .HasColumnName("updated_at")
             .IsRequired();
 
+        builder.OwnsOne(x => x.Schedule, schedule =>
+        {
+            schedule.Property(s => s.StartDate)
+                .HasColumnName("start_date")
+                .IsRequired();
+
+            schedule.Property(s => s.EndDate)
+                .HasColumnName("end_date")
+                .IsRequired();
+
+            schedule.Property(s => s.TimeZoneId)
+                .HasColumnName("time_zone_id")
+                .HasMaxLength(TourDepartureSchedule.TimeZoneIdMaxLength)
+                .IsRequired();
+        });
+
+        builder.Navigation(x => x.Schedule).IsRequired(false);
+
         builder.HasOne<TourProduct>()
             .WithMany()
             .HasForeignKey(x => x.TourProductId)

@@ -29,7 +29,7 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(15, expectedMigrations.Length);
+            Assert.Equal(16, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
@@ -45,6 +45,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.EndsWith("_AddExperienceOperationalAttributes", expectedMigrations[12], StringComparison.Ordinal);
             Assert.EndsWith("_AddExperienceGuideAssignments", expectedMigrations[13], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourDepartureScaffolding", expectedMigrations[14], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourDepartureSchedule", expectedMigrations[15], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -129,6 +130,13 @@ public sealed class TourMigrationLifecycleTests
                   AND tc.constraint_type = 'FOREIGN KEY'
                   AND ccu.table_schema IN ('destination', 'place');
                 """, ct));
+            Assert.Equal(3, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'tour'
+                  AND table_name = 'tour_departures'
+                  AND column_name IN ('start_date', 'end_date', 'time_zone_id');
+                """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
@@ -204,6 +212,7 @@ public sealed class TourMigrationLifecycleTests
             experienceSpec.ReplaceLocalTransport([("minibus", "Shared")], now);
             var package = TourProduct.CreatePackage("PKG-IT-001", "Istanbul Package", now);
             var departure = TourDeparture.Create(package, now);
+            departure.SetSchedule(new LocalDate(2027, 5, 1), new LocalDate(2027, 5, 6), "Europe/Istanbul", now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
             db.ExperienceSpecializations.Add(experienceSpec);
@@ -270,6 +279,10 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(package.Id, loadedDeparture.TourProductId);
             Assert.Equal(now, loadedDeparture.CreatedAt);
             Assert.NotEqual(package.Id.Value, loadedDeparture.Id.Value);
+            Assert.NotNull(loadedDeparture.Schedule);
+            Assert.Equal(new LocalDate(2027, 5, 1), loadedDeparture.Schedule!.StartDate);
+            Assert.Equal(new LocalDate(2027, 5, 6), loadedDeparture.Schedule.EndDate);
+            Assert.Equal("Europe/Istanbul", loadedDeparture.Schedule.TimeZoneId);
         }
     }
 
