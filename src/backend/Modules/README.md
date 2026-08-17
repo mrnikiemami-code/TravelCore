@@ -101,6 +101,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - AgencyMarketplace ≠ Party identity · ≠ Pricing · ≠ Booking · ≠ TourProduct catalog; logical PartyId Guid only (P13-R1).
 - PublicExperience ≠ Tour catalog · ≠ Search engine · ≠ Booking; presentation + SEO composition only (P14-R1).
 - Search ≠ Tour/Content/Pricing/Agency facts · ≠ SEO IndexPolicy · ≠ Booking · ≠ Recommendation; schema `search` only in T001 (P15-R1).
+- UGC ≠ Content · ≠ MediaAsset SoT · ≠ Identity/Party · ≠ target Tour/Place/Destination owner · ≠ SEO IndexPolicy · ≠ Search; schema `ugc` only in T001 (P16-R1).
 
 ## Active modules (P12)
 
@@ -156,6 +157,16 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P15-R6 RESOLVED:** Structured attributable locale-aware facts first. Semantic retrieval + provenance. No embeddings/vector/RAG/LLM. Search ≠ SoT.
 - **P15-R7 RESOLVED:** Engine-neutral public Search query API. Structured filters + continuation-ready pagination + explicit locale. Not SEO IndexPolicy. Empty stub allowed.
 - Invariant: **Search ≠ Catalog · Search ≠ Pricing · Search ≠ AgencyOffer · Search ≠ IndexPolicy · Search ≠ Booking · Search ≠ Recommendation · Filter UI ≠ Faceting · Ranking ≠ Business Priority · Search ≠ AI Platform · Search API ≠ Search Engine API**.
+
+## Active modules (P16)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| Ugc | `Ugc/TravelCore.Modules.Ugc.{Domain,Contracts,Infrastructure}` | `ugc` |
+
+- **Ugc:** independent UGC owner scaffolding (`TC-P16-T001`) — schema `ugc`; ownership contracts; opaque logical actor reference; no Review/Rating/Travelogue/Comment/Like/Report product types.
+- **P16-R1 RESOLVED:** independent UGC module with schema `ugc`. Owns user-generated content lifecycle. Does not own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, or Payment. Target attachment (R3) and product types (R2/R4–R7) remain open.
+- Invariant: **UGC != Content · UGC != Media · UGC != target domain owner · UGC != SEO · UGC != Search**.
 
 ## Host
 

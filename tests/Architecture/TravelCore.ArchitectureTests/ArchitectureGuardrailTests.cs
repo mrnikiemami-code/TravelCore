@@ -434,6 +434,28 @@ public sealed class ArchitectureGuardrailTests
     }
 
     [Fact]
+    public void UgcPersistence_MustUseOwnedSchema_ugc()
+    {
+        var options = new DbContextOptionsBuilder<TravelCore.Modules.Ugc.Infrastructure.UgcDbContext>()
+            .UseTravelCorePostgreSql(
+                "Host=127.0.0.1;Database=architecture_guard_ugc_design;Username=architecture;Password=not-a-real-secret",
+                migrationsHistorySchema: TravelCore.Modules.Ugc.Infrastructure.UgcDbContext.SchemaName)
+            .Options;
+
+        using var db = new TravelCore.Modules.Ugc.Infrastructure.UgcDbContext(options);
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+        Assert.Equal("ugc", TravelCore.Modules.Ugc.Infrastructure.UgcDbContext.SchemaName);
+
+        Assert.Equal("ugc", db.Model.GetDefaultSchema());
+        foreach (var entity in db.Model.GetEntityTypes())
+        {
+            Assert.Equal("ugc", entity.GetSchema());
+        }
+
+        Assert.Equal(System.Data.ConnectionState.Closed, db.Database.GetDbConnection().State);
+    }
+
+    [Fact]
     public void FixtureMigrations_MustRemainUnderFixtureProject()
     {
         var migrationsDir = Path.Combine(

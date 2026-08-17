@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Ugc.Domain</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Ugc.Domain</AssemblyName>
+    <Description>UGC domain scaffolding (TC-P16-T001 / P16-R1). No product aggregates yet.</Description>
+  </PropertyGroup>
+
+</Project>

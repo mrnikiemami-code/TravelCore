@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P16-PLAN` |
 | Phase | P16 — UGC |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | PLAN ACCEPTED; P16-R1 RESOLVED; T001 delivered (R2–R8 UNRESOLVED) |
 | Baseline | `4e2098d` (`docs(search): P15 acceptance gate evidence [TC-P15-GATE]` — **TC-P15-GATE** ACCEPTED; P15 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P16 · `docs/architecture/15-future-architecture-transition-map.md` § P · `04-module-boundaries.md` § UGC · `05-dependency-rules.md` Knowledge/UGC · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` (Review · Travelogue) · P08 Content (UGC ≠ Content) · P06 Media (consumer owns relationship meaning) · P05 SEO (IndexPolicy) · P14 PublicExperience (composition only) · P15 Search (retrieval ≠ UGC SoT) |
 | Backend root | `src/backend` |
@@ -83,9 +83,9 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 ### TC-P16-PLAN — this document
 
 ### TC-P16-T001 — UGC module scaffolding / ownership boundary
-- Purpose: Independent UGC module + ownership contracts (**requires P16-R1 lock**).
-- Expected: Contracts/Domain/Infrastructure scaffolding; dedicated schema; no peer FKs; target modules remain fact SoT.
-- Forbidden until later locks: Review tables productization beyond scaffolding, Like, Search engine, SEO IndexPolicy, Booking.
+- Purpose: Independent UGC module + ownership contracts (**P16-R1 RESOLVED**).
+- Delivered: Contracts/Domain/Infrastructure scaffolding; schema `ugc`; `UgcOwnershipBoundary`; opaque `UgcActorReference`; host registration; no peer FKs; no product aggregates.
+- Forbidden kept: Review/Rating/Travelogue/Comment/Like/Report tables · target-attachment model · SEO IndexPolicy · Search · Booking · Payment · inventing R2–R8.
 
 ### TC-P16-T002 — Review / Rating baseline
 - Purpose: Authoritative Review + Rating (+ dimensions if R2 locks them).
@@ -125,7 +125,7 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
-| **P16-R1** | UGC ownership / module / schema | **UNRESOLVED** | Architecture already names an independent UGC module. T001 must not start until architect locks ownership (schema, what UGC does **not** own). Do not steal Content/Media/SEO/Search/target aggregates. |
+| **P16-R1** | UGC ownership / module / schema | **RESOLVED** | Independent UGC module. Schema `ugc`. Owns user-generated content lifecycle. Does **not** own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, or Payment. Actor = opaque logical id only. T001: no Review/Rating/Travelogue/Comment/Like/Report product types, no target-attachment model, no peer FKs. |
 | **P16-R2** | Review vs Rating vs RatingDimension | **UNRESOLVED** | ROADMAP lists all three. Do not invent scoring formula, required dimensions, or anonymous vs Identity/Party subject model. |
 | **P16-R3** | Target attachment | **UNRESOLVED** | Targets: Destination · Place · Tour; Content only if later confirmed. Do not invent polymorphic vs per-target tables before lock. Target must not own UGC aggregates. |
 | **P16-R4** | Travelogue vs Content | **UNRESOLVED** | UGC ≠ Content is already an invariant. Exact Travelogue aggregate/publication vs Article remains architect lock. |
@@ -140,7 +140,7 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 
 1. UGC = user-generated owner · Content = editorial owner · Media = asset owner · SEO = IndexPolicy owner · Search = retrieval owner · PublicExperience = presentation/composition only.
 2. Target entity (Destination/Place/Tour) is **not** UGC aggregate owner.
-3. UGC ≠ Content · Travelogue ≠ Article.
+3. UGC ≠ Content · Travelogue ≠ Article · UGC != Content · UGC != Media · UGC != target domain owner · UGC != SEO · UGC != Search.
 4. Published ≠ SEO Indexed · Published ≠ Bookable.
 5. UserPhoto relationship ≠ MediaAsset SoT.
 6. Review is not a catalog/pricing/ranking-policy authority.

@@ -158,7 +158,7 @@ Media owns the asset
 
 **Purpose:** محتوای کاربرساخت.
 
-**Owns:** Review · Rating · RatingDimension · Travelogue · UserPhoto relationship · Comment · Moderation · Report/abuse · publication state.
+**Owns:** Review · Rating · RatingDimension · Travelogue · UserPhoto relationship · Comment · Moderation · Report/abuse · publication state · schema `ugc` (P16-R1 scaffolding; product types not implemented in T001).
 
 **Targets (ارجاع):** Destination · Place · Tour · و احتمالاً Content اگر بعداً تأیید شود.
 

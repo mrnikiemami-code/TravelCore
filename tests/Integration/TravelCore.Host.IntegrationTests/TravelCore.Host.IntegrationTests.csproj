@@ -43,6 +43,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Infrastructure\TravelCore.Modules.AgencyMarketplace.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Infrastructure\TravelCore.Modules.Search.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Contracts\TravelCore.Modules.Search.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Ugc\TravelCore.Modules.Ugc.Infrastructure\TravelCore.Modules.Ugc.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
