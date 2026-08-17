@@ -13,7 +13,7 @@ public static class SearchOwnershipBoundary
     public const string PriceFactOwner = "Pricing";
     public const string AgencyOfferFactOwner = "AgencyMarketplace";
     public const string IndexPolicyOwner = "Seo";
-    public const string CompositionPosture = "QueryAndResultContractsPlusFutureReadModel";
+    public const string CompositionPosture = "HybridReadModelPlusQueryContracts";
     public const bool OwnsTourFacts = false;
     public const bool OwnsContentFacts = false;
     public const bool OwnsPricingFacts = false;

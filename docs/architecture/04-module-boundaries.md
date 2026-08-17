@@ -289,7 +289,7 @@ Flight live bookable inventory
 
 **Purpose:** قابلیت پلتفرم پایین‌دستی برای بازیابی و Discovery (P15-R1).
 
-**Owns:** Search query/result contracts · schema `search` · future replaceable read model / projection (not yet in T001).
+**Owns:** Search query/result contracts · schema `search` · `SearchDocument` / `ISearchIndex` hybrid read-model abstraction (P15-R2) · future projection pipeline (not yet).
 
 **Does Not Own (authoritative):** Tour facts · Content facts · Pricing facts · AgencyOffer facts · SEO IndexPolicy · Destination · Place · UGC · Visa · Booking · Payment · Recommendation.
 

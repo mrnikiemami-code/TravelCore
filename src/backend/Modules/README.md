@@ -147,8 +147,9 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Search | `Search/TravelCore.Modules.Search.{Domain,Contracts,Infrastructure}` | `search` |
 
-- **Search:** module scaffolding only (`TC-P15-T001`) — schema `search` ownership; query/result contracts; no projection tables / FTS / ranking / faceting / Elasticsearch.
+- **Search:** scaffolding + hybrid read-model contracts (`TC-P15-T001`/`T002`) — schema `search`; `SearchDocument` + `ISearchIndex` + projection envelopes; no projection tables / FTS / ranking / faceting / Elasticsearch.
 - **P15-R1 RESOLVED:** Search is an independent Discovery Owner. Tour/Content/Pricing/AgencyMarketplace remain fact SoT. SEO remains IndexPolicy owner. Search is a future read-model/projection, not a second write SoR. No LLM/business rules inside Search. No FTS/index engine in T001.
+- **P15-R2 RESOLVED:** Hybrid Read Model. Search owns document/index abstraction. Physical engine not committed. SearchDocument is not a domain entity.
 - Invariant: **Search ≠ Catalog · Search ≠ Pricing · Search ≠ AgencyOffer · Search ≠ IndexPolicy · Search ≠ Booking · Search ≠ Recommendation**.
 
 ## Host

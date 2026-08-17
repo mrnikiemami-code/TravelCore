@@ -6,8 +6,8 @@ using Xunit;
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P15-T001 / P15-R1: Search is an independent Discovery module.
-/// Query/result contracts only — no FTS, ranking, faceting, Elasticsearch, or domain-fact ownership.
+/// TC-P15-T001 / P15-R1 and TC-P15-T002 / P15-R2: Search is Discovery owner with a hybrid read-model
+/// abstraction. No FTS, ranking, faceting, or physical search engine.
 /// </summary>
 public sealed class SearchBoundaryGuardrailTests
 {
@@ -39,6 +39,51 @@ public sealed class SearchBoundaryGuardrailTests
         Assert.False(SearchOwnershipBoundary.FullTextSearchImplemented);
         Assert.False(SearchOwnershipBoundary.ElasticsearchCommitted);
         Assert.False(SearchOwnershipBoundary.RecommendationEngineAllowed);
+        Assert.Equal("HybridReadModel", SearchIndexBoundary.ReadModelPosture);
+        Assert.False(SearchIndexBoundary.SearchDocumentIsDomainEntity);
+        Assert.False(SearchIndexBoundary.PhysicalEngineCommitted);
+        Assert.False(SearchIndexBoundary.SqlFullTextCommitted);
+        Assert.False(SearchIndexBoundary.OpenSearchCommitted);
+        Assert.False(SearchIndexBoundary.ElasticsearchCommitted);
+        Assert.False(SearchIndexBoundary.EmbeddingAllowed);
+        Assert.False(SearchIndexBoundary.RankingEngineAllowed);
+        Assert.False(SearchIndexBoundary.FacetingEngineAllowed);
+    }
+
+    [Fact]
+    public void SearchInfrastructure_MustNotImplement_ISearchIndex()
+    {
+        var infraRoot = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Search",
+            "TravelCore.Modules.Search.Infrastructure");
+        Assert.True(Directory.Exists(infraRoot), infraRoot);
+
+        var hits = Directory.EnumerateFiles(infraRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(x.line, @"\bISearchIndex\b")
+                           || Regex.IsMatch(x.line, @"\bDbSet\s*<\s*SearchDocument\s*>");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "T002 forbids a concrete index engine and SearchDocument persistence:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -97,7 +142,7 @@ public sealed class SearchBoundaryGuardrailTests
 
                     return Regex.IsMatch(
                         x.line,
-                        @"\b(pg_trgm|to_tsvector|ts_rank|Elasticsearch|OpenSearch|Booking|Payment|PriceOverride|Commission|SetIndexPolicy)\b");
+                        @"\b(pg_trgm|to_tsvector|ts_rank|Elasticsearch|OpenSearch|Booking|Payment|PriceOverride|Commission|SetIndexPolicy|IEmbedding|OpenAI)\b");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
