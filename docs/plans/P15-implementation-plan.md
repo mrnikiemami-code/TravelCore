@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P15-PLAN` |
 | Phase | P15 — Search & Discovery |
-| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R6 RESOLVED; T006 AI-readiness boundary delivered |
+| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R7 RESOLVED; T007 public query API delivered |
 | Baseline | `608216d` (`docs: P14 acceptance gate evidence [TC-P14-GATE]` — **TC-P14-GATE** ACCEPTED; P14 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P15 · P14 Gate ACCEPT · P14-R3/R5/R8 (Listing ≠ Landing · Related ≠ Recommendation · Filter ≠ Faceting) · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace |
 | Backend root | `src/backend` |
@@ -100,8 +100,9 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 - Forbidden kept: embeddings · vector DB/search · RAG · LLM/prompt · AI-generated facts · Search-as-SoT · inventing R7.
 
 ### TC-P15-T007 — Query API / listing retrieval integration
-- Purpose: Public query contract for Listing selection (**needs P15-R7** and/or R1).
-- Expected: Replace P14 deterministic listing selection with Search query abstraction where locked; PE composes only.
+- Purpose: Engine-neutral public Search query surface (**P15-R7 RESOLVED**).
+- Delivered: `GET /api/search` · `SearchPublicQueryRequest/Response` · `ISearchQueryService` · `EmptySearchQueryService` stub · `SearchQueryApiBoundary`.
+- Forbidden kept: ES/OpenSearch/SQL FTS · provider DSL · recommendation · embeddings · SEO IndexPolicy ownership · domain duplication.
 
 ### TC-P15-T008 — SEO Landing integration boundary
 - Purpose: Search must not conflate Landing with filtered listing URLs.
@@ -124,7 +125,7 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 | **P15-R4** | Faceting ownership | **RESOLVED** | Search owns Aggregation / Counting / Result composition. Domain owns attribute meaning + source facts. PE owns filter UI only (P14-R8). No facet engine / ES aggregations / domain facet tables in T004. Structured fields remain available for future facets. |
 | **P15-R5** | Ranking model | **RESOLVED** | Deterministic explainable signals + stable tie-break. Search owns ranking composition/ordering/metadata. Not business-policy authority. Ranking ≠ Recommendation. No ML/embeddings/personalization in T005. |
 | **P15-R6** | AI / Search readiness | **RESOLVED** | Structured attributable locale-aware facts first. Semantic retrieval snapshot + provenance. No embeddings/vector/RAG/LLM. Search ≠ SoT. Consumer-neutral reusable contracts. |
-| **P15-R7** | Query API contract | **UNRESOLVED** | Public query surface; PE listing consumes; no Booking. |
+| **P15-R7** | Query API contract | **RESOLVED** | Engine-neutral `GET /api/search`. Structured filters · continuation-ready pagination · explicit locale. Not SEO IndexPolicy. Empty stub execution allowed. No provider DSL. |
 
 ---
 

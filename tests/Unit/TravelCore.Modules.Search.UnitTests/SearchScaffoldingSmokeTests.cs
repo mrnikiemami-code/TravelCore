@@ -291,6 +291,70 @@ public sealed class SearchScaffoldingSmokeTests
         Assert.Contains("destination:istanbul", snapshot.SemanticReferences!);
     }
 
+    [Fact]
+    public void Query_Api_Boundary_Is_Engine_Neutral_And_Not_Seo()
+    {
+        Assert.Equal("/api/search", SearchQueryApiBoundary.PublicRoute);
+        Assert.Equal("EngineNeutralStructuredQuery", SearchQueryApiBoundary.QueryPosture);
+        Assert.Equal("ContinuationReady", SearchQueryApiBoundary.PaginationPosture);
+        Assert.False(SearchQueryApiBoundary.OwnsSeoLanding);
+        Assert.False(SearchQueryApiBoundary.OwnsIndexPolicy);
+        Assert.False(SearchQueryApiBoundary.OwnsCanonicalPolicy);
+        Assert.False(SearchQueryApiBoundary.ExposesProviderQueryDsl);
+        Assert.False(SearchQueryApiBoundary.ExposesIndexNames);
+        Assert.False(SearchQueryApiBoundary.ExposesShardInformation);
+        Assert.False(SearchQueryApiBoundary.ExposesDatabasePredicates);
+        Assert.False(SearchQueryApiBoundary.ElasticsearchDependencyAllowed);
+        Assert.False(SearchQueryApiBoundary.OpenSearchDependencyAllowed);
+        Assert.False(SearchQueryApiBoundary.SqlFullTextAllowed);
+        Assert.False(SearchQueryApiBoundary.RecommendationAllowed);
+        Assert.False(SearchQueryApiBoundary.PersonalizationAllowed);
+        Assert.False(SearchQueryApiBoundary.EmbeddingsAllowed);
+        Assert.False(SearchQueryApiBoundary.VectorSearchAllowed);
+        Assert.False(SearchQueryApiBoundary.RagAllowed);
+        Assert.False(SearchQueryApiBoundary.AiSpecificEndpointAllowed);
+        Assert.True(SearchQueryApiBoundary.LocaleMustBeExplicit);
+        Assert.False(SearchQueryApiBoundary.AutoLanguageDetectionIsAuthoritative);
+    }
+
+    [Fact]
+    public async Task Empty_Search_Query_Service_Requires_Locale_And_Returns_Stub()
+    {
+        var service = new TravelCore.Modules.Search.Infrastructure.Services.EmptySearchQueryService();
+        var response = await service.QueryAsync(
+            new SearchPublicQueryRequest(
+                LocaleCode: "fa-IR",
+                QueryText: "istanbul",
+                EntityTypes: ["TourProduct"],
+                StructuredFilters: new Dictionary<string, string> { ["Difficulty"] = "easy" },
+                Sort: null,
+                PageSize: 10,
+                ContinuationToken: null,
+                RequestedFacets: ["difficulty"]),
+            TestContext.Current.CancellationToken);
+
+        Assert.Equal("fa-IR", response.LocaleCode);
+        Assert.Empty(response.Hits);
+        Assert.NotNull(response.Facets);
+        Assert.Equal(10, response.Continuation.PageSize);
+        Assert.Equal(0, response.Continuation.ReturnedCount);
+        Assert.Null(response.Continuation.NextContinuationToken);
+        Assert.DoesNotContain("lucene", string.Join(' ', response.ResultMetadata!.Values), StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("shard", string.Join(' ', response.ResultMetadata!.Keys), StringComparison.OrdinalIgnoreCase);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => service.QueryAsync(
+            new SearchPublicQueryRequest(
+                LocaleCode: " ",
+                QueryText: null,
+                EntityTypes: null,
+                StructuredFilters: null,
+                Sort: null,
+                PageSize: null,
+                ContinuationToken: null,
+                RequestedFacets: null),
+            TestContext.Current.CancellationToken));
+    }
+
     private sealed class InMemorySearchProjectionIdempotencyStore : ISearchProjectionIdempotencyStore
     {
         private readonly HashSet<Guid> _processed = [];

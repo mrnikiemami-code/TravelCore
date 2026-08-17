@@ -7,8 +7,8 @@ using Xunit;
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P15-T001..T006: Search Discovery owner with hybrid read-model, outbox projection,
-/// faceting, deterministic ranking, and AI-readiness contracts. No FTS/ML/vector/LLM engines.
+/// TC-P15-T001..T007: Search Discovery owner with hybrid read-model, outbox projection,
+/// faceting, ranking, AI-readiness, and engine-neutral public query API. No FTS/ML/vector/LLM engines.
 /// </summary>
 public sealed class SearchBoundaryGuardrailTests
 {
@@ -311,6 +311,26 @@ public sealed class SearchBoundaryGuardrailTests
         Assert.False(SearchIndexBoundary.EmbeddingAllowed);
         Assert.False(SearchRankingBoundary.EmbeddingsAllowed);
         Assert.False(SearchRankingBoundary.VectorSearchAllowed);
+    }
+
+    [Fact]
+    public void Search_Public_Query_Api_Is_Engine_Neutral_And_Not_Seo()
+    {
+        Assert.Equal("/api/search", SearchQueryApiBoundary.PublicRoute);
+        Assert.Equal("EngineNeutralStructuredQuery", SearchQueryApiBoundary.QueryPosture);
+        Assert.False(SearchQueryApiBoundary.OwnsSeoLanding);
+        Assert.False(SearchQueryApiBoundary.OwnsIndexPolicy);
+        Assert.False(SearchQueryApiBoundary.ExposesProviderQueryDsl);
+        Assert.False(SearchQueryApiBoundary.ExposesIndexNames);
+        Assert.False(SearchQueryApiBoundary.SqlFullTextAllowed);
+        Assert.False(SearchQueryApiBoundary.RecommendationAllowed);
+        Assert.False(SearchQueryApiBoundary.EmbeddingsAllowed);
+        Assert.False(SearchQueryApiBoundary.AiSpecificEndpointAllowed);
+        Assert.True(SearchQueryApiBoundary.LocaleMustBeExplicit);
+        Assert.False(SearchQueryApiBoundary.AutoLanguageDetectionIsAuthoritative);
+        Assert.True(typeof(TravelCore.Modules.Search.Infrastructure.Services.EmptySearchQueryService)
+            .GetInterfaces()
+            .Contains(typeof(ISearchQueryService)));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>
