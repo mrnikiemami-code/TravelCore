@@ -4,8 +4,8 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED; T001–T008 ACCEPTED; T009 evidence pack delivered; next = GATE |
-| Baseline | `520a46d` (T008 ACCEPTED baseline for T009) |
+| Status | COMPLETE pending architect ACCEPT of `TC-P12-GATE` — P12-R1…R8 RESOLVED; T001–T009 ACCEPTED; next may auto-start P13 PLAN after Gate ACCEPT |
+| Baseline | `a522dd5` (T009 ACCEPTED baseline for GATE) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
@@ -102,10 +102,10 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 - **P12-R8 RESOLVED:** Pricing provides a public read-only query for price summary (currency, components, occupancy prices) by logical target (initial: TourDepartureId). No Booking, Payment, Checkout, Availability, Reservation, or FX conversion.
 
 ### TC-P12-T009 — Hardening + evidence
-- **Delivered:** architecture hardening + evidence pack only — [`P12-T009-hardening-and-evidence-pack.md`](P12-T009-hardening-and-evidence-pack.md). Extra phase-boundary guardrails (`PricingPhaseBoundaryGuardrailTests`). No new pricing features · no Booking · no Payment · no FX engine · no Checkout. Does **not** execute GATE.
+- **Delivered / ACCEPTED:** `a522dd5` — architecture hardening + evidence pack only — [`P12-T009-hardening-and-evidence-pack.md`](P12-T009-hardening-and-evidence-pack.md). Extra phase-boundary guardrails (`PricingPhaseBoundaryGuardrailTests`). No new pricing features · no Booking · no Payment · no FX engine · no Checkout.
 
 ### TC-P12-GATE — Acceptance Gate
-- Next after T009 ACCEPT. Not executed in T009.
+- **Delivered:** [`P12-GATE-acceptance-evidence.md`](P12-GATE-acceptance-evidence.md) — gate checklist + validation re-run. **AWAITING_ARCHITECT_REVIEW.** P12 COMPLETE pending ACCEPT. Does **not** start P13 product.
 
 ---
 

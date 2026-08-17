@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T009 hardening + evidence; next = GATE) |
-| Phase Status | P00–P11 COMPLETE · P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED · T001–T008 ACCEPTED · `TC-P12-T009` delivered |
+| Current Phase | **P12 — Pricing** (**COMPLETE pending architect ACCEPT** of `TC-P12-GATE`) |
+| Phase Status | P00–P11 COMPLETE · P12-R1…R8 RESOLVED · T001–T009 ACCEPTED · GATE evidence |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `520a46d` (`TC-P12-T008`) · Public pricing read model baseline accepted |
+| Last Accepted Commit | `a522dd5` (`TC-P12-T009`) · Pricing hardening + evidence pack accepted |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of T009 evidence pack → then **TC-P12-GATE** |
+| Current Next Task | Await `TC-P12-GATE` ACCEPT → continuity may auto-start **P13 PLAN** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -111,8 +111,8 @@
 - **P09** = COMPLETE (`TC-P09-GATE` ACCEPTED `67fc580` · T001–T010 ACCEPTED · **R1–R8 RESOLVED** · product T010 `0334bae`)
 - **P10** = COMPLETE (`TC-P10-GATE` ACCEPTED `c351bf9` · **R1–R8 RESOLVED**)
 - **P11** = COMPLETE (`TC-P11-GATE` ACCEPTED `6f7ea12` · **R1–R8 RESOLVED**)
-- **P12** = IN_PROGRESS (**R1–R8 RESOLVED** · T001–T008 ACCEPTED `520a46d` · T009 evidence pack · next = GATE — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
-- **P13–P29 و Post-P29** = PLANNED / NOT_STARTED
+- **P12** = COMPLETE pending architect ACCEPT (**R1–R8 RESOLVED** · T001–T009 ACCEPTED `a522dd5` · GATE evidence [`plans/P12-GATE-acceptance-evidence.md`](plans/P12-GATE-acceptance-evidence.md) — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
+- **P13–P29 و Post-P29** = PLANNED / NOT_STARTED (P13 PLAN may auto-start after Gate ACCEPT; no P13 product invented here)
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -439,7 +439,7 @@ TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Fli
 
 ## P12 — Pricing
 
-**Status:** IN PROGRESS — **P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED** · T001–T008 ACCEPTED (`520a46d`) · T009 evidence pack delivered · next = **TC-P12-GATE**
+**Status:** COMPLETE pending architect ACCEPT — **P12-R1…R8 RESOLVED** · T001–T009 ACCEPTED (`a522dd5`) · **`TC-P12-GATE` AWAITING_ARCHITECT_REVIEW**
 
 Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passenger category · Occupancy · Age policy · Exchange rates · Conversion policy · Quote · Quote expiration در صورت نیاز · Price snapshot.
 
@@ -465,13 +465,17 @@ Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passe
 
 Plan: [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md)
 
-**Evidence pack:** [`plans/P12-T009-hardening-and-evidence-pack.md`](plans/P12-T009-hardening-and-evidence-pack.md) (T009; Gate not executed)
+**Evidence pack:** [`plans/P12-T009-hardening-and-evidence-pack.md`](plans/P12-T009-hardening-and-evidence-pack.md) (`a522dd5`)
+
+**Gate evidence:** [`plans/P12-GATE-acceptance-evidence.md`](plans/P12-GATE-acceptance-evidence.md)
+
+After Gate ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marketplace). No P13 product in this gate.
 
 ---
 
 ## P13 — Agency Marketplace
 
-**Status:** PLANNED
+**Status:** PLANNED — may auto-start **P13 PLAN** after `TC-P12-GATE` ACCEPT (no Agency Marketplace product invented in this gate).
 
 Agency business profile · Offer ownership · Tour offering · Capacity/availability policies · Agency-specific commercial rules · Agency Panel · Publishing/moderation در صورت نیاز.
 
@@ -721,7 +725,7 @@ P26 = Advanced SEO.
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
-| P12 | Pricing | **IN PROGRESS** (R1–R8 RESOLVED · T001–T008 ACCEPTED · T009 evidence · next = GATE) |
+| P12 | Pricing | **COMPLETE pending architect ACCEPT** (`TC-P12-GATE` · R1–R8 RESOLVED · T001–T009) |
 | P13 | Agency Marketplace | PLANNED |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |
