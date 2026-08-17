@@ -59,3 +59,43 @@ public interface ITourDepartureAdminService
         SetTourDepartureStatusRequest request,
         CancellationToken cancellationToken = default);
 }
+
+/// <summary>
+/// Public published-departure summary (TC-P11-T009 · P11-R8). Published ≠ bookable.
+/// </summary>
+public sealed record PublishedDepartureTransportSummary(
+    int Sequence,
+    string TransportMode,
+    string Origin,
+    string Destination);
+
+public sealed record PublishedDepartureAccommodationSummary(
+    Guid PlaceId,
+    int Nights,
+    string BoardType);
+
+public sealed record PublishedDepartureCapacitySummary(
+    int? MinimumPax,
+    int? MaximumPax);
+
+public sealed record PublishedDeparturePublicSummary(
+    Guid Id,
+    Guid TourProductId,
+    string Status,
+    string? StartDate,
+    string? EndDate,
+    string? TimeZoneId,
+    int? DurationDays,
+    PublishedDepartureCapacitySummary Capacity,
+    IReadOnlyList<PublishedDepartureTransportSummary> Transport,
+    IReadOnlyList<PublishedDepartureAccommodationSummary> Accommodation);
+
+/// <summary>
+/// Public read query for Published TourDeparture facts only (P11-R8).
+/// </summary>
+public interface ITourDeparturePublicQuery
+{
+    Task<IReadOnlyList<PublishedDeparturePublicSummary>> GetPublishedByTourProductAsync(
+        Guid tourProductId,
+        CancellationToken cancellationToken = default);
+}

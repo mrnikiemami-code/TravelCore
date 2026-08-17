@@ -5,8 +5,8 @@ using Xunit;
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P09-T010: Public Tour detail hardening — P09-R6 SEO default, app-proxy media,
-/// no StorageKey / SetIndexPolicy / TourDeparture / Booking on the public surface.
+/// TC-P09-T010 / TC-P11-T009: Public Tour detail — P09-R6 SEO default, app-proxy media,
+/// published execution summaries (P11-R8) without Booking/Pricing/Payment invent.
 /// </summary>
 public sealed class TourPublicDetailBoundaryGuardrailTests
 {
@@ -89,7 +89,7 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
 
                     return Regex.IsMatch(
                         x.line,
-                        @"\b(storageKey|DeletedAt|ArchivedAt|IsDeleted|SetIndexPolicy|admin/catalog/tours|TourDeparture|BookingEngine|PriceQuote)\b",
+                        @"\b(storageKey|DeletedAt|ArchivedAt|IsDeleted|SetIndexPolicy|admin/catalog/tours|BookingEngine|PriceQuote|BookableNow|BookingCta|Payment|Reservation|availabilityCount)\b",
                         RegexOptions.IgnoreCase);
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
@@ -97,7 +97,7 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
 
         Assert.True(
             featureHits.Count == 0,
-            "Public Tour detail must not leak StorageKey / Admin lifecycle / IndexPolicy / Departure/Booking:\n"
+            "Public Tour detail must not leak StorageKey / Admin lifecycle / IndexPolicy / Booking commerce:\n"
             + string.Join('\n', featureHits));
 
         var loaderPath = Path.Combine(featureRoot, "load-tour-detail.ts");
@@ -106,11 +106,16 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
         Assert.Contains("media/presentation", loader, StringComparison.Ordinal);
         Assert.Contains("resolveMediaAppProxySrc", loader, StringComparison.Ordinal);
         Assert.Contains("mediaOriginalContentPath", loader, StringComparison.Ordinal);
+        Assert.Contains("departures/published", loader, StringComparison.Ordinal);
+        Assert.Contains("publishedDepartures", loader, StringComparison.Ordinal);
         Assert.DoesNotContain("StorageKey", loader, StringComparison.Ordinal);
 
         var viewPath = Path.Combine(featureRoot, "tour-detail-view.tsx");
         Assert.True(File.Exists(viewPath), viewPath);
-        Assert.DoesNotMatch(new Regex(@"\bHero\b"), File.ReadAllText(viewPath));
+        var view = File.ReadAllText(viewPath);
+        Assert.DoesNotMatch(new Regex(@"\bHero\b"), view);
+        Assert.Contains("publishedDepartures", view, StringComparison.Ordinal);
+        Assert.DoesNotContain("BookableNow", view, StringComparison.Ordinal);
 
         var pagePath = Path.Combine(
             RepoRoot,
@@ -126,12 +131,46 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
         Assert.True(File.Exists(pagePath), pagePath);
         var page = File.ReadAllText(pagePath);
         Assert.Contains("P09-R6", page, StringComparison.Ordinal);
+        Assert.Contains("P11-R8", page, StringComparison.Ordinal);
         Assert.Contains("index: false, follow: true", page, StringComparison.Ordinal);
         Assert.Contains("robotsFromComposed", page, StringComparison.Ordinal);
         Assert.DoesNotContain("SetIndexPolicy", page, StringComparison.Ordinal);
         Assert.DoesNotContain("StorageKey", page, StringComparison.Ordinal);
-        Assert.DoesNotContain("TourDeparture", page, StringComparison.Ordinal);
         Assert.DoesNotContain("Booking", page, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void PublicPublishedDepartures_Endpoint_Filters_Published_Only()
+    {
+        var endpointsPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Tour",
+            "TravelCore.Modules.Tour.Infrastructure",
+            "Endpoints",
+            "TourDepartureEndpoints.cs");
+        Assert.True(File.Exists(endpointsPath), endpointsPath);
+        var endpoints = File.ReadAllText(endpointsPath);
+        Assert.Contains("departures/published", endpoints, StringComparison.Ordinal);
+        Assert.Contains("ITourDeparturePublicQuery", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("BookableNow", endpoints, StringComparison.Ordinal);
+
+        var queryPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Tour",
+            "TravelCore.Modules.Tour.Infrastructure",
+            "Services",
+            "TourDeparturePublicQuery.cs");
+        Assert.True(File.Exists(queryPath), queryPath);
+        var query = File.ReadAllText(queryPath);
+        Assert.Contains("TourDepartureStatus.Published", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("BookableNow", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("IBookingService", query, StringComparison.Ordinal);
     }
 
     [Fact]

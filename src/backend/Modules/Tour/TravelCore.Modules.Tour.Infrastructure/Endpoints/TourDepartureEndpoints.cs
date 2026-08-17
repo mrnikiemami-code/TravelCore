@@ -135,6 +135,23 @@ internal static class TourDepartureEndpoints
             }
         }).RequireAuthorization(DeparturesWritePolicy);
 
+        // Public composition (TC-P11-T009 · P11-R8): Published only; anonymous; ≠ bookable.
+        endpoints.MapGet("/api/tour/products/{tourProductId:guid}/departures/published", async Task<IResult> (
+            Guid tourProductId,
+            ITourDeparturePublicQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var list = await query.GetPublishedByTourProductAsync(tourProductId, cancellationToken);
+                return Results.Ok(list);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        }).WithTags("TourDepartures");
+
         return endpoints;
     }
 

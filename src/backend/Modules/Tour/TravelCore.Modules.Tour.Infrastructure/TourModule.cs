@@ -39,6 +39,7 @@ public sealed class TourModule : ITravelCoreModule
         services.AddScoped<ITourProductMediaService, TourProductMediaService>();
         services.AddScoped<ITourProductService, TourProductService>();
         services.AddScoped<ITourDepartureAdminService, TourDepartureAdminService>();
+        services.AddScoped<ITourDeparturePublicQuery, TourDeparturePublicQuery>();
         services.AddScoped<IExperienceItineraryStopLinkService, ExperienceItineraryStopLinkService>();
         services.AddScoped<IExperienceGuideAssignmentService, ExperienceGuideAssignmentService>();
         services.AddScoped<IExperienceMediaService, ExperienceMediaService>();

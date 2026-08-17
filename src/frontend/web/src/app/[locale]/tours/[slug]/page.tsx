@@ -19,9 +19,10 @@ type PageProps = {
 };
 
 /**
- * Public TourProduct catalog detail (TC-P09-T008/T010).
+ * Public TourProduct catalog detail (TC-P09-T008/T010 · TC-P11-T009).
  * P09-R5: Tour translation owns current slug; SEO owns route binding / history / IndexPolicy.
  * P09-R6: default missing IndexPolicy → noindex, follow (compose / fallback).
+ * P11-R8: published executions visible; Published ≠ bookable (no reservation/price/pay CTA).
  * Draft/Inactive → notFound (no Admin state leak). Published ≠ Index.
  * Media: Cover/Gallery via media/presentation compose (app-proxy only).
  */
@@ -112,8 +113,8 @@ export default async function TourDetailPage({ params }: PageProps) {
       footer={
         <Text role="caption">
           {locale === "fa"
-            ? "P09 — تور عمومی · SEO metadata"
-            : "P09 — public Tour · SEO metadata"}
+            ? "P09/P11 — تور عمومی · اجراهای منتشرشده · SEO metadata"
+            : "P09/P11 — public Tour · published executions · SEO metadata"}
         </Text>
       }
     >

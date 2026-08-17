@@ -18,6 +18,33 @@ export type TourMediaItemView = {
   height: number | null;
 };
 
+export type PublishedDepartureTransportView = {
+  sequence: number;
+  transportMode: string;
+  origin: string;
+  destination: string;
+};
+
+export type PublishedDepartureAccommodationView = {
+  placeId: string;
+  nights: number;
+  boardType: string;
+};
+
+/** Public published execution summary (P11-R8). Published ≠ bookable. */
+export type PublishedDepartureView = {
+  id: string;
+  status: string;
+  startDate: string | null;
+  endDate: string | null;
+  timeZoneId: string | null;
+  durationDays: number | null;
+  minimumPax: number | null;
+  maximumPax: number | null;
+  transport: PublishedDepartureTransportView[];
+  accommodation: PublishedDepartureAccommodationView[];
+};
+
 export type TourDetailPageViewModel = {
   locale: AppLocale;
   tourProductId: string;
@@ -30,6 +57,7 @@ export type TourDetailPageViewModel = {
   catalogStatus: string;
   cover: TourMediaItemView | null;
   gallery: TourMediaItemView[];
+  publishedDepartures: PublishedDepartureView[];
 };
 
 type ApiSlugHit = {
@@ -80,6 +108,28 @@ type ApiTourMedia = {
   gallery?: ApiMediaPresentation[] | null;
 };
 
+type ApiPublishedDeparture = {
+  id: string;
+  tourProductId: string;
+  status: string;
+  startDate?: string | null;
+  endDate?: string | null;
+  timeZoneId?: string | null;
+  durationDays?: number | null;
+  capacity?: { minimumPax?: number | null; maximumPax?: number | null } | null;
+  transport?: Array<{
+    sequence: number;
+    transportMode: string;
+    origin: string;
+    destination: string;
+  }> | null;
+  accommodation?: Array<{
+    placeId: string;
+    nights: number;
+    boardType: string;
+  }> | null;
+};
+
 function mapMediaItem(item: ApiMediaPresentation): TourMediaItemView {
   const p = item.presentation;
   const ready = p?.status === "Ready";
@@ -121,6 +171,7 @@ function mapMediaItem(item: ApiMediaPresentation): TourMediaItemView {
  * Draft/Inactive → 404 (by-slug publicOnly). Missing localized title → 404 (ADR 0008).
  * Catalog Published ≠ SEO Index (P09-R6); IndexPolicy remains SEO-owned.
  * Cover/Gallery via Tour media/presentation compose (Media.Contracts; app-proxy only).
+ * Published execution summaries via departures/published (P11-R8); Published ≠ bookable.
  */
 export async function loadTourDetailPage(
   locale: AppLocale,
@@ -138,12 +189,16 @@ export async function loadTourDetailPage(
   }
 
   const id = hitResult.data.tourProductId;
-  const [productResult, mediaResult] = await Promise.all([
+  const [productResult, mediaResult, departuresResult] = await Promise.all([
     apiGetJson<ApiTourProduct>(`/api/tour/products/${id}?locale=${localeEnc}`, {
       cache: "no-store",
     }),
     apiGetJson<ApiTourMedia>(
       `/api/tour/products/${id}/media/presentation?locale=${localeEnc}`,
+      { cache: "no-store" },
+    ),
+    apiGetJson<ApiPublishedDeparture[]>(
+      `/api/tour/products/${id}/departures/published`,
       { cache: "no-store" },
     ),
   ]);
@@ -153,6 +208,9 @@ export async function loadTourDetailPage(
   }
   if (!isApiOk(mediaResult) && mediaResult.status !== 404) {
     return mediaResult;
+  }
+  if (!isApiOk(departuresResult) && departuresResult.status !== 404) {
+    return departuresResult;
   }
 
   const product = productResult.data;
@@ -176,6 +234,31 @@ export async function loadTourDetailPage(
   const media = isApiOk(mediaResult) ? mediaResult.data : null;
   const cover = media?.cover ? mapMediaItem(media.cover) : null;
   const gallery = (media?.gallery ?? []).map(mapMediaItem);
+  const publishedDepartures = (isApiOk(departuresResult) ? departuresResult.data : [])
+    .filter((d) => d.status === "Published")
+    .map(
+      (d): PublishedDepartureView => ({
+        id: d.id,
+        status: d.status,
+        startDate: d.startDate ?? null,
+        endDate: d.endDate ?? null,
+        timeZoneId: d.timeZoneId ?? null,
+        durationDays: d.durationDays ?? null,
+        minimumPax: d.capacity?.minimumPax ?? null,
+        maximumPax: d.capacity?.maximumPax ?? null,
+        transport: (d.transport ?? []).map((t) => ({
+          sequence: t.sequence,
+          transportMode: t.transportMode,
+          origin: t.origin,
+          destination: t.destination,
+        })),
+        accommodation: (d.accommodation ?? []).map((a) => ({
+          placeId: a.placeId,
+          nights: a.nights,
+          boardType: a.boardType,
+        })),
+      }),
+    );
 
   return {
     ok: true,
@@ -192,6 +275,7 @@ export async function loadTourDetailPage(
       catalogStatus: product.catalogStatus,
       cover,
       gallery,
+      publishedDepartures,
     }),
   };
 }

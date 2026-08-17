@@ -149,6 +149,7 @@ Exact task titles/order may be adjusted by architect on PLAN ACCEPT; Cursor must
 | **P11-R5** | Departure transport segment ownership | **RESOLVED** | Descriptive TourDepartureTransportSegment (Sequence/Mode/Origin/Destination labels); Tour ≠ Flight; no airline/flight number/ticket/seat inventory (TC-P11-T005) |
 | **P11-R6** | Departure accommodation option ownership | **RESOLVED** | TourDepartureAccommodationOption (logical PlaceId + Nights + BoardType); Place owns hotel identity; HotelBooking deferred; intentionally not named TourHotelOption (TC-P11-T006) |
 | **P11-R7** | Departure passenger occupancy rules | **RESOLVED** | TourDeparturePassengerRule (MinimumAdults/ChildAllowed/InfantAllowed/MaximumPassengers); Booking owns actual travellers later (TC-P11-T007) |
+| **P11-R8** | Public Departure visibility | **RESOLVED** | Only `TourDepartureStatus.Published` is public; Published ≠ Bookable (no Booking/Pricing/Payment/availability invent) (TC-P11-T009) |
 | Pricing boundary | What P11 may store vs must DEFER to P12 | **UNRESOLVED** | Deferred (was draft-plan R5; architect remapped R5 → transport) |
 | Booking boundary | Availability signal without Booking module | **UNRESOLVED** | Deferred (was draft-plan R6; architect remapped R6 → accommodation) |
 | Flight / transport relation | Segment ownership; airport/carrier reference shape | **SUPERSEDED by R5** | Descriptive segments locked; real Flight domain deferred |
