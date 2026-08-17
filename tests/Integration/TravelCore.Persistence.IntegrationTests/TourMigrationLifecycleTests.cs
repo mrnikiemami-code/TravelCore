@@ -29,7 +29,7 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(14, expectedMigrations.Length);
+            Assert.Equal(15, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
@@ -44,6 +44,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.EndsWith("_AddExperienceMealsAndAccommodationPlan", expectedMigrations[11], StringComparison.Ordinal);
             Assert.EndsWith("_AddExperienceOperationalAttributes", expectedMigrations[12], StringComparison.Ordinal);
             Assert.EndsWith("_AddExperienceGuideAssignments", expectedMigrations[13], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourDepartureScaffolding", expectedMigrations[14], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -59,7 +60,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'tour';
                 """, ct));
-            Assert.Equal(18, await ScalarIntAsync(conn, """
+            Assert.Equal(19, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'tour'
@@ -81,9 +82,10 @@ public sealed class TourMigrationLifecycleTests
                     'tour_experience_equipment',
                     'tour_experience_local_transport',
                     'tour_experience_guide_assignments',
+                    'tour_departures',
                     '__EFMigrationsHistory');
                 """, ct));
-            // No Package specialty / P11 departure / hotel option product tables.
+            // No Package specialty / Flight / HotelOption product tables yet (later P11).
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
@@ -92,7 +94,6 @@ public sealed class TourMigrationLifecycleTests
                     'experience_tours',
                     'package_tours',
                     'tour_package_specializations',
-                    'tour_departures',
                     'flight_segments',
                     'tour_hotel_options');
                 """, ct));
@@ -202,9 +203,11 @@ public sealed class TourMigrationLifecycleTests
             experienceSpec.ReplaceEquipment([("hiking-shoes", ExperienceEquipmentKind.Required, null)], now);
             experienceSpec.ReplaceLocalTransport([("minibus", "Shared")], now);
             var package = TourProduct.CreatePackage("PKG-IT-001", "Istanbul Package", now);
+            var departure = TourDeparture.Create(package, now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
             db.ExperienceSpecializations.Add(experienceSpec);
+            db.TourDepartures.Add(departure);
             await db.SaveChangesAsync(ct);
         }
 
@@ -262,6 +265,11 @@ public sealed class TourMigrationLifecycleTests
             Assert.Null(package.AgencyId);
             Assert.Empty(package.Destinations);
             Assert.False(await db.ExperienceSpecializations.AnyAsync(x => x.TourProductId == package.Id, ct));
+
+            var loadedDeparture = await db.TourDepartures.SingleAsync(x => x.TourProductId == package.Id, ct);
+            Assert.Equal(package.Id, loadedDeparture.TourProductId);
+            Assert.Equal(now, loadedDeparture.CreatedAt);
+            Assert.NotEqual(package.Id.Value, loadedDeparture.Id.Value);
         }
     }
 

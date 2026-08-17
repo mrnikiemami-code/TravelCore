@@ -19,6 +19,8 @@ public sealed class TourDbContext : DbContext
 
     public DbSet<TourExperienceSpecialization> ExperienceSpecializations => Set<TourExperienceSpecialization>();
 
+    public DbSet<TourDeparture> TourDepartures => Set<TourDeparture>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

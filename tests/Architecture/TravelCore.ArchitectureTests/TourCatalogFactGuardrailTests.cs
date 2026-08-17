@@ -22,13 +22,13 @@ public sealed class TourCatalogFactGuardrailTests
                 .Select((line, i) => (path, line, i))
                 .Where(x => Regex.IsMatch(
                     x.line,
-                    @"\b(class|record|struct|enum)\s+(BookingCancellation|PaymentRule|PricingEngine|TourDeparture|FlightSegment|HotelBooking)\b")))
+                    @"\b(class|record|struct|enum)\s+(BookingCancellation|PaymentRule|PricingEngine|FlightSegment|HotelBooking)\b")))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "Tour catalog facts must not introduce Booking/Payment/Pricing/Departure engines:\n"
+            "Tour catalog facts must not introduce Booking/Payment/Pricing engines:\n"
             + string.Join('\n', hits));
 
         Assert.True(File.Exists(Path.Combine(

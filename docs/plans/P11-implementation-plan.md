@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P11-PLAN` |
 | Phase | P11 — Foreign Package Tour / TourDeparture |
-| Status | DRAFT → awaiting architect ACCEPT |
+| Status | ACCEPTED (architect) · executing T001 |
 | Baseline | `c351bf9` (`docs: P10 GATE acceptance evidence [TC-P10-GATE]` — **TC-P10-GATE** ACCEPTED; P10 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P11 · transition map · Tour module boundaries · P09/P10 locks · ADR 0001 · ADR 0007–0008 · ADR 0011–0014 · architect Gate ACCEPT narrative (TourProduct ≠ TourDeparture) |
 | Backend root | `src/backend` |
@@ -142,7 +142,7 @@ Exact task titles/order may be adjusted by architect on PLAN ACCEPT; Cursor must
 
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
-| **P11-R1** | Departure ownership / cardinality vs TourProduct | **UNRESOLVED** | 0..N Departures per product? Experience and/or Package only? |
+| **P11-R1** | Departure ownership / cardinality vs TourProduct | **RESOLVED** | TourDeparture ∈ Tour module; child execution aggregate; TourProduct ≠ TourDeparture; 0..N Departures per product; identity + product link only in T001 |
 | **P11-R2** | Capacity model | **UNRESOLVED** | Simple seats vs rooms vs passenger categories; holds? |
 | **P11-R3** | Flight / transport relation | **UNRESOLVED** | Segment ownership; airport/carrier reference shape |
 | **P11-R4** | Hotel option relation | **UNRESOLVED** | TourHotelOption cardinality; Place Hotel link rules |

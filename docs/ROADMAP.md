@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P11 — Foreign Package / Departure** (**PLAN**) |
-| Phase Status | P00–P10 COMPLETE · P11 PLAN drafted · P10-R1–R8 RESOLVED |
+| Current Phase | **P11 — Foreign Package / Departure** (**IN PROGRESS**) |
+| Phase Status | P00–P10 COMPLETE · P11 PLAN ACCEPTED · P11-R1 RESOLVED · T001 |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `67fc580` (`TC-P09-GATE` ACCEPTED) · product T010 `0334bae` · prior P08 `576b7fa` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await ACCEPT of `TC-P11-PLAN` |
+| Current Next Task | Complete `TC-P11-T001` TourDeparture scaffolding |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -423,11 +423,15 @@ P09 delivered shared TourProduct; P10 extends Tour with Experience specializatio
 
 ## P11 — Foreign Package Tour
 
-**Status:** PLANNED
+**Status:** IN PROGRESS (`TC-P11-PLAN` ACCEPTED · P11-R1 RESOLVED · T001)
+
+**Progress:** TourDeparture scaffolding · baseline `66cab9b` (PLAN) · prior Gate `c351bf9`
 
 TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Flight number · Cabin/Class · Baggage · Local dates/times/timezones · TourHotelOption · Stay plan · MealPlan · Passenger rules · Occupancy · Age policies · Capacity · Travel requirements · Passport/visa rules.
 
 اعتبارسنجی با UI پکیج خارجی که در P02 طراحی/اثبات شده.
+
+**Invariant:** TourProduct ≠ TourDeparture · Pricing/Booking deferred (P12 / later).
 
 ---
 
@@ -693,8 +697,8 @@ P26 = Advanced SEO.
 | P07 | Place Catalog | **COMPLETE** (`TC-P07-GATE` ACCEPTED) |
 | P08 | Content CMS | **COMPLETE** (`TC-P08-GATE` `576b7fa` · R6–R8 UNRESOLVED) |
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
-| P10 | Experience Tour | **COMPLETE** (Gate evidence · R1–R8 RESOLVED) |
-| P11 | Foreign Package Tour | PLANNED |
+| P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
+| P11 | Foreign Package Tour | **IN PROGRESS** (`TC-P11-PLAN` ACCEPTED · T001) |
 | P12 | Pricing | PLANNED |
 | P13 | Agency Marketplace | PLANNED |
 | P14 | Public Tour Experience | PLANNED |

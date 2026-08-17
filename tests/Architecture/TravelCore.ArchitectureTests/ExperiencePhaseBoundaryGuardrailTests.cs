@@ -43,14 +43,14 @@ public sealed class ExperiencePhaseBoundaryGuardrailTests
 
                     return Regex.IsMatch(
                         x.line,
-                        @"\b(class|record|enum|struct|interface)\s+(TourDeparture|FlightSegment|TourHotelOption|HotelBooking|TourBooking|TourPrice|TourPricing|TourInventory|TourSearchIndex)\b");
+                        @"\b(class|record|enum|struct|interface)\s+(FlightSegment|TourHotelOption|HotelBooking|TourBooking|TourPrice|TourPricing|TourInventory|TourSearchIndex)\b");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "P10 Experience must not introduce Departure/Booking/Pricing/Inventory/Search types:\n"
+            "Experience / Tour must not introduce Booking/Pricing/Inventory/Search or later P11 Flight/HotelOption types (TourDeparture scaffolding is separate):\n"
             + string.Join('\n', hits));
     }
 

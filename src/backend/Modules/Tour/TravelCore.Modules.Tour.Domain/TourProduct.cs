@@ -5,7 +5,7 @@ namespace TravelCore.Modules.Tour.Domain;
 /// <summary>
 /// TourProduct shared-core aggregate root (P09-R1).
 /// Shared Tour facts live here; Experience typed specialization = <see cref="TourExperienceSpecialization"/> (P10);
-/// Package specialty remains deferred to P11. TourDeparture is a separate future aggregate (P11).
+/// Package specialty remains deferred as issued. TourDeparture is a separate aggregate (P11-R1).
 /// Localized title/description: TourProductTranslation rows (TC-P09-T003 / ADR 0008). Slug deferred (P09-R5).
 /// Classification + Origin (0..1) + Destination links (0..N) — TC-P09-T004 / P09-R2.
 /// Agency / media / publishing belong to later P09 tasks.

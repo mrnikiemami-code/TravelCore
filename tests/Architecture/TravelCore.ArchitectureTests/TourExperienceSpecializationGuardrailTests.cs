@@ -76,14 +76,14 @@ public sealed class TourExperienceSpecializationGuardrailTests
 
                     return Regex.IsMatch(
                         x.line,
-                        @"\b(class|record|enum|struct|interface)\s+(TourPackageSpecialization|PackageTourSpecialization|TourDeparture|FlightSegment|TourHotelOption)\b");
+                        @"\b(class|record|enum|struct|interface)\s+(TourPackageSpecialization|PackageTourSpecialization|FlightSegment|TourHotelOption)\b");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "Experience specialization forbids Package specialty / P11 product types:\n"
+            "Experience specialization forbids Package specialty / FlightSegment / TourHotelOption product types:\n"
             + string.Join('\n', hits));
     }
 

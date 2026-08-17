@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P11 — Foreign Package / Departure** (**PLAN** — awaiting ACCEPT) |
+| Current Phase | **P11 — Foreign Package / Departure** (**IN PROGRESS** — T001) |
 | Previous Phase | **P10 — Experience Tour** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `c351bf9` (`TC-P10-GATE`) · T009 `debd4d6` |
+| Last Accepted Commit | `66cab9b` (`TC-P11-PLAN`) · P10 Gate `c351bf9` · T009 `debd4d6` |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P11-PLAN` — AWAITING_ARCHITECT_REVIEW |
+| Current Active Product Task | `TC-P11-T001` — TourDeparture scaffolding (Auto-Execute) |
 | Current Next Product Phase | P11 — Foreign Package / Departure |
-| Current Next Task | Await ACCEPT of `TC-P11-PLAN` / Auto-Execute T001 |
+| Current Next Task | Complete `TC-P11-T001` → RESULT → await ACCEPT / T002 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -156,7 +156,7 @@
 | P10 | **COMPLETE** |
 | P10-GATE | **COMPLETE / ACCEPTED** (`c351bf9`) — evidence [`plans/P10-GATE-acceptance-evidence.md`](plans/P10-GATE-acceptance-evidence.md) |
 | P10-R1…R8 | **ALL RESOLVED** |
-| P11 | **PLAN** — [`plans/P11-implementation-plan.md`](plans/P11-implementation-plan.md) (`TC-P11-PLAN`) |
+| P11 | **IN PROGRESS** — PLAN ACCEPTED · P11-R1 RESOLVED · T001 scaffolding |
 | P10 Plan | `TC-P10-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) |
 | P10-T001 | **COMPLETE / ACCEPTED** (`e5490ae`) — Experience specialization foundation |
 | P10-T002 | **COMPLETE / ACCEPTED** (`757c9b8`) — Itinerary + Day + Stop (P10-R1) |

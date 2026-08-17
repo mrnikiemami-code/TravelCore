@@ -117,7 +117,7 @@ Legend: B=ID reference · C=synchronous contract · D=event consumer · E=projec
 | Article / Guide | Content |
 | Review / Travelogue | UGC |
 | TourProduct / Experience specialization / Itinerary / ExperienceGuideAssignment | Tour |
-| TourDeparture / TourHotelOption / FlightSegment | Tour (future P11+; not in P10) |
+| TourDeparture / TourHotelOption / FlightSegment | Tour (P11+: Departure scaffolding started; Flight/HotelOption later) |
 | TourRate / PriceComponent / Quote | Pricing |
 | VisaType / visa requirements | Visa |
 | Booking / accepted quote snapshot | Booking |

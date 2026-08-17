@@ -50,10 +50,9 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
                         return false;
                     }
 
-                    // Comments may name future aggregates; forbid product types/APIs only.
                     return Regex.IsMatch(
                         x.line,
-                        @"\b(class|record|enum|struct|interface)\s+(TourDeparture|FlightSegment|TourHotelOption|BookingEngine|PriceQuote|SearchIndex)\b")
+                        @"\b(class|record|enum|struct|interface)\s+(FlightSegment|TourHotelOption|BookingEngine|PriceQuote|SearchIndex)\b")
                         || Regex.IsMatch(
                             x.line,
                             @"\b(ITourDepartureService|IBookingService|IPricingService|ITourSearchService)\b");
@@ -63,7 +62,7 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "TourProduct ≠ TourDeparture / Booking / Pricing / Search — no P10/P11 product signals:\n"
+            "Tour public/product surface forbids Booking/Pricing/Search and later P11 types (Flight/HotelOption); TourDeparture scaffolding is P11-owned:\n"
             + string.Join('\n', hits));
     }
 
