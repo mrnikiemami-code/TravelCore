@@ -6,10 +6,12 @@ using TravelCore.Modules.Tour.Domain;
 namespace TravelCore.Modules.Tour.Infrastructure.Services;
 
 /// <summary>
-/// TourProduct catalog publication + slug + public lookup (TC-P09-T008).
+/// TourProduct catalog create/list/translate + publication + slug + public lookup (TC-P09-T008/T009).
 /// </summary>
 public sealed class TourProductService : ITourProductService
 {
+    private const int MaxListTake = 200;
+
     private readonly TourDbContext _db;
     private readonly IClock _clock;
 
@@ -19,6 +21,35 @@ public sealed class TourProductService : ITourProductService
         _clock = clock;
     }
 
+    public async Task<TourProductResponse> CreateAsync(
+        CreateTourProductRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        var kind = ParseKind(request.Kind);
+        var now = _clock.GetCurrentInstant();
+        var product = kind switch
+        {
+            TourKind.Experience => TourProduct.CreateExperience(request.Code, request.EnglishName, now),
+            TourKind.Package => TourProduct.CreatePackage(request.Code, request.EnglishName, now),
+            _ => throw new ArgumentOutOfRangeException(nameof(request.Kind), request.Kind, "Unsupported TourKind.")
+        };
+
+        _db.TourProducts.Add(product);
+        try
+        {
+            await _db.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException(
+                "TourProduct persistence conflict (e.g. duplicate code).",
+                ex);
+        }
+
+        return Map(product);
+    }
+
     public async Task<TourProductResponse?> GetAsync(
         Guid tourProductId,
         string? localeCode = null,
@@ -26,6 +57,63 @@ public sealed class TourProductService : ITourProductService
     {
         var product = await FindAsync(tourProductId, cancellationToken);
         return product is null ? null : Map(product, localeCode);
+    }
+
+    public async Task<TourProductResponse?> GetByCodeAsync(
+        string code,
+        string? localeCode = null,
+        CancellationToken cancellationToken = default)
+    {
+        var normalized = TourProduct.NormalizeCode(code);
+        var product = await _db.TourProducts
+            .FirstOrDefaultAsync(x => x.Code == normalized, cancellationToken);
+        return product is null ? null : Map(product, localeCode);
+    }
+
+    public async Task<IReadOnlyList<TourProductResponse>> ListAsync(
+        string? kind = null,
+        int take = 50,
+        CancellationToken cancellationToken = default)
+    {
+        if (take < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(take), take, "take must be >= 1.");
+        }
+
+        take = Math.Min(take, MaxListTake);
+        var query = _db.TourProducts.AsNoTracking().AsQueryable();
+        if (!string.IsNullOrWhiteSpace(kind))
+        {
+            var parsed = ParseKind(kind);
+            query = query.Where(x => x.Kind == parsed);
+        }
+
+        var products = await query
+            .OrderByDescending(x => x.CreatedAt)
+            .ThenBy(x => x.Id)
+            .Take(take)
+            .ToListAsync(cancellationToken);
+
+        return products.Select(x => Map(x)).ToList();
+    }
+
+    public async Task<TourProductTranslationResponse> UpsertTranslationAsync(
+        Guid tourProductId,
+        string localeCode,
+        UpsertTourProductTranslationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        var normalizedLocale = TourProductTranslation.NormalizeLocaleCode(localeCode);
+        var product = await LoadTrackedAsync(tourProductId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var translation = product.UpsertTranslation(
+            normalizedLocale,
+            request.Title,
+            request.Description,
+            now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return MapTranslation(translation);
     }
 
     public async Task<TourProductResponse> SetCatalogStatusAsync(
@@ -126,6 +214,20 @@ public sealed class TourProductService : ITourProductService
         }
     }
 
+    private static TourKind ParseKind(string kind)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(kind);
+        if (Enum.TryParse<TourKind>(kind.Trim(), ignoreCase: true, out var parsed)
+            && Enum.IsDefined(parsed))
+        {
+            return parsed;
+        }
+
+        throw new ArgumentException(
+            "Kind must be one of: Experience, Package.",
+            nameof(kind));
+    }
+
     private static TourCatalogStatus ParseCatalogStatus(string catalogStatus)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(catalogStatus);
@@ -176,4 +278,13 @@ public sealed class TourProductService : ITourProductService
             localized?.Slug,
             product.Destinations.Select(x => x.DestinationId).OrderBy(x => x).ToArray());
     }
+
+    private static TourProductTranslationResponse MapTranslation(TourProductTranslation translation) =>
+        new(
+            translation.TourProductId.Value,
+            translation.LocaleCode,
+            translation.Title,
+            translation.Description,
+            translation.Slug,
+            translation.UpdatedAt.ToString());
 }

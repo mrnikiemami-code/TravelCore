@@ -1,7 +1,7 @@
 namespace TravelCore.Modules.Tour.Contracts;
 
 /// <summary>
-/// TourProduct catalog publication + slug + public read (TC-P09-T008 / P09-R4/R5/R6).
+/// TourProduct catalog publication + slug + public/admin read (TC-P09-T008/T009 / P09-R4/R5/R6).
 /// </summary>
 public sealed record TourProductResponse(
     Guid Id,
@@ -19,6 +19,23 @@ public sealed record TourProductResponse(
     string? LocalizedSlug = null,
     IReadOnlyList<Guid>? DestinationIds = null);
 
+public sealed record CreateTourProductRequest(
+    string Kind,
+    string Code,
+    string EnglishName);
+
+public sealed record UpsertTourProductTranslationRequest(
+    string Title,
+    string? Description);
+
+public sealed record TourProductTranslationResponse(
+    Guid TourProductId,
+    string LocaleCode,
+    string Title,
+    string? Description,
+    string? Slug,
+    string UpdatedAt);
+
 public sealed record SetTourCatalogStatusRequest(string CatalogStatus);
 
 public sealed record SetTourProductTranslationSlugRequest(string? Slug);
@@ -34,9 +51,29 @@ public sealed record TourProductSlugLookupResponse(
 
 public interface ITourProductService
 {
+    Task<TourProductResponse> CreateAsync(
+        CreateTourProductRequest request,
+        CancellationToken cancellationToken = default);
+
     Task<TourProductResponse?> GetAsync(
         Guid tourProductId,
         string? localeCode = null,
+        CancellationToken cancellationToken = default);
+
+    Task<TourProductResponse?> GetByCodeAsync(
+        string code,
+        string? localeCode = null,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<TourProductResponse>> ListAsync(
+        string? kind = null,
+        int take = 50,
+        CancellationToken cancellationToken = default);
+
+    Task<TourProductTranslationResponse> UpsertTranslationAsync(
+        Guid tourProductId,
+        string localeCode,
+        UpsertTourProductTranslationRequest request,
         CancellationToken cancellationToken = default);
 
     Task<TourProductResponse> SetCatalogStatusAsync(

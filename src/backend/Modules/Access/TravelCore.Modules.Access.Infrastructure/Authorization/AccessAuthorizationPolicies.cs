@@ -48,6 +48,11 @@ public static class AccessAuthorizationPolicies
     public const string SeoContentPostureWrite = "Access.Seo.ContentPosture.Write";
 
     /// <summary>
+    /// Tour Admin catalog mutations: Access-backed <c>tour.products.write</c>.
+    /// </summary>
+    public const string TourProductsWrite = "Access.Tour.Products.Write";
+
+    /// <summary>
     /// TourProduct SEO route publication: Access-backed <c>seo.tour-posture.write</c>.
     /// </summary>
     public const string SeoTourPostureWrite = "Access.Seo.TourPosture.Write";
