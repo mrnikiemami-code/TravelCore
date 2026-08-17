@@ -1,0 +1,142 @@
+# P15 Implementation Plan
+
+| Field | Value |
+|-------|--------|
+| Plan-ID | `TC-P15-PLAN` |
+| Phase | P15 — Search & Discovery |
+| Status | AWAITING_ARCHITECT_REVIEW — plan authored; no product code |
+| Baseline | `608216d` (`docs: P14 acceptance gate evidence [TC-P14-GATE]` — **TC-P14-GATE** ACCEPTED; P14 COMPLETE) |
+| Authoritative sources | `docs/ROADMAP.md` § P15 · P14 Gate ACCEPT · P14-R3/R5/R8 (Listing ≠ Landing · Related ≠ Recommendation · Filter ≠ Faceting) · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace |
+| Backend root | `src/backend` |
+| Frontend root | `src/frontend/web` |
+
+این سند **نقشهٔ اجرایی معتبر P15** است. پیاده‌سازی محصول در این سند انجام نمی‌شود؛ فقط Taskهای اجرایی را برای Cursor تعریف می‌کند.
+
+> **Envelope note:** Authored from **repository SoT** + architect P14 Gate ACCEPT continuity (auto-start P15 PLAN). Under PIPELINE continuity, ceremonial confirms and ceremonial Gate waits are **not required**. **No product code in PLAN task.**
+
+---
+
+## 1. Phase Purpose
+
+P15 باید قابلیت **Search & Discovery** را معرفی کند بدون دزدیدن مالکیت Tour، Content، Pricing، AgencyMarketplace، یا SEO.
+
+هدف (از Roadmap + Gate ACCEPT):
+
+1. **Search = Retrieval + Discovery Owner** — Query · Ranking · Faceting · FTS/optimization.
+2. **Tour = Fact Owner** — Catalog SoR باقی می‌ماند؛ Search کاتالوگ را تکرار نمی‌کند.
+3. **Content = Editorial Owner** — Search ممکن است محتوای قابل‌کشف را ایندکس کند؛ مالک تحریر نیست.
+4. **Pricing = Price Owner** — Search قیمت را مالک نمی‌شود؛ ممکن است فیلدهای نمایشی را از Pricing بخواند.
+5. **AgencyMarketplace = Agency Offer Owner** — Search مالک Offer/publication نیست.
+6. **SEO = Index Policy Owner** — Search مالک IndexPolicy/canonical نیست؛ Landing ≠ filtered listing (P14-R3) حفظ می‌شود.
+7. Search پشت **abstraction** بماند تا موتور آینده بدون بازنویسی Domain ممکن شود (Roadmap: PostgreSQL FTS + `pg_trgm` اولیه؛ تعهد زودهنگام Elasticsearch ممنوع مگر قفل).
+
+P14 تحویل داد: Public Experience presentation (Detail/Listing/Landing) + sticky ≠ Booking + Related/Content/Agency composition + Filter presentation only.
+
+P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ranking — **بدون** Booking، بدون Payment، بدون Recommendation engine، بدون Catalog duplication.
+
+---
+
+## 2. Starting Baseline
+
+| Item | Value |
+|------|--------|
+| P14 Gate | `TC-P14-GATE` COMPLETE / ACCEPTED (`608216d`) |
+| P14 evidence | [`P14-GATE-acceptance-evidence.md`](P14-GATE-acceptance-evidence.md) · [`P14-T009-hardening-and-evidence-pack.md`](P14-T009-hardening-and-evidence-pack.md) |
+| P14 Plan | ACCEPTED · R1–R8 RESOLVED |
+| Baseline HEAD | `608216d` |
+| P00–P14 | COMPLETE |
+| Public listing filters | Presentation/URL only (P14-R8); selection via Tour `related-published` |
+| Related tours | Deterministic replaceable Tour public-read (P14-R5) — P15 may replace retrieval |
+| Search module | **Not implemented** |
+| Booking / Payment | Modules do not exist |
+
+---
+
+## 3. Non-goals (explicit)
+
+1. Booking engine / reservation / checkout / Payment.
+2. Replacing PostgreSQL as source of truth for Tour/Content facts.
+3. Premature hard commitment to Elasticsearch/OpenSearch as Domain SoR (abstraction first).
+4. Recommendation / personalization / embeddings / AI ranking infrastructure.
+5. Duplicating TourProduct as a second catalog SoR inside Search.
+6. Moving IndexPolicy ownership out of SEO.
+7. Stealing Price ownership from Pricing or Offer ownership from AgencyMarketplace.
+8. Inventing unlocked R# closures — open decisions stay OPEN until architect lock.
+
+---
+
+## 4. Task sequence (proposed)
+
+### TC-P15-PLAN — this document
+
+### TC-P15-T001 — Search module scaffolding / ownership boundary
+- Purpose: Independent Search module + ownership contracts (**needs P15-R1**).
+- Expected: Contracts/Domain/Infrastructure scaffolding; schema ownership; no peer FKs; PE remains presentation.
+
+### TC-P15-T002 — Index / read-model strategy baseline
+- Purpose: How Search represents discoverable documents (**needs P15-R2**).
+- Expected: Read model / projection posture; Tour/Content remain SoT; no catalog clone as write SoR.
+
+### TC-P15-T003 — Synchronization strategy baseline
+- Purpose: How facts flow into Search without Domain rewrite (**needs P15-R3**).
+- Expected: Sync/replaceable ingestion boundary; eventual consistency posture; no dual-write invent without lock.
+
+### TC-P15-T004 — Query API / listing retrieval integration
+- Purpose: Public query contract for Listing selection (**needs P15-R7** and/or R1).
+- Expected: Replace P14 deterministic listing selection with Search query abstraction where locked; PE composes only.
+
+### TC-P15-T005 — Faceting architecture baseline
+- Purpose: Facets owned by Search (**needs P15-R4**).
+- Expected: Facet calculation/read model; PE filter UI consumes Search facets — not PE-owned facet engine (honors P14-R8).
+
+### TC-P15-T006 — Ranking boundary baseline
+- Purpose: Ranking owned by Search (**needs P15-R5**).
+- Expected: Ranking contract; Related ≠ Recommendation still holds unless later lock says otherwise.
+
+### TC-P15-T007 — SEO Landing integration boundary
+- Purpose: Search must not conflate Landing with filtered listing URLs.
+- Expected: Preserve Listing ≠ SEO Landing; IndexPolicy stays SEO; no auto-index of every filter combo.
+
+### TC-P15-T008 — AI / Search readiness (boundary only)
+- Purpose: Structured metadata readiness (**needs P15-R6**).
+- Expected: Contracts/metadata posture only — no embeddings/recommendation engine invent.
+
+### TC-P15-T009 — Hardening + evidence
+
+### TC-P15-GATE — Acceptance Gate
+- Evidence only. Ceremonial Gate wait is **not** a pipeline stop.
+
+---
+
+## 5. Open decisions (must not invent)
+
+| ID | Topic | Status | Notes |
+|----|-------|--------|-------|
+| **P15-R1** | Search ownership boundary | **UNRESOLVED** | Search = Retrieval + Discovery. Not Catalog. Not SEO IndexPolicy. Not Pricing. Not AgencyOffer SoR. |
+| **P15-R2** | Index / read model | **UNRESOLVED** | What documents are indexed; projection vs live query; schema ownership. |
+| **P15-R3** | Data synchronization strategy | **UNRESOLVED** | Push/pull/eventual; no Domain rewrite; no replacing PG SoT. |
+| **P15-R4** | Faceting ownership | **UNRESOLVED** | Facets in Search; PE owns UI only (P14-R8 carry-forward). |
+| **P15-R5** | Ranking model | **UNRESOLVED** | Ranking ≠ Recommendation unless later lock. Related Tours may be replaced by Search retrieval. |
+| **P15-R6** | AI / Search readiness | **UNRESOLVED** | Structured readiness only; no embeddings/recommendation invent. |
+| **P15-R7** | Query API contract | **UNRESOLVED** | Public query surface; PE listing consumes; no Booking. |
+
+---
+
+## 6. Architecture invariants (carry forward)
+
+1. Tour = Fact Owner · Content = Editorial Owner · Pricing = Price Owner · AgencyMarketplace = Offer Owner · SEO = IndexPolicy Owner · Search = Retrieval/Discovery Owner.
+2. Listing ≠ SEO Landing · Filtered URL ≠ SEO Landing ownership.
+3. Filter UI (P14) ≠ Faceting Engine (P15).
+4. Related Tours presentation ≠ Recommendation Engine.
+5. PublicExperience remains presentation/composition only.
+6. Published ≠ Bookable · Sticky Action ≠ Booking.
+7. No Booking/Payment modules in P15 unless a later lock says otherwise.
+8. Do not invent unlocked R# closures.
+
+---
+
+## 7. Repository safety
+
+- Branch `main` · fast-forward push only · no force · CLEAN working tree before RESULT.
+- One docs commit for PLAN (no product code).
+- After PLAN ACCEPT, Auto-Execute first locked product task only when architect envelope names it.

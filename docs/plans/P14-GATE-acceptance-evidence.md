@@ -82,4 +82,4 @@
 
 ## 8. Gate outcome
 
-**AWAITING_ARCHITECT_ACCEPT** — this document is evidence only. After ACCEPT, mark P14 COMPLETE and allow Auto-Execute **TC-P15-PLAN** under continuity. Ceremonial Gate wait is **not** a pipeline stop.
+**ACCEPTED** (`608216d`) · P14 COMPLETE · P15 PLAN auto-started (no ceremonial Gate wait).

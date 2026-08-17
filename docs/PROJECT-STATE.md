@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P14 — Public Tour Experience** (**GATE** — acceptance evidence awaiting review) |
-| Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
+| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — PLAN awaiting review) |
+| Previous Phase | **P14 — Public Tour Experience** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P14-GATE` — P14 Public Experience Acceptance Gate (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P15 — Search (after Gate ACCEPT) |
-| Current Next Task | Architect ACCEPT of GATE → Auto-Execute TC-P15-PLAN |
+| Current Active Product Task | `TC-P15-PLAN` — Search & Discovery Architecture Plan (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Product Phase | P15 — Search & Discovery |
+| Current Next Task | Architect review of P15 PLAN → Auto-Execute first locked task (do not invent R1–R7) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -181,7 +181,7 @@
 | P13-T008 | **VACANT** — original publishing slot delivered as T007; no independent capability invented |
 | P13-T009 | **COMPLETE / ACCEPTED** (`d813dbd`) — hardening + evidence pack [`plans/P13-T009-hardening-and-evidence-pack.md`](plans/P13-T009-hardening-and-evidence-pack.md) |
 | P13-GATE | **COMPLETE / ACCEPTED** (`c0bcd78`) — evidence [`plans/P13-GATE-acceptance-evidence.md`](plans/P13-GATE-acceptance-evidence.md) |
-| P14 | **IN PROGRESS** — Plan ACCEPTED · **P14-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED** |
+| P14 | **COMPLETE / ACCEPTED** — Plan ACCEPTED · **P14-R1–R8 RESOLVED** · Gate ACCEPTED (`608216d`) |
 | P14 Plan | `TC-P14-PLAN` COMPLETE / ACCEPTED — [`docs/plans/P14-implementation-plan.md`](plans/P14-implementation-plan.md) |
 | P14-T001 | **COMPLETE / ACCEPTED** (`a7bd549`) — Public Experience surface inventory (Detail/Listing/Landing; no Search/catalog ownership) |
 | P14-T002 | **COMPLETE / ACCEPTED** (`99818dd`) — public detail sticky presentation (P14-R2; Sticky Action ≠ Booking) |
@@ -193,7 +193,9 @@
 | P14-T007 | **COMPLETE / ACCEPTED** (`903cd29`) — Public AgencyOffer presentation (P14-R7; inquiry-only; Marketplace owns facts) |
 | P14-T008 | **COMPLETE / ACCEPTED** (`a0209bd`) — Filter presentation boundary (P14-R8; presentation only; faceting = P15) |
 | P14-T009 | **COMPLETE / ACCEPTED** (`6c0e218`) — Hardening + evidence pack |
-| P14-GATE | **AWAITING_ARCHITECT_REVIEW** — Acceptance evidence ([`plans/P14-GATE-acceptance-evidence.md`](plans/P14-GATE-acceptance-evidence.md)) |
+| P14-GATE | **COMPLETE / ACCEPTED** (`608216d`) — Acceptance evidence |
+| P15 | **IN PROGRESS** — Plan authored · **P15-R1–R7 UNRESOLVED** |
+| P15 Plan | `TC-P15-PLAN` AWAITING_ARCHITECT_REVIEW — [`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md) |
 | P14-R8 (Filters vs P15) | **RESOLVED** — Filter in P14 = Presentation only (UI/URL/selection). Faceting / retrieval / ranking / FTS = P15 Search. Filtered URLs ≠ SEO landings. |
 | P14-R7 (Public AgencyOffer) | **RESOLVED** — AgencyOffer may be displayed; does not own commercial flow. Marketplace owns facts/publication. PE owns presentation. No agency prices / ranking / Booking. Visibility ≠ CatalogStatus / IndexPolicy. |
 | P14-R6 (Content enrichment) | **RESOLVED** — Content = editorial SoT. Tour = tour-facts SoT. PE = composition only. Destination-based links. No TourProduct→ArticleId[]. Content publication ≠ SEO IndexPolicy. |
@@ -281,7 +283,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P14_T009_DELIVERED** · PLAN ACCEPTED · P14-R1–R8 RESOLVED · T009 awaiting review |
+| Phase Transition State | **P15_PLAN_DELIVERED** · P14 COMPLETE · P15-R1–R7 UNRESOLVED · PLAN awaiting review |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -290,7 +292,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P14-T009`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P14-GATE`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -617,7 +619,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P14-T006 | Public Tour content enrichment composition | COMPLETE / ACCEPTED | `5258e20` |
 | TC-P14-T007 | Public AgencyOffer presentation baseline | COMPLETE / ACCEPTED | `903cd29` |
 | TC-P14-T008 | Public Experience filter presentation boundary | COMPLETE / ACCEPTED | `a0209bd` |
-| TC-P14-T009 | Public Experience hardening and evidence pack | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P14-T009 | Public Experience hardening and evidence pack | COMPLETE / ACCEPTED | `6c0e218` |
+| TC-P14-GATE | P14 Public Experience Acceptance Gate | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
