@@ -6,8 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Pricing.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Pricing.Domain</AssemblyName>
-    <Description>Pricing domain: Price + PriceComponent (TC-P12-T003) over platform Money. No EF/ASP.NET.</Description>
+    <Description>Pricing domain: Price + Quote baseline (TC-P12-T003/T004) over platform Money. No EF/ASP.NET.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />

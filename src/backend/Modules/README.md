@@ -105,10 +105,11 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Pricing | `Pricing/TravelCore.Modules.Pricing.{Domain,Contracts,Infrastructure}` | `pricing` |
 
-- **Pricing:** scaffolding + money baseline + Price/PriceComponent (`TC-P12-T001`/`T002`/`T003`) — schema `pricing`; platform `TravelCore.Money`; polymorphic `TargetType`+`TargetId` (initial TourDeparture); structured Base/Fee/Tax; no Quote/Booking/Admin API yet (T004+).
+- **Pricing:** scaffolding + money baseline + Price/PriceComponent + Quote baseline (`TC-P12-T001`…`T004`) — schema `pricing`; platform `TravelCore.Money`; polymorphic `TargetType`+`TargetId`; structured Base/Fee/Tax; Quote = immutable PriceSnapshot + Expiration; no Booking/Payment/Customer/Passenger/checkout/Admin UI yet.
 - **P12-R1 RESOLVED:** independent Pricing module; Tour owns tour facts; Pricing may logically reference TourDeparture identity (Guid) only — no EF FK / no Tour table ownership / no shared DbContext.
 - **P12-R2 RESOLVED:** one authoritative currency per price value; reuse ADR 0003 Money; no twin multi-currency SoR; FX deferred.
-- **P12-R3 RESOLVED:** Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now).
+- **P12-R3 RESOLVED:** Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote** (at Price attach time). Product-level pricing DEFER (do not invent TourProduct pricing now).
+- **P12-R4 RESOLVED:** Quote owned by Pricing · Quote is calculation snapshot · No Booking ownership · No Payment · No Customer/Passenger · No checkout flow.
 - Invariant: **Price ≠ Quote ≠ Payment / Booking Amount**; no silent single-currency wipe.
 
 ## Host

@@ -18,7 +18,9 @@ public sealed class PricePersistenceModelTests
     {
         using var db = new PricingDbContext(
             new DbContextOptionsBuilder<PricingDbContext>()
-                .UseNpgsql("Host=127.0.0.1;Database=travelcore_pricing_model_probe;Username=x;Password=x")
+                .UseNpgsql(
+                    "Host=127.0.0.1;Database=travelcore_pricing_model_probe;Username=x;Password=x",
+                    npgsql => npgsql.UseNodaTime())
                 .Options);
 
         var model = db.Model;

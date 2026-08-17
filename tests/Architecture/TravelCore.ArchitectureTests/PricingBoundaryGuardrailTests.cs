@@ -6,9 +6,10 @@ namespace TravelCore.ArchitectureTests;
 
 /// <summary>
 /// TC-P12-T001 / P12-R1: Pricing is an independent module owning schema <c>pricing</c>.
-/// TC-P12-T002 / P12-R2: Pricing reuses TravelCore.Money; no parallel money types; no FX/Quote/Payment yet.
+/// TC-P12-T002 / P12-R2: Pricing reuses TravelCore.Money; no parallel money types; no FX/Payment.
 /// TC-P12-T003 / P12-R3: Price + PriceComponent with polymorphic TargetType+TargetId (TourDeparture initial);
-/// no Tour.Domain/Infrastructure refs; no Quote/Booking/Payment/FX.
+/// no Tour.Domain/Infrastructure refs; no Booking/Payment/FX.
+/// TC-P12-T004 / P12-R4: Quote owned by Pricing (snapshot + expiration); no Booking/Payment/Customer/Passenger.
 /// </summary>
 public sealed class PricingBoundaryGuardrailTests
 {
@@ -84,7 +85,7 @@ public sealed class PricingBoundaryGuardrailTests
     }
 
     [Fact]
-    public void PricingModule_MustNotIntroduce_Fx_Quote_Or_Payment_Yet()
+    public void PricingModule_MustNotIntroduce_Fx_Or_Payment_Yet()
     {
         var pricingRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Pricing");
         var hits = Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
@@ -102,14 +103,74 @@ public sealed class PricingBoundaryGuardrailTests
 
                     return Regex.IsMatch(
                         x.line,
-                        @"\b(class|record|enum|struct|interface)\s+(ExchangeRate|FxRate|Quote|Payment|PaymentIntent|FxConversion|CurrencyConversion)\b");
+                        @"\b(class|record|enum|struct|interface)\s+(ExchangeRate|FxRate|Payment|PaymentIntent|FxConversion|CurrencyConversion)\b");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "TC-P12-T002/T003 must not introduce FX/Quote/Payment types:\n"
+            "TC-P12 must not introduce FX/Payment types (P12-R5 deferred):\n"
+            + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void PricingDomain_Exposes_Quote_With_Snapshot_And_Expiration()
+    {
+        var domainRoot = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Domain");
+
+        Assert.True(File.Exists(Path.Combine(domainRoot, "Quote.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "QuoteSnapshotComponent.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "QuoteId.cs")));
+
+        var quoteText = File.ReadAllText(Path.Combine(domainRoot, "Quote.cs"));
+        Assert.Contains("SourcePriceId", quoteText, StringComparison.Ordinal);
+        Assert.Contains("ExpiresAt", quoteText, StringComparison.Ordinal);
+        Assert.Contains("SnapshotComponents", quoteText, StringComparison.Ordinal);
+        Assert.Contains("CreateFromPrice", quoteText, StringComparison.Ordinal);
+        Assert.DoesNotContain("CustomerId", quoteText, StringComparison.Ordinal);
+        Assert.DoesNotContain("PassengerId", quoteText, StringComparison.Ordinal);
+        Assert.DoesNotContain("PaymentId", quoteText, StringComparison.Ordinal);
+        Assert.DoesNotContain("BookingId", quoteText, StringComparison.Ordinal);
+        Assert.DoesNotContain("ReservationId", quoteText, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Pricing_Quote_MustNot_Couple_Booking_Payment_Or_Customer()
+    {
+        var pricingRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Pricing");
+        var hits = Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(
+                        x.line,
+                        @"\b(class|record|enum|struct|interface)\s+(Customer|Passenger|Payment|PaymentIntent|Booking|Reservation|Checkout)\b")
+                        || Regex.IsMatch(
+                            x.line,
+                            @"\b(CustomerId|PassengerId|PaymentId|BookingId|ReservationId)\s*\{");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "Quote baseline must not couple Customer/Passenger/Payment/Booking:\n"
             + string.Join('\n', hits));
     }
 

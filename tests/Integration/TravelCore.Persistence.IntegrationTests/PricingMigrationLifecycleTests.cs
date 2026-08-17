@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Pricing schema + Price tables (TC-P12-T001 / T003).
+/// Real-PostgreSQL Pricing schema + Price/Quote tables (TC-P12-T001 / T003 / T004).
 /// </summary>
 [Collection(nameof(PricingMigrationLifecycleCollection))]
 public sealed class PricingMigrationLifecycleTests
@@ -27,9 +27,10 @@ public sealed class PricingMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.EndsWith("_InitialPricingScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPriceAndPriceComponents", expectedMigrations[1], StringComparison.Ordinal);
+            Assert.EndsWith("_AddQuoteAndPriceSnapshot", expectedMigrations[2], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -62,6 +63,18 @@ public sealed class PricingMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'pricing'
                   AND table_name = 'price_components';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'pricing'
+                  AND table_name = 'quotes';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'pricing'
+                  AND table_name = 'quote_snapshot_components';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

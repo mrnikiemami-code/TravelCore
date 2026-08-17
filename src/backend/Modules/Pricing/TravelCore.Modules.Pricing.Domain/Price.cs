@@ -7,7 +7,7 @@ namespace TravelCore.Modules.Pricing.Domain;
 /// Buyable/executable Price aggregate (TC-P12-T003 / P12-R3).
 /// Attaches via polymorphic logical <see cref="TargetType"/> + <see cref="TargetId"/> only —
 /// Pricing does not know TourDeparture CLR types and owns no Tour FK.
-/// Product-level pricing, Quote, and Booking are out of scope.
+/// Product-level pricing and Booking are out of scope here; Quote is a separate aggregate (T004).
 /// </summary>
 public sealed class Price
 {

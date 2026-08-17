@@ -43,7 +43,7 @@
 | Last Accepted Commit | `6f7ea12` (`TC-P11-GATE`) · P11 COMPLETE |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of T003 → `TC-P12-T004` Departure pricing attachment |
+| Current Next Task | Architect review of T004 → next P12 product task |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -437,7 +437,7 @@ TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Fli
 
 ## P12 — Pricing
 
-**Status:** IN PROGRESS — **P12-R1/R2/R3 RESOLVED** · `TC-P12-T003` Price + PriceComponent model delivered
+**Status:** IN PROGRESS — **P12-R1/R2/R3/R4 RESOLVED** · `TC-P12-T004` Quote baseline delivered
 
 Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passenger category · Occupancy · Age policy · Exchange rates · Conversion policy · Quote · Quote expiration در صورت نیاز · Price snapshot.
 
@@ -448,6 +448,8 @@ Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passe
 **P12-R2:** Reuse platform `TravelCore.Money` (ADR 0003). One authoritative currency per price value; no twin multi-currency SoR; FX/Quote/Payment conversion deferred.
 
 **P12-R3:** Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now).
+
+**P12-R4:** Quote owned by Pricing · Quote is calculation snapshot · No Booking ownership · No Payment · No Customer/Passenger · No checkout flow.
 
 مثال طبیعی: `1290 USD` + مؤلفهٔ ارز محلی.
 
