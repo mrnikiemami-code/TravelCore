@@ -36,14 +36,14 @@
 |------|--------|
 | Project | TravelCore |
 | Current Phase | **P11 — Foreign Package / Departure** (**IN PROGRESS**) |
-| Phase Status | P00–P10 COMPLETE · P11 PLAN ACCEPTED · P11-R1..R8 RESOLVED · T009 |
+| Phase Status | P00–P10 COMPLETE · P11 PLAN ACCEPTED · P11-R1..R8 RESOLVED · T010 |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `0b42a94` (`TC-P11-T008`) · T007 `20ffbc9` |
+| Last Accepted Commit | `c8ce3f1` (`TC-P11-T009`) · T008 `0b42a94` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Complete `TC-P11-T009` Public Foreign Package departure hooks |
+| Current Next Task | Complete `TC-P11-T010` hardening + evidence pack |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -423,7 +423,7 @@ P09 delivered shared TourProduct; P10 extends Tour with Experience specializatio
 
 ## P11 — Foreign Package Tour
 
-**Status:** IN PROGRESS (`TC-P11-PLAN` ACCEPTED · P11-R1..R8 RESOLVED · T009 Public hooks)
+**Status:** IN PROGRESS (`TC-P11-PLAN` ACCEPTED · P11-R1..R8 RESOLVED · T010 Evidence)
 
 **Progress:** TourDeparture scaffolding · baseline `66cab9b` (PLAN) · prior Gate `c351bf9`
 

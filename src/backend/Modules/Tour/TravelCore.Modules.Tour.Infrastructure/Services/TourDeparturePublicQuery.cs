@@ -7,7 +7,7 @@ using TravelCore.Modules.Tour.Domain;
 namespace TravelCore.Modules.Tour.Infrastructure.Services;
 
 /// <summary>
-/// Public Published TourDeparture query (TC-P11-T009 · P11-R8). Visibility only — not bookable.
+/// Public Published TourDeparture query (TC-P11-T009 · P11-R8). Visibility facts only — no commerce.
 /// </summary>
 public sealed class TourDeparturePublicQuery : ITourDeparturePublicQuery
 {
