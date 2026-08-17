@@ -34,4 +34,17 @@ public sealed class PublicExperienceScaffoldingSmokeTests
         Assert.Equal("Search", PublicExperienceOwnershipBoundary.SearchOwnerModule);
         Assert.Equal("PresentationAndSeoComposition", PublicExperienceOwnershipBoundary.CompositionPosture);
     }
+
+    [Fact]
+    public void Listing_And_Landing_Are_Separate_Surfaces()
+    {
+        Assert.Equal("Discovery", PublicExperienceListingLandingBoundary.ListingPurpose);
+        Assert.Equal("SearchIntent", PublicExperienceListingLandingBoundary.LandingPurpose);
+        Assert.False(PublicExperienceListingLandingBoundary.LandingIsFilteredListing);
+        Assert.Equal("/tours", PublicExperienceListingLandingBoundary.ListingRoutePattern);
+        Assert.Equal("/tours/{topic}/{intent}", PublicExperienceListingLandingBoundary.LandingRoutePattern);
+        Assert.Equal("/tours/{slug}", PublicExperienceListingLandingBoundary.DetailRoutePattern);
+        Assert.Equal("Search", PublicExperienceListingLandingBoundary.SearchEngineOwnerModule);
+        Assert.Equal("Seo", PublicExperienceListingLandingBoundary.IndexPolicyOwnerModule);
+    }
 }

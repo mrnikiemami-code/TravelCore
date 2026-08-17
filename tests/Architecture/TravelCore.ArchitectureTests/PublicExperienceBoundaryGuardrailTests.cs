@@ -126,4 +126,80 @@ public sealed class PublicExperienceBoundaryGuardrailTests
         Assert.DoesNotContain("Checkout", text, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("/api/booking", text, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Listing_And_Landing_Routes_Are_Not_Search_Engine()
+    {
+        var listingContract = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "listing-landing.ts");
+        Assert.True(File.Exists(listingContract), listingContract);
+        var contract = File.ReadAllText(listingContract);
+        Assert.Contains("Discovery", contract, StringComparison.Ordinal);
+        Assert.Contains("SearchIntent", contract, StringComparison.Ordinal);
+        Assert.Contains("LANDING_IS_FILTERED_LISTING = false", contract, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", contract, StringComparison.Ordinal);
+        Assert.DoesNotContain("to_tsvector", contract, StringComparison.Ordinal);
+
+        var listingPage = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "app",
+            "[locale]",
+            "tours",
+            "page.tsx");
+        Assert.True(File.Exists(listingPage), listingPage);
+        var listing = File.ReadAllText(listingPage);
+        Assert.Contains("PublicTourListingView", listing, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", listing, StringComparison.Ordinal);
+        Assert.DoesNotContain("to_tsvector", listing, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/search", listing, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", listing, StringComparison.Ordinal);
+
+        var landingPage = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "app",
+            "[locale]",
+            "tours",
+            "[slug]",
+            "[intent]",
+            "page.tsx");
+        Assert.True(File.Exists(landingPage), landingPage);
+        var landing = File.ReadAllText(landingPage);
+        Assert.Contains("PublicTourLandingView", landing, StringComparison.Ordinal);
+        Assert.Contains("not a filtered listing", landing, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", landing, StringComparison.Ordinal);
+        Assert.DoesNotContain("to_tsvector", landing, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/search", landing, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", landing, StringComparison.Ordinal);
+        Assert.DoesNotContain("IndexPolicy", landing, StringComparison.Ordinal);
+
+        var landingView = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "landing-view.tsx");
+        Assert.True(File.Exists(landingView), landingView);
+        var landingViewText = File.ReadAllText(landingView);
+        Assert.Contains("Curated content", landingViewText, StringComparison.Ordinal);
+        Assert.Contains("not a filtered listing", landingViewText, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", landingViewText, StringComparison.Ordinal);
+    }
 }
