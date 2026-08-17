@@ -147,13 +147,14 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Search | `Search/TravelCore.Modules.Search.{Domain,Contracts,Infrastructure}` | `search` |
 
-- **Search:** scaffolding + hybrid read-model + projection sync + faceting + ranking contracts (`TC-P15-T001`–`T005`) — schema `search`; `SearchDocument` + `ISearchIndex`; outbox+async worker; facet contracts; deterministic ranking port; no broker / FTS / ML / Elasticsearch.
+- **Search:** scaffolding through AI-readiness (`TC-P15-T001`–`T006`) — schema `search`; hybrid read-model; outbox projection; facets; deterministic ranking; semantic retrieval/provenance; no broker / FTS / ML / vector / LLM / Elasticsearch.
 - **P15-R1 RESOLVED:** Search is an independent Discovery Owner. Tour/Content/Pricing/AgencyMarketplace remain fact SoT. SEO remains IndexPolicy owner. Search is a future read-model/projection, not a second write SoR. No LLM/business rules inside Search. No FTS/index engine in T001.
 - **P15-R2 RESOLVED:** Hybrid Read Model. Search owns document/index abstraction. Physical engine not committed. SearchDocument is not a domain entity.
 - **P15-R3 RESOLVED:** Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003.
 - **P15-R4 RESOLVED:** Search owns faceting Aggregation / Counting / Result composition. Domain owns attribute meaning + source facts. PE owns filter UI only. No facet engine / ES aggregations / domain facet tables in T004.
 - **P15-R5 RESOLVED:** Deterministic explainable ranking + stable tie-break. Search owns ranking composition/ordering/metadata. Not business-policy authority. Ranking ≠ Recommendation. No ML/embeddings/personalization in T005.
-- Invariant: **Search ≠ Catalog · Search ≠ Pricing · Search ≠ AgencyOffer · Search ≠ IndexPolicy · Search ≠ Booking · Search ≠ Recommendation · Filter UI ≠ Faceting · Ranking ≠ Business Priority**.
+- **P15-R6 RESOLVED:** Structured attributable locale-aware facts first. Semantic retrieval + provenance. No embeddings/vector/RAG/LLM. Search ≠ SoT.
+- Invariant: **Search ≠ Catalog · Search ≠ Pricing · Search ≠ AgencyOffer · Search ≠ IndexPolicy · Search ≠ Booking · Search ≠ Recommendation · Filter UI ≠ Faceting · Ranking ≠ Business Priority · Search ≠ AI Platform**.
 
 ## Host
 

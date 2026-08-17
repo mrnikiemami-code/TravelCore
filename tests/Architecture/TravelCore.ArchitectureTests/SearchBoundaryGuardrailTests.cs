@@ -7,8 +7,8 @@ using Xunit;
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P15-T001..T005: Search Discovery owner with hybrid read-model, outbox projection,
-/// faceting ownership, and deterministic ranking contracts. No FTS/ML/recommendation engines.
+/// TC-P15-T001..T006: Search Discovery owner with hybrid read-model, outbox projection,
+/// faceting, deterministic ranking, and AI-readiness contracts. No FTS/ML/vector/LLM engines.
 /// </summary>
 public sealed class SearchBoundaryGuardrailTests
 {
@@ -143,7 +143,7 @@ public sealed class SearchBoundaryGuardrailTests
 
                     return Regex.IsMatch(
                         x.line,
-                        @"\b(pg_trgm|to_tsvector|ts_rank|Elasticsearch|OpenSearch|Booking|Payment|PriceOverride|Commission|SetIndexPolicy|IEmbedding|OpenAI|RabbitMQ|IConnectionFactory)\b");
+                        @"\b(pg_trgm|to_tsvector|ts_rank|Elasticsearch|OpenSearch|Booking|Payment|PriceOverride|Commission|SetIndexPolicy|IEmbedding|OpenAI|RabbitMQ|IConnectionFactory|pgvector|Pinecone|Qdrant|ChatCompletion|LangChain)\b");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
@@ -285,6 +285,32 @@ public sealed class SearchBoundaryGuardrailTests
         Assert.True(
             hits.Count == 0,
             "T005 forbids concrete ranking engines and business-policy invents:\n" + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void Search_Ai_Readiness_Is_Structured_Facts_Without_Vector_Or_Llm()
+    {
+        Assert.Equal("StructuredAttributableLocaleAwareFactsFirst", SearchAiReadinessBoundary.AiReadinessPosture);
+        Assert.True(SearchAiReadinessBoundary.ExposesStructuredRetrievalFacts);
+        Assert.False(SearchAiReadinessBoundary.IsAiPlatform);
+        Assert.False(SearchAiReadinessBoundary.IsLlmGateway);
+        Assert.False(SearchAiReadinessBoundary.IsVectorStore);
+        Assert.False(SearchAiReadinessBoundary.EmbeddingsAllowed);
+        Assert.False(SearchAiReadinessBoundary.VectorDatabaseAllowed);
+        Assert.False(SearchAiReadinessBoundary.VectorSearchAllowed);
+        Assert.False(SearchAiReadinessBoundary.RagAllowed);
+        Assert.False(SearchAiReadinessBoundary.LlmCallsAllowed);
+        Assert.False(SearchAiReadinessBoundary.AiGeneratedContentAllowed);
+        Assert.False(SearchAiReadinessBoundary.MayInventDomainFacts);
+        Assert.False(SearchAiReadinessBoundary.ProjectedFactsAreSearchOwnedTruth);
+        Assert.True(SearchAiReadinessBoundary.LocaleIdentityRequired);
+        Assert.False(SearchAiReadinessBoundary.ChatbotSpecificContractsAllowed);
+        Assert.False(SearchAiReadinessBoundary.PgVectorDependencyAllowed);
+        Assert.False(SearchAiReadinessBoundary.PineconeDependencyAllowed);
+        Assert.False(SearchAiReadinessBoundary.QdrantDependencyAllowed);
+        Assert.False(SearchIndexBoundary.EmbeddingAllowed);
+        Assert.False(SearchRankingBoundary.EmbeddingsAllowed);
+        Assert.False(SearchRankingBoundary.VectorSearchAllowed);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

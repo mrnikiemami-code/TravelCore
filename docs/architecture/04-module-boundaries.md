@@ -289,9 +289,9 @@ Flight live bookable inventory
 
 **Purpose:** قابلیت پلتفرم پایین‌دستی برای بازیابی و Discovery (P15-R1).
 
-**Owns:** Search query/result contracts · schema `search` · `SearchDocument` / `ISearchIndex` hybrid read-model abstraction (P15-R2) · projection sync boundary (P15-R3) · faceting Aggregation / Counting / Result composition contracts (P15-R4) · deterministic ranking composition / ordering / metadata contracts (P15-R5).
+**Owns:** Search query/result contracts · schema `search` · `SearchDocument` / `ISearchIndex` hybrid read-model abstraction (P15-R2) · projection sync boundary (P15-R3) · faceting Aggregation / Counting / Result composition contracts (P15-R4) · deterministic ranking composition / ordering / metadata contracts (P15-R5) · structured semantic retrieval / provenance readiness (P15-R6).
 
-**Does Not Own (authoritative):** Tour facts · Content facts · Pricing facts · AgencyOffer facts · SEO IndexPolicy · attribute meaning of domain facets · Tour/Agency commercial priority · commission/sponsorship/profitability policy · Destination · Place · UGC · Visa · Booking · Payment · Recommendation · filter UI (PublicExperience).
+**Does Not Own (authoritative):** Tour facts · Content facts · Pricing facts · AgencyOffer facts · SEO IndexPolicy · attribute meaning of domain facets · Tour/Agency commercial priority · commission/sponsorship/profitability policy · AI platform / LLM gateway / vector store · Destination · Place · UGC · Visa · Booking · Payment · Recommendation · filter UI (PublicExperience).
 
 **Technology direction:** PostgreSQL FTS + `pg_trgm` behind abstraction later — ماژول‌های کسب‌وکار به این پیاده‌سازی وابسته نمی‌شوند. **T001 does not implement FTS/`pg_trgm`/Elasticsearch.**
 

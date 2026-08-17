@@ -237,6 +237,60 @@ public sealed class SearchScaffoldingSmokeTests
         Assert.Equal(typeof(ISearchRanker).Namespace, typeof(RankingResult).Namespace);
     }
 
+    [Fact]
+    public void Ai_Readiness_Is_Structured_Facts_Not_Ai_Platform()
+    {
+        Assert.Equal("StructuredAttributableLocaleAwareFactsFirst", SearchAiReadinessBoundary.AiReadinessPosture);
+        Assert.Equal("ReusableRetrievalContracts", SearchAiReadinessBoundary.ConsumerPosture);
+        Assert.True(SearchAiReadinessBoundary.ExposesStructuredRetrievalFacts);
+        Assert.False(SearchAiReadinessBoundary.IsAiPlatform);
+        Assert.False(SearchAiReadinessBoundary.IsLlmGateway);
+        Assert.False(SearchAiReadinessBoundary.IsVectorStore);
+        Assert.False(SearchAiReadinessBoundary.IsRecommendationEngine);
+        Assert.False(SearchAiReadinessBoundary.EmbeddingsAllowed);
+        Assert.False(SearchAiReadinessBoundary.VectorDatabaseAllowed);
+        Assert.False(SearchAiReadinessBoundary.VectorSearchAllowed);
+        Assert.False(SearchAiReadinessBoundary.RagAllowed);
+        Assert.False(SearchAiReadinessBoundary.LlmCallsAllowed);
+        Assert.False(SearchAiReadinessBoundary.PromptInfrastructureAllowed);
+        Assert.False(SearchAiReadinessBoundary.AiGeneratedContentAllowed);
+        Assert.False(SearchAiReadinessBoundary.SemanticMlRankingAllowed);
+        Assert.False(SearchAiReadinessBoundary.PersonalizationAllowed);
+        Assert.False(SearchAiReadinessBoundary.MayInventDomainFacts);
+        Assert.False(SearchAiReadinessBoundary.ProjectedFactsAreSearchOwnedTruth);
+        Assert.True(SearchAiReadinessBoundary.LocaleIdentityRequired);
+        Assert.False(SearchAiReadinessBoundary.ChatbotSpecificContractsAllowed);
+        Assert.False(SearchAiReadinessBoundary.PgVectorDependencyAllowed);
+        Assert.False(SearchAiReadinessBoundary.PineconeDependencyAllowed);
+        Assert.False(SearchAiReadinessBoundary.QdrantDependencyAllowed);
+        Assert.False(SearchIndexBoundary.EmbeddingAllowed);
+        Assert.False(SearchRankingBoundary.EmbeddingsAllowed);
+    }
+
+    [Fact]
+    public void Semantic_Retrieval_Snapshot_Preserves_Locale_And_Provenance()
+    {
+        var sourceId = Guid.Parse("0198b3e0-0000-7000-8000-000000000041");
+        var documentId = Guid.Parse("0198b3e0-0000-7000-8000-000000000042");
+        var provenance = new SearchFactProvenance("Tour", FactKind: "TourProduct", SourceVersion: "3");
+        var snapshot = new SemanticRetrievalSnapshot(
+            documentId,
+            EntityType: "TourProduct",
+            sourceId,
+            SourceModule: "Tour",
+            LocaleCode: "fa-IR",
+            Title: "استانبول",
+            StructuredAttributes: new Dictionary<string, string> { ["Difficulty"] = "easy" },
+            SemanticReferences: ["destination:istanbul"],
+            IsPubliclyEligible: true,
+            Provenance: provenance);
+
+        Assert.Equal("fa-IR", snapshot.LocaleCode);
+        Assert.Equal("Tour", snapshot.Provenance!.FactOwnerModule);
+        Assert.NotEqual(snapshot.DocumentId, snapshot.SourceId);
+        Assert.Contains("destination:istanbul", snapshot.SemanticReferences!);
+    }
+
     private sealed class InMemorySearchProjectionIdempotencyStore : ISearchProjectionIdempotencyStore
     {
         private readonly HashSet<Guid> _processed = [];

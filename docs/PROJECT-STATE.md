@@ -194,18 +194,20 @@
 | P14-T008 | **COMPLETE / ACCEPTED** (`a0209bd`) — Filter presentation boundary (P14-R8; presentation only; faceting = P15) |
 | P14-T009 | **COMPLETE / ACCEPTED** (`6c0e218`) — Hardening + evidence pack |
 | P14-GATE | **COMPLETE / ACCEPTED** (`608216d`) — Acceptance evidence |
-| P15 | **IN PROGRESS** — Plan ACCEPTED · **P15-R1–R5 RESOLVED** |
+| P15 | **IN PROGRESS** — Plan ACCEPTED · **P15-R1–R6 RESOLVED** |
 | P15 Plan | `TC-P15-PLAN` COMPLETE / ACCEPTED (`fba7a51`) — [`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md) |
 | P15-T001 | **COMPLETE / ACCEPTED** (`bea92a1`) — Search module scaffolding (`search` schema) |
 | P15-T002 | **COMPLETE / ACCEPTED** (`2b3c9d2`) — Search hybrid read-model / index abstraction |
 | P15-T003 | **COMPLETE / ACCEPTED** (`2631c4e`) — Search projection synchronization boundary |
 | P15-T004 | **COMPLETE / ACCEPTED** (`413d6fe`) — Search faceting ownership boundary |
-| P15-T005 | **AWAITING_ARCHITECT_REVIEW** — Search ranking model boundary |
+| P15-T005 | **COMPLETE / ACCEPTED** (`7b22225`) — Search ranking model boundary |
+| P15-T006 | **AWAITING_ARCHITECT_REVIEW** — Search AI-readiness / semantic retrieval boundary |
 | P15-R1 (Search ownership) | **RESOLVED** — Search = Discovery Owner · schema `search` · owns query/result contracts and future read models · does not own Tour/Content/Pricing/Agency facts or SEO IndexPolicy · Read Model/Projection later, not SoT · no LLM/business rules inside Search · T001: no projection tables / FTS / Elasticsearch / ranking / faceting |
 | P15-R2 (Index / read model) | **RESOLVED** — Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS in T002. SearchDocument is not a domain entity. |
 | P15-R3 (Synchronization) | **RESOLVED** — Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003. |
 | P15-R4 (Faceting ownership) | **RESOLVED** — Search owns Aggregation / Counting / Result composition. Domain owns attribute meaning + source facts. PE owns filter UI only (P14-R8). No facet engine / ES aggregations / domain facet tables in T004. |
 | P15-R5 (Ranking model) | **RESOLVED** — Deterministic explainable signals + stable tie-break. Search owns ranking composition/ordering/metadata. Not business-policy authority. Ranking ≠ Recommendation. No ML/embeddings/personalization in T005. |
+| P15-R6 (AI / Search readiness) | **RESOLVED** — Structured attributable locale-aware facts first. Semantic retrieval snapshot + provenance. No embeddings/vector/RAG/LLM/prompt infra. Search ≠ SoT. |
 | P14-R8 (Filters vs P15) | **RESOLVED** — Filter in P14 = Presentation only (UI/URL/selection). Faceting / retrieval / ranking / FTS = P15 Search. Filtered URLs ≠ SEO landings. |
 | P14-R7 (Public AgencyOffer) | **RESOLVED** — AgencyOffer may be displayed; does not own commercial flow. Marketplace owns facts/publication. PE owns presentation. No agency prices / ranking / Booking. Visibility ≠ CatalogStatus / IndexPolicy. |
 | P14-R6 (Content enrichment) | **RESOLVED** — Content = editorial SoT. Tour = tour-facts SoT. PE = composition only. Destination-based links. No TourProduct→ArticleId[]. Content publication ≠ SEO IndexPolicy. |
@@ -293,7 +295,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P15_T005_DELIVERED** · PLAN ACCEPTED · P15-R1–R5 RESOLVED · T005 ranking boundary awaiting review |
+| Phase Transition State | **P15_T006_DELIVERED** · PLAN ACCEPTED · P15-R1–R6 RESOLVED · T006 AI-readiness awaiting review |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -689,6 +691,7 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - **P15-R3 RESOLVED:** Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003.
 - **P15-R4 RESOLVED:** Search owns faceting Aggregation / Counting / Result composition. Domain modules own attribute meaning and source facts. PublicExperience owns filter UI only. No facet engine, Elasticsearch aggregations, ranking, recommendation, AI model, or Tour/Content/Pricing facet tables in T004. Structured fields on SearchDocument remain available for future facets.
 - **P15-R5 RESOLVED:** Deterministic explainable ranking signals + stable tie-break. Search owns ranking composition / relevance ordering / ranking metadata. Does not own Tour/Agency commercial priority, commission, sponsorship, or profitability. Ranking ≠ Recommendation. No ML / embeddings / vector / personalization in T005.
+- **P15-R6 RESOLVED:** Structured attributable locale-aware facts first. `SemanticRetrievalSnapshot` + `SearchFactProvenance`. Search is not AI platform / LLM gateway / vector store. No embeddings, vector DB, RAG, LLM, or AI-generated domain facts. Search ≠ SoT.
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 
@@ -718,7 +721,7 @@ HotelBooking · Flight
 
 ### Platform Capabilities
 
-Search (scaffolded · schema `search` · hybrid read-model · projection sync · faceting · ranking contracts · P15-R1–R5) · SEO · Notification
+Search (scaffolded · schema `search` · hybrid read-model · projection · faceting · ranking · AI-readiness contracts · P15-R1–R6) · SEO · Notification
 
 **صریح:** Admin یک domain module نیست. Admin Panel (و همچنین Public Website و Agency Panel) سطوح Presentation هستند.
 

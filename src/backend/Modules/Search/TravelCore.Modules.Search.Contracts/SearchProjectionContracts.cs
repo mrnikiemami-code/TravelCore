@@ -12,10 +12,13 @@ public sealed record SearchProjectionSource(
 
 /// <summary>
 /// Inbound projection envelope Search may later map to <see cref="SearchDocument"/>.
-/// Not a catalog clone and not a price SoR.
+/// Not a catalog clone and not a price SoR. P15-R6: optional semantic/provenance fields.
 /// </summary>
 public sealed record SearchProjectionEnvelope(
     SearchProjectionSource Source,
     string Title,
     string? SearchableText,
-    IReadOnlyDictionary<string, string>? StructuredAttributes);
+    IReadOnlyDictionary<string, string>? StructuredAttributes,
+    IReadOnlyList<string>? SemanticReferences = null,
+    bool? IsPubliclyEligible = null,
+    SearchFactProvenance? Provenance = null);
