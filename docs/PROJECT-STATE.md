@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P17 — Visa** (**IN PROGRESS** — T007 public Visa vs Content vs SEO) |
+| Current Phase | **P17 — Visa** (**COMPLETE** — `TC-P17-GATE` pending acceptance) |
 | Previous Phase | **P16 — UGC** (**COMPLETE** — `TC-P16-GATE` ACCEPTED `538f3fc`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P17-T007` — public Visa vs Content vs SEO (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Product Phase | P17 — Visa |
-| Current Next Task | Architect review of T007 → next locked task (do not invent R8) |
+| Current Active Product Task | `TC-P17-GATE` — P17 acceptance evidence |
+| Current Next Product Phase | P18 — Trip Planner / Lead Experience (PLANNED) |
+| Current Next Task | Architect review of `TC-P17-GATE` → next phase from SoT only |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -218,7 +218,7 @@
 | P16-T008 | **COMPLETE / ACCEPTED** (`62a1d7b`) — Public UGC composition / read contracts |
 | P16-T009 | **COMPLETE / ACCEPTED** (`ee02dd8`) — Hardening and evidence pack |
 | P16-GATE | **COMPLETE / ACCEPTED** (`538f3fc`) — Acceptance evidence (no new product capability) |
-| P17 | **IN PROGRESS** — Plan ACCEPTED · **P17-R1–R8 RESOLVED** · T009 hardening/evidence |
+| P17 | **COMPLETE / ACCEPTED** — Plan ACCEPTED · **P17-R1–R8 RESOLVED** · T001–T009 ACCEPTED · `TC-P17-GATE` pending |
 | P17 Plan | `TC-P17-PLAN` COMPLETE / ACCEPTED (`1b5c8ea`) — [`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md) |
 | P17-T001 | **COMPLETE / ACCEPTED** (`5f18f83`) — Visa module scaffolding (`visa` schema) |
 | P17-T002 | **COMPLETE / ACCEPTED** (`12f19e7`) — VisaDefinition + VisaRequirementSet baseline |
@@ -228,7 +228,8 @@
 | P17-T006 | **COMPLETE / ACCEPTED** (`1f3d206`) — OfficialVisaFee vs Pricing |
 | P17-T007 | **COMPLETE / ACCEPTED** — Public Visa vs Content vs SEO |
 | P17-T008 | **COMPLETE / ACCEPTED** (`ee7a232`) — Visa application/transactional boundary |
-| P17-T009 | **AWAITING_ARCHITECT_REVIEW** — Visa hardening and evidence pack |
+| P17-T009 | **COMPLETE / ACCEPTED** (`120e92c`) — Visa hardening and evidence pack |
+| P17-GATE | **AWAITING_ARCHITECT_REVIEW** — P17 acceptance evidence |
 | P17-R1 (Visa ownership) | **RESOLVED** — independent Visa module · schema `visa` · owns structured visa-domain facts/lifecycle · does not own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, Identity/Party · geographic refs = opaque logical id · T001: no VisaDefinition/requirement/document/fee/application product types |
 | P17-R2 (Definition vs requirement) | **RESOLVED** — VisaDefinition = stable visa-type identity; VisaRequirementSet = context-dependent facts; 1 → 0..N; **VisaDefinition != VisaRequirementSet**; no applicability/docs/fees |
 | P17-R3 (Applicability) | **RESOLVED** — exactly one VisaApplicability per RequirementSet · logical Destination/jurisdiction id · optional opaque nationality/residence alpha-2 · optional Adult/Minor/Other · **Applicability != Rules Engine** |

@@ -170,4 +170,24 @@ public sealed class VisaPhaseBoundaryGuardrailTests
         Assert.DoesNotContain("Apply Now", loader, StringComparison.Ordinal);
         Assert.DoesNotContain("Upload Documents", loader, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void P17_GateEvidence_Exists_And_Closes_Phase()
+    {
+        var path = Path.Combine(RepoRoot, "docs", "plans", "P17-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(path), path);
+        var text = File.ReadAllText(path);
+        Assert.Contains("TC-P17-T001", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P17-T009", text, StringComparison.Ordinal);
+        Assert.Contains("P17-R1", text, StringComparison.Ordinal);
+        Assert.Contains("P17-R8", text, StringComparison.Ordinal);
+        Assert.Contains("Visa != Content", text, StringComparison.Ordinal);
+        Assert.Contains("VisaDefinition != VisaRequirementSet", text, StringComparison.Ordinal);
+        Assert.Contains("RequiredDocument != ApplicantSubmittedDocument", text, StringComparison.Ordinal);
+        Assert.Contains("Visa != VisaApplication", text, StringComparison.Ordinal);
+        Assert.Contains("Public Visa Page != Automatically SEO Indexed", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P17-GATE COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("P17 COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("no new Visa capability", text, StringComparison.OrdinalIgnoreCase);
+    }
 }

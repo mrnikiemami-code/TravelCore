@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P17-PLAN` |
 | Phase | P17 — Visa |
-| Status | PLAN ACCEPTED; P17-R1–R8 RESOLVED; T009 delivered |
+| Status | PLAN ACCEPTED; P17-R1–R8 RESOLVED; T001–T009 ACCEPTED; **P17 COMPLETE** |
 | Baseline | `538f3fc` (`docs(ugc): add P16 acceptance gate evidence [TC-P16-GATE]` — **TC-P16-GATE** ACCEPTED; P16 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P17 · `docs/architecture/15-future-architecture-transition-map.md` § Q · `04-module-boundaries.md` § Visa · `05-dependency-rules.md` Commerce/Visa · `docs/architecture/07-data-architecture.md` schema `visa` · `docs/domain/module-ownership-matrix.md` · `docs/pages/07-visa.md` · `docs/pages/00-page-archetype-registry.md` · P04 Destination/ReferenceData · P05 SEO · P06 Media · P08 Content · P12 Pricing · P14 PublicExperience · P15 Search · P16 UGC · P19 Booking · P20 Payment |
 | Backend root | `src/backend` |
@@ -138,6 +138,7 @@ P17 اضافه می‌کند: **Visa module** برای کاتالوگ/الزام
 
 ### TC-P17-GATE — Acceptance Gate
 - Evidence only. Ceremonial Gate wait is **not** a pipeline stop.
+- Delivered: [`P17-GATE-acceptance-evidence.md`](P17-GATE-acceptance-evidence.md); SoT sync; **P17 COMPLETE**.
 - No new Visa product capability. Do not start P18 inside GATE.
 
 Do not manufacture empty capabilities merely to fill numbering. T008 is intentionally allowed to become VACANT if R8 defers application/workflow.
