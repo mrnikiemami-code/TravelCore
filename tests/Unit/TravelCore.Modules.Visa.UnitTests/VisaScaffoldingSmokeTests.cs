@@ -63,7 +63,7 @@ public sealed class VisaScaffoldingSmokeTests
         Assert.True(VisaOwnershipBoundary.RequiredDocumentImplemented);
         Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
         Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
-        Assert.False(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
+        Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
         Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
     }

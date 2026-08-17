@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P17-PLAN` |
 | Phase | P17 — Visa |
-| Status | PLAN ACCEPTED; P17-R1–R4 RESOLVED; T004 delivered (R5–R8 UNRESOLVED) |
+| Status | PLAN ACCEPTED; P17-R1–R5 RESOLVED; T005 delivered (R6–R8 UNRESOLVED) |
 | Baseline | `538f3fc` (`docs(ugc): add P16 acceptance gate evidence [TC-P16-GATE]` — **TC-P16-GATE** ACCEPTED; P16 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P17 · `docs/architecture/15-future-architecture-transition-map.md` § Q · `04-module-boundaries.md` § Visa · `05-dependency-rules.md` Commerce/Visa · `docs/architecture/07-data-architecture.md` schema `visa` · `docs/domain/module-ownership-matrix.md` · `docs/pages/07-visa.md` · `docs/pages/00-page-archetype-registry.md` · P04 Destination/ReferenceData · P05 SEO · P06 Media · P08 Content · P12 Pricing · P14 PublicExperience · P15 Search · P16 UGC · P19 Booking · P20 Payment |
 | Backend root | `src/backend` |
@@ -112,7 +112,8 @@ P17 اضافه می‌کند: **Visa module** برای کاتالوگ/الزام
 - Forbidden kept: inventing competitor checklists as requirements (`docs/pages/07-visa.md`) · OCR · legal-advice engine · inventing R5–R8.
 
 ### TC-P17-T005 — Processing time / validity / stay-duration
-- Purpose: Structured processing and stay/validity semantics (**P17-R5**).
+- Purpose: Structured processing and stay/validity semantics (**P17-R5 RESOLVED**).
+- Delivered: Distinct `VisaProcessingTime`, `VisaValidity`, `VisaAllowedStay`, and `VisaEntryPolicy` owned 0..1 by `VisaRequirementSet`. Optional EffectiveFrom/EffectiveTo readiness on the set. **ProcessingTime != VisaValidity**. **VisaValidity != AllowedStay**. Entry policy is not inferred from any time quantity. No single Duration field. No fee/application engine.
 - Forbidden kept: hardcoded embassy SLAs as architecture truth · inventing R6–R8.
 
 ### TC-P17-T006 — Visa fee vs Pricing ownership
@@ -148,7 +149,7 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 | **P17-R2** | VisaDefinition vs VisaRequirementSet | **RESOLVED** | VisaDefinition = stable visa-type identity/meaning (conceptual Tourist/Business/Transit; no hardcoded country catalog). VisaRequirementSet = context-dependent requirement facts for one definition. Relationship: VisaDefinition 1 → 0..N VisaRequirementSet; each set references exactly one definition. **VisaDefinition != VisaRequirementSet**. Do not dump all requirements into VisaDefinition. Applicability (R3), documents/eligibility (R4), processing/validity (R5), and fees (R6) remain OPEN. Destination remains geo SoT. No peer-schema FK. |
 | **P17-R3** | Applicability model (country / destination / applicant context) | **RESOLVED** | Each VisaRequirementSet has exactly one `VisaApplicability` context. Destination/jurisdiction is an opaque logical id. Nationality/residence are optional opaque ISO alpha-2 codes (ReferenceData remains country SoT). Optional controlled ApplicantCategory (Adult/Minor/Other). **Applicability != Rules Engine**. No expression/DSL/policy engine. Different contexts = different RequirementSets. No peer-schema FK. |
 | **P17-R4** | Required documents and eligibility facts | **RESOLVED** | VisaRequirementSet owns RequiredDocument 0..N and EligibilityRequirement 0..N. **RequiredDocument != EligibilityRequirement**. Documents are row-based codes + RequirementLevel (Required/Conditional/Optional) + locale names. Eligibility is structured Code/Kind/Value/Unit facts, not an executable engine. **EligibilityRequirement != Rules Engine**. No applicant uploads, MediaAsset, OCR, or peer FK. |
-| **P17-R5** | Processing time / validity / stay-duration semantics | **OPEN** | Boundaries own “processing info”. Temporal model exists (NodaTime). Do not hardcode regulatory durations in PLAN. |
+| **P17-R5** | Processing time / validity / stay-duration semantics | **RESOLVED** | ProcessingTime != VisaValidity != AllowedStay. Entry Count / Entry Policy is a fourth independent fact. Structured min/max+unit or value+unit facts, not a Duration blob and not a rules engine. Optional EffectiveFrom/EffectiveTo readiness only. Do not hardcode regulatory durations as architecture truth. |
 | **P17-R6** | Visa fee vs Pricing ownership | **OPEN** | ROADMAP mentions pricing as a P17 theme. Pricing module already owns Price/Quote (P12). Commercial Visa service reference is allowed “if needed”. Do **not** assume Visa stores Money. |
 | **P17-R7** | Public Visa presentation / Content / SEO boundary | **OPEN** | `VisaDetailPage` exists as public intent only. SEO = IndexPolicy. Content = editorial FAQ/guides. PublicExperience = composition. Visa = structured fact owner. Published ≠ Indexed. |
 | **P17-R8** | Visa application/service vs future Booking/transaction | **OPEN** | ROADMAP: forms/workflow **if needed**. Booking = P19. Payment = P20. Notification example `VisaApplicationUpdated` is **not** a locked event list. Full application wizard is an explicit page non-goal. Likely DEFER — **not resolved here**. |

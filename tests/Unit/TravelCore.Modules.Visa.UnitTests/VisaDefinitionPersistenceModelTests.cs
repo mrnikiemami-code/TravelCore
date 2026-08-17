@@ -95,7 +95,7 @@ public sealed class VisaDefinitionPersistenceModelTests
         Assert.Equal(VisaDbContext.SchemaName, applicabilityFk.PrincipalEntityType.GetSchema());
         Assert.Equal(DeleteBehavior.Cascade, applicabilityFk.DeleteBehavior);
 
-        Assert.Equal(8, model.GetEntityTypes().Count());
+        Assert.Equal(12, model.GetEntityTypes().Count());
         Assert.DoesNotContain(
             model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()),
             f =>
@@ -120,6 +120,18 @@ public sealed class VisaDefinitionPersistenceModelTests
         Assert.DoesNotContain("storage_key", columns);
         Assert.DoesNotContain("mime_type", columns);
         Assert.DoesNotContain("file_size", columns);
+        Assert.DoesNotContain("duration", columns);
+        Assert.NotNull(model.FindEntityType(typeof(VisaProcessingTime)));
+        Assert.Equal("visa_processing_times", model.FindEntityType(typeof(VisaProcessingTime))!.GetTableName());
+        Assert.NotNull(model.FindEntityType(typeof(VisaValidity)));
+        Assert.Equal("visa_validities", model.FindEntityType(typeof(VisaValidity))!.GetTableName());
+        Assert.NotNull(model.FindEntityType(typeof(VisaAllowedStay)));
+        Assert.Equal("visa_allowed_stays", model.FindEntityType(typeof(VisaAllowedStay))!.GetTableName());
+        Assert.NotNull(model.FindEntityType(typeof(VisaEntryPolicy)));
+        Assert.Equal("visa_entry_policies", model.FindEntityType(typeof(VisaEntryPolicy))!.GetTableName());
+        Assert.NotNull(setType.FindProperty(nameof(VisaRequirementSet.EffectiveFrom)));
+        Assert.NotNull(setType.FindProperty(nameof(VisaRequirementSet.EffectiveTo)));
+        Assert.Null(setType.FindProperty("Duration"));
         Assert.Null(model.GetEntityTypes().FirstOrDefault(e =>
             string.Equals(e.GetTableName(), "visa_requirements", StringComparison.OrdinalIgnoreCase)));
         Assert.Null(model.GetEntityTypes().FirstOrDefault(e =>

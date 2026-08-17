@@ -50,7 +50,7 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.True(VisaOwnershipBoundary.RequiredDocumentImplemented);
         Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
         Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
-        Assert.False(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
+        Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
         Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
     }
@@ -121,7 +121,7 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.True(VisaOwnershipBoundary.RequiredDocumentImplemented);
         Assert.True(VisaOwnershipBoundary.EligibilityModelImplemented);
         Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
-        Assert.False(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
+        Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
         Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
     }
@@ -189,6 +189,29 @@ public sealed class VisaBoundaryGuardrailTests
     }
 
     [Fact]
+    public void Visa_T005_Separates_Processing_Validity_Stay_And_Entry()
+    {
+        Assert.NotNull(typeof(TravelCore.Modules.Visa.Domain.VisaProcessingTime));
+        Assert.NotNull(typeof(TravelCore.Modules.Visa.Domain.VisaValidity));
+        Assert.NotNull(typeof(TravelCore.Modules.Visa.Domain.VisaAllowedStay));
+        Assert.NotNull(typeof(TravelCore.Modules.Visa.Domain.VisaEntryPolicy));
+        Assert.NotEqual(
+            typeof(TravelCore.Modules.Visa.Domain.VisaProcessingTime),
+            typeof(TravelCore.Modules.Visa.Domain.VisaValidity));
+        Assert.NotEqual(
+            typeof(TravelCore.Modules.Visa.Domain.VisaValidity),
+            typeof(TravelCore.Modules.Visa.Domain.VisaAllowedStay));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaRequirementSet).GetProperty("Duration"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaProcessingTime).GetProperty("Duration"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaProcessingTime).GetProperty("Amount"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaValidity).GetProperty("Fee"));
+        Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
+        Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
+        Assert.False(VisaOwnershipBoundary.RegulatoryEngineImplemented);
+    }
+
+    [Fact]
     public void Visa_Evidence_Keeps_Ascii_Invariants()
     {
         var plan = Path.Combine(RepoRoot, "docs", "plans", "P17-implementation-plan.md");
@@ -206,6 +229,8 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.Contains("P17-R4", text, StringComparison.Ordinal);
         Assert.Contains("RequiredDocument != EligibilityRequirement", text, StringComparison.Ordinal);
         Assert.Contains("EligibilityRequirement != Rules Engine", text, StringComparison.Ordinal);
+        Assert.Contains("ProcessingTime != VisaValidity", text, StringComparison.Ordinal);
+        Assert.Contains("VisaValidity != AllowedStay", text, StringComparison.Ordinal);
         Assert.Contains("VisaDefinition != VisaRequirementSet", text, StringComparison.Ordinal);
         Assert.Contains("Applicability != Rules Engine", text, StringComparison.Ordinal);
     }

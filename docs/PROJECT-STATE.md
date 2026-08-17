@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P17 — Visa** (**IN PROGRESS** — T004 documents/eligibility) |
+| Current Phase | **P17 — Visa** (**IN PROGRESS** — T005 processing/validity/stay) |
 | Previous Phase | **P16 — UGC** (**COMPLETE** — `TC-P16-GATE` ACCEPTED `538f3fc`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P17-T004` — required documents and eligibility facts (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P17-T005` — processing, validity, stay, and entry semantics (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P17 — Visa |
-| Current Next Task | Architect review of T004 → next locked task (do not invent R5–R8) |
+| Current Next Task | Architect review of T005 → next locked task (do not invent R6–R8) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -218,17 +218,18 @@
 | P16-T008 | **COMPLETE / ACCEPTED** (`62a1d7b`) — Public UGC composition / read contracts |
 | P16-T009 | **COMPLETE / ACCEPTED** (`ee02dd8`) — Hardening and evidence pack |
 | P16-GATE | **COMPLETE / ACCEPTED** (`538f3fc`) — Acceptance evidence (no new product capability) |
-| P17 | **IN PROGRESS** — Plan ACCEPTED · **P17-R1–R4 RESOLVED** · T004 documents/eligibility |
+| P17 | **IN PROGRESS** — Plan ACCEPTED · **P17-R1–R5 RESOLVED** · T005 processing/validity/stay |
 | P17 Plan | `TC-P17-PLAN` COMPLETE / ACCEPTED (`1b5c8ea`) — [`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md) |
 | P17-T001 | **COMPLETE / ACCEPTED** (`5f18f83`) — Visa module scaffolding (`visa` schema) |
 | P17-T002 | **COMPLETE / ACCEPTED** (`12f19e7`) — VisaDefinition + VisaRequirementSet baseline |
 | P17-T003 | **COMPLETE / ACCEPTED** (`8098ee2`) — VisaApplicability context baseline |
-| P17-T004 | **AWAITING_ARCHITECT_REVIEW** — RequiredDocument + EligibilityRequirement |
+| P17-T004 | **COMPLETE / ACCEPTED** (`f5f52de`) — RequiredDocument + EligibilityRequirement |
+| P17-T005 | **AWAITING_ARCHITECT_REVIEW** — ProcessingTime / Validity / AllowedStay / EntryPolicy |
 | P17-R1 (Visa ownership) | **RESOLVED** — independent Visa module · schema `visa` · owns structured visa-domain facts/lifecycle · does not own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, Identity/Party · geographic refs = opaque logical id · T001: no VisaDefinition/requirement/document/fee/application product types |
 | P17-R2 (Definition vs requirement) | **RESOLVED** — VisaDefinition = stable visa-type identity; VisaRequirementSet = context-dependent facts; 1 → 0..N; **VisaDefinition != VisaRequirementSet**; no applicability/docs/fees |
 | P17-R3 (Applicability) | **RESOLVED** — exactly one VisaApplicability per RequirementSet · logical Destination/jurisdiction id · optional opaque nationality/residence alpha-2 · optional Adult/Minor/Other · **Applicability != Rules Engine** |
 | P17-R4 (Documents / eligibility) | **RESOLVED** — RequiredDocument != EligibilityRequirement · row-based codes + RequirementLevel · eligibility is structured facts not a rules engine |
-| P17-R5 (Processing / validity) | **OPEN** — processing time / validity / stay-duration |
+| P17-R5 (Processing / validity) | **RESOLVED** — ProcessingTime != VisaValidity != AllowedStay · EntryPolicy independent · no Duration field · effective-period readiness only |
 | P17-R6 (Fee vs Pricing) | **OPEN** — Visa fee vs Pricing Price/Quote ownership |
 | P17-R7 (Public / Content / SEO) | **OPEN** — public Visa presentation vs Content vs SEO IndexPolicy |
 | P17-R8 (Application vs Booking) | **OPEN** — application/service boundary vs future Booking |
@@ -334,7 +335,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P17_T004_DELIVERED** · PLAN ACCEPTED · P17-R1–R4 RESOLVED · T004 awaiting review · R5–R8 UNRESOLVED |
+| Phase Transition State | **P17_T005_DELIVERED** · PLAN ACCEPTED · P17-R1–R5 RESOLVED · T005 awaiting review · R6–R8 UNRESOLVED |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -343,7 +344,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P17-T004`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P17-T005`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -698,7 +699,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P17-T001 | Visa module scaffolding | COMPLETE / ACCEPTED | `5f18f83` |
 | TC-P17-T002 | VisaDefinition / RequirementSet baseline | COMPLETE / ACCEPTED | `12f19e7` |
 | TC-P17-T003 | Visa applicability context baseline | COMPLETE / ACCEPTED | `8098ee2` |
-| TC-P17-T004 | Required documents / eligibility facts | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P17-T004 | Required documents / eligibility facts | COMPLETE / ACCEPTED | `f5f52de` |
+| TC-P17-T005 | Processing / validity / stay / entry semantics | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -767,6 +769,7 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - **P17-R2 RESOLVED:** VisaDefinition = stable visa-type identity/meaning. VisaRequirementSet = context-dependent requirement facts for one definition. VisaDefinition 1 → 0..N VisaRequirementSet. **VisaDefinition != VisaRequirementSet**. No applicability/docs/fees in T002.
 - **P17-R3 RESOLVED:** Each VisaRequirementSet has exactly one VisaApplicability. Destination/jurisdiction is an opaque logical id. Nationality/residence are optional opaque ISO alpha-2 codes. Optional controlled ApplicantCategory. **Applicability != Rules Engine**. No peer-schema FK.
 - **P17-R4 RESOLVED:** VisaRequirementSet owns RequiredDocument and EligibilityRequirement children. **RequiredDocument != EligibilityRequirement**. **EligibilityRequirement != Rules Engine**. No applicant uploads/OCR/MediaAsset.
+- **P17-R5 RESOLVED:** ProcessingTime != VisaValidity != AllowedStay. EntryPolicy is independent. No Duration field. EffectiveFrom/EffectiveTo are readiness only.
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 

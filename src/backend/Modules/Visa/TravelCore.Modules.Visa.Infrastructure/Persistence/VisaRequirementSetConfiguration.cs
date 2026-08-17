@@ -28,6 +28,12 @@ internal sealed class VisaRequirementSetConfiguration : IEntityTypeConfiguration
             .HasColumnName("updated_at")
             .IsRequired();
 
+        builder.Property(x => x.EffectiveFrom)
+            .HasColumnName("effective_from");
+
+        builder.Property(x => x.EffectiveTo)
+            .HasColumnName("effective_to");
+
         builder.HasIndex(x => x.VisaDefinitionId)
             .HasDatabaseName("ix_visa_requirement_sets_visa_definition_id");
 
@@ -59,6 +65,46 @@ internal sealed class VisaRequirementSetConfiguration : IEntityTypeConfiguration
 
         builder.Navigation(x => x.EligibilityRequirements)
             .HasField("_eligibilityRequirements")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasOne(x => x.ProcessingTime)
+            .WithOne()
+            .HasForeignKey<VisaProcessingTime>(x => x.VisaRequirementSetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.ProcessingTime)
+            .HasField("_processingTime")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasOne(x => x.Validity)
+            .WithOne()
+            .HasForeignKey<VisaValidity>(x => x.VisaRequirementSetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Validity)
+            .HasField("_validity")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasOne(x => x.AllowedStay)
+            .WithOne()
+            .HasForeignKey<VisaAllowedStay>(x => x.VisaRequirementSetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.AllowedStay)
+            .HasField("_allowedStay")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasOne(x => x.EntryPolicy)
+            .WithOne()
+            .HasForeignKey<VisaEntryPolicy>(x => x.VisaRequirementSetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.EntryPolicy)
+            .HasField("_entryPolicy")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
     }

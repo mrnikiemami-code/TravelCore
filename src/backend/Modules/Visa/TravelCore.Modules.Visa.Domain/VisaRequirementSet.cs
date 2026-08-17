@@ -4,13 +4,18 @@ namespace TravelCore.Modules.Visa.Domain;
 
 /// <summary>
 /// Context-dependent requirement facts for one VisaDefinition (TC-P17-T002 / P17-R2).
-/// Owns exactly one VisaApplicability (TC-P17-T003 / P17-R3). Documents, processing, and fees remain later R#.
+/// Owns exactly one VisaApplicability (TC-P17-T003 / P17-R3), document/eligibility children (P17-R4),
+/// and distinct processing/validity/stay/entry facts (TC-P17-T005 / P17-R5). Fees remain later R#.
 /// </summary>
 public sealed class VisaRequirementSet
 {
     private readonly List<VisaRequiredDocument> _requiredDocuments = [];
     private readonly List<VisaEligibilityRequirement> _eligibilityRequirements = [];
     private VisaApplicability _applicability = null!;
+    private VisaProcessingTime? _processingTime;
+    private VisaValidity? _validity;
+    private VisaAllowedStay? _allowedStay;
+    private VisaEntryPolicy? _entryPolicy;
 
     private VisaRequirementSet()
     {
@@ -48,8 +53,26 @@ public sealed class VisaRequirementSet
 
     public Instant UpdatedAt { get; private set; }
 
+    /// <summary>Optional fact-window start. Readiness only — not a versioning engine.</summary>
+    public Instant? EffectiveFrom { get; private set; }
+
+    /// <summary>Optional fact-window end. Readiness only — not a versioning engine.</summary>
+    public Instant? EffectiveTo { get; private set; }
+
     /// <summary>Exactly one structured applicability context. Not a rules engine.</summary>
     public VisaApplicability Applicability => _applicability;
+
+    /// <summary>Issuance/review processing time. Not validity, stay, or entry.</summary>
+    public VisaProcessingTime? ProcessingTime => _processingTime;
+
+    /// <summary>How long an issued visa remains valid. Not processing time or stay.</summary>
+    public VisaValidity? Validity => _validity;
+
+    /// <summary>Maximum allowed presence. Not visa validity or processing time.</summary>
+    public VisaAllowedStay? AllowedStay => _allowedStay;
+
+    /// <summary>Entry count/policy. Not inferred from any time quantity.</summary>
+    public VisaEntryPolicy? EntryPolicy => _entryPolicy;
 
     public IReadOnlyList<VisaRequiredDocument> RequiredDocuments => _requiredDocuments;
 
@@ -138,6 +161,56 @@ public sealed class VisaRequirementSet
         _eligibilityRequirements.Add(requirement);
         Touch(now);
         return requirement;
+    }
+
+    public VisaProcessingTime SetProcessingTime(int minValue, string unit, Instant now, int? maxValue = null)
+    {
+        _processingTime = VisaProcessingTime.Create(Id, minValue, maxValue, unit);
+        Touch(now);
+        return _processingTime;
+    }
+
+    public VisaValidity SetValidity(int value, string unit, Instant now)
+    {
+        _validity = VisaValidity.Create(Id, value, unit);
+        Touch(now);
+        return _validity;
+    }
+
+    public VisaAllowedStay SetAllowedStay(int value, string unit, Instant now)
+    {
+        _allowedStay = VisaAllowedStay.Create(Id, value, unit);
+        Touch(now);
+        return _allowedStay;
+    }
+
+    public VisaEntryPolicy SetEntryPolicy(string kind, Instant now)
+    {
+        _entryPolicy = VisaEntryPolicy.Create(Id, kind);
+        Touch(now);
+        return _entryPolicy;
+    }
+
+    public void SetEffectivePeriod(Instant? effectiveFrom, Instant? effectiveTo, Instant now)
+    {
+        if (effectiveFrom is Instant from && from == default)
+        {
+            throw new ArgumentException("EffectiveFrom cannot be default Instant.", nameof(effectiveFrom));
+        }
+
+        if (effectiveTo is Instant to && to == default)
+        {
+            throw new ArgumentException("EffectiveTo cannot be default Instant.", nameof(effectiveTo));
+        }
+
+        if (effectiveFrom is Instant start && effectiveTo is Instant end && end < start)
+        {
+            throw new ArgumentOutOfRangeException(nameof(effectiveTo), "EffectiveTo cannot be before EffectiveFrom.");
+        }
+
+        EffectiveFrom = effectiveFrom;
+        EffectiveTo = effectiveTo;
+        Touch(now);
     }
 
     private void Touch(Instant now)
