@@ -8,7 +8,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Tour migration + TourProduct core through publishing/slug (TC-P09-T002…T008).
+/// Real-PostgreSQL Tour migration + TourProduct core + Experience specialization (TC-P09… · TC-P10-T001).
 /// </summary>
 [Collection(nameof(TourMigrationLifecycleCollection))]
 public sealed class TourMigrationLifecycleTests
@@ -29,7 +29,7 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(8, expectedMigrations.Length);
+            Assert.Equal(9, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
@@ -38,6 +38,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.EndsWith("_AddTourProductCatalogFacts", expectedMigrations[5], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductMediaLinks", expectedMigrations[6], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductPublishingAndSlug", expectedMigrations[7], StringComparison.Ordinal);
+            Assert.EndsWith("_AddTourExperienceSpecialization", expectedMigrations[8], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -53,7 +54,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'tour';
                 """, ct));
-            Assert.Equal(8, await ScalarIntAsync(conn, """
+            Assert.Equal(9, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'tour'
@@ -65,9 +66,10 @@ public sealed class TourMigrationLifecycleTests
                     'tour_product_policies',
                     'tour_product_requirements',
                     'tour_product_media_links',
+                    'tour_experience_specializations',
                     '__EFMigrationsHistory');
                 """, ct));
-            // P09-R7 / T004: no specialty / departure / cross-schema FK invented.
+            // No Package specialty / P11 departure product tables; Experience uses typed specialization table only.
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
@@ -75,9 +77,13 @@ public sealed class TourMigrationLifecycleTests
                   AND table_name IN (
                     'experience_tours',
                     'package_tours',
+                    'tour_package_specializations',
                     'tour_departures',
                     'flight_segments',
-                    'tour_hotel_options');
+                    'tour_hotel_options',
+                    'itineraries',
+                    'itinerary_days',
+                    'stops');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -135,9 +141,11 @@ public sealed class TourMigrationLifecycleTests
             experience.ReplaceRequirements([new TourCatalogFactInput("passport", "6 months validity")], now);
             experience.SetCover(coverId, now);
             experience.AddGalleryItem(galleryId, now);
+            var experienceSpec = TourExperienceSpecialization.CreateFor(experience, now);
             var package = TourProduct.CreatePackage("PKG-IT-001", "Istanbul Package", now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
+            db.ExperienceSpecializations.Add(experienceSpec);
             await db.SaveChangesAsync(ct);
         }
 
@@ -168,12 +176,17 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal("پیاده‌روی خزر", loaded.FindTranslation("fa")!.Title);
             Assert.Equal("Caspian Walk", loaded.FindTranslation("en")!.Title);
 
+            var loadedSpec = await db.ExperienceSpecializations.SingleAsync(x => x.TourProductId == createdId, ct);
+            Assert.Equal(createdId, loadedSpec.TourProductId);
+            Assert.Equal(now, loadedSpec.CreatedAt);
+
             var package = await db.TourProducts.SingleAsync(x => x.Code == "PKG-IT-001", ct);
             Assert.Equal(TourKind.Package, package.Kind);
             Assert.Null(package.ClassificationCode);
             Assert.Null(package.OriginDestinationId);
             Assert.Null(package.AgencyId);
             Assert.Empty(package.Destinations);
+            Assert.False(await db.ExperienceSpecializations.AnyAsync(x => x.TourProductId == package.Id, ct));
         }
     }
 

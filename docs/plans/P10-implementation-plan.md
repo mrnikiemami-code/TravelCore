@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P10-PLAN` |
 | Phase | P10 — Experience Tour |
-| Status | AWAITING_ARCHITECT_REVIEW |
+| Status | ACCEPTED (architect) · implementation IN_PROGRESS |
 | Baseline | `67fc580` (`docs: sync ROADMAP for TC-P09-GATE review` — **TC-P09-GATE** ACCEPTED; P09 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P10 · `docs/architecture/15-future-architecture-transition-map.md` § J · `04-module-boundaries.md` § Tour (Experience Tour) · `05-dependency-rules.md` · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` (ExperienceTour · Itinerary · ItineraryDay · Stop · MealPlan adjacent) · P09 Tour Core locks (R1–R8; shared TourProduct delivered) · P07 Place locks (Attraction/Hotel catalog ≠ Tour ownership) · P06 Media locks (consumer owns relationship meaning) · P05 SEO locks · ADR 0001 · ADR 0007–0008 · ADR 0011–0014 |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 این سند **نقشهٔ اجرایی معتبر P10** است. پیاده‌سازی محصول در این سند انجام نمی‌شود؛ فقط Taskهای اجرایی را برای Cursor تعریف می‌کند.
 
-> **Envelope note:** Scope is authored from **repository SoT** (ROADMAP § P10 · transition map § J · Tour module boundaries · P09 RESOLVED R1–R8). **TC-P09-GATE** ACCEPTED (`67fc580`). Under PIPELINE continuity (USER 2026-08-17), ceremonial `TRAVELCORE_PHASE_CONFIRM` / `TRAVELCORE_TASK_CONFIRM` are **not required** to start this PLAN after Gate ACCEPT. Architect may amend on review. **Planning only — no product code · no T001 until Auto-Execute.**
+> **Envelope note:** Scope is authored from **repository SoT** (ROADMAP § P10 · transition map § J · Tour module boundaries · P09 RESOLVED R1–R8). **TC-P09-GATE** ACCEPTED (`67fc580`). **TC-P10-PLAN** ACCEPTED by architect; Auto-Execute issued for T001. Under PIPELINE continuity (USER 2026-08-17), ceremonial confirms are **not required**.
 
 ---
 
@@ -303,7 +303,7 @@ Exact parallelization may be adjusted by architect on accept; Cursor must not in
 
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
-| **P10-R1** | Experience specialization + Itinerary ownership shape | **UNRESOLVED** | How Experience typed specialization attaches to TourProduct (1:1 table?); whether Itinerary is 1:1 with Experience specialization vs TourProduct; aggregate boundaries. Do not invent. |
+| **P10-R1** | Experience specialization + Itinerary ownership shape | **PARTIAL** | **Attachment (T001):** Experience specialization is 1:1 with `TourProductId` (`tour_experience_specializations`) for `TourKind.Experience` only — delivered under Auto-Execute Allowed + P09-R1 typed specialization; no Package specialty. **Still open:** whether Itinerary is 1:1 with Experience specialization vs TourProduct; aggregate boundaries for itinerary (needed by T002). Do not invent itinerary ownership. |
 | **P10-R2** | Stop → Destination / Attraction (Place) link cardinality | **UNRESOLVED** | 0..1 vs 0..N Destination; 0..1 vs 0..N Attraction PlaceId; requiredness; mutual exclusivity rules. Logical refs only; no cross-schema FK. |
 | **P10-R3** | Accommodation plan vs Place Hotel | **UNRESOLVED** | Experience accommodation plan field shape; optional Place Hotel `PlaceId` refs vs free-text plan only; must not invent P11 `TourHotelOption`. |
 | **P10-R4** | Media for itinerary / day / stop | **UNRESOLVED** | Whether day/stop media roles exist beyond TourProduct Cover/Gallery (P09-R8); roles/cardinality; or DEFER media to product-level only. |

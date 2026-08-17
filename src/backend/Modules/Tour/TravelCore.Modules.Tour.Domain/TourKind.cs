@@ -2,7 +2,7 @@ namespace TravelCore.Modules.Tour.Domain;
 
 /// <summary>
 /// Closed TourKind classification (P09-R1).
-/// One TourProduct has exactly one primary kind — typed specialization tables deferred (P09-R7 → P10/P11).
+/// One TourProduct has exactly one primary kind — Experience specialization starts in P10 (TC-P10-T001); Package specialty remains P11.
 /// </summary>
 public enum TourKind : short
 {
