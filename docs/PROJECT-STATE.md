@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T001) |
+| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T003) |
 | Previous Phase | **P09 — Tour Core** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P10-T002` — AWAITING_ARCHITECT_REVIEW |
+| Current Active Product Task | `TC-P10-T003` — AWAITING_ARCHITECT_REVIEW |
 | Current Next Product Phase | P10 — Experience Tour (**IN_PROGRESS**) |
-| Current Next Task | Await architect ACCEPT of `TC-P10-T002` / Auto-Execute T003 |
+| Current Next Task | Await architect ACCEPT of `TC-P10-T003` / Auto-Execute T004 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -156,8 +156,10 @@
 | P10 | **IN_PROGRESS** (T001 — PLAN ACCEPTED; continuity after P09 Gate ACCEPT) |
 | P10 Plan | `TC-P10-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) |
 | P10-T001 | **COMPLETE / ACCEPTED** (`e5490ae`) — Experience specialization foundation (`tour_experience_specializations` 1:1) |
-| P10-T002 | **AWAITING_ARCHITECT_REVIEW** — Experience Itinerary + Day + Stop structure (P10-R1) |
+| P10-T002 | **COMPLETE / ACCEPTED** (`757c9b8`) — Experience Itinerary + Day + Stop structure (P10-R1) |
+| P10-T003 | **AWAITING_ARCHITECT_REVIEW** — Stop Destination/Place semantic links (P10-R2) |
 | P10-R1 (Experience specialization + Itinerary ownership) | **RESOLVED** — Experience owns Itinerary (0..1 child); Day/Stop under Itinerary |
+| P10-R2 (Stop Destination/Place links) | **RESOLVED** — DestinationId 0..1 · PlaceId 0..1 (Attraction-kind) · logical · no exclusivity · no FK |
 | P09-R1 (TourProduct model shape) | **RESOLVED** — Core TourProduct + Typed Specialization; canonical `TourProductId`; Experience/Package = future typed specialization; TourDeparture = separate future aggregate |
 | P09-R2 (Destination / Origin links) | **RESOLVED** — Destinations **0..N** logical join; Origin **0..1** nullable `OriginDestinationId`; no cross-schema FK; Contracts existence validation |
 | P09-R3 (Agency reference) | **RESOLVED** — optional logical `AgencyId` **0..1**; PartyKind.Agency via Party.Contracts; no cross-schema FK |
@@ -204,7 +206,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P10_T002_REVIEW** · `TC-P10-T001` ACCEPTED (`e5490ae`) · P10-R1 RESOLVED · `TC-P10-T002` awaiting architect ACCEPT |
+| Phase Transition State | **P10_T003_REVIEW** · T001/T002 ACCEPTED · P10-R1/R2 RESOLVED · `TC-P10-T003` awaiting architect ACCEPT |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -213,7 +215,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P10-T002`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P10-T003`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -375,7 +377,7 @@
 - Pipeline Protocol = READY; Current Runtime Mode = PIPELINE (USER opt-in); Automatic Pipeline = ON
 - P01 product phase COMPLETE through `TC-P01-T019` (`2370316`); `TC-P01-GATE` COMPLETE / ACCEPTED (`0853d04`)
 - P02 COMPLETE; `TC-P02-PLAN` through `TC-P02-T017` ACCEPTED; `TC-P02-GATE` COMPLETE / ACCEPTED (`4eacff5`); evidence: `docs/plans/P02-T017-walking-skeleton-validation-evidence.md`
-- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 COMPLETE** (`TC-P08-GATE` ACCEPTED `576b7fa`); **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED**; **P09 COMPLETE** (`TC-P09-GATE` ACCEPTED `67fc580` · T010 `0334bae` · R1–R8 RESOLVED); **P10 IN_PROGRESS** (`TC-P10-T001` ACCEPTED `e5490ae` · `TC-P10-T002` AWAITING_ARCHITECT_REVIEW · **P10-R1 RESOLVED**)
+- P04 COMPLETE (`TC-P04-GATE` ACCEPTED `f70991f`); **P05 COMPLETE** (`TC-P05-GATE` ACCEPTED `7f234e8` · `TC-P05-GATE-R1` ACCEPTED `bde6661`); **P06 COMPLETE** (`TC-P06-GATE` ACCEPTED `da345b5`); **P07 COMPLETE** (`TC-P07-GATE` ACCEPTED `84a0a48`); Runtime Mode = PIPELINE; **P08 COMPLETE** (`TC-P08-GATE` ACCEPTED `576b7fa`); **P08-R1/R2/R3/R4/R5 RESOLVED** · **P08-R6–R8 UNRESOLVED**; **P09 COMPLETE** (`TC-P09-GATE` ACCEPTED `67fc580` · T010 `0334bae` · R1–R8 RESOLVED); **P10 IN_PROGRESS** (T001 `e5490ae` · T002 `757c9b8` · `TC-P10-T003` AWAITING_ARCHITECT_REVIEW · **P10-R1/R2 RESOLVED**)
 
 Recovery Drill note: recovery prompt successfully reconstructed current phase, accepted/pending task state, ADR statuses, and clean Git state without modifying the repository.
 
@@ -502,7 +504,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P09-GATE | P09 Acceptance Gate | COMPLETE / ACCEPTED | `67fc580` |
 | TC-P10-PLAN | P10 Experience Tour Implementation Plan | COMPLETE / ACCEPTED | `d6d27e6` |
 | TC-P10-T001 | Experience specialization scaffolding | COMPLETE / ACCEPTED | `e5490ae` |
-| TC-P10-T002 | Experience Itinerary + Day + Stop baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P10-T002 | Experience Itinerary + Day + Stop baseline | COMPLETE / ACCEPTED | `757c9b8` |
+| TC-P10-T003 | Experience Stop semantic references | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

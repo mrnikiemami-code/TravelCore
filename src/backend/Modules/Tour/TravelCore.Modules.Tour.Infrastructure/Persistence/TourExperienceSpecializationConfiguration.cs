@@ -132,10 +132,21 @@ internal sealed class ExperienceItineraryStopConfiguration : IEntityTypeConfigur
             .HasColumnName("sort_order")
             .IsRequired();
 
+        // Logical DestinationId / PlaceId only — deliberately no FK / navigation (P10-R2).
+        builder.Property(x => x.DestinationId)
+            .HasColumnName("destination_id");
+
+        builder.Property(x => x.PlaceId)
+            .HasColumnName("place_id");
+
         builder.HasIndex(x => new { x.ItineraryDayId, x.SortOrder })
             .IsUnique()
             .HasDatabaseName("ux_tour_experience_itinerary_stops_day_sort");
 
-        // Deliberately no DestinationId / PlaceId columns in T002 (P10-R2 deferred).
+        builder.HasIndex(x => x.DestinationId)
+            .HasDatabaseName("ix_tour_experience_itinerary_stops_destination_id");
+
+        builder.HasIndex(x => x.PlaceId)
+            .HasDatabaseName("ix_tour_experience_itinerary_stops_place_id");
     }
 }

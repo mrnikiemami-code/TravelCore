@@ -82,7 +82,7 @@ public sealed class TourExperienceSpecializationGuardrailTests
     }
 
     [Fact]
-    public void ItineraryStructure_ExistsUnderExperience_WithoutPlaceLinks_T002()
+    public void ItineraryStructure_ExistsUnderExperience_WithLogicalStopLinks_T003()
     {
         var domainRoot = Path.Combine(
             RepoRoot,
@@ -106,11 +106,24 @@ public sealed class TourExperienceSpecializationGuardrailTests
             }));
 
         Assert.Contains("SortOrder", stopText, StringComparison.Ordinal);
-        Assert.DoesNotContain("DestinationId", stopCode, StringComparison.Ordinal);
-        Assert.DoesNotContain("PlaceId", stopCode, StringComparison.Ordinal);
+        Assert.Contains("DestinationId", stopCode, StringComparison.Ordinal);
+        Assert.Contains("PlaceId", stopCode, StringComparison.Ordinal);
         Assert.DoesNotContain("AttractionId", stopCode, StringComparison.Ordinal);
         Assert.DoesNotContain("Meal", stopCode, StringComparison.Ordinal);
         Assert.DoesNotContain("Accommodation", stopCode, StringComparison.Ordinal);
+
+        var config = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Tour",
+            "TravelCore.Modules.Tour.Infrastructure",
+            "Persistence",
+            "TourExperienceSpecializationConfiguration.cs"));
+        Assert.Contains("destination_id", config, StringComparison.Ordinal);
+        Assert.Contains("place_id", config, StringComparison.Ordinal);
+        Assert.Contains("no FK", config, StringComparison.OrdinalIgnoreCase);
 
         var specialization = File.ReadAllText(Path.Combine(domainRoot, "TourExperienceSpecialization.cs"));
         Assert.Contains("EnsureItinerary", specialization, StringComparison.Ordinal);

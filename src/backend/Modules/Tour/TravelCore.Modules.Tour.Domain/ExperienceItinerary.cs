@@ -102,6 +102,36 @@ public sealed class ExperienceItinerary
         return stop;
     }
 
+    public ExperienceItineraryStop GetStop(ItineraryStopId stopId)
+    {
+        foreach (var day in _days)
+        {
+            var stop = day.Stops.FirstOrDefault(x => x.Id == stopId);
+            if (stop is not null)
+            {
+                return stop;
+            }
+        }
+
+        throw new ArgumentException($"Itinerary stop '{stopId}' was not found.", nameof(stopId));
+    }
+
+    public ExperienceItineraryStop SetStopDestinationLink(ItineraryStopId stopId, Guid? destinationId, Instant now)
+    {
+        var stop = GetStop(stopId);
+        stop.SetDestinationLink(destinationId);
+        UpdatedAt = now;
+        return stop;
+    }
+
+    public ExperienceItineraryStop SetStopPlaceLink(ItineraryStopId stopId, Guid? placeId, Instant now)
+    {
+        var stop = GetStop(stopId);
+        stop.SetPlaceLink(placeId);
+        UpdatedAt = now;
+        return stop;
+    }
+
     public bool RemoveDay(ItineraryDayId dayId, Instant now)
     {
         var day = _days.FirstOrDefault(x => x.Id == dayId);

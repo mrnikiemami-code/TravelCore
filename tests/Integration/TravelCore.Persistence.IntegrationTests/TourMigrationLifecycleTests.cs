@@ -29,7 +29,7 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(10, expectedMigrations.Length);
+            Assert.Equal(11, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
@@ -40,6 +40,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.EndsWith("_AddTourProductPublishingAndSlug", expectedMigrations[7], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourExperienceSpecialization", expectedMigrations[8], StringComparison.Ordinal);
             Assert.EndsWith("_AddExperienceItineraryStructure", expectedMigrations[9], StringComparison.Ordinal);
+            Assert.EndsWith("_AddExperienceItineraryStopSemanticLinks", expectedMigrations[10], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -91,7 +92,32 @@ public sealed class TourMigrationLifecycleTests
                 FROM information_schema.columns
                 WHERE table_schema = 'tour'
                   AND table_name = 'tour_experience_itinerary_stops'
-                  AND column_name IN ('destination_id', 'place_id', 'attraction_id');
+                  AND column_name IN ('attraction_id');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'tour'
+                  AND table_name = 'tour_experience_itinerary_stops'
+                  AND column_name = 'destination_id';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'tour'
+                  AND table_name = 'tour_experience_itinerary_stops'
+                  AND column_name = 'place_id';
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.table_constraints tc
+                JOIN information_schema.constraint_column_usage ccu
+                  ON tc.constraint_name = ccu.constraint_name
+                 AND tc.table_schema = ccu.table_schema
+                WHERE tc.table_schema = 'tour'
+                  AND tc.table_name = 'tour_experience_itinerary_stops'
+                  AND tc.constraint_type = 'FOREIGN KEY'
+                  AND ccu.table_schema IN ('destination', 'place');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -152,8 +178,12 @@ public sealed class TourMigrationLifecycleTests
             var experienceSpec = TourExperienceSpecialization.CreateFor(experience, now);
             var itinerary = experienceSpec.EnsureItinerary(now);
             var day1 = itinerary.AddDay(1, now);
+            var stop = itinerary.AddStop(day1.Id, now);
             itinerary.AddStop(day1.Id, now);
-            itinerary.AddStop(day1.Id, now);
+            var stopDest = Guid.Parse("01900000-0000-7000-8000-000000000701");
+            var stopPlace = Guid.Parse("01900000-0000-7000-8000-000000000702");
+            itinerary.SetStopDestinationLink(stop.Id, stopDest, now);
+            itinerary.SetStopPlaceLink(stop.Id, stopPlace, now);
             var package = TourProduct.CreatePackage("PKG-IT-001", "Istanbul Package", now);
             createdId = experience.Id;
             db.TourProducts.AddRange(experience, package);
@@ -195,6 +225,10 @@ public sealed class TourMigrationLifecycleTests
             Assert.Single(loadedSpec.Itinerary!.Days);
             Assert.Equal(1, loadedSpec.Itinerary.DaysOrdered[0].DayNumber);
             Assert.Equal(2, loadedSpec.Itinerary.DaysOrdered[0].Stops.Count);
+            var linkedStop = loadedSpec.Itinerary.DaysOrdered[0].StopsOrdered[0];
+            Assert.Equal(Guid.Parse("01900000-0000-7000-8000-000000000701"), linkedStop.DestinationId);
+            Assert.Equal(Guid.Parse("01900000-0000-7000-8000-000000000702"), linkedStop.PlaceId);
+            Assert.Null(loadedSpec.Itinerary.DaysOrdered[0].StopsOrdered[1].DestinationId);
 
             var package = await db.TourProducts.SingleAsync(x => x.Code == "PKG-IT-001", ct);
             Assert.Equal(TourKind.Package, package.Kind);

@@ -42,7 +42,7 @@ public sealed class ExperienceItineraryTests
     }
 
     [Fact]
-    public void AddStop_AttachesToDay_WithoutDestinationOrAttractionFields()
+    public void AddStop_AttachesToDay_AndAllowsSemanticLinksWithoutOwnership()
     {
         var spec = CreateExperienceSpec("EXP-ITIN-003");
         var itinerary = spec.EnsureItinerary(Now);
@@ -55,10 +55,23 @@ public sealed class ExperienceItineraryTests
         Assert.Equal(1, stopB.SortOrder);
         Assert.Equal(new[] { 0, 1 }, day.StopsOrdered.Select(x => x.SortOrder).ToArray());
 
-        var stopType = typeof(ExperienceItineraryStop);
-        Assert.Null(stopType.GetProperty("DestinationId"));
-        Assert.Null(stopType.GetProperty("PlaceId"));
-        Assert.Null(stopType.GetProperty("AttractionId"));
+        var destId = Guid.Parse("01900000-0000-7000-8000-000000000901");
+        var placeId = Guid.Parse("01900000-0000-7000-8000-000000000902");
+        itinerary.SetStopDestinationLink(stopA.Id, destId, Now);
+        itinerary.SetStopPlaceLink(stopA.Id, placeId, Now);
+
+        Assert.Equal(destId, stopA.DestinationId);
+        Assert.Equal(placeId, stopA.PlaceId);
+        Assert.Null(stopB.DestinationId);
+        Assert.Null(stopB.PlaceId);
+
+        Assert.Throws<ArgumentException>(() => stopA.SetDestinationLink(Guid.Empty));
+        Assert.Throws<ArgumentException>(() => stopA.SetPlaceLink(Guid.Empty));
+
+        itinerary.SetStopDestinationLink(stopA.Id, null, Now);
+        itinerary.SetStopPlaceLink(stopA.Id, null, Now);
+        Assert.Null(stopA.DestinationId);
+        Assert.Null(stopA.PlaceId);
     }
 
     [Fact]
