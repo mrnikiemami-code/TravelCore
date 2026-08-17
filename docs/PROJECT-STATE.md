@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P16 — UGC** (**IN PROGRESS** — T008 public composition / read contracts) |
+| Current Phase | **P16 — UGC** (**IN PROGRESS** — T009 hardening and evidence pack) |
 | Previous Phase | **P15 — Search & Discovery** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P16-T008` — Public UGC composition / read contracts (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P16-T009` — UGC hardening and evidence pack (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P16 — UGC |
-| Current Next Task | Architect review of T008 → next locked task (T009 hardening) |
+| Current Next Task | Architect review of T009 → Auto-Execute `TC-P16-GATE` only |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -206,7 +206,7 @@
 | P15-T008 | **VACANT** — no independent product scope |
 | P15-T009 | **COMPLETE / ACCEPTED** (`b741bc5`) — Search hardening and evidence pack |
 | P15-GATE | **COMPLETE / ACCEPTED** (`4e2098d`) — Acceptance evidence |
-| P16 | **IN PROGRESS** — Plan ACCEPTED · **P16-R1–R8 RESOLVED** · T008 public composition / read contracts |
+| P16 | **IN PROGRESS** — Plan ACCEPTED · **P16-R1–R8 RESOLVED** · T001–T008 ACCEPTED · T009 hardening/evidence |
 | P16 Plan | `TC-P16-PLAN` COMPLETE / ACCEPTED (`bac626b`) — [`docs/plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md) |
 | P16-T001 | **COMPLETE / ACCEPTED** (`e5fa578`) — UGC module scaffolding (`ugc` schema) |
 | P16-T002 | **COMPLETE / ACCEPTED** (`a5cccb2`) — Review aggregate + structured dimension ratings |
@@ -215,7 +215,8 @@
 | P16-T005 | **COMPLETE / ACCEPTED** (`3d10913`) — UserPhoto relationship over logical MediaAssetId |
 | P16-T006 | **COMPLETE / ACCEPTED** (`2d1dd59`) — Flat Comment; Like = DEFERRED |
 | P16-T007 | **COMPLETE / ACCEPTED** (`30b3471`) — UGC moderation, publication, and reporting baseline |
-| P16-T008 | **IN PROGRESS** — Public UGC composition / read contracts |
+| P16-T008 | **COMPLETE / ACCEPTED** (`62a1d7b`) — Public UGC composition / read contracts |
+| P16-T009 | **IN PROGRESS** — Hardening and evidence pack (does not close GATE) |
 | P16-R1 (UGC ownership) | **RESOLVED** — independent UGC module · schema `ugc` · owns user-generated content lifecycle · does not own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, Payment · actor = opaque logical id |
 | P16-R2 (Review / Rating) | **RESOLVED** — Review is the aggregate. OverallRating (1..5) is part of Review. Dimension ratings are children (`DimensionCode` + `Value` 1..5, unique/normalized). Rating is not an independent aggregate. No hardcoded Hotel/Guide/Food/Service columns. |
 | P16-R3 (Target attachment) | **RESOLVED** — Each Review owns exactly one logical target (`TargetType` + `TargetId`). Controlled: TourProduct · Place · Agency. No peer-schema FK. Structural `IReviewTargetValidator` only. |
@@ -318,7 +319,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P16_T008_DELIVERED** · PLAN ACCEPTED · P16-R1–R8 RESOLVED · T008 awaiting review |
+| Phase Transition State | **P16_T009_DELIVERED** · PLAN ACCEPTED · P16-R1–R8 RESOLVED · T001–T008 ACCEPTED · T009 awaiting review · GATE not executed |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -327,7 +328,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P16-T008`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P16-T009`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -675,7 +676,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P16-T005 | UserPhoto vs Media boundary | COMPLETE / ACCEPTED | `3d10913` |
 | TC-P16-T006 | Comment baseline; Like deferred | COMPLETE / ACCEPTED | `2d1dd59` |
 | TC-P16-T007 | Moderation / publication / report | COMPLETE / ACCEPTED | `30b3471` |
-| TC-P16-T008 | Public composition / read contracts | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P16-T008 | Public composition / read contracts | COMPLETE / ACCEPTED | `62a1d7b` |
+| TC-P16-T009 | Hardening and evidence pack | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P16-PLAN` |
 | Phase | P16 — UGC |
-| Status | PLAN ACCEPTED; P16-R1–R8 RESOLVED; T001–T008 delivered |
+| Status | PLAN ACCEPTED; P16-R1–R8 RESOLVED; T001–T008 ACCEPTED; T009 hardening/evidence |
 | Baseline | `4e2098d` (`docs(search): P15 acceptance gate evidence [TC-P15-GATE]` — **TC-P15-GATE** ACCEPTED; P15 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P16 · `docs/architecture/15-future-architecture-transition-map.md` § P · `04-module-boundaries.md` § UGC · `05-dependency-rules.md` Knowledge/UGC · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` (Review · Travelogue) · P08 Content (UGC ≠ Content) · P06 Media (consumer owns relationship meaning) · P05 SEO (IndexPolicy) · P14 PublicExperience (composition only) · P15 Search (retrieval ≠ UGC SoT) |
 | Backend root | `src/backend` |
@@ -124,6 +124,7 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 
 ### TC-P16-T009 — Hardening + evidence
 - Purpose: Harden P16 boundaries and produce gate evidence (**no new capability**).
+- Delivered: [`P16-T009-hardening-and-evidence-pack.md`](P16-T009-hardening-and-evidence-pack.md) + phase guardrails. T001–T008 ACCEPTED. P16-R1–R8 RESOLVED. `TC-P16-GATE` not executed.
 
 ### TC-P16-GATE — Acceptance Gate
 - Evidence only. Ceremonial Gate wait is **not** a pipeline stop.
