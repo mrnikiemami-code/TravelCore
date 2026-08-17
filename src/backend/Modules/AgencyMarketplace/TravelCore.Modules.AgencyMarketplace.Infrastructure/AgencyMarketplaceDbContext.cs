@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.AgencyMarketplace.Domain;
 
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure;
 
 /// <summary>
 /// Agency Marketplace-owned DbContext. Owns PostgreSQL schema <c>agency_marketplace</c>.
-/// Scaffolding only — no product entities yet (TC-P13-T001 / P13-R1).
+/// Maps AgencyProfile (P13-R2). No Party/Tour/Pricing FK. No Offer.
 /// </summary>
 public sealed class AgencyMarketplaceDbContext : DbContext
 {
@@ -14,6 +15,8 @@ public sealed class AgencyMarketplaceDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<AgencyProfile> AgencyProfiles => Set<AgencyProfile>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

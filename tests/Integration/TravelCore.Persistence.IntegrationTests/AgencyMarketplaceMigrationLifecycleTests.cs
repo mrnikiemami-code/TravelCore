@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Agency Marketplace schema scaffolding smoke (TC-P13-T001).
+/// Real-PostgreSQL Agency Marketplace schema + AgencyProfile (TC-P13-T001/T002).
 /// </summary>
 [Collection(nameof(AgencyMarketplaceMigrationLifecycleCollection))]
 public sealed class AgencyMarketplaceMigrationLifecycleTests
@@ -19,7 +19,7 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
     }
 
     [Fact]
-    public async Task AgencyMarketplaceMigrationLifecycle_Apply_EnsureSchema_Only()
+    public async Task AgencyMarketplaceMigrationLifecycle_Apply_Creates_AgencyProfile_Without_Peer_Fk()
     {
         var ct = TestContext.Current.CancellationToken;
         string[] expectedMigrations;
@@ -27,8 +27,13 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Single(expectedMigrations);
-            Assert.EndsWith("_InitialAgencyMarketplaceScaffolding", expectedMigrations[0], StringComparison.Ordinal);
+            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_InitialAgencyMarketplaceScaffolding", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddAgencyProfile", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -54,7 +59,27 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'agency_marketplace'
-                  AND table_name IN ('agency_profiles', 'agency_offers', 'commercial_settings');
+                  AND table_name IN ('agency_offers', 'commercial_settings');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_profiles';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_profiles'
+                  AND column_name = 'party_id';
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_profiles'
+                  AND column_name IN ('commission_rate', 'price_id', 'quote_id', 'offer_id');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

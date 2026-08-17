@@ -6,8 +6,9 @@ namespace TravelCore.ArchitectureTests;
 
 /// <summary>
 /// TC-P13-T001 / P13-R1: Agency Marketplace is an independent module owning schema <c>agency_marketplace</c>.
+/// TC-P13-T002 / P13-R2: AgencyProfile is the commercial layer over Party identity (logical PartyId, 0..1).
 /// May logically reference Party identity (Guid) — must not own Party/Tour/Pricing/Booking/Payment types
-/// or project-reference those modules. Offer / AgencyProfile product types are later P13 tasks.
+/// or project-reference those modules. Offer remains a later P13 task.
 /// </summary>
 public sealed class AgencyMarketplaceBoundaryGuardrailTests
 {
@@ -94,17 +95,17 @@ public sealed class AgencyMarketplaceBoundaryGuardrailTests
 
                     return Regex.IsMatch(
                                x.line,
-                               @"\b(class|record|enum|struct|interface)\s+(TourProduct|TourDeparture|Booking|Payment|PaymentIntent|Reservation|Checkout|Price|Quote|AgencyProfile|AgencyOffer|CommercialSettings|Party|Person|Organization)\b")
+                               @"\b(class|record|enum|struct|interface)\s+(TourProduct|TourDeparture|Booking|Payment|PaymentIntent|Reservation|Checkout|Price|Quote|AgencyOffer|Party|Person|Organization)\b")
                            || Regex.IsMatch(
                                x.line,
-                               @"\b(IBookingService|IPaymentService|IPricingService|ICheckoutService|DbSet<\s*(TourProduct|TourDeparture|Booking|Payment|AgencyProfile|AgencyOffer))\b");
+                               @"\b(IBookingService|IPaymentService|IPricingService|ICheckoutService|DbSet<\s*(TourProduct|TourDeparture|Booking|Payment|AgencyOffer))\b");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "Agency Marketplace must not own Party/Tour/Pricing/Booking/Payment types or implement Offer/Profile in T001:\n"
+            "Agency Marketplace must not own Party/Tour/Pricing/Booking/Payment types or implement Offer in T002:\n"
             + string.Join('\n', hits));
     }
 
@@ -149,6 +150,23 @@ public sealed class AgencyMarketplaceBoundaryGuardrailTests
         Assert.Equal(
             "AgencyMarketplace",
             TravelCore.Modules.AgencyMarketplace.Contracts.AgencyPartyIdentityBoundary.CommercialLayerModule);
+    }
+
+    [Fact]
+    public void AgencyMarketplaceDomain_Exposes_AgencyProfile_With_Logical_Party_Reference()
+    {
+        var profileType = typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyProfile);
+        Assert.NotNull(profileType.GetProperty("PartyId"));
+        Assert.NotNull(profileType.GetProperty("Display"));
+        Assert.NotNull(profileType.GetProperty("Contact"));
+        Assert.NotNull(profileType.GetProperty("Commercial"));
+        Assert.NotNull(profileType.GetProperty("Status"));
+        Assert.Equal(
+            typeof(TravelCore.Modules.AgencyMarketplace.Domain.MarketplacePartyId),
+            profileType.GetProperty("PartyId")!.PropertyType);
+
+        Assert.Null(profileType.GetProperty("Offer"));
+        Assert.Null(profileType.Assembly.GetType("TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer"));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

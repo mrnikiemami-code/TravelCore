@@ -6,7 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.AgencyMarketplace.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.AgencyMarketplace.Domain</AssemblyName>
-    <Description>Agency Marketplace domain scaffolding. No EF/ASP.NET. TC-P13-T001.</Description>
+    <Description>Agency Marketplace domain: AgencyProfile baseline (TC-P13-T002 / P13-R2). No EF/ASP.NET.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 
 </Project>

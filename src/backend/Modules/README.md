@@ -119,8 +119,9 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | AgencyMarketplace | `AgencyMarketplace/TravelCore.Modules.AgencyMarketplace.{Domain,Contracts,Infrastructure}` | `agency_marketplace` |
 
-- **AgencyMarketplace:** module scaffolding only (`TC-P13-T001`) — schema `agency_marketplace` ownership; Party logical Guid readiness; no AgencyProfile/Offer/CommercialSettings aggregates yet (T002+).
+- **AgencyMarketplace:** AgencyProfile baseline (`TC-P13-T002`) — schema `agency_marketplace`; 0..1 profile per logical PartyId; Display/Contact/Commercial owned values; no Offer/Pricing/Commission/Booking.
 - **P13-R1 RESOLVED:** independent Agency Marketplace module owns Agency commercial relationship; Party remains identity SoR; logical PartyId Guid only — no EF FK / no Party table ownership / no shared DbContext / no Offer in T001.
+- **P13-R2 RESOLVED:** AgencyProfile is the commercial layer over Party identity (0..1). Not a second identity SoR.
 - Invariant: **Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking · Agency ≠ TourProduct**.
 
 ## Host

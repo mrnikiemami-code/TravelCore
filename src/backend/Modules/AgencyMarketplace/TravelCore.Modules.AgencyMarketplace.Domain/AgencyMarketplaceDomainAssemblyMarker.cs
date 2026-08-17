@@ -2,7 +2,7 @@ namespace TravelCore.Modules.AgencyMarketplace.Domain;
 
 /// <summary>
 /// Domain assembly marker for the Agency Marketplace module.
-/// Product aggregates (profile / offer / commercial settings) arrive in later P13 tasks.
+/// AgencyProfile commercial layer binds logical Party identity (TC-P13-T002); Offer arrives later.
 /// </summary>
 public static class AgencyMarketplaceDomainAssemblyMarker
 {

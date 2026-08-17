@@ -122,6 +122,7 @@ Legend: B=ID reference · C=synchronous contract · D=event consumer · E=projec
 | TourDeparture / TourHotelOption / FlightSegment | Tour (P11+: Departure scaffolding started; Flight/HotelOption later) |
 | TourRate / PriceComponent / Quote | Pricing |
 | Agency commercial relationship (marketplace) | AgencyMarketplace |
+| AgencyProfile (marketplace display / contact / commercial posture) | AgencyMarketplace |
 | Agency identity (`PartyKind.Agency`) | Party |
 | VisaType / visa requirements | Visa |
 | Booking / accepted quote snapshot | Booking |

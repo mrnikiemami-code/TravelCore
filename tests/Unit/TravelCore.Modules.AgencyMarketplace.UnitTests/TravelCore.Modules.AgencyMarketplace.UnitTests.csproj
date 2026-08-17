@@ -10,10 +10,11 @@
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <RootNamespace>TravelCore.Modules.AgencyMarketplace.UnitTests</RootNamespace>
     <AssemblyName>TravelCore.Modules.AgencyMarketplace.UnitTests</AssemblyName>
-    <Description>Agency Marketplace domain unit tests (TC-P13-T001 scaffolding smoke).</Description>
+    <Description>Agency Marketplace domain unit tests (TC-P13-T002 AgencyProfile).</Description>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
@@ -21,6 +22,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Contracts\TravelCore.Modules.AgencyMarketplace.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Domain\TravelCore.Modules.AgencyMarketplace.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Infrastructure\TravelCore.Modules.AgencyMarketplace.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
   </ItemGroup>
 
 </Project>

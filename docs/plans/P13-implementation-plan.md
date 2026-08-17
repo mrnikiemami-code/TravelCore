@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P13-PLAN` |
 | Phase | P13 — Agency Marketplace |
-| Status | IN PROGRESS — P13-R1 RESOLVED; T001 scaffolding delivered |
+| Status | IN PROGRESS — P13-R1/R2 RESOLVED; T002 AgencyProfile delivered |
 | Baseline | `b372367` (`docs: P12 acceptance gate evidence [TC-P12-GATE]` — **TC-P12-GATE** ACCEPTED; P12 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P13 · P09-R3 AgencyId · P03 Agency Panel non-ownership · P12 R1–R8 · ADR 0001 · ADR 0011–0014 · architect P12 Gate ACCEPT narrative (Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking) |
 | Backend root | `src/backend` |
@@ -75,9 +75,10 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 - Forbidden: Booking/Payment · Pricing engine · duplicating TourProduct · Agency merge into Party · Offer / AgencyProfile product types.
 
 ### TC-P13-T002 — Agency marketplace profile baseline
-- Purpose: Marketplace-facing profile **beyond** Party identity (P13-R2).
+- Purpose: Marketplace-facing profile **beyond** Party identity (P13-R2 RESOLVED).
+- Delivered: `AgencyProfile` aggregate (0..1 per PartyId) · Display/Contact/Commercial owned values · Draft/Active/Archived lifecycle · logical PartyId + optional logical Logo MediaAsset Guid.
 - Party remains SoR of `PartyKind.Agency`; logical PartyId refs only.
-- Forbidden: copying Party aggregate · Identity ownership transfer.
+- Forbidden: copying Party aggregate · Identity ownership transfer · Offer · Pricing · Commission · Booking · Payment · Party schema changes.
 
 ### TC-P13-T003 — Offer ownership model
 - Purpose: Who owns an offerable listing (P13-R3) — new Offer aggregate vs Tour-owned product remaining SoR with Agency ref.
@@ -119,7 +120,7 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
 | **P13-R1** | Marketplace ownership (new module vs Party-owned vs Tour-owned) | **RESOLVED** | Independent Agency Marketplace module owns Agency commercial relationship · schema `agency_marketplace` · Party remains identity SoR · logical PartyId Guid only · no Party/Tour/Pricing merge · no Offer in T001 |
-| **P13-R2** | Marketplace profile vs Party Agency identity | **UNRESOLVED** | Party owns `PartyKind.Agency`. Marketplace must not become a second identity SoR. |
+| **P13-R2** | Marketplace profile vs Party Agency identity | **RESOLVED** | Party = identity SoR. Agency Marketplace owns AgencyProfile (0..1 per Agency PartyId). Logical PartyId only. No Party schema change. |
 | **P13-R3** | Offer aggregate vs TourProduct remaining SoR | **UNRESOLVED** | Roadmap: Marketplace must not duplicate TourProduct without necessity. P09-R3 already has optional `AgencyId` on TourProduct. |
 | **P13-R4** | Agency override of rates | **UNRESOLVED** | Deferred from P12. Pricing owns Price/Quote; `TourMarketPriceType.Agency` already exists. Do not invent a twin price SoR. |
 | **P13-R5** | Capacity/availability policy owner | **UNRESOLVED** | TourDeparture owns Min/Max Pax (P11-R3). Booking owns consumption later. Marketplace policy vs reuse — lock required. |

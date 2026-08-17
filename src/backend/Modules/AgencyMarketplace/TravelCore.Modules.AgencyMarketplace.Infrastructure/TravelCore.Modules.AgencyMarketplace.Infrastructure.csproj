@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.AgencyMarketplace.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.AgencyMarketplace.Infrastructure</AssemblyName>
-    <Description>Agency Marketplace infrastructure: schema agency_marketplace ownership scaffolding (TC-P13-T001).</Description>
+    <Description>Agency Marketplace infrastructure: schema agency_marketplace + AgencyProfile persistence (TC-P13-T002).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />
+    <InternalsVisibleTo Include="TravelCore.Modules.AgencyMarketplace.UnitTests" />
     <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
   </ItemGroup>
 
