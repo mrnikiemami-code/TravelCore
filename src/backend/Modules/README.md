@@ -179,7 +179,7 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Visa | `Visa/TravelCore.Modules.Visa.{Domain,Contracts,Infrastructure}` | `visa` |
 
-- **Visa:** VisaDefinition + RequirementSet + Applicability + RequiredDocument + EligibilityRequirement + ProcessingTime/Validity/AllowedStay/EntryPolicy + OfficialFee + public read contracts (`TC-P17-T007`) — schema `visa`; **OfficialVisaFee != CommercialPrice**; **Visa != Content**; **Public Visa Page != Automatically SEO Indexed**; no Quote/FX/application tables; no peer FK.
+- **Visa:** VisaDefinition + RequirementSet + Applicability + RequiredDocument + EligibilityRequirement + ProcessingTime/Validity/AllowedStay/EntryPolicy + OfficialFee + public read contracts + application boundary (`TC-P17-T008`) — schema `visa`; **OfficialVisaFee != CommercialPrice**; **Visa != Content**; **Visa != VisaApplication**; **Public Visa Page != Automatically SEO Indexed**; no Quote/FX/application tables; no peer FK.
 - **P17-R1 RESOLVED:** independent Visa module with schema `visa`. Owns structured visa-domain facts/lifecycle. Does not own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, or Identity/Party.
 - **P17-R2 RESOLVED:** VisaDefinition = stable visa-type identity; VisaRequirementSet = context-dependent facts; 1 → 0..N; no applicability/docs/fees in T002.
 - **P17-R3 RESOLVED:** each VisaRequirementSet has exactly one VisaApplicability (logical Destination/jurisdiction id + optional opaque nationality/residence + optional ApplicantCategory).
@@ -187,7 +187,8 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P17-R5 RESOLVED:** ProcessingTime, VisaValidity, AllowedStay, and EntryPolicy are distinct structured facts. No Duration field.
 - **P17-R6 RESOLVED:** OfficialVisaFee is a Visa-owned regulatory fact using platform Money. Pricing remains commercial Price/Quote owner. No FX.
 - **P17-R7 RESOLVED:** public Visa read/presentation is composition only. Content remains editorial. SEO owns IndexPolicy. Public presence != indexed. No application workflow.
-- Invariant: **Visa != Destination · Visa != ReferenceData · Visa != Content · Visa != Pricing · Visa != Booking · Visa != SEO · Visa != Search**. Geographic references are logical ids only.
+- **P17-R8 RESOLVED:** Visa owns visa policy/facts only. Applicant-specific VisaApplication/case workflow is explicitly deferred outside P17. **Visa != VisaApplication**. **VisaApplication != Booking**. **VisaApplication != Payment**. **RequiredDocument != ApplicantSubmittedDocument**. No applicant PII, upload, appointment, or external integration in P17.
+- Invariant: **Visa != Destination · Visa != ReferenceData · Visa != Content · Visa != Pricing · Visa != Booking · Visa != SEO · Visa != Search · Visa != VisaApplication**. Geographic references are logical ids only.
 
 ## Host
 

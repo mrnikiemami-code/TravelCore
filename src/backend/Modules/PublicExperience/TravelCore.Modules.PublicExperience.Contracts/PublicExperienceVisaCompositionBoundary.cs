@@ -22,4 +22,8 @@ public static class PublicExperienceVisaCompositionBoundary
     public const bool ApplicationWorkflowAllowed = false;
     public const bool CommercialPriceDisplayAllowed = false;
     public const bool BookingCtaAllowed = false;
+    public const bool DocumentUploadAllowed = false;
+    public const bool AppointmentBookingAllowed = false;
+    public const bool PaymentCtaAllowed = false;
+    public const bool PrivateCaseDataExposureAllowed = false;
 }

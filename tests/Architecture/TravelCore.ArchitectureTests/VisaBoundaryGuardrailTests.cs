@@ -300,6 +300,84 @@ public sealed class VisaBoundaryGuardrailTests
     }
 
     [Fact]
+    public void Visa_T008_Locks_Application_Boundary_Without_Product_Implementation()
+    {
+        Assert.True(VisaApplicationBoundary.VisaPolicyCompleteInP17);
+        Assert.False(VisaApplicationBoundary.VisaApplicationImplemented);
+        Assert.True(VisaApplicationBoundary.DeferredToFutureCapability);
+        Assert.False(VisaApplicationBoundary.VisaEqualsVisaApplication);
+        Assert.False(VisaApplicationBoundary.VisaApplicationEqualsBooking);
+        Assert.False(VisaApplicationBoundary.VisaApplicationEqualsPayment);
+        Assert.False(VisaApplicationBoundary.RequiredDocumentEqualsApplicantSubmittedDocument);
+        Assert.False(VisaApplicationBoundary.OfficialVisaFeeEqualsPaymentAmount);
+        Assert.False(VisaApplicationBoundary.VisaPolicyDataContainsApplicantPii);
+        Assert.False(VisaApplicationBoundary.PublicVisaApiExposesPrivateCaseData);
+        Assert.False(VisaApplicationBoundary.PrivateApplicationApiImplemented);
+        Assert.False(VisaApplicationBoundary.DocumentUploadAllowed);
+        Assert.False(VisaApplicationBoundary.OcrAllowed);
+        Assert.False(VisaApplicationBoundary.AppointmentSchedulingAllowed);
+        Assert.False(VisaApplicationBoundary.ExternalEmbassyIntegrationAllowed);
+        Assert.False(VisaApplicationBoundary.CaseLifecycleStateMachineAllowed);
+        Assert.False(VisaApplicationBoundary.P17VisaIsGenericWorkflowEngine);
+        Assert.True(VisaOwnershipBoundary.VisaPolicyCapabilityCompleteInP17);
+        Assert.False(VisaOwnershipBoundary.VisaApplicationCapabilityImplemented);
+        Assert.False(VisaOwnershipBoundary.OwnsApplicantCase);
+        Assert.False(VisaOwnershipBoundary.OwnsApplicantPii);
+        Assert.True(VisaOwnershipBoundary.RequiredDocumentIsRequirementDefinitionOnly);
+        Assert.False(VisaOwnershipBoundary.ApplicantSubmittedDocumentImplemented);
+        Assert.False(VisaPublicCompositionBoundary.DocumentUploadAllowed);
+        Assert.False(VisaPublicCompositionBoundary.AppointmentBookingAllowed);
+        Assert.False(VisaPublicCompositionBoundary.PaymentCtaAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.DocumentUploadAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.AppointmentBookingAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.PaymentCtaAllowed);
+
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaDefinition).Assembly.GetType("TravelCore.Modules.Visa.Domain.VisaApplication"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaDefinition).Assembly.GetType("TravelCore.Modules.Visa.Domain.Applicant"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaDefinition).Assembly.GetType("TravelCore.Modules.Visa.Domain.ApplicantSubmittedDocument"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaDefinition).Assembly.GetType("TravelCore.Modules.Visa.Domain.UploadedDocument"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaDefinition).Assembly.GetType("TravelCore.Modules.Visa.Domain.VisaAppointment"));
+
+        var snapshot = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Visa",
+            "TravelCore.Modules.Visa.Infrastructure",
+            "Migrations",
+            "VisaDbContextModelSnapshot.cs"));
+        Assert.DoesNotContain("visa_applications", snapshot, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("application_documents", snapshot, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("appointments", snapshot, StringComparison.OrdinalIgnoreCase);
+
+        var endpoints = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Visa",
+            "TravelCore.Modules.Visa.Infrastructure",
+            "Endpoints",
+            "VisaPublicEndpoints.cs"));
+        Assert.DoesNotContain("/applications", endpoints, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("RequireAuthorization", endpoints, StringComparison.Ordinal);
+
+        var frontendRoot = Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "visa-detail");
+        foreach (var path in Directory.EnumerateFiles(frontendRoot, "*.*", SearchOption.AllDirectories)
+                     .Where(p => p.EndsWith(".ts", StringComparison.OrdinalIgnoreCase)
+                                 || p.EndsWith(".tsx", StringComparison.OrdinalIgnoreCase)))
+        {
+            var text = File.ReadAllText(path);
+            Assert.DoesNotContain("Upload Documents", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("Start Application", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("Continue Application", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("Book Appointment", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("Pay Visa Fee", text, StringComparison.Ordinal);
+        }
+    }
+
+    [Fact]
     public void Visa_Evidence_Keeps_Ascii_Invariants()
     {
         var plan = Path.Combine(RepoRoot, "docs", "plans", "P17-implementation-plan.md");
@@ -327,6 +405,11 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.Contains("Structured Visa Fact != Editorial Guidance", text, StringComparison.Ordinal);
         Assert.Contains("Public Visa Visibility != SEO Indexed", text, StringComparison.Ordinal);
         Assert.Contains("Visa != PublicExperience", text, StringComparison.Ordinal);
+        Assert.Contains("Visa != VisaApplication", text, StringComparison.Ordinal);
+        Assert.Contains("VisaApplication != Booking", text, StringComparison.Ordinal);
+        Assert.Contains("VisaApplication != Payment", text, StringComparison.Ordinal);
+        Assert.Contains("RequiredDocument != ApplicantSubmittedDocument", text, StringComparison.Ordinal);
+        Assert.Contains("P17-R8", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

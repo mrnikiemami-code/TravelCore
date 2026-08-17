@@ -50,4 +50,13 @@ public static class VisaOwnershipBoundary
     public const bool PublicReadImplemented = true;
     public const bool PublicPresenceEqualsSeoIndexed = false;
     public const bool ApplicationWorkflowImplemented = false;
+    public const bool VisaApplicationCapabilityImplemented = false;
+    public const bool OwnsApplicantCase = false;
+    public const bool OwnsApplicantPii = false;
+    public const bool RequiredDocumentIsRequirementDefinitionOnly = true;
+    public const bool ApplicantSubmittedDocumentImplemented = false;
+    public const bool AppointmentSchedulingImplemented = false;
+    public const bool ExternalEmbassyIntegrationImplemented = false;
+    public const bool GenericWorkflowEngineImplemented = false;
+    public const bool VisaPolicyCapabilityCompleteInP17 = true;
 }

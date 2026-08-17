@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P17-PLAN` |
 | Phase | P17 — Visa |
-| Status | PLAN ACCEPTED; P17-R1–R7 RESOLVED; T007 delivered (R8 UNRESOLVED) |
+| Status | PLAN ACCEPTED; P17-R1–R8 RESOLVED; T008 delivered |
 | Baseline | `538f3fc` (`docs(ugc): add P16 acceptance gate evidence [TC-P16-GATE]` — **TC-P16-GATE** ACCEPTED; P16 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P17 · `docs/architecture/15-future-architecture-transition-map.md` § Q · `04-module-boundaries.md` § Visa · `05-dependency-rules.md` Commerce/Visa · `docs/architecture/07-data-architecture.md` schema `visa` · `docs/domain/module-ownership-matrix.md` · `docs/pages/07-visa.md` · `docs/pages/00-page-archetype-registry.md` · P04 Destination/ReferenceData · P05 SEO · P06 Media · P08 Content · P12 Pricing · P14 PublicExperience · P15 Search · P16 UGC · P19 Booking · P20 Payment |
 | Backend root | `src/backend` |
@@ -127,8 +127,9 @@ P17 اضافه می‌کند: **Visa module** برای کاتالوگ/الزام
 - Forbidden kept: Visa-owned IndexPolicy · treating Article as VisaType · Search engine · implying a live application/booking transaction · inventing R8.
 
 ### TC-P17-T008 — Application/service vs future Booking
-- Purpose: Lock the application/lead/service boundary vs P19 Booking (**P17-R8**). ROADMAP says forms/workflow **if needed**; page archetype CTA is consultation/application **honesty**, and explicitly excludes a full wizard. Do **not** manufacture a workflow engine merely to fill T008. If R8 = DEFER/OUT, T008 may be vacant or docs-only.
-- Forbidden kept: Booking module · Payment · embassy integration · applicant CRM.
+- Purpose: Lock the application/lead/service boundary vs P19 Booking (**P17-R8 RESOLVED**). Visa policy/information capability is complete in P17. Applicant-specific VisaApplication/case workflow is explicitly deferred to a future separately planned capability. T008 is a boundary task only — no application engine, no applicant PII persistence, no document upload, no appointment/external integration.
+- Delivered: `VisaApplicationBoundary` ownership contract; strengthened ownership/public composition guardrails; architecture + unit tests; SoT sync. **Visa != VisaApplication**. **VisaApplication != Booking**. **VisaApplication != Payment**. **RequiredDocument != ApplicantSubmittedDocument**. **OfficialVisaFee != PaymentAmount**.
+- Forbidden kept: VisaApplication aggregate · visa_applications table · applicant/case workflow · Booking · Payment · embassy integration · OCR · CRM/lead workflow.
 
 ### TC-P17-T009 — Hardening + evidence
 - Purpose: Harden P17 boundaries and produce gate evidence (**no new capability**).
@@ -153,7 +154,7 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 | **P17-R5** | Processing time / validity / stay-duration semantics | **RESOLVED** | ProcessingTime != VisaValidity != AllowedStay. Entry Count / Entry Policy is a fourth independent fact. Structured min/max+unit or value+unit facts, not a Duration blob and not a rules engine. Optional EffectiveFrom/EffectiveTo readiness only. Do not hardcode regulatory durations as architecture truth. |
 | **P17-R6** | Visa fee vs Pricing ownership | **RESOLVED** | OfficialVisaFee != CommercialPrice. OfficialVisaFee != Quote. Visa stores official/regulatory fee facts with platform Money in source currency. Pricing remains Price/Quote authority. No FX, markup, discount, commission, or Payment in Visa. |
 | **P17-R7** | Public Visa presentation / Content / SEO boundary | **RESOLVED** | Visa owns structured facts and public read contracts. PublicExperience owns `VisaDetailPage` composition. Content remains editorial FAQ/guides. SEO owns IndexPolicy / canonical / redirects / sitemap. **Visa != Content**. **Visa != PublicExperience**. **Structured Visa Fact != Editorial Guidance**. **Public Visa Page != Automatically SEO Indexed**. **Public Visa Visibility != SEO Indexed**. No Search engine. No application workflow. |
-| **P17-R8** | Visa application/service vs future Booking/transaction | **OPEN** | ROADMAP: forms/workflow **if needed**. Booking = P19. Payment = P20. Notification example `VisaApplicationUpdated` is **not** a locked event list. Full application wizard is an explicit page non-goal. Likely DEFER — **not resolved here**. |
+| **P17-R8** | Visa application/service vs future Booking/transaction | **RESOLVED** | P17 Visa owns visa policy / structured facts only. Applicant-specific VisaApplication/case workflow is **explicitly deferred** to a future capability outside P17. **Visa != VisaApplication**. **VisaApplication != Booking**. **VisaApplication != Payment**. **RequiredDocument != ApplicantSubmittedDocument**. No application engine, applicant PII, document upload, appointment, or external integration in P17. |
 
 ---
 
@@ -180,6 +181,12 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 19. **Structured Visa Fact != Editorial Guidance**.
 20. ProcessingTime != VisaValidity != AllowedStay.
 21. OfficialVisaFee != CommercialPrice.
+22. **Visa != VisaApplication**.
+23. **VisaApplication != Booking**.
+24. **VisaApplication != Payment**.
+25. **RequiredDocument != ApplicantSubmittedDocument**.
+26. **OfficialVisaFee != PaymentAmount**.
+27. P17 Visa policy capability is complete; applicant case workflow is deferred outside P17.
 
 ---
 

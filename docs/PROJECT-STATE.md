@@ -218,7 +218,7 @@
 | P16-T008 | **COMPLETE / ACCEPTED** (`62a1d7b`) — Public UGC composition / read contracts |
 | P16-T009 | **COMPLETE / ACCEPTED** (`ee02dd8`) — Hardening and evidence pack |
 | P16-GATE | **COMPLETE / ACCEPTED** (`538f3fc`) — Acceptance evidence (no new product capability) |
-| P17 | **IN PROGRESS** — Plan ACCEPTED · **P17-R1–R7 RESOLVED** · T007 public Visa vs Content vs SEO |
+| P17 | **IN PROGRESS** — Plan ACCEPTED · **P17-R1–R8 RESOLVED** · T008 application/transactional boundary |
 | P17 Plan | `TC-P17-PLAN` COMPLETE / ACCEPTED (`1b5c8ea`) — [`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md) |
 | P17-T001 | **COMPLETE / ACCEPTED** (`5f18f83`) — Visa module scaffolding (`visa` schema) |
 | P17-T002 | **COMPLETE / ACCEPTED** (`12f19e7`) — VisaDefinition + VisaRequirementSet baseline |
@@ -226,7 +226,8 @@
 | P17-T004 | **COMPLETE / ACCEPTED** (`f5f52de`) — RequiredDocument + EligibilityRequirement |
 | P17-T005 | **COMPLETE / ACCEPTED** (`90cd5f4`) — ProcessingTime / Validity / AllowedStay / EntryPolicy |
 | P17-T006 | **COMPLETE / ACCEPTED** (`1f3d206`) — OfficialVisaFee vs Pricing |
-| P17-T007 | **AWAITING_ARCHITECT_REVIEW** — Public Visa vs Content vs SEO |
+| P17-T007 | **COMPLETE / ACCEPTED** — Public Visa vs Content vs SEO |
+| P17-T008 | **AWAITING_ARCHITECT_REVIEW** — Visa application/transactional boundary |
 | P17-R1 (Visa ownership) | **RESOLVED** — independent Visa module · schema `visa` · owns structured visa-domain facts/lifecycle · does not own Destination/ReferenceData geography, Content CMS, MediaAsset technical truth, Pricing/Quote, Booking, Payment, SEO IndexPolicy, Search, Identity/Party · geographic refs = opaque logical id · T001: no VisaDefinition/requirement/document/fee/application product types |
 | P17-R2 (Definition vs requirement) | **RESOLVED** — VisaDefinition = stable visa-type identity; VisaRequirementSet = context-dependent facts; 1 → 0..N; **VisaDefinition != VisaRequirementSet**; no applicability/docs/fees |
 | P17-R3 (Applicability) | **RESOLVED** — exactly one VisaApplicability per RequirementSet · logical Destination/jurisdiction id · optional opaque nationality/residence alpha-2 · optional Adult/Minor/Other · **Applicability != Rules Engine** |
@@ -234,7 +235,7 @@
 | P17-R5 (Processing / validity) | **RESOLVED** — ProcessingTime != VisaValidity != AllowedStay · EntryPolicy independent · no Duration field · effective-period readiness only |
 | P17-R6 (Fee vs Pricing) | **RESOLVED** — OfficialVisaFee != CommercialPrice != Quote · platform Money in source currency · Pricing remains Price/Quote owner · no FX |
 | P17-R7 (Public / Content / SEO) | **RESOLVED** — Visa owns structured facts + public read; PublicExperience composes VisaDetailPage; Content remains editorial; SEO owns IndexPolicy; public page != automatically indexed; no application workflow |
-| P17-R8 (Application vs Booking) | **OPEN** — application/service boundary vs future Booking |
+| P17-R8 (Application vs Booking) | **RESOLVED** — Visa owns visa policy/facts only; applicant-specific VisaApplication/case workflow explicitly deferred outside P17; **Visa != VisaApplication**; **VisaApplication != Booking**; **VisaApplication != Payment**; **RequiredDocument != ApplicantSubmittedDocument**; no application engine/PII/upload/appointment/external integration in P17 |
 | P16-R1 (UGC ownership) | **RESOLVED** — independent UGC module · schema `ugc` · owns user-generated content lifecycle · does not own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, Payment · actor = opaque logical id |
 | P16-R2 (Review / Rating) | **RESOLVED** — Review is the aggregate. OverallRating (1..5) is part of Review. Dimension ratings are children (`DimensionCode` + `Value` 1..5, unique/normalized). Rating is not an independent aggregate. No hardcoded Hotel/Guide/Food/Service columns. |
 | P16-R3 (Target attachment) | **RESOLVED** — Each Review owns exactly one logical target (`TargetType` + `TargetId`). Controlled: TourProduct · Place · Agency. No peer-schema FK. Structural `IReviewTargetValidator` only. |

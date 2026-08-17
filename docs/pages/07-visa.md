@@ -5,7 +5,7 @@
 
 ## P17-T007 implementation note
 
-Public `VisaDetailPage` is informational composition (`/[locale]/visas/[code]`). Visa owns structured facts; Content may enrich; SEO owns IndexPolicy. **Public Visa Page != Automatically SEO Indexed**. Application/consultation CTA remains **P17-R8 UNRESOLVED** — this page must not imply a live application or booking transaction.
+Public `VisaDetailPage` is informational composition (`/[locale]/visas/[code]`). Visa owns structured facts; Content may enrich; SEO owns IndexPolicy. **Public Visa Page != Automatically SEO Indexed**. **P17-R8 RESOLVED:** Visa policy capability is complete in P17; applicant-specific VisaApplication/case workflow is explicitly deferred outside P17. This page must not imply a live application, document upload, appointment, payment, or booking transaction.
 
 ---
 
