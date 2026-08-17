@@ -18,3 +18,10 @@ public enum ExperienceEquipmentKind : short
     Required = 1,
     Recommended = 2
 }
+
+/// <summary>Guide assignment role on an Experience (P10-R7 · TC-P10-T006).</summary>
+public enum ExperienceGuideRole : short
+{
+    Primary = 1,
+    Assistant = 2
+}

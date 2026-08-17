@@ -29,7 +29,7 @@ public sealed class TourMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(13, expectedMigrations.Length);
+            Assert.Equal(14, expectedMigrations.Length);
             Assert.EndsWith("_InitialTourScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTables", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddTourProductTranslations", expectedMigrations[2], StringComparison.Ordinal);
@@ -43,6 +43,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.EndsWith("_AddExperienceItineraryStopSemanticLinks", expectedMigrations[10], StringComparison.Ordinal);
             Assert.EndsWith("_AddExperienceMealsAndAccommodationPlan", expectedMigrations[11], StringComparison.Ordinal);
             Assert.EndsWith("_AddExperienceOperationalAttributes", expectedMigrations[12], StringComparison.Ordinal);
+            Assert.EndsWith("_AddExperienceGuideAssignments", expectedMigrations[13], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -58,7 +59,7 @@ public sealed class TourMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'tour';
                 """, ct));
-            Assert.Equal(17, await ScalarIntAsync(conn, """
+            Assert.Equal(18, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'tour'
@@ -79,6 +80,7 @@ public sealed class TourMigrationLifecycleTests
                     'tour_experience_eligibility_requirements',
                     'tour_experience_equipment',
                     'tour_experience_local_transport',
+                    'tour_experience_guide_assignments',
                     '__EFMigrationsHistory');
                 """, ct));
             // No Package specialty / P11 departure / hotel option product tables.

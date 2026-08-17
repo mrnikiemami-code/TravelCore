@@ -84,6 +84,16 @@ internal sealed class TourExperienceSpecializationConfiguration
             .HasField("_localTransport")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
+
+        builder.HasMany(x => x.GuideAssignments)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.GuideAssignments)
+            .HasField("_guideAssignments")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
     }
 }
 
@@ -343,5 +353,44 @@ internal sealed class ExperienceLocalTransportItemConfiguration
         builder.Property(x => x.Detail)
             .HasColumnName("detail")
             .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
+    }
+}
+
+internal sealed class ExperienceGuideAssignmentConfiguration : IEntityTypeConfiguration<ExperienceGuideAssignment>
+{
+    public void Configure(EntityTypeBuilder<ExperienceGuideAssignment> builder)
+    {
+        builder.ToTable("tour_experience_guide_assignments");
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .HasConversion(id => id.Value, value => ExperienceGuideAssignmentId.From(value));
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value))
+            .IsRequired();
+
+        // Logical GuidePartyId only — deliberately no FK / navigation (P10-R7).
+        builder.Property(x => x.GuidePartyId)
+            .HasColumnName("guide_party_id")
+            .IsRequired();
+
+        builder.Property(x => x.Role)
+            .HasColumnName("role")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.Note)
+            .HasColumnName("note")
+            .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
+
+        builder.HasIndex(x => new { x.TourProductId, x.GuidePartyId })
+            .IsUnique()
+            .HasDatabaseName("ux_tour_experience_guide_assignments_tour_party");
+
+        builder.HasIndex(x => x.GuidePartyId)
+            .HasDatabaseName("ix_tour_experience_guide_assignments_guide_party_id");
     }
 }

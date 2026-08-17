@@ -42,7 +42,6 @@ public sealed class TourExperienceSpecializationGuardrailTests
             })
             .ToList();
         var code = string.Join('\n', codeLines);
-        Assert.DoesNotContain("Guide", code, StringComparison.Ordinal);
         Assert.DoesNotContain("TourHotelOption", code, StringComparison.Ordinal);
         Assert.DoesNotContain("HotelBooking", code, StringComparison.Ordinal);
         Assert.Contains("AccommodationPlan", code, StringComparison.Ordinal);
@@ -50,6 +49,9 @@ public sealed class TourExperienceSpecializationGuardrailTests
         Assert.Contains("Eligibility", code, StringComparison.Ordinal);
         Assert.Contains("Equipment", code, StringComparison.Ordinal);
         Assert.Contains("LocalTransport", code, StringComparison.Ordinal);
+        Assert.Contains("GuideAssignments", code, StringComparison.Ordinal);
+        Assert.DoesNotContain("GuideMarketplace", code, StringComparison.Ordinal);
+        Assert.DoesNotContain("GuideProfile", code, StringComparison.Ordinal);
     }
 
     [Fact]

@@ -37,3 +37,21 @@ public readonly record struct ExperienceAccommodationPlanId(Guid Value) : IEquat
 
     public override string ToString() => Value.ToString("D");
 }
+
+/// <summary>Strongly typed Experience guide-assignment identity (UUID v7).</summary>
+public readonly record struct ExperienceGuideAssignmentId(Guid Value) : IEquatable<ExperienceGuideAssignmentId>
+{
+    public static ExperienceGuideAssignmentId New() => new(Uuid7.New());
+
+    public static ExperienceGuideAssignmentId From(Guid value)
+    {
+        if (value == Guid.Empty)
+        {
+            throw new ArgumentException("ExperienceGuideAssignmentId cannot be empty.", nameof(value));
+        }
+
+        return new ExperienceGuideAssignmentId(value);
+    }
+
+    public override string ToString() => Value.ToString("D");
+}

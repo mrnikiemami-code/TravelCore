@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T003) |
-| Phase Status | P00–P09 COMPLETE · P10 IN_PROGRESS (T001–T002 ACCEPTED · T003 review · R1/R2 RESOLVED) |
+| Current Phase | **P10 — Experience Tour** (**IN_PROGRESS** — T006) |
+| Phase Status | P00–P09 COMPLETE · P10 IN_PROGRESS (T001–T005 ACCEPTED · T006 · R1–R3/R5–R7 RESOLVED · R4/R8 open) |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `67fc580` (`TC-P09-GATE` ACCEPTED) · product T010 `0334bae` · prior P08 `576b7fa` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await architect ACCEPT of `TC-P10-T003` / Auto-Execute T004 |
+| Current Next Task | `TC-P10-T006` Guide assignments → then Media/Publishability (R4/R8) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -109,7 +109,7 @@
 - **P07** = COMPLETE (`TC-P07-GATE` ACCEPTED `84a0a48` · **P07-R1/R2/R4/R5 RESOLVED** · **P07-R3 UNRESOLVED**)
 - **P08** = COMPLETE (`TC-P08-GATE` ACCEPTED `576b7fa` · R1–R5 RESOLVED · R6–R8 UNRESOLVED)
 - **P09** = COMPLETE (`TC-P09-GATE` ACCEPTED `67fc580` · T001–T010 ACCEPTED · **R1–R8 RESOLVED** · product T010 `0334bae`)
-- **P10** = IN_PROGRESS (`TC-P10-T001`/`T002` ACCEPTED · `TC-P10-T003` AWAITING_ARCHITECT_REVIEW · **P10-R1/R2 RESOLVED** — [`plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md))
+- **P10** = IN_PROGRESS (`TC-P10-T001`…`T005` ACCEPTED · `TC-P10-T006` Guide · **P10-R1/R2/R3/R5/R6/R7 RESOLVED** · R4/R8 UNRESOLVED — [`plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md))
 - **P11–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -409,9 +409,9 @@ ExperienceTour و PackageTour را به یک مجموعهٔ غول‌پیکر pr
 
 **Status:** IN_PROGRESS (T003)
 
-**Authoritative plan:** [`plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) (`TC-P10-PLAN` ACCEPTED · T001–T002 ACCEPTED · T003 in review)
+**Authoritative plan:** [`plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) (`TC-P10-PLAN` ACCEPTED · T001–T005 ACCEPTED · T006 Guide)
 
-**Progress:** T001 `e5490ae` · T002 `757c9b8` · **P10-R1/R2 RESOLVED** · `TC-P10-T003` Stop semantic links awaiting architect ACCEPT · R3–R8 UNRESOLVED
+**Progress:** T001 `e5490ae` · T002 `757c9b8` · T003 `85553b7` · T004 `7589ad1` · T005 `f7ce58c` · **P10-R1/R2/R3/R5/R6/R7 RESOLVED** · R4/R8 UNRESOLVED · `TC-P10-T006` Guide assignments
 
 Itinerary · ItineraryDay · Stop · Destination/Attraction linking · Meals · Accommodation plan · Local transport · Equipment · Difficulty · Eligibility · Guide information.
 
@@ -693,7 +693,7 @@ P26 = Advanced SEO.
 | P07 | Place Catalog | **COMPLETE** (`TC-P07-GATE` ACCEPTED) |
 | P08 | Content CMS | **COMPLETE** (`TC-P08-GATE` `576b7fa` · R6–R8 UNRESOLVED) |
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
-| P10 | Experience Tour | **IN_PROGRESS** (T001–T002 ACCEPTED · T003 review · R1/R2 RESOLVED) |
+| P10 | Experience Tour | **IN_PROGRESS** (T001–T005 ACCEPTED · T006 · R1–R3/R5–R7 RESOLVED) |
 | P11 | Foreign Package Tour | PLANNED |
 | P12 | Pricing | PLANNED |
 | P13 | Agency Marketplace | PLANNED |

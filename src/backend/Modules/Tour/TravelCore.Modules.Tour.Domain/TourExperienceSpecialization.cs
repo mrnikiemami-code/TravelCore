@@ -3,9 +3,9 @@ using NodaTime;
 namespace TravelCore.Modules.Tour.Domain;
 
 /// <summary>
-/// Experience typed specialization on TourProduct (P09-R1 · P10-R1/R3/R5/R6 · TC-P10-T001…T005).
+/// Experience typed specialization on TourProduct (P09-R1 · P10-R1/R3/R5/R6/R7 · TC-P10-T001…T006).
 /// 1:1 with <see cref="TourProductId"/>. Owns itinerary, accommodation, meals (via days),
-/// difficulty/eligibility/equipment/local-transport facts. Guide/publishing deferred. Package = P11.
+/// difficulty/eligibility/equipment/local-transport facts, and guide assignments. Publishing deferred. Package = P11.
 /// </summary>
 public sealed class TourExperienceSpecialization
 {
@@ -14,6 +14,7 @@ public sealed class TourExperienceSpecialization
     private readonly List<ExperienceEligibilityRequirement> _eligibility = [];
     private readonly List<ExperienceEquipmentItem> _equipment = [];
     private readonly List<ExperienceLocalTransportItem> _localTransport = [];
+    private readonly List<ExperienceGuideAssignment> _guideAssignments = [];
 
     private TourExperienceSpecialization()
     {
@@ -55,6 +56,9 @@ public sealed class TourExperienceSpecialization
     public IReadOnlyCollection<ExperienceEquipmentItem> Equipment => _equipment;
 
     public IReadOnlyCollection<ExperienceLocalTransportItem> LocalTransport => _localTransport;
+
+    /// <summary>Guide assignments (P10-R7 · 0..N). Logical Party refs only.</summary>
+    public IReadOnlyCollection<ExperienceGuideAssignment> GuideAssignments => _guideAssignments;
 
     /// <summary>
     /// Attaches Experience specialization to an Experience-kind TourProduct.
@@ -252,6 +256,55 @@ public sealed class TourExperienceSpecialization
         _localTransport.Clear();
         _localTransport.AddRange(normalized);
         UpdatedAt = now;
+    }
+
+    public ExperienceGuideAssignment AddGuideAssignment(
+        Guid guidePartyId,
+        ExperienceGuideRole role,
+        Instant now,
+        string? note = null,
+        ExperienceGuideAssignmentId? id = null)
+    {
+        if (_guideAssignments.Count >= ExperienceGuideAssignment.MaxEntriesPerExperience)
+        {
+            throw new InvalidOperationException(
+                $"An Experience may have at most {ExperienceGuideAssignment.MaxEntriesPerExperience} guide assignments.");
+        }
+
+        if (guidePartyId == Guid.Empty)
+        {
+            throw new ArgumentException("GuidePartyId cannot be empty.", nameof(guidePartyId));
+        }
+
+        if (_guideAssignments.Any(x => x.GuidePartyId == guidePartyId))
+        {
+            throw new ArgumentException(
+                $"GuidePartyId '{guidePartyId}' is already assigned to this Experience.",
+                nameof(guidePartyId));
+        }
+
+        var assignment = ExperienceGuideAssignment.Create(
+            id ?? ExperienceGuideAssignmentId.New(),
+            TourProductId,
+            guidePartyId,
+            role,
+            note);
+        _guideAssignments.Add(assignment);
+        UpdatedAt = now;
+        return assignment;
+    }
+
+    public bool RemoveGuideAssignment(ExperienceGuideAssignmentId assignmentId, Instant now)
+    {
+        var assignment = _guideAssignments.FirstOrDefault(x => x.Id == assignmentId);
+        if (assignment is null)
+        {
+            return false;
+        }
+
+        _guideAssignments.Remove(assignment);
+        UpdatedAt = now;
+        return true;
     }
 
     public void Touch(Instant now) => UpdatedAt = now;
