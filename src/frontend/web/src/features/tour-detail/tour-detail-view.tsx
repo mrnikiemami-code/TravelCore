@@ -1,4 +1,5 @@
 import { Container, LtrValue, Stack, Text } from "@/components/ui";
+import { PublicDetailStickyActions } from "@/features/public-experience/detail-sticky-actions";
 import type { AppLocale } from "@/lib/i18n";
 import type {
   PublicPriceSummaryView,
@@ -6,9 +7,10 @@ import type {
 } from "./load-tour-detail";
 
 /**
- * Server-only public TourProduct catalog detail (TC-P09-T008/T010 · TC-P11-T009 · TC-P12-T008).
+ * Server-only public TourProduct catalog detail (TC-P09-T008/T010 · TC-P11-T009 · TC-P12-T008 · TC-P14-T002).
  * Catalog Published ≠ bookable. Published executions ≠ bookable (P11-R8).
  * Public price facts only (P12-R8) — no checkout CTA.
+ * Sticky actions are presentation only (P14-R2) — no sales CTA.
  * App-proxy media only. Cover + ordered Gallery (no hero role).
  */
 export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
@@ -28,9 +30,19 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
   const fromLabel = locale === "fa" ? "از" : "From";
   const occupancyLabel = locale === "fa" ? "نرخ اشغال" : "Occupancy prices";
   const componentsLabel = locale === "fa" ? "اجزای قیمت" : "Price components";
+  const noPublicPrice =
+    locale === "fa"
+      ? "فعلاً قیمت عمومی ثبت نشده است."
+      : "No public price facts yet.";
+  const priceRows = vm.publishedDepartures.flatMap((d) => {
+    const money = d.priceSummary ? startingMoney(d.priceSummary) : null;
+    return money
+      ? [{ id: d.id, startDate: d.startDate, amount: money.amount, currency: money.currency }]
+      : [];
+  });
 
   return (
-    <div className="py-6 sm:py-8">
+    <div className="py-6 pb-28 sm:py-8 lg:pb-8">
       <Container width="content">
         <Stack gap="lg">
           {vm.cover?.src ? (
@@ -55,7 +67,8 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             {vm.description ? <Text as="p">{vm.description}</Text> : null}
           </Stack>
 
-          <Stack gap="sm">
+          <div id="published-departures">
+            <Stack gap="sm">
             <Text as="h2" role="heading">
               {departuresHeading}
             </Text>
@@ -139,7 +152,8 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
                 ))}
               </ul>
             )}
-          </Stack>
+            </Stack>
+          </div>
 
           {vm.gallery.length > 0 ? (
             <Stack gap="sm">
@@ -164,8 +178,57 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
               </ul>
             </Stack>
           ) : null}
+
+          <div id="price-from">
+            <Stack gap="sm">
+              <Text as="h2" role="heading">
+                {priceLabel}
+              </Text>
+              <Text role="caption">
+                {locale === "fa"
+                  ? "خلاصه قیمت عمومی · نه پیش‌فاکتور خرید"
+                  : "Public price summary · not a purchase quote"}
+              </Text>
+              {priceRows.length === 0 ? (
+                <Text role="muted">{noPublicPrice}</Text>
+              ) : (
+                <ul className="flex flex-col gap-2">
+                  {priceRows.map((row) => (
+                    <li key={row.id}>
+                      <Text>
+                        {fromLabel}{" "}
+                        <LtrValue>
+                          {row.amount} {row.currency}
+                        </LtrValue>
+                        {row.startDate ? (
+                          <>
+                            {" · "}
+                            <LtrValue>{row.startDate}</LtrValue>
+                          </>
+                        ) : null}
+                      </Text>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Stack>
+          </div>
+
+          <div id="request-information">
+            <Stack gap="sm">
+              <Text as="h2" role="heading">
+                {locale === "fa" ? "درخواست اطلاعات" : "Request information"}
+              </Text>
+              <Text>
+                {locale === "fa"
+                  ? "این اقدام برای دریافت اطلاعات است، نه رزرو و نه پرداخت."
+                  : "This action is for information only — not a sale."}
+              </Text>
+            </Stack>
+          </div>
         </Stack>
       </Container>
+      <PublicDetailStickyActions locale={locale} />
     </div>
   );
 }

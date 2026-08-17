@@ -103,4 +103,27 @@ public sealed class PublicExperienceBoundaryGuardrailTests
         Assert.DoesNotContain("Book Now", text, StringComparison.Ordinal);
         Assert.DoesNotContain("pg_trgm", text, StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void PublicDetailStickyActions_Are_Not_Booking()
+    {
+        var path = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "detail-sticky-actions.tsx");
+        Assert.True(File.Exists(path), path);
+        var text = File.ReadAllText(path);
+        Assert.Contains("View departures", text, StringComparison.Ordinal);
+        Assert.Contains("View price", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("Pay Now", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("Reserve Seat", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("Checkout", text, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("/api/booking", text, StringComparison.Ordinal);
+    }
 }

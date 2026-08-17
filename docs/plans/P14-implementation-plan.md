@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P14-PLAN` |
 | Phase | P14 — Public Tour Experience |
-| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1 RESOLVED; T001 Public Experience surfaces delivered |
+| Status | IN PROGRESS — PLAN ACCEPTED · P14-R1/R2 RESOLVED; T002 detail sticky delivered |
 | Baseline | `c0bcd78` (`docs: P13 acceptance gate evidence [TC-P13-GATE]` — **TC-P13-GATE** ACCEPTED; P13 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P14 · P09–P13 Gates · P05 SEO · P08 Content · P11-R8 Published ≠ Bookable · P12-R8 public price read · P13-R7 Published Offer ≠ SEO Indexed · architect P13 Gate ACCEPT (Public Experience ≠ Booking · SEO Page ≠ Commercial Transaction · Content ≠ Catalog Ownership) |
 | Backend root | `src/backend` |
@@ -77,8 +77,10 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 - Forbidden: Booking · Search engine · new catalog SoR.
 
 ### TC-P14-T002 — Foreign / Experience public detail production baseline
-- Purpose: Production public detail for Foreign Package and Experience (needs **P14-R4**).
-- Forbidden: Booking CTA as commerce engine · duplicating TourProduct.
+- Purpose: Production public detail with mobile-first sticky experience actions (**P14-R2 RESOLVED**).
+- Architect lock: Sticky Action ≠ Booking. Allowed: View Departure · View Price Summary · Contact / Request Information. Forbidden: Book Now · Pay Now · Reserve Seat · Checkout.
+- Delivered: `PublicDetailStickyActions` on live `TourDetailView` · presentation anchors only.
+- Forbidden: Booking CTA · Payment · Reservation · Search engine · Pricing ownership.
 
 ### TC-P14-T003 — Tour / Destination landing distinction
 - Purpose: SEO landing vs listing URL (needs **P14-R3**). Search URL ≠ SEO Landing URL.
@@ -112,7 +114,7 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
 | **P14-R1** | Which public surfaces are in P14 vs deferred to P15 Search | **RESOLVED** | Public Experience Layer owns Detail/Listing/Landing presentation. Not Search. Not Catalog. P14 = Presentation + SEO composition. P15 owns Query/Ranking/FTS. |
-| **P14-R2** | Sticky/mobile booking **actions** vs Published ≠ Bookable | **UNRESOLVED** | Display chrome vs live Booking. P11-R8 and P12 public price (no Book Now) must not be silently reversed. |
+| **P14-R2** | Sticky/mobile booking **actions** vs Published ≠ Bookable | **RESOLVED** | Sticky Action ≠ Booking. Allowed: View Departure · View Price Summary · Contact / Request Information. Forbidden: Book Now · Pay Now · Reserve Seat · Checkout. Published ≠ Bookable. |
 | **P14-R3** | Listing URL vs SEO landing URL ownership | **UNRESOLVED** | Search URL ≠ SEO Landing URL. SEO still owns IndexPolicy. |
 | **P14-R4** | Shared Tour public detail vs Foreign/Experience specialized pages | **UNRESOLVED** | Two product kinds exist (P09/P10/P11). Do not invent a third catalog. |
 | **P14-R5** | Related tours owner | **UNRESOLVED** | Tour vs Content vs future Search. No recommendation engine unless locked. |
