@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P15-PLAN` |
 | Phase | P15 — Search & Discovery |
-| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R7 RESOLVED; T009 hardening evidence delivered (T008 vacant) |
+| Status | GATE delivered — PLAN ACCEPTED; P15-R1–R7 RESOLVED; T001–T007/T009 ACCEPTED; T008 VACANT |
 | Baseline | `608216d` (`docs: P14 acceptance gate evidence [TC-P14-GATE]` — **TC-P14-GATE** ACCEPTED; P14 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P15 · P14 Gate ACCEPT · P14-R3/R5/R8 (Listing ≠ Landing · Related ≠ Recommendation · Filter ≠ Faceting) · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace |
 | Backend root | `src/backend` |
@@ -113,6 +113,7 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 
 ### TC-P15-GATE — Acceptance Gate
 - Evidence only. Ceremonial Gate wait is **not** a pipeline stop.
+- Delivered: [`docs/plans/P15-GATE-acceptance-evidence.md`](P15-GATE-acceptance-evidence.md)
 
 ---
 
