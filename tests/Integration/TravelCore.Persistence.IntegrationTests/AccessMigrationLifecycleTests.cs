@@ -90,9 +90,12 @@ public sealed class AccessMigrationLifecycleTests
 
         await using (var db = _postgres.CreateDbContext())
         {
-            Assert.Equal(
-                AccessPermissionCatalog.AdminBaseline.Count + AccessPermissionCatalog.AgencyPresentationBaseline.Count,
-                await db.Permissions.CountAsync(ct));
+            var expectedPermissionCodes = AccessPermissionCatalog.AdminBaseline
+                .Concat(AccessPermissionCatalog.AgencyPresentationBaseline)
+                .Select(x => x.Code)
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
+            Assert.Equal(expectedPermissionCodes.Count, await db.Permissions.CountAsync(ct));
             var admin = await db.Roles.SingleAsync(x => x.Code == AccessPermissionCatalog.AdminRoleCode, ct);
             Assert.Equal(AccessPermissionCatalog.AdminBaseline.Count, admin.Permissions.Count);
             var agency = await db.Roles.SingleAsync(x => x.Code == AccessPermissionCatalog.AgencyRoleCode, ct);

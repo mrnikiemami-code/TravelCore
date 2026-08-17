@@ -178,7 +178,7 @@ internal static class AccessEndpoints
                 => Results.Ok(await svc.ListRolesAsync(ct)))
             .RequireAuthorization(AccessAuthorizationPolicies.AdminRolesRead);
 
-        // Agency presentation capability stub (T011) — Access-gated, commerce-free.
+        // Agency presentation + Marketplace panel capability gate (T011 / TC-P13-T006).
         var agencyPanel = endpoints.MapGroup("/api/agency/panel").WithTags("AgencyPresentation");
         agencyPanel.MapGet("/capabilities", async Task<IResult> (
             HttpContext httpContext,
@@ -226,7 +226,14 @@ internal static class AccessEndpoints
                     kind = party.Kind,
                     displayName = party.DisplayName
                 },
-                capabilities = new[] { "agency.panel.open" }
+                capabilities = new[]
+                {
+                    "agency.panel.open",
+                    "agency.marketplace.profile.read",
+                    "agency.marketplace.profile.write",
+                    "agency.marketplace.offers.read",
+                    "agency.marketplace.offers.write"
+                }
             });
         }).RequireAuthorization(AccessAuthorizationPolicies.AgencyPanelOpen);
 

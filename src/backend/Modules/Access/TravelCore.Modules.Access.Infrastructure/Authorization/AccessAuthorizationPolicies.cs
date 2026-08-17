@@ -76,4 +76,24 @@ public static class AccessAuthorizationPolicies
     /// Pricing Admin mutations: Access-backed <c>pricing.prices.write</c>.
     /// </summary>
     public const string PricingPricesWrite = "Access.Pricing.Prices.Write";
+
+    /// <summary>
+    /// Agency Marketplace profile reads: Access-backed <c>agency.marketplace.profile.read</c>.
+    /// </summary>
+    public const string AgencyMarketplaceProfileRead = "Access.AgencyMarketplace.Profile.Read";
+
+    /// <summary>
+    /// Agency Marketplace profile mutations: Access-backed <c>agency.marketplace.profile.write</c>.
+    /// </summary>
+    public const string AgencyMarketplaceProfileWrite = "Access.AgencyMarketplace.Profile.Write";
+
+    /// <summary>
+    /// Agency Marketplace offer reads: Access-backed <c>agency.marketplace.offers.read</c>.
+    /// </summary>
+    public const string AgencyMarketplaceOffersRead = "Access.AgencyMarketplace.Offers.Read";
+
+    /// <summary>
+    /// Agency Marketplace offer mutations: Access-backed <c>agency.marketplace.offers.write</c>.
+    /// </summary>
+    public const string AgencyMarketplaceOffersWrite = "Access.AgencyMarketplace.Offers.Write";
 }

@@ -27,7 +27,11 @@ public static class AccessPermissionCatalog
         ("tour.departures.write", "Create/update TourDeparture execution fields"),
         ("seo.tour-posture.write", "Publish TourProduct SEO routes (IndexPolicy remains explicit / default noindex)"),
         ("pricing.prices.read", "Read Pricing admin prices"),
-        ("pricing.prices.write", "Create/update Pricing admin prices, components, and occupancy rules")
+        ("pricing.prices.write", "Create/update Pricing admin prices, components, and occupancy rules"),
+        ("agency.marketplace.profile.read", "Read Agency Marketplace profiles"),
+        ("agency.marketplace.profile.write", "Create/update Agency Marketplace profiles"),
+        ("agency.marketplace.offers.read", "Read Agency Marketplace offers"),
+        ("agency.marketplace.offers.write", "Create/update Agency Marketplace offers")
     ];
 
     public const string AdminRoleCode = "admin";
@@ -38,6 +42,10 @@ public static class AccessPermissionCatalog
 
     public static IReadOnlyList<(string Code, string DisplayName)> AgencyPresentationBaseline { get; } =
     [
-        ("agency.panel.open", "Open Agency presentation panel")
+        ("agency.panel.open", "Open Agency presentation panel"),
+        ("agency.marketplace.profile.read", "Read Agency Marketplace profiles"),
+        ("agency.marketplace.profile.write", "Create/update Agency Marketplace profiles"),
+        ("agency.marketplace.offers.read", "Read Agency Marketplace offers"),
+        ("agency.marketplace.offers.write", "Create/update Agency Marketplace offers")
     ];
 }

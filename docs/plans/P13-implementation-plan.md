@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P13-PLAN` |
 | Phase | P13 — Agency Marketplace |
-| Status | IN PROGRESS — P13-R1–R5 RESOLVED; T005 capacity boundary delivered |
+| Status | IN PROGRESS — P13-R1–R6 RESOLVED; T006 Agency Panel delivered |
 | Baseline | `b372367` (`docs: P12 acceptance gate evidence [TC-P12-GATE]` — **TC-P12-GATE** ACCEPTED; P12 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P13 · P09-R3 AgencyId · P03 Agency Panel non-ownership · P12 R1–R8 · ADR 0001 · ADR 0011–0014 · architect P12 Gate ACCEPT narrative (Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking) |
 | Backend root | `src/backend` |
@@ -98,14 +98,14 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 - Delivered: `AgencyOfferSalesAvailability` (SalesOpen) · optional logical `MarketplaceTourDepartureId` · OpenSales requires Active · no seats.
 - Forbidden: Seat inventory · Capacity ownership · Reservation · Booking · Pricing · Allocation engine.
 
-### TC-P13-T006 — Capacity / availability policies (commercial, not reservation)
-- Purpose: Agency-side capacity/availability **policy** (P13-R5) — not booked-seat counts.
-- TourDeparture already owns Min/Max Pax rules (P11-R3). Booking will own consumption later.
-- Forbidden: reservation consumption · availability engine · inventory ledger.
+### TC-P13-T006 — Agency Marketplace panel baseline
+- Purpose: Agency-facing operational baseline (P13-R6 RESOLVED).
+- Architect lock: Agency Panel belongs to Agency Marketplace — not Tour Admin, not Identity.
+- Delivered: Access-backed `/api/agency-marketplace/profiles` + `/offers` · profile upsert/activate · offer create/list/activate/list/open-sales · Agency portal page operational (not presentation stub).
+- Forbidden: Booking management · Payment · Settlement · Commission · CRM · Financial reports.
 
 ### TC-P13-T007 — Agency Panel operational baseline
-- Purpose: Operational Agency Panel for Marketplace (P13-R6) — extend P03 presentation stub **or** Pricing-style module-owned Admin, as locked.
-- Access-backed. Server Component First.
+- P13-R6 was locked and delivered in T006. Do not invent a replacement until Auto-Execute.
 - Forbidden: Tour Admin ownership of Marketplace · Booking/Payment/Checkout.
 
 ### TC-P13-T008 — Publishing / moderation (if locked)
@@ -128,7 +128,7 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 | **P13-R3** | Offer aggregate vs TourProduct remaining SoR | **RESOLVED** | AgencyOffer owns the sales relationship. TourProduct remains catalog SoR. Logical TourProduct Guid. No Tour FK / Price / Booking. |
 | **P13-R4** | Agency override of rates | **RESOLVED** | Agency must NOT override Price. Commercial terms = Notes + SalesRules metadata. No Money / Discount / Commission / Currency / Quote. |
 | **P13-R5** | Capacity/availability policy owner | **RESOLVED** | Agency does NOT own capacity. TourDeparture remains capacity SoR. Offer may hold SalesAvailability metadata + optional logical TourDeparture Guid. No seats / reservation / allocation. |
-| **P13-R6** | Agency Panel ownership for Marketplace ops | **UNRESOLVED** | P03 Panel is presentation-only. P12 set Admin Pricing inside Pricing module, not Tour Admin. |
+| **P13-R6** | Agency Panel ownership for Marketplace ops | **RESOLVED** | Agency Panel belongs to Agency Marketplace (not Tour Admin, not Identity). Foundation: profile + offer management. No Booking/Payment/Commission/CRM. |
 | **P13-R7** | Publishing / moderation of agency offers | **UNRESOLVED** | Roadmap says «در صورت نیاز». DEFER is valid. |
 
 ---

@@ -116,6 +116,26 @@ public sealed class AccessModule : ITravelCoreModule
             {
                 policy.RequireAuthenticatedUser();
                 policy.AddRequirements(new PermissionRequirement("pricing.prices.write"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.AgencyMarketplaceProfileRead, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("agency.marketplace.profile.read"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.AgencyMarketplaceProfileWrite, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("agency.marketplace.profile.write"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.AgencyMarketplaceOffersRead, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("agency.marketplace.offers.read"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.AgencyMarketplaceOffersWrite, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("agency.marketplace.offers.write"));
             });
     }
 

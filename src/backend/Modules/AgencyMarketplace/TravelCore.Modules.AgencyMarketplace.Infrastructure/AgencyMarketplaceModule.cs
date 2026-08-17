@@ -3,12 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TravelCore.Modularity;
+using TravelCore.Modules.AgencyMarketplace.Contracts;
+using TravelCore.Modules.AgencyMarketplace.Infrastructure.Endpoints;
+using TravelCore.Modules.AgencyMarketplace.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Agency Marketplace module (scaffolding — TC-P13-T001).
+/// Host composition entry for the Agency Marketplace module (panel — TC-P13-T006).
 /// </summary>
 public sealed class AgencyMarketplaceModule : ITravelCoreModule
 {
@@ -27,11 +30,13 @@ public sealed class AgencyMarketplaceModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: AgencyMarketplaceDbContext.SchemaName);
         });
+
+        services.AddScoped<IAgencyMarketplacePanelService, AgencyMarketplacePanelService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
-        // Product endpoints belong to later P13 tasks.
+        endpoints.MapAgencyMarketplacePanelEndpoints();
     }
 }

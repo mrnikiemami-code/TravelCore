@@ -9,16 +9,20 @@ export const metadata = {
 };
 
 const COPY = {
-  fa: {
-    title: "پنل آژانس (پایه)",
-    body: "سطح قابلیت دسترسی‌محور؛ بدون منطق تور/قیمت/رزرو/پرداخت. تصمیم مجوز سمت سرور است.",
-    note: "این صفحه فقط Presentation stub است — مالک دامنه تجارت نیست.",
+    fa: {
+    title: "پنل آژانس",
+    body: "سطح عملیاتی Agency Marketplace: مدیریت پروفایل و Offer. بدون Booking/Payment/Commission.",
+    note: "مالکیت با ماژول Agency Marketplace است — نه Tour Admin و نه Identity.",
+    profile: "پروفایل تجاری",
+    offers: "آگهی‌های فروش",
     back: "بازگشت",
   },
   en: {
-    title: "Agency panel (baseline)",
-    body: "Access-gated capability surface; no Tour/Pricing/Booking/Payment logic. Authorization stays server-side.",
-    note: "Presentation stub only — does not own commerce domains.",
+    title: "Agency panel",
+    body: "Agency Marketplace operational surface: profile and offer management. No Booking/Payment/Commission.",
+    note: "Owned by the Agency Marketplace module — not Tour Admin and not Identity.",
+    profile: "Commercial profile",
+    offers: "Sales offers",
     back: "Back",
   },
 } as const;
@@ -56,6 +60,8 @@ export default async function AgencyPanelPage({
           <Stack gap="sm">
             <Text role="muted">{copy.body}</Text>
             <Text role="caption">{copy.note}</Text>
+            <Text>{copy.profile} · {copy.offers}</Text>
+            <Text role="caption">/api/agency-marketplace/profiles · /api/agency-marketplace/offers</Text>
           </Stack>
         </Surface>
       </div>
