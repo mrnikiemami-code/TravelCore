@@ -1,13 +1,23 @@
 import { Container, LtrValue, Stack, Text } from "@/components/ui";
 import type { AppLocale } from "@/lib/i18n";
+import type { ListingFilterCriteria } from "./filter-presentation";
+import { ListingFilters } from "./listing-filters";
 import { LISTING_PURPOSE, LISTING_ROUTE_PATTERN } from "./listing-landing";
+import { ListingSelection } from "./listing-selection";
+import type { RelatedTourView } from "./load-related-tours";
 
+/**
+ * P14-R3 / P14-R8: Discovery listing with presentation-only filters.
+ * Not Search. Not SEO landing. Not facet ownership.
+ */
 export function PublicTourListingView({
   locale,
-  destination,
+  criteria,
+  selection,
 }: {
   locale: AppLocale;
-  destination?: string;
+  criteria: ListingFilterCriteria;
+  selection: RelatedTourView[];
 }) {
   return (
     <div className="py-6 sm:py-8">
@@ -27,45 +37,13 @@ export function PublicTourListingView({
             </Text>
           </Stack>
 
-          <Stack gap="sm">
-            <Text as="h2" role="heading">
-              {locale === "fa" ? "فیلتر نمایشی" : "Filter slot"}
-            </Text>
-            <Text>
-              {destination ? (
-                <>
-                  {locale === "fa" ? "مقصد کشف:" : "Discovery destination:"}{" "}
-                  <LtrValue>{destination}</LtrValue>
-                </>
-              ) : locale === "fa" ? (
-                "جای فیلتر کشف · بدون موتور facet"
-              ) : (
-                "Discovery filter slot · no faceting engine"
-              )}
-            </Text>
-          </Stack>
-
-          <Stack gap="sm">
-            <Text as="h2" role="heading">
-              {locale === "fa" ? "مرتب‌سازی نمایشی" : "Sort slot"}
-            </Text>
-            <Text>
-              {locale === "fa"
-                ? "جای مرتب‌سازی کشف · فقط نمایش"
-                : "Discovery sort slot · presentation only"}
-            </Text>
-          </Stack>
-
-          <Stack gap="sm">
-            <Text as="h2" role="heading">
-              {locale === "fa" ? "انتخاب" : "Selection"}
-            </Text>
-            <Text>
-              {locale === "fa"
-                ? "انتخاب از کاتالوگ در این سطح است؛ نتیجهٔ فیلترشدهٔ جستجو نیست."
-                : "Catalog selection lives here · not a filtered search result."}
-            </Text>
-          </Stack>
+          <ListingFilters locale={locale} criteria={criteria} />
+          <ListingSelection
+            locale={locale}
+            items={selection}
+            sort={criteria.sort}
+            destinationSlug={criteria.destinationSlug}
+          />
         </Stack>
       </Container>
     </div>

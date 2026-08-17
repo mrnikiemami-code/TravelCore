@@ -112,7 +112,13 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 - Delivered: `PublicExperienceAgencyOfferBoundary` · AgencyMarketplace `related-published` public read · Agency Information on Detail before Request information.
 - Forbidden: Book Now · Pay Now · Checkout · Reservation · Commission · PriceOverride · ranking/popularity · Booking CTA · inventing R8.
 
-### TC-P14-T008 — Hardening + evidence
+### TC-P14-T008 — Public Experience filter presentation boundary
+- Purpose: Establish filter presentation boundaries without Search/Faceting ownership (**P14-R8 RESOLVED**).
+- Architect lock: Filter in P14 = Presentation only (UI state, selected criteria, URL composition). Faceting / retrieval / ranking / FTS = P15 Search. Filtered URLs must not become SEO landings or own IndexPolicy.
+- Delivered: `PublicExperienceFilterPresentationBoundary` · listing filter URL/state · presentation filters + catalog selection via replaceable Tour public-read.
+- Forbidden: Search engine · FTS · `pg_trgm` · Elasticsearch · ranking · facet calculation · popularity · Booking · inventing P15.
+
+### TC-P14-T009 — Hardening + evidence (follow-on)
 
 ### TC-P14-GATE — Acceptance Gate
 - Evidence only. Ceremonial Gate wait is **not** a pipeline stop. Continuity may auto-start **P15 PLAN** after ACCEPT unless a real Stop Condition applies.
@@ -130,7 +136,7 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 | **P14-R5** | Related tours owner | **RESOLVED** | Public Experience owns presentation only. Deterministic shared-destination retrieval behind Tour public-read. Related ≠ Recommendation. P15 may replace retrieval. |
 | **P14-R6** | Content enrichment vs Content CMS ownership | **RESOLVED** | Content = editorial SoT. Tour = tour-facts SoT. PublicExperience = composition only. Destination-based semantic links. No TourProduct→ArticleId[]. Content publication ≠ SEO IndexPolicy. |
 | **P14-R7** | Public AgencyOffer on tour experience | **RESOLVED** | AgencyOffer may be displayed; does not own commercial flow. Marketplace owns facts/publication. PE owns presentation. Inquiry-oriented. No agency prices / ranking / Booking. Visibility ≠ CatalogStatus / IndexPolicy. |
-| **P14-R8** | Filters/facets implementation vs P15 | **UNRESOLVED** | Simple catalog filters in P14 vs faceting engine in P15. |
+| **P14-R8** | Filters/facets implementation vs P15 | **RESOLVED** | Filter in P14 = Presentation only (UI/URL/selection). Faceting / retrieval / ranking / FTS = P15 Search. Filtered URLs ≠ SEO landings; IndexPolicy stays Seo. |
 
 ---
 

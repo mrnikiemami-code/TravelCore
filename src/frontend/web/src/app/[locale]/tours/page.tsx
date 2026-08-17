@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/shell";
 import { Text } from "@/components/ui";
+import { parseListingFilterCriteria } from "@/features/public-experience/filter-presentation";
 import { PublicTourListingView } from "@/features/public-experience/listing-view";
+import { loadRelatedToursByDestination } from "@/features/public-experience/load-related-tours";
+import { apiGetJson } from "@/lib/api/client";
+import { isApiOk } from "@/lib/api/result";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
 import { loadComposedSeoMetadata } from "@/lib/seo/load-composed-metadata";
 import {
@@ -12,12 +16,13 @@ import {
 
 type PageProps = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ destination?: string }>;
+  searchParams: Promise<{ destination?: string; sort?: string }>;
 };
 
 /**
- * Public tour listing (TC-P14-T003 / P14-R3).
- * Discovery surface only — not Search engine, not SEO landing, not SEO policy owner.
+ * Public tour listing (TC-P14-T003 / P14-R3 · TC-P14-T008 / P14-R8).
+ * Discovery + presentation filters only — not Search, not SEO landing owner.
+ * Filtered query variants keep the same listing SEO path (`tours`).
  */
 export async function generateMetadata({
   params,
@@ -67,10 +72,21 @@ export default async function PublicTourListingPage({
   }
   const locale: AppLocale = localeParam;
   const query = await searchParams;
-  const destination =
-    typeof query.destination === "string" && query.destination.trim().length > 0
-      ? query.destination.trim()
-      : undefined;
+  const criteria = parseListingFilterCriteria(query);
+
+  let selection: Awaited<ReturnType<typeof loadRelatedToursByDestination>> = [];
+  if (criteria.destinationSlug) {
+    const destination = await apiGetJson<{ destinationId: string }>(
+      `/api/destination/destinations/by-slug/${encodeURIComponent(locale)}/${encodeURIComponent(criteria.destinationSlug)}`,
+      { cache: "no-store" },
+    );
+    if (isApiOk(destination)) {
+      selection = await loadRelatedToursByDestination(
+        destination.data.destinationId,
+        locale,
+      );
+    }
+  }
 
   return (
     <PublicShell
@@ -92,7 +108,11 @@ export default async function PublicTourListingPage({
         </Text>
       }
     >
-      <PublicTourListingView locale={locale} destination={destination} />
+      <PublicTourListingView
+        locale={locale}
+        criteria={criteria}
+        selection={selection}
+      />
     </PublicShell>
   );
 }

@@ -102,4 +102,21 @@ public sealed class PublicExperienceScaffoldingSmokeTests
             PublicExperienceDetailComposition.SharedSections,
             StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Filter_Presentation_Is_Not_Search_Faceting()
+    {
+        Assert.Equal("PublicExperience", PublicExperienceFilterPresentationBoundary.PresentationOwner);
+        Assert.Equal("Search", PublicExperienceFilterPresentationBoundary.FutureRetrievalOwner);
+        Assert.Equal("Seo", PublicExperienceFilterPresentationBoundary.IndexPolicyOwner);
+        Assert.False(PublicExperienceFilterPresentationBoundary.FacetingAllowed);
+        Assert.False(PublicExperienceFilterPresentationBoundary.RankingAllowed);
+        Assert.False(PublicExperienceFilterPresentationBoundary.FullTextSearchAllowed);
+        Assert.False(PublicExperienceFilterPresentationBoundary.FilteredUrlIsSeoLanding);
+        Assert.False(PublicExperienceFilterPresentationBoundary.FilteredUrlOwnsIndexPolicy);
+        Assert.Contains(
+            "Destination",
+            PublicExperienceFilterPresentationBoundary.AllowedCriteria,
+            StringComparison.Ordinal);
+    }
 }

@@ -36,14 +36,14 @@
 |------|--------|
 | Project | TravelCore |
 | Current Phase | **P14 — Public Tour Experience** (**IN PROGRESS** — T006 content enrichment composition) |
-| Phase Status | P00–P13 COMPLETE · P14-R1–R7 RESOLVED · `TC-P14-T007` delivered |
+| Phase Status | P00–P13 COMPLETE · P14-R1–R8 RESOLVED · `TC-P14-T008` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P14-T007` → next Auto-Execute |
+| Current Next Task | Architect review of `TC-P14-T008` → next Auto-Execute |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |

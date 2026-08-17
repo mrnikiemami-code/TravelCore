@@ -360,4 +360,70 @@ public sealed class PublicExperienceBoundaryGuardrailTests
             "Seo",
             TravelCore.Modules.PublicExperience.Contracts.PublicExperienceAgencyOfferBoundary.IndexPolicyOwner);
     }
+
+    [Fact]
+    public void Filter_Presentation_Is_Not_Search_Faceting()
+    {
+        var filtersPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "listing-filters.tsx");
+        Assert.True(File.Exists(filtersPath), filtersPath);
+        var filters = File.ReadAllText(filtersPath);
+        Assert.Contains("Presentation filters", filters, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", filters, StringComparison.Ordinal);
+        Assert.DoesNotContain("to_tsvector", filters, StringComparison.Ordinal);
+        Assert.DoesNotContain("Elasticsearch", filters, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/search", filters, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", filters, StringComparison.Ordinal);
+        Assert.DoesNotContain("SetIndexPolicy", filters, StringComparison.Ordinal);
+
+        var statePath = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "filter-presentation.ts");
+        Assert.True(File.Exists(statePath), statePath);
+        var state = File.ReadAllText(statePath);
+        Assert.Contains("parseListingFilterCriteria", state, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", state, StringComparison.Ordinal);
+        Assert.DoesNotContain("ts_rank", state, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/search", state, StringComparison.Ordinal);
+
+        var listingPage = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "app",
+            "[locale]",
+            "tours",
+            "page.tsx"));
+        Assert.Contains("parseListingFilterCriteria", listingPage, StringComparison.Ordinal);
+        Assert.Contains("path: \"tours\"", listingPage, StringComparison.Ordinal);
+        Assert.DoesNotContain("SetIndexPolicy", listingPage, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/search", listingPage, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", listingPage, StringComparison.Ordinal);
+
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceFilterPresentationBoundary.FacetingAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceFilterPresentationBoundary.RankingAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceFilterPresentationBoundary.FullTextSearchAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceFilterPresentationBoundary.FilteredUrlIsSeoLanding);
+        Assert.Equal(
+            "Search",
+            TravelCore.Modules.PublicExperience.Contracts.PublicExperienceFilterPresentationBoundary.FutureRetrievalOwner);
+        Assert.Equal(
+            "Seo",
+            TravelCore.Modules.PublicExperience.Contracts.PublicExperienceFilterPresentationBoundary.IndexPolicyOwner);
+    }
 }
