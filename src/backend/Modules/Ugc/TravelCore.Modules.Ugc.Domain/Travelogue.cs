@@ -3,8 +3,8 @@ using NodaTime;
 namespace TravelCore.Modules.Ugc.Domain;
 
 /// <summary>
-/// User-authored travel narrative (TC-P16-T004 / P16-R4). Independent UGC aggregate.
-/// Travelogue != ContentItem. No editorial CMS, moderation, or peer FK.
+/// User-authored travel narrative (TC-P16-T004 / P16-R4, TC-P16-T007 / P16-R7). Independent UGC aggregate.
+/// Travelogue != ContentItem. Starts Draft. No editorial CMS or peer FK.
 /// </summary>
 public sealed class Travelogue
 {
@@ -17,6 +17,8 @@ public sealed class Travelogue
         Title = null!;
         Body = null!;
         LocaleCode = null!;
+        ModerationStatus = null!;
+        PublicationStatus = null!;
     }
 
     private Travelogue(
@@ -42,6 +44,9 @@ public sealed class Travelogue
         LocaleCode = NormalizeLocaleCode(localeCode);
         Title = NormalizeRequired(title, TitleMaxLength, nameof(title));
         Body = NormalizeRequired(body, BodyMaxLength, nameof(body));
+        var lifecycle = UgcContentLifecycle.DraftPending();
+        ModerationStatus = lifecycle.ModerationStatus;
+        PublicationStatus = lifecycle.PublicationStatus;
         CreatedAt = createdAt;
         UpdatedAt = createdAt;
     }
@@ -56,6 +61,13 @@ public sealed class Travelogue
     public string Title { get; private set; }
 
     public string Body { get; private set; }
+
+    public ModerationStatus ModerationStatus { get; private set; }
+
+    public PublicationStatus PublicationStatus { get; private set; }
+
+    public bool IsPubliclyEligible =>
+        new UgcContentLifecycle(ModerationStatus, PublicationStatus).IsPubliclyEligible;
 
     public Instant CreatedAt { get; private set; }
 
@@ -79,6 +91,27 @@ public sealed class Travelogue
     public void SetLocale(string localeCode, Instant now)
     {
         LocaleCode = NormalizeLocaleCode(localeCode);
+        Touch(now);
+    }
+
+    public void Submit(Instant now) => Apply(Current.Submit(), now);
+
+    public void Approve(Instant now) => Apply(Current.Approve(), now);
+
+    public void Reject(Instant now) => Apply(Current.Reject(), now);
+
+    public void Publish(Instant now) => Apply(Current.Publish(), now);
+
+    public void Hide(Instant now) => Apply(Current.Hide(), now);
+
+    public void Archive(Instant now) => Apply(Current.Archive(), now);
+
+    private UgcContentLifecycle Current => new(ModerationStatus, PublicationStatus);
+
+    private void Apply(UgcContentLifecycle next, Instant now)
+    {
+        ModerationStatus = next.ModerationStatus;
+        PublicationStatus = next.PublicationStatus;
         Touch(now);
     }
 

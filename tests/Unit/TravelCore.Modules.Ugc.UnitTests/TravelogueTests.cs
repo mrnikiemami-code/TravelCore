@@ -27,8 +27,9 @@ public sealed class TravelogueTests
         Assert.True(UgcOwnershipBoundary.TravelogueImplemented);
         Assert.True(UgcOwnershipBoundary.TravelogueIsNotContentItem);
         Assert.False(UgcOwnershipBoundary.OwnsContentCms);
-        Assert.False(UgcOwnershipBoundary.ModerationWorkflowImplemented);
-        Assert.Null(typeof(Travelogue).GetProperty("PublicationStatus"));
+        Assert.True(UgcOwnershipBoundary.ModerationWorkflowImplemented);
+        Assert.Equal(PublicationStatus.Draft, travelogue.PublicationStatus);
+        Assert.Equal(ModerationStatus.Pending, travelogue.ModerationStatus);
         Assert.Null(typeof(Travelogue).GetProperty("ContentItemId"));
         Assert.Null(typeof(Travelogue).GetProperty("TargetId"));
     }

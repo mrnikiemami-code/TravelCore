@@ -27,7 +27,9 @@ public sealed class UserPhotoTests
         Assert.True(UgcOwnershipBoundary.UserPhotoImplemented);
         Assert.True(UgcOwnershipBoundary.UserPhotoIsNotMediaAsset);
         Assert.False(UgcOwnershipBoundary.OwnsMediaAssetTruth);
-        Assert.False(UgcOwnershipBoundary.ModerationWorkflowImplemented);
+        Assert.True(UgcOwnershipBoundary.ModerationWorkflowImplemented);
+        Assert.Equal(ModerationStatus.Pending, photo.ModerationStatus);
+        Assert.Equal(PublicationStatus.Hidden, photo.PublicationStatus);
         Assert.Null(typeof(UserPhoto).GetProperty("StorageKey"));
         Assert.Null(typeof(UserPhoto).GetProperty("MimeType"));
         Assert.Null(typeof(UserPhoto).GetProperty("FileSize"));
@@ -35,7 +37,6 @@ public sealed class UserPhotoTests
         Assert.Null(typeof(UserPhoto).GetProperty("Height"));
         Assert.Null(typeof(UserPhoto).GetProperty("FocalPoint"));
         Assert.Null(typeof(UserPhoto).GetProperty("Renditions"));
-        Assert.Null(typeof(UserPhoto).GetProperty("PublicationStatus"));
     }
 
     [Fact]

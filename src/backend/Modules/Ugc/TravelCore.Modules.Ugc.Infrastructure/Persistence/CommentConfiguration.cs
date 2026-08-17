@@ -44,6 +44,13 @@ internal sealed class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasColumnName("updated_at")
             .IsRequired();
 
+        UgcLifecycleMapping.Map(
+            builder,
+            x => x.ModerationStatus,
+            x => x.PublicationStatus,
+            "ix_comments_moderation_status",
+            "ix_comments_publication_status");
+
         builder.HasIndex(x => x.ActorId)
             .HasDatabaseName("ix_comments_actor_id");
 

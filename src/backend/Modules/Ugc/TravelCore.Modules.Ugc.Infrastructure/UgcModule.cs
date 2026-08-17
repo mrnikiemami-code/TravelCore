@@ -33,6 +33,7 @@ public sealed class UgcModule : ITravelCoreModule
         services.AddSingleton<IReviewTargetValidator, StructuralReviewTargetValidator>();
         services.AddSingleton<IUserPhotoMediaAssetValidator, StructuralUserPhotoMediaAssetValidator>();
         services.AddSingleton<ICommentTargetValidator, StructuralCommentTargetValidator>();
+        services.AddSingleton<IUgcReportTargetValidator, StructuralUgcReportTargetValidator>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

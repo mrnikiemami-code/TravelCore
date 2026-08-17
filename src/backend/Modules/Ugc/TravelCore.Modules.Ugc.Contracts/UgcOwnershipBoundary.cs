@@ -40,7 +40,10 @@ public static class UgcOwnershipBoundary
     public const bool CommentImplemented = true;
     public const bool LikeImplemented = false;
     public const bool LikeDeferred = true;
-    public const bool ReportImplemented = false;
-    public const bool ModerationWorkflowImplemented = false;
+    public const bool ReportImplemented = true;
+    public const bool ModerationWorkflowImplemented = true;
+    public const bool ApprovedEqualsPublished = false;
+    public const bool PublishedEqualsSeoIndexed = false;
+    public const bool ReportTriggersAutomaticEnforcement = false;
     public const bool TargetAttachmentModelCommitted = true;
 }

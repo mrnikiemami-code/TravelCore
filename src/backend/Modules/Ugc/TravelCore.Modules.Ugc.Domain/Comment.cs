@@ -3,8 +3,8 @@ using NodaTime;
 namespace TravelCore.Modules.Ugc.Domain;
 
 /// <summary>
-/// Flat user-authored Comment on UGC content (TC-P16-T006 / P16-R6).
-/// Targets Review or Travelogue only. No threading. Like is deferred. No publication/moderation.
+/// Flat user-authored Comment on UGC content (TC-P16-T006 / P16-R6, TC-P16-T007 / P16-R7).
+/// Targets Review or Travelogue only. No threading. Like is deferred. Enters Pending directly.
 /// </summary>
 public sealed class Comment
 {
@@ -14,6 +14,8 @@ public sealed class Comment
     {
         TargetType = null!;
         Body = null!;
+        ModerationStatus = null!;
+        PublicationStatus = null!;
     }
 
     private Comment(
@@ -38,6 +40,9 @@ public sealed class Comment
         TargetType = target.TargetType;
         TargetId = target.TargetId;
         Body = NormalizeBody(body);
+        var lifecycle = UgcContentLifecycle.DirectPending();
+        ModerationStatus = lifecycle.ModerationStatus;
+        PublicationStatus = lifecycle.PublicationStatus;
         CreatedAt = createdAt;
         UpdatedAt = createdAt;
     }
@@ -55,6 +60,13 @@ public sealed class Comment
 
     public string Body { get; private set; }
 
+    public ModerationStatus ModerationStatus { get; private set; }
+
+    public PublicationStatus PublicationStatus { get; private set; }
+
+    public bool IsPubliclyEligible =>
+        new UgcContentLifecycle(ModerationStatus, PublicationStatus).IsPubliclyEligible;
+
     public Instant CreatedAt { get; private set; }
 
     public Instant UpdatedAt { get; private set; }
@@ -70,6 +82,25 @@ public sealed class Comment
     public void SetBody(string body, Instant now)
     {
         Body = NormalizeBody(body);
+        UpdatedAt = now;
+    }
+
+    public void Approve(Instant now) => Apply(Current.Approve(), now);
+
+    public void Reject(Instant now) => Apply(Current.Reject(), now);
+
+    public void Publish(Instant now) => Apply(Current.Publish(), now);
+
+    public void Hide(Instant now) => Apply(Current.Hide(), now);
+
+    public void Archive(Instant now) => Apply(Current.Archive(), now);
+
+    private UgcContentLifecycle Current => new(ModerationStatus, PublicationStatus);
+
+    private void Apply(UgcContentLifecycle next, Instant now)
+    {
+        ModerationStatus = next.ModerationStatus;
+        PublicationStatus = next.PublicationStatus;
         UpdatedAt = now;
     }
 

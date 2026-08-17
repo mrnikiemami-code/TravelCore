@@ -53,6 +53,13 @@ internal sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
             .HasColumnName("updated_at")
             .IsRequired();
 
+        UgcLifecycleMapping.Map(
+            builder,
+            x => x.ModerationStatus,
+            x => x.PublicationStatus,
+            "ix_reviews_moderation_status",
+            "ix_reviews_publication_status");
+
         builder.HasMany(x => x.DimensionRatings)
             .WithOne()
             .HasForeignKey(x => x.ReviewId)

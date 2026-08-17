@@ -3,9 +3,10 @@ using NodaTime;
 namespace TravelCore.Modules.Ugc.Domain;
 
 /// <summary>
-/// User-authored feedback aggregate (TC-P16-T002 / P16-R2, TC-P16-T003 / P16-R3).
+/// User-authored feedback aggregate (TC-P16-T002 / P16-R2, TC-P16-T003 / P16-R3, TC-P16-T007 / P16-R7).
 /// OverallRating is part of Review. Dimension ratings are children. Rating is not an independent aggregate.
 /// Each Review owns exactly one polymorphic logical target (type + id). No peer FK.
+/// Enters Pending directly. Public eligibility = Approved + Published.
 /// </summary>
 public sealed class Review
 {
@@ -17,6 +18,8 @@ public sealed class Review
     private Review()
     {
         TargetType = null!;
+        ModerationStatus = null!;
+        PublicationStatus = null!;
     }
 
     private Review(
@@ -45,6 +48,9 @@ public sealed class Review
         OverallRating = overallRating;
         Title = NormalizeOptional(title, TitleMaxLength, nameof(title));
         Body = NormalizeOptional(body, BodyMaxLength, nameof(body));
+        var lifecycle = UgcContentLifecycle.DirectPending();
+        ModerationStatus = lifecycle.ModerationStatus;
+        PublicationStatus = lifecycle.PublicationStatus;
         CreatedAt = createdAt;
         UpdatedAt = createdAt;
     }
@@ -67,6 +73,13 @@ public sealed class Review
     public string? Title { get; private set; }
 
     public string? Body { get; private set; }
+
+    public ModerationStatus ModerationStatus { get; private set; }
+
+    public PublicationStatus PublicationStatus { get; private set; }
+
+    public bool IsPubliclyEligible =>
+        new UgcContentLifecycle(ModerationStatus, PublicationStatus).IsPubliclyEligible;
 
     public Instant CreatedAt { get; private set; }
 
@@ -127,6 +140,16 @@ public sealed class Review
         Touch(now);
     }
 
+    public void Approve(Instant now) => Apply(Current.Approve(), now);
+
+    public void Reject(Instant now) => Apply(Current.Reject(), now);
+
+    public void Publish(Instant now) => Apply(Current.Publish(), now);
+
+    public void Hide(Instant now) => Apply(Current.Hide(), now);
+
+    public void Archive(Instant now) => Apply(Current.Archive(), now);
+
     public ReviewDimensionRating UpsertDimensionRating(string dimensionCode, int value, Instant now)
         => UpsertDimensionRating(dimensionCode, value, now, touch: true);
 
@@ -165,6 +188,15 @@ public sealed class Review
         }
 
         return existing;
+    }
+
+    private UgcContentLifecycle Current => new(ModerationStatus, PublicationStatus);
+
+    private void Apply(UgcContentLifecycle next, Instant now)
+    {
+        ModerationStatus = next.ModerationStatus;
+        PublicationStatus = next.PublicationStatus;
+        Touch(now);
     }
 
     private void Touch(Instant now) => UpdatedAt = now;

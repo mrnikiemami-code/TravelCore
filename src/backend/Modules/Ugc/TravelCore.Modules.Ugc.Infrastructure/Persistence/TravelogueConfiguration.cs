@@ -42,6 +42,13 @@ internal sealed class TravelogueConfiguration : IEntityTypeConfiguration<Travelo
             .HasColumnName("updated_at")
             .IsRequired();
 
+        UgcLifecycleMapping.Map(
+            builder,
+            x => x.ModerationStatus,
+            x => x.PublicationStatus,
+            "ix_travelogues_moderation_status",
+            "ix_travelogues_publication_status");
+
         builder.HasIndex(x => x.ActorId)
             .HasDatabaseName("ix_travelogues_actor_id");
 

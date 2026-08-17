@@ -112,9 +112,10 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 - Delivered: Flat `Comment` on Review/Travelogue only (`CommentId`, opaque ActorId, controlled TargetType+TargetId, Body, timestamps). No threading. No Like/Reaction. No publication/moderation (R7 open). No peer FK.
 - Forbidden kept: Like · Report workflow · ParentCommentId · ranking · inventing R7–R8.
 
-### TC-P16-T007 — Moderation + publication state
-- Purpose: Draft/Pending/Published/Rejected/Archived (exact set may be locked by R7).
-- Invariant: Published ≠ SEO Indexed.
+### TC-P16-T007 — Moderation + publication + reporting baseline
+- Purpose: Separate moderation from publication; add UGC-owned reports (**P16-R7 RESOLVED**).
+- Delivered: Shared lifecycle on Review/Travelogue/UserPhoto/Comment. `ModerationStatus` Pending/Approved/Rejected. `PublicationStatus` Draft/Published/Hidden/Archived. Public eligibility = Approved + Published. Rejected never public. Travelogue starts Draft; Review/UserPhoto/Comment enter Pending directly. `UgcReport` is moderation input only (Open/Resolved/Dismissed; targets Review/Travelogue/UserPhoto/Comment). No auto-hide/reject/ban/ranking/SEO. No peer FK.
+- Forbidden kept: Like · auto-enforcement · SEO IndexPolicy · Search ranking · inventing R8.
 
 ### TC-P16-T008 — Public composition / read contracts
 - Purpose: Replaceable public-read so PE/Place/Destination pages can compose UGC without owning it.
@@ -138,7 +139,7 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 | **P16-R4** | Travelogue vs Content | **RESOLVED** | Travelogue is an independent UGC aggregate (user-authored travel narrative). Article/Guide/LandingPage remain Content CMS. Travelogue != ContentItem. Do not store Travelogue as a ContentItem flag. No peer FK. Publication/moderation remains P16-R7. |
 | **P16-R5** | UserPhoto vs Media | **RESOLVED** | UGC owns the UserPhoto relationship (Actor + logical MediaAssetId). Media owns technical MediaAsset truth (bytes/variants/StorageKey/mime/dimensions/renditions/focal). UserPhoto relationship != MediaAsset. No peer FK. No second media store. Publication/moderation remains P16-R7. |
 | **P16-R6** | Like / Comment scope | **RESOLVED** | Comment = IN (flat comments on Review and Travelogue only). Like = DEFERRED. No threading, no Like/Reaction counts, no ranking. Publication/moderation remains P16-R7. Report remains later. |
-| **P16-R7** | Moderation / publication states | **UNRESOLVED** | ROADMAP lists Draft/Pending/Published/Rejected/Archived. Exact workflow, who moderates, and Published ≠ IndexPolicy remain locks. |
+| **P16-R7** | Moderation / publication states | **RESOLVED** | ModerationStatus (Pending/Approved/Rejected) != PublicationStatus (Draft/Published/Hidden/Archived). Approved != Published. Published != SEO Indexed. Public eligibility = Approved + Published. Rejected never public. Travelogue may start Draft; Review/UserPhoto/Comment may enter Pending directly. UgcReport is UGC-owned moderation input only (Open/Resolved/Dismissed). Report count != automatic hide/reject/ban/ranking/SEO. No generic rules engine. |
 | **P16-R8** | Public composition vs SEO/Search | **UNRESOLVED** | PE may compose published UGC. SEO owns indexability. Search may retrieve later. Do not invent UGC SEO factory or ranking-from-reviews. |
 
 ---

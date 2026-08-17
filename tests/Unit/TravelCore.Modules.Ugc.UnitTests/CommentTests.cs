@@ -27,9 +27,10 @@ public sealed class CommentTests
         Assert.True(UgcOwnershipBoundary.CommentImplemented);
         Assert.True(UgcOwnershipBoundary.LikeDeferred);
         Assert.False(UgcOwnershipBoundary.LikeImplemented);
-        Assert.False(UgcOwnershipBoundary.ModerationWorkflowImplemented);
+        Assert.True(UgcOwnershipBoundary.ModerationWorkflowImplemented);
+        Assert.Equal(ModerationStatus.Pending, comment.ModerationStatus);
+        Assert.Equal(PublicationStatus.Hidden, comment.PublicationStatus);
         Assert.Null(typeof(Comment).GetProperty("ParentCommentId"));
-        Assert.Null(typeof(Comment).GetProperty("PublicationStatus"));
         Assert.Null(typeof(Comment).GetProperty("LikeCount"));
     }
 

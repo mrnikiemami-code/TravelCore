@@ -31,6 +31,13 @@ internal sealed class UserPhotoConfiguration : IEntityTypeConfiguration<UserPhot
             .HasColumnName("updated_at")
             .IsRequired();
 
+        UgcLifecycleMapping.Map(
+            builder,
+            x => x.ModerationStatus,
+            x => x.PublicationStatus,
+            "ix_user_photos_moderation_status",
+            "ix_user_photos_publication_status");
+
         builder.HasIndex(x => x.ActorId)
             .HasDatabaseName("ix_user_photos_actor_id");
 

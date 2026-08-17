@@ -50,6 +50,10 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.True(UgcOwnershipBoundary.CommentImplemented);
         Assert.False(UgcOwnershipBoundary.LikeImplemented);
         Assert.True(UgcOwnershipBoundary.LikeDeferred);
+        Assert.True(UgcOwnershipBoundary.ReportImplemented);
+        Assert.True(UgcOwnershipBoundary.ModerationWorkflowImplemented);
+        Assert.False(UgcOwnershipBoundary.ApprovedEqualsPublished);
+        Assert.False(UgcOwnershipBoundary.PublishedEqualsSeoIndexed);
         Assert.True(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
         Assert.True(UgcOwnershipBoundary.ReviewTargetIsLogicalReferenceOnly);
         Assert.False(UgcOwnershipBoundary.OwnsTargetFacts);
@@ -111,6 +115,9 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.Travelogue));
         Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.UserPhoto));
         Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.Comment));
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.UgcReport));
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.ModerationStatus));
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.PublicationStatus));
 
         var forbiddenType = new Regex(
             @"\b(class|record|enum|struct|interface)\s+(Rating|RatingDimension|Like|Report)\b",
@@ -141,7 +148,7 @@ public sealed class UgcBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T006 forbids independent Rating aggregate and Like/Report product types:\n" + string.Join('\n', hits));
+            "T007 forbids independent Rating aggregate and Like product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -160,7 +167,9 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.Contains("P16-R3", text, StringComparison.Ordinal);
         Assert.Contains("P16-R4", text, StringComparison.Ordinal);
         Assert.Contains("P16-R5", text, StringComparison.Ordinal);
-        Assert.Contains("P16-R6", text, StringComparison.Ordinal);
+        Assert.Contains("P16-R7", text, StringComparison.Ordinal);
+        Assert.Contains("Approved != Published", text, StringComparison.Ordinal);
+        Assert.Contains("Published != SEO Indexed", text, StringComparison.Ordinal);
         Assert.Contains("Travelogue != ContentItem", text, StringComparison.Ordinal);
         Assert.Contains("UserPhoto relationship != MediaAsset", text, StringComparison.Ordinal);
         Assert.Contains("Like = DEFERRED", text, StringComparison.Ordinal);
@@ -193,7 +202,8 @@ public sealed class UgcBoundaryGuardrailTests
             hits.Count == 0,
             "Content must not absorb Travelogue via IsUserGenerated/UgcType:\n" + string.Join('\n', hits));
         Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Travelogue).GetProperty("ContentItemId"));
-        Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Travelogue).GetProperty("PublicationStatus"));
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.Travelogue).GetProperty("PublicationStatus"));
+        Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.Travelogue).GetProperty("ModerationStatus"));
     }
 
     [Fact]

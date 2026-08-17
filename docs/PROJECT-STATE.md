@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P16 — UGC** (**IN PROGRESS** — T006 Comment baseline) |
+| Current Phase | **P16 — UGC** (**IN PROGRESS** — T007 moderation/publication/report) |
 | Previous Phase | **P15 — Search & Discovery** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -206,20 +206,22 @@
 | P15-T008 | **VACANT** — no independent product scope |
 | P15-T009 | **COMPLETE / ACCEPTED** (`b741bc5`) — Search hardening and evidence pack |
 | P15-GATE | **COMPLETE / ACCEPTED** (`4e2098d`) — Acceptance evidence |
-| P16 | **IN PROGRESS** — Plan ACCEPTED · **P16-R1–R6 RESOLVED** · T006 Comment baseline |
+| P16 | **IN PROGRESS** — Plan ACCEPTED · **P16-R1–R7 RESOLVED** · T007 moderation/publication/report |
 | P16 Plan | `TC-P16-PLAN` COMPLETE / ACCEPTED (`bac626b`) — [`docs/plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md) |
 | P16-T001 | **COMPLETE / ACCEPTED** (`e5fa578`) — UGC module scaffolding (`ugc` schema) |
 | P16-T002 | **COMPLETE / ACCEPTED** (`a5cccb2`) — Review aggregate + structured dimension ratings |
 | P16-T003 | **COMPLETE / ACCEPTED** (`73f85f2`) — Review logical target attachment |
 | P16-T004 | **COMPLETE / ACCEPTED** (`b35721c`) — Travelogue UGC narrative (not ContentItem) |
 | P16-T005 | **COMPLETE / ACCEPTED** (`3d10913`) — UserPhoto relationship over logical MediaAssetId |
-| P16-T006 | **AWAITING_ARCHITECT_REVIEW** — Comment IN; Like = DEFERRED |
+| P16-T006 | **COMPLETE / ACCEPTED** (`2d1dd59`) — Flat Comment; Like = DEFERRED |
+| P16-T007 | **IN PROGRESS** — UGC moderation, publication, and reporting baseline |
 | P16-R1 (UGC ownership) | **RESOLVED** — independent UGC module · schema `ugc` · owns user-generated content lifecycle · does not own Identity/Party, Content CMS, MediaAsset technical truth, Tour/Place/Destination facts, SEO IndexPolicy, Search, Booking, Payment · actor = opaque logical id |
 | P16-R2 (Review / Rating) | **RESOLVED** — Review is the aggregate. OverallRating (1..5) is part of Review. Dimension ratings are children (`DimensionCode` + `Value` 1..5, unique/normalized). Rating is not an independent aggregate. No hardcoded Hotel/Guide/Food/Service columns. |
 | P16-R3 (Target attachment) | **RESOLVED** — Each Review owns exactly one logical target (`TargetType` + `TargetId`). Controlled: TourProduct · Place · Agency. No peer-schema FK. Structural `IReviewTargetValidator` only. |
 | P16-R4 (Travelogue vs Content) | **RESOLVED** — Travelogue is an independent UGC aggregate. Article/Guide/LandingPage remain Content CMS. Travelogue != ContentItem. No Content schema change. Publication/moderation remains P16-R7. |
 | P16-R5 (UserPhoto vs Media) | **RESOLVED** — UGC owns UserPhoto relationship (Actor + logical MediaAssetId). Media owns technical MediaAsset truth. UserPhoto != MediaAsset. No peer FK. No second media store. |
 | P16-R6 (Comment / Like) | **RESOLVED** — Comment = IN (flat, Review/Travelogue). Like = DEFERRED. No threading / ranking / moderation. |
+| P16-R7 (Moderation / publication / report) | **RESOLVED** — ModerationStatus != PublicationStatus. Approved != Published. Published != SEO Indexed. Public eligibility = Approved + Published. UgcReport is moderation input only. |
 | P15-R1 (Search ownership) | **RESOLVED** — Search = Discovery Owner · schema `search` · owns query/result contracts and future read models · does not own Tour/Content/Pricing/Agency facts or SEO IndexPolicy · Read Model/Projection later, not SoT · no LLM/business rules inside Search · T001: no projection tables / FTS / Elasticsearch / ranking / faceting |
 | P15-R2 (Index / read model) | **RESOLVED** — Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS in T002. SearchDocument is not a domain entity. |
 | P15-R3 (Synchronization) | **RESOLVED** — Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003. |
@@ -732,6 +734,7 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - **P16-R4 RESOLVED:** Travelogue is an independent UGC narrative aggregate. Article/Guide/LandingPage remain Content CMS. Travelogue != ContentItem. Do not store Travelogue as a ContentItem flag. Publication/moderation remains P16-R7.
 - **P16-R5 RESOLVED:** UGC owns UserPhoto relationship (Actor + logical MediaAssetId). Media owns technical MediaAsset truth. UserPhoto relationship != MediaAsset. No peer FK. No second media store.
 - **P16-R6 RESOLVED:** Comment = IN (flat comments on Review/Travelogue). Like = DEFERRED. No threading, ranking, or moderation.
+- **P16-R7 RESOLVED:** ModerationStatus (Pending/Approved/Rejected) is distinct from PublicationStatus (Draft/Published/Hidden/Archived). Approved != Published. Published != SEO Indexed. Public eligibility = Approved + Published. Rejected never public. UgcReport is UGC-owned moderation input only — no automatic hide/reject/ban/ranking/SEO.
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 

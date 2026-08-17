@@ -75,8 +75,9 @@ public sealed class ReviewPersistenceModelTests
         Assert.Equal("travelogues", travelogueType.GetTableName());
         Assert.Equal(UgcDbContext.SchemaName, travelogueType.GetSchema());
         Assert.Equal("locale_code", travelogueType.FindProperty(nameof(Travelogue.LocaleCode))!.GetColumnName());
+        Assert.Equal("moderation_status", travelogueType.FindProperty(nameof(Travelogue.ModerationStatus))!.GetColumnName());
+        Assert.Equal("publication_status", travelogueType.FindProperty(nameof(Travelogue.PublicationStatus))!.GetColumnName());
         Assert.Null(travelogueType.FindProperty("ContentItemId"));
-        Assert.Null(travelogueType.FindProperty("PublicationStatus"));
         Assert.Null(travelogueType.FindProperty("IsUserGenerated"));
         Assert.Contains(
             travelogueType.GetIndexes(),
@@ -108,12 +109,20 @@ public sealed class ReviewPersistenceModelTests
         Assert.Equal("target_id", commentType.FindProperty(nameof(Comment.TargetId))!.GetColumnName());
         Assert.Null(commentType.FindProperty("ParentCommentId"));
         Assert.Null(commentType.FindProperty("LikeCount"));
-        Assert.Null(commentType.FindProperty("PublicationStatus"));
+        Assert.Equal("publication_status", commentType.FindProperty(nameof(Comment.PublicationStatus))!.GetColumnName());
+        Assert.Equal("moderation_status", commentType.FindProperty(nameof(Comment.ModerationStatus))!.GetColumnName());
         Assert.Contains(
             commentType.GetIndexes(),
             i => i.GetDatabaseName() == "ix_comments_target_type_target_id");
         Assert.Null(model.GetEntityTypes().FirstOrDefault(e =>
             string.Equals(e.GetTableName(), "likes", StringComparison.OrdinalIgnoreCase)));
+        var reportType = model.FindEntityType(typeof(UgcReport));
+        Assert.NotNull(reportType);
+        Assert.Equal("reports", reportType.GetTableName());
+        Assert.Equal(UgcDbContext.SchemaName, reportType.GetSchema());
+        Assert.Equal("reporter_actor_id", reportType.FindProperty(nameof(UgcReport.ReporterActorId))!.GetColumnName());
+        Assert.Equal("reason_code", reportType.FindProperty(nameof(UgcReport.ReasonCode))!.GetColumnName());
+        Assert.Null(reportType.FindProperty("HideAfterCount"));
 
         Assert.False(db.Database.HasPendingModelChanges());
     }

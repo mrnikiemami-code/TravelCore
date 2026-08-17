@@ -27,7 +27,7 @@ public sealed class UgcMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(6, expectedMigrations.Length);
+            Assert.Equal(7, expectedMigrations.Length);
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_InitialUgcScaffolding", StringComparison.Ordinal));
@@ -46,6 +46,9 @@ public sealed class UgcMigrationLifecycleTests
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_AddCommentBaseline", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddUgcModerationPublicationReport", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -97,11 +100,17 @@ public sealed class UgcMigrationLifecycleTests
                 WHERE table_schema = 'ugc'
                   AND table_name = 'comments';
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'reports';
+                """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'ugc'
-                  AND table_name IN ('ratings', 'likes', 'reports');
+                  AND table_name IN ('ratings', 'likes');
                 """, ct));
             Assert.Equal(4, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -115,7 +124,14 @@ public sealed class UgcMigrationLifecycleTests
                 FROM information_schema.columns
                 WHERE table_schema = 'ugc'
                   AND table_name = 'travelogues'
-                  AND column_name IN ('content_item_id', 'publication_status', 'is_user_generated', 'target_id');
+                  AND column_name IN ('content_item_id', 'is_user_generated', 'target_id');
+                """, ct));
+            Assert.Equal(2, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'travelogues'
+                  AND column_name IN ('moderation_status', 'publication_status');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -135,7 +151,14 @@ public sealed class UgcMigrationLifecycleTests
                 FROM information_schema.columns
                 WHERE table_schema = 'ugc'
                   AND table_name = 'comments'
-                  AND column_name IN ('parent_comment_id', 'like_count', 'publication_status');
+                  AND column_name IN ('parent_comment_id', 'like_count');
+                """, ct));
+            Assert.Equal(2, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'comments'
+                  AND column_name IN ('moderation_status', 'publication_status');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
