@@ -42,12 +42,14 @@ public sealed class TourExperienceSpecializationGuardrailTests
             })
             .ToList();
         var code = string.Join('\n', codeLines);
-        Assert.DoesNotContain("Difficulty", code, StringComparison.Ordinal);
-        Assert.DoesNotContain("Eligibility", code, StringComparison.Ordinal);
         Assert.DoesNotContain("Guide", code, StringComparison.Ordinal);
         Assert.DoesNotContain("TourHotelOption", code, StringComparison.Ordinal);
         Assert.DoesNotContain("HotelBooking", code, StringComparison.Ordinal);
         Assert.Contains("AccommodationPlan", code, StringComparison.Ordinal);
+        Assert.Contains("Difficulty", code, StringComparison.Ordinal);
+        Assert.Contains("Eligibility", code, StringComparison.Ordinal);
+        Assert.Contains("Equipment", code, StringComparison.Ordinal);
+        Assert.Contains("LocalTransport", code, StringComparison.Ordinal);
     }
 
     [Fact]

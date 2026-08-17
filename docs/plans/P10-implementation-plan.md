@@ -308,7 +308,7 @@ Exact parallelization may be adjusted by architect on accept; Cursor must not in
 | **P10-R3** | Accommodation plan vs Place Hotel | **RESOLVED** | Experience owns accommodation plan facts (0..N entries) with optional logical PlaceId (Hotel-kind at app boundary). Place remains SoR. No TourHotelOption · no HotelBooking · no cross-schema FK. Locked architect 2026-08-17 (T004). |
 | **P10-R4** | Media for itinerary / day / stop | **UNRESOLVED** | Whether day/stop media roles exist beyond TourProduct Cover/Gallery (P09-R8); roles/cardinality; or DEFER media to product-level only. |
 | **P10-R5** | Meals model shape | **RESOLVED** | Meal items belong to ItineraryDay; closed enum Breakfast/Lunch/Dinner/Other; unique per day+type; no Pricing / surcharge. Locked architect 2026-08-17 (T004). |
-| **P10-R6** | Difficulty / Eligibility taxonomy | **UNRESOLVED** | Closed enum vs ReferenceData vs free-form localized text; eligibility rules as product facts only (not Booking engine). |
+| **P10-R6** | Difficulty / Eligibility taxonomy | **RESOLVED** | Difficulty = closed UX enum (Easy/Moderate/Challenging/Strenuous) on Experience. Eligibility = structured code/value/detail facts (not Booking rule engine). Equipment = structured code + Required/Recommended + optional detail. Locked by architect 2026-08-17 (T005 · ARCHITECT AUTONOMY). |
 | **P10-R7** | Guide information shape | **UNRESOLVED** | Localized text-only vs optional Party person reference; no Identity/Access merge; no inventing guide marketplace. |
 | **P10-R8** | Experience-only publishability rules | **UNRESOLVED** | Whether Experience specialization (itinerary completeness) gates catalog visibility beyond P09 Draft/Published/Inactive — or P09 lifecycle stands unchanged. |
 

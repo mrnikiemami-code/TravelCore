@@ -24,6 +24,10 @@ internal sealed class TourExperienceSpecializationConfiguration
             .HasColumnName("updated_at")
             .IsRequired();
 
+        builder.Property(x => x.Difficulty)
+            .HasColumnName("difficulty")
+            .HasConversion<short?>();
+
         builder.HasOne<TourProduct>()
             .WithOne()
             .HasForeignKey<TourExperienceSpecialization>(x => x.TourProductId)
@@ -48,6 +52,36 @@ internal sealed class TourExperienceSpecializationConfiguration
 
         builder.Navigation(x => x.AccommodationPlan)
             .HasField("_accommodationPlan")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasMany(x => x.EligibilityRequirements)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.EligibilityRequirements)
+            .HasField("_eligibility")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasMany(x => x.Equipment)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Equipment)
+            .HasField("_equipment")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+
+        builder.HasMany(x => x.LocalTransport)
+            .WithOne()
+            .HasForeignKey(x => x.TourProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.LocalTransport)
+            .HasField("_localTransport")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
     }
@@ -232,5 +266,82 @@ internal sealed class ExperienceAccommodationPlanEntryConfiguration
 
         builder.HasIndex(x => x.PlaceId)
             .HasDatabaseName("ix_tour_experience_accommodation_plan_place_id");
+    }
+}
+
+internal sealed class ExperienceEligibilityRequirementConfiguration
+    : IEntityTypeConfiguration<ExperienceEligibilityRequirement>
+{
+    public void Configure(EntityTypeBuilder<ExperienceEligibilityRequirement> builder)
+    {
+        builder.ToTable("tour_experience_eligibility_requirements");
+        builder.HasKey(x => new { x.TourProductId, x.Code });
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(TourCatalogFactCode.CodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Value)
+            .HasColumnName("value")
+            .HasMaxLength(ExperienceEligibilityRequirement.ValueMaxLength);
+
+        builder.Property(x => x.Detail)
+            .HasColumnName("detail")
+            .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
+    }
+}
+
+internal sealed class ExperienceEquipmentItemConfiguration : IEntityTypeConfiguration<ExperienceEquipmentItem>
+{
+    public void Configure(EntityTypeBuilder<ExperienceEquipmentItem> builder)
+    {
+        builder.ToTable("tour_experience_equipment");
+        builder.HasKey(x => new { x.TourProductId, x.Code });
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(TourCatalogFactCode.CodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Kind)
+            .HasColumnName("kind")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.Detail)
+            .HasColumnName("detail")
+            .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
+    }
+}
+
+internal sealed class ExperienceLocalTransportItemConfiguration
+    : IEntityTypeConfiguration<ExperienceLocalTransportItem>
+{
+    public void Configure(EntityTypeBuilder<ExperienceLocalTransportItem> builder)
+    {
+        builder.ToTable("tour_experience_local_transport");
+        builder.HasKey(x => new { x.TourProductId, x.Code });
+
+        builder.Property(x => x.TourProductId)
+            .HasColumnName("tour_product_id")
+            .HasConversion(id => id.Value, value => TourProductId.From(value));
+
+        builder.Property(x => x.Code)
+            .HasColumnName("code")
+            .HasMaxLength(TourCatalogFactCode.CodeMaxLength)
+            .IsRequired();
+
+        builder.Property(x => x.Detail)
+            .HasColumnName("detail")
+            .HasMaxLength(TourCatalogFactCode.DetailMaxLength);
     }
 }

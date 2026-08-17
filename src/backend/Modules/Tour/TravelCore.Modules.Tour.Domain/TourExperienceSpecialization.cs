@@ -3,14 +3,17 @@ using NodaTime;
 namespace TravelCore.Modules.Tour.Domain;
 
 /// <summary>
-/// Experience typed specialization on TourProduct (P09-R1 · P10-R1 · P10-R3 · TC-P10-T001…T004).
-/// 1:1 with <see cref="TourProductId"/>. Owns optional itinerary (0..1) and accommodation plan (0..N).
-/// Difficulty · guide · publishing remain deferred. Package specialty is out of scope (P11).
+/// Experience typed specialization on TourProduct (P09-R1 · P10-R1/R3/R5/R6 · TC-P10-T001…T005).
+/// 1:1 with <see cref="TourProductId"/>. Owns itinerary, accommodation, meals (via days),
+/// difficulty/eligibility/equipment/local-transport facts. Guide/publishing deferred. Package = P11.
 /// </summary>
 public sealed class TourExperienceSpecialization
 {
     private ExperienceItinerary? _itinerary;
     private readonly List<ExperienceAccommodationPlanEntry> _accommodationPlan = [];
+    private readonly List<ExperienceEligibilityRequirement> _eligibility = [];
+    private readonly List<ExperienceEquipmentItem> _equipment = [];
+    private readonly List<ExperienceLocalTransportItem> _localTransport = [];
 
     private TourExperienceSpecialization()
     {
@@ -35,6 +38,9 @@ public sealed class TourExperienceSpecialization
 
     public Instant UpdatedAt { get; private set; }
 
+    /// <summary>Optional UX-level difficulty (P10-R6 · 0..1).</summary>
+    public ExperienceDifficulty? Difficulty { get; private set; }
+
     /// <summary>Optional Experience-owned itinerary (P10-R1 · 0..1).</summary>
     public ExperienceItinerary? Itinerary => _itinerary;
 
@@ -43,6 +49,12 @@ public sealed class TourExperienceSpecialization
 
     public IReadOnlyList<ExperienceAccommodationPlanEntry> AccommodationPlanOrdered =>
         _accommodationPlan.OrderBy(x => x.SortOrder).ToList();
+
+    public IReadOnlyCollection<ExperienceEligibilityRequirement> EligibilityRequirements => _eligibility;
+
+    public IReadOnlyCollection<ExperienceEquipmentItem> Equipment => _equipment;
+
+    public IReadOnlyCollection<ExperienceLocalTransportItem> LocalTransport => _localTransport;
 
     /// <summary>
     /// Attaches Experience specialization to an Experience-kind TourProduct.
@@ -157,6 +169,89 @@ public sealed class TourExperienceSpecialization
         UpdatedAt = now;
         itinerary.Touch(now);
         return meal;
+    }
+
+    public void SetDifficulty(ExperienceDifficulty? difficulty, Instant now)
+    {
+        if (difficulty is ExperienceDifficulty value && !Enum.IsDefined(value))
+        {
+            throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, "Unsupported ExperienceDifficulty.");
+        }
+
+        Difficulty = difficulty;
+        UpdatedAt = now;
+    }
+
+    public void ReplaceEligibilityRequirements(
+        IEnumerable<(string Code, string? Value, string? Detail)> requirements,
+        Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(requirements);
+        var normalized = requirements
+            .Select(x => ExperienceEligibilityRequirement.Create(TourProductId, x.Code, x.Value, x.Detail))
+            .GroupBy(x => x.Code, StringComparer.Ordinal)
+            .Select(g => g.Last())
+            .OrderBy(x => x.Code, StringComparer.Ordinal)
+            .ToList();
+
+        if (normalized.Count > ExperienceEligibilityRequirement.MaxEntriesPerExperience)
+        {
+            throw new ArgumentException(
+                $"An Experience may have at most {ExperienceEligibilityRequirement.MaxEntriesPerExperience} eligibility requirements.",
+                nameof(requirements));
+        }
+
+        _eligibility.Clear();
+        _eligibility.AddRange(normalized);
+        UpdatedAt = now;
+    }
+
+    public void ReplaceEquipment(
+        IEnumerable<(string Code, ExperienceEquipmentKind Kind, string? Detail)> items,
+        Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(items);
+        var normalized = items
+            .Select(x => ExperienceEquipmentItem.Create(TourProductId, x.Code, x.Kind, x.Detail))
+            .GroupBy(x => x.Code, StringComparer.Ordinal)
+            .Select(g => g.Last())
+            .OrderBy(x => x.Code, StringComparer.Ordinal)
+            .ToList();
+
+        if (normalized.Count > ExperienceEquipmentItem.MaxEntriesPerExperience)
+        {
+            throw new ArgumentException(
+                $"An Experience may have at most {ExperienceEquipmentItem.MaxEntriesPerExperience} equipment items.",
+                nameof(items));
+        }
+
+        _equipment.Clear();
+        _equipment.AddRange(normalized);
+        UpdatedAt = now;
+    }
+
+    public void ReplaceLocalTransport(
+        IEnumerable<(string Code, string? Detail)> items,
+        Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(items);
+        var normalized = items
+            .Select(x => ExperienceLocalTransportItem.Create(TourProductId, x.Code, x.Detail))
+            .GroupBy(x => x.Code, StringComparer.Ordinal)
+            .Select(g => g.Last())
+            .OrderBy(x => x.Code, StringComparer.Ordinal)
+            .ToList();
+
+        if (normalized.Count > ExperienceLocalTransportItem.MaxEntriesPerExperience)
+        {
+            throw new ArgumentException(
+                $"An Experience may have at most {ExperienceLocalTransportItem.MaxEntriesPerExperience} local transport items.",
+                nameof(items));
+        }
+
+        _localTransport.Clear();
+        _localTransport.AddRange(normalized);
+        UpdatedAt = now;
     }
 
     public void Touch(Instant now) => UpdatedAt = now;
