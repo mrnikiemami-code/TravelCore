@@ -102,4 +102,54 @@ public sealed class SearchScaffoldingSmokeTests
         Assert.Equal("Content", envelope.Source.SourceModule);
         Assert.Equal(sourceId, envelope.Source.SourceId);
     }
+
+    [Fact]
+    public void Projection_Sync_Boundary_Keeps_Search_Out_Of_Domain_Transaction()
+    {
+        Assert.Equal("TransactionalOutboxPlusAsyncProjectionWorker", SearchProjectionSyncBoundary.SyncPosture);
+        Assert.False(SearchProjectionSyncBoundary.DomainTransactionIncludesSearchWrite);
+        Assert.False(SearchProjectionSyncBoundary.SearchFailureFailsDomainTransaction);
+        Assert.True(SearchProjectionSyncBoundary.ProjectionMustBeRetryable);
+        Assert.True(SearchProjectionSyncBoundary.ProjectionMustBeIdempotent);
+        Assert.False(SearchProjectionSyncBoundary.RealQueueInfrastructureAllowed);
+        Assert.False(SearchProjectionSyncBoundary.RabbitMqDependencyAllowed);
+    }
+
+    [Fact]
+    public async Task ProjectionWorker_Is_Idempotent_On_Duplicate_Event()
+    {
+        var store = new InMemorySearchProjectionIdempotencyStore();
+        var worker = new TravelCore.Modules.Search.Infrastructure.SearchProjectionWorker(store);
+        var evt = new SearchProjectionEvent(
+            Guid.Parse("0198b3e0-0000-7000-8000-000000000021"),
+            SourceType: "TourProduct",
+            SourceId: Guid.Parse("0198b3e0-0000-7000-8000-000000000022"),
+            Version: 1,
+            LocaleCode: "fa-IR",
+            ChangeKind: "Upsert",
+            OccurredAtUtc: DateTimeOffset.Parse("2026-08-17T12:00:00Z"));
+
+        var first = await worker.ProcessAsync(evt, TestContext.Current.CancellationToken);
+        var second = await worker.ProcessAsync(evt, TestContext.Current.CancellationToken);
+
+        Assert.True(first.Applied);
+        Assert.Equal("AcceptedForProjection", first.Outcome);
+        Assert.False(second.Applied);
+        Assert.Equal("DuplicateSkipped", second.Outcome);
+    }
+
+    private sealed class InMemorySearchProjectionIdempotencyStore : ISearchProjectionIdempotencyStore
+    {
+        private readonly HashSet<Guid> _processed = [];
+
+        public Task<bool> HasProcessedAsync(Guid eventId, CancellationToken cancellationToken = default)
+            => Task.FromResult(_processed.Contains(eventId));
+
+        public Task MarkProcessedAsync(Guid eventId, long sourceVersion, CancellationToken cancellationToken = default)
+        {
+            _ = sourceVersion;
+            _processed.Add(eventId);
+            return Task.CompletedTask;
+        }
+    }
 }

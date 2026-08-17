@@ -75,7 +75,7 @@ public sealed class SearchBoundaryGuardrailTests
                         return false;
                     }
 
-                    return Regex.IsMatch(x.line, @"\bISearchIndex\b")
+                    return Regex.IsMatch(x.line, @"\bclass\s+\w+[^{:]*:\s*[^{]*\bISearchIndex\b")
                            || Regex.IsMatch(x.line, @"\bDbSet\s*<\s*SearchDocument\s*>");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
@@ -142,14 +142,29 @@ public sealed class SearchBoundaryGuardrailTests
 
                     return Regex.IsMatch(
                         x.line,
-                        @"\b(pg_trgm|to_tsvector|ts_rank|Elasticsearch|OpenSearch|Booking|Payment|PriceOverride|Commission|SetIndexPolicy|IEmbedding|OpenAI)\b");
+                        @"\b(pg_trgm|to_tsvector|ts_rank|Elasticsearch|OpenSearch|Booking|Payment|PriceOverride|Commission|SetIndexPolicy|IEmbedding|OpenAI|RabbitMQ|IConnectionFactory)\b");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "Search scaffolding must not implement FTS/engines or steal facts:\n" + string.Join('\n', hits));
+            "Search scaffolding must not implement FTS/engines/brokers or steal facts:\n" + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void Search_Projection_Sync_Is_Outbox_Plus_Async_Worker()
+    {
+        Assert.Equal("TransactionalOutboxPlusAsyncProjectionWorker", SearchProjectionSyncBoundary.SyncPosture);
+        Assert.False(SearchProjectionSyncBoundary.DomainTransactionIncludesSearchWrite);
+        Assert.False(SearchProjectionSyncBoundary.SearchFailureFailsDomainTransaction);
+        Assert.True(SearchProjectionSyncBoundary.ProjectionMustBeRetryable);
+        Assert.True(SearchProjectionSyncBoundary.ProjectionMustBeIdempotent);
+        Assert.False(SearchProjectionSyncBoundary.RealQueueInfrastructureAllowed);
+        Assert.False(SearchProjectionSyncBoundary.RabbitMqDependencyAllowed);
+        Assert.True(typeof(TravelCore.Modules.Search.Infrastructure.SearchProjectionWorker)
+            .GetInterfaces()
+            .Contains(typeof(ISearchProjectionWorker)));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P15-PLAN` |
 | Phase | P15 — Search & Discovery |
-| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R2 RESOLVED; T002 index abstraction delivered |
+| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R3 RESOLVED; T003 projection sync skeleton delivered |
 | Baseline | `608216d` (`docs: P14 acceptance gate evidence [TC-P14-GATE]` — **TC-P14-GATE** ACCEPTED; P14 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P15 · P14 Gate ACCEPT · P14-R3/R5/R8 (Listing ≠ Landing · Related ≠ Recommendation · Filter ≠ Faceting) · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace |
 | Backend root | `src/backend` |
@@ -80,8 +80,9 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 - Forbidden kept: Elasticsearch / OpenSearch / SQL FTS / `pg_trgm` / ranking / faceting / embedding / TourProduct clone / Pricing SoR copy.
 
 ### TC-P15-T003 — Synchronization strategy baseline
-- Purpose: How facts flow into Search without Domain rewrite (**needs P15-R3**).
-- Expected: Sync/replaceable ingestion boundary; eventual consistency posture; no dual-write invent without lock.
+- Purpose: How facts flow into Search without Domain rewrite (**P15-R3 RESOLVED** — Transactional Outbox + Async Projection Worker).
+- Delivered: `SearchProjectionEvent` · sync boundary · `ISearchProjectionWorker` · `ISearchProjectionIdempotencyStore` · skeleton worker. No broker/queue.
+- Forbidden kept: RabbitMQ · Elasticsearch · OpenSearch · ranking · faceting · embeddings · peer FKs · Search write inside domain transaction.
 
 ### TC-P15-T004 — Query API / listing retrieval integration
 - Purpose: Public query contract for Listing selection (**needs P15-R7** and/or R1).
@@ -116,7 +117,7 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 |----|-------|--------|-------|
 | **P15-R1** | Search ownership boundary | **RESOLVED** | Search = Discovery Owner. Owns query/result contracts and future read models. Does **not** own Tour/Content/Pricing/Agency facts or SEO IndexPolicy. Search is a Read Model / Projection (later), not SoT. No LLM/business rules inside Search. T001: no database projection, no indexing engine, no Elasticsearch, no FTS. |
 | **P15-R2** | Index / read model | **RESOLVED** | Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS/`pg_trgm` in T002. Search Document is not a domain entity. |
-| **P15-R3** | Data synchronization strategy | **UNRESOLVED** | Push/pull/eventual; no Domain rewrite; no replacing PG SoT. |
+| **P15-R3** | Data synchronization strategy | **RESOLVED** | Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003. |
 | **P15-R4** | Faceting ownership | **UNRESOLVED** | Facets in Search; PE owns UI only (P14-R8 carry-forward). |
 | **P15-R5** | Ranking model | **UNRESOLVED** | Ranking ≠ Recommendation unless later lock. Related Tours may be replaced by Search retrieval. |
 | **P15-R6** | AI / Search readiness | **UNRESOLVED** | Structured readiness only; no embeddings/recommendation invent. |

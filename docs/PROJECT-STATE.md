@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T002 index abstraction) |
+| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T003 projection sync) |
 | Previous Phase | **P14 — Public Tour Experience** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P15-T002` — Search index model abstraction (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P15-T003` — Search projection synchronization boundary (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P15 — Search & Discovery |
-| Current Next Task | Architect review of T002 → next locked task (do not invent R3–R7) |
+| Current Next Task | Architect review of T003 → next locked task (do not invent R4–R7) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -194,12 +194,14 @@
 | P14-T008 | **COMPLETE / ACCEPTED** (`a0209bd`) — Filter presentation boundary (P14-R8; presentation only; faceting = P15) |
 | P14-T009 | **COMPLETE / ACCEPTED** (`6c0e218`) — Hardening + evidence pack |
 | P14-GATE | **COMPLETE / ACCEPTED** (`608216d`) — Acceptance evidence |
-| P15 | **IN PROGRESS** — Plan ACCEPTED · **P15-R1–R2 RESOLVED** |
+| P15 | **IN PROGRESS** — Plan ACCEPTED · **P15-R1–R3 RESOLVED** |
 | P15 Plan | `TC-P15-PLAN` COMPLETE / ACCEPTED (`fba7a51`) — [`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md) |
 | P15-T001 | **COMPLETE / ACCEPTED** (`bea92a1`) — Search module scaffolding (`search` schema) |
-| P15-T002 | **AWAITING_ARCHITECT_REVIEW** — Search hybrid read-model / index abstraction |
+| P15-T002 | **COMPLETE / ACCEPTED** (`2b3c9d2`) — Search hybrid read-model / index abstraction |
+| P15-T003 | **AWAITING_ARCHITECT_REVIEW** — Search projection synchronization boundary |
 | P15-R1 (Search ownership) | **RESOLVED** — Search = Discovery Owner · schema `search` · owns query/result contracts and future read models · does not own Tour/Content/Pricing/Agency facts or SEO IndexPolicy · Read Model/Projection later, not SoT · no LLM/business rules inside Search · T001: no projection tables / FTS / Elasticsearch / ranking / faceting |
 | P15-R2 (Index / read model) | **RESOLVED** — Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS in T002. SearchDocument is not a domain entity. |
+| P15-R3 (Synchronization) | **RESOLVED** — Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003. |
 | P14-R8 (Filters vs P15) | **RESOLVED** — Filter in P14 = Presentation only (UI/URL/selection). Faceting / retrieval / ranking / FTS = P15 Search. Filtered URLs ≠ SEO landings. |
 | P14-R7 (Public AgencyOffer) | **RESOLVED** — AgencyOffer may be displayed; does not own commercial flow. Marketplace owns facts/publication. PE owns presentation. No agency prices / ranking / Booking. Visibility ≠ CatalogStatus / IndexPolicy. |
 | P14-R6 (Content enrichment) | **RESOLVED** — Content = editorial SoT. Tour = tour-facts SoT. PE = composition only. Destination-based links. No TourProduct→ArticleId[]. Content publication ≠ SEO IndexPolicy. |
@@ -287,7 +289,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P15_T002_DELIVERED** · PLAN ACCEPTED · P15-R1–R2 RESOLVED · T002 index abstraction awaiting review |
+| Phase Transition State | **P15_T003_DELIVERED** · PLAN ACCEPTED · P15-R1–R3 RESOLVED · T003 projection sync awaiting review |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -296,7 +298,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P15-T002`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P15-T003`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -627,7 +629,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P14-GATE | P14 Public Experience Acceptance Gate | COMPLETE / ACCEPTED | `608216d` |
 | TC-P15-PLAN | Search & Discovery Architecture Plan | COMPLETE / ACCEPTED · R1 locked for T001 | `fba7a51` |
 | TC-P15-T001 | Search module scaffolding | COMPLETE / ACCEPTED | `bea92a1` |
-| TC-P15-T002 | Search index model abstraction | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P15-T002 | Search index model abstraction | COMPLETE / ACCEPTED | `2b3c9d2` |
+| TC-P15-T003 | Search projection synchronization boundary | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -679,6 +682,7 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - **P13-R6 RESOLVED:** Agency Panel belongs to Agency Marketplace (not Tour Admin, not Identity). Foundation: profile + offer management. No Booking/Payment/Commission/CRM.
 - **P15-R1 RESOLVED:** Search is an independent Discovery Owner (schema `search`). Owns query/result contracts and future read models. Does not own Tour/Content/Pricing/Agency facts or SEO IndexPolicy. Search is a Read Model / Projection later, not SoT. No LLM/business rules inside Search. T001: no projection tables, no FTS, no Elasticsearch, no ranking/faceting engine.
 - **P15-R2 RESOLVED:** Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS/`pg_trgm` in T002. SearchDocument is not a domain entity.
+- **P15-R3 RESOLVED:** Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003.
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 

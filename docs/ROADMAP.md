@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T002 index abstraction) |
-| Phase Status | P00–P14 COMPLETE · P15-R1–R2 RESOLVED · `TC-P15-T002` delivered |
+| Current Phase | **P15 — Search & Discovery** (**IN PROGRESS** — T003 projection sync) |
+| Phase Status | P00–P14 COMPLETE · P15-R1–R3 RESOLVED · `TC-P15-T003` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P15-T002` → next locked task (do not invent R3–R7) |
+| Current Next Task | Architect review of `TC-P15-T003` → next locked task (do not invent R4–R7) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -114,7 +114,7 @@
 - **P12** = COMPLETE / ACCEPTED (`b372367`) (**R1–R8 RESOLVED** · T001–T009 ACCEPTED — [`plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md))
 - **P13** = COMPLETE (`TC-P13-GATE` ACCEPTED `c0bcd78` · **R1–R7 RESOLVED** · T008 vacant)
 - **P14** = COMPLETE (`TC-P14-GATE` ACCEPTED `608216d` · **R1–R8 RESOLVED**)
-- **P15** = IN_PROGRESS — PLAN ACCEPTED · **P15-R1–R2 RESOLVED** · T002 index abstraction [`plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md)
+- **P15** = IN_PROGRESS — PLAN ACCEPTED · **P15-R1–R3 RESOLVED** · T003 projection sync [`plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md)
 - **P16–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -506,7 +506,9 @@ Search URL ≠ SEO Landing URL.
 
 ## P15 — Search
 
-**Status:** IN PROGRESS — PLAN ACCEPTED · **P15-R1–R2 RESOLVED** · `TC-P15-T002` index abstraction delivered ([`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md))
+**Status:** IN PROGRESS — PLAN ACCEPTED · **P15-R1–R3 RESOLVED** · `TC-P15-T003` projection sync skeleton delivered ([`docs/plans/P15-implementation-plan.md`](plans/P15-implementation-plan.md))
+
+**P15-R3:** Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003.
 
 **P15-R2:** Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS in T002.
 
@@ -743,7 +745,7 @@ P26 = Advanced SEO.
 | P12 | Pricing | **COMPLETE** (`TC-P12-GATE` ACCEPTED `b372367` · R1–R8 RESOLVED) |
 | P13 | Agency Marketplace | **COMPLETE** (`TC-P13-GATE` `c0bcd78` · R1–R7 RESOLVED) |
 | P14 | Public Tour Experience | **COMPLETE** (`TC-P14-GATE` ACCEPTED `608216d` · R1–R8 RESOLVED) |
-| P15 | Search | **IN_PROGRESS** (R1–R2 RESOLVED · T002) |
+| P15 | Search | **IN_PROGRESS** (R1–R3 RESOLVED · T003) |
 | P16 | UGC | PLANNED |
 | P17 | Visa | PLANNED |
 | P18 | Trip Planner / Lead Experience | PLANNED |
