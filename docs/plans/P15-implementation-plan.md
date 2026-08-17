@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P15-PLAN` |
 | Phase | P15 — Search & Discovery |
-| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R3 RESOLVED; T003 projection sync skeleton delivered |
+| Status | IN PROGRESS — PLAN ACCEPTED; P15-R1–R4 RESOLVED; T004 faceting ownership boundary delivered |
 | Baseline | `608216d` (`docs: P14 acceptance gate evidence [TC-P14-GATE]` — **TC-P14-GATE** ACCEPTED; P14 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P15 · P14 Gate ACCEPT · P14-R3/R5/R8 (Listing ≠ Landing · Related ≠ Recommendation · Filter ≠ Faceting) · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace |
 | Backend root | `src/backend` |
@@ -84,25 +84,26 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 - Delivered: `SearchProjectionEvent` · sync boundary · `ISearchProjectionWorker` · `ISearchProjectionIdempotencyStore` · skeleton worker. No broker/queue.
 - Forbidden kept: RabbitMQ · Elasticsearch · OpenSearch · ranking · faceting · embeddings · peer FKs · Search write inside domain transaction.
 
-### TC-P15-T004 — Query API / listing retrieval integration
-- Purpose: Public query contract for Listing selection (**needs P15-R7** and/or R1).
-- Expected: Replace P14 deterministic listing selection with Search query abstraction where locked; PE composes only.
+### TC-P15-T004 — Search faceting ownership boundary
+- Purpose: Facets owned by Search without domain ownership (**P15-R4 RESOLVED**).
+- Delivered: `FacetDefinition` / `FacetValue` / `FacetResult` · `SearchFacetingBoundary`. Search owns Aggregation/Counting/Result composition; Domain owns attribute meaning/source facts; PE owns UI only.
+- Forbidden kept: Facet engine · Elasticsearch aggregations · Ranking · Recommendation · AI model · Tour/Content facet tables · Pricing facet ownership.
 
-### TC-P15-T005 — Faceting architecture baseline
-- Purpose: Facets owned by Search (**needs P15-R4**).
-- Expected: Facet calculation/read model; PE filter UI consumes Search facets — not PE-owned facet engine (honors P14-R8).
-
-### TC-P15-T006 — Ranking boundary baseline
+### TC-P15-T005 — Ranking boundary baseline
 - Purpose: Ranking owned by Search (**needs P15-R5**).
 - Expected: Ranking contract; Related ≠ Recommendation still holds unless later lock says otherwise.
 
-### TC-P15-T007 — SEO Landing integration boundary
-- Purpose: Search must not conflate Landing with filtered listing URLs.
-- Expected: Preserve Listing ≠ SEO Landing; IndexPolicy stays SEO; no auto-index of every filter combo.
-
-### TC-P15-T008 — AI / Search readiness (boundary only)
+### TC-P15-T006 — AI / Search readiness (boundary only)
 - Purpose: Structured metadata readiness (**needs P15-R6**).
 - Expected: Contracts/metadata posture only — no embeddings/recommendation engine invent.
+
+### TC-P15-T007 — Query API / listing retrieval integration
+- Purpose: Public query contract for Listing selection (**needs P15-R7** and/or R1).
+- Expected: Replace P14 deterministic listing selection with Search query abstraction where locked; PE composes only.
+
+### TC-P15-T008 — SEO Landing integration boundary
+- Purpose: Search must not conflate Landing with filtered listing URLs.
+- Expected: Preserve Listing ≠ SEO Landing; IndexPolicy stays SEO; no auto-index of every filter combo.
 
 ### TC-P15-T009 — Hardening + evidence
 
@@ -118,7 +119,7 @@ P15 اضافه می‌کند: **Search module** برای بازیابی/facet/ra
 | **P15-R1** | Search ownership boundary | **RESOLVED** | Search = Discovery Owner. Owns query/result contracts and future read models. Does **not** own Tour/Content/Pricing/Agency facts or SEO IndexPolicy. Search is a Read Model / Projection (later), not SoT. No LLM/business rules inside Search. T001: no database projection, no indexing engine, no Elasticsearch, no FTS. |
 | **P15-R2** | Index / read model | **RESOLVED** | Hybrid Read Model. Search owns `SearchDocument` + `ISearchIndex` abstraction. Domain modules remain SoT. No Elasticsearch/OpenSearch/SQL FTS/`pg_trgm` in T002. Search Document is not a domain entity. |
 | **P15-R3** | Data synchronization strategy | **RESOLVED** | Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003. |
-| **P15-R4** | Faceting ownership | **UNRESOLVED** | Facets in Search; PE owns UI only (P14-R8 carry-forward). |
+| **P15-R4** | Faceting ownership | **RESOLVED** | Search owns Aggregation / Counting / Result composition. Domain owns attribute meaning + source facts. PE owns filter UI only (P14-R8). No facet engine / ES aggregations / domain facet tables in T004. Structured fields remain available for future facets. |
 | **P15-R5** | Ranking model | **UNRESOLVED** | Ranking ≠ Recommendation unless later lock. Related Tours may be replaced by Search retrieval. |
 | **P15-R6** | AI / Search readiness | **UNRESOLVED** | Structured readiness only; no embeddings/recommendation invent. |
 | **P15-R7** | Query API contract | **UNRESOLVED** | Public query surface; PE listing consumes; no Booking. |

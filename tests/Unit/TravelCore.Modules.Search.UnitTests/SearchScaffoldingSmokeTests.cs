@@ -138,6 +138,54 @@ public sealed class SearchScaffoldingSmokeTests
         Assert.Equal("DuplicateSkipped", second.Outcome);
     }
 
+    [Fact]
+    public void Faceting_Boundary_Gives_Aggregation_To_Search_Meaning_To_Domain()
+    {
+        Assert.Equal("Search", SearchFacetingBoundary.FacetingOwnerModule);
+        Assert.Equal("PublicExperience", SearchFacetingBoundary.PresentationOwnerModule);
+        Assert.Equal("DomainModulesOwnAttributeMeaning", SearchFacetingBoundary.AttributeMeaningOwnerPosture);
+        Assert.Equal("SearchOwnsAggregationCountingResultComposition", SearchFacetingBoundary.OwnershipPosture);
+        Assert.True(SearchFacetingBoundary.OwnsAggregation);
+        Assert.True(SearchFacetingBoundary.OwnsCounting);
+        Assert.True(SearchFacetingBoundary.OwnsResultComposition);
+        Assert.False(SearchFacetingBoundary.OwnsAttributeMeaning);
+        Assert.False(SearchFacetingBoundary.OwnsSourceFacts);
+        Assert.False(SearchFacetingBoundary.FacetingEngineImplemented);
+        Assert.False(SearchFacetingBoundary.ElasticsearchAggregationsAllowed);
+        Assert.False(SearchFacetingBoundary.RankingAllowed);
+        Assert.False(SearchFacetingBoundary.RecommendationAllowed);
+        Assert.False(SearchFacetingBoundary.AiModelAllowed);
+        Assert.False(SearchFacetingBoundary.DomainFacetTablesAllowed);
+        Assert.False(SearchFacetingBoundary.TourFacetTablesAllowed);
+        Assert.False(SearchFacetingBoundary.ContentFacetTablesAllowed);
+        Assert.False(SearchFacetingBoundary.PricingFacetOwnershipAllowed);
+        Assert.True(SearchFacetingBoundary.StructuredFieldsRequiredForFutureFacets);
+        Assert.False(SearchOwnershipBoundary.FacetingEngineAllowed);
+        Assert.False(SearchIndexBoundary.FacetingEngineAllowed);
+    }
+
+    [Fact]
+    public void Facet_Contracts_Are_Shape_Only_Without_Engine()
+    {
+        var definition = new FacetDefinition(
+            Key: "difficulty",
+            DisplayLabel: "Difficulty",
+            AttributeKey: "Difficulty");
+        var result = new FacetResult(
+            Key: definition.Key,
+            Values:
+            [
+                new FacetValue(Value: "easy", DisplayLabel: "Easy", Count: 3),
+                new FacetValue(Value: "hard", DisplayLabel: "Hard", Count: 1)
+            ]);
+
+        Assert.Equal("Difficulty", definition.AttributeKey);
+        Assert.Equal(2, result.Values.Count);
+        Assert.Equal(3, result.Values[0].Count);
+        Assert.True(
+            typeof(SearchDocument).GetProperty(nameof(SearchDocument.StructuredAttributes)) is not null);
+    }
+
     private sealed class InMemorySearchProjectionIdempotencyStore : ISearchProjectionIdempotencyStore
     {
         private readonly HashSet<Guid> _processed = [];

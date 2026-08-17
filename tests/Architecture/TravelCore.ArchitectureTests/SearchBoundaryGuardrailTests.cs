@@ -1,13 +1,14 @@
 using System.Text.RegularExpressions;
 using TravelCore.ArchitectureTests.Support;
+using TravelCore.Modules.PublicExperience.Contracts;
 using TravelCore.Modules.Search.Contracts;
 using Xunit;
 
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P15-T001 / P15-R1 and TC-P15-T002 / P15-R2: Search is Discovery owner with a hybrid read-model
-/// abstraction. No FTS, ranking, faceting, or physical search engine.
+/// TC-P15-T001..T004: Search is Discovery owner with hybrid read-model, outbox projection,
+/// and faceting ownership contracts. No FTS/ranking/facet engine or physical search engine yet.
 /// </summary>
 public sealed class SearchBoundaryGuardrailTests
 {
@@ -165,6 +166,60 @@ public sealed class SearchBoundaryGuardrailTests
         Assert.True(typeof(TravelCore.Modules.Search.Infrastructure.SearchProjectionWorker)
             .GetInterfaces()
             .Contains(typeof(ISearchProjectionWorker)));
+    }
+
+    [Fact]
+    public void Search_Owns_Faceting_Aggregation_Not_Attribute_Meaning_Or_Engine()
+    {
+        Assert.Equal("Search", SearchFacetingBoundary.FacetingOwnerModule);
+        Assert.Equal("PublicExperience", SearchFacetingBoundary.PresentationOwnerModule);
+        Assert.True(SearchFacetingBoundary.OwnsAggregation);
+        Assert.True(SearchFacetingBoundary.OwnsCounting);
+        Assert.True(SearchFacetingBoundary.OwnsResultComposition);
+        Assert.False(SearchFacetingBoundary.OwnsAttributeMeaning);
+        Assert.False(SearchFacetingBoundary.OwnsSourceFacts);
+        Assert.False(SearchFacetingBoundary.FacetingEngineImplemented);
+        Assert.False(SearchFacetingBoundary.ElasticsearchAggregationsAllowed);
+        Assert.False(SearchFacetingBoundary.TourFacetTablesAllowed);
+        Assert.False(SearchFacetingBoundary.ContentFacetTablesAllowed);
+        Assert.False(SearchFacetingBoundary.PricingFacetOwnershipAllowed);
+        Assert.True(SearchFacetingBoundary.StructuredFieldsRequiredForFutureFacets);
+        Assert.False(SearchOwnershipBoundary.FacetingEngineAllowed);
+        Assert.False(SearchIndexBoundary.FacetingEngineAllowed);
+        Assert.False(PublicExperienceFilterPresentationBoundary.FacetingAllowed);
+    }
+
+    [Fact]
+    public void SearchInfrastructure_MustNotImplement_FacetEngine_Or_DomainFacetTables()
+    {
+        var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "Search");
+        Assert.True(Directory.Exists(root), root);
+
+        var hits = Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(
+                               x.line,
+                               @"\b(TermsAggregation|FacetEngine|IFacetEngine|Elasticsearch\.Net|Nest\.|OpenSearch\.Client)\b")
+                           || Regex.IsMatch(x.line, @"\bDbSet\s*<\s*Facet(Definition|Value|Result)\s*>")
+                           || Regex.IsMatch(x.line, @"\b(TourFacet|ContentFacet|PricingFacet)\b");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "T004 forbids facet engines, ES aggregations, and domain facet tables:\n" + string.Join('\n', hits));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

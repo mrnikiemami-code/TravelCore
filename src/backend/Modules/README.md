@@ -147,11 +147,12 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Search | `Search/TravelCore.Modules.Search.{Domain,Contracts,Infrastructure}` | `search` |
 
-- **Search:** scaffolding + hybrid read-model + projection sync skeleton (`TC-P15-T001`–`T003`) — schema `search`; `SearchDocument` + `ISearchIndex`; outbox+async worker boundary; no broker / FTS / ranking / faceting / Elasticsearch.
+- **Search:** scaffolding + hybrid read-model + projection sync + faceting ownership (`TC-P15-T001`–`T004`) — schema `search`; `SearchDocument` + `ISearchIndex`; outbox+async worker boundary; facet contracts without engine; no broker / FTS / ranking / Elasticsearch.
 - **P15-R1 RESOLVED:** Search is an independent Discovery Owner. Tour/Content/Pricing/AgencyMarketplace remain fact SoT. SEO remains IndexPolicy owner. Search is a future read-model/projection, not a second write SoR. No LLM/business rules inside Search. No FTS/index engine in T001.
 - **P15-R2 RESOLVED:** Hybrid Read Model. Search owns document/index abstraction. Physical engine not committed. SearchDocument is not a domain entity.
 - **P15-R3 RESOLVED:** Transactional Outbox + Async Projection Worker. Search failure must not fail domain transaction. Projection retryable + idempotent. No RabbitMQ/real queue in T003.
-- Invariant: **Search ≠ Catalog · Search ≠ Pricing · Search ≠ AgencyOffer · Search ≠ IndexPolicy · Search ≠ Booking · Search ≠ Recommendation**.
+- **P15-R4 RESOLVED:** Search owns faceting Aggregation / Counting / Result composition. Domain owns attribute meaning + source facts. PE owns filter UI only. No facet engine / ES aggregations / domain facet tables in T004.
+- Invariant: **Search ≠ Catalog · Search ≠ Pricing · Search ≠ AgencyOffer · Search ≠ IndexPolicy · Search ≠ Booking · Search ≠ Recommendation · Filter UI ≠ Faceting**.
 
 ## Host
 
