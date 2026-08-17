@@ -118,7 +118,9 @@ P14 **Search (P15)** · **UGC (P16)** · **Visa (P17)** · **Booking/Payment** �
 - Delivered: `PublicExperienceFilterPresentationBoundary` · listing filter URL/state · presentation filters + catalog selection via replaceable Tour public-read.
 - Forbidden: Search engine · FTS · `pg_trgm` · Elasticsearch · ranking · facet calculation · popularity · Booking · inventing P15.
 
-### TC-P14-T009 — Hardening + evidence (follow-on)
+### TC-P14-T009 — Hardening + evidence
+- Purpose: Harden P14 boundaries and produce gate-ready evidence (**no new product capability**).
+- Delivered: [`docs/plans/P14-T009-hardening-and-evidence-pack.md`](P14-T009-hardening-and-evidence-pack.md) · `PublicExperiencePhaseBoundaryGuardrailTests`.
 
 ### TC-P14-GATE — Acceptance Gate
 - Evidence only. Ceremonial Gate wait is **not** a pipeline stop. Continuity may auto-start **P15 PLAN** after ACCEPT unless a real Stop Condition applies.
