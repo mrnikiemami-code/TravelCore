@@ -30,5 +30,16 @@ internal sealed class VisaRequirementSetConfiguration : IEntityTypeConfiguration
 
         builder.HasIndex(x => x.VisaDefinitionId)
             .HasDatabaseName("ix_visa_requirement_sets_visa_definition_id");
+
+        builder.HasOne(x => x.Applicability)
+            .WithOne()
+            .HasForeignKey<VisaApplicability>(x => x.VisaRequirementSetId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Applicability)
+            .HasField("_applicability")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .IsRequired()
+            .AutoInclude();
     }
 }

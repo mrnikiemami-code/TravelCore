@@ -73,7 +73,29 @@ public sealed class VisaDefinitionPersistenceModelTests
             setType.GetIndexes(),
             i => i.GetDatabaseName() == "ix_visa_requirement_sets_visa_definition_id");
 
-        Assert.Equal(3, model.GetEntityTypes().Count());
+        var applicabilityType = model.FindEntityType(typeof(VisaApplicability));
+        Assert.NotNull(applicabilityType);
+        Assert.Equal("visa_applicabilities", applicabilityType.GetTableName());
+        Assert.Equal(VisaDbContext.SchemaName, applicabilityType.GetSchema());
+        Assert.Equal(
+            "destination_geographic_id",
+            applicabilityType.FindProperty(nameof(VisaApplicability.DestinationGeographicId))!.GetColumnName());
+        Assert.Equal(
+            "applicant_nationality_code",
+            applicabilityType.FindProperty(nameof(VisaApplicability.ApplicantNationalityCode))!.GetColumnName());
+        Assert.Equal(
+            "residence_country_code",
+            applicabilityType.FindProperty(nameof(VisaApplicability.ResidenceCountryCode))!.GetColumnName());
+        Assert.Null(applicabilityType.FindProperty("Expression"));
+        Assert.Null(applicabilityType.FindProperty("Predicate"));
+        Assert.Null(applicabilityType.FindProperty("Rules"));
+        Assert.Null(applicabilityType.FindProperty("Amount"));
+        var applicabilityFk = applicabilityType.GetForeignKeys().Single();
+        Assert.Equal(typeof(VisaRequirementSet), applicabilityFk.PrincipalEntityType.ClrType);
+        Assert.Equal(VisaDbContext.SchemaName, applicabilityFk.PrincipalEntityType.GetSchema());
+        Assert.Equal(DeleteBehavior.Cascade, applicabilityFk.DeleteBehavior);
+
+        Assert.Equal(4, model.GetEntityTypes().Count());
         Assert.DoesNotContain(
             model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()),
             f =>

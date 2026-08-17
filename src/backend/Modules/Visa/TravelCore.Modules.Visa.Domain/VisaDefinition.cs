@@ -70,9 +70,21 @@ public sealed class VisaDefinition
         Touch(now);
     }
 
-    public VisaRequirementSet AddRequirementSet(Instant now)
+    public VisaRequirementSet AddRequirementSet(
+        Guid destinationGeographicId,
+        Instant now,
+        string? applicantNationalityCode = null,
+        string? residenceCountryCode = null,
+        string? applicantCategory = null)
     {
-        var set = VisaRequirementSet.Create(VisaRequirementSetId.New(), Id, now);
+        var set = VisaRequirementSet.Create(
+            VisaRequirementSetId.New(),
+            Id,
+            destinationGeographicId,
+            now,
+            applicantNationalityCode,
+            residenceCountryCode,
+            applicantCategory);
         _requirementSets.Add(set);
         Touch(now);
         return set;

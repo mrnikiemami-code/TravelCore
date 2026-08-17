@@ -4,10 +4,12 @@ namespace TravelCore.Modules.Visa.Domain;
 
 /// <summary>
 /// Context-dependent requirement facts for one VisaDefinition (TC-P17-T002 / P17-R2).
-/// Distinct from VisaDefinition. Applicability, documents, processing, and fees remain later R#.
+/// Owns exactly one VisaApplicability (TC-P17-T003 / P17-R3). Documents, processing, and fees remain later R#.
 /// </summary>
 public sealed class VisaRequirementSet
 {
+    private VisaApplicability _applicability = null!;
+
     private VisaRequirementSet()
     {
     }
@@ -44,9 +46,25 @@ public sealed class VisaRequirementSet
 
     public Instant UpdatedAt { get; private set; }
 
+    /// <summary>Exactly one structured applicability context. Not a rules engine.</summary>
+    public VisaApplicability Applicability => _applicability;
+
     internal static VisaRequirementSet Create(
         VisaRequirementSetId id,
         VisaDefinitionId visaDefinitionId,
-        Instant now) =>
-        new(id, visaDefinitionId, now);
+        Guid destinationGeographicId,
+        Instant now,
+        string? applicantNationalityCode = null,
+        string? residenceCountryCode = null,
+        string? applicantCategory = null)
+    {
+        var set = new VisaRequirementSet(id, visaDefinitionId, now);
+        set._applicability = VisaApplicability.Create(
+            id,
+            destinationGeographicId,
+            applicantNationalityCode,
+            residenceCountryCode,
+            applicantCategory);
+        return set;
+    }
 }

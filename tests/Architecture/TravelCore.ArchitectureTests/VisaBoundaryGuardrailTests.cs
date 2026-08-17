@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P17-T002: VisaDefinition != VisaRequirementSet. No applicability/docs/fees (R3–R6 OPEN).
+/// TC-P17-T003: VisaApplicability is structured facts, not a rules engine.
 /// Visa != Destination · Visa != ReferenceData · Visa != Content · Visa != Pricing · Visa != Booking · Visa != SEO · Visa != Search.
 /// </summary>
 public sealed class VisaBoundaryGuardrailTests
@@ -44,6 +44,8 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.False(VisaOwnershipBoundary.RegulatoryEngineImplemented);
         Assert.True(VisaOwnershipBoundary.VisaDefinitionImplemented);
         Assert.True(VisaOwnershipBoundary.VisaRequirementSetImplemented);
+        Assert.True(VisaOwnershipBoundary.VisaApplicabilityImplemented);
+        Assert.False(VisaOwnershipBoundary.ApplicabilityIsRulesEngine);
         Assert.False(VisaOwnershipBoundary.VisaRequirementImplemented);
         Assert.False(VisaOwnershipBoundary.RequiredDocumentImplemented);
         Assert.False(VisaOwnershipBoundary.EligibilityModelImplemented);
@@ -113,6 +115,8 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaRequirementSet).GetProperty("CountryOfResidence"));
         Assert.True(VisaOwnershipBoundary.VisaDefinitionImplemented);
         Assert.True(VisaOwnershipBoundary.VisaRequirementSetImplemented);
+        Assert.True(VisaOwnershipBoundary.VisaApplicabilityImplemented);
+        Assert.False(VisaOwnershipBoundary.ApplicabilityIsRulesEngine);
         Assert.False(VisaOwnershipBoundary.RequiredDocumentImplemented);
         Assert.False(VisaOwnershipBoundary.EligibilityModelImplemented);
         Assert.False(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
@@ -129,7 +133,7 @@ public sealed class VisaBoundaryGuardrailTests
         };
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(VisaRequirement|RequiredDocument|EligibilityRule|VisaFee|VisaApplication|VisaOffering|Country|Destination|Nationality|Region)\b",
+            @"\b(class|record|enum|struct|interface)\s+(VisaRequirement|RequiredDocument|EligibilityRule|VisaFee|VisaApplication|VisaOffering|Country|Destination|Nationality|Region|RuleEngine|PolicyEngine|DecisionTable)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -161,6 +165,27 @@ public sealed class VisaBoundaryGuardrailTests
     }
 
     [Fact]
+    public void Visa_T003_Applicability_Is_Structured_Facts_Not_Engine()
+    {
+        Assert.NotNull(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability));
+        Assert.NotNull(typeof(TravelCore.Modules.Visa.Domain.VisaApplicantCategory));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).GetProperty("Expression"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).GetProperty("Predicate"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).GetProperty("Rules"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).GetProperty("Amount"));
+        Assert.True(VisaOwnershipBoundary.VisaApplicabilityImplemented);
+        Assert.False(VisaOwnershipBoundary.ApplicabilityIsRulesEngine);
+        Assert.False(VisaOwnershipBoundary.OwnsDestinationFacts);
+        Assert.False(VisaOwnershipBoundary.OwnsReferenceData);
+        Assert.False(VisaOwnershipBoundary.OwnsIdentityOrParty);
+        Assert.False(VisaOwnershipBoundary.RequiredDocumentImplemented);
+        Assert.False(VisaOwnershipBoundary.EligibilityModelImplemented);
+        Assert.False(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).Assembly.GetType("TravelCore.Modules.Visa.Domain.Country"));
+        Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaApplicability).Assembly.GetType("TravelCore.Modules.Visa.Domain.Destination"));
+    }
+
+    [Fact]
     public void Visa_Evidence_Keeps_Ascii_Invariants()
     {
         var plan = Path.Combine(RepoRoot, "docs", "plans", "P17-implementation-plan.md");
@@ -174,8 +199,9 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.Contains("Visa != SEO authority", text, StringComparison.Ordinal);
         Assert.Contains("Visa != Search authority", text, StringComparison.Ordinal);
         Assert.Contains("P17-R1", text, StringComparison.Ordinal);
-        Assert.Contains("P17-R2", text, StringComparison.Ordinal);
+        Assert.Contains("P17-R3", text, StringComparison.Ordinal);
         Assert.Contains("VisaDefinition != VisaRequirementSet", text, StringComparison.Ordinal);
+        Assert.Contains("Applicability != Rules Engine", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

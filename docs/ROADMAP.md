@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P17 — Visa** (**IN PROGRESS** — T002 Definition/RequirementSet) |
-| Phase Status | P00–P16 COMPLETE · P17-R1/R2 RESOLVED · `TC-P17-T002` delivered |
+| Current Phase | **P17 — Visa** (**IN PROGRESS** — T003 applicability) |
+| Phase Status | P00–P16 COMPLETE · P17-R1/R2/R3 RESOLVED · `TC-P17-T003` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P17-T002` → next locked task (do not invent R3–R8) |
+| Current Next Task | Architect review of `TC-P17-T003` → next locked task (do not invent R4–R8) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -116,7 +116,7 @@
 - **P14** = COMPLETE (`TC-P14-GATE` ACCEPTED `608216d` · **R1–R8 RESOLVED**)
 - **P15** = COMPLETE (`TC-P15-GATE` ACCEPTED `4e2098d` · **R1–R7 RESOLVED** · T008 vacant)
 - **P16** = COMPLETE (`TC-P16-GATE` ACCEPTED `538f3fc` · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md)
-- **P17** = IN PROGRESS — PLAN ACCEPTED · **P17-R1/R2 RESOLVED** · T002 Definition/RequirementSet [`plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md)
+- **P17** = IN PROGRESS — PLAN ACCEPTED · **P17-R1/R2/R3 RESOLVED** · T003 applicability [`plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md)
 - **P18–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -546,7 +546,7 @@ UGC باید به Destination / Place / Content وصل شود.
 
 ## P17 — Visa
 
-**Status:** IN PROGRESS — PLAN ACCEPTED · **P17-R1/R2 RESOLVED** · T002 Definition/RequirementSet ([`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md))
+**Status:** IN PROGRESS — PLAN ACCEPTED · **P17-R1/R2/R3 RESOLVED** · T003 applicability ([`docs/plans/P17-implementation-plan.md`](plans/P17-implementation-plan.md))
 
 Visa catalog · رابطه با Destination/کشور · نوع ویزا · requirements · documents · processing · pricing · content · forms/workflow در صورت نیاز · SEO landing.
 
@@ -759,7 +759,7 @@ P26 = Advanced SEO.
 | P14 | Public Tour Experience | **COMPLETE** (`TC-P14-GATE` ACCEPTED `608216d` · R1–R8 RESOLVED) |
 | P15 | Search | **COMPLETE** (`TC-P15-GATE` ACCEPTED `4e2098d` · R1–R7 RESOLVED · T008 VACANT) |
 | P16 | UGC | **COMPLETE** (`TC-P16-GATE` ACCEPTED `538f3fc` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
-| P17 | Visa | **IN PROGRESS** (R1/R2 RESOLVED · T002) |
+| P17 | Visa | **IN PROGRESS** (R1/R2/R3 RESOLVED · T003) |
 | P18 | Trip Planner / Lead Experience | PLANNED |
 | P19 | Tour Booking | PLANNED |
 | P20 | Payment | PLANNED |

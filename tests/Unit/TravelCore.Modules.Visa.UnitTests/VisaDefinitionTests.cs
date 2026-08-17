@@ -36,16 +36,22 @@ public sealed class VisaDefinitionTests
     public void AddRequirementSet_Is_Same_Schema_Child_And_Does_Not_Merge_Into_Definition()
     {
         var definition = VisaDefinition.Create("BUSINESS", "fa", "ویزای تجاری", Now);
+        var france = Guid.Parse("0198b3e0-0000-7000-8000-000000000061");
+        var turkey = Guid.Parse("0198b3e0-0000-7000-8000-000000000062");
         var later = Instant.FromUtc(2026, 8, 17, 22, 0);
         var latest = Instant.FromUtc(2026, 8, 17, 23, 0);
-        var first = definition.AddRequirementSet(later);
-        var second = definition.AddRequirementSet(latest);
+        var first = definition.AddRequirementSet(france, later, "ir", null, "Adult");
+        var second = definition.AddRequirementSet(turkey, latest);
 
         Assert.Equal(2, definition.RequirementSets.Count);
         Assert.Equal(definition.Id, first.VisaDefinitionId);
         Assert.Equal(definition.Id, second.VisaDefinitionId);
         Assert.NotEqual(first.Id, second.Id);
         Assert.Equal(latest, definition.UpdatedAt);
+        Assert.Equal(france, first.Applicability.DestinationGeographicId);
+        Assert.Equal("IR", first.Applicability.ApplicantNationalityCode);
+        Assert.Equal(VisaApplicantCategory.Adult, first.Applicability.ApplicantCategory);
+        Assert.Null(second.Applicability.ApplicantNationalityCode);
         Assert.Null(typeof(VisaRequirementSet).GetProperty("Amount"));
         Assert.Null(typeof(VisaRequirementSet).GetProperty("Currency"));
         Assert.Null(typeof(VisaRequirementSet).GetProperty("Fee"));

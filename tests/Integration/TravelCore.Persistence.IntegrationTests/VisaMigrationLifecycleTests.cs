@@ -27,9 +27,10 @@ public sealed class VisaMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.EndsWith("_InitialVisaScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddVisaDefinitionBaseline", expectedMigrations[1], StringComparison.Ordinal);
+            Assert.EndsWith("_AddVisaApplicabilityBaseline", expectedMigrations[2], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -51,7 +52,7 @@ public sealed class VisaMigrationLifecycleTests
                 WHERE table_schema = 'visa'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(3, await ScalarIntAsync(conn, """
+            Assert.Equal(4, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'visa'
@@ -74,6 +75,12 @@ public sealed class VisaMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'visa'
                   AND table_name = 'visa_requirement_sets';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'visa'
+                  AND table_name = 'visa_applicabilities';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
