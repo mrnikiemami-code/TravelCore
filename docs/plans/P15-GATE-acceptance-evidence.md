@@ -113,4 +113,4 @@ git diff --check
 
 ## 10. Gate outcome
 
-Awaiting architect ACCEPT of this evidence commit. Ceremonial Gate wait is **not** a pipeline stop. P16 must not start until Gate ACCEPT + Auto-Execute PLAN.
+**ACCEPTED** (`4e2098d`) · P15 COMPLETE · next phase from SoT is **P16 — UGC** (`TC-P16-PLAN`; ceremonial Gate wait is not a pipeline stop).

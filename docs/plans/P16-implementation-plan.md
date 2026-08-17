@@ -1,0 +1,156 @@
+# P16 Implementation Plan
+
+| Field | Value |
+|-------|--------|
+| Plan-ID | `TC-P16-PLAN` |
+| Phase | P16 — UGC |
+| Status | AWAITING_ARCHITECT_REVIEW |
+| Baseline | `4e2098d` (`docs(search): P15 acceptance gate evidence [TC-P15-GATE]` — **TC-P15-GATE** ACCEPTED; P15 COMPLETE) |
+| Authoritative sources | `docs/ROADMAP.md` § P16 · `docs/architecture/15-future-architecture-transition-map.md` § P · `04-module-boundaries.md` § UGC · `05-dependency-rules.md` Knowledge/UGC · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` (Review · Travelogue) · P08 Content (UGC ≠ Content) · P06 Media (consumer owns relationship meaning) · P05 SEO (IndexPolicy) · P14 PublicExperience (composition only) · P15 Search (retrieval ≠ UGC SoT) |
+| Backend root | `src/backend` |
+| Frontend root | `src/frontend/web` |
+
+این سند **نقشهٔ اجرایی معتبر P16** است. پیاده‌سازی محصول در این سند انجام نمی‌شود؛ فقط Taskهای اجرایی را برای Cursor تعریف می‌کند.
+
+> **Envelope note:** Authored from **repository SoT** after architect `TC-P15-GATE` ACCEPT + `TC-NEXT-PHASE-RESOLVE`. Next phase is **explicitly** `P16 — UGC` in `docs/ROADMAP.md` (not guessed). Under PIPELINE continuity, ceremonial confirms and ceremonial Gate waits are **not required**. **No product code in PLAN task.** Open R# must stay OPEN until architect lock.
+
+---
+
+## 0. Next-phase resolve (TC-NEXT-PHASE-RESOLVE)
+
+| Question | Answer from SoT |
+|----------|-----------------|
+| P15 completion | **COMPLETE / ACCEPTED** — Gate `4e2098d` |
+| Authoritative next phase ID | **P16** |
+| Title / purpose | **UGC** — Review · Rating · Rating dimensions · Travelogue · User Photo · Comment · Like (if later confirmed) · Report · Moderation · Publication state |
+| PLAN already existed? | **NO** — this document is the first P16 PLAN |
+| SoT conflict? | **NO** — ROADMAP, module-boundaries, dependency-rules, ownership matrix, transition map, page-archetype registry all name P16 = UGC |
+| Missing business fact blocking next phase? | **NO** |
+| Invented phase? | **NO** — P16 is already listed after P15 in ROADMAP |
+
+---
+
+## 1. Phase Purpose
+
+P16 باید قابلیت **UGC (محتوای کاربرساخت)** را معرفی کند بدون دزدیدن مالکیت Content، Destination، Place، Tour، Media، SEO، Search، Booking، یا Payment.
+
+هدف (از Roadmap + architecture):
+
+1. **UGC = User-generated content owner** — Review · Rating · RatingDimension · Travelogue · UserPhoto *relationship* · Comment · Moderation · Report/abuse · publication state (`04-module-boundaries.md`).
+2. **Target ≠ UGC owner** — Destination/Place/Tour (و Content اگر بعداً تأیید شود) هدف ارجاع‌اند؛ موجودیت هدف مالک Aggregate UGC نیست و نباید navigation EF به `UGC.Review` داشته باشد.
+3. **UGC ≠ Content** — Article/Guide/LandingPage editorial باقی می‌ماند در Content (P08). Travelogue UGC با Article editorial یکی نیست.
+4. **Media owns technical asset truth** — UserPhoto رابطه/معنا را مالک می‌شود؛ بایت/variant متعلق به Media است (P06).
+5. **SEO owns IndexPolicy** — انتشار UGC ≠ ایندکس SEO. آستانهٔ indexability UGC در SEO است نه در UGC.
+6. **Search may later retrieve published UGC** — Search مالک Review/Travelogue نیست (P15).
+7. **PublicExperience = composition only** — صفحهٔ Place/Destination می‌تواند UGC projection را ترکیب کند؛ مالک lifecycle نیست (P14).
+
+P15 تحویل داد: Search Discovery owner + hybrid read-model + outbox projection + faceting/ranking/AI-readiness contracts + engine-neutral `GET /api/search` stub.
+
+P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخت — **بدون** Booking، بدون Payment، بدون Recommendation، بدون تبدیل Review به Catalog SoT.
+
+---
+
+## 2. Starting Baseline
+
+| Item | Value |
+|------|--------|
+| P15 Gate | `TC-P15-GATE` COMPLETE / ACCEPTED (`4e2098d`) |
+| P15 evidence | [`P15-GATE-acceptance-evidence.md`](P15-GATE-acceptance-evidence.md) · [`P15-T009-hardening-and-evidence-pack.md`](P15-T009-hardening-and-evidence-pack.md) |
+| P15 Plan | ACCEPTED · R1–R7 RESOLVED · T008 VACANT |
+| Baseline HEAD | `4e2098d` |
+| P00–P15 | COMPLETE |
+| UGC module | **Not implemented** (architecture/docs only) |
+| Booking / Payment | Modules do not exist |
+
+---
+
+## 3. Non-goals (explicit)
+
+1. Booking / Payment / Quote / checkout.
+2. Turning Review into Tour/Place catalog SoT.
+3. Absorbing Article/Guide into UGC or Travelogue into Content.
+4. Media storage engine / object-store vendor invent.
+5. SEO IndexPolicy / canonical / sitemap ownership.
+6. Search ranking/faceting/FTS engine (already P15 contracts; do not re-own).
+7. Recommendation / personalization / embeddings / LLM moderation invent.
+8. Confirming **Like** (ROADMAP: «در صورت تأیید») — stays OPEN until architect lock.
+9. Inventing unlocked R# closures.
+
+---
+
+## 4. Task sequence (proposed)
+
+### TC-P16-PLAN — this document
+
+### TC-P16-T001 — UGC module scaffolding / ownership boundary
+- Purpose: Independent UGC module + ownership contracts (**requires P16-R1 lock**).
+- Expected: Contracts/Domain/Infrastructure scaffolding; dedicated schema; no peer FKs; target modules remain fact SoT.
+- Forbidden until later locks: Review tables productization beyond scaffolding, Like, Search engine, SEO IndexPolicy, Booking.
+
+### TC-P16-T002 — Review / Rating baseline
+- Purpose: Authoritative Review + Rating (+ dimensions if R2 locks them).
+- Forbidden: target-owned review collections · Content Article clone · Payment.
+
+### TC-P16-T003 — Target attachment boundary
+- Purpose: How UGC attaches to Destination / Place / Tour (and Content only if locked).
+- Invariant: target entity is not UGC aggregate owner.
+
+### TC-P16-T004 — Travelogue baseline
+- Purpose: Travelogue as UGC narrative, not editorial Article.
+- Forbidden: merging Travelogue into Content CMS.
+
+### TC-P16-T005 — UserPhoto relationship baseline
+- Purpose: UserPhoto *relationship* over MediaAssetId; Media remains asset SoT.
+
+### TC-P16-T006 — Comment + Report/abuse baseline
+- Purpose: Comment and Report/abuse without inventing Like unless R6 locks it.
+
+### TC-P16-T007 — Moderation + publication state
+- Purpose: Draft/Pending/Published/Rejected/Archived (exact set may be locked by R7).
+- Invariant: Published ≠ SEO Indexed.
+
+### TC-P16-T008 — Public composition / read contracts
+- Purpose: Replaceable public-read so PE/Place/Destination pages can compose UGC without owning it.
+- Vacant allowed if architect finds no independent scope after R7.
+
+### TC-P16-T009 — Hardening + evidence
+- Purpose: Harden P16 boundaries and produce gate evidence (**no new capability**).
+
+### TC-P16-GATE — Acceptance Gate
+- Evidence only. Ceremonial Gate wait is **not** a pipeline stop.
+
+---
+
+## 5. Open decisions (must not invent)
+
+| ID | Topic | Status | Notes |
+|----|-------|--------|-------|
+| **P16-R1** | UGC ownership / module / schema | **UNRESOLVED** | Architecture already names an independent UGC module. T001 must not start until architect locks ownership (schema, what UGC does **not** own). Do not steal Content/Media/SEO/Search/target aggregates. |
+| **P16-R2** | Review vs Rating vs RatingDimension | **UNRESOLVED** | ROADMAP lists all three. Do not invent scoring formula, required dimensions, or anonymous vs Identity/Party subject model. |
+| **P16-R3** | Target attachment | **UNRESOLVED** | Targets: Destination · Place · Tour; Content only if later confirmed. Do not invent polymorphic vs per-target tables before lock. Target must not own UGC aggregates. |
+| **P16-R4** | Travelogue vs Content | **UNRESOLVED** | UGC ≠ Content is already an invariant. Exact Travelogue aggregate/publication vs Article remains architect lock. |
+| **P16-R5** | UserPhoto vs Media | **UNRESOLVED** | Media owns bytes/variants. UGC owns relationship meaning. Do not invent a second media store. |
+| **P16-R6** | Like / Comment scope | **UNRESOLVED** | ROADMAP: Like only «در صورت تأیید». Comment listed; do not invent social graph. |
+| **P16-R7** | Moderation / publication states | **UNRESOLVED** | ROADMAP lists Draft/Pending/Published/Rejected/Archived. Exact workflow, who moderates, and Published ≠ IndexPolicy remain locks. |
+| **P16-R8** | Public composition vs SEO/Search | **UNRESOLVED** | PE may compose published UGC. SEO owns indexability. Search may retrieve later. Do not invent UGC SEO factory or ranking-from-reviews. |
+
+---
+
+## 6. Architecture invariants (carry forward)
+
+1. UGC = user-generated owner · Content = editorial owner · Media = asset owner · SEO = IndexPolicy owner · Search = retrieval owner · PublicExperience = presentation/composition only.
+2. Target entity (Destination/Place/Tour) is **not** UGC aggregate owner.
+3. UGC ≠ Content · Travelogue ≠ Article.
+4. Published ≠ SEO Indexed · Published ≠ Bookable.
+5. UserPhoto relationship ≠ MediaAsset SoT.
+6. Review is not a catalog/pricing/ranking-policy authority.
+7. No Booking/Payment modules in P16 unless a later lock says otherwise.
+8. Do not invent unlocked R# closures.
+
+---
+
+## 7. Repository safety
+
+- Branch `main` · fast-forward push only · no force · CLEAN working tree before RESULT.
+- One docs commit for PLAN (no product code).
+- After PLAN ACCEPT, Auto-Execute first locked product task only when architect envelope names it.
