@@ -4,13 +4,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TravelCore.Modularity;
 using TravelCore.Modules.Ugc.Contracts;
+using TravelCore.Modules.Ugc.Infrastructure.Endpoints;
 using TravelCore.Modules.Ugc.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Ugc.Infrastructure;
 
 /// <summary>
-/// Host composition entry for UGC (TC-P16-T001). Schema scaffolding only — no product endpoints.
+/// Host composition entry for UGC (TC-P16-T001, public composition reads TC-P16-T008).
 /// </summary>
 public sealed class UgcModule : ITravelCoreModule
 {
@@ -34,10 +35,16 @@ public sealed class UgcModule : ITravelCoreModule
         services.AddSingleton<IUserPhotoMediaAssetValidator, StructuralUserPhotoMediaAssetValidator>();
         services.AddSingleton<ICommentTargetValidator, StructuralCommentTargetValidator>();
         services.AddSingleton<IUgcReportTargetValidator, StructuralUgcReportTargetValidator>();
+        services.AddScoped<UgcPublicQuery>();
+        services.AddScoped<IUgcPublicReviewQuery>(sp => sp.GetRequiredService<UgcPublicQuery>());
+        services.AddScoped<IUgcPublicTravelogueQuery>(sp => sp.GetRequiredService<UgcPublicQuery>());
+        services.AddScoped<IUgcPublicUserPhotoQuery>(sp => sp.GetRequiredService<UgcPublicQuery>());
+        services.AddScoped<IUgcPublicCommentQuery>(sp => sp.GetRequiredService<UgcPublicQuery>());
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
+        endpoints.MapUgcPublicEndpoints();
     }
 }

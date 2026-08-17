@@ -4,6 +4,7 @@ import { PublicDetailStickyActions } from "@/features/public-experience/detail-s
 import { ExperienceTourDetailSections } from "@/features/public-experience/experience-detail-sections";
 import { RelatedContentList } from "@/features/public-experience/related-content-list";
 import { RelatedToursList } from "@/features/public-experience/related-tours-list";
+import { UgcCompositionList } from "@/features/public-experience/ugc-composition-list";
 import type { AppLocale } from "@/lib/i18n";
 import type {
   PublicPriceSummaryView,
@@ -274,6 +275,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
           </Stack>
 
           <AgencyOffersList locale={locale} items={vm.agencyOffers} />
+          <UgcCompositionList locale={locale} composition={vm.ugcComposition} />
 
           <div id="request-information">
             <Stack gap="sm">

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P16-PLAN` |
 | Phase | P16 — UGC |
-| Status | PLAN ACCEPTED; P16-R1–R6 RESOLVED; T001–T006 delivered (R7–R8 UNRESOLVED) |
+| Status | PLAN ACCEPTED; P16-R1–R8 RESOLVED; T001–T008 delivered |
 | Baseline | `4e2098d` (`docs(search): P15 acceptance gate evidence [TC-P15-GATE]` — **TC-P15-GATE** ACCEPTED; P15 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P16 · `docs/architecture/15-future-architecture-transition-map.md` § P · `04-module-boundaries.md` § UGC · `05-dependency-rules.md` Knowledge/UGC · `docs/domain/module-ownership-matrix.md` · `docs/domain/glossary.md` (Review · Travelogue) · P08 Content (UGC ≠ Content) · P06 Media (consumer owns relationship meaning) · P05 SEO (IndexPolicy) · P14 PublicExperience (composition only) · P15 Search (retrieval ≠ UGC SoT) |
 | Backend root | `src/backend` |
@@ -118,8 +118,9 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 - Forbidden kept: Like · auto-enforcement · SEO IndexPolicy · Search ranking · inventing R8.
 
 ### TC-P16-T008 — Public composition / read contracts
-- Purpose: Replaceable public-read so PE/Place/Destination pages can compose UGC without owning it.
-- Vacant allowed if architect finds no independent scope after R7.
+- Purpose: Replaceable public-read so PE/Place/Destination pages can compose UGC without owning it (**P16-R8 RESOLVED**).
+- Delivered: Engine-neutral UGC public read/query contracts. Public eligibility = Approved + Published. PublicExperience composition slot only. Derived rebuildable rating summary (not an independent Average Rating engine). Search remains a later projection; SEO remains IndexPolicy owner. Publicly Eligible != SEO Indexed. Publicly Eligible != Automatically Search Indexed.
+- Forbidden kept: Like · Search engine / FTS / Elasticsearch · UGC-owned SEO pages / IndexPolicy · copying UGC into Tour/Place catalog · ranking-from-reviews.
 
 ### TC-P16-T009 — Hardening + evidence
 - Purpose: Harden P16 boundaries and produce gate evidence (**no new capability**).
@@ -140,7 +141,7 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 | **P16-R5** | UserPhoto vs Media | **RESOLVED** | UGC owns the UserPhoto relationship (Actor + logical MediaAssetId). Media owns technical MediaAsset truth (bytes/variants/StorageKey/mime/dimensions/renditions/focal). UserPhoto relationship != MediaAsset. No peer FK. No second media store. Publication/moderation remains P16-R7. |
 | **P16-R6** | Like / Comment scope | **RESOLVED** | Comment = IN (flat comments on Review and Travelogue only). Like = DEFERRED. No threading, no Like/Reaction counts, no ranking. Publication/moderation remains P16-R7. Report remains later. |
 | **P16-R7** | Moderation / publication states | **RESOLVED** | ModerationStatus (Pending/Approved/Rejected) != PublicationStatus (Draft/Published/Hidden/Archived). Approved != Published. Published != SEO Indexed. Public eligibility = Approved + Published. Rejected never public. Travelogue may start Draft; Review/UserPhoto/Comment may enter Pending directly. UgcReport is UGC-owned moderation input only (Open/Resolved/Dismissed). Report count != automatic hide/reject/ban/ranking/SEO. No generic rules engine. |
-| **P16-R8** | Public composition vs SEO/Search | **UNRESOLVED** | PE may compose published UGC. SEO owns indexability. Search may retrieve later. Do not invent UGC SEO factory or ranking-from-reviews. |
+| **P16-R8** | Public composition vs SEO/Search | **RESOLVED** | UGC = user-generated fact owner (including public-eligibility truth). PublicExperience = public composition/presentation only. Search = retrieval/discovery projection (async; T008 must not build a Search engine; Search must not treat UGC DB as SoT). SEO = IndexPolicy / canonical / redirects / sitemap authority. Publicly Eligible != SEO Indexed. Publicly Eligible != Automatically Search Indexed. Individual ratings = UGC truth; aggregate/summary = derived rebuildable read model. Published Review != SEO page. Published Travelogue != automatically indexed page. |
 
 ---
 
@@ -154,6 +155,8 @@ P16 اضافه می‌کند: **UGC module** برای lifecycle کاربرساخ
 6. Review is not a catalog/pricing/ranking-policy authority.
 7. No Booking/Payment modules in P16 unless a later lock says otherwise.
 8. Do not invent unlocked R# closures.
+
+Publicly Eligible != SEO Indexed. Publicly Eligible != Automatically Search Indexed.
 
 ---
 

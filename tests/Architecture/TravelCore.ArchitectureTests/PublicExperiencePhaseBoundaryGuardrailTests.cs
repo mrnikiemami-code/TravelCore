@@ -49,6 +49,12 @@ public sealed class PublicExperiencePhaseBoundaryGuardrailTests
         Assert.Equal("AgencyMarketplace", PublicExperienceAgencyOfferBoundary.FactOwner);
         Assert.Equal("Content", PublicExperienceRelatedContentBoundary.FactOwner);
         Assert.Equal("Tour", PublicExperienceRelatedToursBoundary.FactOwner);
+        Assert.Equal("Ugc", PublicExperienceUgcCompositionBoundary.FactOwner);
+        Assert.False(PublicExperienceUgcCompositionBoundary.CopyUgcIntoCatalogAllowed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.PubliclyEligibleEqualsSeoIndexed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.SearchEngineAllowed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.UgcSeoPagesAllowed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.RankingFromUgcAllowed);
     }
 
     [Fact]

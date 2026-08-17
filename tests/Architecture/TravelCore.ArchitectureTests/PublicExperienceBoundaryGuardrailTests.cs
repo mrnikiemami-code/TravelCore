@@ -428,4 +428,56 @@ public sealed class PublicExperienceBoundaryGuardrailTests
             "Seo",
             TravelCore.Modules.PublicExperience.Contracts.PublicExperienceFilterPresentationBoundary.IndexPolicyOwner);
     }
+
+    [Fact]
+    public void Ugc_Presentation_Is_Composition_Not_Fact_Ownership()
+    {
+        var listPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "features",
+            "public-experience",
+            "ugc-composition-list.tsx");
+        Assert.True(File.Exists(listPath), listPath);
+        var list = File.ReadAllText(listPath);
+        Assert.Contains("Traveler reviews", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/search", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Elasticsearch", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("SetIndexPolicy", list, StringComparison.Ordinal);
+        Assert.DoesNotContain("Like", list, StringComparison.Ordinal);
+
+        var endpoints = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Ugc",
+            "TravelCore.Modules.Ugc.Infrastructure",
+            "Endpoints",
+            "UgcPublicEndpoints.cs"));
+        Assert.Contains("/api/ugc/public", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("RequireAuthorization", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("SetIndexPolicy", endpoints, StringComparison.Ordinal);
+
+        Assert.Equal("Ugc", TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.FactOwner);
+        Assert.Equal("PublicExperience", TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.PresentationOwner);
+        Assert.Equal("Seo", TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.IndexPolicyOwner);
+        Assert.Equal("Search", TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.FutureRetrievalOwner);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.CopyUgcIntoCatalogAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.PubliclyEligibleEqualsSeoIndexed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.PubliclyEligibleEqualsAutomaticallySearchIndexed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.IndependentAverageRatingEngineAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.SearchEngineAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.UgcSeoPagesAllowed);
+        Assert.False(TravelCore.Modules.PublicExperience.Contracts.PublicExperienceUgcCompositionBoundary.RankingFromUgcAllowed);
+        Assert.Contains(
+            "UgcComposition",
+            TravelCore.Modules.PublicExperience.Contracts.PublicExperienceDetailComposition.SharedSections,
+            StringComparison.Ordinal);
+    }
 }

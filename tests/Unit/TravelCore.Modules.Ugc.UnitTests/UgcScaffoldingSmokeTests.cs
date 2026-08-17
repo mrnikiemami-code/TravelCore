@@ -64,6 +64,13 @@ public sealed class UgcScaffoldingSmokeTests
         Assert.True(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
         Assert.True(UgcOwnershipBoundary.ReviewTargetIsLogicalReferenceOnly);
         Assert.False(UgcOwnershipBoundary.OwnsTargetFacts);
+        Assert.True(UgcOwnershipBoundary.PublicReadContractsImplemented);
+        Assert.True(UgcOwnershipBoundary.RatingSummaryIsDerivedRebuildable);
+        Assert.False(UgcOwnershipBoundary.SearchEngineInUgcAllowed);
+        Assert.False(UgcOwnershipBoundary.UgcOwnedSeoPagesAllowed);
+        Assert.False(UgcOwnershipBoundary.IndependentAverageRatingEngineAllowed);
+        Assert.False(UgcOwnershipBoundary.PubliclyEligibleEqualsSeoIndexed);
+        Assert.False(UgcOwnershipBoundary.PubliclyEligibleEqualsAutomaticallySearchIndexed);
     }
 
     [Fact]

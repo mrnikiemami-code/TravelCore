@@ -13,6 +13,8 @@ import type { RelatedContentView } from "@/features/public-experience/load-relat
 import { loadRelatedContentByDestinations } from "@/features/public-experience/load-related-content";
 import type { RelatedTourView } from "@/features/public-experience/load-related-tours";
 import { loadRelatedToursByProduct } from "@/features/public-experience/load-related-tours";
+import type { UgcCompositionView } from "@/features/public-experience/load-ugc-composition";
+import { loadUgcComposition } from "@/features/public-experience/load-ugc-composition";
 
 export type TourMediaItemView = {
   mediaAssetId: string;
@@ -150,6 +152,7 @@ export type TourDetailPageViewModel = {
   relatedTours: RelatedTourView[];
   relatedContent: RelatedContentView[];
   agencyOffers: AgencyOfferView[];
+  ugcComposition: UgcCompositionView;
 };
 
 type ApiSlugHit = {
@@ -457,6 +460,11 @@ export async function loadTourDetailPage(
     locale,
   );
   const agencyOffers = await loadAgencyOffersByTourProduct(id);
+  const ugcComposition = await loadUgcComposition({
+    targetType: "TourProduct",
+    targetId: id,
+    locale,
+  });
 
   return {
     ok: true,
@@ -488,6 +496,7 @@ export async function loadTourDetailPage(
       relatedTours,
       relatedContent,
       agencyOffers,
+      ugcComposition,
     }),
   };
 }

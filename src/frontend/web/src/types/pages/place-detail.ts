@@ -1,5 +1,6 @@
 import type { AppLocale } from "@/lib/i18n";
 import type { PageViewModel } from "@/lib/api/read-models";
+import type { UgcCompositionView } from "@/features/public-experience/load-ugc-composition";
 
 /**
  * PlaceDetailPage — public catalog presentation (TC-P07-T007).
@@ -19,6 +20,7 @@ export type PlaceMediaItemView = {
 
 export type PlaceDetailFields = {
   locale: AppLocale;
+  placeId: string;
   kind: string;
   code: string;
   name: string;
@@ -43,6 +45,7 @@ export type PlaceDetailFields = {
   hotelStarRating: number | null;
   restaurantCuisineType: string | null;
   attractionCategoryCode: string | null;
+  ugcComposition: UgcCompositionView;
 };
 
 export type PlaceDetailPageViewModel = PageViewModel<PlaceDetailFields>;

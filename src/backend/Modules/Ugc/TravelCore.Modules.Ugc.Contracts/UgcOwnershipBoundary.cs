@@ -46,4 +46,11 @@ public static class UgcOwnershipBoundary
     public const bool PublishedEqualsSeoIndexed = false;
     public const bool ReportTriggersAutomaticEnforcement = false;
     public const bool TargetAttachmentModelCommitted = true;
+    public const bool PublicReadContractsImplemented = true;
+    public const bool PubliclyEligibleEqualsSeoIndexed = false;
+    public const bool PubliclyEligibleEqualsAutomaticallySearchIndexed = false;
+    public const bool IndependentAverageRatingEngineAllowed = false;
+    public const bool RatingSummaryIsDerivedRebuildable = true;
+    public const bool SearchEngineInUgcAllowed = false;
+    public const bool UgcOwnedSeoPagesAllowed = false;
 }

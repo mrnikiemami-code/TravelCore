@@ -57,6 +57,13 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.True(UgcOwnershipBoundary.TargetAttachmentModelCommitted);
         Assert.True(UgcOwnershipBoundary.ReviewTargetIsLogicalReferenceOnly);
         Assert.False(UgcOwnershipBoundary.OwnsTargetFacts);
+        Assert.True(UgcOwnershipBoundary.PublicReadContractsImplemented);
+        Assert.False(UgcOwnershipBoundary.PubliclyEligibleEqualsSeoIndexed);
+        Assert.False(UgcOwnershipBoundary.PubliclyEligibleEqualsAutomaticallySearchIndexed);
+        Assert.False(UgcOwnershipBoundary.IndependentAverageRatingEngineAllowed);
+        Assert.True(UgcOwnershipBoundary.RatingSummaryIsDerivedRebuildable);
+        Assert.False(UgcOwnershipBoundary.SearchEngineInUgcAllowed);
+        Assert.False(UgcOwnershipBoundary.UgcOwnedSeoPagesAllowed);
     }
 
     [Fact]
@@ -168,8 +175,11 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.Contains("P16-R4", text, StringComparison.Ordinal);
         Assert.Contains("P16-R5", text, StringComparison.Ordinal);
         Assert.Contains("P16-R7", text, StringComparison.Ordinal);
+        Assert.Contains("P16-R8", text, StringComparison.Ordinal);
         Assert.Contains("Approved != Published", text, StringComparison.Ordinal);
         Assert.Contains("Published != SEO Indexed", text, StringComparison.Ordinal);
+        Assert.Contains("Publicly Eligible != SEO Indexed", text, StringComparison.Ordinal);
+        Assert.Contains("Publicly Eligible != Automatically Search Indexed", text, StringComparison.Ordinal);
         Assert.Contains("Travelogue != ContentItem", text, StringComparison.Ordinal);
         Assert.Contains("UserPhoto relationship != MediaAsset", text, StringComparison.Ordinal);
         Assert.Contains("Like = DEFERRED", text, StringComparison.Ordinal);
@@ -219,6 +229,55 @@ public sealed class UgcBoundaryGuardrailTests
         Assert.NotNull(typeof(TravelCore.Modules.Ugc.Domain.UserPhoto).GetProperty("MediaAssetId"));
         Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Comment).GetProperty("ParentCommentId"));
         Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Comment).GetProperty("LikeCount"));
+    }
+
+    [Fact]
+    public void Ugc_Public_Read_Is_Composition_Not_Search_Or_Seo()
+    {
+        Assert.NotNull(typeof(IUgcPublicReviewQuery));
+        Assert.NotNull(typeof(IUgcPublicTravelogueQuery));
+        Assert.NotNull(typeof(IUgcPublicUserPhotoQuery));
+        Assert.NotNull(typeof(IUgcPublicCommentQuery));
+        Assert.Equal("Ugc", UgcPublicCompositionBoundary.FactOwner);
+        Assert.Equal("PublicExperience", UgcPublicCompositionBoundary.PresentationOwner);
+        Assert.Equal("Search", UgcPublicCompositionBoundary.SearchOwner);
+        Assert.Equal("Seo", UgcPublicCompositionBoundary.IndexPolicyOwner);
+        Assert.False(UgcPublicCompositionBoundary.PubliclyEligibleEqualsSeoIndexed);
+        Assert.False(UgcPublicCompositionBoundary.PubliclyEligibleEqualsAutomaticallySearchIndexed);
+        Assert.False(UgcPublicCompositionBoundary.IndependentAverageRatingEngineAllowed);
+        Assert.False(UgcPublicCompositionBoundary.SearchEngineInThisTaskAllowed);
+        Assert.False(UgcPublicCompositionBoundary.UgcOwnedSeoPagesAllowed);
+
+        var endpoints = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Ugc",
+            "TravelCore.Modules.Ugc.Infrastructure",
+            "Endpoints",
+            "UgcPublicEndpoints.cs"));
+        Assert.Contains("/api/ugc/public", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("RequireAuthorization", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("SetIndexPolicy", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("Elasticsearch", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("to_tsvector", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/search", endpoints, StringComparison.Ordinal);
+
+        var query = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Ugc",
+            "TravelCore.Modules.Ugc.Infrastructure",
+            "Services",
+            "UgcPublicQuery.cs"));
+        Assert.Contains("UgcPublicEligibility.IsPubliclyEligible", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("SetIndexPolicy", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("Elasticsearch", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("pg_trgm", query, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

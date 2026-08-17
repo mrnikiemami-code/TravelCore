@@ -119,4 +119,25 @@ public sealed class PublicExperienceScaffoldingSmokeTests
             PublicExperienceFilterPresentationBoundary.AllowedCriteria,
             StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Ugc_Composition_Is_Presentation_Only()
+    {
+        Assert.Equal("PublicExperience", PublicExperienceUgcCompositionBoundary.PresentationOwner);
+        Assert.Equal("Ugc", PublicExperienceUgcCompositionBoundary.FactOwner);
+        Assert.Equal("Seo", PublicExperienceUgcCompositionBoundary.IndexPolicyOwner);
+        Assert.Equal("Search", PublicExperienceUgcCompositionBoundary.FutureRetrievalOwner);
+        Assert.False(PublicExperienceUgcCompositionBoundary.CopyUgcIntoCatalogAllowed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.PubliclyEligibleEqualsSeoIndexed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.PubliclyEligibleEqualsAutomaticallySearchIndexed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.IndependentAverageRatingEngineAllowed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.SearchEngineAllowed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.UgcSeoPagesAllowed);
+        Assert.False(PublicExperienceUgcCompositionBoundary.RankingFromUgcAllowed);
+        Assert.Equal(6, PublicExperienceUgcCompositionBoundary.MaxItems);
+        Assert.Contains(
+            "UgcComposition",
+            PublicExperienceDetailComposition.SharedSections,
+            StringComparison.Ordinal);
+    }
 }

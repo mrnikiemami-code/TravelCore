@@ -7,6 +7,7 @@ import {
   Text,
 } from "@/components/ui";
 import type { PlaceDetailPageViewModel } from "@/types/pages/place-detail";
+import { UgcCompositionList } from "@/features/public-experience/ugc-composition-list";
 
 function kindLabel(kind: string, locale: string): string {
   if (locale === "fa") {
@@ -161,6 +162,8 @@ export function PlaceDetailView({ vm }: { vm: PlaceDetailPageViewModel }) {
               </ul>
             </Stack>
           ) : null}
+
+          <UgcCompositionList locale={locale} composition={vm.ugcComposition} />
         </Stack>
       </Container>
     </div>

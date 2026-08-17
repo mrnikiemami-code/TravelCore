@@ -7,6 +7,7 @@ import {
   mediaOriginalContentPath,
   resolveMediaAppProxySrc,
 } from "@/lib/media/media-presentation";
+import { loadUgcComposition } from "@/features/public-experience/load-ugc-composition";
 import type {
   PlaceDetailPageViewModel,
   PlaceMediaItemView,
@@ -231,12 +232,18 @@ export async function loadPlaceDetailPage(
   const media = isApiOk(mediaResult) ? mediaResult.data : null;
   const cover = media?.cover ? mapMediaItem(media.cover) : null;
   const gallery = (media?.gallery ?? []).map(mapMediaItem);
+  const ugcComposition = await loadUgcComposition({
+    targetType: "Place",
+    targetId: place.id,
+    locale,
+  });
 
   return {
     ok: true,
     status: 200,
     data: asPageViewModel({
       locale,
+      placeId: place.id,
       kind: place.kind,
       code: place.code,
       name: localizedName,
@@ -255,6 +262,7 @@ export async function loadPlaceDetailPage(
       hotelStarRating: place.hotel?.starRating ?? null,
       restaurantCuisineType: place.restaurant?.cuisineType ?? null,
       attractionCategoryCode: place.attraction?.categoryCode ?? null,
+      ugcComposition,
     }),
   };
 }
