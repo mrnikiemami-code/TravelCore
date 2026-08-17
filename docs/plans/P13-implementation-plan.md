@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P13-PLAN` |
 | Phase | P13 — Agency Marketplace |
-| Status | IN PROGRESS — P13-R1–R7 RESOLVED; T007 Offer publishing/moderation delivered |
+| Status | IN PROGRESS — P13-R1–R7 RESOLVED; T008 vacant; T009 hardening delivered |
 | Baseline | `b372367` (`docs: P12 acceptance gate evidence [TC-P12-GATE]` — **TC-P12-GATE** ACCEPTED; P12 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P13 · P09-R3 AgencyId · P03 Agency Panel non-ownership · P12 R1–R8 · ADR 0001 · ADR 0011–0014 · architect P12 Gate ACCEPT narrative (Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking) |
 | Backend root | `src/backend` |
@@ -115,10 +115,13 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 - Delivered: `AgencyOfferPublicationStatus` · Submit/Approve/Reject/Publish/Unpublish · Access `offers.write` vs `offers.moderate` · persistence `publication_status`.
 - Forbidden: SEO ownership · Commission · Payment · Settlement · Ranking engine · Booking.
 
-### TC-P13-T008 — (do not invent)
-- Original plan slot for publishing is delivered in T007. Do not invent remaining work until Auto-Execute.
+### TC-P13-T008 — vacant (do not invent)
+- Original plan slot for publishing/moderation was delivered as **T007 / P13-R7**.
+- No remaining independent capability. Do not invent Admin/Public extra surfaces.
 
 ### TC-P13-T009 — Hardening + evidence
+- Evidence pack [`P13-T009-hardening-and-evidence-pack.md`](P13-T009-hardening-and-evidence-pack.md) · phase-boundary guardrails.
+- No new product capability. Does not execute GATE.
 
 ### TC-P13-GATE — Acceptance Gate
 - Evidence only. Ceremonial Gate wait is **not** a pipeline stop. Continuity may auto-start **P14 PLAN** after ACCEPT unless a real Stop Condition applies.
