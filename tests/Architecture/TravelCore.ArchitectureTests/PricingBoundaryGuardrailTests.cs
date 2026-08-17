@@ -12,6 +12,8 @@ namespace TravelCore.ArchitectureTests;
 /// TC-P12-T004 / P12-R4: Quote owned by Pricing (snapshot + expiration); no Booking/Payment/Customer/Passenger.
 /// TC-P12-T005 / P12-R5: Occupancy/passenger category pricing baseline in Pricing model; no Booking passenger entity.
 /// TC-P12-T006 / P12-R6: Admin Pricing operational API owned by Pricing (not Tour Admin); no Booking/Payment/Quote workflow.
+/// TC-P12-T007 / P12-R7: Quote requested-display-currency metadata + FX boundary contracts only;
+/// still forbid ExchangeRate table / calculation types and Payment/Settlement.
 /// </summary>
 public sealed class PricingBoundaryGuardrailTests
 {
@@ -112,7 +114,7 @@ public sealed class PricingBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "TC-P12 must not introduce FX/Payment types (P12-R5 deferred):\n"
+            "TC-P12-R7 FX boundary: IFxConversionPort / QuoteCurrencyContext / FxBoundaryUnavailableException are allowed; ExchangeRate table and calculation types (ExchangeRate, FxRate, FxConversion, CurrencyConversion) and Payment remain forbidden:\n"
             + string.Join('\n', hits));
     }
 
@@ -136,6 +138,7 @@ public sealed class PricingBoundaryGuardrailTests
         Assert.Contains("ExpiresAt", quoteText, StringComparison.Ordinal);
         Assert.Contains("SnapshotComponents", quoteText, StringComparison.Ordinal);
         Assert.Contains("CreateFromPrice", quoteText, StringComparison.Ordinal);
+        Assert.Contains("RequestedDisplayCurrency", quoteText, StringComparison.Ordinal);
         Assert.DoesNotContain("CustomerId", quoteText, StringComparison.Ordinal);
         Assert.DoesNotContain("PassengerId", quoteText, StringComparison.Ordinal);
         Assert.DoesNotContain("PaymentId", quoteText, StringComparison.Ordinal);
@@ -409,6 +412,8 @@ public sealed class PricingBoundaryGuardrailTests
         var text = File.ReadAllText(modulePath);
         Assert.Contains("IPriceAdminService", text, StringComparison.Ordinal);
         Assert.Contains("MapPricingAdminEndpoints", text, StringComparison.Ordinal);
+        Assert.Contains("IFxConversionPort", text, StringComparison.Ordinal);
+        Assert.Contains("FxBoundaryUnavailablePort", text, StringComparison.Ordinal);
         Assert.DoesNotContain("ITourDepartureAdminService", text, StringComparison.Ordinal);
     }
 
@@ -420,6 +425,92 @@ public sealed class PricingBoundaryGuardrailTests
         var payment = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
         Assert.False(Directory.Exists(booking), "Booking module must not exist in P12 scaffolding.");
         Assert.False(Directory.Exists(payment), "Payment module must not exist in P12 scaffolding.");
+    }
+
+    [Fact]
+    public void PricingContracts_Expose_Fx_Boundary_Without_Rate_Or_Payment_Types()
+    {
+        var contractsPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Contracts",
+            "PricingFxBoundaryContracts.cs");
+        Assert.True(File.Exists(contractsPath), contractsPath);
+
+        var text = File.ReadAllText(contractsPath);
+        Assert.Contains("IFxConversionPort", text, StringComparison.Ordinal);
+        Assert.Contains("QuoteCurrencyContext", text, StringComparison.Ordinal);
+        Assert.Contains("FxBoundaryUnavailableException", text, StringComparison.Ordinal);
+        Assert.Contains("RequestedDisplayCurrency", text, StringComparison.Ordinal);
+        Assert.DoesNotMatch(
+            new Regex(@"\b(class|record|enum|struct|interface)\s+(ExchangeRate|FxRate|Payment|PaymentIntent|FxConversion|CurrencyConversion|Settlement)\b"),
+            text);
+
+        var stubPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Infrastructure",
+            "FxBoundaryUnavailablePort.cs");
+        Assert.True(File.Exists(stubPath), stubPath);
+        var stub = File.ReadAllText(stubPath);
+        Assert.Contains("IFxConversionPort", stub, StringComparison.Ordinal);
+        Assert.Contains("FxBoundaryUnavailableException", stub, StringComparison.Ordinal);
+        Assert.DoesNotContain("numeric", stub, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("rate *", stub, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("Amount *", stub, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void PricingInfrastructure_MustNot_Map_ExchangeRate_Payment_Or_Settlement()
+    {
+        var pricingRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Pricing");
+        var dbContextPath = Path.Combine(
+            pricingRoot,
+            "TravelCore.Modules.Pricing.Infrastructure",
+            "PricingDbContext.cs");
+        var dbContext = File.ReadAllText(dbContextPath);
+        Assert.Contains("DbSet<Quote>", dbContext, StringComparison.Ordinal);
+        Assert.DoesNotMatch(
+            new Regex(@"DbSet<\s*(ExchangeRate|FxRate|Payment|Settlement|CurrencyConversion)\s*>"),
+            dbContext);
+
+        var hits = Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(
+                               x.line,
+                               @"ToTable\(\s*""(exchange_rates|fx_rates|payments|settlements)""",
+                               RegexOptions.IgnoreCase)
+                           || Regex.IsMatch(
+                               x.line,
+                               @"name:\s*""(exchange_rates|fx_rates|payments|settlements)""",
+                               RegexOptions.IgnoreCase)
+                           || Regex.IsMatch(
+                               x.line,
+                               @"\b(class|record|enum|struct|interface)\s+(Settlement|PaymentCurrency)\b");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "P12-R7: no ExchangeRate/Payment/Settlement tables or types:\n" + string.Join('\n', hits));
     }
 
     private static bool IsGeneratedOrBin(string path) =>

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TravelCore.Modules.Pricing.Domain;
+using TravelCore.Money;
 
 namespace TravelCore.Modules.Pricing.Infrastructure.Persistence;
 
@@ -40,6 +41,14 @@ internal sealed class QuoteConfiguration : IEntityTypeConfiguration<Quote>
             .HasColumnName("expires_at")
             .HasColumnType("timestamp with time zone")
             .IsRequired();
+
+        // Metadata only — nullable code, not a money pair / converted amount (P12-R7).
+        builder.Property(x => x.RequestedDisplayCurrency)
+            .HasColumnName("requested_display_currency")
+            .HasMaxLength(CurrencyCode.MaxLength)
+            .HasConversion(
+                code => code == null ? null : code.Value,
+                value => string.IsNullOrWhiteSpace(value) ? null : PricingCurrency.ParseRequired(value));
 
         builder.Ignore(x => x.Currency);
         builder.Ignore(x => x.Total);

@@ -11,7 +11,7 @@ using TravelCore.Persistence.PostgreSql;
 namespace TravelCore.Modules.Pricing.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Pricing module (Admin Pricing — TC-P12-T006).
+/// Host composition entry for the Pricing module (Admin Pricing — T006; FX boundary stub — T007).
 /// </summary>
 public sealed class PricingModule : ITravelCoreModule
 {
@@ -32,6 +32,7 @@ public sealed class PricingModule : ITravelCoreModule
         });
 
         services.AddScoped<IPriceAdminService, PriceAdminService>();
+        services.AddSingleton<IFxConversionPort, FxBoundaryUnavailablePort>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

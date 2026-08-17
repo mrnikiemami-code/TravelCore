@@ -5,10 +5,11 @@ using MoneyValue = TravelCore.Money.Money;
 namespace TravelCore.Modules.Pricing.Domain;
 
 /// <summary>
-/// Quote aggregate owned by Pricing (TC-P12-T004 / P12-R4).
+/// Quote aggregate owned by Pricing (TC-P12-T004 / P12-R4 · TC-P12-T007 / P12-R7).
 /// Quote = calculated price snapshot for a specific request (with expiration) —
 /// not the live <see cref="Price"/>, not a Booking amount, and not Payment.
 /// Ownership: Pricing → Quote → PriceSnapshot + Expiration.
+/// Optional <see cref="RequestedDisplayCurrency"/> is metadata only — Pricing does not convert.
 /// Must not carry Customer / Passenger / Payment / Reservation / Booking fields.
 /// </summary>
 public sealed class Quote
@@ -26,7 +27,8 @@ public sealed class Quote
         PriceTargetType? snapshotTargetType,
         Guid? snapshotTargetId,
         Instant createdAt,
-        Instant expiresAt)
+        Instant expiresAt,
+        CurrencyCode? requestedDisplayCurrency)
     {
         if (id.Value == Guid.Empty)
         {
@@ -73,6 +75,7 @@ public sealed class Quote
         SnapshotTargetId = snapshotTargetId;
         CreatedAt = createdAt;
         ExpiresAt = expiresAt;
+        RequestedDisplayCurrency = requestedDisplayCurrency;
     }
 
     public QuoteId Id { get; private set; }
@@ -97,6 +100,13 @@ public sealed class Quote
 
     /// <summary>Required expiration instant; Quote is invalid at/after this moment.</summary>
     public Instant ExpiresAt { get; private set; }
+
+    /// <summary>
+    /// Optional requested display-currency metadata (P12-R7). Does not change snapshot amounts,
+    /// does not store a second money value, and does not convert. Authoritative Quote currency
+    /// remains <see cref="Currency"/> / <see cref="Total"/> (price currency). Same-code requests are allowed.
+    /// </summary>
+    public CurrencyCode? RequestedDisplayCurrency { get; private set; }
 
     /// <summary>Immutable PriceSnapshot lines (kind + money) captured at quote time.</summary>
     public IReadOnlyCollection<QuoteSnapshotComponent> SnapshotComponents => _snapshotComponents;
@@ -138,7 +148,11 @@ public sealed class Quote
     /// Creates a Quote by snapshotting a live <see cref="Price"/> (components + optional target copy).
     /// Price ≠ Quote: the snapshot is frozen; later Price edits do not rewrite this Quote.
     /// </summary>
-    public static Quote CreateFromPrice(Price price, Instant createdAt, Instant expiresAt)
+    public static Quote CreateFromPrice(
+        Price price,
+        Instant createdAt,
+        Instant expiresAt,
+        string? requestedDisplayCurrency = null)
     {
         ArgumentNullException.ThrowIfNull(price);
 
@@ -152,7 +166,8 @@ public sealed class Quote
             createdAt,
             expiresAt,
             price.TargetType,
-            price.TargetId);
+            price.TargetId,
+            requestedDisplayCurrency);
     }
 
     /// <summary>
@@ -165,7 +180,8 @@ public sealed class Quote
         Instant createdAt,
         Instant expiresAt,
         PriceTargetType? snapshotTargetType = null,
-        Guid? snapshotTargetId = null)
+        Guid? snapshotTargetId = null,
+        string? requestedDisplayCurrency = null)
     {
         ArgumentNullException.ThrowIfNull(snapshotComponents);
 
@@ -184,7 +200,8 @@ public sealed class Quote
             snapshotTargetType,
             snapshotTargetId,
             createdAt,
-            expiresAt);
+            expiresAt,
+            ParseOptionalRequestedDisplayCurrency(requestedDisplayCurrency));
 
         foreach (var definition in snapshotComponents)
         {
@@ -217,7 +234,7 @@ public sealed class Quote
             }
             else if (!definition.Money.Currency.Equals(currency))
             {
-                // Quote snapshot inherits Price currency rules; FX is out of scope (P12-R5 deferred).
+                // Quote snapshot inherits Price currency rules; Pricing does not convert (P12-R7).
                 throw new ArgumentException(
                     "All Quote snapshot components must share the same currency.",
                     nameof(components));
@@ -241,5 +258,15 @@ public sealed class Quote
                 }
             }
         }
+    }
+
+    private static CurrencyCode? ParseOptionalRequestedDisplayCurrency(string? requestedDisplayCurrency)
+    {
+        if (string.IsNullOrWhiteSpace(requestedDisplayCurrency))
+        {
+            return null;
+        }
+
+        return PricingCurrency.ParseRequired(requestedDisplayCurrency);
     }
 }

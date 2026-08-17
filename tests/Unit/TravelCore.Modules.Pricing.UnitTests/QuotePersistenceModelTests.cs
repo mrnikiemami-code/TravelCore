@@ -9,7 +9,7 @@ using Xunit;
 namespace TravelCore.Modules.Pricing.UnitTests;
 
 /// <summary>
-/// Persistence model shape for Quote + PriceSnapshot (TC-P12-T004).
+/// Persistence model shape for Quote + PriceSnapshot (TC-P12-T004) and requested display currency (TC-P12-T007).
 /// </summary>
 public sealed class QuotePersistenceModelTests
 {
@@ -39,6 +39,15 @@ public sealed class QuotePersistenceModelTests
         Assert.NotNull(quoteType.FindProperty(nameof(Quote.CreatedAt)));
         Assert.NotNull(quoteType.FindProperty(nameof(Quote.SnapshotTargetType)));
         Assert.NotNull(quoteType.FindProperty(nameof(Quote.SnapshotTargetId)));
+
+        var displayCurrency = quoteType.FindProperty(nameof(Quote.RequestedDisplayCurrency));
+        Assert.NotNull(displayCurrency);
+        Assert.True(displayCurrency.IsNullable);
+        Assert.Equal("requested_display_currency", displayCurrency.GetColumnName());
+        Assert.Null(quoteType.FindNavigation("RequestedDisplayMoney"));
+        Assert.Null(quoteType.FindProperty("ConvertedAmount"));
+        Assert.Null(quoteType.FindProperty("DisplayAmount"));
+        Assert.Null(quoteType.FindProperty("ExchangeRate"));
 
         // SourcePriceId is logical provenance — must not FK to prices (snapshot independence).
         Assert.DoesNotContain(
@@ -73,5 +82,12 @@ public sealed class QuotePersistenceModelTests
         Assert.Null(quoteType.FindProperty("PassengerId"));
         Assert.Null(quoteType.FindProperty("PaymentId"));
         Assert.Null(quoteType.FindProperty("BookingId"));
+        Assert.Null(quoteType.FindProperty("SettlementId"));
+
+        Assert.DoesNotContain(
+            model.GetEntityTypes(),
+            e => e.GetTableName() is "exchange_rates" or "fx_rates" or "payments" or "settlements"
+                 || string.Equals(e.ClrType.Name, "ExchangeRate", StringComparison.Ordinal)
+                 || string.Equals(e.ClrType.Name, "FxRate", StringComparison.Ordinal));
     }
 }

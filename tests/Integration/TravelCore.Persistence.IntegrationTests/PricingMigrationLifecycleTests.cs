@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Pricing schema + Price/Quote + occupancy rule tables (TC-P12-T001 / T003 / T004 / T005).
+/// Real-PostgreSQL Pricing schema + Price/Quote + occupancy + requested display currency (T001–T007).
 /// </summary>
 [Collection(nameof(PricingMigrationLifecycleCollection))]
 public sealed class PricingMigrationLifecycleTests
@@ -27,7 +27,7 @@ public sealed class PricingMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_InitialPricingScaffolding", StringComparison.Ordinal));
@@ -40,6 +40,9 @@ public sealed class PricingMigrationLifecycleTests
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_AddPriceOccupancyRules", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddQuoteRequestedDisplayCurrency", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -90,6 +93,26 @@ public sealed class PricingMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'pricing'
                   AND table_name = 'quote_snapshot_components';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'pricing'
+                  AND table_name = 'quotes'
+                  AND column_name = 'requested_display_currency';
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'pricing'
+                  AND table_name = 'quotes'
+                  AND column_name IN ('converted_amount', 'display_amount', 'exchange_rate', 'fx_rate');
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'pricing'
+                  AND table_name IN ('exchange_rates', 'fx_rates', 'payments', 'settlements');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

@@ -8,8 +8,8 @@ using Xunit;
 namespace TravelCore.Modules.Pricing.UnitTests;
 
 /// <summary>
-/// Quote + PriceSnapshot domain invariants (TC-P12-T004 / P12-R4).
-/// Price ≠ Quote ≠ Booking Amount; no Customer/Passenger/Payment.
+/// Quote + PriceSnapshot domain invariants (TC-P12-T004 / P12-R4 · TC-P12-T007 / P12-R7).
+/// Price ≠ Quote ≠ Booking Amount; requested display currency is metadata only; no Customer/Passenger/Payment.
 /// </summary>
 public sealed class QuoteAggregateTests
 {
@@ -148,6 +148,7 @@ public sealed class QuoteAggregateTests
         Assert.Contains("SourcePriceId", names);
         Assert.Contains("ExpiresAt", names);
         Assert.Contains("SnapshotComponents", names);
+        Assert.Contains("RequestedDisplayCurrency", names);
     }
 
     [Fact]
@@ -156,5 +157,65 @@ public sealed class QuoteAggregateTests
         var quote = Quote.CreateFromPrice(SamplePrice(), CreatedAt, ExpiresAt);
         Assert.IsType<MoneyValue>(quote.Total);
         Assert.Equal("TravelCore.Money", typeof(MoneyValue).Assembly.GetName().Name);
+    }
+
+    [Fact]
+    public void CreateFromPrice_Without_RequestedDisplayCurrency_Leaves_Metadata_Null()
+    {
+        var quote = Quote.CreateFromPrice(SamplePrice(), CreatedAt, ExpiresAt);
+
+        Assert.Null(quote.RequestedDisplayCurrency);
+        Assert.Equal("USD", quote.Currency.Value);
+        Assert.Equal(1140m, quote.Total.Amount);
+    }
+
+    [Fact]
+    public void CreateFromPrice_Stores_RequestedDisplayCurrency_As_Metadata_Only()
+    {
+        var quote = Quote.CreateFromPrice(SamplePrice(), CreatedAt, ExpiresAt, requestedDisplayCurrency: "irr");
+
+        Assert.Equal("IRR", quote.RequestedDisplayCurrency!.Value);
+        Assert.Equal("USD", quote.Currency.Value);
+        Assert.Equal("USD", quote.Total.Currency.Value);
+        Assert.Equal(1140m, quote.Total.Amount);
+        Assert.All(quote.SnapshotComponents, c => Assert.Equal("USD", c.Money.Currency.Value));
+    }
+
+    [Fact]
+    public void Create_Allows_Same_Code_RequestedDisplayCurrency()
+    {
+        var quote = Quote.CreateFromPrice(SamplePrice(), CreatedAt, ExpiresAt, requestedDisplayCurrency: "USD");
+
+        Assert.Equal("USD", quote.RequestedDisplayCurrency!.Value);
+        Assert.Equal("USD", quote.Currency.Value);
+        Assert.Equal(1140m, quote.Total.Amount);
+    }
+
+    [Fact]
+    public void Create_Rejects_Toman_RequestedDisplayCurrency()
+    {
+        var ex = Assert.Throws<ArgumentException>(() =>
+            Quote.CreateFromPrice(SamplePrice(), CreatedAt, ExpiresAt, requestedDisplayCurrency: "TOMAN"));
+
+        Assert.Contains("TOMAN", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Quote_Has_No_Conversion_Methods()
+    {
+        var names = typeof(Quote)
+            .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            .Where(m => !m.IsSpecialName)
+            .Select(m => m.Name)
+            .ToList();
+
+        Assert.DoesNotContain(names, n => n.Contains("Convert", StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain(names, n => n.Contains("Exchange", StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain("ToDisplayMoney", names);
+        Assert.DoesNotContain("ConvertTotal", names);
+        Assert.Contains("CreateFromPrice", names);
+        Assert.Contains(
+            "RequestedDisplayCurrency",
+            typeof(Quote).GetProperties(BindingFlags.Instance | BindingFlags.Public).Select(p => p.Name));
     }
 }

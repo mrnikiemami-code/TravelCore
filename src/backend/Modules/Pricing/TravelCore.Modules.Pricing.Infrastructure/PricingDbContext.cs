@@ -6,6 +6,7 @@ namespace TravelCore.Modules.Pricing.Infrastructure;
 /// <summary>
 /// Pricing-owned DbContext. Owns PostgreSQL schema <c>pricing</c>.
 /// Maps Price / PriceComponent / PriceOccupancyRule and Quote / QuoteSnapshotComponent (no Tour/Booking/Payment FK).
+/// P12-R7: no ExchangeRate table; Quote may store optional requested display-currency metadata only.
 /// </summary>
 public sealed class PricingDbContext : DbContext
 {

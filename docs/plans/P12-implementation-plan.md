@@ -4,8 +4,8 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5/R6 RESOLVED; T001–T006 delivered |
-| Baseline | `c90931d` (T005 ACCEPTED baseline for T006) |
+| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5/R6/R7 RESOLVED; T001–T007 delivered |
+| Baseline | `e1d01c4` (T006 ACCEPTED baseline for T007) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
@@ -88,11 +88,14 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 - **P12-R5 RESOLVED:** Pricing occupancy and passenger category baseline.
 
 ### TC-P12-T006 — Admin Pricing baseline
-- **Delivered:** Pricing-owned Admin API for create/update Price, manage PriceComponent, and manage OccupancyRules; Access permissions `pricing.prices.read` / `pricing.prices.write`; no Tour Admin ownership; no Booking/Payment/Checkout/FX/Quote workflow UI.
+- **Delivered / ACCEPTED:** `e1d01c4` — Pricing-owned Admin API for create/update Price, manage PriceComponent, and manage OccupancyRules; Access permissions `pricing.prices.read` / `pricing.prices.write`; no Tour Admin ownership; no Booking/Payment/Checkout/FX/Quote workflow UI.
 - **P12-R6 RESOLVED:** Admin Pricing is operational UI/API for Pricing. Ownership stays in Pricing module (Admin API + Admin UI). Not Tour Admin ownership.
 
-### TC-P12-T007 — Access + Admin Pricing baseline
-- Original plan slot for Access + Admin job. **Architect assigned this work to T006 / P12-R6.** Slot retained as absorbed — do not duplicate Admin Pricing here.
+### TC-P12-T007 — Pricing currency context and FX boundary
+> **Architect reorder:** original plan slot was Access + Admin Pricing baseline; that work was delivered in T006 / P12-R6. T007 is currency context + FX boundary.
+- **Delivered:** optional `RequestedDisplayCurrency` metadata on `Quote` (CurrencyCode via `PricingCurrency.ParseRequired` when present); `QuoteCurrencyContext` + `IFxConversionPort` fail-closed stub (`FxBoundaryUnavailableException`); nullable `quotes.requested_display_currency` column. Snapshot Money amounts unchanged; no second stored amount; no conversion.
+- **P12-R7 RESOLVED:** Pricing keeps the price currency. Pricing does not convert currency. Exchange-rate ownership is not Pricing. Future FX Service owns ExchangeRate + Conversion; Pricing may only request conversion later. T007 records requested display-currency metadata / currency context only — no ExchangeRate table, no FX calculation, no Payment currency, no Settlement, no Booking.
+- Original FX-authority wording previously parked under old R5 remains deferred as **implementation of FX Service** (not invented here).
 
 ### TC-P12-T008 — Public / composition hooks (read-only price facts)
 - Optional published price display hooks — no book/pay CTA.
@@ -111,8 +114,9 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 | **P12-R2** | Mixed-currency / conversion policy SoT | **RESOLVED** | Reuse platform Money/Currency (ADR 0003). One authoritative currency per price value; no twin SoR duplicates (e.g. USD+IRR for same amount). Currency required; amount rules follow Money ADR. FX conversion / exchange-rate provider / Quote conversion / Payment currency / FX tables = deferred (not T002). Never silent single-currency wipe. |
 | **P12-R3** | Pricing attaches to Departure vs Product vs both | **RESOLVED** | Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now). |
 | **P12-R4** | Quote model (required in P12? expiration? snapshot fields) | **RESOLVED** | Quote owned by Pricing · Quote is calculation snapshot · No Booking ownership · No Payment · No Customer/Passenger · No checkout flow. Price = defined system price; Quote = calculated price for a specific request (snapshot + expiration). Ownership: Pricing → Quote → PriceSnapshot + Expiration. |
-| **P12-R5** | Pricing occupancy and passenger category baseline | **RESOLVED** | **Pricing owns occupancy categories; Support tour market price types; No Booking passenger entity; No reservation calculation; No inventory.** Previous FX-authority phrasing ("Exchange rate source / authority") is deferred to a future pricing/FX decision and is not solved in T005. |
+| **P12-R5** | Pricing occupancy and passenger category baseline | **RESOLVED** | **Pricing owns occupancy categories; Support tour market price types; No Booking passenger entity; No reservation calculation; No inventory.** Previous FX-authority phrasing ("Exchange rate source / authority") is deferred to **implementation of FX Service** (not solved in T005; T007 only records the request boundary — see P12-R7). |
 | **P12-R6** | Admin Pricing ownership | **RESOLVED** | Admin Pricing is operational UI/API for Pricing. Ownership stays in Pricing module (Admin API + Admin UI). Not Tour Admin ownership. |
+| **P12-R7** | Pricing currency context / FX boundary | **RESOLVED** | **P12-R7 RESOLVED:** Pricing keeps the price currency. Pricing does not convert currency. Exchange-rate ownership is not Pricing. Future FX Service owns ExchangeRate + Conversion; Pricing may only request conversion later. T007 records requested display-currency metadata / currency context only — no ExchangeRate table, no FX calculation, no Payment currency, no Settlement, no Booking. |
 | Agency override of rates | Marketplace (P13) vs P12 | **UNRESOLVED** | Prefer DEFER to P13 |
 
 ---
@@ -138,7 +142,7 @@ After `TC-P12-GATE` ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marke
 
 - [x] Phase purpose + non-goals explicit
 - [x] Task sequence proposed without product code
-- [x] Open decisions listed (R1–R6) — no invention
+- [x] Open decisions listed (R1–R7) — no invention
 - [x] Baseline = P11 Gate ACCEPT commit
 - [x] Architect lock **P12-R1** (independent Pricing module) · first product task `TC-P12-T001` executable
 - [x] Architect lock **P12-R2** (platform Money reuse · one currency per value · no twin SoR · no FX in T002)
@@ -146,4 +150,5 @@ After `TC-P12-GATE` ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marke
 - [x] Architect lock **P12-R4** (Quote owned by Pricing; calculation snapshot + expiration; no Booking/Payment/Customer/Passenger/checkout)
 - [x] Architect lock **P12-R5** (Pricing occupancy and passenger category baseline; no Booking passenger entity/reservation/inventory)
 - [x] Architect lock **P12-R6** (Admin Pricing is operational UI/API for Pricing; ownership stays in Pricing module (Admin API + Admin UI); not Tour Admin ownership)
+- [x] Architect lock **P12-R7** (Pricing keeps the price currency; does not convert; Exchange-rate ownership is not Pricing; T007 records requested display-currency metadata / FX boundary only)
 - [ ] Architect ACCEPT + Auto-Execute subsequent product tasks
