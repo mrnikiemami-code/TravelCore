@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P11 — Foreign Package / Departure** (**GATE READY** — awaiting ACCEPT) |
-| Previous Phase | **P10 — Experience Tour** (**COMPLETE**) |
+| Current Phase | **P12 — Pricing** (**PLAN authored** — awaiting ACCEPT) |
+| Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `5a21058` (`TC-P11-T010`) · T009 `c8ce3f1` · PLAN `66cab9b` |
+| Last Accepted Commit | `6f7ea12` (`TC-P11-GATE`) · T010 `5a21058` · P11 COMPLETE |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P11-GATE` — acceptance evidence |
-| Current Next Product Phase | P12 — Pricing (after Gate ACCEPT) |
-| Current Next Task | Await `TC-P11-GATE` ACCEPT → continuity may auto-start P12 PLAN |
+| Current Active Product Task | `TC-P12-PLAN` — Pricing implementation plan |
+| Current Next Product Phase | P12 — Pricing |
+| Current Next Task | Await `TC-P12-PLAN` ACCEPT → Auto-Execute first product task (likely T001 after R1 lock) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -156,7 +156,7 @@
 | P10 | **COMPLETE** |
 | P10-GATE | **COMPLETE / ACCEPTED** (`c351bf9`) — evidence [`plans/P10-GATE-acceptance-evidence.md`](plans/P10-GATE-acceptance-evidence.md) |
 | P10-R1…R8 | **ALL RESOLVED** |
-| P11 | **GATE READY** — T001–T010 ACCEPTED · P11-R1..R8 RESOLVED · evidence pack |
+| P11 | **COMPLETE** — GATE ACCEPTED (`6f7ea12`) · R1..R8 RESOLVED |
 | P10 Plan | `TC-P10-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) |
 | P10-T001 | **COMPLETE / ACCEPTED** (`e5490ae`) — Experience specialization foundation |
 | P10-T002 | **COMPLETE / ACCEPTED** (`757c9b8`) — Itinerary + Day + Stop (P10-R1) |

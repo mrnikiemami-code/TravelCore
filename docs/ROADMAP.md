@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P11 — Foreign Package / Departure** (**GATE READY**) |
-| Phase Status | P00–P10 COMPLETE · P11 T001–T010 ACCEPTED · P11-R1..R8 RESOLVED · GATE evidence |
+| Current Phase | **P12 — Pricing** (**PLAN authored**) |
+| Phase Status | P00–P11 COMPLETE · P12 PLAN drafted (`TC-P12-PLAN`) · awaiting ACCEPT |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `5a21058` (`TC-P11-T010`) · T009 `c8ce3f1` |
+| Last Accepted Commit | `6f7ea12` (`TC-P11-GATE`) · P11 COMPLETE |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await `TC-P11-GATE` ACCEPT → P12 PLAN (continuity) |
+| Current Next Task | Await `TC-P12-PLAN` ACCEPT / Auto-Execute T001 |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -698,7 +698,7 @@ P26 = Advanced SEO.
 | P08 | Content CMS | **COMPLETE** (`TC-P08-GATE` `576b7fa` · R6–R8 UNRESOLVED) |
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
-| P11 | Foreign Package Tour | **GATE READY** (`T001–T010` · P11-R1..R8) |
+| P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
 | P12 | Pricing | PLANNED |
 | P13 | Agency Marketplace | PLANNED |
 | P14 | Public Tour Experience | PLANNED |
