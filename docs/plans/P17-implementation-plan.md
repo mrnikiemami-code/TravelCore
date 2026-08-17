@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P17-PLAN` |
 | Phase | P17 — Visa |
-| Status | PLAN ACCEPTED; P17-R1–R8 RESOLVED; T008 delivered |
+| Status | PLAN ACCEPTED; P17-R1–R8 RESOLVED; T009 delivered |
 | Baseline | `538f3fc` (`docs(ugc): add P16 acceptance gate evidence [TC-P16-GATE]` — **TC-P16-GATE** ACCEPTED; P16 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P17 · `docs/architecture/15-future-architecture-transition-map.md` § Q · `04-module-boundaries.md` § Visa · `05-dependency-rules.md` Commerce/Visa · `docs/architecture/07-data-architecture.md` schema `visa` · `docs/domain/module-ownership-matrix.md` · `docs/pages/07-visa.md` · `docs/pages/00-page-archetype-registry.md` · P04 Destination/ReferenceData · P05 SEO · P06 Media · P08 Content · P12 Pricing · P14 PublicExperience · P15 Search · P16 UGC · P19 Booking · P20 Payment |
 | Backend root | `src/backend` |
@@ -133,6 +133,7 @@ P17 اضافه می‌کند: **Visa module** برای کاتالوگ/الزام
 
 ### TC-P17-T009 — Hardening + evidence
 - Purpose: Harden P17 boundaries and produce gate evidence (**no new capability**).
+- Delivered: `docs/plans/P17-T009-hardening-and-evidence-pack.md`; `VisaPhaseBoundaryGuardrailTests`; SoT sync. T001–T008 recorded ACCEPTED; R1–R8 RESOLVED. Does **not** execute GATE.
 - Forbidden kept: new Visa product · next-phase work.
 
 ### TC-P17-GATE — Acceptance Gate
