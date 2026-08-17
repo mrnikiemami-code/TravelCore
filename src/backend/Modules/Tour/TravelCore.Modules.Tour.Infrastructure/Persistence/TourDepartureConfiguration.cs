@@ -46,6 +46,19 @@ internal sealed class TourDepartureConfiguration : IEntityTypeConfiguration<Tour
 
         builder.Navigation(x => x.Schedule).IsRequired(false);
 
+        builder.OwnsOne(x => x.Capacity, capacity =>
+        {
+            capacity.Property(c => c.MinimumPax)
+                .HasColumnName("minimum_pax")
+                .IsRequired();
+
+            capacity.Property(c => c.MaximumPax)
+                .HasColumnName("maximum_pax")
+                .IsRequired();
+        });
+
+        builder.Navigation(x => x.Capacity).IsRequired(false);
+
         builder.HasOne<TourProduct>()
             .WithMany()
             .HasForeignKey(x => x.TourProductId)

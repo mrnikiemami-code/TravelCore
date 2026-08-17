@@ -5,7 +5,8 @@ namespace TravelCore.Modules.Tour.Domain;
 /// <summary>
 /// TourDeparture aggregate root — concrete execution instance of a <see cref="TourProduct"/> (P11-R1 · TC-P11-T001).
 /// Invariant: TourProduct ≠ TourDeparture. Product owns reusable definition; Departure owns execution identity.
-/// Schedule: <see cref="TourDepartureSchedule"/> (P11-R2 · TC-P11-T002). Capacity / status / flight / hotel / pricing / booking later.
+/// Schedule: <see cref="TourDepartureSchedule"/> (P11-R2 · TC-P11-T002).
+/// Capacity rules: <see cref="TourDepartureCapacity"/> (P11-R3 · TC-P11-T003). Status / flight / hotel / pricing / booking later.
 /// </summary>
 public sealed class TourDeparture
 {
@@ -42,6 +43,9 @@ public sealed class TourDeparture
     /// <summary>Optional schedule until attached (P11-R2).</summary>
     public TourDepartureSchedule? Schedule { get; private set; }
 
+    /// <summary>Optional capacity rules until attached (P11-R3). Not booked/available seats.</summary>
+    public TourDepartureCapacity? Capacity { get; private set; }
+
     public Instant CreatedAt { get; private set; }
 
     public Instant UpdatedAt { get; private set; }
@@ -63,18 +67,27 @@ public sealed class TourDeparture
         UpdatedAt = now;
     }
 
+    /// <summary>Attaches or replaces planned pax capacity rules (not reservation counts).</summary>
+    public void SetCapacity(int minimumPax, int maximumPax, Instant now)
+    {
+        Capacity = TourDepartureCapacity.Create(minimumPax, maximumPax);
+        UpdatedAt = now;
+    }
+
     /// <summary>Test / reconstitution helper when TourProductId has already been validated.</summary>
     public static TourDeparture Reconstitute(
         TourDepartureId id,
         TourProductId tourProductId,
         Instant createdAt,
         Instant updatedAt,
-        TourDepartureSchedule? schedule = null)
+        TourDepartureSchedule? schedule = null,
+        TourDepartureCapacity? capacity = null)
     {
         return new TourDeparture(id, tourProductId, createdAt)
         {
             UpdatedAt = updatedAt,
-            Schedule = schedule
+            Schedule = schedule,
+            Capacity = capacity
         };
     }
 }
