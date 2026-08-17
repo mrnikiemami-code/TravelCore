@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T007 currency context / FX boundary) |
-| Phase Status | P00–P11 COMPLETE · P12-R1/R2/R3/R4/R5/R6/R7 RESOLVED · `TC-P12-T007` delivered |
+| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T008 public pricing read model) |
+| Phase Status | P00–P11 COMPLETE · P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED · `TC-P12-T008` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
-| Last Accepted Commit | `e1d01c4` (`TC-P12-T006`) · Admin Pricing baseline accepted |
+| Last Accepted Commit | `87b5dac` (`TC-P12-T007`) · Pricing currency context and FX boundary accepted |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of T007 currency context / FX boundary |
+| Current Next Task | Architect review of T008 public pricing read model |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -437,7 +437,7 @@ TourDeparture · TransportSegment · FlightSegment · Airports · Carrier · Fli
 
 ## P12 — Pricing
 
-**Status:** IN PROGRESS — **P12-R1/R2/R3/R4/R5/R6/R7 RESOLVED** · `TC-P12-T007` currency context / FX boundary delivered
+**Status:** IN PROGRESS — **P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED** · `TC-P12-T008` public pricing read model delivered
 
 Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passenger category · Occupancy · Age policy · Exchange rates · Conversion policy · Quote · Quote expiration در صورت نیاز · Price snapshot.
 
@@ -456,6 +456,8 @@ Money · Currency · PriceComponent · TourRate · Mixed-currency rates · Passe
 **P12-R6:** **Admin Pricing is operational UI/API for Pricing. Ownership stays in Pricing module (Admin API + Admin UI). Not Tour Admin ownership.**
 
 **P12-R7 RESOLVED:** Pricing keeps the price currency. Pricing does not convert currency. Exchange-rate ownership is not Pricing. Future FX Service owns ExchangeRate + Conversion; Pricing may only request conversion later. T007 records requested display-currency metadata / currency context only — no ExchangeRate table, no FX calculation, no Payment currency, no Settlement, no Booking.
+
+**P12-R8 RESOLVED:** Pricing provides a public read-only query for price summary (currency, components, occupancy prices) by logical target (initial: TourDepartureId). No Booking, Payment, Checkout, Availability, Reservation, or FX conversion.
 
 مثال طبیعی: `1290 USD` + مؤلفهٔ ارز محلی.
 
@@ -715,7 +717,7 @@ P26 = Advanced SEO.
 | P09 | Tour Core | **COMPLETE** (`TC-P09-GATE` `67fc580` · R1–R8 RESOLVED) |
 | P10 | Experience Tour | **COMPLETE** (Gate `c351bf9` · R1–R8 RESOLVED) |
 | P11 | Foreign Package Tour | **COMPLETE** (`TC-P11-GATE` ACCEPTED) |
-| P12 | Pricing | **IN PROGRESS** (R1/R2/R3/R4/R5/R6/R7 RESOLVED · T007) |
+| P12 | Pricing | **IN PROGRESS** (R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED · T008) |
 | P13 | Agency Marketplace | PLANNED |
 | P14 | Public Tour Experience | PLANNED |
 | P15 | Search | PLANNED |

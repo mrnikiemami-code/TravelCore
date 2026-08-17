@@ -14,6 +14,7 @@ namespace TravelCore.ArchitectureTests;
 /// TC-P12-T006 / P12-R6: Admin Pricing operational API owned by Pricing (not Tour Admin); no Booking/Payment/Quote workflow.
 /// TC-P12-T007 / P12-R7: Quote requested-display-currency metadata + FX boundary contracts only;
 /// still forbid ExchangeRate table / calculation types and Payment/Settlement.
+/// TC-P12-T008 / P12-R8: Public read-only price summary query; no Booking/Payment/Checkout/Availability/FX conversion.
 /// </summary>
 public sealed class PricingBoundaryGuardrailTests
 {
@@ -412,9 +413,87 @@ public sealed class PricingBoundaryGuardrailTests
         var text = File.ReadAllText(modulePath);
         Assert.Contains("IPriceAdminService", text, StringComparison.Ordinal);
         Assert.Contains("MapPricingAdminEndpoints", text, StringComparison.Ordinal);
+        Assert.Contains("IPublicPricingQuery", text, StringComparison.Ordinal);
+        Assert.Contains("MapPricingPublicEndpoints", text, StringComparison.Ordinal);
         Assert.Contains("IFxConversionPort", text, StringComparison.Ordinal);
         Assert.Contains("FxBoundaryUnavailablePort", text, StringComparison.Ordinal);
         Assert.DoesNotContain("ITourDepartureAdminService", text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void PricingContracts_Expose_Public_Read_Query_Without_Commerce_Or_Fx()
+    {
+        var contractsPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Contracts",
+            "PricingPublicContracts.cs");
+        Assert.True(File.Exists(contractsPath), contractsPath);
+        var text = File.ReadAllText(contractsPath);
+        Assert.Contains("IPublicPricingQuery", text, StringComparison.Ordinal);
+        Assert.Contains("PublicPriceSummary", text, StringComparison.Ordinal);
+        Assert.Contains("GetSummaryAsync", text, StringComparison.Ordinal);
+        Assert.Contains("GetByTourDepartureIdAsync", text, StringComparison.Ordinal);
+        Assert.Contains("OccupancyPrices", text, StringComparison.Ordinal);
+        Assert.Contains("PublicPricingTargets", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("CreateAsync", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("UpdateAsync", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("ConvertedAmount", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("DisplayAmount", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("ExchangeRate", text, StringComparison.Ordinal);
+        Assert.DoesNotMatch(
+            new Regex(@"\b(class|record|enum|struct|interface)\s+(Booking|Payment|Checkout|Reservation|Availability)\b"),
+            text);
+    }
+
+    [Fact]
+    public void PricingPublic_Surface_Is_Anonymous_ReadOnly_Without_Quote_Mutation_Or_Fx()
+    {
+        var endpointsPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Infrastructure",
+            "Endpoints",
+            "PricingPublicEndpoints.cs");
+        Assert.True(File.Exists(endpointsPath), endpointsPath);
+        var endpoints = File.ReadAllText(endpointsPath);
+        Assert.Contains("/api/pricing/public", endpoints, StringComparison.Ordinal);
+        Assert.Contains("IPublicPricingQuery", endpoints, StringComparison.Ordinal);
+        Assert.Contains("AllowAnonymous", endpoints, StringComparison.Ordinal);
+        Assert.Contains("GetByTourDepartureIdAsync", endpoints, StringComparison.Ordinal);
+        Assert.Contains("GetSummaryAsync", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotMatch(new Regex(@"Map(Post|Put|Patch|Delete)\s*\("), endpoints);
+        Assert.DoesNotContain("IPriceAdminService", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("IFxConversionPort", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("SaveChanges", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("checkout", endpoints, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("PaymentIntent", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("availability", endpoints, StringComparison.OrdinalIgnoreCase);
+
+        var queryPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Infrastructure",
+            "Services",
+            "PublicPricingQuery.cs");
+        Assert.True(File.Exists(queryPath), queryPath);
+        var query = File.ReadAllText(queryPath);
+        Assert.Contains("AsNoTracking", query, StringComparison.Ordinal);
+        Assert.Contains("TourMarketPriceType.Public", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("SaveChanges", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("Quotes", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("IFxConversionPort", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("RequestDisplayConversion", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("IPriceAdminService", query, StringComparison.Ordinal);
     }
 
     [Fact]

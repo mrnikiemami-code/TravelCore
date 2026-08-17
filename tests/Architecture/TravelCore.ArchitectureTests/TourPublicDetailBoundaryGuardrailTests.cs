@@ -5,8 +5,9 @@ using Xunit;
 namespace TravelCore.ArchitectureTests;
 
 /// <summary>
-/// TC-P09-T010 / TC-P11-T009: Public Tour detail — P09-R6 SEO default, app-proxy media,
-/// published execution summaries (P11-R8) without Booking/Pricing/Payment invent.
+/// TC-P09-T010 / TC-P11-T009 / TC-P12-T008: Public Tour detail — P09-R6 SEO default, app-proxy media,
+/// published execution summaries (P11-R8) and optional public price facts (P12-R8).
+/// Booking/Payment/Checkout/Availability remain forbidden.
 /// </summary>
 public sealed class TourPublicDetailBoundaryGuardrailTests
 {
@@ -108,6 +109,8 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
         Assert.Contains("mediaOriginalContentPath", loader, StringComparison.Ordinal);
         Assert.Contains("departures/published", loader, StringComparison.Ordinal);
         Assert.Contains("publishedDepartures", loader, StringComparison.Ordinal);
+        Assert.Contains("/api/pricing/public/tour-departures", loader, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/pricing/prices", loader, StringComparison.Ordinal);
         Assert.DoesNotContain("StorageKey", loader, StringComparison.Ordinal);
 
         var viewPath = Path.Combine(featureRoot, "tour-detail-view.tsx");
@@ -115,7 +118,10 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
         var view = File.ReadAllText(viewPath);
         Assert.DoesNotMatch(new Regex(@"\bHero\b"), view);
         Assert.Contains("publishedDepartures", view, StringComparison.Ordinal);
+        Assert.Contains("priceSummary", view, StringComparison.Ordinal);
         Assert.DoesNotContain("BookableNow", view, StringComparison.Ordinal);
+        Assert.DoesNotContain("Book Now", view, StringComparison.Ordinal);
+        Assert.DoesNotContain("BookingCta", view, StringComparison.Ordinal);
 
         var pagePath = Path.Combine(
             RepoRoot,
@@ -132,6 +138,7 @@ public sealed class TourPublicDetailBoundaryGuardrailTests
         var page = File.ReadAllText(pagePath);
         Assert.Contains("P09-R6", page, StringComparison.Ordinal);
         Assert.Contains("P11-R8", page, StringComparison.Ordinal);
+        Assert.Contains("P12-R8", page, StringComparison.Ordinal);
         Assert.Contains("index: false, follow: true", page, StringComparison.Ordinal);
         Assert.Contains("robotsFromComposed", page, StringComparison.Ordinal);
         Assert.DoesNotContain("SetIndexPolicy", page, StringComparison.Ordinal);

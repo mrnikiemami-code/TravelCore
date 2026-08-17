@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Pricing.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Pricing.Infrastructure</AssemblyName>
-    <Description>Pricing module infrastructure: schema pricing + Price/Quote persistence + Admin Pricing API (T006) + FX boundary stub (T007).</Description>
+    <Description>Pricing module infrastructure: schema pricing + Price/Quote persistence + Admin Pricing API (T006) + FX boundary stub (T007) + public read query (T008).</Description>
   </PropertyGroup>
 
   <ItemGroup>

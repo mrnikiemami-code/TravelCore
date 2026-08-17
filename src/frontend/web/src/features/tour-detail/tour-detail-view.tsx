@@ -1,9 +1,14 @@
 import { Container, LtrValue, Stack, Text } from "@/components/ui";
-import type { TourDetailPageViewModel } from "./load-tour-detail";
+import type { AppLocale } from "@/lib/i18n";
+import type {
+  PublicPriceSummaryView,
+  TourDetailPageViewModel,
+} from "./load-tour-detail";
 
 /**
- * Server-only public TourProduct catalog detail (TC-P09-T008/T010 · TC-P11-T009).
+ * Server-only public TourProduct catalog detail (TC-P09-T008/T010 · TC-P11-T009 · TC-P12-T008).
  * Catalog Published ≠ bookable. Published executions ≠ bookable (P11-R8).
+ * Public price facts only (P12-R8) — no checkout CTA.
  * App-proxy media only. Cover + ordered Gallery (no hero role).
  */
 export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
@@ -19,6 +24,10 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
   const transportLabel = locale === "fa" ? "حمل‌ونقل" : "Transport";
   const stayLabel = locale === "fa" ? "اقامت" : "Stay";
   const daysLabel = locale === "fa" ? "روز" : "days";
+  const priceLabel = locale === "fa" ? "قیمت" : "Price";
+  const fromLabel = locale === "fa" ? "از" : "From";
+  const occupancyLabel = locale === "fa" ? "نرخ اشغال" : "Occupancy prices";
+  const componentsLabel = locale === "fa" ? "اجزای قیمت" : "Price components";
 
   return (
     <div className="py-6 sm:py-8">
@@ -115,6 +124,16 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
                           </ul>
                         </Stack>
                       ) : null}
+                      {d.priceSummary ? (
+                        <DeparturePriceFacts
+                          locale={locale}
+                          summary={d.priceSummary}
+                          priceLabel={priceLabel}
+                          fromLabel={fromLabel}
+                          occupancyLabel={occupancyLabel}
+                          componentsLabel={componentsLabel}
+                        />
+                      ) : null}
                     </Stack>
                   </li>
                 ))}
@@ -148,5 +167,118 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
         </Stack>
       </Container>
     </div>
+  );
+}
+
+function startingMoney(summary: PublicPriceSummaryView): {
+  amount: number;
+  currency: string;
+} | null {
+  if (summary.occupancyPrices.length > 0) {
+    const lowest = summary.occupancyPrices.reduce((current, row) =>
+      row.money.amount < current.money.amount ? row : current,
+    );
+    return { amount: lowest.money.amount, currency: summary.currency };
+  }
+
+  const base = summary.components.find((c) => c.kind === "Base");
+  if (base) {
+    return { amount: base.money.amount, currency: summary.currency };
+  }
+
+  return null;
+}
+
+function categoryLabel(locale: AppLocale, value: string): string {
+  if (locale !== "fa") {
+    return value;
+  }
+
+  switch (value) {
+    case "Adult":
+      return "بزرگسال";
+    case "ChildWithBed":
+      return "کودک با تخت";
+    case "ChildWithoutBed":
+      return "کودک بدون تخت";
+    case "SingleRoom":
+      return "یک‌تخته";
+    case "DoubleRoom":
+      return "دو‌تخته";
+    case "TwinRoom":
+      return "تویین";
+    case "Base":
+      return "پایه";
+    case "Fee":
+      return "کارمزد";
+    case "Tax":
+      return "مالیات";
+    default:
+      return value;
+  }
+}
+
+function DeparturePriceFacts({
+  locale,
+  summary,
+  priceLabel,
+  fromLabel,
+  occupancyLabel,
+  componentsLabel,
+}: {
+  locale: AppLocale;
+  summary: PublicPriceSummaryView;
+  priceLabel: string;
+  fromLabel: string;
+  occupancyLabel: string;
+  componentsLabel: string;
+}) {
+  const starting = startingMoney(summary);
+
+  return (
+    <Stack gap="sm">
+      <Text role="label">{priceLabel}</Text>
+      {starting ? (
+        <Text>
+          {fromLabel}{" "}
+          <LtrValue>
+            {starting.amount} {starting.currency}
+          </LtrValue>
+        </Text>
+      ) : null}
+      {summary.occupancyPrices.length > 0 ? (
+        <Stack gap="sm">
+          <Text role="caption">{occupancyLabel}</Text>
+          <ul className="list-inside list-disc">
+            {summary.occupancyPrices.map((row) => (
+              <li
+                key={`${summary.priceId}-${row.passengerCategory}-${row.occupancyCategory}`}
+              >
+                {categoryLabel(locale, row.passengerCategory)} ·{" "}
+                {categoryLabel(locale, row.occupancyCategory)} ·{" "}
+                <LtrValue>
+                  {row.money.amount} {row.money.currencyCode}
+                </LtrValue>
+              </li>
+            ))}
+          </ul>
+        </Stack>
+      ) : null}
+      {summary.components.length > 0 ? (
+        <Stack gap="sm">
+          <Text role="caption">{componentsLabel}</Text>
+          <ul className="list-inside list-disc">
+            {summary.components.map((component, index) => (
+              <li key={`${summary.priceId}-c-${component.kind}-${index}`}>
+                {categoryLabel(locale, component.kind)} ·{" "}
+                <LtrValue>
+                  {component.money.amount} {component.money.currencyCode}
+                </LtrValue>
+              </li>
+            ))}
+          </ul>
+        </Stack>
+      ) : null}
+    </Stack>
   );
 }

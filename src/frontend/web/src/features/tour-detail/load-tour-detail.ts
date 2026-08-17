@@ -31,6 +31,32 @@ export type PublishedDepartureAccommodationView = {
   boardType: string;
 };
 
+export type PublicMoneyView = {
+  amount: number;
+  currencyCode: string;
+};
+
+export type PublicPriceComponentView = {
+  kind: string;
+  money: PublicMoneyView;
+};
+
+export type PublicOccupancyPriceView = {
+  passengerCategory: string;
+  occupancyCategory: string;
+  money: PublicMoneyView;
+};
+
+/** Public price summary facts (P12-R8). Source currency only — no converted display money. */
+export type PublicPriceSummaryView = {
+  priceId: string;
+  targetType: string;
+  targetId: string;
+  currency: string;
+  components: PublicPriceComponentView[];
+  occupancyPrices: PublicOccupancyPriceView[];
+};
+
 /** Public published execution summary (P11-R8). Published ≠ bookable. */
 export type PublishedDepartureView = {
   id: string;
@@ -43,6 +69,7 @@ export type PublishedDepartureView = {
   maximumPax: number | null;
   transport: PublishedDepartureTransportView[];
   accommodation: PublishedDepartureAccommodationView[];
+  priceSummary: PublicPriceSummaryView | null;
 };
 
 export type TourDetailPageViewModel = {
@@ -130,6 +157,24 @@ type ApiPublishedDeparture = {
   }> | null;
 };
 
+type ApiPublicMoney = {
+  amount: number;
+  currencyCode: string;
+};
+
+type ApiPublicPriceSummary = {
+  priceId: string;
+  targetType: string;
+  targetId: string;
+  currency: string;
+  components?: Array<{ kind: string; money: ApiPublicMoney }> | null;
+  occupancyPrices?: Array<{
+    passengerCategory: string;
+    occupancyCategory: string;
+    money: ApiPublicMoney;
+  }> | null;
+};
+
 function mapMediaItem(item: ApiMediaPresentation): TourMediaItemView {
   const p = item.presentation;
   const ready = p?.status === "Ready";
@@ -172,6 +217,7 @@ function mapMediaItem(item: ApiMediaPresentation): TourMediaItemView {
  * Catalog Published ≠ SEO Index (P09-R6); IndexPolicy remains SEO-owned.
  * Cover/Gallery via Tour media/presentation compose (Media.Contracts; app-proxy only).
  * Published execution summaries via departures/published (P11-R8); Published ≠ bookable.
+ * Optional public price summary via /api/pricing/public (P12-R8); missing summary does not hide the tour.
  */
 export async function loadTourDetailPage(
   locale: AppLocale,
@@ -234,31 +280,39 @@ export async function loadTourDetailPage(
   const media = isApiOk(mediaResult) ? mediaResult.data : null;
   const cover = media?.cover ? mapMediaItem(media.cover) : null;
   const gallery = (media?.gallery ?? []).map(mapMediaItem);
-  const publishedDepartures = (isApiOk(departuresResult) ? departuresResult.data : [])
+  const publishedBase = (isApiOk(departuresResult) ? departuresResult.data : [])
     .filter((d) => d.status === "Published")
-    .map(
-      (d): PublishedDepartureView => ({
-        id: d.id,
-        status: d.status,
-        startDate: d.startDate ?? null,
-        endDate: d.endDate ?? null,
-        timeZoneId: d.timeZoneId ?? null,
-        durationDays: d.durationDays ?? null,
-        minimumPax: d.capacity?.minimumPax ?? null,
-        maximumPax: d.capacity?.maximumPax ?? null,
-        transport: (d.transport ?? []).map((t) => ({
-          sequence: t.sequence,
-          transportMode: t.transportMode,
-          origin: t.origin,
-          destination: t.destination,
-        })),
-        accommodation: (d.accommodation ?? []).map((a) => ({
-          placeId: a.placeId,
-          nights: a.nights,
-          boardType: a.boardType,
-        })),
-      }),
-    );
+    .map((d) => ({
+      id: d.id,
+      status: d.status,
+      startDate: d.startDate ?? null,
+      endDate: d.endDate ?? null,
+      timeZoneId: d.timeZoneId ?? null,
+      durationDays: d.durationDays ?? null,
+      minimumPax: d.capacity?.minimumPax ?? null,
+      maximumPax: d.capacity?.maximumPax ?? null,
+      transport: (d.transport ?? []).map((t) => ({
+        sequence: t.sequence,
+        transportMode: t.transportMode,
+        origin: t.origin,
+        destination: t.destination,
+      })),
+      accommodation: (d.accommodation ?? []).map((a) => ({
+        placeId: a.placeId,
+        nights: a.nights,
+        boardType: a.boardType,
+      })),
+    }));
+
+  const priceResults = await Promise.all(
+    publishedBase.map((d) => loadPublicPriceSummary(d.id)),
+  );
+  const publishedDepartures: PublishedDepartureView[] = publishedBase.map(
+    (d, index) => ({
+      ...d,
+      priceSummary: priceResults[index] ?? null,
+    }),
+  );
 
   return {
     ok: true,
@@ -277,5 +331,45 @@ export async function loadTourDetailPage(
       gallery,
       publishedDepartures,
     }),
+  };
+}
+
+function mapPublicMoney(money: ApiPublicMoney): PublicMoneyView {
+  return {
+    amount: money.amount,
+    currencyCode: money.currencyCode,
+  };
+}
+
+/**
+ * Optional public price facts (P12-R8). 404 / transport errors omit the summary
+ * so the catalog page still renders.
+ */
+async function loadPublicPriceSummary(
+  tourDepartureId: string,
+): Promise<PublicPriceSummaryView | null> {
+  const result = await apiGetJson<ApiPublicPriceSummary>(
+    `/api/pricing/public/tour-departures/${tourDepartureId}`,
+    { cache: "no-store" },
+  );
+  if (!isApiOk(result)) {
+    return null;
+  }
+
+  const data = result.data;
+  return {
+    priceId: data.priceId,
+    targetType: data.targetType,
+    targetId: data.targetId,
+    currency: data.currency,
+    components: (data.components ?? []).map((c) => ({
+      kind: c.kind,
+      money: mapPublicMoney(c.money),
+    })),
+    occupancyPrices: (data.occupancyPrices ?? []).map((row) => ({
+      passengerCategory: row.passengerCategory,
+      occupancyCategory: row.occupancyCategory,
+      money: mapPublicMoney(row.money),
+    })),
   };
 }

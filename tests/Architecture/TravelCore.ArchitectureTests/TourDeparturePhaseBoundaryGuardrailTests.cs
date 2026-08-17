@@ -97,6 +97,7 @@ public sealed class TourDeparturePhaseBoundaryGuardrailTests
             "load-tour-detail.ts");
         var loader = File.ReadAllText(loaderPath);
         Assert.Contains("departures/published", loader, StringComparison.Ordinal);
+        Assert.Contains("/api/pricing/public/tour-departures", loader, StringComparison.Ordinal);
         Assert.DoesNotContain("BookableNow", loader, StringComparison.Ordinal);
         Assert.DoesNotContain("BookingCta", loader, StringComparison.OrdinalIgnoreCase);
     }

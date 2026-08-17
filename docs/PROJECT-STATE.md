@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T007 currency context / FX boundary) |
+| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T008 public pricing read model) |
 | Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -46,7 +46,7 @@
 | TC-GOV-T002 | COMPLETE / ACCEPTED |
 | TC-GOV-T002 Protocol Consolidation Commit | `1cfe48a` |
 | TC-GOV-T002A | COMPLETE / ACCEPTED (`1f9ad48`) |
-| Last Accepted Commit | `e1d01c4` (`TC-P12-T006`) · Admin Pricing baseline accepted |
+| Last Accepted Commit | `87b5dac` (`TC-P12-T007`) · Pricing currency context and FX boundary accepted |
 | ADR 0001–0014 | ALL Accepted |
 | Unresolved Proposed ADR | NO |
 | Accepted Pipeline Governance | ADR 0013 · ADR 0014 |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P12-T007` — Pricing currency context and FX boundary (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P12-T008` — Public Pricing read model baseline (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P12 — Pricing |
-| Current Next Task | Architect review of T007 currency context / FX boundary |
+| Current Next Task | Architect review of T008 public pricing read model |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -157,7 +157,7 @@
 | P10-GATE | **COMPLETE / ACCEPTED** (`c351bf9`) — evidence [`plans/P10-GATE-acceptance-evidence.md`](plans/P10-GATE-acceptance-evidence.md) |
 | P10-R1…R8 | **ALL RESOLVED** |
 | P11 | **COMPLETE** — GATE ACCEPTED (`6f7ea12`) · R1..R8 RESOLVED |
-| P12 | **IN PROGRESS** — Plan authored · **P12-R1/R2/R3/R4/R5/R6/R7 RESOLVED** |
+| P12 | **IN PROGRESS** — Plan authored · **P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED** |
 | P12 Plan | `TC-P12-PLAN` — [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md) |
 | P12-T001 | **COMPLETE / ACCEPTED** (`7c2e488`) — Pricing module scaffolding (`pricing` schema) |
 | P12-T002 | **COMPLETE / ACCEPTED** (`6c1b4ce`) — Money / Currency baseline (platform Money reuse · EF owned mapping) |
@@ -165,7 +165,8 @@
 | P12-T004 | **COMPLETE / ACCEPTED** (`81a3f26`) — Quote baseline (PriceSnapshot + Expiration; architect reorder vs old “Departure pricing attachment”) |
 | P12-T005 | **COMPLETE / ACCEPTED** (`c90931d`) — Occupancy/passenger category pricing baseline (`PriceOccupancyRule`) |
 | P12-T006 | **COMPLETE / ACCEPTED** (`e1d01c4`) — Admin Pricing baseline (Pricing-owned Admin API + Access `pricing.prices.read`/`write`) |
-| P12-T007 | **AWAITING_ARCHITECT_REVIEW** — Quote requested-display-currency metadata + FX boundary contracts (no ExchangeRate table / no FX calculation) |
+| P12-T007 | **COMPLETE / ACCEPTED** (`87b5dac`) — Quote requested-display-currency metadata + FX boundary contracts (no ExchangeRate table / no FX calculation) |
+| P12-T008 | **AWAITING_ARCHITECT_REVIEW** — Public read-only price summary query (currency, components, occupancy prices) by logical target |
 | P12-R1 (Pricing ownership) | **RESOLVED** — Independent Pricing module · schema `pricing` · logical TourDeparture Guid refs only · no Tour table ownership / no shared DbContext |
 | P12-R2 (Money / currency posture) | **RESOLVED** — Reuse `TravelCore.Money`; one authoritative currency per price value; no twin SoR; no FX/Quote/Payment in T002 |
 | P12-R3 (Price attachment target) | **RESOLVED** — Buyable/executable Price attaches conceptually to **TourDeparture** as the *initial* target. Pricing remains **generic**: it does **not** know TourDeparture types from Tour module. Polymorphic logical reference only: `TargetType` + `TargetId` (Guid). Example: TargetType=`TourDeparture`, TargetId=`uuid`. **No FK** · **No Booking** · **No Quote**. Product-level pricing DEFER (do not invent TourProduct pricing now). |
@@ -173,6 +174,7 @@
 | P12-R5 (Pricing occupancy/passenger baseline) | **RESOLVED** — **Pricing owns occupancy categories; Support tour market price types; No Booking passenger entity; No reservation calculation; No inventory.** Previous FX-authority wording for R5 is deferred as **implementation of FX Service** (not invented in T007; T007 only records the request boundary). |
 | P12-R6 (Admin Pricing ownership) | **RESOLVED** — **Admin Pricing is operational UI/API for Pricing. Ownership stays in Pricing module (Admin API + Admin UI). Not Tour Admin ownership.** |
 | P12-R7 (Pricing currency context / FX boundary) | **RESOLVED** — **P12-R7 RESOLVED:** Pricing keeps the price currency. Pricing does not convert currency. Exchange-rate ownership is not Pricing. Future FX Service owns ExchangeRate + Conversion; Pricing may only request conversion later. T007 records requested display-currency metadata / currency context only — no ExchangeRate table, no FX calculation, no Payment currency, no Settlement, no Booking. |
+| P12-R8 (Public Pricing read model) | **RESOLVED** — **P12-R8 RESOLVED:** Pricing provides a public read-only query for price summary (currency, components, occupancy prices) by logical target (initial: TourDepartureId). No Booking, Payment, Checkout, Availability, Reservation, or FX conversion. |
 | P10 Plan | `TC-P10-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) |
 | P10-T001 | **COMPLETE / ACCEPTED** (`e5490ae`) — Experience specialization foundation |
 | P10-T002 | **COMPLETE / ACCEPTED** (`757c9b8`) — Itinerary + Day + Stop (P10-R1) |
@@ -541,14 +543,15 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P10-T005 | Difficulty · Eligibility · Equipment · LocalTransport | COMPLETE / ACCEPTED | `f7ce58c` |
 | TC-P10-T006 | Experience Guide relation baseline | COMPLETE / ACCEPTED | `e3dbea6` |
 | TC-P10-T007 | Experience Media relations baseline | AWAITING_ARCHITECT_REVIEW | `f262084` |
-| TC-P12-PLAN | P12 Pricing Implementation Plan | ACTIVE · R1–R7 locked | see `docs/plans/P12-implementation-plan.md` |
+| TC-P12-PLAN | P12 Pricing Implementation Plan | ACTIVE · R1–R8 locked | see `docs/plans/P12-implementation-plan.md` |
 | TC-P12-T001 | Pricing module scaffolding | COMPLETE / ACCEPTED | `7c2e488` |
 | TC-P12-T002 | Money / Currency baseline | COMPLETE / ACCEPTED | `6c1b4ce` |
 | TC-P12-T003 | Price + PriceComponent model | COMPLETE / ACCEPTED | `58de552` |
 | TC-P12-T004 | Pricing Quote baseline | COMPLETE / ACCEPTED | `81a3f26` |
 | TC-P12-T005 | Pricing occupancy/passenger category baseline | COMPLETE / ACCEPTED | `c90931d` |
 | TC-P12-T006 | Admin Pricing baseline | COMPLETE / ACCEPTED | `e1d01c4` |
-| TC-P12-T007 | Pricing currency context and FX boundary | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P12-T007 | Pricing currency context and FX boundary | COMPLETE / ACCEPTED | `87b5dac` |
+| TC-P12-T008 | Public Pricing read model baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -613,7 +616,7 @@ Content · UGC
 
 ### Commerce
 
-Tour · Pricing (Price + Quote baseline · requested display-currency metadata · FX boundary contracts · PriceComponent · occupancy rules · Admin Pricing API · Money · schema `pricing` · P12-R1/R2/R3/R4/R5/R6/R7) · Visa · Booking · Payment
+Tour · Pricing (Price + Quote baseline · public read-only price summary · requested display-currency metadata · FX boundary contracts · PriceComponent · occupancy rules · Admin Pricing API · Money · schema `pricing` · P12-R1/R2/R3/R4/R5/R6/R7/R8) · Visa · Booking · Payment
 
 ### External Inventory / Booking
 

@@ -11,7 +11,7 @@ using TravelCore.Persistence.PostgreSql;
 namespace TravelCore.Modules.Pricing.Infrastructure;
 
 /// <summary>
-/// Host composition entry for the Pricing module (Admin Pricing — T006; FX boundary stub — T007).
+/// Host composition entry for the Pricing module (Admin — T006; FX stub — T007; public read — T008).
 /// </summary>
 public sealed class PricingModule : ITravelCoreModule
 {
@@ -32,6 +32,7 @@ public sealed class PricingModule : ITravelCoreModule
         });
 
         services.AddScoped<IPriceAdminService, PriceAdminService>();
+        services.AddScoped<IPublicPricingQuery, PublicPricingQuery>();
         services.AddSingleton<IFxConversionPort, FxBoundaryUnavailablePort>();
     }
 
@@ -39,5 +40,6 @@ public sealed class PricingModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         endpoints.MapPricingAdminEndpoints();
+        endpoints.MapPricingPublicEndpoints();
     }
 }

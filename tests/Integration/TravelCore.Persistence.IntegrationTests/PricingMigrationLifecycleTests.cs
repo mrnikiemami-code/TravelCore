@@ -7,6 +7,7 @@ namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
 /// Real-PostgreSQL Pricing schema + Price/Quote + occupancy + requested display currency (T001–T007).
+/// T008 is a public read query only — no new tables.
 /// </summary>
 [Collection(nameof(PricingMigrationLifecycleCollection))]
 public sealed class PricingMigrationLifecycleTests

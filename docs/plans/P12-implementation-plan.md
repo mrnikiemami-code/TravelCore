@@ -4,8 +4,8 @@
 |-------|--------|
 | Plan-ID | `TC-P12-PLAN` |
 | Phase | P12 — Pricing |
-| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5/R6/R7 RESOLVED; T001–T007 delivered |
-| Baseline | `e1d01c4` (T006 ACCEPTED baseline for T007) |
+| Status | IN PROGRESS — P12-R1/R2/R3/R4/R5/R6/R7/R8 RESOLVED; T001–T008 delivered |
+| Baseline | `87b5dac` (T007 ACCEPTED baseline for T008) |
 | Authoritative sources | `docs/ROADMAP.md` § P12 · transition map · Tour/Departure boundaries · P09–P11 locks · ADR money foundation · ADR 0001 · ADR 0011–0014 · architect P11 Gate ACCEPT narrative (Price ≠ Quote ≠ Booking Amount) |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
@@ -93,12 +93,13 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 
 ### TC-P12-T007 — Pricing currency context and FX boundary
 > **Architect reorder:** original plan slot was Access + Admin Pricing baseline; that work was delivered in T006 / P12-R6. T007 is currency context + FX boundary.
-- **Delivered:** optional `RequestedDisplayCurrency` metadata on `Quote` (CurrencyCode via `PricingCurrency.ParseRequired` when present); `QuoteCurrencyContext` + `IFxConversionPort` fail-closed stub (`FxBoundaryUnavailableException`); nullable `quotes.requested_display_currency` column. Snapshot Money amounts unchanged; no second stored amount; no conversion.
+- **Delivered / ACCEPTED:** `87b5dac` — optional `RequestedDisplayCurrency` metadata on `Quote` (CurrencyCode via `PricingCurrency.ParseRequired` when present); `QuoteCurrencyContext` + `IFxConversionPort` fail-closed stub (`FxBoundaryUnavailableException`); nullable `quotes.requested_display_currency` column. Snapshot Money amounts unchanged; no second stored amount; no conversion.
 - **P12-R7 RESOLVED:** Pricing keeps the price currency. Pricing does not convert currency. Exchange-rate ownership is not Pricing. Future FX Service owns ExchangeRate + Conversion; Pricing may only request conversion later. T007 records requested display-currency metadata / currency context only — no ExchangeRate table, no FX calculation, no Payment currency, no Settlement, no Booking.
 - Original FX-authority wording previously parked under old R5 remains deferred as **implementation of FX Service** (not invented here).
 
-### TC-P12-T008 — Public / composition hooks (read-only price facts)
-- Optional published price display hooks — no book/pay CTA.
+### TC-P12-T008 — Public Pricing read model baseline
+- **Delivered:** public read-only query (`IPublicPricingQuery`) + Price Summary DTO (currency, components kind+money, occupancy prices categories+money) by logical `TargetType`+`TargetId` (thin helper for TourDeparture). Anonymous GET `/api/pricing/public`. Optional tour-detail display of starting price / occupancy lines. No Booking, Payment, Checkout, Availability, Reservation, or FX conversion. No Quote mutation.
+- **P12-R8 RESOLVED:** Pricing provides a public read-only query for price summary (currency, components, occupancy prices) by logical target (initial: TourDepartureId). No Booking, Payment, Checkout, Availability, Reservation, or FX conversion.
 
 ### TC-P12-T009 — Hardening + evidence
 
@@ -117,6 +118,7 @@ P12 **Booking/Payment** · **Agency Marketplace (P13)** · **Public polish (P14)
 | **P12-R5** | Pricing occupancy and passenger category baseline | **RESOLVED** | **Pricing owns occupancy categories; Support tour market price types; No Booking passenger entity; No reservation calculation; No inventory.** Previous FX-authority phrasing ("Exchange rate source / authority") is deferred to **implementation of FX Service** (not solved in T005; T007 only records the request boundary — see P12-R7). |
 | **P12-R6** | Admin Pricing ownership | **RESOLVED** | Admin Pricing is operational UI/API for Pricing. Ownership stays in Pricing module (Admin API + Admin UI). Not Tour Admin ownership. |
 | **P12-R7** | Pricing currency context / FX boundary | **RESOLVED** | **P12-R7 RESOLVED:** Pricing keeps the price currency. Pricing does not convert currency. Exchange-rate ownership is not Pricing. Future FX Service owns ExchangeRate + Conversion; Pricing may only request conversion later. T007 records requested display-currency metadata / currency context only — no ExchangeRate table, no FX calculation, no Payment currency, no Settlement, no Booking. |
+| **P12-R8** | Public Pricing read model | **RESOLVED** | **P12-R8 RESOLVED:** Pricing provides a public read-only query for price summary (currency, components, occupancy prices) by logical target (initial: TourDepartureId). No Booking, Payment, Checkout, Availability, Reservation, or FX conversion. |
 | Agency override of rates | Marketplace (P13) vs P12 | **UNRESOLVED** | Prefer DEFER to P13 |
 
 ---
@@ -142,7 +144,7 @@ After `TC-P12-GATE` ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marke
 
 - [x] Phase purpose + non-goals explicit
 - [x] Task sequence proposed without product code
-- [x] Open decisions listed (R1–R7) — no invention
+- [x] Open decisions listed (R1–R8) — no invention
 - [x] Baseline = P11 Gate ACCEPT commit
 - [x] Architect lock **P12-R1** (independent Pricing module) · first product task `TC-P12-T001` executable
 - [x] Architect lock **P12-R2** (platform Money reuse · one currency per value · no twin SoR · no FX in T002)
@@ -151,4 +153,5 @@ After `TC-P12-GATE` ACCEPT, continuity may auto-start **P13 PLAN** (Agency Marke
 - [x] Architect lock **P12-R5** (Pricing occupancy and passenger category baseline; no Booking passenger entity/reservation/inventory)
 - [x] Architect lock **P12-R6** (Admin Pricing is operational UI/API for Pricing; ownership stays in Pricing module (Admin API + Admin UI); not Tour Admin ownership)
 - [x] Architect lock **P12-R7** (Pricing keeps the price currency; does not convert; Exchange-rate ownership is not Pricing; T007 records requested display-currency metadata / FX boundary only)
+- [x] Architect lock **P12-R8** (public read-only price summary by logical target; initial TourDepartureId; no Booking/Payment/Checkout/Availability/Reservation/FX conversion)
 - [ ] Architect ACCEPT + Auto-Execute subsequent product tasks
