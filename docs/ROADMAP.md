@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P10 — Experience Tour** (**COMPLETE** — Gate review) |
-| Phase Status | P00–P10 COMPLETE (Gate evidence) · P10-R1–R8 RESOLVED |
+| Current Phase | **P11 — Foreign Package / Departure** (**PLAN**) |
+| Phase Status | P00–P10 COMPLETE · P11 PLAN drafted · P10-R1–R8 RESOLVED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `67fc580` (`TC-P09-GATE` ACCEPTED) · product T010 `0334bae` · prior P08 `576b7fa` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | `TC-P10-T006` Guide assignments → then Media/Publishability (R4/R8) |
+| Current Next Task | Await ACCEPT of `TC-P11-PLAN` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
