@@ -30,7 +30,7 @@ public sealed class TourExperienceSpecializationGuardrailTests
         Assert.Contains("TourProductId", text, StringComparison.Ordinal);
         Assert.Contains("TourKind.Experience", text, StringComparison.Ordinal);
 
-        // T001 must not invent itinerary / business policies (ignore doc comments naming deferrals).
+        // T001 identity foundation must not invent deferred business policies (ignore doc comments).
         var codeLines = File.ReadAllLines(path)
             .Where(line =>
             {
@@ -41,7 +41,6 @@ public sealed class TourExperienceSpecializationGuardrailTests
             })
             .ToList();
         var code = string.Join('\n', codeLines);
-        Assert.DoesNotContain("Itinerary", code, StringComparison.Ordinal);
         Assert.DoesNotContain("Difficulty", code, StringComparison.Ordinal);
         Assert.DoesNotContain("Eligibility", code, StringComparison.Ordinal);
         Assert.DoesNotContain("Guide", code, StringComparison.Ordinal);
@@ -70,19 +69,52 @@ public sealed class TourExperienceSpecializationGuardrailTests
                     }
 
                     return Regex.IsMatch(
-                               x.line,
-                               @"\b(class|record|enum|struct|interface)\s+(TourPackageSpecialization|PackageTourSpecialization|TourDeparture|FlightSegment|TourHotelOption)\b")
-                           || Regex.IsMatch(
-                               x.line,
-                               @"\b(ItineraryDay|class\s+Itinerary|class\s+Stop)\b");
+                        x.line,
+                        @"\b(class|record|enum|struct|interface)\s+(TourPackageSpecialization|PackageTourSpecialization|TourDeparture|FlightSegment|TourHotelOption)\b");
                 }))
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
 
         Assert.True(
             hits.Count == 0,
-            "T001 forbids Package specialty / Itinerary·Day·Stop / P11 product types:\n"
+            "Experience specialization forbids Package specialty / P11 product types:\n"
             + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void ItineraryStructure_ExistsUnderExperience_WithoutPlaceLinks_T002()
+    {
+        var domainRoot = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Tour",
+            "TravelCore.Modules.Tour.Domain");
+
+        Assert.True(File.Exists(Path.Combine(domainRoot, "ExperienceItinerary.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "ExperienceItineraryDay.cs")));
+        Assert.True(File.Exists(Path.Combine(domainRoot, "ExperienceItineraryStop.cs")));
+
+        var stopText = File.ReadAllText(Path.Combine(domainRoot, "ExperienceItineraryStop.cs"));
+        var stopCode = string.Join('\n', File.ReadAllLines(Path.Combine(domainRoot, "ExperienceItineraryStop.cs"))
+            .Where(line =>
+            {
+                var trimmed = line.TrimStart();
+                return !(trimmed.StartsWith("//", StringComparison.Ordinal)
+                         || trimmed.StartsWith("///", StringComparison.Ordinal));
+            }));
+
+        Assert.Contains("SortOrder", stopText, StringComparison.Ordinal);
+        Assert.DoesNotContain("DestinationId", stopCode, StringComparison.Ordinal);
+        Assert.DoesNotContain("PlaceId", stopCode, StringComparison.Ordinal);
+        Assert.DoesNotContain("AttractionId", stopCode, StringComparison.Ordinal);
+        Assert.DoesNotContain("Meal", stopCode, StringComparison.Ordinal);
+        Assert.DoesNotContain("Accommodation", stopCode, StringComparison.Ordinal);
+
+        var specialization = File.ReadAllText(Path.Combine(domainRoot, "TourExperienceSpecialization.cs"));
+        Assert.Contains("EnsureItinerary", specialization, StringComparison.Ordinal);
+        Assert.Contains("ExperienceItinerary", specialization, StringComparison.Ordinal);
     }
 
     [Fact]

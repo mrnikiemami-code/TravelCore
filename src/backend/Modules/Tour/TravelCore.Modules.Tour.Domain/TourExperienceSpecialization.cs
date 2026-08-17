@@ -3,14 +3,15 @@ using NodaTime;
 namespace TravelCore.Modules.Tour.Domain;
 
 /// <summary>
-/// Experience typed specialization foundation on TourProduct (P09-R1 · TC-P10-T001).
-/// 1:1 with <see cref="TourProductId"/> — identity/marker only in T001.
-/// Itinerary · Day · Stop · meals · difficulty · guide · publishing rules are deferred
-/// (P10-R1 itinerary ownership remains open for later tasks; do not invent here).
+/// Experience typed specialization on TourProduct (P09-R1 · P10-R1 · TC-P10-T001/T002).
+/// 1:1 with <see cref="TourProductId"/>. Owns optional <see cref="ExperienceItinerary"/> (0..1).
+/// Meals · difficulty · guide · publishing rules remain deferred.
 /// Package specialty is out of scope (P11).
 /// </summary>
 public sealed class TourExperienceSpecialization
 {
+    private ExperienceItinerary? _itinerary;
+
     private TourExperienceSpecialization()
     {
     }
@@ -34,6 +35,9 @@ public sealed class TourExperienceSpecialization
 
     public Instant UpdatedAt { get; private set; }
 
+    /// <summary>Optional Experience-owned itinerary (P10-R1 · 0..1).</summary>
+    public ExperienceItinerary? Itinerary => _itinerary;
+
     /// <summary>
     /// Attaches Experience specialization to an Experience-kind TourProduct.
     /// Rejects Package (and any non-Experience kind) — no Package specialty in P10.
@@ -55,12 +59,30 @@ public sealed class TourExperienceSpecialization
     public static TourExperienceSpecialization Reconstitute(
         TourProductId tourProductId,
         Instant createdAt,
-        Instant updatedAt)
+        Instant updatedAt,
+        ExperienceItinerary? itinerary = null)
     {
-        return new TourExperienceSpecialization(tourProductId, createdAt)
+        var specialization = new TourExperienceSpecialization(tourProductId, createdAt)
         {
             UpdatedAt = updatedAt
         };
+        specialization._itinerary = itinerary;
+        return specialization;
+    }
+
+    /// <summary>
+    /// Creates the Experience-owned itinerary (0..1). Idempotent if already present.
+    /// </summary>
+    public ExperienceItinerary EnsureItinerary(Instant now)
+    {
+        if (_itinerary is not null)
+        {
+            return _itinerary;
+        }
+
+        _itinerary = ExperienceItinerary.Create(TourProductId, now);
+        UpdatedAt = now;
+        return _itinerary;
     }
 
     public void Touch(Instant now) => UpdatedAt = now;

@@ -303,7 +303,7 @@ Exact parallelization may be adjusted by architect on accept; Cursor must not in
 
 | ID | Topic | Status | Notes |
 |----|-------|--------|-------|
-| **P10-R1** | Experience specialization + Itinerary ownership shape | **PARTIAL** | **Attachment (T001):** Experience specialization is 1:1 with `TourProductId` (`tour_experience_specializations`) for `TourKind.Experience` only — delivered under Auto-Execute Allowed + P09-R1 typed specialization; no Package specialty. **Still open:** whether Itinerary is 1:1 with Experience specialization vs TourProduct; aggregate boundaries for itinerary (needed by T002). Do not invent itinerary ownership. |
+| **P10-R1** | Experience specialization + Itinerary ownership shape | **RESOLVED** | Experience specialization 1:1 with `TourProductId` (`TourKind.Experience` only). **Itinerary ownership:** `TourExperienceSpecialization` owns `ExperienceItinerary` as child aggregate (not standalone). **Cardinality:** 0..1 Itinerary per Experience. Day and Stop belong to Itinerary. Locked by architect 2026-08-17 (T001 ACCEPT → T002 Auto-Execute). |
 | **P10-R2** | Stop → Destination / Attraction (Place) link cardinality | **UNRESOLVED** | 0..1 vs 0..N Destination; 0..1 vs 0..N Attraction PlaceId; requiredness; mutual exclusivity rules. Logical refs only; no cross-schema FK. |
 | **P10-R3** | Accommodation plan vs Place Hotel | **UNRESOLVED** | Experience accommodation plan field shape; optional Place Hotel `PlaceId` refs vs free-text plan only; must not invent P11 `TourHotelOption`. |
 | **P10-R4** | Media for itinerary / day / stop | **UNRESOLVED** | Whether day/stop media roles exist beyond TourProduct Cover/Gallery (P09-R8); roles/cardinality; or DEFER media to product-level only. |
