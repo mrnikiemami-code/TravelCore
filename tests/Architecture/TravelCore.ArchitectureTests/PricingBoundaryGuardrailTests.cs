@@ -6,6 +6,7 @@ namespace TravelCore.ArchitectureTests;
 
 /// <summary>
 /// TC-P12-T001 / P12-R1: Pricing is an independent module owning schema <c>pricing</c>.
+/// TC-P12-T002 / P12-R2: Pricing reuses TravelCore.Money; no parallel money types; no FX/Quote/Payment yet.
 /// May logically reference TourDeparture identity (Guid) later — must not own Tour/Booking/Payment types
 /// or project-reference Booking/Payment (modules may not exist yet).
 /// </summary>
@@ -22,6 +23,114 @@ public sealed class PricingBoundaryGuardrailTests
         Assert.Contains(Projects, p => p.Name == "TravelCore.Modules.Pricing.Infrastructure");
 
         Assert.Equal("pricing", TravelCore.Modules.Pricing.Infrastructure.PricingDbContext.SchemaName);
+    }
+
+    [Fact]
+    public void PricingDomain_MustProjectReference_TravelCoreMoney()
+    {
+        var pricingDomain = Projects.Single(p => p.Name == "TravelCore.Modules.Pricing.Domain");
+        var refs = pricingDomain.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .ToList();
+
+        Assert.Contains("TravelCore.Money", refs);
+    }
+
+    [Fact]
+    public void PricingInfrastructure_MustProjectReference_TravelCoreMoney()
+    {
+        var pricingInfra = Projects.Single(p => p.Name == "TravelCore.Modules.Pricing.Infrastructure");
+        var refs = pricingInfra.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .ToList();
+
+        Assert.Contains("TravelCore.Money", refs);
+    }
+
+    [Fact]
+    public void PricingModule_MustNotInvent_ParallelMoneyTypes()
+    {
+        var pricingRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Pricing");
+        Assert.True(Directory.Exists(pricingRoot), pricingRoot);
+
+        var hits = Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    // Forbid parallel Money/Currency primitives; PricingMoney/PricingCurrency factories are allowed.
+                    return Regex.IsMatch(
+                               x.line,
+                               @"\b(class|record|struct|enum)\s+(Money|CurrencyCode|TomanMoney)\b")
+                           || Regex.IsMatch(
+                               x.line,
+                               @"\bnamespace\s+TravelCore\.Modules\.Pricing\.(Money|Currency)\b");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "Pricing must reuse TravelCore.Money — must not invent parallel Money/CurrencyCode types:\n"
+            + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void PricingModule_MustNotIntroduce_Fx_Quote_Or_Payment_Yet()
+    {
+        var pricingRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Pricing");
+        var hits = Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(
+                        x.line,
+                        @"\b(class|record|enum|struct|interface)\s+(ExchangeRate|FxRate|Quote|Payment|PaymentIntent|FxConversion|CurrencyConversion)\b");
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "TC-P12-T002 must not introduce FX/Quote/Payment types:\n"
+            + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void PricingInfrastructure_MustExpose_MoneyOwnedMapping_Helper()
+    {
+        var helperPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Pricing",
+            "TravelCore.Modules.Pricing.Infrastructure",
+            "Persistence",
+            "MoneyOwnedMapping.cs");
+
+        Assert.True(File.Exists(helperPath), helperPath);
+        var text = File.ReadAllText(helperPath);
+        Assert.Contains("numeric(24,8)", text, StringComparison.Ordinal);
+        Assert.Contains("OwnsRequiredMoney", text, StringComparison.Ordinal);
+        Assert.Contains("CurrencyCode.Parse", text, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -69,8 +178,7 @@ public sealed class PricingBoundaryGuardrailTests
 
         // Comments may mention TourDeparture as a future logical Guid reference; forbid ownership types only.
         var hits = Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
-            .Where(p => !p.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase)
-                        && !p.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase))
+            .Where(p => !IsGeneratedOrBin(p))
             .SelectMany(path => File.ReadAllLines(path)
                 .Select((line, i) => (path, line, i))
                 .Where(x =>
@@ -103,8 +211,7 @@ public sealed class PricingBoundaryGuardrailTests
     {
         var pricingRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Pricing");
         var hits = Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
-            .Where(p => !p.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase)
-                        && !p.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase))
+            .Where(p => !IsGeneratedOrBin(p))
             .SelectMany(path => File.ReadAllLines(path)
                 .Select((line, i) => (path, line, i))
                 .Where(x => Regex.IsMatch(
@@ -129,4 +236,8 @@ public sealed class PricingBoundaryGuardrailTests
         Assert.False(Directory.Exists(booking), "Booking module must not exist in P12 scaffolding.");
         Assert.False(Directory.Exists(payment), "Payment module must not exist in P12 scaffolding.");
     }
+
+    private static bool IsGeneratedOrBin(string path) =>
+        path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase)
+        || path.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase);
 }

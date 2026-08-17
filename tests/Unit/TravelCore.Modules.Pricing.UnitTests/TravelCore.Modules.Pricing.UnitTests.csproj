@@ -10,16 +10,19 @@
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <RootNamespace>TravelCore.Modules.Pricing.UnitTests</RootNamespace>
     <AssemblyName>TravelCore.Modules.Pricing.UnitTests</AssemblyName>
-    <Description>Pricing domain unit tests (TC-P12-T001 scaffolding smoke).</Description>
+    <Description>Pricing domain unit tests (TC-P12-T002 money/currency baseline).</Description>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\backend\Modules\Pricing\TravelCore.Modules.Pricing.Domain\TravelCore.Modules.Pricing.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Pricing\TravelCore.Modules.Pricing.Infrastructure\TravelCore.Modules.Pricing.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
   </ItemGroup>
 
 </Project>

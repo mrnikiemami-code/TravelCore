@@ -105,8 +105,9 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | Pricing | `Pricing/TravelCore.Modules.Pricing.{Domain,Contracts,Infrastructure}` | `pricing` |
 
-- **Pricing:** module scaffolding only (`TC-P12-T001`) — schema `pricing` ownership; no Rate/Quote/PriceComponent aggregates yet (T002+).
+- **Pricing:** scaffolding + money baseline (`TC-P12-T001`/`T002`) — schema `pricing`; platform `TravelCore.Money` binding; EF `MoneyOwnedMapping`; no Rate/Quote/PriceComponent aggregates yet (T003+).
 - **P12-R1 RESOLVED:** independent Pricing module; Tour owns tour facts; Pricing may logically reference TourDeparture identity (Guid) only — no EF FK / no Tour table ownership / no shared DbContext.
+- **P12-R2 RESOLVED:** one authoritative currency per price value; reuse ADR 0003 Money; no twin multi-currency SoR; FX deferred.
 - Invariant: **Price ≠ Quote ≠ Payment / Booking Amount**; no silent single-currency wipe.
 
 ## Host

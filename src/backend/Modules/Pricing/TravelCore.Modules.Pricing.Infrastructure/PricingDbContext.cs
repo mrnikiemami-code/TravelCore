@@ -4,7 +4,7 @@ namespace TravelCore.Modules.Pricing.Infrastructure;
 
 /// <summary>
 /// Pricing-owned DbContext. Owns PostgreSQL schema <c>pricing</c>.
-/// Scaffolding only — no product entities yet (TC-P12-T001 / P12-R1).
+/// Money persistence uses <see cref="Persistence.MoneyOwnedMapping"/> when product entities arrive (TC-P12-T002).
 /// </summary>
 public sealed class PricingDbContext : DbContext
 {

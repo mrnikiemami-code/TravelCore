@@ -6,7 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Pricing.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Pricing.Domain</AssemblyName>
-    <Description>Pricing domain scaffolding. No EF/ASP.NET. TC-P12-T001.</Description>
+    <Description>Pricing domain: platform Money/Currency binding (TC-P12-T002). No EF/ASP.NET.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
+  </ItemGroup>
 
 </Project>

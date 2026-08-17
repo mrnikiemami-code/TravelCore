@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T001 scaffolding) |
+| Current Phase | **P12 — Pricing** (**IN PROGRESS** — T002 money baseline) |
 | Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P12-T001` — Pricing module scaffolding (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P12-T002` — Money / Currency baseline (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P12 — Pricing |
-| Current Next Task | Architect review of T001 → `TC-P12-T002` Money / Currency baseline binding |
+| Current Next Task | Architect review of T002 → `TC-P12-T003` PriceComponent model |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -157,10 +157,12 @@
 | P10-GATE | **COMPLETE / ACCEPTED** (`c351bf9`) — evidence [`plans/P10-GATE-acceptance-evidence.md`](plans/P10-GATE-acceptance-evidence.md) |
 | P10-R1…R8 | **ALL RESOLVED** |
 | P11 | **COMPLETE** — GATE ACCEPTED (`6f7ea12`) · R1..R8 RESOLVED |
-| P12 | **IN PROGRESS** — Plan authored · **P12-R1 RESOLVED** (independent Pricing module) |
+| P12 | **IN PROGRESS** — Plan authored · **P12-R1/R2 RESOLVED** |
 | P12 Plan | `TC-P12-PLAN` — [`docs/plans/P12-implementation-plan.md`](plans/P12-implementation-plan.md) |
-| P12-T001 | **AWAITING_ARCHITECT_REVIEW** — Pricing module scaffolding (`pricing` schema) |
+| P12-T001 | **COMPLETE / ACCEPTED** (`7c2e488`) — Pricing module scaffolding (`pricing` schema) |
+| P12-T002 | **AWAITING_ARCHITECT_REVIEW** — Money / Currency baseline (platform Money reuse · EF owned mapping) |
 | P12-R1 (Pricing ownership) | **RESOLVED** — Independent Pricing module · schema `pricing` · logical TourDeparture Guid refs only · no Tour table ownership / no shared DbContext |
+| P12-R2 (Money / currency posture) | **RESOLVED** — Reuse `TravelCore.Money`; one authoritative currency per price value; no twin SoR; no FX/Quote/Payment in T002 |
 | P10 Plan | `TC-P10-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/P10-implementation-plan.md`](plans/P10-implementation-plan.md) |
 | P10-T001 | **COMPLETE / ACCEPTED** (`e5490ae`) — Experience specialization foundation |
 | P10-T002 | **COMPLETE / ACCEPTED** (`757c9b8`) — Itinerary + Day + Stop (P10-R1) |
@@ -529,8 +531,9 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P10-T005 | Difficulty · Eligibility · Equipment · LocalTransport | COMPLETE / ACCEPTED | `f7ce58c` |
 | TC-P10-T006 | Experience Guide relation baseline | COMPLETE / ACCEPTED | `e3dbea6` |
 | TC-P10-T007 | Experience Media relations baseline | AWAITING_ARCHITECT_REVIEW | `f262084` |
-| TC-P12-PLAN | P12 Pricing Implementation Plan | DRAFTED · R1 locked for T001 | see `docs/plans/P12-implementation-plan.md` |
-| TC-P12-T001 | Pricing module scaffolding | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P12-PLAN | P12 Pricing Implementation Plan | DRAFTED · R1/R2 locked | see `docs/plans/P12-implementation-plan.md` |
+| TC-P12-T001 | Pricing module scaffolding | COMPLETE / ACCEPTED | `7c2e488` |
+| TC-P12-T002 | Money / Currency baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -595,7 +598,7 @@ Content · UGC
 
 ### Commerce
 
-Tour · Pricing (scaffolded · schema `pricing` · P12-R1) · Visa · Booking · Payment
+Tour · Pricing (scaffolded · Money baseline · schema `pricing` · P12-R1/R2) · Visa · Booking · Payment
 
 ### External Inventory / Booking
 
