@@ -47,5 +47,7 @@ public static class VisaOwnershipBoundary
     public const bool EligibilityIsRulesEngine = false;
     public const bool ProcessingValidityModelImplemented = true;
     public const bool FeeModelImplemented = true;
+    public const bool PublicReadImplemented = true;
+    public const bool PublicPresenceEqualsSeoIndexed = false;
     public const bool ApplicationWorkflowImplemented = false;
 }

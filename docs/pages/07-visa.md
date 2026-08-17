@@ -3,7 +3,9 @@
 **Archetype:** `VisaDetailPage`  
 **Registry:** [`00-page-archetype-registry.md`](00-page-archetype-registry.md)
 
-Detailed Visa domain comes later (ROADMAP P17). This locks public-page intent only.
+## P17-T007 implementation note
+
+Public `VisaDetailPage` is informational composition (`/[locale]/visas/[code]`). Visa owns structured facts; Content may enrich; SEO owns IndexPolicy. **Public Visa Page != Automatically SEO Indexed**. Application/consultation CTA remains **P17-R8 UNRESOLVED** — this page must not imply a live application or booking transaction.
 
 ---
 

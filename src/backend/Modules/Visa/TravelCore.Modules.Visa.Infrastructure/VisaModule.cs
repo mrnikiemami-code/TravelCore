@@ -3,12 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TravelCore.Modularity;
+using TravelCore.Modules.Visa.Contracts;
+using TravelCore.Modules.Visa.Infrastructure.Endpoints;
+using TravelCore.Modules.Visa.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Visa.Infrastructure;
 
 /// <summary>
-/// Host composition entry for Visa (TC-P17-T001). Schema scaffolding only — no product endpoints.
+/// Host composition entry for Visa (TC-P17-T001, public composition reads TC-P17-T007).
 /// </summary>
 public sealed class VisaModule : ITravelCoreModule
 {
@@ -27,10 +30,13 @@ public sealed class VisaModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: VisaDbContext.SchemaName);
         });
+
+        services.AddScoped<IVisaPublicQuery, VisaPublicQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
+        endpoints.MapVisaPublicEndpoints();
     }
 }

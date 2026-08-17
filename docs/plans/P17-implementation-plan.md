@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P17-PLAN` |
 | Phase | P17 — Visa |
-| Status | PLAN ACCEPTED; P17-R1–R6 RESOLVED; T006 delivered (R7–R8 UNRESOLVED) |
+| Status | PLAN ACCEPTED; P17-R1–R7 RESOLVED; T007 delivered (R8 UNRESOLVED) |
 | Baseline | `538f3fc` (`docs(ugc): add P16 acceptance gate evidence [TC-P16-GATE]` — **TC-P16-GATE** ACCEPTED; P16 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P17 · `docs/architecture/15-future-architecture-transition-map.md` § Q · `04-module-boundaries.md` § Visa · `05-dependency-rules.md` Commerce/Visa · `docs/architecture/07-data-architecture.md` schema `visa` · `docs/domain/module-ownership-matrix.md` · `docs/pages/07-visa.md` · `docs/pages/00-page-archetype-registry.md` · P04 Destination/ReferenceData · P05 SEO · P06 Media · P08 Content · P12 Pricing · P14 PublicExperience · P15 Search · P16 UGC · P19 Booking · P20 Payment |
 | Backend root | `src/backend` |
@@ -122,8 +122,8 @@ P17 اضافه می‌کند: **Visa module** برای کاتالوگ/الزام
 - Forbidden kept: inventing R7–R8.
 
 ### TC-P17-T007 — Public Visa presentation / Content / SEO boundary
-- Purpose: Public `VisaDetailPage` composition without stealing Content or SEO (**P17-R7**). PublicExperience composes; Visa remains fact owner; SEO remains IndexPolicy; Content remains editorial FAQ/guides.
-- Public UX posture: mobile-first · locale-aware · RTL/LTR-safe · structured requirements · document checklists · explicit uncertainty/disclaimer · accessible warnings. Published Visa page ≠ SEO Indexed.
+- Purpose: Public `VisaDetailPage` composition without stealing Content or SEO (**P17-R7 RESOLVED**).
+- Delivered: Visa public read contracts + `GET /api/visa/public/definitions/{code}`; locale-aware `/[locale]/visas/[code]` Server Component; Content enrichment via existing related-content reads; SEO metadata composed through existing IndexPolicy contracts. **Visa != Content**. **Visa != PublicExperience**. **Structured Visa Fact != Editorial Guidance**. **Public Visa Page != Automatically SEO Indexed**. **Public Visa Visibility != SEO Indexed**. No application workflow.
 - Forbidden kept: Visa-owned IndexPolicy · treating Article as VisaType · Search engine · implying a live application/booking transaction · inventing R8.
 
 ### TC-P17-T008 — Application/service vs future Booking
@@ -152,7 +152,7 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 | **P17-R4** | Required documents and eligibility facts | **RESOLVED** | VisaRequirementSet owns RequiredDocument 0..N and EligibilityRequirement 0..N. **RequiredDocument != EligibilityRequirement**. Documents are row-based codes + RequirementLevel (Required/Conditional/Optional) + locale names. Eligibility is structured Code/Kind/Value/Unit facts, not an executable engine. **EligibilityRequirement != Rules Engine**. No applicant uploads, MediaAsset, OCR, or peer FK. |
 | **P17-R5** | Processing time / validity / stay-duration semantics | **RESOLVED** | ProcessingTime != VisaValidity != AllowedStay. Entry Count / Entry Policy is a fourth independent fact. Structured min/max+unit or value+unit facts, not a Duration blob and not a rules engine. Optional EffectiveFrom/EffectiveTo readiness only. Do not hardcode regulatory durations as architecture truth. |
 | **P17-R6** | Visa fee vs Pricing ownership | **RESOLVED** | OfficialVisaFee != CommercialPrice. OfficialVisaFee != Quote. Visa stores official/regulatory fee facts with platform Money in source currency. Pricing remains Price/Quote authority. No FX, markup, discount, commission, or Payment in Visa. |
-| **P17-R7** | Public Visa presentation / Content / SEO boundary | **OPEN** | `VisaDetailPage` exists as public intent only. SEO = IndexPolicy. Content = editorial FAQ/guides. PublicExperience = composition. Visa = structured fact owner. Published ≠ Indexed. |
+| **P17-R7** | Public Visa presentation / Content / SEO boundary | **RESOLVED** | Visa owns structured facts and public read contracts. PublicExperience owns `VisaDetailPage` composition. Content remains editorial FAQ/guides. SEO owns IndexPolicy / canonical / redirects / sitemap. **Visa != Content**. **Visa != PublicExperience**. **Structured Visa Fact != Editorial Guidance**. **Public Visa Page != Automatically SEO Indexed**. **Public Visa Visibility != SEO Indexed**. No Search engine. No application workflow. |
 | **P17-R8** | Visa application/service vs future Booking/transaction | **OPEN** | ROADMAP: forms/workflow **if needed**. Booking = P19. Payment = P20. Notification example `VisaApplicationUpdated` is **not** a locked event list. Full application wizard is an explicit page non-goal. Likely DEFER — **not resolved here**. |
 
 ---
@@ -165,9 +165,9 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 4. Content owns editorial Article/Guide; Visa owns structured visa facts.
 5. Media owns MediaAsset technical truth; Visa may hold logical MediaAssetId only.
 6. Pricing owns Price/Quote if a commercial visa fee is later locked; Visa must not steal that ownership.
-7. SEO owns IndexPolicy / canonical / redirects / sitemap. Public Visa page ≠ automatically indexed.
+7. SEO owns IndexPolicy / canonical / redirects / sitemap. Public Visa page ≠ automatically indexed. **Public Visa Page != Automatically SEO Indexed**. **Public Visa Visibility != SEO Indexed**.
 8. Search owns retrieval/discovery projection later; Search != Visa SoT.
-9. PublicExperience owns presentation/composition only.
+9. PublicExperience owns presentation/composition only. **Visa != PublicExperience**.
 10. Published Visa fact ≠ bookable transaction.
 11. Time-sensitive visa facts need room for last updated / source / jurisdiction — not a legal rules engine.
 12. Structured, attributable, locale-aware facts first. No AI infrastructure in P17.
@@ -177,6 +177,9 @@ Do not manufacture empty capabilities merely to fill numbering. T008 is intentio
 16. Applicability != Rules Engine.
 17. RequiredDocument != EligibilityRequirement.
 18. EligibilityRequirement != Rules Engine.
+19. **Structured Visa Fact != Editorial Guidance**.
+20. ProcessingTime != VisaValidity != AllowedStay.
+21. OfficialVisaFee != CommercialPrice.
 
 ---
 

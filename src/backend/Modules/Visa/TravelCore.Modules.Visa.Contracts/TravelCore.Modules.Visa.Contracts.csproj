@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Visa.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Visa.Contracts</AssemblyName>
-    <Description>Visa module contracts. Ownership boundary only — product aggregates live in Domain (TC-P17-T002 / P17-R2).</Description>
+    <Description>Visa module contracts. Public read boundary lives here; product aggregates live in Domain (TC-P17-T007 / P17-R7).</Description>
   </PropertyGroup>
 
 </Project>

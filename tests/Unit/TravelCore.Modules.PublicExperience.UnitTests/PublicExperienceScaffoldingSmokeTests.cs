@@ -140,4 +140,23 @@ public sealed class PublicExperienceScaffoldingSmokeTests
             PublicExperienceDetailComposition.SharedSections,
             StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void Visa_Composition_Is_Presentation_Only_And_Not_Automatically_Indexed()
+    {
+        Assert.Equal("PublicExperience", PublicExperienceVisaCompositionBoundary.PresentationOwner);
+        Assert.Equal("Visa", PublicExperienceVisaCompositionBoundary.FactOwner);
+        Assert.Equal("Content", PublicExperienceVisaCompositionBoundary.EditorialOwner);
+        Assert.Equal("Seo", PublicExperienceVisaCompositionBoundary.IndexPolicyOwner);
+        Assert.Equal("Search", PublicExperienceVisaCompositionBoundary.FutureRetrievalOwner);
+        Assert.Equal("/visas/{code}", PublicExperienceVisaCompositionBoundary.PublicRoutePattern);
+        Assert.False(PublicExperienceVisaCompositionBoundary.CopyContentIntoVisaAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.PublicPresenceEqualsSeoIndexed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.PublicPresenceEqualsAutomaticallySearchIndexed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.VisaOwnsIndexPolicy);
+        Assert.False(PublicExperienceVisaCompositionBoundary.SearchEngineAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.ApplicationWorkflowAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.CommercialPriceDisplayAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.BookingCtaAllowed);
+    }
 }

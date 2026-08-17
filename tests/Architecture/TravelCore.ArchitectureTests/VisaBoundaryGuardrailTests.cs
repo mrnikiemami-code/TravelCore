@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using TravelCore.ArchitectureTests.Support;
+using TravelCore.Modules.PublicExperience.Contracts;
 using TravelCore.Modules.Visa.Contracts;
 using Xunit;
 
@@ -52,6 +53,8 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.False(VisaOwnershipBoundary.EligibilityIsRulesEngine);
         Assert.True(VisaOwnershipBoundary.ProcessingValidityModelImplemented);
         Assert.True(VisaOwnershipBoundary.FeeModelImplemented);
+        Assert.True(VisaOwnershipBoundary.PublicReadImplemented);
+        Assert.False(VisaOwnershipBoundary.PublicPresenceEqualsSeoIndexed);
         Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
     }
 
@@ -232,6 +235,71 @@ public sealed class VisaBoundaryGuardrailTests
     }
 
     [Fact]
+    public void Visa_T007_Public_Read_Does_Not_Steal_Content_Seo_Search_Or_Application()
+    {
+        Assert.True(VisaOwnershipBoundary.PublicReadImplemented);
+        Assert.False(VisaOwnershipBoundary.PublicPresenceEqualsSeoIndexed);
+        Assert.False(VisaOwnershipBoundary.OwnsContentCms);
+        Assert.False(VisaOwnershipBoundary.OwnsIndexPolicy);
+        Assert.False(VisaOwnershipBoundary.OwnsSearch);
+        Assert.False(VisaOwnershipBoundary.ApplicationWorkflowImplemented);
+        Assert.Equal("Visa", VisaPublicCompositionBoundary.FactOwner);
+        Assert.Equal("PublicExperience", VisaPublicCompositionBoundary.PresentationOwner);
+        Assert.Equal("Content", VisaPublicCompositionBoundary.EditorialOwner);
+        Assert.Equal("Seo", VisaPublicCompositionBoundary.IndexPolicyOwner);
+        Assert.Equal("Search", VisaPublicCompositionBoundary.SearchOwner);
+        Assert.False(VisaPublicCompositionBoundary.PublicPresenceEqualsSeoIndexed);
+        Assert.False(VisaPublicCompositionBoundary.CopyContentIntoVisaAllowed);
+        Assert.False(VisaPublicCompositionBoundary.ApplicationWorkflowAllowed);
+        Assert.False(VisaPublicCompositionBoundary.CommercialPriceDisplayAllowed);
+        Assert.Equal("Visa", PublicExperienceVisaCompositionBoundary.FactOwner);
+        Assert.Equal("PublicExperience", PublicExperienceVisaCompositionBoundary.PresentationOwner);
+        Assert.Equal("Seo", PublicExperienceVisaCompositionBoundary.IndexPolicyOwner);
+        Assert.False(PublicExperienceVisaCompositionBoundary.PublicPresenceEqualsSeoIndexed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.ApplicationWorkflowAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.BookingCtaAllowed);
+        Assert.NotNull(typeof(IVisaPublicQuery));
+        Assert.NotNull(typeof(PublicVisaDefinition));
+        Assert.Null(typeof(PublicVisaRequirementSet).GetProperty("Duration"));
+        Assert.Null(typeof(PublicVisaRequirementSet).GetProperty("Price"));
+        Assert.Null(typeof(PublicVisaDefinition).GetProperty("IndexPolicy"));
+
+        var endpoints = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Visa",
+            "TravelCore.Modules.Visa.Infrastructure",
+            "Endpoints",
+            "VisaPublicEndpoints.cs"));
+        Assert.Contains("/api/visa/public", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("RequireAuthorization", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("SetIndexPolicy", endpoints, StringComparison.Ordinal);
+
+        var frontendRoot = Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "visa-detail");
+        Assert.True(Directory.Exists(frontendRoot), frontendRoot);
+        foreach (var path in Directory.EnumerateFiles(frontendRoot, "*.ts", SearchOption.AllDirectories)
+                     .Concat(Directory.EnumerateFiles(frontendRoot, "*.tsx", SearchOption.AllDirectories)))
+        {
+            var text = File.ReadAllText(path);
+            Assert.DoesNotContain("Apply Now", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("Book Now", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("Pay Now", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("Submit Application", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("/api/search", text, StringComparison.Ordinal);
+            Assert.DoesNotContain("SetIndexPolicy", text, StringComparison.Ordinal);
+        }
+
+        var page = Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "visas", "[code]", "page.tsx");
+        Assert.True(File.Exists(page), page);
+        var pageText = File.ReadAllText(page);
+        Assert.Contains("loadComposedSeoMetadata", pageText, StringComparison.Ordinal);
+        Assert.DoesNotContain("Apply Now", pageText, StringComparison.Ordinal);
+        Assert.DoesNotContain("index: true", pageText, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void Visa_Evidence_Keeps_Ascii_Invariants()
     {
         var plan = Path.Combine(RepoRoot, "docs", "plans", "P17-implementation-plan.md");
@@ -255,6 +323,10 @@ public sealed class VisaBoundaryGuardrailTests
         Assert.Contains("Visa != Pricing", text, StringComparison.Ordinal);
         Assert.Contains("VisaDefinition != VisaRequirementSet", text, StringComparison.Ordinal);
         Assert.Contains("Applicability != Rules Engine", text, StringComparison.Ordinal);
+        Assert.Contains("Public Visa Page != Automatically SEO Indexed", text, StringComparison.Ordinal);
+        Assert.Contains("Structured Visa Fact != Editorial Guidance", text, StringComparison.Ordinal);
+        Assert.Contains("Public Visa Visibility != SEO Indexed", text, StringComparison.Ordinal);
+        Assert.Contains("Visa != PublicExperience", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

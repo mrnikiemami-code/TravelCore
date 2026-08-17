@@ -16,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NodaTime" Version="3.3.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
     <PackageReference Include="Testcontainers.PostgreSql" Version="4.14.0" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
@@ -45,6 +46,8 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Contracts\TravelCore.Modules.Search.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Ugc\TravelCore.Modules.Ugc.Infrastructure\TravelCore.Modules.Ugc.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Infrastructure\TravelCore.Modules.Visa.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Domain\TravelCore.Modules.Visa.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Visa\TravelCore.Modules.Visa.Contracts\TravelCore.Modules.Visa.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -55,6 +55,11 @@ public sealed class PublicExperiencePhaseBoundaryGuardrailTests
         Assert.False(PublicExperienceUgcCompositionBoundary.SearchEngineAllowed);
         Assert.False(PublicExperienceUgcCompositionBoundary.UgcSeoPagesAllowed);
         Assert.False(PublicExperienceUgcCompositionBoundary.RankingFromUgcAllowed);
+        Assert.Equal("Visa", PublicExperienceVisaCompositionBoundary.FactOwner);
+        Assert.False(PublicExperienceVisaCompositionBoundary.PublicPresenceEqualsSeoIndexed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.ApplicationWorkflowAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.BookingCtaAllowed);
+        Assert.False(PublicExperienceVisaCompositionBoundary.CopyContentIntoVisaAllowed);
     }
 
     [Fact]

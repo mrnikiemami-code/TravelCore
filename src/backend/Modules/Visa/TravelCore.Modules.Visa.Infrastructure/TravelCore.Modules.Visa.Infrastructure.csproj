@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Visa.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Visa.Infrastructure</AssemblyName>
-    <Description>Visa infrastructure: schema visa · VisaDefinition + VisaRequirementSet (TC-P17-T002 / P17-R2).</Description>
+    <Description>Visa infrastructure: schema visa · public read contracts (TC-P17-T007 / P17-R7).</Description>
   </PropertyGroup>
 
   <ItemGroup>
