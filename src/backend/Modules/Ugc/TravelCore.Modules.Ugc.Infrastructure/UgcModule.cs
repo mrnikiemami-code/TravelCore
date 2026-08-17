@@ -31,6 +31,7 @@ public sealed class UgcModule : ITravelCoreModule
         });
 
         services.AddSingleton<IReviewTargetValidator, StructuralReviewTargetValidator>();
+        services.AddSingleton<IUserPhotoMediaAssetValidator, StructuralUserPhotoMediaAssetValidator>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

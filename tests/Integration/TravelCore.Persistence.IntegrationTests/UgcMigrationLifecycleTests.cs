@@ -27,7 +27,7 @@ public sealed class UgcMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_InitialUgcScaffolding", StringComparison.Ordinal));
@@ -40,6 +40,9 @@ public sealed class UgcMigrationLifecycleTests
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_AddTravelogueBaseline", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddUserPhotoBaseline", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -79,6 +82,12 @@ public sealed class UgcMigrationLifecycleTests
                 WHERE table_schema = 'ugc'
                   AND table_name = 'travelogues';
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'user_photos';
+                """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
@@ -98,6 +107,19 @@ public sealed class UgcMigrationLifecycleTests
                 WHERE table_schema = 'ugc'
                   AND table_name = 'travelogues'
                   AND column_name IN ('content_item_id', 'publication_status', 'is_user_generated', 'target_id');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'ugc'
+                  AND table_name = 'user_photos'
+                  AND column_name = 'media_asset_id';
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'ugc'
+                  AND column_name IN ('storage_key', 'mime_type', 'file_size', 'width', 'height', 'focal_point');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

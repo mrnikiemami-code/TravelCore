@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Ugc.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Ugc.Domain</AssemblyName>
-    <Description>UGC domain: Review + Travelogue (TC-P16-T004 / P16-R4). No EF/ASP.NET.</Description>
+    <Description>UGC domain: Review + Travelogue + UserPhoto (TC-P16-T005 / P16-R5). No EF/ASP.NET.</Description>
   </PropertyGroup>
 
   <ItemGroup>

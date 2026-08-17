@@ -35,6 +35,8 @@ public static class UgcOwnershipBoundary
     public const bool OverallRatingOwnedByReview = true;
     public const bool DimensionRatingsAreReviewChildren = true;
     public const bool TravelogueImplemented = true;
+    public const bool UserPhotoImplemented = true;
+    public const bool UserPhotoIsNotMediaAsset = true;
     public const bool CommentImplemented = false;
     public const bool LikeImplemented = false;
     public const bool ReportImplemented = false;

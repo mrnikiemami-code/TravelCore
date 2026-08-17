@@ -85,6 +85,21 @@ public sealed class ReviewPersistenceModelTests
             travelogueType.GetIndexes(),
             i => i.GetDatabaseName() == "ix_travelogues_locale_code");
 
+        var userPhotoType = model.FindEntityType(typeof(UserPhoto));
+        Assert.NotNull(userPhotoType);
+        Assert.Equal("user_photos", userPhotoType.GetTableName());
+        Assert.Equal(UgcDbContext.SchemaName, userPhotoType.GetSchema());
+        Assert.Equal("media_asset_id", userPhotoType.FindProperty(nameof(UserPhoto.MediaAssetId))!.GetColumnName());
+        Assert.Null(userPhotoType.FindProperty("StorageKey"));
+        Assert.Null(userPhotoType.FindProperty("MimeType"));
+        Assert.Null(userPhotoType.FindProperty("FileSize"));
+        Assert.Null(userPhotoType.FindProperty("Width"));
+        Assert.Null(userPhotoType.FindProperty("Height"));
+        Assert.Null(userPhotoType.FindProperty("FocalPoint"));
+        Assert.Contains(
+            userPhotoType.GetIndexes(),
+            i => i.GetDatabaseName() == "ux_user_photos_media_asset_id" && i.IsUnique);
+
         Assert.False(db.Database.HasPendingModelChanges());
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using TravelCore.Modules.Ugc.Infrastructure;
 namespace TravelCore.Modules.Ugc.Infrastructure.Migrations
 {
     [DbContext(typeof(UgcDbContext))]
-    partial class UgcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260817250000_AddUserPhotoBaseline")]
+    partial class AddUserPhotoBaseline
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

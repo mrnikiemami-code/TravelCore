@@ -51,6 +51,8 @@ public sealed class UgcScaffoldingSmokeTests
         Assert.True(UgcOwnershipBoundary.DimensionRatingsAreReviewChildren);
         Assert.True(UgcOwnershipBoundary.TravelogueImplemented);
         Assert.True(UgcOwnershipBoundary.TravelogueIsNotContentItem);
+        Assert.True(UgcOwnershipBoundary.UserPhotoImplemented);
+        Assert.True(UgcOwnershipBoundary.UserPhotoIsNotMediaAsset);
         Assert.False(UgcOwnershipBoundary.CommentImplemented);
         Assert.False(UgcOwnershipBoundary.LikeImplemented);
         Assert.False(UgcOwnershipBoundary.ReportImplemented);

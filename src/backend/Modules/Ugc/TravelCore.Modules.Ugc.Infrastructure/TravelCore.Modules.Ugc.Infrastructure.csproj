@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Ugc.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Ugc.Infrastructure</AssemblyName>
-    <Description>UGC infrastructure: schema ugc + Review + Travelogue (TC-P16-T004).</Description>
+    <Description>UGC infrastructure: schema ugc + Review + Travelogue + UserPhoto (TC-P16-T005).</Description>
   </PropertyGroup>
 
   <ItemGroup>
