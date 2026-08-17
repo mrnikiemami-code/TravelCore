@@ -19,6 +19,7 @@ public sealed class AgencyOfferTests
         var offer = AgencyOffer.Create(Profile(), Tour());
         Assert.Equal(AgencyOfferStatus.Draft, offer.Status);
         Assert.Equal(AgencyOfferVisibility.Unlisted, offer.Visibility);
+        Assert.Equal(AgencyOfferPublicationStatus.Draft, offer.PublicationStatus);
         Assert.Equal(Tour(), offer.TourProductId);
         Assert.Null(offer.Display.TitleOverride);
         Assert.Null(offer.CommercialTerms.Notes);
@@ -39,7 +40,38 @@ public sealed class AgencyOfferTests
         offer.Archive();
         Assert.Equal(AgencyOfferStatus.Archived, offer.Status);
         Assert.Equal(AgencyOfferVisibility.Unlisted, offer.Visibility);
+        Assert.Equal(AgencyOfferPublicationStatus.Archived, offer.PublicationStatus);
         Assert.Throws<InvalidOperationException>(offer.Activate);
+    }
+
+    [Fact]
+    public void Publication_Workflow_Is_Independent_Of_Catalog_And_Seo()
+    {
+        var offer = AgencyOffer.Create(Profile(), Tour());
+        Assert.Throws<InvalidOperationException>(offer.Approve);
+        Assert.Throws<InvalidOperationException>(offer.Publish);
+
+        offer.Submit();
+        Assert.Equal(AgencyOfferPublicationStatus.Submitted, offer.PublicationStatus);
+
+        offer.Reject();
+        Assert.Equal(AgencyOfferPublicationStatus.Rejected, offer.PublicationStatus);
+        Assert.Equal(AgencyOfferVisibility.Unlisted, offer.Visibility);
+
+        offer.Submit();
+        offer.Approve();
+        Assert.Equal(AgencyOfferPublicationStatus.Approved, offer.PublicationStatus);
+
+        offer.Publish();
+        Assert.Equal(AgencyOfferPublicationStatus.Published, offer.PublicationStatus);
+        Assert.Equal(AgencyOfferVisibility.Listed, offer.Visibility);
+
+        offer.Unpublish();
+        Assert.Equal(AgencyOfferPublicationStatus.Approved, offer.PublicationStatus);
+        Assert.Equal(AgencyOfferVisibility.Unlisted, offer.Visibility);
+
+        Assert.Null(typeof(AgencyOffer).GetProperty("IndexPolicy"));
+        Assert.Null(typeof(AgencyOffer).GetProperty("CatalogStatus"));
     }
 
     [Fact]

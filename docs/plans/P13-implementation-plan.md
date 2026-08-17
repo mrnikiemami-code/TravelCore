@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P13-PLAN` |
 | Phase | P13 — Agency Marketplace |
-| Status | IN PROGRESS — P13-R1–R6 RESOLVED; T006 Agency Panel delivered |
+| Status | IN PROGRESS — P13-R1–R7 RESOLVED; T007 Offer publishing/moderation delivered |
 | Baseline | `b372367` (`docs: P12 acceptance gate evidence [TC-P12-GATE]` — **TC-P12-GATE** ACCEPTED; P12 COMPLETE) |
 | Authoritative sources | `docs/ROADMAP.md` § P13 · P09-R3 AgencyId · P03 Agency Panel non-ownership · P12 R1–R8 · ADR 0001 · ADR 0011–0014 · architect P12 Gate ACCEPT narrative (Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking) |
 | Backend root | `src/backend` |
@@ -104,13 +104,19 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 - Delivered: Access-backed `/api/agency-marketplace/profiles` + `/offers` · profile upsert/activate · offer create/list/activate/list/open-sales · Agency portal page operational (not presentation stub).
 - Forbidden: Booking management · Payment · Settlement · Commission · CRM · Financial reports.
 
-### TC-P13-T007 — Agency Panel operational baseline
-- P13-R6 was locked and delivered in T006. Do not invent a replacement until Auto-Execute.
-- Forbidden: Tour Admin ownership of Marketplace · Booking/Payment/Checkout.
+### TC-P13-T007 — Agency Offer publishing and moderation baseline
+- Purpose: Marketplace publication lifecycle for AgencyOffer (P13-R7 RESOLVED).
+- Architect lock: Agency Marketplace owns Offer publication status. Agency Offer must not replace SEO or Catalog.
+  - `TourProduct.CatalogStatus` = is the tour in the catalog?
+  - `AgencyOffer.PublicationStatus` = does this agency offer this tour?
+  - `SEO.IndexPolicy` = should search engines index it?
+  - Published Offer ≠ SEO Indexed.
+  - Lifecycle: Draft → Submitted → Approved → Published; returns Rejected, Archived.
+- Delivered: `AgencyOfferPublicationStatus` · Submit/Approve/Reject/Publish/Unpublish · Access `offers.write` vs `offers.moderate` · persistence `publication_status`.
+- Forbidden: SEO ownership · Commission · Payment · Settlement · Ranking engine · Booking.
 
-### TC-P13-T008 — Publishing / moderation (if locked)
-- Purpose: Offer/agency publishing + moderation (P13-R7) only if architect requires it in P13.
-- Explicit DEFER allowed. Do not invent workflow.
+### TC-P13-T008 — (do not invent)
+- Original plan slot for publishing is delivered in T007. Do not invent remaining work until Auto-Execute.
 
 ### TC-P13-T009 — Hardening + evidence
 
@@ -129,7 +135,7 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 | **P13-R4** | Agency override of rates | **RESOLVED** | Agency must NOT override Price. Commercial terms = Notes + SalesRules metadata. No Money / Discount / Commission / Currency / Quote. |
 | **P13-R5** | Capacity/availability policy owner | **RESOLVED** | Agency does NOT own capacity. TourDeparture remains capacity SoR. Offer may hold SalesAvailability metadata + optional logical TourDeparture Guid. No seats / reservation / allocation. |
 | **P13-R6** | Agency Panel ownership for Marketplace ops | **RESOLVED** | Agency Panel belongs to Agency Marketplace (not Tour Admin, not Identity). Foundation: profile + offer management. No Booking/Payment/Commission/CRM. |
-| **P13-R7** | Publishing / moderation of agency offers | **UNRESOLVED** | Roadmap says «در صورت نیاز». DEFER is valid. |
+| **P13-R7** | Publishing / moderation of agency offers | **RESOLVED** | Agency Marketplace owns Offer publication status. Not SEO. Not TourProduct catalog status. Lifecycle Draft → Submitted → Approved → Published; returns Rejected, Archived. Published Offer ≠ SEO Indexed. |
 
 ---
 
@@ -143,6 +149,7 @@ P13 **Booking/Payment** · **Public polish factory (P14)** · **Search (P15)** �
 6. Agency Panel (P03) is presentation/capability, not commerce SoR — until P13-R6 lock.
 7. No Booking/Payment/Search/FX engines in P13.
 8. Do not duplicate TourProduct as a second catalog.
+9. Published Offer ≠ SEO Indexed · CatalogStatus ≠ PublicationStatus ≠ IndexPolicy.
 
 ---
 

@@ -135,6 +135,41 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
         await _db.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task SubmitOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
+    {
+        var offer = await LoadOfferAsync(offerId, cancellationToken);
+        offer.Submit();
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task ApproveOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
+    {
+        var offer = await LoadOfferAsync(offerId, cancellationToken);
+        offer.Approve();
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task RejectOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
+    {
+        var offer = await LoadOfferAsync(offerId, cancellationToken);
+        offer.Reject();
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task PublishOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
+    {
+        var offer = await LoadOfferAsync(offerId, cancellationToken);
+        offer.Publish();
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task UnpublishOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
+    {
+        var offer = await LoadOfferAsync(offerId, cancellationToken);
+        offer.Unpublish();
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
     private async Task<AgencyOffer> LoadOfferAsync(Guid offerId, CancellationToken cancellationToken)
     {
         return await _db.AgencyOffers
@@ -168,5 +203,6 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
             offer.CommercialTerms.SalesRules.ExclusiveListing,
             offer.SalesAvailability.SalesOpen,
             offer.Status.ToString(),
-            offer.Visibility.ToString());
+            offer.Visibility.ToString(),
+            offer.PublicationStatus.ToString());
 }

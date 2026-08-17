@@ -9,6 +9,7 @@ namespace TravelCore.ArchitectureTests;
 /// TC-P13-T002 / P13-R2: AgencyProfile is the commercial layer over Party identity (logical PartyId, 0..1).
 /// TC-P13-T003 / P13-R3: AgencyOffer is the market listing (logical TourProduct Guid; same-schema AgencyProfile FK).
 /// TC-P13-T005 / P13-R5: AgencyOffer does not own capacity — SalesAvailability + optional logical TourDeparture Guid only.
+/// TC-P13-T007 / P13-R7: AgencyOffer publication lifecycle is Marketplace-owned — not SEO IndexPolicy and not TourProduct CatalogStatus.
 /// </summary>
 public sealed class AgencyMarketplaceBoundaryGuardrailTests
 {
@@ -208,7 +209,45 @@ public sealed class AgencyMarketplaceBoundaryGuardrailTests
         Assert.NotNull(typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer).GetMethod("Deactivate"));
         Assert.NotNull(typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer).GetProperty("SalesAvailability"));
         Assert.NotNull(typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer).GetProperty("ReferencedTourDepartureId"));
+        Assert.NotNull(typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer).GetProperty("PublicationStatus"));
         Assert.True(typeof(TravelCore.Modules.AgencyMarketplace.Domain.MarketplaceTourDepartureId).IsValueType);
+        Assert.True(typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOfferPublicationStatus).IsEnum);
+    }
+
+    [Fact]
+    public void AgencyMarketplace_DoesNotOwn_Seo_IndexPolicy_Or_CatalogStatus()
+    {
+        var offer = typeof(TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer);
+        Assert.Null(offer.GetProperty("IndexPolicy"));
+        Assert.Null(offer.GetProperty("CatalogStatus"));
+        Assert.Null(offer.GetProperty("Robots"));
+
+        var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "AgencyMarketplace");
+        var hits = Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x =>
+                {
+                    var trimmed = x.line.TrimStart();
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("///", StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+
+                    return Regex.IsMatch(
+                        x.line,
+                        @"IndexPolicy|/api/seo|SeoDbContext|CatalogStatus",
+                        RegexOptions.IgnoreCase);
+                }))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+
+        Assert.True(
+            hits.Count == 0,
+            "Agency Marketplace must not own SEO IndexPolicy or TourProduct CatalogStatus:\n"
+            + string.Join('\n', hits));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

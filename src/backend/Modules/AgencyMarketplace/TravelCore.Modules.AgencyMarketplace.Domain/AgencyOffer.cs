@@ -42,6 +42,7 @@ public sealed class AgencyOffer
         Display = display;
         CommercialTerms = commercialTerms;
         SalesAvailability = AgencyOfferSalesAvailability.Closed();
+        PublicationStatus = AgencyOfferPublicationStatus.Draft;
         Status = AgencyOfferStatus.Draft;
         Visibility = AgencyOfferVisibility.Unlisted;
     }
@@ -58,6 +59,9 @@ public sealed class AgencyOffer
     public AgencyOfferCommercialTerms CommercialTerms { get; private set; }
 
     public AgencyOfferSalesAvailability SalesAvailability { get; private set; }
+
+    /// <summary>Marketplace publication lifecycle. Not SEO IndexPolicy and not TourProduct catalog status.</summary>
+    public AgencyOfferPublicationStatus PublicationStatus { get; private set; }
 
     /// <summary>Optional logical TourDeparture identity. No Tour schema FK and no capacity ownership.</summary>
     public MarketplaceTourDepartureId? ReferencedTourDepartureId { get; private set; }
@@ -134,6 +138,66 @@ public sealed class AgencyOffer
         ReferencedTourDepartureId = tourDepartureId;
     }
 
+    public void Submit()
+    {
+        EnsureNotArchived();
+        if (PublicationStatus is not (AgencyOfferPublicationStatus.Draft or AgencyOfferPublicationStatus.Rejected))
+        {
+            throw new InvalidOperationException("Only Draft or Rejected AgencyOffer can be Submitted.");
+        }
+
+        PublicationStatus = AgencyOfferPublicationStatus.Submitted;
+    }
+
+    public void Approve()
+    {
+        EnsureNotArchived();
+        if (PublicationStatus != AgencyOfferPublicationStatus.Submitted)
+        {
+            throw new InvalidOperationException("Only a Submitted AgencyOffer can be Approved.");
+        }
+
+        PublicationStatus = AgencyOfferPublicationStatus.Approved;
+    }
+
+    public void Reject()
+    {
+        EnsureNotArchived();
+        if (PublicationStatus != AgencyOfferPublicationStatus.Submitted)
+        {
+            throw new InvalidOperationException("Only a Submitted AgencyOffer can be Rejected.");
+        }
+
+        PublicationStatus = AgencyOfferPublicationStatus.Rejected;
+        Visibility = AgencyOfferVisibility.Unlisted;
+        SalesAvailability = AgencyOfferSalesAvailability.Closed();
+    }
+
+    public void Publish()
+    {
+        EnsureNotArchived();
+        if (PublicationStatus != AgencyOfferPublicationStatus.Approved)
+        {
+            throw new InvalidOperationException("Only an Approved AgencyOffer can be Published.");
+        }
+
+        PublicationStatus = AgencyOfferPublicationStatus.Published;
+        Visibility = AgencyOfferVisibility.Listed;
+    }
+
+    public void Unpublish()
+    {
+        EnsureNotArchived();
+        if (PublicationStatus != AgencyOfferPublicationStatus.Published)
+        {
+            throw new InvalidOperationException("Only a Published AgencyOffer can be Unpublished.");
+        }
+
+        PublicationStatus = AgencyOfferPublicationStatus.Approved;
+        Visibility = AgencyOfferVisibility.Unlisted;
+        SalesAvailability = AgencyOfferSalesAvailability.Closed();
+    }
+
     public void Unlist()
     {
         EnsureNotArchived();
@@ -148,6 +212,11 @@ public sealed class AgencyOffer
         EnsureNotArchived();
         SalesAvailability = AgencyOfferSalesAvailability.Closed();
         Visibility = AgencyOfferVisibility.Unlisted;
+        if (PublicationStatus == AgencyOfferPublicationStatus.Published)
+        {
+            PublicationStatus = AgencyOfferPublicationStatus.Approved;
+        }
+
         Status = AgencyOfferStatus.Draft;
     }
 
@@ -155,6 +224,7 @@ public sealed class AgencyOffer
     {
         SalesAvailability = AgencyOfferSalesAvailability.Closed();
         Visibility = AgencyOfferVisibility.Unlisted;
+        PublicationStatus = AgencyOfferPublicationStatus.Archived;
         Status = AgencyOfferStatus.Archived;
     }
 

@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Agency Marketplace schema + AgencyProfile + AgencyOffer + commercial terms (TC-P13-T001..T004).
+/// Real-PostgreSQL Agency Marketplace schema + AgencyProfile + AgencyOffer + publication (TC-P13-T001..T007).
 /// </summary>
 [Collection(nameof(AgencyMarketplaceMigrationLifecycleCollection))]
 public sealed class AgencyMarketplaceMigrationLifecycleTests
@@ -27,7 +27,7 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(5, expectedMigrations.Length);
+            Assert.Equal(6, expectedMigrations.Length);
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_InitialAgencyMarketplaceScaffolding", StringComparison.Ordinal));
@@ -43,6 +43,9 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_AddAgencyOfferCapacityBoundary", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddAgencyOfferPublication", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -123,6 +126,13 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
                 WHERE table_schema = 'agency_marketplace'
                   AND table_name = 'agency_offers'
                   AND column_name = 'exclusive_listing';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_offers'
+                  AND column_name = 'publication_status';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

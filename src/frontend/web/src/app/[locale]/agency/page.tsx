@@ -9,20 +9,22 @@ export const metadata = {
 };
 
 const COPY = {
-    fa: {
+  fa: {
     title: "پنل آژانس",
-    body: "سطح عملیاتی Agency Marketplace: مدیریت پروفایل و Offer. بدون Booking/Payment/Commission.",
-    note: "مالکیت با ماژول Agency Marketplace است — نه Tour Admin و نه Identity.",
+    body: "سطح عملیاتی Agency Marketplace: مدیریت پروفایل، Offer و چرخهٔ انتشار. بدون Booking/Payment/Commission و بدون مالکیت SEO.",
+    note: "مالکیت با ماژول Agency Marketplace است — نه Tour Admin و نه Identity. Published Offer ≠ SEO Indexed.",
     profile: "پروفایل تجاری",
     offers: "آگهی‌های فروش",
+    publish: "انتشار و بازبینی",
     back: "بازگشت",
   },
   en: {
     title: "Agency panel",
-    body: "Agency Marketplace operational surface: profile and offer management. No Booking/Payment/Commission.",
-    note: "Owned by the Agency Marketplace module — not Tour Admin and not Identity.",
+    body: "Agency Marketplace operational surface: profile, offer management, and publication workflow. No Booking/Payment/Commission and no SEO ownership.",
+    note: "Owned by the Agency Marketplace module — not Tour Admin and not Identity. Published Offer ≠ SEO Indexed.",
     profile: "Commercial profile",
     offers: "Sales offers",
+    publish: "Publish and moderate",
     back: "Back",
   },
 } as const;
@@ -60,8 +62,8 @@ export default async function AgencyPanelPage({
           <Stack gap="sm">
             <Text role="muted">{copy.body}</Text>
             <Text role="caption">{copy.note}</Text>
-            <Text>{copy.profile} · {copy.offers}</Text>
-            <Text role="caption">/api/agency-marketplace/profiles · /api/agency-marketplace/offers</Text>
+            <Text>{copy.profile} · {copy.offers} · {copy.publish}</Text>
+            <Text role="caption">/api/agency-marketplace/profiles · /api/agency-marketplace/offers · submit/approve/publish</Text>
           </Stack>
         </Surface>
       </div>

@@ -51,6 +51,7 @@ public sealed class AgencyOfferPersistenceModelTests
         Assert.Contains("commercial_notes", columns);
         Assert.Contains("sales_open", columns);
         Assert.Contains("referenced_tour_departure_id", columns);
+        Assert.Contains("publication_status", columns);
         Assert.DoesNotContain("amount", columns);
         Assert.DoesNotContain("currency_code", columns);
         Assert.DoesNotContain("price_id", columns);

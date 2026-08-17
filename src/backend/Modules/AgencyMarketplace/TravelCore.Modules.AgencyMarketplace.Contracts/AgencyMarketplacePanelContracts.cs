@@ -1,8 +1,8 @@
 namespace TravelCore.Modules.AgencyMarketplace.Contracts;
 
 /// <summary>
-/// Agency Marketplace panel contracts (TC-P13-T006 / P13-R6).
-/// Owned by Agency Marketplace — not Tour Admin, not Identity. No Booking/Payment/Commission.
+/// Agency Marketplace panel contracts (TC-P13-T006 / P13-R6; publication TC-P13-T007 / P13-R7).
+/// Owned by Agency Marketplace — not Tour Admin, not Identity, not SEO. No Booking/Payment/Commission.
 /// </summary>
 public sealed record AgencyProfilePanelResponse(
     Guid Id,
@@ -38,7 +38,8 @@ public sealed record AgencyOfferPanelResponse(
     bool ExclusiveListing,
     bool SalesOpen,
     string Status,
-    string Visibility);
+    string Visibility,
+    string PublicationStatus);
 
 public sealed record CreateAgencyOfferRequest(
     Guid AgencyProfileId,
@@ -80,4 +81,14 @@ public interface IAgencyMarketplacePanelService
     Task OpenOfferSalesAsync(Guid offerId, CancellationToken cancellationToken = default);
 
     Task CloseOfferSalesAsync(Guid offerId, CancellationToken cancellationToken = default);
+
+    Task SubmitOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
+
+    Task ApproveOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
+
+    Task RejectOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
+
+    Task PublishOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
+
+    Task UnpublishOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
 }

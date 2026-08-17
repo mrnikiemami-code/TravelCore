@@ -6,7 +6,8 @@ using TravelCore.Modules.AgencyMarketplace.Contracts;
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Endpoints;
 
 /// <summary>
-/// Agency Marketplace panel HTTP surface (TC-P13-T006 / P13-R6). Marketplace-owned; not Tour Admin.
+/// Agency Marketplace panel HTTP surface (TC-P13-T006 / P13-R6).
+/// Publication/moderation (TC-P13-T007 / P13-R7) is Marketplace-owned — not SEO.
 /// </summary>
 internal static class AgencyMarketplacePanelEndpoints
 {
@@ -14,6 +15,7 @@ internal static class AgencyMarketplacePanelEndpoints
     private const string ProfileWritePolicy = "Access.AgencyMarketplace.Profile.Write";
     private const string OffersReadPolicy = "Access.AgencyMarketplace.Offers.Read";
     private const string OffersWritePolicy = "Access.AgencyMarketplace.Offers.Write";
+    private const string OffersModeratePolicy = "Access.AgencyMarketplace.Offers.Moderate";
 
     public static IEndpointRouteBuilder MapAgencyMarketplacePanelEndpoints(this IEndpointRouteBuilder endpoints)
     {
@@ -174,6 +176,41 @@ internal static class AgencyMarketplacePanelEndpoints
             CancellationToken cancellationToken) =>
             await MutateOffer(id, service.CloseOfferSalesAsync, cancellationToken))
             .RequireAuthorization(OffersWritePolicy);
+
+        offers.MapPost("/{id:guid}/submit", async Task<IResult> (
+            Guid id,
+            IAgencyMarketplacePanelService service,
+            CancellationToken cancellationToken) =>
+            await MutateOffer(id, service.SubmitOfferAsync, cancellationToken))
+            .RequireAuthorization(OffersWritePolicy);
+
+        offers.MapPost("/{id:guid}/publish", async Task<IResult> (
+            Guid id,
+            IAgencyMarketplacePanelService service,
+            CancellationToken cancellationToken) =>
+            await MutateOffer(id, service.PublishOfferAsync, cancellationToken))
+            .RequireAuthorization(OffersWritePolicy);
+
+        offers.MapPost("/{id:guid}/unpublish", async Task<IResult> (
+            Guid id,
+            IAgencyMarketplacePanelService service,
+            CancellationToken cancellationToken) =>
+            await MutateOffer(id, service.UnpublishOfferAsync, cancellationToken))
+            .RequireAuthorization(OffersWritePolicy);
+
+        offers.MapPost("/{id:guid}/approve", async Task<IResult> (
+            Guid id,
+            IAgencyMarketplacePanelService service,
+            CancellationToken cancellationToken) =>
+            await MutateOffer(id, service.ApproveOfferAsync, cancellationToken))
+            .RequireAuthorization(OffersModeratePolicy);
+
+        offers.MapPost("/{id:guid}/reject", async Task<IResult> (
+            Guid id,
+            IAgencyMarketplacePanelService service,
+            CancellationToken cancellationToken) =>
+            await MutateOffer(id, service.RejectOfferAsync, cancellationToken))
+            .RequireAuthorization(OffersModeratePolicy);
 
         return endpoints;
     }

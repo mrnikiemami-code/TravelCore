@@ -35,6 +35,11 @@ internal sealed class AgencyOfferConfiguration : IEntityTypeConfiguration<Agency
             .HasConversion<short>()
             .IsRequired();
 
+        builder.Property(x => x.PublicationStatus)
+            .HasColumnName("publication_status")
+            .HasConversion<short>()
+            .IsRequired();
+
         builder.HasIndex(x => new { x.AgencyProfileId, x.TourProductId })
             .IsUnique()
             .HasDatabaseName("ux_agency_offers_profile_tour_product");

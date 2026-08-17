@@ -96,4 +96,9 @@ public static class AccessAuthorizationPolicies
     /// Agency Marketplace offer mutations: Access-backed <c>agency.marketplace.offers.write</c>.
     /// </summary>
     public const string AgencyMarketplaceOffersWrite = "Access.AgencyMarketplace.Offers.Write";
+
+    /// <summary>
+    /// Agency Marketplace offer moderation: Access-backed <c>agency.marketplace.offers.moderate</c>.
+    /// </summary>
+    public const string AgencyMarketplaceOffersModerate = "Access.AgencyMarketplace.Offers.Moderate";
 }

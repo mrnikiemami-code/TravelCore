@@ -31,7 +31,8 @@ public static class AccessPermissionCatalog
         ("agency.marketplace.profile.read", "Read Agency Marketplace profiles"),
         ("agency.marketplace.profile.write", "Create/update Agency Marketplace profiles"),
         ("agency.marketplace.offers.read", "Read Agency Marketplace offers"),
-        ("agency.marketplace.offers.write", "Create/update Agency Marketplace offers")
+        ("agency.marketplace.offers.write", "Create/update Agency Marketplace offers"),
+        ("agency.marketplace.offers.moderate", "Approve or reject Agency Marketplace offer publication")
     ];
 
     public const string AdminRoleCode = "admin";

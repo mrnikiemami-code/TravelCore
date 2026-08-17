@@ -119,13 +119,14 @@ Create only the layers a module actually needs. Empty layer projects are not req
 |--------|----------|--------|
 | AgencyMarketplace | `AgencyMarketplace/TravelCore.Modules.AgencyMarketplace.{Domain,Contracts,Infrastructure}` | `agency_marketplace` |
 
-- **AgencyMarketplace:** AgencyProfile + AgencyOffer + Agency Panel (`TC-P13-T002`–`T006`) — schema `agency_marketplace`; commercial terms without Price; sales availability without capacity; Access-backed panel.
+- **AgencyMarketplace:** AgencyProfile + AgencyOffer + Agency Panel + Offer publication (`TC-P13-T002`–`T007`) — schema `agency_marketplace`; commercial terms without Price; sales availability without capacity; Access-backed panel; publication ≠ SEO IndexPolicy.
 - **P13-R1 RESOLVED:** independent Agency Marketplace module owns Agency commercial relationship; Party remains identity SoR; logical PartyId Guid only — no EF FK / no Party table ownership / no shared DbContext / no Offer in T001.
 - **P13-R2 RESOLVED:** AgencyProfile is the commercial layer over Party identity (0..1). Not a second identity SoR.
 - **P13-R3 RESOLVED:** AgencyOffer owns the marketplace sales relationship. TourProduct remains catalog SoR. Logical TourProduct Guid only.
 - **P13-R4 RESOLVED:** Agency must NOT override Price. Commercial terms = Notes + SalesRules metadata only.
 - **P13-R5 RESOLVED:** Agency does NOT own capacity. SalesAvailability metadata + optional logical TourDeparture Guid only.
 - **P13-R6 RESOLVED:** Agency Panel belongs to Agency Marketplace (not Tour Admin, not Identity). Profile + offer management only.
+- **P13-R7 RESOLVED:** Agency Marketplace owns Offer publication status. Not SEO IndexPolicy. Not TourProduct CatalogStatus. Published Offer ≠ SEO Indexed.
 - Invariant: **Agency ≠ Party · Agency ≠ Pricing · Agency ≠ Booking · Agency ≠ TourProduct**.
 
 ## Host

@@ -124,6 +124,9 @@ Legend: B=ID reference · C=synchronous contract · D=event consumer · E=projec
 | Agency commercial relationship (marketplace) | AgencyMarketplace |
 | AgencyProfile (marketplace display / contact / commercial posture) | AgencyMarketplace |
 | AgencyOffer (marketplace listing) | AgencyMarketplace |
+| AgencyOffer publication / moderation lifecycle | AgencyMarketplace |
+| TourProduct catalog status | Tour |
+| SEO IndexPolicy / route indexation | SEO |
 | Agency identity (`PartyKind.Agency`) | Party |
 | VisaType / visa requirements | Visa |
 | Booking / accepted quote snapshot | Booking |

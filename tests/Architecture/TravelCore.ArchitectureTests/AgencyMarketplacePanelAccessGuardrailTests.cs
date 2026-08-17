@@ -30,6 +30,10 @@ public sealed class AgencyMarketplacePanelAccessGuardrailTests
         Assert.Contains("Access.AgencyMarketplace.Profile.Write", text, StringComparison.Ordinal);
         Assert.Contains("Access.AgencyMarketplace.Offers.Read", text, StringComparison.Ordinal);
         Assert.Contains("Access.AgencyMarketplace.Offers.Write", text, StringComparison.Ordinal);
+        Assert.Contains("Access.AgencyMarketplace.Offers.Moderate", text, StringComparison.Ordinal);
+        Assert.Contains("/submit", text, StringComparison.Ordinal);
+        Assert.Contains("/approve", text, StringComparison.Ordinal);
+        Assert.Contains("/publish", text, StringComparison.Ordinal);
         Assert.Contains("/api/agency-marketplace/profiles", text, StringComparison.Ordinal);
         Assert.Contains("/api/agency-marketplace/offers", text, StringComparison.Ordinal);
         Assert.DoesNotContain("commission", text, StringComparison.OrdinalIgnoreCase);
@@ -55,6 +59,7 @@ public sealed class AgencyMarketplacePanelAccessGuardrailTests
         Assert.Contains("agency.marketplace.profile.write", text, StringComparison.Ordinal);
         Assert.Contains("agency.marketplace.offers.read", text, StringComparison.Ordinal);
         Assert.Contains("agency.marketplace.offers.write", text, StringComparison.Ordinal);
+        Assert.Contains("agency.marketplace.offers.moderate", text, StringComparison.Ordinal);
     }
 
     [Fact]
