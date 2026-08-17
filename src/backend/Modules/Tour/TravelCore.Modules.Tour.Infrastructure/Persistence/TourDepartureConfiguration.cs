@@ -20,6 +20,11 @@ internal sealed class TourDepartureConfiguration : IEntityTypeConfiguration<Tour
             .HasConversion(id => id.Value, value => TourProductId.From(value))
             .IsRequired();
 
+        builder.Property(x => x.Status)
+            .HasColumnName("status")
+            .HasConversion<short>()
+            .IsRequired();
+
         builder.Property(x => x.CreatedAt)
             .HasColumnName("created_at")
             .IsRequired();
@@ -69,5 +74,8 @@ internal sealed class TourDepartureConfiguration : IEntityTypeConfiguration<Tour
 
         builder.HasIndex(x => x.CreatedAt)
             .HasDatabaseName("ix_tour_departures_created_at");
+
+        builder.HasIndex(x => x.Status)
+            .HasDatabaseName("ix_tour_departures_status");
     }
 }

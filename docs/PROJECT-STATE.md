@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P11-T003` — TourDeparture capacity baseline |
+| Current Active Product Task | `TC-P11-T004` — TourDeparture lifecycle status |
 | Current Next Product Phase | P11 — Foreign Package / Departure |
-| Current Next Task | Complete `TC-P11-T003` → RESULT → await ACCEPT / T004 |
+| Current Next Task | Complete `TC-P11-T004` → RESULT → await ACCEPT / T005 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |

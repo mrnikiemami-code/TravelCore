@@ -43,7 +43,7 @@
 | Last Accepted Commit | `67fc580` (`TC-P09-GATE` ACCEPTED) · product T010 `0334bae` · prior P08 `576b7fa` |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Complete `TC-P11-T003` capacity baseline |
+| Current Next Task | Complete `TC-P11-T004` lifecycle status |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
