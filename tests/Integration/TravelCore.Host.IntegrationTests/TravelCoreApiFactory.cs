@@ -17,6 +17,7 @@ using TravelCore.Modules.AgencyMarketplace.Infrastructure;
 using TravelCore.Modules.Search.Infrastructure;
 using TravelCore.Modules.Ugc.Infrastructure;
 using TravelCore.Modules.Visa.Infrastructure;
+using TravelCore.Modules.TripPlanner.Infrastructure;
 using TravelCore.Persistence.PostgreSql;
 using Xunit;
 
@@ -80,6 +81,9 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
 
         await using var visa = CreateVisaDb();
         await VisaMigrator.MigrateAsync(visa);
+
+        await using var tripPlanner = CreateTripPlannerDb();
+        await TripPlannerMigrator.MigrateAsync(tripPlanner);
     }
 
     public async ValueTask DisposeAsync() => await _container.DisposeAsync();
@@ -202,6 +206,14 @@ public sealed class IdentityAuthHostFixture : IAsyncLifetime
             .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: VisaDbContext.SchemaName)
             .Options;
         return new VisaDbContext(options);
+    }
+
+    public TripPlannerDbContext CreateTripPlannerDb()
+    {
+        var options = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<TripPlannerDbContext>()
+            .UseTravelCorePostgreSql(ConnectionString, migrationsHistorySchema: TripPlannerDbContext.SchemaName)
+            .Options;
+        return new TripPlannerDbContext(options);
     }
 
     public TravelCoreApiFactory CreateFactory(string environmentName) =>

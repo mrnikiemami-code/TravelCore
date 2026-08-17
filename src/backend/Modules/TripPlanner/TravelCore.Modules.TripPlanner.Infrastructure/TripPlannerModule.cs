@@ -2,7 +2,12 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.TripPlanner.Contracts;
+using TravelCore.Modules.TripPlanner.Infrastructure.Endpoints;
+using TravelCore.Modules.TripPlanner.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.TripPlanner.Infrastructure;
@@ -27,10 +32,14 @@ public sealed class TripPlannerModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: TripPlannerDbContext.SchemaName);
         });
+
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
+        services.AddScoped<ITripPlannerPublicCommand, TripPlannerPublicCommand>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
+        endpoints.MapTripPlannerPublicEndpoints();
     }
 }

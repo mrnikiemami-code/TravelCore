@@ -55,4 +55,6 @@ public static class TripPlannerOwnershipBoundary
     public const bool RecommendationEngineImplemented = false;
     public const bool AiInfrastructureImplemented = false;
     public const bool GenericWorkflowEngineImplemented = false;
+    public const bool PublicExperienceCompositionImplemented = true;
+    public const bool PublicPlannerRouteImplemented = true;
 }

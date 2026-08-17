@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using TravelCore.ArchitectureTests.Support;
+using TravelCore.Modules.PublicExperience.Contracts;
 using TravelCore.Modules.TripPlanner.Contracts;
 using TravelCore.Modules.TripPlanner.Domain;
 using Xunit;
@@ -54,6 +55,8 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.True(TripPlannerOwnershipBoundary.ConsentModelImplemented);
         Assert.False(TripPlannerOwnershipBoundary.NotificationProviderImplemented);
         Assert.False(TripPlannerOwnershipBoundary.SearchEngineImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.PublicExperienceCompositionImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.PublicPlannerRouteImplemented);
         Assert.False(TripPlannerOwnershipBoundary.RecommendationEngineImplemented);
         Assert.False(TripPlannerOwnershipBoundary.AiInfrastructureImplemented);
         Assert.False(TripPlannerOwnershipBoundary.GenericWorkflowEngineImplemented);
@@ -218,6 +221,43 @@ public sealed class TripPlannerBoundaryGuardrailTests
     }
 
     [Fact]
+    public void TripPlanner_T008_Implements_Public_Experience_Composition_Without_Search_Or_Booking()
+    {
+        Assert.True(TripPlannerOwnershipBoundary.PublicExperienceCompositionImplemented);
+        Assert.True(TripPlannerOwnershipBoundary.PublicPlannerRouteImplemented);
+        Assert.False(TripPlannerPublicCompositionBoundary.PublicExperienceOwnsLeadFacts);
+        Assert.False(TripPlannerPublicCompositionBoundary.SearchEngineAllowed);
+        Assert.False(TripPlannerPublicCompositionBoundary.BookingCtaAllowed);
+        Assert.False(TripPlannerPublicCompositionBoundary.PaymentCtaAllowed);
+        Assert.False(TripPlannerPublicCompositionBoundary.CheckoutCtaAllowed);
+        Assert.False(TripPlannerPublicCompositionBoundary.CrmWorkflowAllowed);
+        Assert.False(TripPlannerPublicCompositionBoundary.AgencyRoutingAllowed);
+        Assert.False(TripPlannerPublicCompositionBoundary.NotificationProviderAllowed);
+        Assert.Equal("/plan", TripPlannerPublicCompositionBoundary.PublicRoutePattern);
+        Assert.Equal("/api/trip-planner/public", TripPlannerPublicCompositionBoundary.PublicApiGroup);
+        Assert.Equal("RequestFollowUpOnly", TripPlannerPublicCompositionBoundary.HonestCtaPosture);
+        Assert.False(PublicExperienceTripPlannerCompositionBoundary.PublicExperienceOwnsLeadFacts);
+        Assert.False(PublicExperienceTripPlannerCompositionBoundary.SearchEngineAllowed);
+        Assert.False(PublicExperienceTripPlannerCompositionBoundary.BookingCtaAllowed);
+
+        var frontendPlanRoute = Path.Combine(
+            RepoRoot,
+            "src",
+            "frontend",
+            "web",
+            "src",
+            "app",
+            "[locale]",
+            "plan",
+            "page.tsx");
+        Assert.True(File.Exists(frontendPlanRoute), frontendPlanRoute);
+        var frontendText = File.ReadAllText(frontendPlanRoute);
+        Assert.Contains("Honest follow-up CTA only", frontendText, StringComparison.Ordinal);
+        Assert.Contains("honestCtaNote", frontendText, StringComparison.Ordinal);
+        Assert.DoesNotContain("BookNow", frontendText, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void TripPlanner_Module_Keeps_Search_And_Ai_Engines_Out()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "TripPlanner");
@@ -289,6 +329,8 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.Contains("P18-R7", text, StringComparison.Ordinal);
         Assert.Contains("ContactPermission != MarketingConsent", text, StringComparison.Ordinal);
         Assert.Contains("Consent != NotificationDelivery", text, StringComparison.Ordinal);
+        Assert.Contains("P18-R8", text, StringComparison.Ordinal);
+        Assert.Contains("PublicExperience ≠ Lead", text, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

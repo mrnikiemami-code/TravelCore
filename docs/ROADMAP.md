@@ -36,7 +36,7 @@
 |------|--------|
 | Project | TravelCore |
 | Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T007 delivered; **P18-R1–R7 RESOLVED**) |
-| Phase Status | P00–P17 COMPLETE · P18-R1–R7 RESOLVED · P18-R8 OPEN · T001–T007 delivered |
+| Phase Status | P00–P17 COMPLETE · P18-R1–R8 RESOLVED · T001–T008 delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
@@ -557,7 +557,7 @@ ROADMAP bullets above are **capability themes**, not ownership transfers. Visa r
 
 ## P18 — Trip Planner / Lead Experience
 
-**Status:** IN PROGRESS — PLAN ACCEPTED · **P18-R1–R7 RESOLVED** · T001–T007 delivered · **P18-R8 OPEN** — [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md)
+**Status:** IN PROGRESS — PLAN ACCEPTED · **P18-R1–R8 RESOLVED** · T001–T008 delivered · T009 pending — [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md)
 
 مفهوم Travel Planner / «سفرساز»: کمک به بیان نیاز سفر و کشف/درخواست محصول مناسب.
 

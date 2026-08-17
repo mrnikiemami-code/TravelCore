@@ -12,7 +12,7 @@ export type ServerFetchOptions = {
 };
 
 export type ServerMutateOptions = ServerFetchOptions & {
-  method?: "POST" | "PUT" | "DELETE";
+  method?: "POST" | "PUT" | "PATCH" | "DELETE";
   body?: unknown;
 };
 
