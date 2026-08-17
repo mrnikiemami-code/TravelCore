@@ -5,7 +5,7 @@ namespace TravelCore.Modules.AgencyMarketplace.Infrastructure;
 
 /// <summary>
 /// Agency Marketplace-owned DbContext. Owns PostgreSQL schema <c>agency_marketplace</c>.
-/// Maps AgencyProfile (P13-R2). No Party/Tour/Pricing FK. No Offer.
+/// Maps AgencyProfile (P13-R2) and AgencyOffer (P13-R3). No Party/Tour/Pricing FK.
 /// </summary>
 public sealed class AgencyMarketplaceDbContext : DbContext
 {
@@ -17,6 +17,8 @@ public sealed class AgencyMarketplaceDbContext : DbContext
     }
 
     public DbSet<AgencyProfile> AgencyProfiles => Set<AgencyProfile>();
+
+    public DbSet<AgencyOffer> AgencyOffers => Set<AgencyOffer>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

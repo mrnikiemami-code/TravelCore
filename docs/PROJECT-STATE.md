@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P13 — Agency Marketplace** (**IN PROGRESS** — T002 AgencyProfile) |
+| Current Phase | **P13 — Agency Marketplace** (**IN PROGRESS** — T003 AgencyOffer) |
 | Previous Phase | **P11 — Foreign Package / Departure** (**COMPLETE**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,9 +71,9 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P13-T002` — Agency Marketplace profile baseline (AWAITING_ARCHITECT_REVIEW) |
+| Current Active Product Task | `TC-P13-T003` — Agency Offer relationship baseline (AWAITING_ARCHITECT_REVIEW) |
 | Current Next Product Phase | P13 — Agency Marketplace |
-| Current Next Task | Architect review of T002 → `TC-P13-T003` Offer ownership (needs P13-R3 lock) |
+| Current Next Task | Architect review of T003 → `TC-P13-T004` Tour offering linkage |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -172,7 +172,9 @@
 | P13 | **IN PROGRESS** — Plan ACCEPTED · **P13-R1/R2 RESOLVED** |
 | P13 Plan | `TC-P13-PLAN` COMPLETE / ACCEPTED — [`docs/plans/P13-implementation-plan.md`](plans/P13-implementation-plan.md) |
 | P13-T001 | **COMPLETE / ACCEPTED** (`9f61763`) — Agency Marketplace module scaffolding (`agency_marketplace` schema) |
-| P13-T002 | **AWAITING_ARCHITECT_REVIEW** — AgencyProfile commercial layer over Party identity |
+| P13-T002 | **COMPLETE / ACCEPTED** (`809eb49`) — AgencyProfile commercial layer over Party identity |
+| P13-T003 | **AWAITING_ARCHITECT_REVIEW** — AgencyOffer marketplace listing (logical TourProduct Guid) |
+| P13-R3 (Offer vs TourProduct) | **RESOLVED** — AgencyOffer owns the sales relationship; TourProduct remains catalog SoR; logical TourProduct Guid; no Tour FK / Price / Booking |
 | P13-R1 (Marketplace ownership) | **RESOLVED** — Independent Agency Marketplace module owns Agency commercial relationship · schema `agency_marketplace` · Party remains identity SoR (`PartyKind.Agency`) · logical PartyId Guid only · no Party/Tour/Pricing merge · no Offer in T001 |
 | P13-R2 (Marketplace profile vs Party identity) | **RESOLVED** — Party = identity SoR; Agency Marketplace owns AgencyProfile (0..1 per Agency PartyId); logical PartyId only; no Party schema change |
 | P12-R1 (Pricing ownership) | **RESOLVED** — Independent Pricing module · schema `pricing` · logical TourDeparture Guid refs only · no Tour table ownership / no shared DbContext |
@@ -247,7 +249,7 @@
 | Real PostgreSQL Integration Test Doc | [`docs/architecture/31-real-postgresql-integration-test-foundation.md`](architecture/31-real-postgresql-integration-test-foundation.md) |
 | Real PostgreSQL Migration Proof Doc | [`docs/architecture/32-real-postgresql-migration-proof.md`](architecture/32-real-postgresql-migration-proof.md) |
 | Minimal API Validation Foundation Doc | [`docs/architecture/33-minimal-api-validation-foundation.md`](architecture/33-minimal-api-validation-foundation.md) |
-| Phase Transition State | **P13_T002_DELIVERED** · PLAN ACCEPTED · P13-R1/R2 RESOLVED · T002 AgencyProfile awaiting review |
+| Phase Transition State | **P13_T003_DELIVERED** · PLAN ACCEPTED · P13-R1/R2/R3 RESOLVED · T003 AgencyOffer awaiting review |
 | P01 Phase Gate | **TC-P01-GATE** COMPLETE / ACCEPTED |
 | P02 Phase Gate | **TC-P02-GATE** COMPLETE / ACCEPTED (`4eacff5`) |
 | P03 Phase Gate | **TC-P03-GATE** COMPLETE / ACCEPTED (`6a8a5ce`) |
@@ -256,7 +258,7 @@
 | P06 Phase Gate | **TC-P06-GATE** COMPLETE / ACCEPTED (`da345b5`) |
 | P07 Phase Gate | **TC-P07-GATE** COMPLETE / ACCEPTED (`84a0a48`) |
 | Human Phase Confirmation | USER `TRAVELCORE_PHASE_CONFIRM: P08` received |
-| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P13-T002`) |
+| Pipeline Product Execution | **NORMAL — AWAITING_ARCHITECT_REVIEW** (`TC-P13-T003`) |
 | Human Confirmation Reason | Continuity override ON (USER 2026-08-17); stop only on architecture/path/SoT/unsafe/unlocked-decision |
 | TC-P02-PLAN | COMPLETE / ACCEPTED (`47475ba`) |
 | TC-P02-T001 | COMPLETE / ACCEPTED (`4e9d505`) |
@@ -564,7 +566,8 @@ T008R note: repository integrity PASS — canonical origin already `mrnikiemami-
 | TC-P12-GATE | P12 Pricing Acceptance Gate | COMPLETE / ACCEPTED | `b372367` |
 | TC-P13-PLAN | P13 Agency Marketplace Implementation Plan | COMPLETE / ACCEPTED · R1 locked for T001 | see `docs/plans/P13-implementation-plan.md` |
 | TC-P13-T001 | Agency Marketplace scaffolding | COMPLETE / ACCEPTED | `9f61763` |
-| TC-P13-T002 | Agency Marketplace profile baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
+| TC-P13-T002 | Agency Marketplace profile baseline | COMPLETE / ACCEPTED | `809eb49` |
+| TC-P13-T003 | Agency Offer relationship baseline | AWAITING_ARCHITECT_REVIEW | (this commit) |
 
 Bootstrap commit اولیهٔ فنی: `cf97f35`
 ## Locked Architectural Decisions
@@ -609,7 +612,8 @@ Bootstrap commit اولیهٔ فنی: `cf97f35`
 - **P08-R3 RESOLVED:** `ContentItemTranslation` owns localized current slug; SEO owns route binding, redirect history, canonical/history, publication SEO state; no global slug engine in Content
 - **P08-R4 RESOLVED:** default IndexPolicy = **noindex, follow**; public route existence ≠ indexing; SEO owns final IndexPolicy; Content only exposes SEO hooks; publication services do not set IndexPolicy
 - **P13-R1 RESOLVED:** Independent Agency Marketplace module owns Agency commercial relationship (schema `agency_marketplace`). Party remains identity SoR; Marketplace is the commercial layer. Logical PartyId Guid only — no Party/Tour/Pricing merge, no Offer in T001.
-- **P13-R2 RESOLVED:** Party remains identity SoR. Agency Marketplace owns AgencyProfile (0..1 per Agency PartyId). Logical PartyId Guid only — no Party schema change, no Offer/Pricing/Commission/Booking in T002.
+- **P13-R2 RESOLVED:** Party remains identity SoR. Agency Marketplace owns AgencyProfile (0..1 per Agency PartyId). Logical PartyId Guid only — no Party schema change.
+- **P13-R3 RESOLVED:** AgencyOffer owns the marketplace sales relationship. TourProduct remains catalog SoR. Logical TourProduct Guid only — no Tour FK, no Price/Booking/Payment/Inventory/Departure ownership.
 
 منبع تفصیلی: `AGENTS.md` و `docs/architecture/00-constitution.md`
 
@@ -631,7 +635,7 @@ Content · UGC
 
 ### Commerce
 
-Tour · Pricing (Price + Quote baseline · public read-only price summary · requested display-currency metadata · FX boundary contracts · PriceComponent · occupancy rules · Admin Pricing API · Money · schema `pricing` · P12-R1/R2/R3/R4/R5/R6/R7/R8) · AgencyMarketplace (AgencyProfile · schema `agency_marketplace` · P13-R1/R2) · Visa · Booking · Payment
+Tour · Pricing (Price + Quote baseline · public read-only price summary · requested display-currency metadata · FX boundary contracts · PriceComponent · occupancy rules · Admin Pricing API · Money · schema `pricing` · P12-R1/R2/R3/R4/R5/R6/R7/R8) · AgencyMarketplace (AgencyProfile + AgencyOffer · schema `agency_marketplace` · P13-R1/R2/R3) · Visa · Booking · Payment
 
 ### External Inventory / Booking
 

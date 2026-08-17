@@ -6,7 +6,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Real-PostgreSQL Agency Marketplace schema + AgencyProfile (TC-P13-T001/T002).
+/// Real-PostgreSQL Agency Marketplace schema + AgencyProfile + AgencyOffer (TC-P13-T001..T003).
 /// </summary>
 [Collection(nameof(AgencyMarketplaceMigrationLifecycleCollection))]
 public sealed class AgencyMarketplaceMigrationLifecycleTests
@@ -27,13 +27,16 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_InitialAgencyMarketplaceScaffolding", StringComparison.Ordinal));
             Assert.Contains(
                 expectedMigrations,
                 m => m.EndsWith("_AddAgencyProfile", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddAgencyOffer", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -59,7 +62,13 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'agency_marketplace'
-                  AND table_name IN ('agency_offers', 'commercial_settings');
+                  AND table_name IN ('commercial_settings');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'agency_marketplace'
+                  AND table_name = 'agency_offers';
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -78,8 +87,8 @@ public sealed class AgencyMarketplaceMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'agency_marketplace'
-                  AND table_name = 'agency_profiles'
-                  AND column_name IN ('commission_rate', 'price_id', 'quote_id', 'offer_id');
+                  AND table_name = 'agency_offers'
+                  AND column_name IN ('price_id', 'quote_id', 'commission_rate', 'departure_id', 'amount', 'currency_code');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

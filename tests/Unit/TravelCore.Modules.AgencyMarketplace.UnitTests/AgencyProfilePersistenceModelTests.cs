@@ -41,7 +41,7 @@ public sealed class AgencyProfilePersistenceModelTests
                  || string.Equals(f.PrincipalEntityType.GetSchema(), "pricing", StringComparison.OrdinalIgnoreCase)
                  || string.Equals(f.PrincipalEntityType.GetSchema(), "media", StringComparison.OrdinalIgnoreCase));
 
-        Assert.Null(model.FindEntityType("TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer"));
+        Assert.NotNull(model.FindEntityType(typeof(AgencyOffer)));
         Assert.False(db.Database.HasPendingModelChanges());
     }
 }

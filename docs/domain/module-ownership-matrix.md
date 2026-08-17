@@ -123,6 +123,7 @@ Legend: B=ID reference · C=synchronous contract · D=event consumer · E=projec
 | TourRate / PriceComponent / Quote | Pricing |
 | Agency commercial relationship (marketplace) | AgencyMarketplace |
 | AgencyProfile (marketplace display / contact / commercial posture) | AgencyMarketplace |
+| AgencyOffer (marketplace listing) | AgencyMarketplace |
 | Agency identity (`PartyKind.Agency`) | Party |
 | VisaType / visa requirements | Visa |
 | Booking / accepted quote snapshot | Booking |
