@@ -75,14 +75,26 @@ function main() {
   assert.ok(fs.existsSync(path.join(srcRoot, "app", "[locale]", "page.tsx")));
   assert.ok(
     fs.existsSync(
-      path.join(srcRoot, "app", "[locale]", "tours", "[productKey]", "page.tsx"),
+      path.join(srcRoot, "app", "[locale]", "tours", "[slug]", "page.tsx"),
     ),
   );
+  assert.equal(
+    fs.existsSync(
+      path.join(srcRoot, "app", "[locale]", "tours", "[productKey]"),
+    ),
+    false,
+    "Legacy walking-skeleton /tours/[productKey] must not compete with /tours/[slug]",
+  );
   const tourPage = read(
-    path.join(srcRoot, "app", "[locale]", "tours", "[productKey]", "page.tsx"),
+    path.join(srcRoot, "app", "[locale]", "tours", "[slug]", "page.tsx"),
   );
   assert.match(tourPage, /generateMetadata/);
   assert.doesNotMatch(tourPage, /['"]use client['"]/);
+  assert.match(tourPage, /params: Promise<\{ locale: string; slug: string \}>/);
+  assert.ok(
+    fs.existsSync(path.join(srcRoot, "app", "[locale]", "plan", "page.tsx")),
+    "Public planner route /[locale]/plan must remain intact",
+  );
 
   // 3) FA/EN published fixtures; AR not fabricated as published fixture
   assert.ok(

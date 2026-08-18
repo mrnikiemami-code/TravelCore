@@ -21,7 +21,7 @@ This runs, in order:
 |------|-----------|
 | Lint / types / build | existing npm scripts |
 | Server Component First | allowlisted `"use client"` only (`BookingCtaIsland`, locale `error.tsx`) |
-| Locale tour route | `app/[locale]/tours/[productKey]/page.tsx` + `generateMetadata` |
+| Locale tour route | `app/[locale]/tours/[slug]/page.tsx` + `generateMetadata` (canonical; legacy `[productKey]` removed) |
 | Published locales | FA/EN fixtures exist; no fabricated `ar.ts` fixture |
 | RTL/LTR document | `[locale]/layout.tsx` sets `lang`/`dir` |
 | A11y baseline files | SkipLink + FieldMessage present |

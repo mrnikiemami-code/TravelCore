@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P18-T008` — public Trip Planner experience (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Architect review of `TC-P18-T008` → T009 only after ACCEPT |
+| Current Active Product Task | `TC-FIX-TOUR-ROUTE-AMBIGUITY` — baseline repair blocking T008 final ACCEPT |
+| Current Next Task | Return repair RESULT; T008 final ACCEPT then T009 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
