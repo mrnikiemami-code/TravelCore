@@ -13,6 +13,7 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<PaymentAgg
         builder.ToTable("payments", table =>
         {
             table.HasCheckConstraint("ck_payments_status", "status IN (1, 2)");
+            table.HasCheckConstraint("ck_payments_version_nonnegative", "version >= 0");
         });
         builder.HasKey(x => x.Id);
 
@@ -42,6 +43,11 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<PaymentAgg
         builder.Property(x => x.SucceededAt)
             .HasColumnName("succeeded_at");
 
+        builder.Property(x => x.Version)
+            .HasColumnName("version")
+            .IsConcurrencyToken()
+            .IsRequired();
+
         builder.HasMany(x => x.Attempts)
             .WithOne()
             .HasForeignKey("PaymentId")
@@ -52,6 +58,7 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<PaymentAgg
             .UsePropertyAccessMode(PropertyAccessMode.Field);
 
         builder.HasIndex(x => x.Booking)
-            .HasDatabaseName("ix_payments_booking_id");
+            .IsUnique()
+            .HasDatabaseName("ux_payments_booking_id");
     }
 }

@@ -29,6 +29,7 @@ public sealed class PaymentModule : ITravelCoreModule
         services.AddOptions<PaymentProviderOptions>()
             .Bind(configuration.GetSection(PaymentProviderOptions.SectionName));
         services.AddSingleton<IPaymentProviderResolver, PaymentProviderResolver>();
+        services.AddScoped<PaymentGetOrCreateService>();
         services.AddScoped<PaymentInitiationService>();
         services.AddScoped<PaymentCallbackProcessor>();
         services.AddScoped<PaymentAttemptRecheckService>();

@@ -63,7 +63,9 @@ internal sealed class PaymentAttemptConfiguration : IEntityTypeConfiguration<Pay
             .HasConversion(id => id.Value, value => PaymentId.From(value));
 
         builder.HasIndex("PaymentId")
-            .HasDatabaseName("ix_payment_attempts_payment_id");
+            .IsUnique()
+            .HasDatabaseName("ux_payment_attempts_one_active_per_payment")
+            .HasFilter("status IN (1, 2)");
 
         builder.HasIndex(x => new { x.ProviderKey, x.ProviderRequestReference })
             .HasDatabaseName("ux_payment_attempts_provider_request")

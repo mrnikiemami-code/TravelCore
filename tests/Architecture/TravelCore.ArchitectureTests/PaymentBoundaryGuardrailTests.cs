@@ -244,6 +244,7 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Contains("P20-R1 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P20-R2 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P20-R3 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R4 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("schema `payment`", text, StringComparison.Ordinal);
         Assert.Contains("initial Payment target = Booking", text, StringComparison.Ordinal);
         Assert.Contains("Payment != Booking", text, StringComparison.Ordinal);
@@ -255,7 +256,7 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Contains("PaymentSucceeded != BookingConfirmed", text, StringComparison.Ordinal);
         Assert.Contains("BrowserReturn != PaymentSuccess", text, StringComparison.Ordinal);
         Assert.Contains("UnverifiedCallback != PaymentSuccess", text, StringComparison.Ordinal);
-        Assert.Contains("P20-R4", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R5", text, StringComparison.Ordinal);
         Assert.Contains("P20-R8", text, StringComparison.Ordinal);
         Assert.DoesNotContain("P20 COMPLETE", text, StringComparison.Ordinal);
         Assert.DoesNotContain("TC-P20-GATE COMPLETE", text, StringComparison.Ordinal);
@@ -368,6 +369,47 @@ public sealed class PaymentBoundaryGuardrailTests
             "TravelCore.Modules.Payment.Infrastructure",
             "Endpoints",
             "PaymentProviderCallbackEndpoints.cs")), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Payment_T004_Idempotency_Is_Database_Backed()
+    {
+        Assert.Equal("Booking 1 -> 1 logical Payment", PaymentIdempotencyBoundary.OneBookingOneLogicalPayment);
+        Assert.Equal("Retry = PaymentAttempt, not new Payment", PaymentIdempotencyBoundary.RetryIsAttemptNotPayment);
+        Assert.Equal("NOT ASSUMED", PaymentIdempotencyBoundary.ExactlyOnceExternalPayment);
+        Assert.Equal(
+            "Unknown/Ambiguous provider outcome != PaymentAttempt.Failed",
+            PaymentIdempotencyBoundary.AmbiguousIsNotFailedAttempt);
+        Assert.Equal("Reconciliation != Settlement", PaymentIdempotencyBoundary.ReconciliationIsNotSettlement);
+        Assert.Equal("Reconciliation != Accounting", PaymentIdempotencyBoundary.ReconciliationIsNotAccounting);
+        Assert.True(PaymentIdempotencyBoundary.UniqueLogicalPaymentPerBookingImplemented);
+        Assert.False(PaymentIdempotencyBoundary.ProcessLocalIdempotencyAuthorityImplemented);
+        Assert.False(PaymentIdempotencyBoundary.AutomaticRetryOnAmbiguityImplemented);
+        Assert.False(PaymentIdempotencyBoundary.AutomaticProviderFailoverImplemented);
+        Assert.False(PaymentIdempotencyBoundary.ReconciliationSchedulerImplemented);
+        var infraRoot = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Payment",
+            "TravelCore.Modules.Payment.Infrastructure");
+        var forbidden = new[] { "ConcurrentDictionary", "SemaphoreSlim", "static readonly object" };
+        var hits = Directory.EnumerateFiles(infraRoot, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !p.Contains($"{Path.DirectorySeparatorChar}Migrations{Path.DirectorySeparatorChar}", StringComparison.Ordinal))
+            .SelectMany(path => File.ReadAllLines(path)
+                .Select((line, i) => (path, line, i))
+                .Where(x => forbidden.Any(token => x.line.Contains(token, StringComparison.Ordinal))))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+        Assert.True(hits.Count == 0, "Payment idempotency must not use process-local authority:\n" + string.Join('\n', hits));
+        var paymentConfiguration = File.ReadAllText(Path.Combine(
+            infraRoot,
+            "Persistence",
+            "PaymentConfiguration.cs"));
+        Assert.Contains("ux_payments_booking_id", paymentConfiguration, StringComparison.Ordinal);
+        Assert.Contains("IsConcurrencyToken", paymentConfiguration, StringComparison.Ordinal);
+        Assert.Contains("version", paymentConfiguration, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

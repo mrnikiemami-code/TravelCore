@@ -21,6 +21,11 @@ public sealed class PaymentDbContext : DbContext
 
     public DbSet<PaymentAttempt> PaymentAttempts => Set<PaymentAttempt>();
 
+    public DbSet<PaymentInitiationIdempotencyRecord> InitiationIdempotency =>
+        Set<PaymentInitiationIdempotencyRecord>();
+
+    public DbSet<PaymentReconciliationIssue> ReconciliationIssues => Set<PaymentReconciliationIssue>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

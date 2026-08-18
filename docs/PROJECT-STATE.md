@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P20 — Payment** (**PLAN ACCEPTED** · **P20-R1–R3 = RESOLVED** · **P20-R4–R8 OPEN** · T003 provider-neutral boundary) |
+| Current Phase | **P20 — Payment** (**PLAN ACCEPTED** · **P20-R1–R4 = RESOLVED** · **P20-R5–R8 OPEN** · T004 idempotency/reconciliation) |
 | Previous Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` ACCEPTED `73605aa`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P20-T003` — provider-neutral initiation / verification / callback (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Architect review of `TC-P20-T003` RESULT → do **not** execute T004 until T003 ACCEPTED; do not invent P20-R4–R8 |
+| Current Active Product Task | `TC-P20-T004` — idempotency / retry safety / reconciliation baseline (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P20-T004` RESULT → do **not** execute T005 until T004 ACCEPTED; do not invent P20-R5–R8 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -234,15 +234,17 @@
 | P18-GATE | **COMPLETE / ACCEPTED** (`73605aa`) — Acceptance evidence (no new product capability) |
 | P19 | **COMPLETE** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE ACCEPTED (`d258933`) [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md) |
 | P19-GATE | **COMPLETE / ACCEPTED** (`d258933`) — [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md); Payment/Confirm remain DEFERRED into P20 |
-| P20 | **IN PROGRESS** — PLAN ACCEPTED · **P20-R1–R3 = RESOLVED** · **P20-R4–R8 OPEN** · T003 provider-neutral boundary [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
+| P20 | **IN PROGRESS** — PLAN ACCEPTED · **P20-R1–R4 = RESOLVED** · **P20-R5–R8 OPEN** · T004 idempotency/reconciliation [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
 | P20 Plan | `TC-P20-PLAN` COMPLETE / ACCEPTED (`aca9c44`) — [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
 | P20-T001 | **COMPLETE / ACCEPTED** (`1ec8963`) — independent Payment module · schema `payment` · initial target = Booking · Tour Booking scope |
 | P20-T002 | **COMPLETE / ACCEPTED** (`75a4f84`) — Payment aggregate + PaymentAttempt · PaymentStatus Pending/Succeeded · PaymentAttemptStatus Created/Initiated/Succeeded/Failed |
-| P20-T003 | **IMPLEMENTED** (awaiting architect ACCEPT) — provider-neutral initiation/verification/callback · no named provider |
+| P20-T003 | **COMPLETE / ACCEPTED** (`32e555d`) — provider-neutral initiation/verification/callback · no named provider |
+| P20-T004 | **IMPLEMENTED** (awaiting architect ACCEPT) — one Booking/one Payment · attempt retry safety · reconciliation baseline |
 | P20-R1 (Payment ownership / schema / target) | **RESOLVED** — independent Payment module · schema `payment` · initial Payment target = Booking · Tour Booking scope · Payment does not own Booking/Pricing · **Payment != Booking** · **PaymentStatus != BookingStatus** · **PaymentSucceeded != BookingConfirmed** |
 | P20-R2 (Payment aggregate / attempts / lifecycle) | **RESOLVED** — Payment = one logical Booking collection · PaymentAttempt = one execution attempt · **Payment != PaymentAttempt** · **PaymentStatus != PaymentAttemptStatus** · **Failed PaymentAttempt != Failed Payment** · statuses Pending/Succeeded and Created/Initiated/Succeeded/Failed · at most one successful attempt · no attempt after success · verified provider evidence required for success |
 | P20-R3 (Provider abstraction / initiation / verification / callback) | **RESOLVED** — Payment core is provider-neutral · NamedProvider = NONE · **BrowserReturn != PaymentSuccess** · **UnverifiedCallback != PaymentSuccess** · initiation/verification/query are neutral ports · network ambiguity is not definitive failure · Booking confirmation remains R5 · callback replay/reconciliation remains R4 · amount mismatch enforcement deferred to R5 |
-| P20-R4 through P20-R8 | **OPEN** |
+| P20-R4 (Idempotency / retries / duplicate payment / reconciliation) | **RESOLVED** — one Booking -> one logical Payment · retries are PaymentAttempts · database-backed uniqueness/idempotency · ambiguous outcomes do not become Failed · unresolved Attempt blocks unsafe retry · **Reconciliation != Settlement** · **Reconciliation != Accounting** · external exactly-once is not assumed · Booking confirmation remains R5 · Refund remains R6 |
+| P20-R5 through P20-R8 | **OPEN** |
 | P19 Plan | `TC-P19-PLAN` COMPLETE / ACCEPTED (`9d4266b`) — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md) |
 | P19-T001 | **COMPLETE / ACCEPTED** (`e198daa`) — Booking module scaffolding (`booking` schema) |
 | P19-T002 | **COMPLETE / ACCEPTED** (`7caa90a`) — Booking aggregate + Pending/Confirmed/Cancelled lifecycle (`bookings` table) |

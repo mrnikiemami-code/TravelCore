@@ -6,7 +6,7 @@ using TravelCore.Modules.Payment.Domain;
 namespace TravelCore.Modules.Payment.Infrastructure.Services;
 
 /// <summary>
-/// Internal recheck of one PaymentAttempt through provider status query. No scheduler (P20-R4).
+/// Callable Payment reconciliation. No scheduler. Does not auto-retry (P20-R4).
 /// </summary>
 internal sealed class PaymentAttemptRecheckService
 {
@@ -41,6 +41,13 @@ internal sealed class PaymentAttemptRecheckService
         var attempt = payment.Attempts.Single(item => item.Id.Equals(attemptId));
         if (attempt.ProviderKey is not { } providerKey)
         {
+            _db.ReconciliationIssues.Add(
+                PaymentReconciliationIssue.Create(
+                    payment.Id,
+                    attempt.Id,
+                    PaymentReconciliationIssueKind.UnknownProviderTransaction,
+                    _clock.GetCurrentInstant()));
+            await _db.SaveChangesAsync(cancellationToken);
             return null;
         }
 
@@ -57,11 +64,21 @@ internal sealed class PaymentAttemptRecheckService
                 attempt.ProviderTransactionReference),
             cancellationToken);
 
-        VerifiedProviderOutcomeApplier.ApplyVerification(
+        var status = VerifiedProviderOutcomeApplier.ApplyVerification(
             payment,
             attempt,
             result.Outcome,
             _clock.GetCurrentInstant());
+        if (status == VerificationApplyStatus.Contradiction)
+        {
+            _db.ReconciliationIssues.Add(
+                PaymentReconciliationIssue.Create(
+                    payment.Id,
+                    attempt.Id,
+                    PaymentReconciliationIssueKind.ContradictoryProviderState,
+                    _clock.GetCurrentInstant()));
+        }
+
         await _db.SaveChangesAsync(cancellationToken);
         return result;
     }

@@ -23,6 +23,7 @@ public sealed class PaymentAggregateTests
         Assert.Equal(Now, payment.StatusChangedAt);
         Assert.Null(payment.SucceededAt);
         Assert.Empty(payment.Attempts);
+        Assert.Equal(0, payment.Version);
         Assert.NotEqual(Guid.Empty, payment.Id.Value);
         Assert.Equal(7, payment.Id.Value.Version);
         Assert.Equal(
@@ -72,6 +73,7 @@ public sealed class PaymentAggregateTests
         Assert.Null(attempt.InitiatedAt);
         Assert.Equal(7, attempt.Id.Value.Version);
         Assert.Equal(PaymentStatus.Pending, payment.Status);
+        Assert.Equal(1, payment.Version);
         Assert.Single(payment.Attempts);
         Assert.Equal("Created != Provider payment created successfully", PaymentLifecycleBoundary.CreatedIsNotProviderCreated);
     }

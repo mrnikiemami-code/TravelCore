@@ -317,7 +317,8 @@ public sealed class PaymentProviderBoundaryTests
             db,
             new PaymentProviderResolver([fake]),
             Options.Create(new PaymentProviderOptions { DefaultProviderKey = "test" }),
-            new FixedClock(Instant.FromUtc(2026, 8, 18, 10, 20)));
+            new FixedClock(Instant.FromUtc(2026, 8, 18, 10, 20)),
+            new PaymentGetOrCreateService(db, new FixedClock(Instant.FromUtc(2026, 8, 18, 10, 20))));
         var result = await service.InitiateAsync(payment.Id);
 
         Assert.Equal(PaymentInitiationOutcome.Unknown, result.Outcome);
@@ -341,7 +342,8 @@ public sealed class PaymentProviderBoundaryTests
             db,
             new PaymentProviderResolver([fake]),
             Options.Create(new PaymentProviderOptions { DefaultProviderKey = "test" }),
-            new FixedClock(Instant.FromUtc(2026, 8, 18, 10, 21)));
+            new FixedClock(Instant.FromUtc(2026, 8, 18, 10, 21)),
+            new PaymentGetOrCreateService(db, new FixedClock(Instant.FromUtc(2026, 8, 18, 10, 21))));
         var result = await service.InitiateAsync(payment.Id);
 
         Assert.Equal(PaymentInitiationOutcome.Initiated, result.Outcome);

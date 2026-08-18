@@ -23,6 +23,7 @@ public sealed class Payment
         Status = PaymentStatus.Pending;
         CreatedAt = createdAt;
         StatusChangedAt = createdAt;
+        Version = 0;
     }
 
     public PaymentId Id { get; private set; }
@@ -36,6 +37,8 @@ public sealed class Payment
     public Instant StatusChangedAt { get; private set; }
 
     public Instant? SucceededAt { get; private set; }
+
+    public long Version { get; private set; }
 
     public IReadOnlyList<PaymentAttempt> Attempts => _attempts;
 
@@ -61,6 +64,7 @@ public sealed class Payment
 
         var attempt = new PaymentAttempt(PaymentAttemptId.New(), now);
         _attempts.Add(attempt);
+        IncrementVersion();
         return attempt;
     }
 
@@ -68,6 +72,7 @@ public sealed class Payment
     {
         EnsurePending();
         FindAttempt(attemptId).MarkInitiated(now);
+        IncrementVersion();
     }
 
     public void RecordProviderInitiation(
@@ -82,6 +87,7 @@ public sealed class Payment
         var attempt = FindAttempt(attemptId);
         attempt.AttachProviderCorrelation(providerKey, requestReference, transactionReference);
         attempt.MarkInitiated(now);
+        IncrementVersion();
     }
 
     public void RecordAmbiguousProviderInitiation(
@@ -99,12 +105,21 @@ public sealed class Payment
         {
             attempt.MarkInitiated(now);
         }
+
+        IncrementVersion();
     }
 
     public void RecordAttemptFailure(PaymentAttemptId attemptId, Instant now)
     {
         EnsurePending();
-        FindAttempt(attemptId).RecordFailure(now);
+        var attempt = FindAttempt(attemptId);
+        if (attempt.Status == PaymentAttemptStatus.Failed)
+        {
+            return;
+        }
+
+        attempt.RecordFailure(now);
+        IncrementVersion();
     }
 
     /// <summary>
@@ -136,6 +151,7 @@ public sealed class Payment
         Status = PaymentStatus.Succeeded;
         StatusChangedAt = now;
         SucceededAt = now;
+        IncrementVersion();
     }
 
     private PaymentAttempt FindAttempt(PaymentAttemptId attemptId)
@@ -162,6 +178,8 @@ public sealed class Payment
             throw new InvalidOperationException("Payment is not Pending.");
         }
     }
+
+    private void IncrementVersion() => Version++;
 
     private static void EnsureClock(Instant now)
     {
