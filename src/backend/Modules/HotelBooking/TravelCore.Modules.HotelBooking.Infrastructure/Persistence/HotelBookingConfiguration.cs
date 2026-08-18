@@ -57,6 +57,9 @@ internal sealed class HotelBookingConfiguration : IEntityTypeConfiguration<Hotel
             .HasDefaultValue(0L)
             .IsRequired();
 
+        builder.Property(x => x.ActorAccountId)
+            .HasColumnName("actor_account_id");
+
         builder.Ignore(x => x.Nights);
         builder.Ignore(x => x.RoomCount);
         builder.Ignore(x => x.GuestCount);

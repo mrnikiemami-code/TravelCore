@@ -58,6 +58,7 @@ public sealed class PaymentModule : ITravelCoreModule
         services.AddHostedService<PaymentSuccessOutboxHostedService>();
         services.AddScoped<IPaymentSuccessEvidenceQuery, PaymentSuccessEvidenceQueryService>();
         services.AddScoped<IPublicBookingPaymentService, PublicBookingPaymentService>();
+        services.AddScoped<IPublicHotelBookingPaymentService, PublicHotelBookingPaymentService>();
         services.AddScoped<IPaymentOperationalQuery, PaymentOperationalQueryService>();
 
         services.AddDbContext<PaymentDbContext>((_, options) =>

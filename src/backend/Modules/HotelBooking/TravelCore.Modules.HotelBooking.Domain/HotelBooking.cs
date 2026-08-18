@@ -55,6 +55,12 @@ public sealed class HotelBooking
 
     public HotelBookingContactSnapshot Contact { get; private set; }
 
+    /// <summary>
+    /// Optional logical authenticated actor id captured at initiation.
+    /// Not an Identity/Party entity and not an authorization credential by itself.
+    /// </summary>
+    public Guid? ActorAccountId { get; private set; }
+
     public IReadOnlyList<RoomReservation> Rooms => _rooms;
 
     public int RoomCount => _rooms.Count;
@@ -116,6 +122,16 @@ public sealed class HotelBooking
         }
 
         return booking;
+    }
+
+    public void AttachActorAccount(Guid actorAccountId)
+    {
+        if (actorAccountId == Guid.Empty)
+        {
+            throw new ArgumentException("Actor account id cannot be empty.", nameof(actorAccountId));
+        }
+
+        ActorAccountId = actorAccountId;
     }
 
     /// <summary>

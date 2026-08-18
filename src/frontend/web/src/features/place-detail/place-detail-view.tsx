@@ -75,6 +75,18 @@ export function PlaceDetailView({ vm }: { vm: PlaceDetailPageViewModel }) {
               ) : null}
             </Text>
             {vm.description ? <Text as="p">{vm.description}</Text> : null}
+            {vm.kind === "Hotel" ? (
+              <a
+                className="min-h-touch inline-flex items-center underline underline-offset-2"
+                href={`/${locale}/places/${encodeURIComponent(vm.slug)}/book`}
+              >
+                {locale === "fa"
+                  ? "رزرو این هتل"
+                  : locale === "ar"
+                    ? "احجز هذا الفندق"
+                    : "Book this hotel"}
+              </a>
+            ) : null}
           </Stack>
 
           {vm.destination ? (

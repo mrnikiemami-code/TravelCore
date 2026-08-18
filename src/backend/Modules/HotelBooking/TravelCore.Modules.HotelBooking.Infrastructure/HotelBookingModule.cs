@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.HotelBooking.Contracts;
+using TravelCore.Modules.HotelBooking.Infrastructure.Endpoints;
 using TravelCore.Modules.HotelBooking.Infrastructure.Availability;
 using TravelCore.Modules.HotelBooking.Infrastructure.Rates;
 using TravelCore.Modules.HotelBooking.Infrastructure.Reservations;
@@ -17,7 +18,8 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure;
 
 /// <summary>
 /// Host composition for HotelBooking. Schema, stay aggregate, availability hold, rate-offer snapshot,
-/// supplier reservation lifecycle. No public endpoints. No production reservation source.
+/// supplier reservation lifecycle, and public transactional journey (P21-R8).
+/// Production availability/rate/reservation sources remain NONE.
 /// </summary>
 public sealed class HotelBookingModule : ITravelCoreModule
 {
@@ -42,6 +44,19 @@ public sealed class HotelBookingModule : ITravelCoreModule
         services.AddScoped<HotelBookingCompensationOutboxDispatcher>();
         services.AddScoped<HotelBookingCancellationRefundOutboxDispatcher>();
         services.AddScoped<HotelSupplierReservationRequiredOutboxDispatcher>();
+        services.AddScoped<PlaceContractHotelCatalogLookup>();
+        services.AddScoped<IHotelPlaceCatalogLookup>(sp => sp.GetRequiredService<PlaceContractHotelCatalogLookup>());
+        services.AddSingleton<IHotelSourceCatalog, HotelSourceCatalog>();
+        services.AddScoped<PublicHotelBookingSurfaceService>();
+        services.AddScoped<IPublicHotelBookingInitiationService>(
+            sp => sp.GetRequiredService<PublicHotelBookingSurfaceService>());
+        services.AddScoped<IPublicHotelBookingReadService>(
+            sp => sp.GetRequiredService<PublicHotelBookingSurfaceService>());
+        services.AddScoped<IPublicHotelBookingJourneyService>(
+            sp => sp.GetRequiredService<PublicHotelBookingSurfaceService>());
+        services.AddScoped<HotelBookingOperationalQueryService>();
+        services.AddScoped<IHotelBookingOperationalQuery>(
+            sp => sp.GetRequiredService<HotelBookingOperationalQueryService>());
         services.AddHostedService<HotelBookingCompensationOutboxHostedService>();
 
         services.AddDbContext<HotelBookingDbContext>((_, options) =>
@@ -59,5 +74,6 @@ public sealed class HotelBookingModule : ITravelCoreModule
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
+        endpoints.MapPublicHotelBookingEndpoints();
     }
 }

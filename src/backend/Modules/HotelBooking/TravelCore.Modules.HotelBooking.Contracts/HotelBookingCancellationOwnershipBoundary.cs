@@ -2,7 +2,7 @@ namespace TravelCore.Modules.HotelBooking.Contracts;
 
 /// <summary>
 /// P21-R7: Confirmed HotelBooking cancellation process is HotelBooking-owned.
-/// Not HotelBookingStatus, not Partial Refund, not public API.
+/// Not HotelBookingStatus, not Partial Refund. P21-R8 exposes a scoped public cancellation request.
 /// </summary>
 public static class HotelBookingCancellationOwnershipBoundary
 {
@@ -36,8 +36,8 @@ public static class HotelBookingCancellationOwnershipBoundary
     public const bool AmendmentsImplemented = false;
     public const bool RebookingImplemented = false;
     public const bool NoShowExecutionImplemented = false;
-    public const bool PublicCancellationApiImplemented = false;
-    public const bool PublicCancellationUiImplemented = false;
+    public const bool PublicCancellationApiImplemented = true;
+    public const bool PublicCancellationUiImplemented = true;
     public const bool ProcessLocalLockIsAuthority = false;
     public const bool SharedDbContextImplemented = false;
     public const bool PeerSchemaForeignKeyImplemented = false;

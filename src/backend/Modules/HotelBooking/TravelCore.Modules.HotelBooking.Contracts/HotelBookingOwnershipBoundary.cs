@@ -46,8 +46,8 @@ public static class HotelBookingOwnershipBoundary
     public const bool RateQuoteModelImplemented = true;
     public const bool CancellationModelImplemented = true;
     public const bool PaymentIntegrationImplemented = true;
-    public const bool HotelBookingApiImplemented = false;
-    public const bool HotelBookingUiImplemented = false;
+    public const bool HotelBookingApiImplemented = true;
+    public const bool HotelBookingUiImplemented = true;
     public const bool SharedDbContextImplemented = false;
     public const bool PeerSchemaForeignKeyImplemented = false;
     public const bool PlacePersistenceDependencyImplemented = false;

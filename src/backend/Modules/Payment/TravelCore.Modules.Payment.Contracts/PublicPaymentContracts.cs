@@ -45,6 +45,18 @@ public interface IPublicBookingPaymentService
         CancellationToken cancellationToken = default);
 }
 
+public interface IPublicHotelBookingPaymentService
+{
+    Task<PublicPaymentRead> GetByHotelBookingIdAsync(
+        Guid hotelBookingId,
+        CancellationToken cancellationToken = default);
+
+    Task<PublicPaymentCommandResult> InitiateForHotelBookingAsync(
+        Guid hotelBookingId,
+        string? idempotencyKey,
+        CancellationToken cancellationToken = default);
+}
+
 public sealed record PublicPaymentCommandResult(
     PublicPaymentRead Payment,
     PublicPaymentCommandStatus Status);

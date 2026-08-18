@@ -209,6 +209,64 @@ public sealed class HotelBookingStayPersistenceTests
         }
     }
 
+    [Fact]
+    public async Task Public_Access_Credential_Persists_Hash_And_Idempotency_Is_Unique()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        await using (var migrate = _postgres.CreateDbContext())
+        {
+            await HotelBookingMigrator.MigrateAsync(migrate, ct);
+        }
+
+        var now = Instant.FromUtc(2026, 8, 18, 12, 0);
+        var raw = HotelBookingAccessToken.CreateRaw();
+        var hash = HotelBookingAccessToken.Hash(raw);
+        HotelBookingId id;
+
+        await using (var db = _postgres.CreateDbContext())
+        {
+            var booking = HotelBookingAggregate.Create(
+                new HotelPlaceReference(Guid.Parse("0198b3e0-0000-7000-8000-000000000031")),
+                new LocalDate(2026, 9, 1),
+                new LocalDate(2026, 9, 3),
+                HotelBookingContactSnapshot.Create(email: "token@example.com"),
+                [
+                    new RoomReservationSpecification(
+                    [
+                        new HotelBookingGuestSpecification("Ada", "Lovelace", HotelGuestCategory.Adult, true),
+                    ]),
+                ]);
+            id = booking.Id;
+            db.HotelBookings.Add(booking);
+            db.AccessCredentials.Add(HotelBookingAccessCredential.Create(id, hash, now));
+            db.PublicIdempotency.Add(
+                HotelBookingPublicIdempotencyRecord.Create("t008-idem-1", id, now));
+            await db.SaveChangesAsync(ct);
+        }
+
+        await using (var db = _postgres.CreateDbContext())
+        {
+            var credential = await db.AccessCredentials.SingleAsync(x => x.HotelBookingId == id, ct);
+            Assert.Equal(hash, credential.TokenHash);
+            Assert.DoesNotContain(raw, credential.TokenHash, StringComparison.Ordinal);
+            Assert.Null(typeof(HotelBookingAccessCredential).GetProperty("RawToken"));
+
+            var conn = db.Database.GetDbConnection();
+            await db.Database.OpenConnectionAsync(ct);
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_booking_access_credentials'
+                  AND column_name IN ('raw_token', 'token', 'access_token');
+                """, ct));
+
+            db.PublicIdempotency.Add(
+                HotelBookingPublicIdempotencyRecord.Create("t008-idem-1", id, now));
+            await Assert.ThrowsAsync<DbUpdateException>(() => db.SaveChangesAsync(ct));
+        }
+    }
+
     private static async Task<int> ScalarIntAsync(
         DbConnection conn,
         string sql,

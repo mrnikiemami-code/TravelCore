@@ -51,10 +51,10 @@ public sealed class HotelBookingCancellationGuardrailTests
         Assert.Equal("DEFERRED", HotelBookingCancellationOwnershipBoundary.PartialRefund);
         Assert.Equal("DEFERRED", HotelBookingCancellationOwnershipBoundary.Amendments);
         Assert.False(HotelBookingCancellationOwnershipBoundary.AmendmentsImplemented);
-        Assert.False(HotelBookingCancellationOwnershipBoundary.PublicCancellationApiImplemented);
-        Assert.False(HotelBookingCancellationOwnershipBoundary.PublicCancellationUiImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingUiImplemented);
+        Assert.True(HotelBookingCancellationOwnershipBoundary.PublicCancellationApiImplemented);
+        Assert.True(HotelBookingCancellationOwnershipBoundary.PublicCancellationUiImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingUiImplemented);
         Assert.Equal("NONE", HotelBookingCancellationOwnershipBoundary.NamedHotelSupplier);
         Assert.Equal("NONE", HotelBookingCancellationOwnershipBoundary.ProductionHotelReservationSource);
         Assert.Equal("NONE", HotelBookingCancellationOwnershipBoundary.ProductionPaymentProvider);
@@ -91,11 +91,11 @@ public sealed class HotelBookingCancellationGuardrailTests
         var hotelText = string.Join('\n', Directory.EnumerateFiles(hotelInfra, "*.cs", SearchOption.AllDirectories)
             .Where(p => !p.Contains($"{Path.DirectorySeparatorChar}Migrations{Path.DirectorySeparatorChar}"))
             .Select(File.ReadAllText));
-        Assert.DoesNotContain("MapGet", hotelText, StringComparison.Ordinal);
-        Assert.DoesNotContain("MapPost", hotelText, StringComparison.Ordinal);
-        Assert.DoesNotContain("/api/hotel-booking", hotelText, StringComparison.Ordinal);
         Assert.DoesNotContain("SemaphoreSlim", hotelText, StringComparison.Ordinal);
         Assert.DoesNotContain("ConcurrentDictionary", hotelText, StringComparison.Ordinal);
+        Assert.Contains("/api/hotel-booking/public", hotelText, StringComparison.Ordinal);
+        Assert.Contains("X-TravelCore-Hotel-Booking-Access-Token", hotelText, StringComparison.Ordinal);
+        Assert.DoesNotContain("MapGet(\"/api/hotel-bookings", hotelText, StringComparison.Ordinal);
 
         var frontend = Path.Combine(RepoRoot, "src", "frontend", "web");
         if (Directory.Exists(frontend))
@@ -105,7 +105,7 @@ public sealed class HotelBookingCancellationGuardrailTests
                     .Where(p => !p.Contains($"{Path.DirectorySeparatorChar}node_modules{Path.DirectorySeparatorChar}"))
                     .Select(p => Path.GetRelativePath(RepoRoot, p)),
                 path => path.Contains("hotel-booking", StringComparison.OrdinalIgnoreCase)
-                    && path.Contains("cancel", StringComparison.OrdinalIgnoreCase));
+                    && path.Contains("amend", StringComparison.OrdinalIgnoreCase));
         }
 
         var hotelInfraProject = Projects.Single(p => p.Name == "TravelCore.Modules.HotelBooking.Infrastructure");

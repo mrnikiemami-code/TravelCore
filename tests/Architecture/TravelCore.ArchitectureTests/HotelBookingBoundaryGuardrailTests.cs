@@ -51,8 +51,8 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.True(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
         Assert.True(HotelBookingOwnershipBoundary.CancellationModelImplemented);
         Assert.True(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingUiImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingUiImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SharedDbContextImplemented);
         Assert.False(HotelBookingOwnershipBoundary.PeerSchemaForeignKeyImplemented);
         Assert.False(HotelBookingOwnershipBoundary.PlacePersistenceDependencyImplemented);
@@ -107,7 +107,8 @@ public sealed class HotelBookingBoundaryGuardrailTests
             .Select(r => Path.GetFileNameWithoutExtension(r)!)
             .Where(name =>
                 IsForbiddenPeerModule(name)
-                && !string.Equals(name, "TravelCore.Modules.Payment.Contracts", StringComparison.Ordinal))
+                && !string.Equals(name, "TravelCore.Modules.Payment.Contracts", StringComparison.Ordinal)
+                && !string.Equals(name, "TravelCore.Modules.Place.Contracts", StringComparison.Ordinal))
             .ToList();
         Assert.True(
             hits.Count == 0,
@@ -115,6 +116,9 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.Contains(
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name == "TravelCore.Modules.Payment.Contracts");
+        Assert.Contains(
+            infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Modules.Place.Contracts");
         Assert.DoesNotContain(
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name is "TravelCore.Modules.Place.Infrastructure"
@@ -238,9 +242,11 @@ public sealed class HotelBookingBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "HotelBooking must not introduce named suppliers or public HotelBooking API/UI:\n" + string.Join('\n', hits));
+            "HotelBooking must not introduce named suppliers or generic HotelBooking CRUD:\n" + string.Join('\n', hits));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "hotels", "book")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "hotel-booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "hotel-booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "places", "[slug]", "book")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "hotel-bookings")));
     }
 
     [Fact]
@@ -283,6 +289,9 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.Contains("P21-R3 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P21-R4 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P21-R5 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("P21-R6 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("P21-R7 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("P21-R8 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("schema `hotel_booking`", text, StringComparison.Ordinal);
         Assert.Contains("Hotel Catalog != Hotel Booking", text, StringComparison.Ordinal);
         Assert.Contains("HotelBooking != Tour Booking", text, StringComparison.Ordinal);
@@ -306,6 +315,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
             "HotelBookingModule.cs"));
         Assert.Contains("AddDbContext<HotelBookingDbContext>", module, StringComparison.Ordinal);
         Assert.Contains("IHotelAvailabilitySourceResolver", module, StringComparison.Ordinal);
+        Assert.Contains("MapPublicHotelBookingEndpoints", module, StringComparison.Ordinal);
         Assert.DoesNotContain("IHotelAvailabilitySource,", module, StringComparison.Ordinal);
         Assert.Contains("IHotelRateOfferSourceResolver", module, StringComparison.Ordinal);
         Assert.DoesNotContain("IHotelRateOfferSource,", module, StringComparison.Ordinal);
@@ -336,7 +346,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.True(HotelBookingOwnershipBoundary.CancellationModelImplemented);
         Assert.True(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
         Assert.True(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
         Assert.Equal("NONE", HotelRateOfferOwnershipBoundary.NamedHotelSupplier);
         Assert.Equal("NONE", HotelRateOfferOwnershipBoundary.ProductionHotelRateSource);
         Assert.False(HotelRateOfferOwnershipBoundary.ProductionFakeRateSourceImplemented);

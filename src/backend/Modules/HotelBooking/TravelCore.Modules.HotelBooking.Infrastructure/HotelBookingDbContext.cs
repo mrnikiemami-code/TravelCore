@@ -82,6 +82,11 @@ public sealed class HotelBookingDbContext : DbContext
     public DbSet<HotelBookingRefundSuccessInboxRecord> RefundSuccessInbox =>
         Set<HotelBookingRefundSuccessInboxRecord>();
 
+    public DbSet<HotelBookingAccessCredential> AccessCredentials => Set<HotelBookingAccessCredential>();
+
+    public DbSet<HotelBookingPublicIdempotencyRecord> PublicIdempotency =>
+        Set<HotelBookingPublicIdempotencyRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

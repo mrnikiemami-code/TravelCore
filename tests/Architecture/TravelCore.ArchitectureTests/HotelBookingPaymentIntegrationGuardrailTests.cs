@@ -26,8 +26,8 @@ public sealed class HotelBookingPaymentIntegrationGuardrailTests
         Assert.False(PaymentRefundBoundary.PartialRefundImplemented);
         Assert.False(HotelBookingOwnershipBoundary.OwnsPayment);
         Assert.True(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingUiImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingUiImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SharedDbContextImplemented);
         Assert.False(HotelBookingOwnershipBoundary.PeerSchemaForeignKeyImplemented);
         Assert.False(PaymentOwnershipBoundary.SharedDbContextImplemented);
@@ -86,12 +86,11 @@ public sealed class HotelBookingPaymentIntegrationGuardrailTests
         var paymentText = string.Join('\n', Directory.EnumerateFiles(paymentInfra, "*.cs", SearchOption.AllDirectories)
             .Where(p => !p.Contains($"{Path.DirectorySeparatorChar}Migrations{Path.DirectorySeparatorChar}"))
             .Select(File.ReadAllText));
-        Assert.DoesNotContain("MapGet", hotelText, StringComparison.Ordinal);
-        Assert.DoesNotContain("MapPost", hotelText, StringComparison.Ordinal);
-        Assert.DoesNotContain("/api/hotel-booking", paymentText, StringComparison.Ordinal);
         Assert.DoesNotContain("/api/payment/{targetType}/{targetId}", paymentText, StringComparison.Ordinal);
         Assert.DoesNotContain("IHotelRateOfferSource", paymentText, StringComparison.Ordinal);
         Assert.False(Regex.IsMatch(paymentText, @"\bstring\s+TargetType\b"));
+        Assert.Contains("IPublicHotelBookingPaymentService", paymentText, StringComparison.Ordinal);
+        Assert.DoesNotContain("MapGet(\"/api/hotel-bookings", hotelText, StringComparison.Ordinal);
     }
 
     [Fact]

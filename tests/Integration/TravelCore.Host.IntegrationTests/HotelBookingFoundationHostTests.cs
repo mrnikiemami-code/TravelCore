@@ -48,6 +48,11 @@ public sealed class HotelBookingFoundationHostTests
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });
         using var list = await client.GetAsync("/api/hotel-booking", ct);
         Assert.Equal(HttpStatusCode.NotFound, list.StatusCode);
+        using var publicList = await client.GetAsync("/api/hotel-booking/public", ct);
+        Assert.Equal(HttpStatusCode.NotFound, publicList.StatusCode);
+        using var missingToken = await client.GetAsync(
+            $"/api/hotel-booking/public/{Guid.CreateVersion7():D}", ct);
+        Assert.Equal(HttpStatusCode.NotFound, missingToken.StatusCode);
         using var post = await client.PostAsync("/api/hotel-booking", content: null, ct);
         Assert.Equal(HttpStatusCode.NotFound, post.StatusCode);
         using var availability = await client.GetAsync("/api/hotel-booking/availability", ct);

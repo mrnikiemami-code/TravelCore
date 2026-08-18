@@ -50,6 +50,7 @@ internal sealed class HotelBookingPaymentObligationQueryService : IHotelBookingP
             .ToListAsync(cancellationToken);
         var expectedRooms = booking.Rooms.Select(r => r.Id).ToHashSet();
         var eligible = booking.Status == HotelBookingStatus.Pending
+            && (snapshot.OfferExpiresAt is null || snapshot.OfferExpiresAt > now)
             && holds.Any(hold =>
                 hold.IsActiveAndUnexpired(now)
                 && hold.Rooms.Select(r => r.RoomReservationId).ToHashSet().SetEquals(expectedRooms));
