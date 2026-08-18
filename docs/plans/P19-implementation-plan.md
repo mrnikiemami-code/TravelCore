@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P19-PLAN` |
 | Phase | P19 — Tour Booking |
-| Status | PLAN ACCEPTED; **P19-R1–R7 RESOLVED**; P19-R8 OPEN; T007 Direct/Agency source boundary |
+| Status | PLAN ACCEPTED; **P19-R1–R8 RESOLVED**; T008 public Booking initiation / authorization / privacy |
 | Baseline | `73605aa` (`docs(tripplanner): add P18 acceptance gate evidence [TC-P18-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P19 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` (schema `booking`) · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § R Booking / § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P09 Tour · P11 TourDeparture (R3 capacity definition · R7 passenger rules · R8 Published ≠ Bookable) · P12 Pricing (R3–R8 Quote/occupancy/public price) · P13 AgencyMarketplace · P14 PublicExperience (R2 Sticky Action ≠ Booking) · P15 Search · P17 Visa (R8 VisaApplication ≠ Booking) · P18 TripPlanner (Lead ≠ Booking) · P20 Payment (PLANNED) |
 | Backend root | `src/backend` |
@@ -283,8 +283,9 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 
 ### TC-P19-T008 — Public booking experience / authorization / privacy
 
-- Purpose: PE composition + authorized reads + honest CTA (**P19-R8**).
-- Preserve: **PublicExperience ≠ Booking SoT**. P14-R2 remains until honest Book capability exists. No SEO-indexed PII pages. No public Lead-style listing of bookings. T008 may be VACANT only if R8 has no independent implementation after T001–T007.
+- Purpose: PE composition + authorized reads + honest CTA (**P19-R8 RESOLVED**).
+- Delivered: public Pending initiation under `/api/booking/public`; opaque hashed Booking access token; object-level actor ownership; Direct-only public path; Quote issuance via Pricing `IAuthoritativeQuoteIssuer`; Tour published-departure capacity read via `ITourDeparturePublicQuery`; noindex `/[locale]/tours/[slug]/book` and `/[locale]/bookings/[bookingId]`. No Confirm, Payment, public listing, or public cancellation.
+- Preserve: **PublicExperience != Booking Source of Truth** · **Public Booking initiation != Booking confirmation** · **Pending != Confirmed** · **BookingId != Access Credential**. Payment/Confirm remain DEFERRED.
 
 ### TC-P19-T009 — Hardening + evidence
 
@@ -310,7 +311,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 | **P19-R5** | Pricing Quote / Booking monetary snapshot | **RESOLVED** | Pricing owns Price and Quote. Booking consumes only a valid authoritative Quote and stores an immutable transaction-time `BookingMonetarySnapshot`. Snapshot survives later Quote expiry/Price changes. Quote target must match Booking TourDeparture. Booking performs no commercial recalculation and no FX. Payment remains separate. Requote/repricing DEFERRED. **Price != Quote**. **Quote != BookingMonetarySnapshot**. **BookingMonetarySnapshot != PaymentAmount**. **Booking != Pricing Authority**. **QuoteExpired != BookingStatus**. **QuoteExpiresAt != CapacityHold.ExpiresAt**. **BudgetPreference != BookingMonetarySnapshot**. |
 | **P19-R6** | Payment / confirmation / cancellation orchestration | **RESOLVED** | Payment execution is outside P19 (P20). Booking owns Booking status decisions. Executable payment-driven confirmation = **DEFERRED to Payment integration**. No fake Payment, no caller-controlled paymentSucceeded boolean, no unrestricted Confirm(). Pending cancellation is IN and atomically releases Active holds. Confirmed → Cancelled / refund = **DEFERRED**. **Booking != Payment**. **BookingMonetarySnapshot != PaymentTransaction**. **PaymentSucceeded != BookingConfirmed**. **BookingCancelled != PaymentRefunded**. |
 | **P19-R7** | Agency/direct booking and external module boundaries | **RESOLVED** | Direct and Agency-originated bookings use the same Booking aggregate. `BookingSourceKind` = Direct / Agency. Agency source uses logical `AgencyProfileReference`; optional `AgencyOfferReference` may preserve originating offer context. **Booking != AgencyMarketplace**. **BookingSourceKind != BookingStatus**. **AgencyOffer != Booking**. **AgencyOffer != Quote**. **Agency context != Pricing Authority**. Booking remains Booking-owned. AgencyMarketplace remains AgencyProfile/AgencyOffer owner. Pricing remains Price/Quote authority. No agency price override, commission, settlement, agency acceptance lifecycle, or agency capacity pool/priority. **Lead != Booking**. **VisaApplication != Booking**. Agency Booking data-sharing/authorization remains for R8/future policy. |
-| **P19-R8** | Public booking experience / authorization / reads / privacy | **OPEN** | PE = composition (P14). Sticky Action ≠ Booking until capability exists (P14-R2). Customer booking pages ≠ SEO product. Object-level authorization required. Checkout UI ≠ Payment ownership. |
+| **P19-R8** | Public booking experience / authorization / reads / privacy | **RESOLVED** | **PublicExperience != Booking Source of Truth**. **Public Booking initiation != Booking confirmation**. **Pending != Confirmed**. **BookingId != Access Credential**. PE composes honest Prepare-booking CTA; Booking remains SoT. Anonymous reads require opaque Booking-scoped token (raw once, hash persisted). Authenticated reads are object-level (`BookingActorReference`). Direct is the public consumer path; Agency origin cannot be client-forged. Transaction pages are noindex. No public listing/cancellation/Confirm/Payment. |
 
 ---
 

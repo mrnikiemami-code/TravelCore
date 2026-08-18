@@ -26,6 +26,7 @@
     <ProjectReference Include="..\TravelCore.Modules.Booking.Contracts\TravelCore.Modules.Booking.Contracts.csproj" />
     <ProjectReference Include="..\TravelCore.Modules.Booking.Domain\TravelCore.Modules.Booking.Domain.csproj" />
     <ProjectReference Include="..\..\Pricing\TravelCore.Modules.Pricing.Contracts\TravelCore.Modules.Pricing.Contracts.csproj" />
+    <ProjectReference Include="..\..\Tour\TravelCore.Modules.Tour.Contracts\TravelCore.Modules.Tour.Contracts.csproj" />
     <ProjectReference Include="..\..\AgencyMarketplace\TravelCore.Modules.AgencyMarketplace.Contracts\TravelCore.Modules.AgencyMarketplace.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
     <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />

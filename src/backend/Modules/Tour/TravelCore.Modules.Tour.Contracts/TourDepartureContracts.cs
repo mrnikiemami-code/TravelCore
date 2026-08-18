@@ -98,4 +98,9 @@ public interface ITourDeparturePublicQuery
     Task<IReadOnlyList<PublishedDeparturePublicSummary>> GetPublishedByTourProductAsync(
         Guid tourProductId,
         CancellationToken cancellationToken = default);
+
+    /// <summary>Published execution facts by id. Draft/Closed/Cancelled return null. Published ≠ bookable.</summary>
+    Task<PublishedDeparturePublicSummary?> GetPublishedByIdAsync(
+        Guid tourDepartureId,
+        CancellationToken cancellationToken = default);
 }

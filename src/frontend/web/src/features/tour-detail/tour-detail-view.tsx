@@ -294,7 +294,10 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
           <RelatedToursList locale={locale} items={vm.relatedTours} />
         </Stack>
       </Container>
-      <PublicDetailStickyActions locale={locale} />
+      <PublicDetailStickyActions
+        locale={locale}
+        bookHref={`/${locale}/tours/${encodeURIComponent(vm.slug)}/book`}
+      />
     </div>
   );
 }

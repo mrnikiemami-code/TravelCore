@@ -23,6 +23,12 @@ public sealed class BookingDbContext : DbContext
     public DbSet<TravelCore.Modules.Booking.Domain.DepartureCapacityAccount> DepartureCapacityAccounts =>
         Set<TravelCore.Modules.Booking.Domain.DepartureCapacityAccount>();
 
+    public DbSet<TravelCore.Modules.Booking.Domain.BookingAccessCredential> AccessCredentials =>
+        Set<TravelCore.Modules.Booking.Domain.BookingAccessCredential>();
+
+    public DbSet<TravelCore.Modules.Booking.Domain.BookingPublicIdempotencyRecord> PublicIdempotency =>
+        Set<TravelCore.Modules.Booking.Domain.BookingPublicIdempotencyRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

@@ -6,21 +6,37 @@ import type { AppLocale } from "@/lib/i18n";
  * Allowed: View Departure · View Price Summary · Contact / Request Information.
  * Forbidden: sales CTA, payment, seat hold, commerce funnel.
  */
-export function PublicDetailStickyActions({ locale }: { locale: AppLocale }) {
+export function PublicDetailStickyActions({
+  locale,
+  bookHref,
+}: {
+  locale: AppLocale;
+  bookHref?: string;
+}) {
   const copy =
     locale === "fa"
       ? {
           viewOptions: "مشاهده اجراها",
           viewPrice: "مشاهده قیمت",
           contact: "درخواست اطلاعات",
-          note: "اقدام نمایشی · بدون رزرو/پرداخت",
+          prepare: "شروع رزرو موقت",
+          note: "اقدام نمایشی + شروع رزرو موقت · نه پرداخت",
         }
-      : {
-          viewOptions: "View departures",
-          viewPrice: "View price",
-          contact: "Request information",
-          note: "Presentation actions · not booking/payment",
-        };
+      : locale === "ar"
+        ? {
+            viewOptions: "عرض الرحلات",
+            viewPrice: "عرض السعر",
+            contact: "طلب معلومات",
+            prepare: "إعداد حجز مؤقت",
+            note: "إجراءات العرض + إعداد حجز مؤقت · ليست عملية دفع",
+          }
+        : {
+            viewOptions: "View departures",
+            viewPrice: "View price",
+            contact: "Request information",
+            prepare: "Prepare booking",
+            note: "Presentation actions + prepare pending booking",
+          };
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 p-3 lg:pointer-events-auto lg:inset-x-auto lg:bottom-8 lg:end-8 lg:w-72">
@@ -54,6 +70,16 @@ export function PublicDetailStickyActions({ locale }: { locale: AppLocale }) {
               {copy.contact}
             </a>
           </li>
+          {bookHref ? (
+            <li className="flex-1">
+              <a
+                className="min-h-touch inline-flex w-full items-center justify-center rounded-md border border-border px-3 py-2 text-sm underline-offset-2 hover:underline"
+                href={bookHref}
+              >
+                {copy.prepare}
+              </a>
+            </li>
+          ) : null}
         </ul>
       </nav>
     </div>

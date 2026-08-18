@@ -42,6 +42,27 @@ public sealed class TourDeparturePublicQuery : ITourDeparturePublicQuery
             .ToList();
     }
 
+    public async Task<PublishedDeparturePublicSummary?> GetPublishedByIdAsync(
+        Guid tourDepartureId,
+        CancellationToken cancellationToken = default)
+    {
+        if (tourDepartureId == Guid.Empty)
+        {
+            throw new ArgumentException("TourDepartureId cannot be empty.", nameof(tourDepartureId));
+        }
+
+        var departure = await _db.TourDepartures
+            .AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id == TourDepartureId.From(tourDepartureId), cancellationToken);
+
+        if (departure is null || departure.Status != TourDepartureStatus.Published)
+        {
+            return null;
+        }
+
+        return Map(departure);
+    }
+
     private static PublishedDeparturePublicSummary Map(TourDeparture departure)
     {
         int? durationDays = null;

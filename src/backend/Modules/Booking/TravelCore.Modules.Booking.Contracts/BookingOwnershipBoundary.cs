@@ -50,7 +50,7 @@ public static class BookingOwnershipBoundary
     public const bool QuoteIntegrationImplemented = true;
     public const bool BookingSourceContextImplemented = true;
     public const bool PaymentIntegrationImplemented = false;
-    public const bool PublicBookingSurfaceImplemented = false;
+    public const bool PublicBookingSurfaceImplemented = true;
     public const bool SearchEngineImplemented = false;
     public const bool AiInfrastructureImplemented = false;
     public const bool GenericWorkflowEngineImplemented = false;

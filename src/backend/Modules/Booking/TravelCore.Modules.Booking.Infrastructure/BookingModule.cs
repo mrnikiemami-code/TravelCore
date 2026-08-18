@@ -2,13 +2,18 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Booking.Contracts;
+using TravelCore.Modules.Booking.Infrastructure.Endpoints;
+using TravelCore.Modules.Booking.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Booking.Infrastructure;
 
 /// <summary>
-/// Host composition entry for Booking (TC-P19-T001 / P19-R1 scaffolding only).
+/// Host composition entry for Booking (TC-P19-T008 / P19-R8 public initiation).
 /// </summary>
 public sealed class BookingModule : ITravelCoreModule
 {
@@ -27,15 +32,20 @@ public sealed class BookingModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: BookingDbContext.SchemaName);
         });
-        services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingCapacityService>();
-        services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingPeopleService>();
-        services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingQuoteService>();
-        services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingCancellationService>();
-        services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingCreationService>();
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
+        services.AddScoped<BookingCapacityService>();
+        services.AddScoped<BookingPeopleService>();
+        services.AddScoped<BookingQuoteService>();
+        services.AddScoped<BookingCancellationService>();
+        services.AddScoped<BookingCreationService>();
+        services.AddScoped<PublicBookingSurfaceService>();
+        services.AddScoped<IPublicBookingInitiationService>(sp => sp.GetRequiredService<PublicBookingSurfaceService>());
+        services.AddScoped<IPublicBookingReadService>(sp => sp.GetRequiredService<PublicBookingSurfaceService>());
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
+        endpoints.MapPublicBookingEndpoints();
     }
 }
