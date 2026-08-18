@@ -206,9 +206,10 @@ Create only the layers a module actually needs. Empty layer projects are not req
 
 | Booking | `Booking/TravelCore.Modules.Booking.{Domain,Contracts,Infrastructure}` | `booking` |
 
-- **Booking:** Booking module scaffolding (`TC-P19-T001`) — schema `booking`; initial logical target = TourDeparture; **Booking != Tour**; **Booking != TourDeparture**; **Booking != Pricing**; **Booking != Payment**; **Booking != TripPlanner Lead**; **Booking != VisaApplication**; Tour owns capacity definition; Booking owns consumption (not implemented in T001); no Booking aggregate/lifecycle/hold/passenger/public types in T001; no peer FK.
+- **Booking:** Booking module scaffolding (`TC-P19-T001`) + aggregate/lifecycle (`TC-P19-T002`) — schema `booking`; table `bookings`; initial logical target = TourDeparture; **Booking != Tour**; **Booking != TourDeparture**; **Booking != Pricing**; **Booking != Payment**; **Booking != TripPlanner Lead**; **Booking != VisaApplication**; statuses Pending/Confirmed/Cancelled; **Confirmed != PaymentSucceeded**; **Cancelled != Refunded**; Tour owns capacity definition; Booking owns consumption (not implemented; R3 OPEN); no hold/passenger/public types; no peer FK.
 - **P19-R1 RESOLVED:** independent Booking module with schema `booking`. Owns future transactional Tour booking facts and (later) capacity consumption. Does not own TourProduct/TourDeparture catalog, capacity definition, Pricing/Quote, Payment, Party/Identity master, AgencyMarketplace, Search, SEO, Notification delivery, VisaApplication, or TripPlanner Lead. Product references are opaque logical ids only (`TourDepartureReference`).
-- Invariant: **Booking != Tour · Booking != TourDeparture · Booking != Price · Booking != Quote · Booking != Payment · Booking != Lead · Booking != VisaApplication**.
+- **P19-R2 RESOLVED:** independent `Booking` aggregate targets exactly one logical TourDeparture. Statuses: Pending, Confirmed, Cancelled. Create → Pending. Pending → Cancelled allowed. No unrestricted Confirm. No Confirmed → Cancelled. Persist `bookings`.
+- Invariant: **Booking != Tour · Booking != TourDeparture · Booking != Price · Booking != Quote · Booking != Payment · Booking != Lead · Booking != VisaApplication**. **BookingStatus != PaymentStatus**.
 
 ## Host
 

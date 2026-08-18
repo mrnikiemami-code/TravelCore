@@ -42,8 +42,8 @@ public static class BookingOwnershipBoundary
     public const bool OwnsTripPlannerLead = false;
     public const bool ProductReferencesAreLogicalOnly = true;
     public const bool ProductReferencesAreSourceOfTruth = false;
-    public const bool BookingAggregateImplemented = false;
-    public const bool BookingStatusImplemented = false;
+    public const bool BookingAggregateImplemented = true;
+    public const bool BookingStatusImplemented = true;
     public const bool CapacityHoldImplemented = false;
     public const bool BookingPassengerImplemented = false;
     public const bool ContactSnapshotImplemented = false;

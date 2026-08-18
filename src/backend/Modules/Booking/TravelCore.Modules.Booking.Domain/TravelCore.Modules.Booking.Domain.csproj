@@ -6,7 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Booking.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Booking.Domain</AssemblyName>
-    <Description>Booking domain marker only (TC-P19-T001 / P19-R1). No EF/ASP.NET. No Booking aggregate.</Description>
+    <Description>Booking domain (TC-P19-T002 / P19-R2). Booking aggregate + minimal lifecycle.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TravelCore.Modules.Booking.Contracts\TravelCore.Modules.Booking.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 </Project>

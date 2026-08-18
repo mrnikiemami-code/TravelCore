@@ -44,8 +44,8 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.False(BookingOwnershipBoundary.OwnsNotificationDelivery);
         Assert.False(BookingOwnershipBoundary.OwnsVisaApplication);
         Assert.False(BookingOwnershipBoundary.OwnsTripPlannerLead);
-        Assert.False(BookingOwnershipBoundary.BookingAggregateImplemented);
-        Assert.False(BookingOwnershipBoundary.BookingStatusImplemented);
+        Assert.True(BookingOwnershipBoundary.BookingAggregateImplemented);
+        Assert.True(BookingOwnershipBoundary.BookingStatusImplemented);
         Assert.False(BookingOwnershipBoundary.CapacityHoldImplemented);
         Assert.False(BookingOwnershipBoundary.BookingPassengerImplemented);
         Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
@@ -103,7 +103,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(BookingStatus|CapacityHold|SeatHold|Reservation|ReservedSeats|ConfirmedSeats|ReleasedSeats|BookingPassenger|BookingContactSnapshot|PaymentIntent|PaymentStatus|Quote|Price|Checkout|Lead|VisaApplication|AgencyBooking|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine)\b",
+            @"\b(class|record|enum|struct|interface)\s+(CapacityHold|SeatHold|Reservation|ReservedSeats|ConfirmedSeats|ReleasedSeats|BookingPassenger|BookingContactSnapshot|PaymentIntent|PaymentStatus|Quote|Price|Checkout|Lead|VisaApplication|AgencyBooking|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -127,7 +127,7 @@ public sealed class BookingBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T001 forbids Booking aggregate/lifecycle/hold/passenger/payment product types:\n" + string.Join('\n', hits));
+            "T002 still forbids hold/passenger/payment/pricing product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -172,9 +172,9 @@ public sealed class BookingBoundaryGuardrailTests
             }
         }
 
-        Assert.True(hits.Count == 0, "Booking T001 must not introduce Search/AI/public API:\n" + string.Join('\n', hits));
-        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.Booking"));
-        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingStatus"));
+        Assert.True(hits.Count == 0, "Booking T002 must not introduce Search/AI/public API:\n" + string.Join('\n', hits));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.Booking"));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingStatus"));
         Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingPassenger"));
         Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.CapacityHold"));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
@@ -196,6 +196,44 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains("Booking != Payment", text, StringComparison.Ordinal);
         Assert.Contains("P19-R1", text, StringComparison.Ordinal);
         Assert.Contains("schema `booking`", text, StringComparison.Ordinal);
+        Assert.Contains("Pending", text, StringComparison.Ordinal);
+        Assert.Contains("Confirmed != PaymentSucceeded", text, StringComparison.Ordinal);
+        Assert.Contains("Cancelled != Refunded", text, StringComparison.Ordinal);
+        Assert.Contains("P19-R2", text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Booking_T002_Lifecycle_Is_Minimal_And_Not_Payment_Or_Capacity()
+    {
+        Assert.Equal(
+            new[] { BookingStatus.Pending, BookingStatus.Confirmed, BookingStatus.Cancelled },
+            Enum.GetValues<BookingStatus>());
+        Assert.False(BookingLifecycleBoundary.UnrestrictedConfirmationImplemented);
+        Assert.False(BookingLifecycleBoundary.ConfirmedToCancelledImplemented);
+        Assert.False(BookingLifecycleBoundary.ExpiredStatusImplemented);
+        Assert.False(BookingLifecycleBoundary.AwaitingPaymentStatusImplemented);
+        Assert.False(BookingLifecycleBoundary.PaidStatusImplemented);
+        Assert.False(BookingLifecycleBoundary.RefundedStatusImplemented);
+        Assert.Equal("Confirmed != PaymentSucceeded", BookingLifecycleBoundary.ConfirmedIsNotPaymentSucceeded);
+        Assert.Equal("Cancelled != Refunded", BookingLifecycleBoundary.CancelledIsNotRefunded);
+        Assert.Equal("BookingStatus != PaymentStatus", BookingLifecycleBoundary.BookingStatusIsNotPaymentStatus);
+        Assert.Equal("BookingStatus != CapacityStatus", BookingLifecycleBoundary.BookingStatusIsNotCapacityStatus);
+        Assert.Equal("BookingStatus != QuoteStatus", BookingLifecycleBoundary.BookingStatusIsNotQuoteStatus);
+        var methodNames = typeof(Booking).GetMethods(
+                System.Reflection.BindingFlags.Instance
+                | System.Reflection.BindingFlags.Public
+                | System.Reflection.BindingFlags.NonPublic
+                | System.Reflection.BindingFlags.DeclaredOnly)
+            .Select(m => m.Name)
+            .ToArray();
+        Assert.DoesNotContain("Confirm", methodNames);
+        Assert.DoesNotContain("SetStatus", methodNames);
+        Assert.Contains("CancelPending", methodNames);
+        Assert.Equal(
+            new[] { "CreatedAt", "Id", "Status", "StatusChangedAt", "TourDeparture" },
+            typeof(Booking).GetProperties().Select(p => p.Name).OrderBy(n => n, StringComparer.Ordinal).ToArray());
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingPassenger"));
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.CapacityHold"));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

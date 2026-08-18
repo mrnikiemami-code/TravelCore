@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Booking.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Booking.Infrastructure</AssemblyName>
-    <Description>Booking infrastructure: schema booking (TC-P19-T001 / P19-R1).</Description>
+    <Description>Booking infrastructure: schema booking + bookings table (TC-P19-T002 / P19-R2).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>

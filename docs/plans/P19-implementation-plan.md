@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P19-PLAN` |
 | Phase | P19 — Tour Booking |
-| Status | PLAN ACCEPTED; **P19-R1 RESOLVED**; P19-R2–R8 OPEN; T001 scaffolding |
+| Status | PLAN ACCEPTED; **P19-R1 RESOLVED**; **P19-R2 RESOLVED**; P19-R3–R8 OPEN; T002 aggregate/lifecycle |
 | Baseline | `73605aa` (`docs(tripplanner): add P18 acceptance gate evidence [TC-P18-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P19 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` (schema `booking`) · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § R Booking / § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P09 Tour · P11 TourDeparture (R3 capacity definition · R7 passenger rules · R8 Published ≠ Bookable) · P12 Pricing (R3–R8 Quote/occupancy/public price) · P13 AgencyMarketplace · P14 PublicExperience (R2 Sticky Action ≠ Booking) · P15 Search · P17 Visa (R8 VisaApplication ≠ Booking) · P18 TripPlanner (Lead ≠ Booking) · P20 Payment (PLANNED) |
 | Backend root | `src/backend` |
@@ -190,11 +190,17 @@ Investigate (do not implement):
 
 Frontend availability is never the correctness boundary.
 
-### 6.3 Lifecycle (feeds P19-R2 / P19-R6)
+### 6.3 Lifecycle (P19-R2 RESOLVED; still feeds P19-R6)
 
-Candidates to **evaluate** (not lock): Draft · Pending · Reserved · AwaitingPayment · Confirmed · Cancelled · Expired · Failed.
+Locked BookingStatus set: **Pending** · **Confirmed** · **Cancelled**.
 
-Avoid generic workflow infrastructure. Confirmation facts to evaluate: capacity secured · valid commercial snapshot · required passenger data · payment success **if required** · departure still bookable.
+- **Pending** — aggregate exists; does **not** imply capacity held, payment pending, or quote valid.
+- **Confirmed** — final successful Booking state. **Confirmed != PaymentSucceeded**. **Confirmed != CapacityHeld**. Unrestricted `Confirm()` is **not** implemented (preconditions remain R3/R5/R6).
+- **Cancelled** — no longer active. **Cancelled != Refunded**. **Cancelled != CapacityReleased**.
+
+Allowed: Create → Pending; Pending → Cancelled (`CancelPending`). Forbidden: generic `SetStatus()`; Confirmed → Cancelled (R6); Cancelled → Pending; extra statuses (Expired, AwaitingPayment, Paid, Refunded, Held, Reserved).
+
+Confirmation facts still deferred to R3/R5/R6: capacity secured · valid commercial snapshot · required passenger data · payment success **if required** · departure still bookable. Avoid generic workflow infrastructure.
 
 ### 6.4 Identity / passengers / PII (feeds P19-R4)
 
@@ -261,8 +267,9 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 
 ### TC-P19-T002 — Booking aggregate + lifecycle boundary
 
-- Purpose: Booking aggregate vs status machine (**P19-R2**).
-- Preserve: **BookingStatus ≠ PaymentStatus ≠ TourDepartureStatus**. No generic BPM. No Payment execution.
+- Purpose: Booking aggregate vs status machine (**P19-R2 RESOLVED**).
+- Delivered: independent `Booking` aggregate targeting one logical `TourDeparture`; statuses Pending/Confirmed/Cancelled; table `bookings`; UUIDv7 `BookingId`; Create → Pending; `CancelPending` only. No unrestricted Confirm, no Confirmed → Cancelled, no passengers/quote/payment/agency fields.
+- Preserve: **BookingStatus ≠ PaymentStatus ≠ TourDepartureStatus**. **Confirmed != PaymentSucceeded**. **Cancelled != Refunded**. No generic BPM. No Payment execution.
 
 ### TC-P19-T003 — Capacity consumption / hold / concurrency
 
@@ -312,7 +319,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 | ID | Topic | Status | SoT notes (not a lock) |
 |----|-------|--------|------------------------|
 | **P19-R1** | Booking module ownership / schema / initial target | **RESOLVED** | Independent Booking module. Schema `booking`. Initial logical target = TourDeparture. Tour owns TourProduct, TourDeparture, capacity **definition**. Booking will own capacity **consumption** (implementation deferred to R3). No peer-schema FK. T001: no Booking aggregate, lifecycle, hold, passenger, pricing, payment, or public surface. |
-| **P19-R2** | Booking lifecycle and aggregate boundary | **OPEN** | Constitution: Booking owns reservation/order state, status, confirmation, cancellation foundation. Exact status set **not** locked. Avoid workflow engine. BookingStatus ≠ PaymentStatus ≠ TourDepartureStatus. |
+| **P19-R2** | Booking lifecycle and aggregate boundary | **RESOLVED** | Independent `Booking` aggregate targets exactly one logical TourDeparture. Statuses: Pending, Confirmed, Cancelled. Pending does not imply capacity/payment/quote. **Confirmed != PaymentSucceeded**. **Cancelled != Refunded**. Create → Pending; Pending → Cancelled allowed. No unrestricted Confirm; no Confirmed → Cancelled (R6); no Cancelled → Pending; no generic SetStatus; no extra payment/capacity statuses. Persist `bookings` in schema `booking`. No passenger/quote/payment/agency columns. |
 | **P19-R3** | Capacity reservation / hold / expiry / concurrency | **OPEN** | P11-R3 splits definition (Tour) vs consumption (Booking later). Hold vs confirm vs expire, oversell prevention, and Availability Projection owner are **not** locked. Frontend checks are not correctness. |
 | **P19-R4** | Booker / passengers / contact / PII boundary | **OPEN** | P11-R7: actual travellers later. P18-R4: PlannerTravelerComposition ≠ BookingPassenger. Anonymous vs login **not** inherited from P18. Passport/document **not** in by default. BookingPassenger ≠ Party master. |
 | **P19-R5** | Pricing Quote / Booking monetary snapshot | **OPEN** | P12-R4 Quote is Pricing-owned snapshot. Booking historically keeps accepted commercial facts. Whether Quote is mandatory, how expiry works, and post-confirmation authority are **not** locked. ADR 0003 applies. |

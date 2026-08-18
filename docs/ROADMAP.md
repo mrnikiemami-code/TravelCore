@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P19 — Tour Booking** (**IN PROGRESS** — T001 scaffolding; **P19-R1 RESOLVED**) |
-| Phase Status | P00–P18 COMPLETE · P19 PLAN ACCEPTED · P19-R1 RESOLVED · R2–R8 OPEN |
+| Current Phase | **P19 — Tour Booking** (**IN PROGRESS** — T002 aggregate/lifecycle; **P19-R1–R2 RESOLVED**) |
+| Phase Status | P00–P18 COMPLETE · P19 PLAN ACCEPTED · P19-R1–R2 RESOLVED · R3–R8 OPEN |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P19-T001` → T002 only after ACCEPT and P19-R2 lock |
+| Current Next Task | Architect review of `TC-P19-T002` → T003 only after ACCEPT and P19-R3 lock |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -118,7 +118,7 @@
 - **P16** = COMPLETE (`TC-P16-GATE` ACCEPTED `538f3fc` · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md)
 - **P17** = COMPLETE — GATE ACCEPTED [`plans/P17-GATE-acceptance-evidence.md`](plans/P17-GATE-acceptance-evidence.md)
 - **P18** = COMPLETE (`TC-P18-GATE` ACCEPTED `73605aa` · **R1–R8 RESOLVED**) [`plans/P18-GATE-acceptance-evidence.md`](plans/P18-GATE-acceptance-evidence.md)
-- **P19** = IN PROGRESS — Tour Booking · PLAN ACCEPTED · **P19-R1 RESOLVED** · R2–R8 OPEN [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
+- **P19** = IN PROGRESS — Tour Booking · PLAN ACCEPTED · **P19-R1–R2 RESOLVED** · R3–R8 OPEN [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
 - **P20–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -570,7 +570,7 @@ ROADMAP bullets above are **capability themes**, not ownership transfers. Visa r
 
 ## P19 — Tour Booking
 
-**Status:** IN PROGRESS — PLAN ACCEPTED · **P19-R1 RESOLVED** · R2–R8 OPEN — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
+**Status:** IN PROGRESS — PLAN ACCEPTED · **P19-R1–R2 RESOLVED** · R3–R8 OPEN — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
 
 traveler information · availability validation · Quote acceptance · reservation · Booking · status · price snapshot · cancellation foundation · confirmation.
 

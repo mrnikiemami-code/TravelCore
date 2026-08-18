@@ -10,12 +10,13 @@
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <RootNamespace>TravelCore.Modules.Booking.UnitTests</RootNamespace>
     <AssemblyName>TravelCore.Modules.Booking.UnitTests</AssemblyName>
-    <Description>Booking scaffolding unit tests (TC-P19-T001 / P19-R1).</Description>
+    <Description>Booking unit tests (TC-P19-T002 / P19-R2).</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NodaTime" Version="3.3.3" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
 
