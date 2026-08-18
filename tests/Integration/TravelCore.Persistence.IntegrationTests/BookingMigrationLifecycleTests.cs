@@ -27,11 +27,12 @@ public sealed class BookingMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.EndsWith("_InitialBookingScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddBookingAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddCapacityHoldAndDepartureAccount", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddBookingPassengerAndContactSnapshot", expectedMigrations[3], StringComparison.Ordinal);
+            Assert.EndsWith("_AddBookingMonetarySnapshot", expectedMigrations[4], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -57,7 +58,7 @@ public sealed class BookingMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'booking'
-                  AND table_name NOT IN ('__EFMigrationsHistory', 'bookings', 'capacity_holds', 'departure_capacity_accounts', 'booking_passengers');
+                  AND table_name NOT IN ('__EFMigrationsHistory', 'bookings', 'capacity_holds', 'departure_capacity_accounts', 'booking_passengers', 'booking_monetary_snapshots', 'booking_monetary_snapshot_components');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

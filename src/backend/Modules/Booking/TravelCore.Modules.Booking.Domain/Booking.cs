@@ -4,8 +4,8 @@ using TravelCore.Modules.Booking.Contracts;
 namespace TravelCore.Modules.Booking.Domain;
 
 /// <summary>
-/// Transactional Tour Booking aggregate (TC-P19-T002 / P19-R2 / P19-R4).
-/// Targets one logical TourDeparture. Owns transaction-time contact/passengers.
+/// Transactional Tour Booking aggregate (TC-P19-T002 / P19-R2 / P19-R4 / P19-R5).
+/// Targets one logical TourDeparture. Owns transaction-time contact/passengers/monetary snapshot.
 /// </summary>
 public sealed class Booking
 {
@@ -39,6 +39,8 @@ public sealed class Booking
     public BookingActorReference? ActorReference { get; private set; }
 
     public BookingPartyReference? PartyReference { get; private set; }
+
+    public BookingMonetarySnapshot? MonetarySnapshot { get; private set; }
 
     public IReadOnlyList<BookingPassenger> Passengers => _passengers;
 
@@ -144,7 +146,51 @@ public sealed class Booking
         }
     }
 
+    public void AcceptQuote(AuthoritativeQuoteFacts quote, Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(quote);
+        if (now == default)
+        {
+            throw new ArgumentException("Acceptance time cannot be default.", nameof(now));
+        }
+
+        if (Status != BookingStatus.Pending)
+        {
+            throw new InvalidOperationException("Quote can be accepted only while Booking is Pending.");
+        }
+
+        if (quote.IsExpired(now))
+        {
+            throw new InvalidOperationException("Expired Quote cannot be newly accepted as BookingMonetarySnapshot.");
+        }
+
+        EnsureQuoteTargetsThisDeparture(quote);
+
+        if (MonetarySnapshot is not null)
+        {
+            if (MonetarySnapshot.QuoteReference == quote.QuoteReference)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(
+                "Booking already has an accepted monetary snapshot; attaching a different Quote is not implemented in T005.");
+        }
+
+        MonetarySnapshot = BookingMonetarySnapshot.CopyFrom(Id, quote, now);
+    }
+
     public int PassengerCount => _passengers.Count;
+
+    private void EnsureQuoteTargetsThisDeparture(AuthoritativeQuoteFacts quote)
+    {
+        if (!string.Equals(quote.TargetType, BookingOwnershipBoundary.InitialTarget, StringComparison.Ordinal)
+            || quote.TargetId != TourDeparture.LogicalId)
+        {
+            throw new InvalidOperationException(
+                "Quote target must match this Booking TourDeparture. Arbitrary Quote reuse is forbidden.");
+        }
+    }
 
     private void EnsurePendingPeopleEdit()
     {

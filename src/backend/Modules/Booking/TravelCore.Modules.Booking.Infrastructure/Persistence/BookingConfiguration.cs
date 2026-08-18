@@ -76,6 +76,14 @@ internal sealed class BookingConfiguration : IEntityTypeConfiguration<Domain.Boo
             .HasField("_passengers")
             .UsePropertyAccessMode(PropertyAccessMode.Field);
 
+        builder.HasOne(x => x.MonetarySnapshot)
+            .WithOne()
+            .HasForeignKey<BookingMonetarySnapshot>(x => x.BookingId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.MonetarySnapshot)
+            .IsRequired(false);
+
         builder.HasIndex(x => x.TourDeparture)
             .HasDatabaseName("ix_bookings_tour_departure_id");
     }

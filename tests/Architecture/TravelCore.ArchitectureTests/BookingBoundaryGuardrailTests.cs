@@ -47,10 +47,9 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(BookingOwnershipBoundary.BookingAggregateImplemented);
         Assert.True(BookingOwnershipBoundary.BookingStatusImplemented);
         Assert.True(BookingOwnershipBoundary.CapacityHoldImplemented);
-        Assert.True(BookingOwnershipBoundary.BookingPassengerImplemented);
         Assert.True(BookingOwnershipBoundary.ContactSnapshotImplemented);
+        Assert.True(BookingOwnershipBoundary.QuoteIntegrationImplemented);
         Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
-        Assert.False(BookingOwnershipBoundary.SearchEngineImplemented);
         Assert.False(BookingOwnershipBoundary.AiInfrastructureImplemented);
         Assert.False(BookingOwnershipBoundary.GenericWorkflowEngineImplemented);
         Assert.False(BookingOwnershipBoundary.NotificationProviderImplemented);
@@ -62,11 +61,19 @@ public sealed class BookingBoundaryGuardrailTests
         var infra = Projects.Single(p => p.Name == "TravelCore.Modules.Booking.Infrastructure");
         var hits = infra.ProjectReferences
             .Select(r => Path.GetFileNameWithoutExtension(r)!)
-            .Where(IsForbiddenPeerModule)
+            .Where(name =>
+                IsForbiddenPeerModule(name)
+                && !string.Equals(name, "TravelCore.Modules.Pricing.Contracts", StringComparison.Ordinal))
             .ToList();
         Assert.True(
             hits.Count == 0,
             "Booking.Infrastructure must not project-reference peer business modules:\n" + string.Join('\n', hits));
+        Assert.Contains(
+            infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Modules.Pricing.Contracts");
+        Assert.DoesNotContain(
+            infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name is "TravelCore.Modules.Pricing.Infrastructure" or "TravelCore.Modules.Pricing.Domain");
     }
 
     [Fact]
@@ -204,6 +211,13 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains("CapacityDefinition != CapacityConsumption", text, StringComparison.Ordinal);
         Assert.Contains("P19-R3", text, StringComparison.Ordinal);
         Assert.Contains("CapacityHoldStatus != BookingStatus", text, StringComparison.Ordinal);
+        Assert.Contains("Price != Quote", text, StringComparison.Ordinal);
+        Assert.Contains("Quote != BookingMonetarySnapshot", text, StringComparison.Ordinal);
+        Assert.Contains("BookingMonetarySnapshot != PaymentAmount", text, StringComparison.Ordinal);
+        Assert.Contains("Booking != Pricing Authority", text, StringComparison.Ordinal);
+        Assert.Contains("QuoteExpired != BookingStatus", text, StringComparison.Ordinal);
+        Assert.Contains("QuoteExpiresAt != CapacityHold.ExpiresAt", text, StringComparison.Ordinal);
+        Assert.Contains("BudgetPreference != BookingMonetarySnapshot", text, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -240,6 +254,7 @@ public sealed class BookingBoundaryGuardrailTests
                 "Contact",
                 "CreatedAt",
                 "Id",
+                "MonetarySnapshot",
                 "PartyReference",
                 "PassengerCount",
                 "Passengers",
@@ -340,6 +355,60 @@ public sealed class BookingBoundaryGuardrailTests
         var plan = File.ReadAllText(Path.Combine(RepoRoot, "docs", "plans", "P19-implementation-plan.md"));
         Assert.Contains("PlannerTravelerComposition != BookingPassenger", plan, StringComparison.Ordinal);
         Assert.Contains("BookingPassenger != Party Person Master", plan, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Booking_T005_Monetary_Snapshot_Is_Not_Pricing_Or_Payment()
+    {
+        Assert.Equal("Price != Quote", BookingMonetaryBoundary.PriceIsNotQuote);
+        Assert.Equal("Quote != BookingMonetarySnapshot", BookingMonetaryBoundary.QuoteIsNotBookingMonetarySnapshot);
+        Assert.Equal("BookingMonetarySnapshot != PaymentAmount", BookingMonetaryBoundary.BookingMonetarySnapshotIsNotPaymentAmount);
+        Assert.Equal("Booking != Pricing Authority", BookingMonetaryBoundary.BookingIsNotPricingAuthority);
+        Assert.Equal("QuoteExpired != BookingStatus", BookingMonetaryBoundary.QuoteExpiredIsNotBookingStatus);
+        Assert.Equal("QuoteExpiresAt != CapacityHold.ExpiresAt", BookingMonetaryBoundary.QuoteExpiresAtIsNotCapacityHoldExpiresAt);
+        Assert.Equal("BudgetPreference != BookingMonetarySnapshot", BookingMonetaryBoundary.BudgetPreferenceIsNotBookingMonetarySnapshot);
+        Assert.False(BookingMonetaryBoundary.RecalculationImplemented);
+        Assert.False(BookingMonetaryBoundary.FxImplemented);
+        Assert.False(BookingMonetaryBoundary.RepricingImplemented);
+        Assert.False(BookingMonetaryBoundary.PaymentInferenceImplemented);
+        Assert.True(BookingOwnershipBoundary.QuoteIntegrationImplemented);
+        Assert.False(BookingOwnershipBoundary.OwnsQuote);
+        Assert.False(BookingOwnershipBoundary.OwnsPricing);
+        Assert.False(BookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.DoesNotContain("Quoted", Enum.GetNames<BookingStatus>());
+        Assert.DoesNotContain("PriceLocked", Enum.GetNames<BookingStatus>());
+        Assert.DoesNotContain("QuoteExpired", Enum.GetNames<BookingStatus>());
+        Assert.Null(typeof(Booking).GetMethod("Confirm"));
+        Assert.Null(typeof(Booking).GetMethod("SetPrice"));
+        Assert.Null(typeof(Booking).GetMethod("SetTotal"));
+        Assert.Null(typeof(Booking).GetMethod("UpdateAmount"));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingMonetarySnapshot"));
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.Quote"));
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.Price"));
+        Assert.Contains("AcceptQuote", typeof(Booking).GetMethods().Select(m => m.Name));
+
+        var domain = Projects.Single(p => p.Name == "TravelCore.Modules.Booking.Domain");
+        Assert.DoesNotContain(
+            domain.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name.Contains(".Pricing.", StringComparison.OrdinalIgnoreCase));
+
+        var infraCs = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Booking",
+            "TravelCore.Modules.Booking.Infrastructure");
+        var infraHits = Directory.EnumerateFiles(infraCs, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path).Select((line, i) => (path, line, i)))
+            .Where(x =>
+                x.line.Contains("TravelCore.Modules.Pricing.Infrastructure", StringComparison.Ordinal)
+                || x.line.Contains("TravelCore.Modules.Pricing.Domain", StringComparison.Ordinal)
+                || x.line.Contains("PricingDbContext", StringComparison.Ordinal))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+        Assert.True(infraHits.Count == 0, "Booking must not reach Pricing engine/persistence:\n" + string.Join('\n', infraHits));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

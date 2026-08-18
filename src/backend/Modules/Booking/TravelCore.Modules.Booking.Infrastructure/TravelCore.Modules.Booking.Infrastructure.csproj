@@ -25,6 +25,8 @@
   <ItemGroup>
     <ProjectReference Include="..\TravelCore.Modules.Booking.Contracts\TravelCore.Modules.Booking.Contracts.csproj" />
     <ProjectReference Include="..\TravelCore.Modules.Booking.Domain\TravelCore.Modules.Booking.Domain.csproj" />
+    <ProjectReference Include="..\..\Pricing\TravelCore.Modules.Pricing.Contracts\TravelCore.Modules.Pricing.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
     <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
     <ProjectReference Include="..\..\..\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
   </ItemGroup>

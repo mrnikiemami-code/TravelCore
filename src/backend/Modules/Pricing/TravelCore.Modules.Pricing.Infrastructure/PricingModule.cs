@@ -33,6 +33,7 @@ public sealed class PricingModule : ITravelCoreModule
 
         services.AddScoped<IPriceAdminService, PriceAdminService>();
         services.AddScoped<IPublicPricingQuery, PublicPricingQuery>();
+        services.AddScoped<IAuthoritativeQuoteQuery, AuthoritativeQuoteQuery>();
         services.AddSingleton<IFxConversionPort, FxBoundaryUnavailablePort>();
     }
 
