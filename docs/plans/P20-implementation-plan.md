@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P20-PLAN` |
 | Phase | P20 — Payment |
-| Status | PLAN ACCEPTED · **P20-R1 = RESOLVED** · **P20-R2 = RESOLVED** · **P20-R3 = RESOLVED** · **P20-R4 = RESOLVED** · **P20-R5 through P20-R8 = OPEN** · T004 idempotency/reconciliation baseline |
+| Status | PLAN ACCEPTED · **P20-R1 = RESOLVED** · **P20-R2 = RESOLVED** · **P20-R3 = RESOLVED** · **P20-R4 = RESOLVED** · **P20-R5 = RESOLVED** · **P20-R6 through P20-R8 = OPEN** · T005 obligation binding + confirmation implemented |
 | Baseline | `d258933` (`docs(booking): add P19 acceptance gate evidence [TC-P19-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P20 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Payment · `05-dependency-rules.md` · `06-cross-module-communication.md` · `07-data-architecture.md` (schema `payment`) · `08-persistence-and-migrations.md` · `29-module-local-transactional-outbox.md` · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P12 Pricing · P19 Booking (`P19-GATE-acceptance-evidence.md`) |
 | Backend root | `src/backend` |
@@ -225,7 +225,7 @@ Booking confirmation remains R5
 Refund remains R6
 ```
 
-Keep **P20-R5 through P20-R8 = OPEN**.
+Keep **P20-R6 through P20-R8 = OPEN**.
 
 
 
