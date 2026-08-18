@@ -62,10 +62,10 @@ public sealed class BookingAggregatePersistenceTests
                 FROM information_schema.columns
                 WHERE table_schema = 'booking'
                   AND table_name = 'bookings'
-                  AND column_name IN ('id', 'tour_departure_id', 'status', 'created_at', 'status_changed_at');
+                  AND column_name IN ('id', 'tour_departure_id', 'status', 'created_at', 'status_changed_at', 'source_kind');
                 """;
             var required = Convert.ToInt32(await cmd.ExecuteScalarAsync(ct));
-            Assert.Equal(5, required);
+            Assert.Equal(6, required);
 
             cmd.CommandText = """
                 SELECT COUNT(*)::int
@@ -85,7 +85,7 @@ public sealed class BookingAggregatePersistenceTests
                  AND tc.constraint_name = ccu.constraint_name
                 WHERE tc.table_schema = 'booking'
                   AND tc.constraint_type = 'FOREIGN KEY'
-                  AND ccu.table_schema IN ('tour', 'pricing', 'party', 'payment');
+                  AND ccu.table_schema IN ('tour', 'pricing', 'party', 'payment', 'agency_marketplace');
                 """;
             var fks = Convert.ToInt32(await cmd.ExecuteScalarAsync(ct));
             Assert.Equal(0, fks);

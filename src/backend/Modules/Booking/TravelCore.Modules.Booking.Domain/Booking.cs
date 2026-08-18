@@ -4,8 +4,9 @@ using TravelCore.Modules.Booking.Contracts;
 namespace TravelCore.Modules.Booking.Domain;
 
 /// <summary>
-/// Transactional Tour Booking aggregate (TC-P19-T002 / P19-R2 / P19-R4 / P19-R5).
+/// Transactional Tour Booking aggregate (TC-P19-T002 / P19-R2 / P19-R4 / P19-R5 / P19-R7).
 /// Targets one logical TourDeparture. Owns transaction-time contact/passengers/monetary snapshot.
+/// Direct and Agency-originated bookings share this aggregate.
 /// </summary>
 public sealed class Booking
 {
@@ -13,15 +14,22 @@ public sealed class Booking
 
     private Booking()
     {
+        Source = null!;
     }
 
-    private Booking(BookingId id, TourDepartureReference tourDeparture, Instant createdAt)
+    private Booking(
+        BookingId id,
+        TourDepartureReference tourDeparture,
+        Instant createdAt,
+        BookingSourceContext source)
     {
+        ArgumentNullException.ThrowIfNull(source);
         Id = id;
         TourDeparture = tourDeparture;
         Status = BookingStatus.Pending;
         CreatedAt = createdAt;
         StatusChangedAt = createdAt;
+        Source = source;
     }
 
     public BookingId Id { get; private set; }
@@ -34,6 +42,8 @@ public sealed class Booking
 
     public Instant StatusChangedAt { get; private set; }
 
+    public BookingSourceContext Source { get; private set; }
+
     public BookingContactSnapshot? Contact { get; private set; }
 
     public BookingActorReference? ActorReference { get; private set; }
@@ -44,8 +54,15 @@ public sealed class Booking
 
     public IReadOnlyList<BookingPassenger> Passengers => _passengers;
 
-    public static Booking Create(TourDepartureReference tourDeparture, Instant now)
+    public static Booking Create(TourDepartureReference tourDeparture, Instant now) =>
+        Create(tourDeparture, now, BookingSourceContext.Direct());
+
+    public static Booking Create(
+        TourDepartureReference tourDeparture,
+        Instant now,
+        BookingSourceContext source)
     {
+        ArgumentNullException.ThrowIfNull(source);
         if (tourDeparture.LogicalId == Guid.Empty)
         {
             throw new ArgumentException("TourDeparture reference cannot be empty.", nameof(tourDeparture));
@@ -56,7 +73,7 @@ public sealed class Booking
             throw new ArgumentException("CreatedAt cannot be default.", nameof(now));
         }
 
-        return new Booking(BookingId.New(), tourDeparture, now);
+        return new Booking(BookingId.New(), tourDeparture, now, source);
     }
 
     public void CancelPending(Instant now)

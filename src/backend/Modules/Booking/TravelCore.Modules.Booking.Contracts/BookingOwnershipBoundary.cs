@@ -48,6 +48,7 @@ public static class BookingOwnershipBoundary
     public const bool BookingPassengerImplemented = true;
     public const bool ContactSnapshotImplemented = true;
     public const bool QuoteIntegrationImplemented = true;
+    public const bool BookingSourceContextImplemented = true;
     public const bool PaymentIntegrationImplemented = false;
     public const bool PublicBookingSurfaceImplemented = false;
     public const bool SearchEngineImplemented = false;

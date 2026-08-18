@@ -9,7 +9,12 @@ internal sealed class BookingConfiguration : IEntityTypeConfiguration<Domain.Boo
 {
     public void Configure(EntityTypeBuilder<Domain.Booking> builder)
     {
-        builder.ToTable("bookings");
+        builder.ToTable("bookings", table =>
+        {
+            table.HasCheckConstraint(
+                "ck_bookings_source_context",
+                "(source_kind = 0 AND agency_profile_id IS NULL AND agency_offer_id IS NULL) OR (source_kind = 1 AND agency_profile_id IS NOT NULL)");
+        });
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
@@ -48,6 +53,25 @@ internal sealed class BookingConfiguration : IEntityTypeConfiguration<Domain.Boo
                 value => value.HasValue ? new BookingPartyReference(value.Value) : null);
 
         builder.Ignore(x => x.PassengerCount);
+
+        builder.OwnsOne(x => x.Source, source =>
+        {
+            source.Property(s => s.Kind)
+                .HasColumnName("source_kind")
+                .HasConversion<short>()
+                .IsRequired();
+            source.Property(s => s.AgencyProfile)
+                .HasColumnName("agency_profile_id")
+                .HasConversion(
+                    reference => reference.HasValue ? reference.Value.AgencyProfileId : (Guid?)null,
+                    value => value.HasValue ? new AgencyProfileReference(value.Value) : null);
+            source.Property(s => s.AgencyOffer)
+                .HasColumnName("agency_offer_id")
+                .HasConversion(
+                    reference => reference.HasValue ? reference.Value.AgencyOfferId : (Guid?)null,
+                    value => value.HasValue ? new AgencyOfferReference(value.Value) : null);
+        });
+        builder.Navigation(x => x.Source).IsRequired();
 
         builder.OwnsOne(x => x.Contact, contact =>
         {

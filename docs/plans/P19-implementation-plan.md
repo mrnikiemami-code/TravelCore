@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P19-PLAN` |
 | Phase | P19 — Tour Booking |
-| Status | PLAN ACCEPTED; **P19-R1–R6 RESOLVED**; P19-R7–R8 OPEN; T006 confirmation/cancellation boundary |
+| Status | PLAN ACCEPTED; **P19-R1–R7 RESOLVED**; P19-R8 OPEN; T007 Direct/Agency source boundary |
 | Baseline | `73605aa` (`docs(tripplanner): add P18 acceptance gate evidence [TC-P18-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P19 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` (schema `booking`) · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § R Booking / § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P09 Tour · P11 TourDeparture (R3 capacity definition · R7 passenger rules · R8 Published ≠ Bookable) · P12 Pricing (R3–R8 Quote/occupancy/public price) · P13 AgencyMarketplace · P14 PublicExperience (R2 Sticky Action ≠ Booking) · P15 Search · P17 Visa (R8 VisaApplication ≠ Booking) · P18 TripPlanner (Lead ≠ Booking) · P20 Payment (PLANNED) |
 | Backend root | `src/backend` |
@@ -42,7 +42,7 @@ P19 باید قابلیت **Tour Booking** را به‌عنوان دامنهٔ �
 2. **Booking ≠ Price ≠ Quote ≠ Payment** — Pricing owns Price/Quote; Booking owns accepted historical commercial snapshot; Payment owns money movement (P12, P20, ADR 0003).
 3. **Capacity Definition ≠ Capacity Consumption ≠ Availability Projection** — P11-R3: TourDeparture owns Min/Max Pax **definition**; Booking later owns **consumption**. Exact hold/confirm/release semantics are **P19-R3 (OPEN)**.
 4. **PlannerTravelerComposition ≠ BookingPassenger** — P18 traveler counts are preferences; P19 may collect actual traveler facts (P19-R4 OPEN).
-5. **Lead ≠ Booking** — P18 Lead is follow-up request; conversion requires an explicit command (P19-R7 OPEN). Do not auto-convert.
+5. **Lead ≠ Booking** — P18 Lead is follow-up request; conversion requires an explicit command (P19-R7 RESOLVED; conversion not implemented in T007). Do not auto-convert.
 6. **VisaApplication ≠ Booking** — P17-R8: visa case workflow is not a Booking. Booking must not auto-create visa applications.
 7. **BookingStatus ≠ PaymentStatus ≠ TourDepartureStatus ≠ CatalogStatus ≠ SEO IndexPolicy**.
 8. **PublicExperience = composition only** — checkout/booking UI is presentation; Booking remains transactional SoT. P14-R2 currently forbids fake Book Now; honest Book CTA is allowed only after Booking capability exists **and** P19-R8 locks it.
@@ -227,18 +227,9 @@ Evaluate:
 
 Payment remains P20. P19 may define **contracts/events only**.
 
-### 6.7 Agency / Lead / Visa / PE (feeds P19-R7 / P19-R8)
+### 6.7 Agency / Lead / Visa / PE (P19-R7 RESOLVED; still feeds P19-R8)
 
-Evaluate:
-
-- AgencyOffer reference optional? Booking owner remains Booking (expected)
-- direct vs agency-mediated vs both; **no settlement/commission engine**
-- Lead → Booking conversion only via explicit command
-- Visa requirements may be **surfaced** logically; no VisaApplication create
-- Checkout UI vs Booking API vs Payment ownership
-- whether unfinished draft is persisted
-- object-level authorization; no public listing of arbitrary customer bookings
-- booking routes must not be SEO product surfaces
+Direct and Agency-originated Tour bookings use the **same** Booking aggregate. Origin is a controlled `BookingSourceKind` (`Direct` / `Agency`) with optional logical `AgencyOfferReference` and required `AgencyProfileReference` for Agency source. **Booking != AgencyMarketplace**. **BookingSourceKind != BookingStatus**. **AgencyOffer != Booking**. **AgencyOffer != Quote**. **Agency context != Pricing Authority**. No commission, settlement, agency price override, agency acceptance lifecycle, or agency capacity pool. **Lead != Booking**. **VisaApplication != Booking**. Public/authorization/PII-sharing remain P19-R8.
 
 ---
 
@@ -284,10 +275,11 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 - Delivered: Pending → Cancelled is executable and idempotent; Active hold is released atomically with Pending cancellation; Consumed holds are not reversed; people/monetary snapshots survive cancellation. Executable payment-driven Confirm and Confirmed → Cancelled remain **DEFERRED**. No Payment implementation, no caller-controlled paid boolean, no Confirm().
 - Preserve: **Booking != Payment** · **BookingStatus != PaymentStatus** · **BookingMonetarySnapshot != PaymentTransaction** · **PaymentSucceeded != BookingConfirmed** · **BookingCancelled != PaymentRefunded**. Payment provider **OUT** (P20). Distinguish Booking cancellation ≠ TourDeparture cancellation ≠ Payment refund. **DEFERRED to Payment integration**.
 
-### TC-P19-T007 — Agency / Lead / Visa / external module boundaries
+### TC-P19-T007 — Direct and agency-originated Booking source boundary
 
-- Purpose: Direct vs agency; Lead conversion; Visa non-ownership (**P19-R7**).
-- Preserve: **Lead ≠ Booking** · **VisaApplication ≠ Booking** · Booking ≠ AgencyMarketplace ranking/settlement. No commission engine.
+- Purpose: Direct vs agency on one Booking aggregate (**P19-R7 RESOLVED**).
+- Delivered: `BookingSourceKind` Direct/Agency; `BookingSourceContext`; logical `AgencyProfileReference` (required for Agency) and optional `AgencyOfferReference`; internal `BookingCreationService`; `IAgencyOriginContextQuery` in AgencyMarketplace.Contracts. No AgencyBooking aggregate, commission, settlement, agency price override, Confirm, public API, or Lead conversion.
+- Preserve: **Booking != AgencyMarketplace** · **BookingSourceKind != BookingStatus** · **AgencyOffer != Booking** · **AgencyOffer != Quote** · **Agency context != Pricing Authority** · **Lead ≠ Booking** · **VisaApplication ≠ Booking**. Agency access/PII sharing remains R8.
 
 ### TC-P19-T008 — Public booking experience / authorization / privacy
 
@@ -317,7 +309,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 | **P19-R4** | Booker / passengers / contact / PII boundary | **RESOLVED** | BookingContactSnapshot is transaction-time contact data. Optional authenticated/Party associations are logical only. BookingPassenger is a Booking-owned transaction child. **PlannerTravelerComposition != BookingPassenger**. **BookingPassenger != Party Person Master**. **BookingContactSnapshot != Party**. **BookingContactSnapshot != Identity Account**. Baseline passenger facts are minimized (GivenName/FamilyName/TravelerCategory). BirthDate omitted (category is explicit, not age-inferred). No passport/document upload. Infant seat-consumption special handling DEFERRED; PassengerCount counts every passenger and cannot exceed Active hold SeatCount. Under-filled holds allowed. Post-confirmation passenger amendment DEFERRED. PII retention = future explicit operational/legal policy. |
 | **P19-R5** | Pricing Quote / Booking monetary snapshot | **RESOLVED** | Pricing owns Price and Quote. Booking consumes only a valid authoritative Quote and stores an immutable transaction-time `BookingMonetarySnapshot`. Snapshot survives later Quote expiry/Price changes. Quote target must match Booking TourDeparture. Booking performs no commercial recalculation and no FX. Payment remains separate. Requote/repricing DEFERRED. **Price != Quote**. **Quote != BookingMonetarySnapshot**. **BookingMonetarySnapshot != PaymentAmount**. **Booking != Pricing Authority**. **QuoteExpired != BookingStatus**. **QuoteExpiresAt != CapacityHold.ExpiresAt**. **BudgetPreference != BookingMonetarySnapshot**. |
 | **P19-R6** | Payment / confirmation / cancellation orchestration | **RESOLVED** | Payment execution is outside P19 (P20). Booking owns Booking status decisions. Executable payment-driven confirmation = **DEFERRED to Payment integration**. No fake Payment, no caller-controlled paymentSucceeded boolean, no unrestricted Confirm(). Pending cancellation is IN and atomically releases Active holds. Confirmed → Cancelled / refund = **DEFERRED**. **Booking != Payment**. **BookingMonetarySnapshot != PaymentTransaction**. **PaymentSucceeded != BookingConfirmed**. **BookingCancelled != PaymentRefunded**. |
-| **P19-R7** | Agency/direct booking and external module boundaries | **OPEN** | AgencyOffer is marketplace sales relationship (P13), not Booking owner. Lead ≠ Booking (P18). VisaApplication ≠ Booking (P17). Commission/settlement **OUT**. Conversion from Lead only if explicitly commanded. |
+| **P19-R7** | Agency/direct booking and external module boundaries | **RESOLVED** | Direct and Agency-originated bookings use the same Booking aggregate. `BookingSourceKind` = Direct / Agency. Agency source uses logical `AgencyProfileReference`; optional `AgencyOfferReference` may preserve originating offer context. **Booking != AgencyMarketplace**. **BookingSourceKind != BookingStatus**. **AgencyOffer != Booking**. **AgencyOffer != Quote**. **Agency context != Pricing Authority**. Booking remains Booking-owned. AgencyMarketplace remains AgencyProfile/AgencyOffer owner. Pricing remains Price/Quote authority. No agency price override, commission, settlement, agency acceptance lifecycle, or agency capacity pool/priority. **Lead != Booking**. **VisaApplication != Booking**. Agency Booking data-sharing/authorization remains for R8/future policy. |
 | **P19-R8** | Public booking experience / authorization / reads / privacy | **OPEN** | PE = composition (P14). Sticky Action ≠ Booking until capability exists (P14-R2). Customer booking pages ≠ SEO product. Object-level authorization required. Checkout UI ≠ Payment ownership. |
 
 ---
@@ -326,7 +318,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 
 1. Booking != TourProduct · Booking != TourDeparture · Booking != Price · Booking != Quote · Booking != Payment.
 2. Booking != TripPlanner Lead · Booking != VisaApplication · Booking != CRM Opportunity.
-3. Booking != AgencyMarketplace ranking/settlement authority.
+3. Booking != AgencyMarketplace ranking/settlement authority. Booking != AgencyMarketplace. BookingSourceKind != BookingStatus. AgencyOffer != Booking. AgencyOffer != Quote. Agency context != Pricing Authority.
 4. Capacity Definition (TourDeparture) != Capacity Consumption (Booking, after R3) != Availability Projection (owner OPEN).
 5. PlannerTravelerComposition != BookingPassenger · BookingPassenger != Party Person Master · Booker != Identity Account entity.
 6. BookingContactSnapshot != Party (if a contact snapshot is locked later).

@@ -55,6 +55,7 @@ public sealed class BookingScaffoldingSmokeTests
         Assert.True(BookingOwnershipBoundary.BookingPassengerImplemented);
         Assert.True(BookingOwnershipBoundary.ContactSnapshotImplemented);
         Assert.True(BookingOwnershipBoundary.QuoteIntegrationImplemented);
+        Assert.True(BookingOwnershipBoundary.BookingSourceContextImplemented);
         Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
         Assert.False(BookingOwnershipBoundary.SearchEngineImplemented);
         Assert.False(BookingOwnershipBoundary.AiInfrastructureImplemented);

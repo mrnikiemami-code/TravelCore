@@ -34,6 +34,7 @@ public sealed class AgencyMarketplaceModule : ITravelCoreModule
 
         services.AddScoped<IAgencyMarketplacePanelService, AgencyMarketplacePanelService>();
         services.AddScoped<IRelatedAgencyOfferPublicQuery, RelatedAgencyOfferPublicQuery>();
+        services.AddScoped<IAgencyOriginContextQuery, AgencyOriginContextQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

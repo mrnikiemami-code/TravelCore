@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P19 — Tour Booking** (**IN PROGRESS** — T006 confirmation/cancellation boundary; **P19-R1–R6 RESOLVED**; R7–R8 OPEN) |
+| Current Phase | **P19 — Tour Booking** (**IN PROGRESS** — T007 Direct/Agency source boundary; **P19-R1–R7 RESOLVED**; R8 OPEN) |
 | Previous Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` ACCEPTED `73605aa`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P19-T006` — Confirmation / cancellation / Payment boundary (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Architect review of `TC-P19-T006` → T007 only after ACCEPT and P19-R7 lock |
+| Current Active Product Task | `TC-P19-T007` — Direct / agency Booking source boundary (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P19-T007` → T008 only after ACCEPT and P19-R8 lock |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -232,21 +232,22 @@
 | P18-FIX-TOUR-ROUTE | **COMPLETE / ACCEPTED** (`d302ad4`) — remove legacy `/tours/[productKey]` |
 | P18-T009 | **COMPLETE / ACCEPTED** (`ad05e0f`) — hardening and evidence pack |
 | P18-GATE | **COMPLETE / ACCEPTED** (`73605aa`) — Acceptance evidence (no new product capability) |
-| P19 | **IN PROGRESS** — Plan ACCEPTED · **P19-R1–R6 RESOLVED** · R7–R8 OPEN · T006 confirmation/cancellation |
+| P19 | **IN PROGRESS** — Plan ACCEPTED · **P19-R1–R7 RESOLVED** · R8 OPEN · T007 Direct/Agency source |
 | P19 Plan | `TC-P19-PLAN` COMPLETE / ACCEPTED (`9d4266b`) — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md) |
 | P19-T001 | **COMPLETE / ACCEPTED** (`e198daa`) — Booking module scaffolding (`booking` schema) |
 | P19-T002 | **COMPLETE / ACCEPTED** (`7caa90a`) — Booking aggregate + Pending/Confirmed/Cancelled lifecycle (`bookings` table) |
 | P19-T003 | **COMPLETE / ACCEPTED** (`8c79b02`) — CapacityHold + DepartureCapacityAccount + atomic overbooking protection |
 | P19-T004 | **COMPLETE / ACCEPTED** (`b71fd15`) — BookingContactSnapshot + BookingPassenger transaction-time people facts |
 | P19-T005 | **COMPLETE / ACCEPTED** (`66ec4e9`) — BookingMonetarySnapshot copied from authoritative Pricing Quote |
-| P19-T006 | **DELIVERED** — Pending cancellation + Active-hold release; Confirm/Payment DEFERRED |
+| P19-T006 | **COMPLETE / ACCEPTED** (`9dca5ef`) — Pending cancellation + Active-hold release; Confirm/Payment DEFERRED |
+| P19-T007 | **DELIVERED** — Direct/Agency source on one Booking aggregate; logical AgencyProfile/Offer refs |
 | P19-R1 (Booking ownership / schema / target) | **RESOLVED** — independent Booking module · schema `booking` · initial target = TourDeparture (logical) · Tour owns capacity definition · Booking owns consumption |
 | P19-R2 (Lifecycle / aggregate) | **RESOLVED** — independent Booking aggregate targets one logical TourDeparture · statuses Pending/Confirmed/Cancelled · **Confirmed != PaymentSucceeded** · **Cancelled != Refunded** · Create→Pending · Pending→Cancelled · no unrestricted Confirm · no Confirmed→Cancelled · table `bookings` |
 | P19-R3 (Capacity consumption / hold / concurrency) | **RESOLVED** — Tour owns definition · Booking owns consumption · CapacityHold Active/Consumed/Released/Expired · **CapacityHoldStatus != BookingStatus** · explicit ExpiresAt · advisory-lock concurrency · idempotent hold · confirmation remains R6 |
 | P19-R4 (Booker / passengers / contact / PII) | **RESOLVED** — BookingContactSnapshot · BookingPassenger child · **PlannerTravelerComposition != BookingPassenger** · **BookingPassenger != Party Person Master** · no passport/upload · PassengerCount <= Active hold SeatCount |
 | P19-R5 (Quote / monetary snapshot) | **RESOLVED** — Pricing owns Price/Quote · Booking stores immutable BookingMonetarySnapshot · **Price != Quote** · **Quote != BookingMonetarySnapshot** · **BookingMonetarySnapshot != PaymentAmount** · **Booking != Pricing Authority** · no FX/recalc/Payment |
 | P19-R6 (Payment / confirmation / cancellation orchestration) | **RESOLVED** — Payment execution OUT of P19 · Confirm DEFERRED · Pending cancel IN · Confirmed cancel DEFERRED · **Booking != Payment** · **PaymentSucceeded != BookingConfirmed** · **BookingCancelled != PaymentRefunded** |
-| P19-R7 (Agency / Lead / Visa / external boundaries) | **OPEN** |
+| P19-R7 (Agency / Lead / Visa / external boundaries) | **RESOLVED** — one Booking aggregate for Direct and Agency · `BookingSourceKind` Direct/Agency · logical AgencyProfileReference required for Agency · optional AgencyOfferReference · **Booking != AgencyMarketplace** · **BookingSourceKind != BookingStatus** · **AgencyOffer != Booking** · **AgencyOffer != Quote** · **Agency context != Pricing Authority** · **Lead != Booking** · **VisaApplication != Booking** · no commission/settlement/agency price/acceptance/capacity pool · agency PII/authorization remains R8 |
 | P19-R8 (Public booking / authorization / privacy) | **OPEN** |
 | P18-R8 (Public composition) | **RESOLVED** — PublicExperience composes `/plan` · TripPlanner owns TripIntent/Lead · honest follow-up CTA · no Search/Booking/Payment/CRM |
 | P18-R1 (TripPlanner ownership) | **RESOLVED** — independent TripPlanner module · schema `trip_planner` · owns trip-intent/lead facts/lifecycle · does not own Destination/Tour/Place facts, Pricing/Quote, Booking, Payment, CRM, Search, AgencyMarketplace commercial allocation, Notification delivery, or Party/Identity master data · product refs = opaque logical id |

@@ -49,6 +49,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(BookingOwnershipBoundary.CapacityHoldImplemented);
         Assert.True(BookingOwnershipBoundary.ContactSnapshotImplemented);
         Assert.True(BookingOwnershipBoundary.QuoteIntegrationImplemented);
+        Assert.True(BookingOwnershipBoundary.BookingSourceContextImplemented);
         Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
         Assert.False(BookingOwnershipBoundary.AiInfrastructureImplemented);
         Assert.False(BookingOwnershipBoundary.GenericWorkflowEngineImplemented);
@@ -63,7 +64,8 @@ public sealed class BookingBoundaryGuardrailTests
             .Select(r => Path.GetFileNameWithoutExtension(r)!)
             .Where(name =>
                 IsForbiddenPeerModule(name)
-                && !string.Equals(name, "TravelCore.Modules.Pricing.Contracts", StringComparison.Ordinal))
+                && !string.Equals(name, "TravelCore.Modules.Pricing.Contracts", StringComparison.Ordinal)
+                && !string.Equals(name, "TravelCore.Modules.AgencyMarketplace.Contracts", StringComparison.Ordinal))
             .ToList();
         Assert.True(
             hits.Count == 0,
@@ -71,9 +73,16 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains(
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name == "TravelCore.Modules.Pricing.Contracts");
+        Assert.Contains(
+            infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Modules.AgencyMarketplace.Contracts");
         Assert.DoesNotContain(
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name is "TravelCore.Modules.Pricing.Infrastructure" or "TravelCore.Modules.Pricing.Domain");
+        Assert.DoesNotContain(
+            infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name is "TravelCore.Modules.AgencyMarketplace.Infrastructure"
+                or "TravelCore.Modules.AgencyMarketplace.Domain");
     }
 
     [Fact]
@@ -111,7 +120,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(SeatHold|Reservation|ReservedSeats|ConfirmedSeats|ReleasedSeats|PaymentIntent|PaymentStatus|Quote|Price|Checkout|Lead|VisaApplication|AgencyBooking|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine|TravelDocument|Passport)\b",
+            @"\b(class|record|enum|struct|interface)\s+(SeatHold|Reservation|ReservedSeats|ConfirmedSeats|ReleasedSeats|PaymentIntent|PaymentStatus|Quote|Price|Checkout|Lead|VisaApplication|AgencyBooking|DirectBooking|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine|TravelDocument|Passport|Commission|AgencyPrice)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -223,6 +232,13 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains("PaymentSucceeded != BookingConfirmed", text, StringComparison.Ordinal);
         Assert.Contains("BookingCancelled != PaymentRefunded", text, StringComparison.Ordinal);
         Assert.Contains("DEFERRED to Payment integration", text, StringComparison.Ordinal);
+        Assert.Contains("Booking != AgencyMarketplace", text, StringComparison.Ordinal);
+        Assert.Contains("BookingSourceKind != BookingStatus", text, StringComparison.Ordinal);
+        Assert.Contains("AgencyOffer != Booking", text, StringComparison.Ordinal);
+        Assert.Contains("AgencyOffer != Quote", text, StringComparison.Ordinal);
+        Assert.Contains("Agency context != Pricing Authority", text, StringComparison.Ordinal);
+        Assert.Contains("Lead != Booking", text, StringComparison.Ordinal);
+        Assert.Contains("VisaApplication != Booking", text, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -263,6 +279,7 @@ public sealed class BookingBoundaryGuardrailTests
                 "PartyReference",
                 "PassengerCount",
                 "Passengers",
+                "Source",
                 "Status",
                 "StatusChangedAt",
                 "TourDeparture",
@@ -459,6 +476,91 @@ public sealed class BookingBoundaryGuardrailTests
             .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
             .ToList();
         Assert.True(infraHits.Count == 0, "Booking must not reach Pricing engine/persistence:\n" + string.Join('\n', infraHits));
+    }
+
+    [Fact]
+    public void Booking_T007_Source_Is_Not_Marketplace_Pricing_Or_Acceptance()
+    {
+        Assert.Equal("Booking != AgencyMarketplace", BookingSourceBoundary.BookingIsNotAgencyMarketplace);
+        Assert.Equal("BookingSourceKind != BookingStatus", BookingSourceBoundary.BookingSourceKindIsNotBookingStatus);
+        Assert.Equal("AgencyOffer != Booking", BookingSourceBoundary.AgencyOfferIsNotBooking);
+        Assert.Equal("AgencyOffer != Quote", BookingSourceBoundary.AgencyOfferIsNotQuote);
+        Assert.Equal("AgencyOffer != Price", BookingSourceBoundary.AgencyOfferIsNotPrice);
+        Assert.Equal("Agency context != Pricing Authority", BookingSourceBoundary.AgencyContextIsNotPricingAuthority);
+        Assert.Equal("Lead != Booking", BookingSourceBoundary.LeadIsNotBooking);
+        Assert.Equal("VisaApplication != Booking", BookingSourceBoundary.VisaApplicationIsNotBooking);
+        Assert.Equal("BookingStatus != AgencyOfferStatus", BookingSourceBoundary.BookingStatusIsNotAgencyOfferStatus);
+        Assert.Equal("BookingStatus != AgencyAcceptanceStatus", BookingSourceBoundary.BookingStatusIsNotAgencyAcceptanceStatus);
+        Assert.Equal(
+            "AgencyOfferReference is optional; AgencyProfileReference is required for Agency source",
+            BookingSourceBoundary.AgencyOfferReferenceRequirement);
+        Assert.Equal("future object-level authorization; not globally visible", BookingSourceBoundary.AgencyAccessPolicy);
+        Assert.True(BookingSourceBoundary.DirectAndAgencyUseSameAggregate);
+        Assert.False(BookingSourceBoundary.AgencyBookingAggregateImplemented);
+        Assert.False(BookingSourceBoundary.DirectBookingAggregateImplemented);
+        Assert.False(BookingSourceBoundary.AgencyPriceOverrideImplemented);
+        Assert.False(BookingSourceBoundary.CommissionImplemented);
+        Assert.False(BookingSourceBoundary.SettlementImplemented);
+        Assert.False(BookingSourceBoundary.AgencyAcceptanceLifecycleImplemented);
+        Assert.False(BookingSourceBoundary.AgencyCapacityPoolImplemented);
+        Assert.False(BookingSourceBoundary.AgencyPiiSharingImplemented);
+        Assert.False(BookingSourceBoundary.AgencyInboxImplemented);
+        Assert.False(BookingSourceBoundary.LeadConversionImplemented);
+        Assert.False(BookingSourceBoundary.SourceMutationImplemented);
+        Assert.True(BookingOwnershipBoundary.BookingSourceContextImplemented);
+        Assert.False(BookingOwnershipBoundary.OwnsAgencyMarketplace);
+        Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
+        Assert.Equal(
+            new[] { BookingSourceKind.Direct, BookingSourceKind.Agency },
+            Enum.GetValues<BookingSourceKind>());
+        Assert.DoesNotContain("AwaitingAgency", Enum.GetNames<BookingStatus>());
+        Assert.DoesNotContain("AgencyAccepted", Enum.GetNames<BookingStatus>());
+        Assert.DoesNotContain("AgencyRejected", Enum.GetNames<BookingStatus>());
+        Assert.Null(typeof(Booking).GetMethod("Confirm"));
+        Assert.Null(typeof(Booking).GetMethod("SetSource"));
+        Assert.Null(typeof(Booking).GetMethod("ConvertFromLead"));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.Booking.Domain.BookingSourceContext"));
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.Booking.Domain.AgencyBooking"));
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.Booking.Domain.DirectBooking"));
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.Booking.Domain.Commission"));
+
+        var infraCs = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Booking",
+            "TravelCore.Modules.Booking.Infrastructure");
+        var infraHits = Directory.EnumerateFiles(infraCs, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path).Select((line, i) => (path, line, i)))
+            .Where(x =>
+                x.line.Contains("TravelCore.Modules.AgencyMarketplace.Infrastructure", StringComparison.Ordinal)
+                || x.line.Contains("TravelCore.Modules.AgencyMarketplace.Domain", StringComparison.Ordinal)
+                || x.line.Contains("AgencyMarketplaceDbContext", StringComparison.Ordinal)
+                || x.line.Contains("TourDbContext", StringComparison.Ordinal))
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+        Assert.True(
+            infraHits.Count == 0,
+            "Booking must not reach AgencyMarketplace/Tour persistence:\n" + string.Join('\n', infraHits));
+
+        var creation = File.ReadAllText(Path.Combine(infraCs, "Services", "BookingCreationService.cs"));
+        Assert.Contains("IAgencyOriginContextQuery", creation, StringComparison.Ordinal);
+        Assert.DoesNotContain("MapPost(\"/api/booking", creation, StringComparison.Ordinal);
+
+        var plan = File.ReadAllText(Path.Combine(RepoRoot, "docs", "plans", "P19-implementation-plan.md"));
+        Assert.Contains("Booking != AgencyMarketplace", plan, StringComparison.Ordinal);
+        Assert.Contains("BookingSourceKind != BookingStatus", plan, StringComparison.Ordinal);
+        Assert.Contains("AgencyOffer != Booking", plan, StringComparison.Ordinal);
+        Assert.Contains("AgencyOffer != Quote", plan, StringComparison.Ordinal);
+        Assert.Contains("Agency context != Pricing Authority", plan, StringComparison.Ordinal);
+        Assert.Contains("Lead != Booking", plan, StringComparison.Ordinal);
+        Assert.Contains("VisaApplication != Booking", plan, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>
