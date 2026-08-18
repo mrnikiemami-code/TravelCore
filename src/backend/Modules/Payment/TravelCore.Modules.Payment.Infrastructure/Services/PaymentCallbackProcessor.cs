@@ -63,7 +63,7 @@ internal sealed class PaymentCallbackProcessor
         var payment = await FindCorrelatedPaymentAsync(verification.Result, cancellationToken);
         if (payment is null)
         {
-            return await ProcessRefundAsync(verification.Result, now, cancellationToken);
+            return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.UnknownAttempt);
         }
 
         var attempt = FindCorrelatedAttempt(payment, verification.Result);

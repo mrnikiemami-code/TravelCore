@@ -305,6 +305,139 @@ public sealed class PaymentProviderBoundaryTests
     }
 
     [Fact]
+    public async Task Callback_For_Payment_A_Cannot_Mutate_Payment_B()
+    {
+        await using var db = CreateDb();
+        var bookingB = new BookingReference(Guid.Parse("0198b3e0-0000-7000-8000-000000000331"));
+        var paymentA = PaymentAggregate.Create(Booking, Now);
+        paymentA.BindExecutionSnapshot(Guid.CreateVersion7(), new TravelCore.Money.Money(100m, "USD"), Now);
+        var attemptA = paymentA.CreateAttempt(Now);
+        paymentA.RecordProviderInitiation(
+            attemptA.Id,
+            Now.Plus(Duration.FromMinutes(1)),
+            TestKey,
+            new ProviderRequestReference("req-A"),
+            new ProviderTransactionReference("txn-A"));
+        var paymentB = PaymentAggregate.Create(bookingB, Now);
+        paymentB.BindExecutionSnapshot(Guid.CreateVersion7(), new TravelCore.Money.Money(200m, "USD"), Now);
+        var attemptB = paymentB.CreateAttempt(Now);
+        paymentB.RecordProviderInitiation(
+            attemptB.Id,
+            Now.Plus(Duration.FromMinutes(1)),
+            TestKey,
+            new ProviderRequestReference("req-B"),
+            new ProviderTransactionReference("txn-B"));
+        db.Payments.AddRange(paymentA, paymentB);
+        await db.SaveChangesAsync();
+
+        var fake = new FakePaymentProviderGateway(TestKey)
+        {
+            NextVerification = ProviderVerificationOutcome.Succeeded,
+            RequestReference = new ProviderRequestReference("req-A"),
+            TransactionReference = new ProviderTransactionReference("txn-A"),
+            ReportedAmount = 100m,
+            ReportedCurrencyCode = "USD",
+        };
+        var processor = new PaymentCallbackProcessor(
+            db,
+            new PaymentProviderResolver([fake]),
+            new FixedClock(Now.Plus(Duration.FromMinutes(2))));
+        var result = await processor.ProcessAsync(new PaymentCallbackEnvelope
+        {
+            ProviderKey = TestKey,
+            Headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                [FakePaymentProviderGateway.VerifiedHeaderName] = "true",
+            },
+        });
+
+        Assert.Equal(PaymentCallbackProcessStatus.Applied, result.Status);
+        var reloadedA = await db.Payments.Include(item => item.Attempts).SingleAsync(item => item.Id == paymentA.Id);
+        var reloadedB = await db.Payments.Include(item => item.Attempts).SingleAsync(item => item.Id == paymentB.Id);
+        Assert.Equal(PaymentStatus.Succeeded, reloadedA.Status);
+        Assert.Equal(PaymentStatus.Pending, reloadedB.Status);
+        Assert.Equal(PaymentAttemptStatus.Initiated, reloadedB.Attempts.Single().Status);
+    }
+
+    [Fact]
+    public async Task Collection_Evidence_Cannot_Succeed_Refund_And_Refund_Evidence_Cannot_Succeed_Payment()
+    {
+        await using var db = CreateDb();
+        var payment = PaymentAggregate.Create(Booking, Now);
+        payment.BindExecutionSnapshot(Guid.CreateVersion7(), new TravelCore.Money.Money(100m, "USD"), Now);
+        var payAttempt = payment.CreateAttempt(Now);
+        payment.RecordProviderInitiation(
+            payAttempt.Id,
+            Now.Plus(Duration.FromMinutes(1)),
+            TestKey,
+            new ProviderRequestReference("req-pay"),
+            new ProviderTransactionReference("txn-pay"));
+        payment.RecordAuthoritativeCollectionSuccess(payAttempt.Id, Now.Plus(Duration.FromMinutes(2)));
+        db.Payments.Add(payment);
+        var refund = Refund.CreateForSucceededPayment(payment, Now.Plus(Duration.FromMinutes(3)));
+        var refundAttempt = refund.CreateAttempt(Now.Plus(Duration.FromMinutes(3)));
+        refund.RecordProviderInitiation(
+            refundAttempt.Id,
+            Now.Plus(Duration.FromMinutes(3)),
+            TestKey,
+            new ProviderRequestReference("req-ref"),
+            new ProviderTransactionReference("txn-ref"));
+        db.Refunds.Add(refund);
+        await db.SaveChangesAsync();
+
+        var collectionFake = new FakePaymentProviderGateway(TestKey)
+        {
+            NextVerification = ProviderVerificationOutcome.Succeeded,
+            RequestReference = new ProviderRequestReference("req-ref"),
+            TransactionReference = new ProviderTransactionReference("txn-ref"),
+            ReportedAmount = 100m,
+            ReportedCurrencyCode = "USD",
+        };
+        var collection = await new PaymentCallbackProcessor(
+            db,
+            new PaymentProviderResolver([collectionFake]),
+            new FixedClock(Now.Plus(Duration.FromMinutes(4))))
+            .ProcessAsync(new PaymentCallbackEnvelope
+            {
+                ProviderKey = TestKey,
+                Headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    [FakePaymentProviderGateway.VerifiedHeaderName] = "true",
+                },
+            });
+        Assert.Equal(PaymentCallbackProcessStatus.UnknownAttempt, collection.Status);
+        Assert.Equal(RefundStatus.Pending, (await db.Refunds.Include(x => x.Attempts).SingleAsync()).Status);
+        Assert.Equal(PaymentStatus.Succeeded, (await db.Payments.SingleAsync()).Status);
+
+        var refundFake = new FakePaymentProviderGateway(TestKey)
+        {
+            NextRefundVerification = ProviderVerificationOutcome.Succeeded,
+            RefundRequestReference = new ProviderRequestReference("req-pay"),
+            RefundTransactionReference = new ProviderTransactionReference("txn-pay"),
+            ReportedRefundAmount = 100m,
+            ReportedRefundCurrencyCode = "USD",
+        };
+        var refundCallback = await new PaymentCallbackProcessor(
+            db,
+            new PaymentProviderResolver([refundFake]),
+            new FixedClock(Now.Plus(Duration.FromMinutes(5))))
+            .ProcessAsync(new PaymentCallbackEnvelope
+            {
+                ProviderKey = TestKey,
+                Headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    [FakePaymentProviderGateway.VerifiedHeaderName] = "true",
+                    [PaymentCallbackKinds.HeaderName] = PaymentCallbackKinds.Refund,
+                },
+            });
+        Assert.Equal(PaymentCallbackProcessStatus.UnknownAttempt, refundCallback.Status);
+        var reloadedPayment = await db.Payments.Include(x => x.Attempts).SingleAsync();
+        Assert.Equal(PaymentStatus.Succeeded, reloadedPayment.Status);
+        Assert.Equal(1, reloadedPayment.Attempts.Count(x => x.Status == PaymentAttemptStatus.Succeeded));
+        Assert.Equal(RefundStatus.Pending, (await db.Refunds.Include(x => x.Attempts).SingleAsync()).Status);
+    }
+
+    [Fact]
     public async Task Initiation_Service_Uses_Trusted_Provider_And_Network_Failure_Is_Unknown()
     {
         await using var db = CreateDb();

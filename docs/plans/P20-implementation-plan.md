@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P20-PLAN` |
 | Phase | P20 — Payment |
-| Status | PLAN ACCEPTED · **P20-R1 = RESOLVED** · **P20-R2 = RESOLVED** · **P20-R3 = RESOLVED** · **P20-R4 = RESOLVED** · **P20-R5 = RESOLVED** · **P20-R6 = RESOLVED** · **P20-R7 = RESOLVED** · **P20-R8 = RESOLVED** · T008 provider capability/ops reads delivered, awaiting architect acceptance |
+| Status | PLAN ACCEPTED · **P20-R1 = RESOLVED** · **P20-R2 = RESOLVED** · **P20-R3 = RESOLVED** · **P20-R4 = RESOLVED** · **P20-R5 = RESOLVED** · **P20-R6 = RESOLVED** · **P20-R7 = RESOLVED** · **P20-R8 = RESOLVED** · T009 hardening/evidence delivered, awaiting architect acceptance |
 | Baseline | `d258933` (`docs(booking): add P19 acceptance gate evidence [TC-P19-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P20 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Payment · `05-dependency-rules.md` · `06-cross-module-communication.md` · `07-data-architecture.md` (schema `payment`) · `08-persistence-and-migrations.md` · `29-module-local-transactional-outbox.md` · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P12 Pricing · P19 Booking (`P19-GATE-acceptance-evidence.md`) |
 | Backend root | `src/backend` |
@@ -308,11 +308,11 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 
 ### TC-P20-T008 — Provider capability / operational read / remaining public-ops slice
 
-- Depends on **P20-R8**. Vacant if R8 has no independent product slice.
+- Depends on **P20-R8**. **ACCEPTED** `f11041a` / docs `7aab5b6`.
 
 ### TC-P20-T009 — Hardening + evidence
 
-- Guardrails + evidence pack; **no new capability**. Does **not** execute GATE.
+- Guardrails + evidence pack; **no new capability**. Does **not** execute GATE. Evidence: [`P20-T009-hardening-and-evidence-pack.md`](P20-T009-hardening-and-evidence-pack.md).
 
 ### TC-P20-GATE — Acceptance Gate
 

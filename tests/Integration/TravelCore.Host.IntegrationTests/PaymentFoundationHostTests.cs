@@ -71,6 +71,13 @@ public sealed class PaymentFoundationHostTests
         Assert.Equal(HttpStatusCode.NotFound, operational.StatusCode);
         using var adminPayment = await client.GetAsync("/api/admin/payments/" + Guid.CreateVersion7().ToString("D"), ct);
         Assert.Equal(HttpStatusCode.NotFound, adminPayment.StatusCode);
+
+        using var opsWithBookingToken = new HttpRequestMessage(
+            HttpMethod.Get,
+            "/api/payment/operational/" + Guid.CreateVersion7().ToString("D"));
+        opsWithBookingToken.Headers.Add("X-TravelCore-Booking-Access-Token", "not-an-operational-credential");
+        using var opsToken = await client.SendAsync(opsWithBookingToken, ct);
+        Assert.Equal(HttpStatusCode.NotFound, opsToken.StatusCode);
     }
 
     [Fact]

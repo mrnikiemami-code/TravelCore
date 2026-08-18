@@ -229,6 +229,61 @@ public sealed class PaymentCapabilityAndOperationalTests
         Assert.Equal(PaymentStatus.Succeeded, (await db.Payments.SingleAsync()).Status);
     }
 
+    [Fact]
+    public async Task Unsupported_Refund_Status_Query_Does_Not_Mutate()
+    {
+        await using var db = CreateDb();
+        var payment = PaymentAggregate.Create(Booking, Now);
+        payment.BindExecutionSnapshot(Guid.CreateVersion7(), new MoneyValue(110m, "IRR"), Now);
+        var payAttempt = payment.CreateAttempt(Now);
+        payment.RecordProviderInitiation(
+            payAttempt.Id,
+            Now.Plus(Duration.FromMinutes(1)),
+            TestKey,
+            new ProviderRequestReference("req-cap-2"),
+            new ProviderTransactionReference("txn-cap-2"));
+        payment.RecordAuthoritativeCollectionSuccess(payAttempt.Id, Now.Plus(Duration.FromMinutes(2)));
+        db.Payments.Add(payment);
+        var refund = Refund.CreateForSucceededPayment(payment, Now.Plus(Duration.FromMinutes(3)));
+        var refundAttempt = refund.CreateAttempt(Now.Plus(Duration.FromMinutes(3)));
+        refund.RecordProviderInitiation(
+            refundAttempt.Id,
+            Now.Plus(Duration.FromMinutes(3)),
+            TestKey,
+            new ProviderRequestReference("req-cap-ref"),
+            new ProviderTransactionReference("txn-cap-ref"));
+        db.Refunds.Add(refund);
+        await db.SaveChangesAsync();
+
+        var fake = new FakePaymentProviderGateway(
+            TestKey,
+            PaymentProviderCapability.RedirectInitiation
+            | PaymentProviderCapability.CallbackVerification
+            | PaymentProviderCapability.RefundInitiation);
+        var resolver = new PaymentProviderResolver([fake]);
+        var query = new PaymentOperationalQueryService(
+            db,
+            resolver,
+            new PaymentAttemptRecheckService(db, resolver, new FixedClock(Now.Plus(Duration.FromMinutes(4)))),
+            new RefundAttemptRecheckService(db, resolver, new FixedClock(Now.Plus(Duration.FromMinutes(4)))));
+        Assert.Equal(
+            ProviderCapabilityStatus.UnsupportedCapability,
+            await query.RecheckRefundAttemptAsync(refundAttempt.Id.Value));
+        var reloaded = await db.Refunds.Include(x => x.Attempts).SingleAsync();
+        Assert.Equal(RefundStatus.Pending, reloaded.Status);
+        Assert.Equal(RefundAttemptStatus.Initiated, reloaded.Attempts.Single().Status);
+        Assert.False(fake.Capabilities.HasFlag(PaymentProviderCapability.RefundStatusQuery));
+
+        var recheckParams = typeof(IPaymentOperationalQuery)
+            .GetMethod(nameof(IPaymentOperationalQuery.RecheckPaymentAttemptAsync))!
+            .GetParameters()
+            .Select(p => p.ParameterType)
+            .ToArray();
+        Assert.DoesNotContain(typeof(PaymentStatus), recheckParams);
+        Assert.DoesNotContain(typeof(ProviderVerificationOutcome), recheckParams);
+        Assert.DoesNotContain(typeof(RefundStatus), recheckParams);
+    }
+
     private static PaymentDbContext CreateDb()
     {
         var options = new DbContextOptionsBuilder<PaymentDbContext>()
