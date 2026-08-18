@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P20 — Payment** (**COMPLETE** — `TC-P20-GATE` ACCEPTED · **P20-R1–R8 RESOLVED** · T001–T009 ACCEPTED) |
-| Phase Status | P00–P20 COMPLETE |
+| Current Phase | **P21 — Hotel Booking** (**PLAN authored** — `TC-P21-PLAN`; **P21-R1–R8 OPEN**; no HotelBooking product code) |
+| Phase Status | P00–P20 COMPLETE · P21 PLAN authored · P21-R1–R8 OPEN |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P20-GATE` RESULT → do **not** start P21 until `TC-P21-PLAN` |
+| Current Next Task | Architect review of `TC-P21-PLAN` → T001 only after ACCEPT **and** P21-R1 lock; do not invent R1–R8 |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -120,7 +120,8 @@
 - **P18** = COMPLETE (`TC-P18-GATE` ACCEPTED `73605aa` · **R1–R8 RESOLVED**) [`plans/P18-GATE-acceptance-evidence.md`](plans/P18-GATE-acceptance-evidence.md)
 - **P19** = COMPLETE (`TC-P19-GATE` ACCEPTED `d258933` · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
 - **P20** = COMPLETE (`TC-P20-GATE` ACCEPTED · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md)
-- **P21–P29 و Post-P29** = PLANNED / NOT_STARTED
+- **P21** = PLAN authored — Hotel Booking · `TC-P21-PLAN` [`plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R8 OPEN** · no product code
+- **P22–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -591,7 +592,7 @@ Payment را با Price یا Quote ادغام نکنید.
 
 ## P21 — Hotel Booking
 
-**Status:** PLANNED
+**Status:** PLAN authored — `TC-P21-PLAN` [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R8 OPEN** · no HotelBooking product code
 
 جدا از Place Hotel Catalog: provider abstraction · mapping · search · availability · rooms · rates · cancellation rules · Quote · reservation · booking · voucher · provider sync.
 
@@ -768,7 +769,7 @@ P26 = Advanced SEO.
 | P18 | Trip Planner / Lead Experience | **COMPLETE** (`TC-P18-GATE` ACCEPTED `73605aa` · R1–R8 RESOLVED) |
 | P19 | Tour Booking | **COMPLETE** (`TC-P19-GATE` ACCEPTED `d258933` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P20 | Payment | **COMPLETE** (`TC-P20-GATE` ACCEPTED · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
-| P21 | Hotel Booking | PLANNED |
+| P21 | Hotel Booking | **PLAN authored** (R1–R8 OPEN · no product code) |
 | P22 | Flight | PLANNED |
 | P23 | Dynamic Package / Flight + Hotel | PLANNED |
 | P24 | B2B / Agency Commerce | PLANNED |

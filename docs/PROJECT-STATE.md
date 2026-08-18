@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P20 — Payment** (**COMPLETE** — `TC-P20-GATE` ACCEPTED · **P20-R1–R8 RESOLVED** · T001–T009 ACCEPTED) |
-| Previous Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` ACCEPTED `73605aa`) |
+| Current Phase | **P21 — Hotel Booking** (**PLAN authored** — `TC-P21-PLAN`; **P21-R1–R8 OPEN**; no HotelBooking product code) |
+| Previous Phase | **P20 — Payment** (**COMPLETE** — `TC-P20-GATE` ACCEPTED `fc41756` · docs `96be199`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P20-GATE` COMPLETE / ACCEPTED — P20 closed; next phase **P21 — Hotel Booking** is PLANNED and **not started** |
-| Current Next Task | Return `TC-P20-GATE RESULT`; do **not** start P21 until architect issues `TC-P21-PLAN` |
+| Current Active Product Task | `TC-P21-PLAN` — Hotel Booking architecture and implementation plan (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P21-PLAN` → T001 only after ACCEPT **and** P21-R1 lock; do not invent R1–R8 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -235,6 +235,7 @@
 | P19 | **COMPLETE** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE ACCEPTED (`d258933`) [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md) |
 | P19-GATE | **COMPLETE / ACCEPTED** (`d258933`) — [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md); Payment/Confirm remain DEFERRED into P20 |
 | P20 | **COMPLETE** — GATE ACCEPTED · **P20-R1–R8 RESOLVED** · T001–T009 ACCEPTED [`docs/plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md) |
+| P21 | **PLAN authored** — `TC-P21-PLAN` [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R8 OPEN** · no HotelBooking product code |
 | P20 Plan | `TC-P20-PLAN` COMPLETE / ACCEPTED (`aca9c44`) — [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
 | P20-T001 | **COMPLETE / ACCEPTED** (`1ec8963`) — independent Payment module · schema `payment` · initial target = Booking · Tour Booking scope |
 | P20-T002 | **COMPLETE / ACCEPTED** (`75a4f84`) — Payment aggregate + PaymentAttempt · PaymentStatus Pending/Succeeded · PaymentAttemptStatus Created/Initiated/Succeeded/Failed |
