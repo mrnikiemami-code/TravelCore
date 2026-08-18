@@ -151,6 +151,11 @@ internal sealed class PaymentInitiationService
 
         var gateway = _resolver.Resolve(providerKey)
             ?? throw new InvalidOperationException("Configured Payment provider is not registered.");
+        if (_resolver.Check(providerKey, PaymentProviderCapability.RedirectInitiation)
+            == ProviderCapabilityStatus.UnsupportedCapability)
+        {
+            throw new InvalidOperationException("Provider does not support RedirectInitiation.");
+        }
 
         PaymentInitiationResult result;
         try

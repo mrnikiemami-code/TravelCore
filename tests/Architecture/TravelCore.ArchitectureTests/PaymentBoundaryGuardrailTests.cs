@@ -322,6 +322,10 @@ public sealed class PaymentBoundaryGuardrailTests
             .ToArray();
         Assert.DoesNotContain("SetStatus", methodNames);
         Assert.DoesNotContain("MarkSucceeded", methodNames);
+        Assert.DoesNotContain("ForceSuccess", methodNames);
+        Assert.DoesNotContain("MarkPaid", methodNames);
+        Assert.DoesNotContain("MarkRefunded", methodNames);
+        Assert.DoesNotContain("ForceConfirm", methodNames);
         Assert.Contains("RecordAuthoritativeCollectionSuccess", methodNames);
         Assert.Contains("CreateAttempt", methodNames);
         Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
@@ -463,6 +467,32 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Equal(
             "/api/booking/public/{bookingId}/payment/initiation",
             PublicPaymentCompositionBoundary.InitiationRoute);
+        Assert.False(PaymentOperationalBoundary.PublicOperationalEndpointImplemented);
+        Assert.False(PaymentOperationalBoundary.ManualPaymentMutationImplemented);
+        Assert.False(PaymentOperationalBoundary.ManualRefundMutationImplemented);
+        Assert.False(PaymentOperationalBoundary.ManualBookingConfirmImplemented);
+        Assert.Equal("READY FOR ADAPTERS", PaymentProviderTrustBoundary.ProviderInfrastructurePosture);
+        Assert.Equal("NOT CONFIGURED / NONE", PaymentProviderTrustBoundary.ProductionProviderPosture);
+        Assert.Equal(
+            new[]
+            {
+                "RedirectInitiation",
+                "CallbackVerification",
+                "PaymentStatusQuery",
+                "RefundInitiation",
+                "RefundVerification",
+                "RefundStatusQuery",
+            },
+            PaymentProviderCapabilitySet.ExactValues);
+        var operationalMethods = typeof(IPaymentOperationalQuery)
+            .GetMethods()
+            .Select(m => m.Name)
+            .ToArray();
+        Assert.DoesNotContain("SetStatus", operationalMethods);
+        Assert.DoesNotContain("ForceSuccess", operationalMethods);
+        Assert.DoesNotContain("MarkPaid", operationalMethods);
+        Assert.DoesNotContain("MarkRefunded", operationalMethods);
+        Assert.DoesNotContain("ForceConfirm", operationalMethods);
         Assert.False(PaymentRefundBoundary.PartialRefundImplemented);
         Assert.False(RefundSuccessOutboxBoundary.EventMeansBookingCancelled);
         Assert.Equal("Payment != Refund", PaymentRefundBoundary.PaymentIsNotRefund);

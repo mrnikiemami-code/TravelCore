@@ -7,6 +7,8 @@ public interface IPaymentProviderGateway
 {
     ProviderKey Key { get; }
 
+    PaymentProviderCapability Capabilities { get; }
+
     Task<PaymentInitiationResult> InitiatePaymentAsync(
         PaymentInitiationRequest request,
         CancellationToken cancellationToken = default);

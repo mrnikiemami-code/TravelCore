@@ -11,4 +11,9 @@ public sealed class PaymentProviderOptions
     /// Trusted default ProviderKey. Optional so the host can start without a production adapter.
     /// </summary>
     public string? DefaultProviderKey { get; set; }
+
+    /// <summary>
+    /// Registered adapters listed here cannot initiate, recheck, or apply callbacks (P20-R8).
+    /// </summary>
+    public string[] DisabledProviderKeys { get; set; } = [];
 }

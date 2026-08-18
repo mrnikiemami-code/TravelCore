@@ -41,6 +41,16 @@ internal sealed class RefundInitiationService
             ?? throw new InvalidOperationException("Refund requires a successful PaymentAttempt provider context.");
         var providerKey = collection.ProviderKey
             ?? throw new InvalidOperationException("Refund requires the original collection ProviderKey.");
+        var capability = _resolver.Check(providerKey, PaymentProviderCapability.RefundInitiation);
+        if (capability is ProviderCapabilityStatus.UnknownProvider or ProviderCapabilityStatus.DisabledProvider)
+        {
+            throw new InvalidOperationException("Configured Payment provider is not registered.");
+        }
+
+        if (capability == ProviderCapabilityStatus.UnsupportedCapability)
+        {
+            throw new InvalidOperationException("Provider does not support RefundInitiation.");
+        }
 
         var active = refund.Attempts.SingleOrDefault(item => item.IsActive);
         if (active is not null)
@@ -89,6 +99,11 @@ internal sealed class RefundInitiationService
     {
         var gateway = _resolver.Resolve(providerKey)
             ?? throw new InvalidOperationException("Configured Payment provider is not registered.");
+        if (_resolver.Check(providerKey, PaymentProviderCapability.RefundInitiation)
+            == ProviderCapabilityStatus.UnsupportedCapability)
+        {
+            throw new InvalidOperationException("Provider does not support RefundInitiation.");
+        }
 
         PaymentInitiationResult result;
         try

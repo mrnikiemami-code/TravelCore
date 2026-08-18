@@ -67,5 +67,25 @@ public sealed class PaymentFoundationHostTests
             new StringContent("""{"success":true}""", System.Text.Encoding.UTF8, "application/json"),
             ct);
         Assert.Equal(HttpStatusCode.NotFound, unverified.StatusCode);
+        using var operational = await client.GetAsync("/api/payment/operational/" + Guid.CreateVersion7().ToString("D"), ct);
+        Assert.Equal(HttpStatusCode.NotFound, operational.StatusCode);
+        using var adminPayment = await client.GetAsync("/api/admin/payments/" + Guid.CreateVersion7().ToString("D"), ct);
+        Assert.Equal(HttpStatusCode.NotFound, adminPayment.StatusCode);
+    }
+
+    [Fact]
+    public async Task Host_Starts_With_Zero_Production_Providers_And_Internal_Operational_Query()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        await using var factory = _fixture.CreateFactory(Environments.Development);
+        using var scope = factory.Services.CreateScope();
+        var resolver = scope.ServiceProvider.GetRequiredService<IPaymentProviderResolver>();
+        var operational = scope.ServiceProvider.GetRequiredService<IPaymentOperationalQuery>();
+        Assert.Empty(resolver.ListDescriptors());
+        Assert.Null(await operational.GetByPaymentIdAsync(Guid.CreateVersion7(), ct));
+        Assert.Equal("NONE", PaymentProviderTrustBoundary.NamedProviderSelected);
+        Assert.False(PaymentProviderTrustBoundary.NamedProductionAdapterImplemented);
+        Assert.False(PaymentOperationalBoundary.PublicOperationalEndpointImplemented);
+        Assert.False(PaymentOperationalBoundary.ManualPaymentMutationImplemented);
     }
 }

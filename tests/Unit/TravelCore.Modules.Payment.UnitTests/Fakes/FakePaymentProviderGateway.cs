@@ -9,12 +9,17 @@ internal sealed class FakePaymentProviderGateway : IPaymentProviderGateway
 {
     public const string VerifiedHeaderName = "X-TravelCore-Provider-Verified";
 
-    public FakePaymentProviderGateway(ProviderKey key)
+    public FakePaymentProviderGateway(
+        ProviderKey key,
+        PaymentProviderCapability capabilities = PaymentProviderCapabilitySet.All)
     {
         Key = key;
+        Capabilities = capabilities;
     }
 
     public ProviderKey Key { get; }
+
+    public PaymentProviderCapability Capabilities { get; }
 
     public PaymentInitiationOutcome NextInitiation { get; set; } = PaymentInitiationOutcome.Initiated;
 

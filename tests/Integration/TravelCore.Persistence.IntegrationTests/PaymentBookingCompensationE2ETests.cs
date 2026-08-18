@@ -307,6 +307,8 @@ public sealed class PaymentBookingCompensationE2ETests
     {
         public ProviderKey Key => TestKey;
 
+        public PaymentProviderCapability Capabilities => PaymentProviderCapabilitySet.All;
+
         public Task<PaymentInitiationResult> InitiatePaymentAsync(
             PaymentInitiationRequest request,
             CancellationToken cancellationToken = default) =>

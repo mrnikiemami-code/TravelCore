@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P20 — Payment** (**PLAN ACCEPTED** · **P20-R1–R7 = RESOLVED** · **P20-R8 OPEN** · T007 public Payment journey delivered, awaiting architect acceptance) |
-| Phase Status | P00–P19 COMPLETE · P20 PLAN ACCEPTED · P20-R1–R7 RESOLVED · P20-R8 OPEN |
+| Current Phase | **P20 — Payment** (**PLAN ACCEPTED** · **P20-R1–R8 = RESOLVED** · T008 provider capability/ops reads delivered, awaiting architect acceptance) |
+| Phase Status | P00–P19 COMPLETE · P20 PLAN ACCEPTED · P20-R1–R8 RESOLVED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P20-T007` RESULT → do **not** execute T008 until T007 ACCEPTED; do not invent P20-R8 |
+| Current Next Task | Architect review of `TC-P20-T008` RESULT → do **not** execute T009 until T008 ACCEPTED |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -119,7 +119,7 @@
 - **P17** = COMPLETE — GATE ACCEPTED [`plans/P17-GATE-acceptance-evidence.md`](plans/P17-GATE-acceptance-evidence.md)
 - **P18** = COMPLETE (`TC-P18-GATE` ACCEPTED `73605aa` · **R1–R8 RESOLVED**) [`plans/P18-GATE-acceptance-evidence.md`](plans/P18-GATE-acceptance-evidence.md)
 - **P19** = COMPLETE (`TC-P19-GATE` ACCEPTED `d258933` · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
-- **P20** = IN PROGRESS — PLAN ACCEPTED · **P20-R1–R7 = RESOLVED** · **P20-R8 OPEN** · T007 public Payment journey delivered/awaiting acceptance [`plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md)
+- **P20** = IN PROGRESS — PLAN ACCEPTED · **P20-R1–R8 = RESOLVED** · T008 provider capability/ops reads delivered/awaiting acceptance [`plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md)
 - **P21–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -581,7 +581,7 @@ traveler information · availability validation · Quote acceptance · reservati
 
 ## P20 — Payment
 
-**Status:** PLAN ACCEPTED · **P20-R1–R7 = RESOLVED** · **P20-R8 OPEN** · T007 public Payment journey delivered/awaiting acceptance [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md)
+**Status:** PLAN ACCEPTED · **P20-R1–R8 = RESOLVED** · T008 provider capability/ops reads delivered/awaiting acceptance [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md)
 
 Payment · attempts · provider abstraction · callback/webhook validation · success/failure lifecycle · refund foundation · payment snapshots · financial auditability.
 

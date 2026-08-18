@@ -6,4 +6,10 @@ namespace TravelCore.Modules.Payment.Contracts;
 public interface IPaymentProviderResolver
 {
     IPaymentProviderGateway? Resolve(ProviderKey providerKey);
+
+    PaymentProviderDescriptor? Describe(ProviderKey providerKey);
+
+    IReadOnlyList<PaymentProviderDescriptor> ListDescriptors();
+
+    ProviderCapabilityStatus Check(ProviderKey providerKey, PaymentProviderCapability required);
 }

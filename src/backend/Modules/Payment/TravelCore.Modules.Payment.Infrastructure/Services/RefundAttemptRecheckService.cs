@@ -58,6 +58,12 @@ internal sealed class RefundAttemptRecheckService
             return null;
         }
 
+        if (_resolver.Check(providerKey, PaymentProviderCapability.RefundStatusQuery)
+            != ProviderCapabilityStatus.Available)
+        {
+            return null;
+        }
+
         var result = await gateway.QueryRefundStatusAsync(
             new PaymentVerificationRequest(
                 providerKey,

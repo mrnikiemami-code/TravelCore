@@ -18,4 +18,6 @@ public static class PaymentProviderTrustBoundary
     public const bool NamedProductionAdapterImplemented = false;
     public const bool ProductionFakeProviderRegistered = false;
     public const bool AmountMismatchEnforcementImplemented = true;
+    public const string ProviderInfrastructurePosture = "READY FOR ADAPTERS";
+    public const string ProductionProviderPosture = "NOT CONFIGURED / NONE";
 }

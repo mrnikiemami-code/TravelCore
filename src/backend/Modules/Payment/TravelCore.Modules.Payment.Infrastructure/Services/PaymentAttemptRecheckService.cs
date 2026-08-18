@@ -58,6 +58,12 @@ internal sealed class PaymentAttemptRecheckService
             return null;
         }
 
+        if (_resolver.Check(providerKey, PaymentProviderCapability.PaymentStatusQuery)
+            != ProviderCapabilityStatus.Available)
+        {
+            return null;
+        }
+
         var result = await gateway.QueryPaymentStatusAsync(
             new PaymentVerificationRequest(
                 providerKey,
