@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P18-PLAN` |
 | Phase | P18 — Trip Planner / Lead Experience |
-| Status | PLAN ACCEPTED; **P18-R1–R8 RESOLVED**; T001–T008 delivered; T009 pending |
+| Status | PLAN ACCEPTED; **P18-R1–R8 RESOLVED**; T001–T008 ACCEPTED; T009 hardening awaiting review |
 | Baseline | `1826013` (`docs(tripplanner): add P18 implementation plan [TC-P18-PLAN]`) · T001 on top |
 | Authoritative sources | `docs/ROADMAP.md` § P18 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `13-reference-page-archetypes.md` · `docs/pages/00-page-archetype-registry.md` · `docs/pages/09-page-state-and-composition-rules.md` · P04 Destination/ReferenceData · P05 SEO · P08 Content · P09 Tour · P12 Pricing · P13 AgencyMarketplace · P14 PublicExperience · P15 Search · P16 UGC · P17 Visa · P19 Booking · P20 Payment · `15-future-architecture-transition-map.md` § V Notification |
 | Backend root | `src/backend` |
@@ -189,7 +189,8 @@ P18 اضافه می‌کند: **Trip Planner / Lead capability** — **بدون*
 
 ### TC-P18-T009 — Hardening + evidence
 - Purpose: Harden P18 boundaries and produce gate evidence (**no new capability**).
-- Forbidden kept: new planner product · next-phase work.
+- Delivered: `docs/plans/P18-T009-hardening-and-evidence-pack.md`; strengthened architecture guardrails for R1–R8 + baseline Tour route repair.
+- Forbidden kept: new planner product · next-phase work · GATE execution.
 
 ### TC-P18-GATE — Acceptance Gate
 - Evidence only. Ceremonial Gate wait is **not** a pipeline stop.

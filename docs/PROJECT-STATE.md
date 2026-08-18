@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T008 delivered; **P18-R1–R8 RESOLVED**) |
+| Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T009 hardening; **P18-R1–R8 RESOLVED**; GATE not executed) |
 | Previous Phase | **P17 — Visa** (**COMPLETE** — `TC-P17-GATE` ACCEPTED `f439924`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-FIX-TOUR-ROUTE-AMBIGUITY` — baseline repair blocking T008 final ACCEPT |
-| Current Next Task | Return repair RESULT; T008 final ACCEPT then T009 |
+| Current Active Product Task | `TC-P18-T009` — hardening and evidence pack (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P18-T009` → GATE only after ACCEPT |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -219,16 +219,18 @@
 | P16-GATE | **COMPLETE / ACCEPTED** (`538f3fc`) — Acceptance evidence (no new product capability) |
 | P17 | **COMPLETE / ACCEPTED** — Plan ACCEPTED · **P17-R1–R8 RESOLVED** · T001–T009 ACCEPTED · `TC-P17-GATE` `f439924` |
 | P17-GATE | **COMPLETE / ACCEPTED** (`f439924`) — Acceptance evidence (no new product capability) |
-| P18 | **IN PROGRESS** — **P18-R1–R8 RESOLVED** · T001–T008 delivered · T009 pending |
+| P18 | **IN PROGRESS** — **P18-R1–R8 RESOLVED** · T001–T008 ACCEPTED · T009 hardening awaiting review · GATE not executed |
 | P18 Plan | [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md) |
 | P18-T001 | **COMPLETE / ACCEPTED** (`d29ab8e`) — TripPlanner module scaffolding (`trip_planner` schema) |
 | P18-T002 | **COMPLETE / ACCEPTED** (`1163e47`) — TripIntent vs Lead aggregate boundary |
-| P18-T003 | **DELIVERED** — anonymous-first identity/contact boundary |
-| P18-T004 | **DELIVERED** — structured travel preference model |
-| P18-T005 | **DELIVERED** — lead lifecycle baseline |
-| P18-T006 | **DELIVERED** — agency routing boundary (DEFERRED) |
+| P18-T003 | **COMPLETE / ACCEPTED** (`3ccabd2`) — anonymous-first identity/contact boundary |
+| P18-T004 | **COMPLETE / ACCEPTED** (`bdace2e`) — structured travel preference model |
+| P18-T005 | **COMPLETE / ACCEPTED** (`6a5b4ed`) — lead lifecycle baseline |
+| P18-T006 | **COMPLETE / ACCEPTED** (`c79c07d`) — agency routing boundary (DEFERRED) |
 | P18-T007 | **COMPLETE / ACCEPTED** (`b2e3173`) — lead consent/privacy boundary |
-| P18-T008 | **DELIVERED** — public Trip Planner experience (`/[locale]/plan` + anonymous public API) |
+| P18-T008 | **COMPLETE / ACCEPTED** (`9e1b1e0`; final baseline `d302ad4`) — public Trip Planner experience |
+| P18-FIX-TOUR-ROUTE | **COMPLETE / ACCEPTED** (`d302ad4`) — remove legacy `/tours/[productKey]` |
+| P18-T009 | **DELIVERED** — hardening and evidence pack (GATE not executed) |
 | P18-R8 (Public composition) | **RESOLVED** — PublicExperience composes `/plan` · TripPlanner owns TripIntent/Lead · honest follow-up CTA · no Search/Booking/Payment/CRM |
 | P18-R1 (TripPlanner ownership) | **RESOLVED** — independent TripPlanner module · schema `trip_planner` · owns trip-intent/lead facts/lifecycle · does not own Destination/Tour/Place facts, Pricing/Quote, Booking, Payment, CRM, Search, AgencyMarketplace commercial allocation, Notification delivery, or Party/Identity master data · product refs = opaque logical id |
 | P18-R2 (TripIntent vs Lead) | **RESOLVED** — TripIntent = mutable planning intent · Lead = submitted follow-up request · **TripIntent != Lead** · **Lead != Booking** · submission snapshot invariant |

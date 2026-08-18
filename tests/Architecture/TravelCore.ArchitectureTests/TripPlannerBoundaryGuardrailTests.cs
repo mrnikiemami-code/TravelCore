@@ -258,6 +258,83 @@ public sealed class TripPlannerBoundaryGuardrailTests
     }
 
     [Fact]
+    public void TripPlanner_T009_Hardening_Evidence_Pack_Locks_Accepted_Boundaries()
+    {
+        var evidence = Path.Combine(RepoRoot, "docs", "plans", "P18-T009-hardening-and-evidence-pack.md");
+        Assert.True(File.Exists(evidence), evidence);
+        var text = File.ReadAllText(evidence);
+
+        string[] required =
+        [
+            "TripPlanner != Booking",
+            "TripPlanner != Payment",
+            "TripPlanner != Pricing",
+            "TripPlanner != CRM",
+            "TripPlanner != Search",
+            "TripPlanner != AgencyMarketplace",
+            "TripPlanner != Notification Provider",
+            "TripPlanner != Party Identity",
+            "TripIntent != Lead",
+            "PlannerActorReference != Identity Account entity",
+            "LeadContactSnapshot != Party",
+            "DestinationPreference != Destination Source of Truth",
+            "PlannerTravelerComposition != BookingPassenger",
+            "BudgetPreference != Price",
+            "BudgetPreference != Quote",
+            "InterestPreference != Search Facet Authority",
+            "LeadStatus != CRM Pipeline Stage",
+            "Lead != CRM Opportunity",
+            "Contacted != Qualification",
+            "Closed != Booking conversion",
+            "Lead != AgencyAssignment",
+            "LeadStatus != AgencyAssignmentStatus",
+            "ContactPermission != MarketingConsent",
+            "Consent != NotificationDelivery",
+            "LeadContactSnapshot != LeadConsentSnapshot",
+            "FollowUpContactAllowed != AgencyDataSharingPermission",
+            "PublicExperience != TripPlanner Source of Truth",
+            "Planner Submission != Booking",
+            "Planner Submission != Quote",
+            "Planner Submission != Payment",
+            "Planner Discovery != Search Ownership",
+            "P18 Agency Routing = DEFERRED",
+        ];
+
+        foreach (var invariant in required)
+        {
+            Assert.Contains(invariant, text, StringComparison.Ordinal);
+        }
+
+        var toursRoot = Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "tours");
+        Assert.True(File.Exists(Path.Combine(toursRoot, "[slug]", "page.tsx")));
+        Assert.False(Directory.Exists(Path.Combine(toursRoot, "[productKey]")));
+        Assert.True(File.Exists(Path.Combine(
+            RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "plan", "page.tsx")));
+
+        var endpoints = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "TripPlanner",
+            "TravelCore.Modules.TripPlanner.Infrastructure",
+            "Endpoints",
+            "TripPlannerPublicEndpoints.cs");
+        var endpointText = File.ReadAllText(endpoints);
+        Assert.DoesNotContain("MapGet(\"/leads", endpointText, StringComparison.Ordinal);
+        Assert.DoesNotContain("MapGet(\"/intents\"", endpointText, StringComparison.Ordinal);
+        Assert.Contains("MapPost(\"/intents/{intentId:guid}/submit\"", endpointText, StringComparison.Ordinal);
+
+        Assert.False(TripPlannerOwnershipBoundary.AgencyRoutingImplemented);
+        Assert.False(TripPlannerOwnershipBoundary.NotificationProviderImplemented);
+        Assert.False(TripPlannerOwnershipBoundary.OwnsBooking);
+        Assert.False(TripPlannerOwnershipBoundary.OwnsPayment);
+        Assert.False(TripPlannerOwnershipBoundary.OwnsCrm);
+        Assert.False(TripPlannerOwnershipBoundary.OwnsSearch);
+        Assert.True(TripPlannerOwnershipBoundary.PublicPlannerRouteImplemented);
+    }
+
+    [Fact]
     public void TripPlanner_Module_Keeps_Search_And_Ai_Engines_Out()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "TripPlanner");
