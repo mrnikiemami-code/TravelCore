@@ -47,7 +47,7 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.True(PaymentOwnershipBoundary.PaymentAggregateImplemented);
         Assert.True(PaymentOwnershipBoundary.PaymentStatusImplemented);
         Assert.True(PaymentOwnershipBoundary.PaymentAttemptImplemented);
-        Assert.False(PaymentOwnershipBoundary.RefundImplemented);
+        Assert.True(PaymentOwnershipBoundary.RefundImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderAdapterImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderSdkImplemented);
         Assert.True(PaymentOwnershipBoundary.ProviderPortImplemented);
@@ -61,7 +61,7 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Payment"));
         Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.PaymentStatus"));
         Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.PaymentAttempt"));
-        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
+        Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
     }
 
     [Fact]
@@ -127,7 +127,7 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(PaymentIntent|Refund|RefundStatus|Stripe|Zarinpal|IDPay|PayPal|Adyen|Checkout|Wallet|Settlement|JournalEntry|Ledger|Commission|Payout|StripeStatus|ZarinpalStatus|GatewayStatus)\b",
+            @"\b(class|record|enum|struct|interface)\s+(PaymentIntent|Stripe|Zarinpal|IDPay|PayPal|Adyen|Checkout|Wallet|Settlement|JournalEntry|Ledger|Commission|Payout|StripeStatus|ZarinpalStatus|GatewayStatus)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -324,7 +324,7 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.DoesNotContain("MarkSucceeded", methodNames);
         Assert.Contains("RecordAuthoritativeCollectionSuccess", methodNames);
         Assert.Contains("CreateAttempt", methodNames);
-        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
+        Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
     }
 
     [Fact]
@@ -344,14 +344,14 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.True(PaymentProviderTrustBoundary.AmountMismatchEnforcementImplemented);
         Assert.True(typeof(IPaymentProviderGateway).IsInterface);
         Assert.True(typeof(IPaymentProviderResolver).IsInterface);
-        Assert.Contains("InitiatePaymentAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
-        Assert.Contains("VerifyPaymentAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
-        Assert.Contains("QueryPaymentStatusAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
+        Assert.Contains("InitiateRefundAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
+        Assert.Contains("VerifyRefundAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
+        Assert.Contains("QueryRefundStatusAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
         Assert.Contains("VerifyCallbackAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
         Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.GatewayStatus"));
         Assert.DoesNotContain(
             typeof(PaymentDomainAssemblyMarker).Assembly.GetTypes().Select(t => t.Name),
-            name => name is "StripeStatus" or "Refund" or "RefundStatus");
+            name => name is "StripeStatus");
         var module = File.ReadAllText(Path.Combine(
             RepoRoot,
             "src",
@@ -433,6 +433,8 @@ public sealed class PaymentBoundaryGuardrailTests
             "TravelCore.Modules.Payment.Infrastructure",
             "PaymentModule.cs"));
         Assert.Contains("PaymentSuccessOutboxDispatcher", module, StringComparison.Ordinal);
+        Assert.Contains("RefundSucceededOutboxDispatcher", module, StringComparison.Ordinal);
+        Assert.Contains("IBookingPaymentCompensationRequiredHandler", module, StringComparison.Ordinal);
         Assert.DoesNotContain(
             Projects.Single(p => p.Name == "TravelCore.Modules.Payment.Infrastructure")
                 .ProjectReferences
@@ -447,6 +449,15 @@ public sealed class PaymentBoundaryGuardrailTests
             "TravelCore.Modules.Booking.Infrastructure",
             "BookingModule.cs"));
         Assert.Contains("IPaymentSucceededIntegrationHandler", bookingModule, StringComparison.Ordinal);
+        Assert.Contains("IRefundSucceededIntegrationHandler", bookingModule, StringComparison.Ordinal);
+        Assert.Contains("BookingCompensationOutboxDispatcher", bookingModule, StringComparison.Ordinal);
+        Assert.True(PaymentRefundBoundary.RefundAggregateImplemented);
+        Assert.False(PaymentRefundBoundary.PublicRefundApiImplemented);
+        Assert.False(PaymentRefundBoundary.PartialRefundImplemented);
+        Assert.False(RefundSuccessOutboxBoundary.EventMeansBookingCancelled);
+        Assert.Equal("Payment != Refund", PaymentRefundBoundary.PaymentIsNotRefund);
+        Assert.Equal("PaymentSucceeded != RefundSucceeded", PaymentRefundBoundary.PaymentSucceededIsNotRefundSucceeded);
+        Assert.Equal("RefundSucceeded != BookingCancelled", PaymentRefundBoundary.RefundSucceededIsNotBookingCancelled);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

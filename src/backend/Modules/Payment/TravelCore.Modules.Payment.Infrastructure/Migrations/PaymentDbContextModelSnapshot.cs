@@ -201,6 +201,176 @@ namespace TravelCore.Modules.Payment.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Payment.Domain.Refund", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("Booking")
+                        .HasColumnType("uuid")
+                        .HasColumnName("booking_id");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<Instant>("StatusChangedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("status_changed_at");
+
+                    b.Property<Instant?>("SucceededAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("succeeded_at");
+
+                    b.Property<long>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint")
+                        .HasColumnName("version");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_refunds_payment_id");
+
+                    b.ToTable("refunds", "payment", t =>
+                        {
+                            t.HasCheckConstraint("ck_refunds_status", "status IN (1, 2)");
+
+                            t.HasCheckConstraint("ck_refunds_version_nonnegative", "version >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Payment.Domain.RefundAttempt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Instant?>("InitiatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("initiated_at");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("provider_key");
+
+                    b.Property<string>("ProviderRequestReference")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("provider_request_reference");
+
+                    b.Property<string>("ProviderTransactionReference")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("provider_transaction_reference");
+
+                    b.Property<Guid>("RefundId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("refund_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<Instant>("StatusChangedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("status_changed_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RefundId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_refund_attempts_one_active_per_refund")
+                        .HasFilter("status IN (1, 2)");
+
+                    b.HasIndex("ProviderKey", "ProviderRequestReference")
+                        .IsUnique()
+                        .HasDatabaseName("ux_refund_attempts_provider_request")
+                        .HasFilter("provider_key IS NOT NULL AND provider_request_reference IS NOT NULL");
+
+                    b.HasIndex("ProviderKey", "ProviderTransactionReference")
+                        .IsUnique()
+                        .HasDatabaseName("ux_refund_attempts_provider_transaction")
+                        .HasFilter("provider_key IS NOT NULL AND provider_transaction_reference IS NOT NULL");
+
+                    b.ToTable("refund_attempts", "payment", t =>
+                        {
+                            t.HasCheckConstraint("ck_refund_attempts_status", "status IN (1, 2, 3, 4)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Payment.Domain.RefundReconciliationIssue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("AttemptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("attempt_id");
+
+                    b.Property<Instant>("DetectedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("detected_at");
+
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer")
+                        .HasColumnName("kind");
+
+                    b.Property<Guid>("RefundId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("refund_id");
+
+                    b.Property<Instant?>("ResolvedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("resolved_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttemptId")
+                        .HasDatabaseName("ix_refund_reconciliation_issues_attempt_id");
+
+                    b.HasIndex("RefundId")
+                        .HasDatabaseName("ix_refund_reconciliation_issues_refund_id");
+
+                    b.ToTable("refund_reconciliation_issues", "payment", t =>
+                        {
+                            t.HasCheckConstraint("ck_refund_reconciliation_issues_kind", "kind IN (1, 2, 3, 4)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Payment.Infrastructure.PaymentCompensationInboxRecord", b =>
+                {
+                    b.Property<Guid>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<Instant>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("PaymentId");
+
+                    b.ToTable("compensation_inbox", "payment");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Payment.Infrastructure.PaymentOutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -315,7 +485,66 @@ namespace TravelCore.Modules.Payment.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Payment.Domain.Refund", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Payment.Domain.Payment", null)
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.OwnsOne("TravelCore.Money.Money", "Amount", b1 =>
+                        {
+                            b1.Property<Guid>("RefundId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("numeric(18,2)")
+                                .HasColumnName("amount");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("character varying(3)")
+                                .HasColumnName("currency");
+
+                            b1.HasKey("RefundId");
+
+                            b1.ToTable("refunds", "payment");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RefundId");
+                        });
+
+                    b.Navigation("Amount")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Payment.Domain.RefundAttempt", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Payment.Domain.Refund", null)
+                        .WithMany("Attempts")
+                        .HasForeignKey("RefundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Payment.Domain.RefundReconciliationIssue", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Payment.Domain.Refund", null)
+                        .WithMany()
+                        .HasForeignKey("RefundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Payment.Domain.Payment", b =>
+                {
+                    b.Navigation("Attempts");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Payment.Domain.Refund", b =>
                 {
                     b.Navigation("Attempts");
                 });

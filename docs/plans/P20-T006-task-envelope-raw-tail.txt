@@ -1,0 +1,1812 @@
+﻿isite
+
+
+Refund requires the immutable:
+
+
+PaymentExecutionSnapshot
+
+
+
+
+29. No amount override
+
+
+Do not expose:
+
+
+SetRefundAmount
+
+
+or client/provider-controlled Refund amount mutation.
+
+
+
+
+30. Provider abstraction extension
+
+
+Extend the existing provider-neutral Payment gateway boundary minimally to support
+refund execution.
+
+
+Use provider-neutral operations such as:
+
+
+InitiateRefundAsync
+
+
+VerifyRefundAsync
+
+
+QueryRefundStatusAsync
+
+
+or repository-equivalent.
+
+
+
+
+31. Provider-neutral only
+
+
+No named provider implementation.
+
+
+Keep:
+
+
+Named Provider = NONE
+
+
+
+
+32. No provider SDK
+
+
+Do NOT add a real PSP SDK/package.
+
+
+
+
+33. Refund provider attempt
+
+
+RefundAttempt may store neutral provider correlation facts such as:
+
+
+- ProviderKey
+- ProviderRequestReference
+- ProviderTransactionReference
+
+
+according to accepted PaymentAttempt patterns.
+
+
+
+
+34. Original payment provider posture
+
+
+Prefer refunding through the same provider/provider transaction context that
+successfully collected the Payment where the provider protocol requires this.
+
+
+Do not implement smart provider routing for Refund.
+
+
+
+
+35. Cross-provider refund
+
+
+Forbidden baseline:
+
+
+collect through Provider A
+then automatically refund through Provider B
+
+
+
+
+36. Refund initiation ambiguity
+
+
+Preserve:
+
+
+NetworkTimeout
+!=
+RefundAttempt.Failed
+
+
+An ambiguous refund execution must not automatically cause another refund attempt.
+
+
+
+
+37. Unsafe retry protection
+
+
+An unresolved/ambiguous refund attempt blocks another refund attempt until
+reconciled or definitively terminal.
+
+
+
+
+38. Refund idempotency
+
+
+Refund creation must be idempotent per Payment.
+
+
+Repeated compensation requests for the same Payment must converge on:
+
+
+same RefundId
+
+
+
+
+39. Concurrent Refund creation
+
+
+Two concurrent compensation messages for the same Payment must result in:
+
+
+one logical Refund
+
+
+
+
+40. Refund attempt idempotency
+
+
+Repeated same refund initiation request/idempotency key must not execute a second
+provider refund.
+
+
+
+
+41. Provider callback trust
+
+
+Preserve:
+
+
+UnverifiedRefundCallback
+!=
+RefundSucceeded
+
+
+
+
+42. Browser return
+
+
+Preserve:
+
+
+BrowserReturn
+!=
+RefundSucceeded
+
+
+
+
+43. Provider verification
+
+
+Only authoritative provider refund verification/query evidence may transition:
+
+
+RefundAttempt -> Succeeded
+Refund -> Succeeded
+
+
+
+
+44. Refund amount verification
+
+
+Where provider refund verification reports amount/currency:
+
+
+they must match the expected full Refund obligation.
+
+
+Mismatch must not mark Refund succeeded.
+
+
+
+
+45. Refund currency verification
+
+
+Same rule for CurrencyCode.
+
+
+
+
+46. No client success flag
+
+
+Do not expose:
+
+
+refundSucceeded = true
+
+
+or caller-controlled success semantics.
+
+
+
+
+47. Refund reconciliation
+
+
+Reuse R4 principles for refund execution uncertainty.
+
+
+Support callable provider-neutral recheck/query for unresolved RefundAttempt.
+
+
+
+
+48. No Refund scheduler requirement
+
+
+A callable recheck service is sufficient unless accepted infrastructure naturally
+uses an existing worker.
+
+
+Do not invent another scheduler.
+
+
+
+
+49. No exactly-once claim
+
+
+Refund provider calls are external and may be ambiguous.
+
+
+Design:
+
+
+at-least-once evidence
++
+idempotent local effects
++
+reconciliation
+
+
+
+
+50. Compensation trigger source
+
+
+The accepted T005 BookingConfirmationRecoveryIssue is the authoritative Booking
+evidence that Payment succeeded but Booking could not confirm.
+
+
+
+
+51. Durable Booking compensation event
+
+
+When a business-level Booking confirmation recovery issue requiring financial
+compensation is created, persist a durable Booking-local outbox integration event.
+
+
+Use repository-consistent naming such as:
+
+
+BookingPaymentCompensationRequiredIntegrationEvent
+
+
+or equivalent.
+
+
+
+
+52. Recovery event semantics
+
+
+The event means:
+
+
+Payment succeeded,
+Booking cannot accept/confirm that Payment,
+financial compensation is required.
+
+
+It does NOT mean:
+
+
+Refund already succeeded.
+
+
+
+
+53. Recovery event payload
+
+
+Keep PII-free.
+
+
+Expected:
+
+
+- BookingId
+- PaymentId
+- recovery reason
+- occurred timestamp
+
+
+Amount may be omitted because Payment must use its own PaymentExecutionSnapshot.
+
+
+
+
+54. Durable issue + outbox
+
+
+Where recovery issue and compensation event arise from the same Booking business
+decision, persist them atomically within Booking-local transaction.
+
+
+
+
+55. No technical-failure compensation event
+
+
+Transient handler/infrastructure failure must NOT emit compensation-required
+business event.
+
+
+Only accepted authoritative Booking rejection does.
+
+
+
+
+56. Compensation reasons
+
+
+Use current accepted BookingConfirmationRecoveryIssue reasons.
+
+
+Do not create an unrelated second business taxonomy unless mapping is required.
+
+
+
+
+57. Current reasons
+
+
+Actual baseline currently includes:
+
+
+- ExpiredHold
+- ReleasedHold
+- CancelledBooking
+- MonetaryMismatch
+- MissingMonetarySnapshot
+- MissingPeoplePrerequisites
+
+
+Verify against repository before implementation.
+
+
+Do not invent names if code differs.
+
+
+
+
+58. Payment compensation consumer
+
+
+Payment owns the consumer for:
+
+
+BookingPaymentCompensationRequiredIntegrationEvent
+
+
+or equivalent.
+
+
+
+
+59. Payment consumer trust
+
+
+On receiving compensation requirement:
+
+
+- correlate Payment
+- verify Payment is Succeeded
+- load PaymentExecutionSnapshot
+- GetOrCreate full Refund
+- do NOT trust event amount
+
+
+
+
+60. Compensation inbox
+
+
+Use durable Payment-local inbox/idempotent-consumer semantics.
+
+
+Repeated Booking compensation event delivery must not create duplicate Refunds.
+
+
+
+
+61. Booking -> Payment dependency
+
+
+Booking may publish a Payment contract/integration event.
+
+
+Booking must NOT depend on:
+
+
+Payment.Infrastructure
+
+
+
+
+62. Payment -> Booking dependency
+
+
+Payment compensation consumer must not query Booking persistence directly.
+
+
+Use event data only for trigger/correlation and Payment-owned facts for Refund.
+
+
+
+
+63. Refund execution timing
+
+
+Creating Refund obligation and calling external provider need not occur in the same
+database transaction.
+
+
+Use staged orchestration like Payment initiation.
+
+
+
+
+64. Do not hold DB transaction over provider network call
+
+
+Preserve accepted external-call transaction posture.
+
+
+
+
+65. Refund success durable outbox
+
+
+When authoritative provider evidence transitions:
+
+
+RefundAttempt -> Succeeded
+Refund -> Succeeded
+
+
+atomically persist a Payment-local:
+
+
+RefundSucceededIntegrationEvent
+
+
+or repository-equivalent outbox record.
+
+
+
+
+66. Refund-success semantics
+
+
+RefundSucceeded event means:
+
+
+money was authoritatively returned according to provider verification.
+
+
+It does NOT directly mutate Booking.
+
+
+
+
+67. Refund success payload
+
+
+Keep minimal:
+
+
+- RefundId
+- PaymentId
+- BookingId/reference if Payment retains it
+- amount
+- CurrencyCode
+- occurred timestamp
+
+
+No passenger/contact PII.
+
+
+
+
+68. Booking refund-success consumer
+
+
+Booking owns an idempotent consumer for RefundSucceeded.
+
+
+
+
+69. Booking behavior after recovery refund success
+
+
+For a Booking that is still:
+
+
+Pending
+
+
+the accepted compensation-completion behavior is:
+
+
+Pending -> Cancelled
+
+
+using the existing safe Booking cancellation behavior.
+
+
+
+
+70. Active hold on refund success
+
+
+If Booking is still Pending and has an Active hold when Refund succeeds:
+
+
+Booking cancellation must use accepted local behavior to:
+
+
+Booking -> Cancelled
+Active Hold -> Released
+
+
+atomically.
+
+
+
+
+71. Already expired/released hold
+
+
+If hold is already:
+
+
+Expired
+or
+Released
+
+
+Refund success should cancel Pending Booking without attempting another capacity
+release.
+
+
+
+
+72. Already Cancelled Booking
+
+
+If Booking is already Cancelled:
+
+
+Refund success consumption is idempotent/no-op with respect to Booking status.
+
+
+
+
+73. Confirmed Booking guardrail
+
+
+Refund-success compensation handler must NOT implement:
+
+
+Confirmed -> Cancelled
+
+
+
+
+74. Confirmed cancellation remains deferred
+
+
+Explicitly preserve:
+
+
+Confirmed Booking cancellation
+=
+DEFERRED
+
+
+
+
+75. Unexpected Confirmed state
+
+
+If a compensation RefundSucceeded event arrives for an already Confirmed Booking:
+
+
+do not automatically cancel it.
+
+
+Surface an explicit reconciliation/invariant issue according to minimal existing
+patterns.
+
+
+Do not corrupt Booking lifecycle.
+
+
+
+
+76. Consumed capacity
+
+
+Do NOT convert:
+
+
+Consumed -> Released
+
+
+in this compensation baseline.
+
+
+Confirmed Booking cancellation/capacity reversal remains deferred.
+
+
+
+
+77. BookingConfirmationRecoveryIssue lifecycle
+
+
+Do not invent a complex workflow.
+
+
+If useful, minimally mark/associate that compensation Refund succeeded.
+
+
+But avoid adding:
+
+
+- assigned
+- investigating
+- approved
+- closed
+
+
+workflow stages.
+
+
+
+
+78. Recovery resolution evidence
+
+
+A minimal timestamp/correlation such as:
+
+
+RefundId
+RefundSucceededAt
+
+
+may be recorded on/alongside recovery evidence if needed for audit.
+
+
+Do not make Booking the Refund owner.
+
+
+
+
+79. Refund does not erase Payment
+
+
+Preserve:
+
+
+Payment remains Succeeded
+
+
+
+
+80. Refund does not erase monetary snapshot
+
+
+Preserve:
+
+
+PaymentExecutionSnapshot remains immutable historical evidence.
+
+
+
+
+81. Refund does not erase Booking monetary snapshot
+
+
+BookingMonetarySnapshot remains historical transaction evidence.
+
+
+
+
+82. Automatic refund scope
+
+
+Automatic full Refund is allowed only for the accepted:
+
+
+Payment succeeded
++
+Booking confirmation business rejection
+
+
+compensation path.
+
+
+
+
+83. General customer refund API
+
+
+Do NOT implement public/operator generic Refund API in T006.
+
+
+
+
+84. Confirmed Booking user cancellation
+
+
+Do NOT implement customer:
+
+
+Confirmed Booking -> Cancelled
+
+
+
+
+85. Cancellation penalty
+
+
+Do NOT implement:
+
+
+- cancellation fees
+- penalty percentage
+- refund schedule
+- deadline-based refund rules
+
+
+
+
+86. Partial refund
+
+
+Remain DEFERRED.
+
+
+
+
+87. Multiple partial refunds
+
+
+Remain DEFERRED.
+
+
+
+
+88. Chargeback
+
+
+OUT/DEFERRED.
+
+
+
+
+89. Provider fee handling
+
+
+Do not modify Pricing/Booking monetary obligation based on provider refund fees.
+
+
+Provider operational fees remain outside Booking price.
+
+
+
+
+90. Settlement
+
+
+Preserve:
+
+
+Refund
+!=
+Settlement
+
+
+No bank settlement implementation.
+
+
+
+
+91. Accounting
+
+
+Preserve:
+
+
+Refund
+!=
+Accounting Ledger
+
+
+No journal entries.
+
+
+
+
+92. Agency settlement
+
+
+No agency payout/commission reconciliation.
+
+
+
+
+93. Public Payment UX
+
+
+P20-R7 remains OPEN.
+
+
+No public refund UI/API.
+
+
+
+
+94. Authorization
+
+
+No generic internal refund command should be publicly reachable.
+
+
+This baseline compensation is system-triggered by durable accepted Booking
+recovery evidence.
+
+
+
+
+95. PaymentStatus guardrail
+
+
+Remain exactly:
+
+
+Pending
+Succeeded
+
+
+
+
+96. RefundStatus guardrail
+
+
+Remain exactly baseline:
+
+
+Pending
+Succeeded
+
+
+
+
+97. RefundAttemptStatus guardrail
+
+
+Remain:
+
+
+Created
+Initiated
+Succeeded
+Failed
+
+
+
+
+98. BookingStatus guardrail
+
+
+Remain:
+
+
+Pending
+Confirmed
+Cancelled
+
+
+
+
+99. CapacityHoldStatus guardrail
+
+
+Remain:
+
+
+Active
+Consumed
+Released
+Expired
+
+
+
+
+100. Provider reconciliation vs Refund reconciliation
+
+
+Keep conceptual separation where needed:
+
+
+Payment collection reconciliation
+!=
+Refund execution reconciliation
+
+
+They may reuse infrastructure patterns.
+
+
+
+
+101. PaymentReconciliationIssue
+
+
+Do not misuse existing collection reconciliation issue to represent Refund state
+unless semantics genuinely match.
+
+
+
+
+102. BookingConfirmationRecoveryIssue
+
+
+Remains Booking-owned evidence of confirmation rejection.
+
+
+It does not become Refund aggregate.
+
+
+
+
+103. Transactional outbox/inbox
+
+
+Use existing accepted durable mechanisms.
+
+
+Do not invent another event bus.
+
+
+
+
+104. At-least-once delivery
+
+
+Both directions must be safe:
+
+
+Booking compensation-required event
+->
+Payment
+
+
+RefundSucceeded event
+->
+Booking
+
+
+
+
+105. Duplicate compensation event
+
+
+Deliver same compensation-required event repeatedly.
+
+
+Expected:
+
+
+one logical Refund
+no duplicate provider refund obligation
+
+
+
+
+106. Duplicate RefundSucceeded event
+
+
+Expected:
+
+
+one effective Booking cancellation/recovery-completion effect.
+
+
+
+
+107. Process crash after recovery issue
+
+
+Scenario:
+
+
+Booking writes RecoveryIssue + compensation outbox
+then process crashes.
+
+
+Expected:
+
+
+durable event later drives Payment Refund creation.
+
+
+
+
+108. Process crash after Refund success
+
+
+Scenario:
+
+
+Refund commits Succeeded + RefundSucceeded outbox
+then process crashes.
+
+
+Expected:
+
+
+Booking later receives durable event.
+
+
+
+
+109. Payment consumer transient failure
+
+
+Must leave compensation message retryable.
+
+
+No duplicate Refund creation.
+
+
+
+
+110. Booking consumer transient failure
+
+
+Must leave RefundSucceeded message retryable.
+
+
+No false completion.
+
+
+
+
+111. Provider Refund success duplication
+
+
+Repeated verified provider refund success must not:
+
+
+- mark Refund twice with duplicate side effects
+- emit multiple logical RefundSucceeded events
+
+
+
+
+112. Contradictory refund evidence
+
+
+If local RefundAttempt is terminal and later provider evidence contradicts it:
+
+
+do not silently flip terminal state.
+
+
+Record minimal reconciliation issue if necessary.
+
+
+
+
+113. Amount mismatch refund test
+
+
+Provider says Refund succeeded with wrong amount.
+
+
+Expected:
+
+
+Refund remains non-Succeeded
+no RefundSucceeded event
+Booking remains unchanged
+
+
+
+
+114. Currency mismatch refund test
+
+
+Same requirement for CurrencyCode.
+
+
+
+
+115. Persistence
+
+
+Allowed Payment schema additions:
+
+
+- refunds
+- refund_attempts
+- refund idempotency/concurrency metadata
+- refund outbox records if using shared outbox table
+- minimal refund reconciliation metadata if necessary
+
+
+
+
+116. Payment same-schema relationships
+
+
+Allowed:
+
+
+Refund -> Payment FK
+
+
+RefundAttempt -> Refund FK
+
+
+inside:
+
+
+payment
+
+
+
+
+117. Booking persistence additions
+
+
+Allowed only for:
+
+
+- compensation-required outbox
+- refund-success inbox
+- minimal recovery resolution correlation
+
+
+according to existing durable infrastructure.
+
+
+
+
+118. No peer-schema FK
+
+
+No FK between:
+
+
+booking
+and
+payment
+
+
+
+
+119. No shared DbContext
+
+
+Preserve independent persistence.
+
+
+
+
+120. Architecture guardrails
+
+
+Add/strengthen tests proving:
+
+
+Refund != Payment
+
+
+RefundSucceeded != PaymentSucceeded
+
+
+RefundSucceeded != BookingCancelled
+
+
+Payment remains Succeeded after Refund
+
+
+one Payment -> at most one logical baseline Refund
+
+
+Refund amount = PaymentExecutionSnapshot amount
+
+
+Refund currency = PaymentExecutionSnapshot currency
+
+
+client cannot choose refund amount
+
+
+unverified refund callback cannot succeed
+
+
+ambiguous refund attempt blocks unsafe retry
+
+
+Booking recovery issue != Refund
+
+
+Booking emits durable compensation requirement
+
+
+Payment owns Refund consumer
+
+
+Refund success emits durable Payment outbox
+
+
+Booking owns RefundSucceeded consumer
+
+
+Pending Booking may Cancel after compensation succeeds
+
+
+Confirmed Booking is NOT cancelled by T006
+
+
+Consumed Hold is NOT released
+
+
+No partial refund
+
+
+No generic refund API
+
+
+No distributed transaction
+
+
+No peer-schema FK
+
+
+No shared DbContext
+
+
+
+
+121. Payment unit tests
+
+
+Cover at minimum:
+
+
+- Succeeded Payment creates full Refund obligation
+- Pending Payment cannot be refunded
+- Refund amount/currency come from PaymentExecutionSnapshot
+- repeated GetOrCreate Refund returns same RefundId
+- Refund starts Pending
+- first RefundAttempt starts Created
+- failed RefundAttempt leaves Refund Pending
+- retry after definitive failure creates new RefundAttempt
+- unresolved RefundAttempt blocks retry
+- successful Refund prevents more attempts
+- Refund success leaves Payment Succeeded
+- provider amount mismatch rejected
+- provider currency mismatch rejected
+- duplicate verified refund success idempotent
+
+
+
+
+122. Booking unit tests
+
+
+Cover:
+
+
+- accepted RecoveryIssue emits/produces compensation-required integration intent
+- RefundSucceeded for Pending Booking cancels it
+- Pending + Active hold -> Cancelled + Released
+- Pending + Expired hold -> Cancelled, remains Expired
+- Pending + Released hold -> Cancelled, remains Released
+- already Cancelled is idempotent
+- Confirmed Booking is not cancelled by compensation handler
+- Consumed hold is not released
+
+
+
+
+123. Persistence concurrency test: one Refund
+
+
+Two concurrent compensation events for same Payment.
+
+
+Expected:
+
+
+one logical Refund
+
+
+
+
+124. Persistence concurrency test: one active RefundAttempt
+
+
+Two concurrent retry initiations.
+
+
+Expected:
+
+
+at most one non-terminal RefundAttempt.
+
+
+
+
+125. Compensation outbox atomicity test
+
+
+Booking business rejection transaction:
+
+
+RecoveryIssue
++
+compensation-required outbox
+
+
+must commit atomically.
+
+
+
+
+126. Compensation outbox rollback test
+
+
+If Booking transaction fails:
+
+
+neither issue nor durable compensation message may partially commit.
+
+
+
+
+127. Refund success outbox atomicity test
+
+
+Verified Refund success transaction:
+
+
+Refund -> Succeeded
++
+RefundSucceeded outbox
+
+
+commits atomically.
+
+
+
+
+128. Refund success rollback test
+
+
+On local transaction failure:
+
+
+no partial Refund success without durable downstream trigger.
+
+
+
+
+129. End-to-end compensation integration test
+
+
+Scenario:
+
+
+- Booking Pending
+- Payment succeeds
+- Booking confirmation fails due Expired hold
+- Booking records RecoveryIssue + compensation event
+- Payment consumes event
+- one full Refund created
+- test provider refund succeeds authoritatively
+- Refund -> Succeeded
+- RefundSucceeded durable event delivered
+- Booking -> Cancelled
+- Hold remains Expired
+- Payment remains Succeeded
+
+
+
+
+130. Cancelled Booking compensation integration
+
+
+Scenario:
+
+
+- Payment succeeds
+- Booking already Cancelled before confirmation
+- compensation triggered
+- Refund succeeds
+- Booking remains Cancelled
+- no reopen
+
+
+
+
+131. Released hold compensation integration
+
+
+Refund succeeds and Pending Booking with Released hold becomes Cancelled without
+capacity resurrection.
+
+
+
+
+132. Duplicate delivery integration
+
+
+Repeated:
+
+
+compensation-required
+and
+RefundSucceeded
+
+
+messages produce one effective Refund and one effective Booking finalization.
+
+
+
+
+133. Crash-window tests
+
+
+Structurally/procedurally verify:
+
+
+RecoveryIssue committed but Payment processing delayed
+=>
+event survives
+
+
+Refund succeeded but Booking processing delayed
+=>
+event survives
+
+
+
+
+134. No general confirmed cancellation
+
+
+Explicitly test absence of new:
+
+
+Confirmed -> Cancelled
+
+
+product path.
+
+
+
+
+135. No Refund public endpoint
+
+
+Verify no generic public:
+
+
+POST /api/payment/.../refund
+
+
+or equivalent.
+
+
+
+
+136. Generic callback
+
+
+Existing provider-neutral callback may be extended for refund verification only if
+provider protocol routing can safely distinguish collection vs Refund.
+
+
+Do not create unsafe client-callable success endpoint.
+
+
+
+
+137. Source-of-Truth synchronization
+
+
+Update authoritative P20 documents to record:
+
+
+P20-R6 = RESOLVED
+
+
+Decision:
+
+
+- Refund is distinct from Payment
+- Payment remains Succeeded after successful Refund
+- baseline Refund is full amount/currency from PaymentExecutionSnapshot
+- one logical Refund per successful Payment in baseline
+- Refund supports retryable RefundAttempts
+- RefundStatus = Pending / Succeeded
+- RefundAttemptStatus = Created / Initiated / Succeeded / Failed
+- Booking confirmation business rejection emits durable compensation requirement
+- Payment consumes compensation idempotently
+- Refund provider success is authoritative/verified
+- Refund success emits durable event back to Booking
+- Pending Booking is cancelled after compensation succeeds
+- Active hold is released through accepted Pending cancellation
+- Confirmed Booking cancellation remains DEFERRED
+- Consumed capacity reversal remains DEFERRED
+- Partial Refund remains DEFERRED
+- general cancellation/refund policy remains DEFERRED
+- no distributed transaction
+
+
+Keep:
+
+
+P20-R7 through P20-R8 = OPEN
+
+
+
+
+Allowed:
+
+
+- Refund
+- RefundId
+- RefundStatus
+- RefundAttempt
+- RefundAttemptStatus
+- full refund obligation from PaymentExecutionSnapshot
+- refund provider-neutral gateway extensions
+- refund verification/query
+- refund idempotency/reconciliation
+- Booking compensation-required durable outbox event
+- Payment compensation durable inbox consumer
+- RefundSucceeded durable Payment outbox event
+- Booking RefundSucceeded durable inbox consumer
+- Pending Booking cancellation after compensation
+- same-schema migrations
+- unit/architecture/persistence/host tests
+- SoT synchronization for P20-R6
+
+
+
+
+Forbidden:
+
+
+- inventing P20-R7 or P20-R8
+- partial Refund
+- arbitrary refund amount
+- multiple independent Refunds for same Payment
+- public generic Refund API
+- confirmed Booking cancellation
+- cancellation penalty rules
+- Consumed -> Released
+- PaymentStatus.Ref​​unded
+- new BookingStatus
+- new CapacityHoldStatus
+- real provider selection
+- real provider SDK
+- accounting ledger
+- bank settlement
+- agency settlement
+- wallet
+- chargeback
+- generic workflow engine
+- distributed transaction
+- peer-schema FK
+- shared DbContext
+
+
+
+
+Done:
+
+
+- Refund is a distinct Payment-owned concept
+- Payment remains Succeeded after Refund
+- baseline Refund is full and immutable
+- one successful Payment has at most one logical Refund
+- Refund retry attempts are safe/idempotent
+- ambiguous Refund provider outcome does not cause unsafe duplicate refund
+- Booking confirmation recovery durably triggers compensation
+- Payment durably consumes compensation requirement
+- successful Refund durably notifies Booking
+- Pending Booking is closed through accepted cancellation after refund success
+- Active hold is safely released when applicable
+- Confirmed Booking is not cancelled
+- Consumed capacity is not reversed
+- partial/general refunds are not introduced
+- P20-R6 recorded RESOLVED
+- P20-R7 through P20-R8 remain OPEN
+
+
+
+
+Validation:
+
+
+Run:
+
+
+dotnet build TravelCore.sln
+
+
+Payment.UnitTests
+
+
+Booking.UnitTests
+
+
+ArchitectureTests
+
+
+Persistence.IntegrationTests
+
+
+Host.IntegrationTests
+
+
+frontend validation only if frontend files are touched
+
+
+git diff --check
+
+
+
+
+Required Result Evidence:
+
+
+Report exact:
+
+
+- Payment Unit test count
+- Booking Unit test count
+- Architecture test count
+- Persistence Integration test count
+- Host Integration test count
+- frontend touched YES/NO
+- git diff --check
+
+
+Also report:
+
+
+- RefundStatus exact values
+- RefundAttemptStatus exact values
+- full Refund amount source
+- Refund currency source
+- PaymentStatus after Refund success
+- duplicate Refund creation result
+- failed RefundAttempt retry result
+- unresolved RefundAttempt retry result
+- provider refund amount mismatch result
+- provider refund currency mismatch result
+- compensation-required event contract
+- Booking compensation outbox mechanism
+- Payment compensation consumer/inbox
+- RefundSucceeded event contract
+- Payment Refund-success outbox
+- Booking Refund-success consumer/inbox
+- expired-hold end-to-end compensation result
+- cancelled-Booking compensation result
+- duplicate delivery result
+- process-crash durability result
+- Confirmed Booking cancellation: NO
+- Consumed hold reversal: NO
+- Partial Refund: NO
+- public Refund API: NO
+- real provider: NO
+- distributed transaction: NO
+- peer-schema FK: NO
+- shared DbContext: NO
+- P20-R7/P20-R8: OPEN
+
+
+
+
+Repository safety:
+
+
+- discover repository root using:
+  git rev-parse --show-toplevel
+- git fetch origin
+- require branch main
+- require HEAD == origin/main
+- require clean working tree before work
+
+
+Forbidden repository operations:
+
+
+- force push
+- accepted-history rewrite
+- reset discarding accepted work
+- duplicate cherry-picks
+
+
+
+
+Commit:
+
+
+After successful validation:
+
+
+- commit with TC-P20-T006 in the commit message
+- push main to origin/main using normal fast-forward push
+- re-fetch origin
+- verify HEAD == origin/main
+- verify Working Tree CLEAN
+
+
+
+
+Expected Baseline:
+930a3be
+
+
+
+
+Auto-Execute:
+
+
+After PASS:
+
+
+- return TC-P20-T006 RESULT to architect
+- do NOT execute TC-P20-T007 until T006 is architect ACCEPTED
+- do NOT invent P20-R7 or P20-R8
+- keep Confirmed Booking cancellation explicitly DEFERRED
+- keep partial/general refund policy explicitly DEFERRED
+- remain in PIPELINE
+
+
+
+
+END_TRAVELCORE_CURSOR_TASK_V1

@@ -40,6 +40,9 @@ public sealed class BookingModule : ITravelCoreModule
         services.AddScoped<BookingCancellationService>();
         services.AddScoped<BookingPaymentConfirmationService>();
         services.AddScoped<IPaymentSucceededIntegrationHandler, BookingPaymentSucceededIntegrationHandler>();
+        services.AddScoped<IRefundSucceededIntegrationHandler, BookingRefundSucceededIntegrationHandler>();
+        services.AddScoped<BookingCompensationOutboxDispatcher>();
+        services.AddHostedService<BookingCompensationOutboxHostedService>();
         services.AddScoped<BookingPaymentObligationQueryService>();
         services.AddScoped<BookingCreationService>();
         services.AddScoped<PublicBookingSurfaceService>();

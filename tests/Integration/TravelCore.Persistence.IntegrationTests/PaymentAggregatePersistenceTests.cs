@@ -117,7 +117,7 @@ public sealed class PaymentAggregatePersistenceTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'payment'
-                  AND table_name IN ('refunds', 'provider_callbacks', 'settlements', 'wallets');
+                  AND table_name IN ('provider_callbacks', 'settlements', 'wallets');
                 """;
             Assert.Equal(0, Convert.ToInt32(await cmd.ExecuteScalarAsync(ct)));
 

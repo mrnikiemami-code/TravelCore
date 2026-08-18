@@ -54,10 +54,16 @@ internal sealed class PaymentCallbackProcessor
             return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.Unverified);
         }
 
+        var now = _clock.GetCurrentInstant();
+        if (IsRefundCallback(envelope))
+        {
+            return await ProcessRefundAsync(verification.Result, now, cancellationToken);
+        }
+
         var payment = await FindCorrelatedPaymentAsync(verification.Result, cancellationToken);
         if (payment is null)
         {
-            return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.UnknownAttempt);
+            return await ProcessRefundAsync(verification.Result, now, cancellationToken);
         }
 
         var attempt = FindCorrelatedAttempt(payment, verification.Result);
@@ -66,7 +72,6 @@ internal sealed class PaymentCallbackProcessor
             return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.UnknownAttempt);
         }
 
-        var now = _clock.GetCurrentInstant();
         var status = VerifiedProviderOutcomeApplier.ApplyVerification(
             payment,
             attempt,
@@ -87,6 +92,47 @@ internal sealed class PaymentCallbackProcessor
         PaymentSuccessOutboxWriter.EnqueueIfSucceeded(_db, payment, now, status);
         await _db.SaveChangesAsync(cancellationToken);
         return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.Applied);
+    }
+
+    private async Task<PaymentCallbackProcessResult> ProcessRefundAsync(
+        PaymentVerificationResult result,
+        Instant now,
+        CancellationToken cancellationToken)
+    {
+        var refund = await FindCorrelatedRefundAsync(result, cancellationToken);
+        if (refund is null)
+        {
+            return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.UnknownAttempt);
+        }
+
+        var attempt = FindCorrelatedRefundAttempt(refund, result);
+        if (attempt is null)
+        {
+            return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.UnknownAttempt);
+        }
+
+        var status = VerifiedRefundOutcomeApplier.ApplyVerification(refund, attempt, result, now);
+        if (status is VerificationApplyStatus.AmountMismatch or VerificationApplyStatus.CurrencyMismatch)
+        {
+            _db.RefundReconciliationIssues.Add(
+                RefundReconciliationIssue.Create(
+                    refund.Id,
+                    attempt.Id,
+                    status == VerificationApplyStatus.AmountMismatch
+                        ? RefundReconciliationIssueKind.AmountMismatch
+                        : RefundReconciliationIssueKind.CurrencyMismatch,
+                    now));
+        }
+
+        RefundSucceededOutboxWriter.EnqueueIfSucceeded(_db, refund, now, status);
+        await _db.SaveChangesAsync(cancellationToken);
+        return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.Applied);
+    }
+
+    private static bool IsRefundCallback(PaymentCallbackEnvelope envelope)
+    {
+        return envelope.Headers.TryGetValue(PaymentCallbackKinds.HeaderName, out var kind)
+            && string.Equals(kind, PaymentCallbackKinds.Refund, StringComparison.OrdinalIgnoreCase);
     }
 
     private async Task<PaymentAggregate?> FindCorrelatedPaymentAsync(
@@ -125,6 +171,50 @@ internal sealed class PaymentCallbackProcessor
         PaymentVerificationResult result)
     {
         return payment.Attempts.SingleOrDefault(item =>
+            item.ProviderKey.Equals(result.ProviderKey)
+            && ((result.TransactionReference is { } transaction
+                    && item.ProviderTransactionReference.Equals(transaction))
+                || (result.TransactionReference is null
+                    && result.RequestReference is { } request
+                    && item.ProviderRequestReference.Equals(request))));
+    }
+
+    private async Task<Refund?> FindCorrelatedRefundAsync(
+        PaymentVerificationResult result,
+        CancellationToken cancellationToken)
+    {
+        IQueryable<RefundAttempt> query = _db.RefundAttempts.Where(item => item.ProviderKey == result.ProviderKey);
+        if (result.TransactionReference is { } transaction)
+        {
+            query = query.Where(item => item.ProviderTransactionReference == transaction);
+        }
+        else if (result.RequestReference is { } request)
+        {
+            query = query.Where(item => item.ProviderRequestReference == request);
+        }
+        else
+        {
+            return null;
+        }
+
+        var attempt = await query.SingleOrDefaultAsync(cancellationToken);
+        if (attempt is null)
+        {
+            return null;
+        }
+
+        var refundId = _db.Entry(attempt).Property<RefundId>("RefundId").CurrentValue;
+        return await _db.Refunds
+            .Include(item => item.Attempts)
+            .Include(item => item.Amount)
+            .SingleAsync(item => item.Id == refundId, cancellationToken);
+    }
+
+    private static RefundAttempt? FindCorrelatedRefundAttempt(
+        Refund refund,
+        PaymentVerificationResult result)
+    {
+        return refund.Attempts.SingleOrDefault(item =>
             item.ProviderKey.Equals(result.ProviderKey)
             && ((result.TransactionReference is { } transaction
                     && item.ProviderTransactionReference.Equals(transaction))

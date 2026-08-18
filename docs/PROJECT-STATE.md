@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P20 — Payment** (**PLAN ACCEPTED** · **P20-R1–R5 = RESOLVED** · **P20-R6–R8 OPEN** · T005 durability outbox delivered, awaiting acceptance) |
+| Current Phase | **P20 — Payment** (**PLAN ACCEPTED** · **P20-R1–R6 = RESOLVED** · **P20-R7–R8 OPEN** · T006 Refund compensation delivered, awaiting architect acceptance) |
 | Previous Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` ACCEPTED `73605aa`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P20-T005-DURABILITY-FIX` — Payment-local transactional outbox + Booking inbox consumer delivered, awaiting architect review |
-| Current Next Task | Return `TC-P20-T005-DURABILITY-FIX RESULT`; do **not** execute T006 until T005 ACCEPTED; do not invent P20-R6–R8 |
+| Current Active Product Task | `TC-P20-T006` — Full Refund compensation for successful Payment with failed Booking confirmation, awaiting architect review |
+| Current Next Task | Return `TC-P20-T006 RESULT`; do **not** execute T007 until T006 ACCEPTED; do not invent P20-R7–R8 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -234,19 +234,21 @@
 | P18-GATE | **COMPLETE / ACCEPTED** (`73605aa`) — Acceptance evidence (no new product capability) |
 | P19 | **COMPLETE** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE ACCEPTED (`d258933`) [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md) |
 | P19-GATE | **COMPLETE / ACCEPTED** (`d258933`) — [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md); Payment/Confirm remain DEFERRED into P20 |
-| P20 | **IN PROGRESS** — PLAN ACCEPTED · **P20-R1–R5 = RESOLVED** · **P20-R6–R8 OPEN** · T005 durability outbox delivered, awaiting acceptance [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
+| P20 | **IN PROGRESS** — PLAN ACCEPTED · **P20-R1–R6 = RESOLVED** · **P20-R7–R8 OPEN** · T006 Refund compensation delivered, awaiting acceptance [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
 | P20 Plan | `TC-P20-PLAN` COMPLETE / ACCEPTED (`aca9c44`) — [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
 | P20-T001 | **COMPLETE / ACCEPTED** (`1ec8963`) — independent Payment module · schema `payment` · initial target = Booking · Tour Booking scope |
 | P20-T002 | **COMPLETE / ACCEPTED** (`75a4f84`) — Payment aggregate + PaymentAttempt · PaymentStatus Pending/Succeeded · PaymentAttemptStatus Created/Initiated/Succeeded/Failed |
 | P20-T003 | **COMPLETE / ACCEPTED** (`32e555d`) — provider-neutral initiation/verification/callback · no named provider |
 | P20-T004 | **COMPLETE / ACCEPTED** (`f286d9f`) — one Booking/one Payment · attempt retry safety · reconciliation baseline · Payment.Version concurrency |
-| P20-T005 | **IMPLEMENTED / DURABILITY-FIX DELIVERED / AWAITING ACCEPTANCE** — PaymentExecutionSnapshot · Booking obligation binding · amount/currency integrity · payment-driven Booking confirmation · BookingConfirmationRecoveryIssue · Payment-local `outbox_messages` + Booking `payment_success_inbox` |
+| P20-T005 | **COMPLETE / ACCEPTED** (`c7c846b` durability; `930a3be` result/docs; verification `ecc61c4`) — PaymentExecutionSnapshot · Booking obligation binding · amount/currency integrity · payment-driven Booking confirmation · BookingConfirmationRecoveryIssue · Payment-local `outbox_messages` + Booking `payment_success_inbox` |
+| P20-T006 | **IMPLEMENTED / AWAITING ACCEPTANCE** — Payment-owned full Refund · RefundAttempt · compensation-required outbox · RefundSucceeded outbox · Pending cancel after refund · Confirmed cancel remains deferred |
 | P20-R1 (Payment ownership / schema / target) | **RESOLVED** — independent Payment module · schema `payment` · initial Payment target = Booking · Tour Booking scope · Payment does not own Booking/Pricing · **Payment != Booking** · **PaymentStatus != BookingStatus** · **PaymentSucceeded != BookingConfirmed** |
 | P20-R2 (Payment aggregate / attempts / lifecycle) | **RESOLVED** — Payment = one logical Booking collection · PaymentAttempt = one execution attempt · **Payment != PaymentAttempt** · **PaymentStatus != PaymentAttemptStatus** · **Failed PaymentAttempt != Failed Payment** · statuses Pending/Succeeded and Created/Initiated/Succeeded/Failed · at most one successful attempt · no attempt after success · verified provider evidence required for success |
 | P20-R3 (Provider abstraction / initiation / verification / callback) | **RESOLVED** — Payment core is provider-neutral · NamedProvider = NONE · **BrowserReturn != PaymentSuccess** · **UnverifiedCallback != PaymentSuccess** · initiation/verification/query are neutral ports · network ambiguity is not definitive failure · Booking confirmation remains R5 · callback replay/reconciliation remains R4 · amount mismatch enforcement deferred to R5 |
 | P20-R4 (Idempotency / retries / duplicate payment / reconciliation) | **RESOLVED** — one Booking -> one logical Payment · retries are PaymentAttempts · database-backed uniqueness/idempotency · ambiguous outcomes do not become Failed · unresolved Attempt blocks unsafe retry · **Reconciliation != Settlement** · **Reconciliation != Accounting** · external exactly-once is not assumed · Booking confirmation remains R5 · Refund remains R6 |
-| P20-R5 (Booking obligation binding / confirmation integration) | **RESOLVED** (architect lock; T005 implements) — Payment executes immutable Booking monetary obligation via PaymentExecutionSnapshot · provider amount/currency match required · Payment success != Booking confirmed · Booking owns Confirm · Payment does not write Booking · recovery evidence when success cannot confirm · Refund remains R6 |
-| P20-R6 through P20-R8 | **OPEN** |
+| P20-R5 (Booking obligation binding / confirmation integration) | **RESOLVED** (architect lock; T005 implements) — Payment executes immutable Booking monetary obligation via PaymentExecutionSnapshot · provider amount/currency match required · Payment success != Booking confirmed · Booking owns Confirm · Payment does not write Booking · recovery evidence when success cannot confirm · compensation/refund is R6 |
+| P20-R6 (Refund / cancellation / compensation boundary) | **RESOLVED** (architect lock; T006 implements, awaiting acceptance) — Payment succeeded + Booking cannot confirm requires a Payment-owned full Refund · **Payment != Refund** · **PaymentSucceeded != RefundSucceeded** · **RefundSucceeded != BookingCancelled** · PaymentStatus stays Succeeded after refund · RefundStatus Pending/Succeeded · one full Refund per Succeeded Payment from PaymentExecutionSnapshot · Booking recovery writes compensation-required outbox · Payment GetOrCreate Refund does not trust event amount · RefundSucceeded cancels Pending Booking and releases Active hold · Confirmed cancel and Consumed reversal remain deferred · no public refund API · no partial refund |
+| P20-R7 through P20-R8 | **OPEN** |
 | P19 Plan | `TC-P19-PLAN` COMPLETE / ACCEPTED (`9d4266b`) — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md) |
 | P19-T001 | **COMPLETE / ACCEPTED** (`e198daa`) — Booking module scaffolding (`booking` schema) |
 | P19-T002 | **COMPLETE / ACCEPTED** (`7caa90a`) — Booking aggregate + Pending/Confirmed/Cancelled lifecycle (`bookings` table) |

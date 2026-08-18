@@ -84,7 +84,64 @@ internal sealed class FakePaymentProviderGateway : IPaymentProviderGateway
             return Task.FromResult(PaymentCallbackVerification.Unverified());
         }
 
-        return Task.FromResult(PaymentCallbackVerification.Verified(CreateVerification()));
+        var refundCallback = envelope.Headers.TryGetValue(PaymentCallbackKinds.HeaderName, out var kind)
+            && string.Equals(kind, PaymentCallbackKinds.Refund, StringComparison.OrdinalIgnoreCase);
+        return Task.FromResult(PaymentCallbackVerification.Verified(
+            refundCallback ? CreateRefundVerification() : CreateVerification()));
+    }
+
+    public PaymentInitiationOutcome NextRefundInitiation { get; set; } = PaymentInitiationOutcome.Initiated;
+
+    public ProviderVerificationOutcome NextRefundVerification { get; set; } = ProviderVerificationOutcome.Succeeded;
+
+    public bool ThrowOnInitiateRefund { get; set; }
+
+    public ProviderRequestReference RefundRequestReference { get; set; } = new("ref-refund-1");
+
+    public ProviderTransactionReference RefundTransactionReference { get; set; } = new("txn-refund-1");
+
+    public decimal? ReportedRefundAmount { get; set; }
+
+    public string? ReportedRefundCurrencyCode { get; set; }
+
+    public Task<PaymentInitiationResult> InitiateRefundAsync(
+        RefundInitiationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        ReportedRefundAmount ??= request.Amount;
+        ReportedRefundCurrencyCode ??= request.CurrencyCode;
+        if (ThrowOnInitiateRefund)
+        {
+            throw new InvalidOperationException("Simulated refund provider network failure.");
+        }
+
+        return Task.FromResult(new PaymentInitiationResult
+        {
+            Outcome = NextRefundInitiation,
+            ProviderKey = Key,
+            RequestReference = NextRefundInitiation == PaymentInitiationOutcome.DefinitiveFailure
+                ? null
+                : RefundRequestReference,
+            TransactionReference = NextRefundInitiation == PaymentInitiationOutcome.Initiated
+                ? RefundTransactionReference
+                : null,
+        });
+    }
+
+    public Task<PaymentVerificationResult> VerifyRefundAsync(
+        PaymentVerificationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(CreateRefundVerification());
+    }
+
+    public Task<PaymentVerificationResult> QueryRefundStatusAsync(
+        PaymentVerificationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        return VerifyRefundAsync(request, cancellationToken);
     }
 
     private PaymentVerificationResult CreateVerification() => new()
@@ -95,5 +152,15 @@ internal sealed class FakePaymentProviderGateway : IPaymentProviderGateway
         TransactionReference = TransactionReference,
         ReportedAmount = ReportedAmount,
         ReportedCurrencyCode = ReportedCurrencyCode,
+    };
+
+    private PaymentVerificationResult CreateRefundVerification() => new()
+    {
+        Outcome = NextRefundVerification,
+        ProviderKey = Key,
+        RequestReference = RefundRequestReference,
+        TransactionReference = RefundTransactionReference,
+        ReportedAmount = ReportedRefundAmount,
+        ReportedCurrencyCode = ReportedRefundCurrencyCode,
     };
 }

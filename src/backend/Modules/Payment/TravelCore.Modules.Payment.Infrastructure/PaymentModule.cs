@@ -35,6 +35,11 @@ public sealed class PaymentModule : ITravelCoreModule
         services.AddScoped<PaymentCallbackProcessor>();
         services.AddScoped<PaymentAttemptRecheckService>();
         services.AddScoped<PaymentSuccessOutboxDispatcher>();
+        services.AddScoped<RefundGetOrCreateService>();
+        services.AddScoped<RefundInitiationService>();
+        services.AddScoped<RefundAttemptRecheckService>();
+        services.AddScoped<RefundSucceededOutboxDispatcher>();
+        services.AddScoped<IBookingPaymentCompensationRequiredHandler, BookingPaymentCompensationRequiredHandler>();
         services.AddHostedService<PaymentSuccessOutboxHostedService>();
         services.AddScoped<IPaymentSuccessEvidenceQuery, PaymentSuccessEvidenceQueryService>();
 

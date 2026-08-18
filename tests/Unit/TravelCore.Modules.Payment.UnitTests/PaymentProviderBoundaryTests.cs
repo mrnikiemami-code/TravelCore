@@ -39,8 +39,8 @@ public sealed class PaymentProviderBoundaryTests
         Assert.False(PaymentLifecycleBoundary.CallerControlledSuccessImplemented);
         Assert.False(PaymentLifecycleBoundary.PublicSuccessEndpointImplemented);
         Assert.False(PaymentLifecycleBoundary.BookingConfirmImplemented);
-        Assert.False(PaymentLifecycleBoundary.RefundImplemented);
-        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
+        Assert.True(PaymentLifecycleBoundary.RefundImplemented);
+        Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
         Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.StripeStatus"));
     }
 

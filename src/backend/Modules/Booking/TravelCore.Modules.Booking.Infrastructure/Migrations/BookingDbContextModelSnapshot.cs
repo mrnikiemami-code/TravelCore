@@ -277,6 +277,47 @@ namespace TravelCore.Modules.Booking.Infrastructure.Migrations
                     b.ToTable("booking_public_idempotency", "booking");
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Booking.Domain.BookingRefundInvariantIssue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("BookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("booking_id");
+
+                    b.Property<Instant>("DetectedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("detected_at");
+
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer")
+                        .HasColumnName("kind");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<Guid>("RefundId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("refund_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("RefundId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_booking_refund_invariant_issues_refund_id");
+
+                    b.ToTable("booking_refund_invariant_issues", "booking", t =>
+                        {
+                            t.HasCheckConstraint("ck_booking_refund_invariant_issues_kind", "kind IN (1)");
+                        });
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Booking.Domain.CapacityHold", b =>
                 {
                     b.Property<Guid>("Id")
@@ -374,6 +415,40 @@ namespace TravelCore.Modules.Booking.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Booking.Infrastructure.BookingOutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("message_type");
+
+                    b.Property<Instant>("OccurredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occurred_at");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("payload");
+
+                    b.Property<Instant?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcessedAt")
+                        .HasDatabaseName("ix_booking_outbox_messages_processed_at");
+
+                    b.ToTable("outbox_messages", "booking");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Booking.Infrastructure.PaymentSuccessInboxRecord", b =>
                 {
                     b.Property<Guid>("PaymentId")
@@ -388,6 +463,22 @@ namespace TravelCore.Modules.Booking.Infrastructure.Migrations
                     b.HasKey("PaymentId");
 
                     b.ToTable("payment_success_inbox", "booking");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Booking.Infrastructure.RefundSuccessInboxRecord", b =>
+                {
+                    b.Property<Guid>("RefundId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("refund_id");
+
+                    b.Property<Instant>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("RefundId");
+
+                    b.ToTable("refund_success_inbox", "booking");
                 });
 
             modelBuilder.Entity("TravelCore.Modules.Booking.Domain.Booking", b =>
@@ -554,6 +645,15 @@ namespace TravelCore.Modules.Booking.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("TravelCore.Modules.Booking.Domain.BookingPublicIdempotencyRecord", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Booking.Domain.Booking", null)
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Booking.Domain.BookingRefundInvariantIssue", b =>
                 {
                     b.HasOne("TravelCore.Modules.Booking.Domain.Booking", null)
                         .WithMany()

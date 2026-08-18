@@ -34,6 +34,13 @@ public sealed class BookingDbContext : DbContext
 
     public DbSet<PaymentSuccessInboxRecord> PaymentSuccessInbox => Set<PaymentSuccessInboxRecord>();
 
+    public DbSet<BookingOutboxMessage> OutboxMessages => Set<BookingOutboxMessage>();
+
+    public DbSet<RefundSuccessInboxRecord> RefundSuccessInbox => Set<RefundSuccessInboxRecord>();
+
+    public DbSet<TravelCore.Modules.Booking.Domain.BookingRefundInvariantIssue> RefundInvariantIssues =>
+        Set<TravelCore.Modules.Booking.Domain.BookingRefundInvariantIssue>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

@@ -61,6 +61,11 @@ public sealed class BookingCancellationService
 
     private Task AcquireLockAsync(Guid id, CancellationToken cancellationToken)
     {
+        if (!_db.Database.IsRelational())
+        {
+            return Task.CompletedTask;
+        }
+
         var bytes = id.ToByteArray();
         var key1 = BitConverter.ToInt32(bytes, 0);
         var key2 = BitConverter.ToInt32(bytes, 4);

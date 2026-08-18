@@ -20,7 +20,10 @@ public static class BookingOrchestrationBoundary
     public const bool PendingCancellationImplemented = true;
     public const bool PendingCancellationReleasesActiveHold = true;
     public const bool ConfirmationRecoveryEvidenceImplemented = true;
+    public const bool CompensationRequiredOutboxImplemented = true;
+    public const bool RefundSucceededConsumerImplemented = true;
     public const string RecoveryIssueIsNotRefund = "RecoveryIssue != Refund";
     public const string RecoveryIssueIsNotPaymentStatus = "RecoveryIssue != PaymentStatus";
     public const string RecoveryIssueIsNotBookingStatus = "RecoveryIssue != BookingStatus";
+    public const string RefundSucceededIsNotBookingCancelled = "RefundSucceeded != BookingCancelled";
 }

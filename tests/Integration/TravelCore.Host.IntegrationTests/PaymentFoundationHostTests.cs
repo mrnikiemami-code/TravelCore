@@ -32,7 +32,11 @@ public sealed class PaymentFoundationHostTests
             Assert.Equal("payment", db.Model.GetDefaultSchema());
             Assert.False(db.Database.HasPendingModelChanges());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<PaymentSuccessOutboxDispatcher>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<RefundSucceededOutboxDispatcher>());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<IPaymentSucceededIntegrationHandler>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<IRefundSucceededIntegrationHandler>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<IBookingPaymentCompensationRequiredHandler>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<TravelCore.Modules.Booking.Infrastructure.Services.BookingCompensationOutboxDispatcher>());
         }
 
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });
@@ -40,6 +44,13 @@ public sealed class PaymentFoundationHostTests
         Assert.Equal(HttpStatusCode.NotFound, list.StatusCode);
         using var post = await client.PostAsync("/api/payment", content: null, ct);
         Assert.Equal(HttpStatusCode.NotFound, post.StatusCode);
+        using var refund = await client.PostAsync("/api/payment/refund", content: null, ct);
+        Assert.Equal(HttpStatusCode.NotFound, refund.StatusCode);
+        using var paymentRefund = await client.PostAsync(
+            "/api/payment/" + Guid.CreateVersion7().ToString("D") + "/refund",
+            content: null,
+            ct);
+        Assert.Equal(HttpStatusCode.NotFound, paymentRefund.StatusCode);
         using var callback = await client.PostAsync("/api/payment/callback", content: null, ct);
         Assert.Equal(HttpStatusCode.NotFound, callback.StatusCode);
         using var webhook = await client.PostAsync("/api/payment/webhook", content: null, ct);

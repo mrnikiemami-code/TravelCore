@@ -66,7 +66,7 @@ public sealed class PaymentScaffoldingSmokeTests
         Assert.True(PaymentOwnershipBoundary.PaymentAggregateImplemented);
         Assert.True(PaymentOwnershipBoundary.PaymentStatusImplemented);
         Assert.True(PaymentOwnershipBoundary.PaymentAttemptImplemented);
-        Assert.False(PaymentOwnershipBoundary.RefundImplemented);
+        Assert.True(PaymentOwnershipBoundary.RefundImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderAdapterImplemented);
         Assert.True(PaymentOwnershipBoundary.ProviderPortImplemented);
         Assert.True(PaymentOwnershipBoundary.CallbackEndpointImplemented);
@@ -104,14 +104,18 @@ public sealed class PaymentScaffoldingSmokeTests
     }
 
     [Fact]
-    public void Payment_T002_Has_Aggregate_And_Attempts_Without_Refund()
+    public void Payment_T006_Has_Refund_Distinct_From_Payment()
     {
         var domain = typeof(PaymentDomainAssemblyMarker).Assembly;
         Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.Payment"));
-        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.PaymentStatus"));
-        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.PaymentAttempt"));
-        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.PaymentAttemptStatus"));
-        Assert.Null(domain.GetType("TravelCore.Modules.Payment.Domain.Refund"));
-        Assert.Null(domain.GetType("TravelCore.Modules.Payment.Domain.RefundStatus"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.Refund"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.RefundStatus"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.RefundAttempt"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.RefundAttemptStatus"));
+        Assert.Equal(
+            new[] { RefundStatus.Pending, RefundStatus.Succeeded },
+            Enum.GetValues<RefundStatus>());
+        Assert.DoesNotContain("Refunded", Enum.GetNames<PaymentStatus>());
+        Assert.Equal("Payment != Refund", PaymentRefundBoundary.PaymentIsNotRefund);
     }
 }

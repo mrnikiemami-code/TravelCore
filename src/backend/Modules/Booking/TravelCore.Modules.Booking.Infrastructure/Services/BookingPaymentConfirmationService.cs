@@ -6,9 +6,9 @@ using TravelCore.Modules.Payment.Contracts;
 namespace TravelCore.Modules.Booking.Infrastructure.Services;
 
 /// <summary>
-/// Booking-owned authoritative payment-success confirmation orchestration (P20-R5).
+/// Booking-owned authoritative payment-success confirmation orchestration (P20-R5 / P20-R6).
 /// Payment success is independent of Booking confirmation. Business refusal records
-/// BookingConfirmationRecoveryIssue and does not Refund.
+/// BookingConfirmationRecoveryIssue and a compensation-required outbox atomically.
 /// </summary>
 public sealed class BookingPaymentConfirmationService
 {
@@ -102,7 +102,24 @@ public sealed class BookingPaymentConfirmationService
         var hold = await _db.CapacityHolds.SingleOrDefaultAsync(
             x => x.BookingId == bookingId && x.Status == CapacityHoldStatus.Active,
             cancellationToken);
-        if (hold is null || hold.ExpiresAt <= now)
+        if (hold is not null && hold.ExpiresAt <= now)
+        {
+            await AcquireLockAsync(hold.TourDeparture.LogicalId, cancellationToken);
+            hold.Expire(now);
+            var expiredAccount = await _db.DepartureCapacityAccounts
+                .SingleAsync(x => x.TourDeparture == hold.TourDeparture, cancellationToken);
+            expiredAccount.ReleaseActive(hold.SeatCount);
+            await RecordRecoveryAsync(
+                booking.Id,
+                evidence.PaymentId,
+                BookingConfirmationRecoveryReason.ExpiredHold,
+                now,
+                cancellationToken);
+            await tx.CommitAsync(cancellationToken);
+            return;
+        }
+
+        if (hold is null)
         {
             var reason = await ResolveMissingActiveHoldReasonAsync(bookingId, cancellationToken);
             await RecordRecoveryAsync(booking.Id, evidence.PaymentId, reason, now, cancellationToken);
@@ -148,16 +165,24 @@ public sealed class BookingPaymentConfirmationService
             .SingleOrDefaultAsync(x => x.BookingId == bookingId, cancellationToken);
         if (existing is not null)
         {
+            BookingCompensationOutboxWriter.Enqueue(_db, existing, now);
+            await _db.SaveChangesAsync(cancellationToken);
             return;
         }
 
-        _db.ConfirmationRecoveryIssues.Add(
-            BookingConfirmationRecoveryIssue.Create(bookingId, paymentId, reason, now));
+        var issue = BookingConfirmationRecoveryIssue.Create(bookingId, paymentId, reason, now);
+        _db.ConfirmationRecoveryIssues.Add(issue);
+        BookingCompensationOutboxWriter.Enqueue(_db, issue, now);
         await _db.SaveChangesAsync(cancellationToken);
     }
 
     private Task AcquireLockAsync(Guid id, CancellationToken cancellationToken)
     {
+        if (!_db.Database.IsRelational())
+        {
+            return Task.CompletedTask;
+        }
+
         var bytes = id.ToByteArray();
         var key1 = BitConverter.ToInt32(bytes, 0);
         var key2 = BitConverter.ToInt32(bytes, 4);

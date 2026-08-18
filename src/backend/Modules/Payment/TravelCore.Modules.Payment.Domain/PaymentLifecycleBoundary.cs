@@ -25,6 +25,6 @@ public static class PaymentLifecycleBoundary
     public const bool PublicSuccessEndpointImplemented = false;
     public const bool ProviderAdapterImplemented = false;
     public const bool ProviderPortImplemented = true;
-    public const bool RefundImplemented = false;
+    public const bool RefundImplemented = true;
     public const bool BookingConfirmImplemented = false;
 }

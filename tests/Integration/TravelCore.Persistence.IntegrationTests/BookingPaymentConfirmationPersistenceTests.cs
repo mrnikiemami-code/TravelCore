@@ -94,6 +94,26 @@ public sealed class BookingPaymentConfirmationPersistenceTests
     }
 
     [Fact]
+    public async Task Time_Elapsed_Active_Hold_Is_Expired_On_Confirmation_Recovery()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var ctx = await SeedEligibleAsync(ct, holdMinutes: 1);
+        await using (var db = _postgres.CreateDbContext())
+        {
+            await new BookingPaymentConfirmationService(db, SuccessEvidence(ctx))
+                .ConfirmIfEligibleAsync(ctx.BookingId, ctx.Now.Plus(Duration.FromMinutes(2)), ct);
+        }
+
+        await AssertRecoveryAsync(ctx, BookingConfirmationRecoveryReason.ExpiredHold, CapacityHoldStatus.Expired, ct);
+        await using (var db = _postgres.CreateDbContext())
+        {
+            var account = await db.DepartureCapacityAccounts.SingleAsync(x => x.TourDeparture == ctx.Departure, ct);
+            Assert.Equal(0, account.ActiveSeats);
+            Assert.Equal(0, account.ConsumedSeats);
+        }
+    }
+
+    [Fact]
     public async Task Released_Hold_After_Payment_Does_Not_Confirm_Or_Resurrect()
     {
         var ct = TestContext.Current.CancellationToken;

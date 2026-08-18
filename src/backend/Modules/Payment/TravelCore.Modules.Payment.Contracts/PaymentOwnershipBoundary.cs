@@ -64,7 +64,7 @@ public static class PaymentOwnershipBoundary
     public const bool PaymentAggregateImplemented = true;
     public const bool PaymentStatusImplemented = true;
     public const bool PaymentAttemptImplemented = true;
-    public const bool RefundImplemented = false;
+    public const bool RefundImplemented = true;
     public const bool ProviderAdapterImplemented = false;
     public const bool ProviderSdkImplemented = false;
     public const bool ProviderPortImplemented = true;

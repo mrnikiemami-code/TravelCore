@@ -6,7 +6,7 @@ namespace TravelCore.Modules.Payment.Infrastructure;
 
 /// <summary>
 /// Payment-owned DbContext. Owns PostgreSQL schema <c>payment</c>.
-/// T003: payments + payment_attempts with provider-neutral correlation columns. No refund tables.
+/// Same-schema FKs Refund→Payment and RefundAttempt→Refund are allowed (P20-R6).
 /// </summary>
 public sealed class PaymentDbContext : DbContext
 {
@@ -27,6 +27,14 @@ public sealed class PaymentDbContext : DbContext
     public DbSet<PaymentReconciliationIssue> ReconciliationIssues => Set<PaymentReconciliationIssue>();
 
     public DbSet<PaymentOutboxMessage> OutboxMessages => Set<PaymentOutboxMessage>();
+
+    public DbSet<Refund> Refunds => Set<Refund>();
+
+    public DbSet<RefundAttempt> RefundAttempts => Set<RefundAttempt>();
+
+    public DbSet<RefundReconciliationIssue> RefundReconciliationIssues => Set<RefundReconciliationIssue>();
+
+    public DbSet<PaymentCompensationInboxRecord> CompensationInbox => Set<PaymentCompensationInboxRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

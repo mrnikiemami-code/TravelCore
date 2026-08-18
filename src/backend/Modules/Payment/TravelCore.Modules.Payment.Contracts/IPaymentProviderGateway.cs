@@ -22,4 +22,16 @@ public interface IPaymentProviderGateway
     Task<PaymentCallbackVerification> VerifyCallbackAsync(
         PaymentCallbackEnvelope envelope,
         CancellationToken cancellationToken = default);
+
+    Task<PaymentInitiationResult> InitiateRefundAsync(
+        RefundInitiationRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<PaymentVerificationResult> VerifyRefundAsync(
+        PaymentVerificationRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<PaymentVerificationResult> QueryRefundStatusAsync(
+        PaymentVerificationRequest request,
+        CancellationToken cancellationToken = default);
 }

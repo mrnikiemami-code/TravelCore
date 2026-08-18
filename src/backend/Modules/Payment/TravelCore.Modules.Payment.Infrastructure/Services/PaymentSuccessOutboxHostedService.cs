@@ -24,8 +24,10 @@ internal sealed class PaymentSuccessOutboxHostedService : BackgroundService
             try
             {
                 await using var scope = _scopes.CreateAsyncScope();
-                var dispatcher = scope.ServiceProvider.GetRequiredService<PaymentSuccessOutboxDispatcher>();
-                await dispatcher.DispatchPendingAsync(take: 50, stoppingToken);
+                var paymentDispatcher = scope.ServiceProvider.GetRequiredService<PaymentSuccessOutboxDispatcher>();
+                await paymentDispatcher.DispatchPendingAsync(take: 50, stoppingToken);
+                var refundDispatcher = scope.ServiceProvider.GetRequiredService<RefundSucceededOutboxDispatcher>();
+                await refundDispatcher.DispatchPendingAsync(take: 50, stoppingToken);
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
