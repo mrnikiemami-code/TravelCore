@@ -200,6 +200,8 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P18-R5 RESOLVED:** minimal Lead lifecycle **Submitted · Contacted · Closed · Cancelled** via `LeadLifecycleBoundary`; **LeadStatus != CRM Pipeline Stage**; full qualification **DEFERRED**; no agency routing/consent/public UI.
 - **P18-R6 RESOLVED (DEFERRED):** **P18 Agency Routing = DEFERRED** via `TripPlannerAgencyRoutingBoundary`; no AgencyAssignment/AgencyId/routing tables; **Lead != AgencyAssignment**; **TripPlanner != AgencyMarketplace ranking/allocation authority**.
 - **P18-R7 RESOLVED:** `LeadConsentSnapshot` at submission; **ContactPermission != MarketingConsent**; marketing optional; **Consent != NotificationDelivery**; Notification provider **DEFERRED**; no hardcoded retention period.
+- **P18-R8 RESOLVED:** PublicExperience composes `/plan`; TripPlanner remains TripIntent/Lead SoT; honest follow-up CTA only; **Planner Submission != Booking**.
+- **P18 COMPLETE:** `TC-P18-GATE` evidence [`docs/plans/P18-GATE-acceptance-evidence.md`](../../../docs/plans/P18-GATE-acceptance-evidence.md) — no new TripPlanner capability in Gate.
 - Invariant: **TripPlanner != Booking · TripPlanner != Payment · TripPlanner != Pricing · TripPlanner != CRM · TripPlanner != Search · TripPlanner != Notification delivery · TripPlanner != Party/Identity**.
 
 ## Host

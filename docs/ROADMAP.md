@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P18 — Trip Planner / Lead Experience** (**IN PROGRESS** — T009 hardening; **P18-R1–R8 RESOLVED**) |
-| Phase Status | P00–P17 COMPLETE · P18-R1–R8 RESOLVED · T001–T008 ACCEPTED · T009 awaiting review |
+| Current Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — Gate evidence delivered) |
+| Phase Status | P00–P18 COMPLETE · P18-R1–R8 RESOLVED · `TC-P18-GATE` delivered |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P18-T003` → T004 only after R4 lock |
+| Current Next Task | Architect review of `TC-P18-GATE` → next phase from SoT only (P19 PLANNED) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -117,8 +117,8 @@
 - **P15** = COMPLETE (`TC-P15-GATE` ACCEPTED `4e2098d` · **R1–R7 RESOLVED** · T008 vacant)
 - **P16** = COMPLETE (`TC-P16-GATE` ACCEPTED `538f3fc` · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P16-implementation-plan.md`](plans/P16-implementation-plan.md)
 - **P17** = COMPLETE — GATE ACCEPTED [`plans/P17-GATE-acceptance-evidence.md`](plans/P17-GATE-acceptance-evidence.md)
-- **P18** = IN PROGRESS — Trip Planner / Lead · T001–T007 delivered · **P18-R1–R7 RESOLVED**
-- **P18–P29 و Post-P29** = PLANNED / NOT_STARTED (except P18 PLAN authored)
+- **P18** = COMPLETE — PLAN ACCEPTED · **P18-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE evidence [`plans/P18-GATE-acceptance-evidence.md`](plans/P18-GATE-acceptance-evidence.md)
+- **P19–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -557,7 +557,7 @@ ROADMAP bullets above are **capability themes**, not ownership transfers. Visa r
 
 ## P18 — Trip Planner / Lead Experience
 
-**Status:** IN PROGRESS — PLAN ACCEPTED · **P18-R1–R8 RESOLVED** · T001–T008 ACCEPTED · T009 hardening awaiting review · GATE not executed — [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md)
+**Status:** COMPLETE — PLAN ACCEPTED · **P18-R1–R8 RESOLVED** · T001–T009 ACCEPTED · Gate evidence ([`docs/plans/P18-GATE-acceptance-evidence.md`](plans/P18-GATE-acceptance-evidence.md))
 
 مفهوم Travel Planner / «سفرساز»: کمک به بیان نیاز سفر و کشف/درخواست محصول مناسب.
 
@@ -763,7 +763,7 @@ P26 = Advanced SEO.
 | P15 | Search | **COMPLETE** (`TC-P15-GATE` ACCEPTED `4e2098d` · R1–R7 RESOLVED · T008 VACANT) |
 | P16 | UGC | **COMPLETE** (`TC-P16-GATE` ACCEPTED `538f3fc` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P17 | Visa | **COMPLETE** (R1–R8 RESOLVED · GATE) |
-| P18 | Trip Planner / Lead Experience | **IN PROGRESS** (T003 delivered; R1–R3 RESOLVED) |
+| P18 | Trip Planner / Lead Experience | **COMPLETE** (R1–R8 RESOLVED · GATE) |
 | P19 | Tour Booking | PLANNED |
 | P20 | Payment | PLANNED |
 | P21 | Hotel Booking | PLANNED |

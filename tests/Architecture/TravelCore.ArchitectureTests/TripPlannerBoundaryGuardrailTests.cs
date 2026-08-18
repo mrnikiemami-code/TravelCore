@@ -335,6 +335,24 @@ public sealed class TripPlannerBoundaryGuardrailTests
     }
 
     [Fact]
+    public void P18_GateEvidence_Exists_And_Closes_Phase()
+    {
+        var path = Path.Combine(RepoRoot, "docs", "plans", "P18-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(path), path);
+        var text = File.ReadAllText(path);
+        Assert.Contains("TC-P18-T001", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P18-T009", text, StringComparison.Ordinal);
+        Assert.Contains("P18-R1", text, StringComparison.Ordinal);
+        Assert.Contains("P18-R8", text, StringComparison.Ordinal);
+        Assert.Contains("TripPlanner != Booking", text, StringComparison.Ordinal);
+        Assert.Contains("TripIntent != Lead", text, StringComparison.Ordinal);
+        Assert.Contains("P18 Agency Routing = DEFERRED", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P18-GATE COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("P18 COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("no new TripPlanner capability", text, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void TripPlanner_Module_Keeps_Search_And_Ai_Engines_Out()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "TripPlanner");
