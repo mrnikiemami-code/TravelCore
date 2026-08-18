@@ -15,6 +15,7 @@ using TravelCore.Modules.Ugc.Infrastructure;
 using TravelCore.Modules.Visa.Infrastructure;
 using TravelCore.Modules.TripPlanner.Infrastructure;
 using TravelCore.Modules.Booking.Infrastructure;
+using TravelCore.Modules.Payment.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Modules.Tour.Infrastructure;
@@ -54,6 +55,7 @@ IReadOnlyList<ITravelCoreModule> modules =
     new VisaModule(),
     new TripPlannerModule(),
     new BookingModule(),
+    new PaymentModule(),
 ];
 builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 

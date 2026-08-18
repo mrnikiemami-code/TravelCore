@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P20-PLAN` |
 | Phase | P20 — Payment |
-| Status | PLAN authored; **P20-R1–R8 OPEN**; no Payment product code |
+| Status | PLAN ACCEPTED · **P20-R1 = RESOLVED** · **P20-R2 through P20-R8 = OPEN** · T001 scaffolding only (no Payment aggregate) |
 | Baseline | `d258933` (`docs(booking): add P19 acceptance gate evidence [TC-P19-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P20 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Payment · `05-dependency-rules.md` · `06-cross-module-communication.md` · `07-data-architecture.md` (schema `payment`) · `08-persistence-and-migrations.md` · `29-module-local-transactional-outbox.md` · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P12 Pricing · P19 Booking (`P19-GATE-acceptance-evidence.md`) |
 | Backend root | `src/backend` |
@@ -143,9 +143,27 @@ P20 must not silently become:
 
 ## 6. Decision inventory (must not invent)
 
+**P20-R1 lock (architect):**
+
+```
+P20-R1 = RESOLVED
+
+Payment = Independent Domain Module
+schema = payment
+initial Payment target = Booking
+P20 Payment scope is initially Tour Booking payment
+Payment does not own Booking/Pricing
+PaymentStatus != BookingStatus
+PaymentSucceeded != BookingConfirmed
+no Payment aggregate/lifecycle/provider implemented yet
+```
+
+Keep **P20-R2 through P20-R8 = OPEN**.
+
+
 | ID | Topic | Status | SoT notes (not a lock) |
 |----|-------|--------|------------------------|
-| **P20-R1** | Payment module ownership / target / schema | **OPEN** | Candidate: independent Payment module; schema `payment`; initial logical target = existing Booking. Tour owns catalog. Booking owns reservation. Pricing owns Quote. Confirm ownership stays Booking. T001 must not invent R2–R8 product types. |
+| **P20-R1** | Payment module ownership / target / schema | **RESOLVED** | Independent Payment domain module. Schema `payment`. Initial Payment target = Booking. P20 scope is initially Tour Booking payment. Payment does not own Booking or Pricing. **Payment != Booking**. **PaymentStatus != BookingStatus**. **PaymentSucceeded != BookingConfirmed**. T001: no Payment aggregate/lifecycle/attempt/refund/provider. |
 | **P20-R2** | Payment aggregate vs PaymentAttempt and lifecycle | **OPEN** | Constitution names Payment · PaymentAttempt · success/failure. Exact statuses, attempt vs payment split, and whether Capture/Authorized exist are **not** locked here. Do not import Stripe terminology automatically. Do not expose raw provider status as PaymentStatus unless semantics match. |
 | **P20-R3** | Provider abstraction / initiation / verification / callback security | **OPEN** | Provider-neutral ports required. No named provider SDK in PLAN. Webhook signature/replay, return-URL distrust, secret handling, and initiation redirect/hosted-page shape wait for lock. Do not collect PAN/CVV. |
 | **P20-R4** | Idempotency / retries / duplicate payment / reconciliation | **OPEN** | Reuse accepted inbox/outbox conventions. Duplicate submit must not double-charge conceptually. Reconciliation is a **baseline**, not a full accounting product. Do not claim exactly-once provider processing. |
@@ -160,7 +178,7 @@ P20 must not silently become:
 
 ### 7.1 Ownership / schema
 
-Candidate: `src/backend/Modules/Payment/{Contracts,Domain,Infrastructure}` + schema `payment`. No shared DbContext. No peer-schema FK. Allowed later contract consumption: Booking.Contracts (and possibly Pricing.Contracts for currency/amount facts already snapshotted on Booking). Payment.Infrastructure must not reference Booking.Infrastructure/Domain.
+**P20-R1 lock:** independent Payment module at `src/backend/Modules/Payment/{Contracts,Domain,Infrastructure}` + schema `payment`. No shared DbContext. No peer-schema FK. Initial Payment target = Booking. Payment.Infrastructure must not reference Booking.Infrastructure/Domain. A Payment-owned opaque BookingReference is sufficient in T001.
 
 ### 7.2 Amounts
 
@@ -192,8 +210,8 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 
 ### TC-P20-T001 — Payment module scaffolding / ownership / target boundary
 
-- Purpose: Independent Payment module + ownership contracts (**needs P20-R1 lock**).
-- Expected first product task after PLAN ACCEPT + R1 lock only.
+- Purpose: Independent Payment module + ownership contracts (**P20-R1 = RESOLVED**).
+- Executed after PLAN ACCEPT + R1 lock.
 - Must not implement Payment aggregate, provider, callback, refund, Confirm, or public checkout.
 
 ### TC-P20-T002 — Payment aggregate / attempt / lifecycle boundary

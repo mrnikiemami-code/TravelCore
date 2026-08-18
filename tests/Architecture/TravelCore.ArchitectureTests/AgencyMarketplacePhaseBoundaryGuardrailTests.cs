@@ -96,7 +96,7 @@ public sealed class AgencyMarketplacePhaseBoundaryGuardrailTests
             + string.Join('\n', hits));
 
         Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
     }
 
     [Fact]

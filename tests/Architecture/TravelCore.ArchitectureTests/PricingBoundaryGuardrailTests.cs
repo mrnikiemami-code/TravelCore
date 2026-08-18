@@ -497,12 +497,12 @@ public sealed class PricingBoundaryGuardrailTests
     }
 
     [Fact]
-    public void Booking_Exists_Independently_And_Payment_DoesNotExist_Yet()
+    public void Booking_And_Payment_Exist_Independently()
     {
         var booking = Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking");
         var payment = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
         Assert.True(Directory.Exists(booking), "P19 owns Booking independently; Pricing must not absorb it.");
-        Assert.False(Directory.Exists(payment), "Payment module must not exist in P12 scaffolding.");
+        Assert.True(Directory.Exists(payment), "P20 owns Payment independently; Pricing must not absorb it.");
     }
 
     [Fact]

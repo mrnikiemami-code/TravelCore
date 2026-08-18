@@ -1,0 +1,314 @@
+using System.Text.RegularExpressions;
+using TravelCore.ArchitectureTests.Support;
+using TravelCore.Modules.Payment.Contracts;
+using TravelCore.Modules.Payment.Domain;
+using Xunit;
+
+namespace TravelCore.ArchitectureTests;
+
+/// <summary>
+/// TC-P20-T001: Payment owns schema payment; initial target Booking; no aggregate/lifecycle/provider yet.
+/// </summary>
+public sealed class PaymentBoundaryGuardrailTests
+{
+    private static readonly string RepoRoot = ProjectGraph.FindRepoRoot();
+    private static readonly IReadOnlyList<ProjectModel> Projects = ProjectGraph.LoadAll(RepoRoot);
+
+    [Fact]
+    public void PaymentProjects_Exist_WithOwnedSchemaConstant()
+    {
+        Assert.Contains(Projects, p => p.Name == "TravelCore.Modules.Payment.Contracts");
+        Assert.Contains(Projects, p => p.Name == "TravelCore.Modules.Payment.Domain");
+        Assert.Contains(Projects, p => p.Name == "TravelCore.Modules.Payment.Infrastructure");
+        Assert.Equal("payment", TravelCore.Modules.Payment.Infrastructure.PaymentDbContext.SchemaName);
+        Assert.Equal("payment", PaymentOwnershipBoundary.SchemaName);
+        Assert.Equal("Booking", PaymentOwnershipBoundary.InitialTarget);
+        Assert.Equal("Tour Booking", PaymentOwnershipBoundary.InitialScope);
+    }
+
+    [Fact]
+    public void Payment_DoesNot_Own_Peer_SoT_Or_Product_Types()
+    {
+        Assert.Equal("Payment", PaymentOwnershipBoundary.OwnerModule);
+        Assert.Equal("Payment != Booking", PaymentOwnershipBoundary.PaymentIsNotBooking);
+        Assert.Equal("Payment != Pricing", PaymentOwnershipBoundary.PaymentIsNotPricing);
+        Assert.Equal("Payment != Quote", PaymentOwnershipBoundary.PaymentIsNotQuote);
+        Assert.Equal("Payment != BookingMonetarySnapshot", PaymentOwnershipBoundary.PaymentIsNotBookingMonetarySnapshot);
+        Assert.Equal("Payment != Bank Settlement", PaymentOwnershipBoundary.PaymentIsNotBankSettlement);
+        Assert.Equal("Payment != Accounting Ledger", PaymentOwnershipBoundary.PaymentIsNotAccountingLedger);
+        Assert.Equal("Payment != Agency Settlement", PaymentOwnershipBoundary.PaymentIsNotAgencySettlement);
+        Assert.Equal("PaymentStatus != BookingStatus", PaymentOwnershipBoundary.PaymentStatusIsNotBookingStatus);
+        Assert.Equal("PaymentSucceeded != BookingConfirmed", PaymentOwnershipBoundary.PaymentSucceededIsNotBookingConfirmed);
+        Assert.Equal("BookingCancelled != PaymentRefunded", PaymentOwnershipBoundary.BookingCancelledIsNotPaymentRefunded);
+        Assert.False(PaymentOwnershipBoundary.OwnsBooking);
+        Assert.False(PaymentOwnershipBoundary.OwnsPricing);
+        Assert.False(PaymentOwnershipBoundary.OwnsQuote);
+        Assert.False(PaymentOwnershipBoundary.OwnsBookingMonetarySnapshot);
+        Assert.False(PaymentOwnershipBoundary.PaymentAggregateImplemented);
+        Assert.False(PaymentOwnershipBoundary.PaymentStatusImplemented);
+        Assert.False(PaymentOwnershipBoundary.PaymentAttemptImplemented);
+        Assert.False(PaymentOwnershipBoundary.RefundImplemented);
+        Assert.False(PaymentOwnershipBoundary.ProviderAdapterImplemented);
+        Assert.False(PaymentOwnershipBoundary.ProviderSdkImplemented);
+        Assert.False(PaymentOwnershipBoundary.CallbackEndpointImplemented);
+        Assert.False(PaymentOwnershipBoundary.PaymentApiImplemented);
+        Assert.False(PaymentOwnershipBoundary.PaymentUiImplemented);
+        Assert.False(PaymentOwnershipBoundary.BookingConfirmImplemented);
+        Assert.False(PaymentOwnershipBoundary.SharedDbContextImplemented);
+        Assert.False(PaymentOwnershipBoundary.PeerSchemaForeignKeyImplemented);
+        Assert.False(PaymentOwnershipBoundary.GeneralizedTargetTypeImplemented);
+        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Payment"));
+        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.PaymentStatus"));
+        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.PaymentAttempt"));
+        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
+    }
+
+    [Fact]
+    public void PaymentInfrastructure_MustNotProjectReference_PeerBusinessModules()
+    {
+        var infra = Projects.Single(p => p.Name == "TravelCore.Modules.Payment.Infrastructure");
+        var hits = infra.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .Where(IsForbiddenPeerModule)
+            .ToList();
+        Assert.True(
+            hits.Count == 0,
+            "Payment.Infrastructure must not project-reference peer business modules:\n" + string.Join('\n', hits));
+        Assert.DoesNotContain(
+            infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name is "TravelCore.Modules.Booking.Infrastructure"
+                or "TravelCore.Modules.Booking.Domain"
+                or "TravelCore.Modules.Booking.Contracts"
+                or "TravelCore.Modules.Pricing.Infrastructure"
+                or "TravelCore.Modules.Pricing.Domain"
+                or "TravelCore.Modules.AgencyMarketplace.Infrastructure");
+    }
+
+    [Fact]
+    public void PaymentDomain_MustNotProjectReference_PeerBusinessModules()
+    {
+        var domain = Projects.Single(p => p.Name == "TravelCore.Modules.Payment.Domain");
+        var hits = domain.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .Where(name =>
+                name.Contains(".Infrastructure", StringComparison.OrdinalIgnoreCase)
+                || IsForbiddenPeerModule(name))
+            .ToList();
+        Assert.True(
+            hits.Count == 0,
+            "Payment.Domain must stay free of peer modules:\n" + string.Join('\n', hits));
+        Assert.Contains(
+            domain.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Identifiers");
+        Assert.Contains(
+            domain.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Money");
+    }
+
+    [Fact]
+    public void PaymentContracts_MustNotProjectReference_PeerBusinessModules()
+    {
+        var contracts = Projects.Single(p => p.Name == "TravelCore.Modules.Payment.Contracts");
+        var hits = contracts.ProjectReferences
+            .Select(r => Path.GetFileNameWithoutExtension(r)!)
+            .Where(IsForbiddenPeerModule)
+            .ToList();
+        Assert.True(
+            hits.Count == 0,
+            "Payment.Contracts must not project-reference peer business modules:\n" + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void Payment_T001_MustNotImplement_Deferred_Product_Types()
+    {
+        var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
+        Assert.True(Directory.Exists(root), root);
+
+        var forbiddenType = new Regex(
+            @"\b(class|record|enum|struct|interface)\s+(Payment|PaymentStatus|PaymentAttempt|PaymentIntent|Refund|RefundStatus|Stripe|Zarinpal|IDPay|PayPal|Adyen|Checkout|Wallet|Settlement|JournalEntry|Ledger|Commission|Payout)\b",
+            RegexOptions.Compiled);
+
+        var hits = new List<string>();
+        hits.AddRange(
+            Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)
+                .Where(p => !IsGeneratedOrBin(p))
+                .SelectMany(path => File.ReadAllLines(path)
+                    .Select((line, i) => (path, line, i))
+                    .Where(x =>
+                    {
+                        var trimmed = x.line.TrimStart();
+                        if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                            || trimmed.StartsWith("///", StringComparison.Ordinal))
+                        {
+                            return false;
+                        }
+
+                        return forbiddenType.IsMatch(x.line);
+                    }))
+                .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}"));
+
+        Assert.True(
+            hits.Count == 0,
+            "T001 forbids Payment aggregate/status/attempt/refund/provider product types:\n" + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void Payment_Module_Keeps_Provider_Callback_Api_And_Ui_Out()
+    {
+        var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
+        Assert.True(Directory.Exists(root), root);
+
+        var forbidden = new[]
+        {
+            "Stripe",
+            "Zarinpal",
+            "IDPay",
+            "PayPal",
+            "Adyen",
+            "MapGet(\"/api/payment",
+            "MapPost(\"/api/payment",
+            "MapPut(\"/api/payment",
+            "webhook",
+            "Webhook",
+            "isPaid",
+            "paymentSucceeded",
+            "providerSuccess",
+            "SmtpClient",
+            "Twilio",
+        };
+
+        var hits = new List<string>();
+        foreach (var path in Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories))
+        {
+            if (IsGeneratedOrBin(path)
+                || path.EndsWith("Boundary.cs", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            var text = File.ReadAllText(path);
+            foreach (var token in forbidden)
+            {
+                if (text.Contains(token, StringComparison.Ordinal))
+                {
+                    hits.Add($"{Path.GetRelativePath(RepoRoot, path)}:{token}");
+                }
+            }
+        }
+
+        Assert.True(
+            hits.Count == 0,
+            "Payment T001 must not introduce provider/callback/API/UI:\n" + string.Join('\n', hits));
+        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "checkout")));
+        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "pay")));
+        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "payment")));
+    }
+
+    [Fact]
+    public void Payment_Csproj_MustNotReference_Provider_Sdks()
+    {
+        var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
+        var forbiddenPackages = new[]
+        {
+            "Stripe",
+            "Zarinpal",
+            "IDPay",
+            "PayPal",
+            "Adyen",
+            "Braintree",
+        };
+
+        var hits = new List<string>();
+        foreach (var path in Directory.EnumerateFiles(root, "*.csproj", SearchOption.AllDirectories))
+        {
+            var text = File.ReadAllText(path);
+            foreach (var token in forbiddenPackages)
+            {
+                if (text.Contains(token, StringComparison.OrdinalIgnoreCase))
+                {
+                    hits.Add($"{Path.GetRelativePath(RepoRoot, path)}:{token}");
+                }
+            }
+        }
+
+        Assert.True(hits.Count == 0, "Payment must not package-reference provider SDKs:\n" + string.Join('\n', hits));
+    }
+
+    [Fact]
+    public void Payment_Evidence_Keeps_Ascii_Invariants()
+    {
+        var plan = Path.Combine(RepoRoot, "docs", "plans", "P20-implementation-plan.md");
+        Assert.True(File.Exists(plan), plan);
+        var text = File.ReadAllText(plan);
+        Assert.Contains("P20-R1 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("schema `payment`", text, StringComparison.Ordinal);
+        Assert.Contains("initial Payment target = Booking", text, StringComparison.Ordinal);
+        Assert.Contains("Payment != Booking", text, StringComparison.Ordinal);
+        Assert.Contains("Payment != Pricing", text, StringComparison.Ordinal);
+        Assert.Contains("PaymentStatus != BookingStatus", text, StringComparison.Ordinal);
+        Assert.Contains("PaymentSucceeded != BookingConfirmed", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R2", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R8", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("P20 COMPLETE", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("TC-P20-GATE COMPLETE", text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Payment_Host_Registers_Module_Without_Endpoints()
+    {
+        var program = File.ReadAllText(Path.Combine(RepoRoot, "src", "backend", "TravelCore.Api", "Program.cs"));
+        Assert.Contains("new PaymentModule()", program, StringComparison.Ordinal);
+        var module = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Payment",
+            "TravelCore.Modules.Payment.Infrastructure",
+            "PaymentModule.cs"));
+        Assert.Contains("AddDbContext<PaymentDbContext>", module, StringComparison.Ordinal);
+        Assert.DoesNotContain("MapGet", module, StringComparison.Ordinal);
+        Assert.DoesNotContain("MapPost", module, StringComparison.Ordinal);
+    }
+
+    private static bool IsForbiddenPeerModule(string name) =>
+        name.Contains(".Booking.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Booking", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Tour.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Tour", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Content.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Content", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Pricing.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Pricing", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".AgencyMarketplace.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".AgencyMarketplace", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Place.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Place", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Destination.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Destination", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".ReferenceData.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".ReferenceData", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Media.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Media", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Seo.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Seo", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Search.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Search", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Ugc.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Ugc", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Visa.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Visa", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Identity.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Identity", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".Party.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".Party", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".TripPlanner.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".TripPlanner", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".PublicExperience.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".PublicExperience", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsGeneratedOrBin(string path) =>
+        path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase)
+        || path.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase)
+        || path.Contains($"{Path.DirectorySeparatorChar}Migrations{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase);
+}

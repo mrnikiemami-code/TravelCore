@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Payment.Contracts</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Payment.Contracts</AssemblyName>
+    <Description>Payment module contracts. Ownership boundary only in T001 (TC-P20-T001 / P20-R1).</Description>
+  </PropertyGroup>
+
+</Project>

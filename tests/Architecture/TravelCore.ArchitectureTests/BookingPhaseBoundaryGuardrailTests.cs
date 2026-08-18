@@ -139,7 +139,7 @@ public sealed class BookingPhaseBoundaryGuardrailTests
             new[] { BookingStatus.Pending, BookingStatus.Confirmed, BookingStatus.Cancelled },
             Enum.GetValues<BookingStatus>());
         Assert.Null(typeof(Booking).GetMethod("Confirm"));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
     }
 
     [Fact]

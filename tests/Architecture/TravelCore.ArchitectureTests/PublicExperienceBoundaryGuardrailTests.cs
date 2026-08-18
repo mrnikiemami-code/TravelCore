@@ -78,7 +78,7 @@ public sealed class PublicExperienceBoundaryGuardrailTests
             "Public Experience must not own Tour/Booking/Search/SEO types:\n" + string.Join('\n', hits));
 
         Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
         Assert.True(
             Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Search")),
             "P15 Search exists as Discovery owner; PublicExperience must not own it.");

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.Payment.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Payment.UnitTests</AssemblyName>
+    <Description>Payment module scaffolding unit tests (TC-P20-T001 / P20-R1).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Contracts\TravelCore.Modules.Payment.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Domain\TravelCore.Modules.Payment.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Infrastructure\TravelCore.Modules.Payment.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
+
+</Project>

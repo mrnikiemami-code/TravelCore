@@ -66,7 +66,7 @@ public sealed class PublicExperiencePhaseBoundaryGuardrailTests
     public void PublicExperience_DoesNot_Own_Booking_Payment_Or_Search_Module()
     {
         Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
         Assert.True(
             Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Search")),
             "P15 Search exists as Discovery owner; PublicExperience remains presentation only.");

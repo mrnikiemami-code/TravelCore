@@ -136,7 +136,7 @@ public sealed class VisaPhaseBoundaryGuardrailTests
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaDefinition).Assembly.GetType("TravelCore.Modules.Visa.Domain.Country"));
         Assert.Null(typeof(TravelCore.Modules.Visa.Domain.VisaDefinition).Assembly.GetType("TravelCore.Modules.Visa.Domain.Destination"));
         Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
     }
 
     [Fact]

@@ -116,6 +116,6 @@ public sealed class PricingPhaseBoundaryGuardrailTests
         Assert.DoesNotContain("CreateQuote", loader, StringComparison.Ordinal);
 
         Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
     }
 }
