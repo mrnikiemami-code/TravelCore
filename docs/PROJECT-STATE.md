@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` pending acceptance) |
-| Previous Phase | **P17 — Visa** (**COMPLETE** — `TC-P17-GATE` ACCEPTED `f439924`) |
+| Current Phase | **P19 — Tour Booking** (**PLAN authored** — `TC-P19-PLAN`; **P19-R1–R8 OPEN**; no product) |
+| Previous Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` ACCEPTED `73605aa`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P18-GATE` — P18 acceptance evidence |
-| Current Next Task | Architect review of `TC-P18-GATE` → next phase from SoT only (P19 — Tour Booking PLANNED) |
+| Current Active Product Task | `TC-P19-PLAN` — Tour Booking architecture/implementation plan (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P19-PLAN` → do not execute T001 until PLAN ACCEPT and P19-R1 lock |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -219,7 +219,7 @@
 | P16-GATE | **COMPLETE / ACCEPTED** (`538f3fc`) — Acceptance evidence (no new product capability) |
 | P17 | **COMPLETE / ACCEPTED** — Plan ACCEPTED · **P17-R1–R8 RESOLVED** · T001–T009 ACCEPTED · `TC-P17-GATE` `f439924` |
 | P17-GATE | **COMPLETE / ACCEPTED** (`f439924`) — Acceptance evidence (no new product capability) |
-| P18 | **COMPLETE / ACCEPTED** — Plan ACCEPTED · **P18-R1–R8 RESOLVED** · T001–T009 ACCEPTED · `TC-P18-GATE` pending acceptance |
+| P18 | **COMPLETE / ACCEPTED** — Plan ACCEPTED · **P18-R1–R8 RESOLVED** · T001–T009 ACCEPTED · `TC-P18-GATE` `73605aa` |
 | P18 Plan | `TC-P18-PLAN` COMPLETE / ACCEPTED (`1826013`) — [`docs/plans/P18-implementation-plan.md`](plans/P18-implementation-plan.md) |
 | P18-T001 | **COMPLETE / ACCEPTED** (`d29ab8e`) — TripPlanner module scaffolding (`trip_planner` schema) |
 | P18-T002 | **COMPLETE / ACCEPTED** (`1163e47`) — TripIntent vs Lead aggregate boundary |
@@ -231,7 +231,16 @@
 | P18-T008 | **COMPLETE / ACCEPTED** (`9e1b1e0`; final baseline `d302ad4`) — public Trip Planner experience |
 | P18-FIX-TOUR-ROUTE | **COMPLETE / ACCEPTED** (`d302ad4`) — remove legacy `/tours/[productKey]` |
 | P18-T009 | **COMPLETE / ACCEPTED** (`ad05e0f`) — hardening and evidence pack |
-| P18-GATE | **COMPLETE / ACCEPTED** (pending SHA) — Acceptance evidence (no new product capability) |
+| P18-GATE | **COMPLETE / ACCEPTED** (`73605aa`) — Acceptance evidence (no new product capability) |
+| P19 | **PLAN authored** — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md) · **P19-R1–R8 OPEN** · no Booking product |
+| P19-R1 (Booking ownership / schema / target) | **OPEN** |
+| P19-R2 (Lifecycle / aggregate) | **OPEN** |
+| P19-R3 (Capacity consumption / hold / concurrency) | **OPEN** |
+| P19-R4 (Booker / passengers / contact / PII) | **OPEN** |
+| P19-R5 (Quote / monetary snapshot) | **OPEN** |
+| P19-R6 (Payment / confirmation / cancellation orchestration) | **OPEN** |
+| P19-R7 (Agency / Lead / Visa / external boundaries) | **OPEN** |
+| P19-R8 (Public booking / authorization / privacy) | **OPEN** |
 | P18-R8 (Public composition) | **RESOLVED** — PublicExperience composes `/plan` · TripPlanner owns TripIntent/Lead · honest follow-up CTA · no Search/Booking/Payment/CRM |
 | P18-R1 (TripPlanner ownership) | **RESOLVED** — independent TripPlanner module · schema `trip_planner` · owns trip-intent/lead facts/lifecycle · does not own Destination/Tour/Place facts, Pricing/Quote, Booking, Payment, CRM, Search, AgencyMarketplace commercial allocation, Notification delivery, or Party/Identity master data · product refs = opaque logical id |
 | P18-R2 (TripIntent vs Lead) | **RESOLVED** — TripIntent = mutable planning intent · Lead = submitted follow-up request · **TripIntent != Lead** · **Lead != Booking** · submission snapshot invariant |
