@@ -79,7 +79,7 @@ public sealed class HotelBookingStayPersistenceTests
             Assert.Equal(1, rooms[0].AdultCount);
             Assert.Equal(1, rooms[0].ChildCount);
             Assert.Equal(1, rooms[1].GuestCount);
-            Assert.Equal(loaded.Rooms[0].Guests.Single(g => g.IsLeadGuest).Id, loaded.LeadGuest.Id);
+            Assert.Equal(rooms[0].Guests.Single(g => g.IsLeadGuest).Id, loaded.LeadGuest.Id);
             Assert.All(loaded.Guests, g => Assert.Contains(g.RoomReservationId, rooms.Select(r => r.Id)));
             Assert.Equal(8, rooms[0].Guests.Single(g => g.Category == HotelGuestCategory.Child).AgeAtCheckIn!.Value.Years);
             Assert.Null(loaded.LeadGuest.AgeAtCheckIn);
