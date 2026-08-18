@@ -26,6 +26,15 @@ export type PublicBookingCopy = {
   monetaryLabel: string;
   holdLabel: string;
   unauthorized: string;
+  payTitle: string;
+  payNote: string;
+  payAction: string;
+  payUnavailable: string;
+  payWaiting: string;
+  payReceivedPendingConfirm: string;
+  payCompensation: string;
+  payReturned: string;
+  payRetry: string;
 };
 
 const COPY: Record<AppLocale, PublicBookingCopy> = {
@@ -56,6 +65,15 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     monetaryLabel: "تصویر مالی ثبت‌شده",
     holdLabel: "نگه‌داشت ظرفیت",
     unauthorized: "این رزرو در دسترس نیست.",
+    payTitle: "پرداخت رزرو",
+    payNote: "مبلغ از رزرو ثبت‌شده خوانده می‌شود. کارت بانکی در TravelCore وارد نمی‌شود.",
+    payAction: "ادامه به درگاه پرداخت",
+    payUnavailable: "پرداخت آنلاین فعلاً در دسترس نیست.",
+    payWaiting: "وضعیت پرداخت در حال بررسی است.",
+    payReceivedPendingConfirm: "پرداخت دریافت شد؛ تأیید رزرو در حال پردازش است.",
+    payCompensation: "بازگشت وجه در حال انجام است. رزرو قطعی نیست.",
+    payReturned: "بازگشت از درگاه. این صفحه پرداخت را موفق اعلام نمی‌کند.",
+    payRetry: "تلاش دوباره برای پرداخت",
   },
   en: {
     prepareTitle: "Prepare booking",
@@ -84,6 +102,15 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     monetaryLabel: "Recorded monetary snapshot",
     holdLabel: "Capacity hold",
     unauthorized: "This booking is not available.",
+    payTitle: "Booking payment",
+    payNote: "The amount comes from the recorded booking. TravelCore does not collect card details.",
+    payAction: "Continue to payment provider",
+    payUnavailable: "Online payment is not currently available.",
+    payWaiting: "Payment status is being checked.",
+    payReceivedPendingConfirm: "Payment received; booking confirmation is being processed.",
+    payCompensation: "A money return is in progress. This booking is not confirmed.",
+    payReturned: "Returned from the provider. This page does not mark payment successful.",
+    payRetry: "Try payment again",
   },
   ar: {
     prepareTitle: "إعداد حجز مؤقت",
@@ -112,6 +139,15 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     monetaryLabel: "اللقطة المالية المسجلة",
     holdLabel: "احتجاز السعة",
     unauthorized: "هذا الحجز غير متاح.",
+    payTitle: "دفع الحجز",
+    payNote: "المبلغ مأخوذ من الحجز المسجل. لا تجمع TravelCore بيانات البطاقة.",
+    payAction: "المتابعة إلى مزود الدفع",
+    payUnavailable: "الدفع عبر الإنترنت غير متاح حالياً.",
+    payWaiting: "جارٍ التحقق من حالة الدفع.",
+    payReceivedPendingConfirm: "تم استلام الدفع؛ تأكيد الحجز قيد المعالجة.",
+    payCompensation: "جاري إرجاع المبلغ. الحجز غير مؤكد.",
+    payReturned: "عودة من المزود. هذه الصفحة لا تعتبر الدفع ناجحاً.",
+    payRetry: "إعادة محاولة الدفع",
   },
 };
 

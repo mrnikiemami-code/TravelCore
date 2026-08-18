@@ -7,9 +7,12 @@ import {
   BOOKING_IDEMPOTENCY_HEADER,
   BOOKING_PUBLIC_INITIATIONS_PATH,
   publicBookingReadPath,
+  publicBookingPaymentPath,
+  publicBookingPaymentInitiationPath,
   type PublicBookingInitiationResult,
   type PublicBookingPassengerInput,
   type PublicBookingReadResult,
+  type PublicBookingPaymentReadResult,
 } from "@/features/booking/types";
 
 const AUTH_COOKIE = "TravelCore.Identity";
@@ -94,5 +97,58 @@ export async function readPublicBookingAction(
   );
   if (!result.ok) return failMessage(result);
   if (!result.data) return { ok: false, message: "Empty booking response." };
+  return { ok: true, data: result.data };
+}
+
+export async function readPublicBookingPaymentAction(
+  bookingId: string,
+  accessToken: string | null,
+): Promise<
+  | { ok: true; data: PublicBookingPaymentReadResult }
+  | { ok: false; message: string; status?: number }
+> {
+  const extra: HeadersInit = {};
+  if (accessToken) {
+    extra[BOOKING_ACCESS_TOKEN_HEADER] = accessToken;
+  }
+
+  const result = await apiGetJson<PublicBookingPaymentReadResult>(
+    publicBookingPaymentPath(bookingId),
+    {
+      cache: "no-store",
+      headers: await identityHeaders(extra),
+    },
+  );
+  if (!result.ok) return failMessage(result);
+  if (!result.data) return { ok: false, message: "Empty payment response." };
+  return { ok: true, data: result.data };
+}
+
+export async function initiatePublicBookingPaymentAction(input: {
+  bookingId: string;
+  accessToken: string | null;
+  idempotencyKey: string;
+}): Promise<
+  | { ok: true; data: PublicBookingPaymentReadResult }
+  | { ok: false; message: string; status?: number }
+> {
+  const extra: HeadersInit = {
+    [BOOKING_IDEMPOTENCY_HEADER]: input.idempotencyKey,
+  };
+  if (input.accessToken) {
+    extra[BOOKING_ACCESS_TOKEN_HEADER] = input.accessToken;
+  }
+
+  const result = await apiSendJson<PublicBookingPaymentReadResult>(
+    publicBookingPaymentInitiationPath(input.bookingId),
+    {
+      method: "POST",
+      cache: "no-store",
+      headers: await identityHeaders(extra),
+      body: { idempotencyKey: input.idempotencyKey },
+    },
+  );
+  if (!result.ok) return failMessage(result);
+  if (!result.data) return { ok: false, message: "Empty payment initiation response." };
   return { ok: true, data: result.data };
 }

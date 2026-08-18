@@ -24,7 +24,7 @@ public sealed class PublicBookingSurfaceTests
     {
         Assert.True(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
         Assert.False(PublicBookingCompositionBoundary.ConfirmEndpointImplemented);
-        Assert.False(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
+        Assert.True(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicListingImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicCancellationImplemented);
         Assert.False(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);

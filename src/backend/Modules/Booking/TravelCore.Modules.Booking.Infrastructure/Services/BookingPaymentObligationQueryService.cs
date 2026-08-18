@@ -21,8 +21,9 @@ internal sealed class BookingPaymentObligationQueryService : IBookingPaymentObli
         CancellationToken cancellationToken = default)
     {
         var booking = await _db.Bookings
+            .AsNoTracking()
             .Include(x => x.MonetarySnapshot)
-            .SingleOrDefaultAsync(x => x.Id.Value == bookingId, cancellationToken);
+            .SingleOrDefaultAsync(x => x.Id == BookingId.From(bookingId), cancellationToken);
         if (booking is null || booking.MonetarySnapshot is null)
         {
             return null;

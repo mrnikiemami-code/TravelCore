@@ -3,6 +3,8 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.Extensions.Hosting;
 using NodaTime;
+using TravelCore.Modules.Booking.Domain;
+using TravelCore.Modules.Booking.Infrastructure.Services;
 using TravelCore.Modules.Identity.Contracts;
 using TravelCore.Modules.Pricing.Domain;
 using TravelCore.Modules.Tour.Domain;
@@ -74,6 +76,125 @@ public sealed class BookingPublicHostTests
         Assert.Equal(HttpStatusCode.NotFound, list.StatusCode);
         using var confirm = await client.PostAsJsonAsync($"/api/booking/public/{bookingId:D}/confirm", new { }, ct);
         Assert.Equal(HttpStatusCode.NotFound, confirm.StatusCode);
+    }
+
+    [Fact]
+    public async Task Public_Payment_Is_Booking_Scoped_And_Token_Protected()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        await using var factory = _fixture.CreateFactory(Environments.Development);
+        using var client = factory.CreateClient(new() { AllowAutoRedirect = false });
+        var seeded = await SeedPublishedDepartureAsync(maxPax: 4, ct);
+        using var created = await PostInitiationAsync(
+            client,
+            seeded.DepartureId,
+            Guid.NewGuid().ToString("D"),
+            passengerCount: 1,
+            ct);
+        Assert.Equal(HttpStatusCode.Created, created.StatusCode);
+        using var createdDoc = JsonDocument.Parse(await created.Content.ReadAsStringAsync(ct));
+        var bookingId = createdDoc.RootElement.GetProperty("bookingId").GetGuid();
+        var token = createdDoc.RootElement.GetProperty("accessToken").GetString();
+        var paymentPath = $"/api/booking/public/{bookingId:D}/payment";
+        var initiationPath = paymentPath + "/initiation";
+
+        using var missing = await client.GetAsync(paymentPath, ct);
+        Assert.Equal(HttpStatusCode.NotFound, missing.StatusCode);
+
+        using var wrongReq = new HttpRequestMessage(HttpMethod.Get, paymentPath);
+        wrongReq.Headers.Add("X-TravelCore-Booking-Access-Token", "not-the-token");
+        using var wrong = await client.SendAsync(wrongReq, ct);
+        Assert.Equal(HttpStatusCode.NotFound, wrong.StatusCode);
+
+        using var okReq = new HttpRequestMessage(HttpMethod.Get, paymentPath);
+        okReq.Headers.Add("X-TravelCore-Booking-Access-Token", token);
+        using var ok = await client.SendAsync(okReq, ct);
+        Assert.Equal(HttpStatusCode.OK, ok.StatusCode);
+        using var okDoc = JsonDocument.Parse(await ok.Content.ReadAsStringAsync(ct));
+        Assert.Equal("Pending", okDoc.RootElement.GetProperty("bookingStatus").GetString());
+        Assert.Equal("Pending", okDoc.RootElement.GetProperty("paymentStatus").GetString());
+        Assert.False(okDoc.RootElement.GetProperty("providerInitiationPossible").GetBoolean());
+        Assert.Equal("Unavailable", okDoc.RootElement.GetProperty("safeAction").GetString());
+        Assert.Equal(1000m, okDoc.RootElement.GetProperty("amount").GetDecimal());
+        Assert.Equal("USD", okDoc.RootElement.GetProperty("currencyCode").GetString());
+        var paymentId = okDoc.RootElement.GetProperty("paymentId").GetGuid();
+
+        using var tamper = new HttpRequestMessage(HttpMethod.Post, initiationPath)
+        {
+            Content = JsonContent.Create(new
+            {
+                amount = 1m,
+                currencyCode = "EUR",
+                success = true,
+                isPaid = true,
+                paymentId = Guid.CreateVersion7(),
+                providerKey = "test",
+            }),
+        };
+        tamper.Headers.Add("X-TravelCore-Booking-Access-Token", token);
+        tamper.Headers.Add("Idempotency-Key", Guid.NewGuid().ToString("D"));
+        using var tamperResponse = await client.SendAsync(tamper, ct);
+        Assert.Equal(HttpStatusCode.ServiceUnavailable, tamperResponse.StatusCode);
+
+        using var afterTamperReq = new HttpRequestMessage(HttpMethod.Get, paymentPath);
+        afterTamperReq.Headers.Add("X-TravelCore-Booking-Access-Token", token);
+        using var afterTamper = await client.SendAsync(afterTamperReq, ct);
+        using var afterDoc = JsonDocument.Parse(await afterTamper.Content.ReadAsStringAsync(ct));
+        Assert.Equal(paymentId, afterDoc.RootElement.GetProperty("paymentId").GetGuid());
+        Assert.Equal(1000m, afterDoc.RootElement.GetProperty("amount").GetDecimal());
+        Assert.Equal("USD", afterDoc.RootElement.GetProperty("currencyCode").GetString());
+        Assert.Equal("Pending", afterDoc.RootElement.GetProperty("paymentStatus").GetString());
+
+        using var paymentLookup = await client.GetAsync($"/api/payment/{paymentId:D}", ct);
+        Assert.Equal(HttpStatusCode.NotFound, paymentLookup.StatusCode);
+        using var paymentList = await client.GetAsync("/api/payment/public", ct);
+        Assert.Equal(HttpStatusCode.NotFound, paymentList.StatusCode);
+        using var refund = await client.PostAsync($"/api/booking/public/{bookingId:D}/payment/refund", content: null, ct);
+        Assert.Equal(HttpStatusCode.NotFound, refund.StatusCode);
+        using var unknown = new HttpRequestMessage(HttpMethod.Get, $"/api/booking/public/{Guid.CreateVersion7():D}/payment");
+        unknown.Headers.Add("X-TravelCore-Booking-Access-Token", token);
+        using var unknownResponse = await client.SendAsync(unknown, ct);
+        Assert.Equal(HttpStatusCode.NotFound, unknownResponse.StatusCode);
+    }
+
+    [Fact]
+    public async Task Public_Payment_Cross_User_And_Cancelled_Booking_Are_Rejected()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        await using var factory = _fixture.CreateFactory(Environments.Development);
+        using var owner = factory.CreateClient(new() { AllowAutoRedirect = false });
+        using var stranger = factory.CreateClient(new() { AllowAutoRedirect = false });
+        var seeded = await SeedPublishedDepartureAsync(maxPax: 4, ct);
+        await RegisterAndLoginAsync(owner, $"t007-owner-{Guid.NewGuid():N}@travelcore.test", "Owner-Password-1", ct);
+        await RegisterAndLoginAsync(stranger, $"t007-other-{Guid.NewGuid():N}@travelcore.test", "Other-Password-1", ct);
+
+        using var created = await PostInitiationAsync(
+            owner,
+            seeded.DepartureId,
+            Guid.NewGuid().ToString("D"),
+            passengerCount: 1,
+            ct);
+        Assert.Equal(HttpStatusCode.Created, created.StatusCode);
+        using var createdDoc = JsonDocument.Parse(await created.Content.ReadAsStringAsync(ct));
+        var bookingId = createdDoc.RootElement.GetProperty("bookingId").GetGuid();
+        var paymentPath = $"/api/booking/public/{bookingId:D}/payment";
+
+        using var ownerRead = await owner.GetAsync(paymentPath, ct);
+        Assert.Equal(HttpStatusCode.OK, ownerRead.StatusCode);
+        using var strangerRead = await stranger.GetAsync(paymentPath, ct);
+        Assert.Equal(HttpStatusCode.NotFound, strangerRead.StatusCode);
+
+        await using (var bookingDb = _fixture.CreateBookingDb())
+        {
+            await new BookingCancellationService(bookingDb)
+                .CancelPendingAsync(BookingId.From(bookingId), SystemClock.Instance.GetCurrentInstant(), ct);
+        }
+
+        using var cancelled = await owner.PostAsJsonAsync(
+            paymentPath + "/initiation",
+            new { idempotencyKey = Guid.NewGuid().ToString("D") },
+            ct);
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, cancelled.StatusCode);
     }
 
     [Fact]

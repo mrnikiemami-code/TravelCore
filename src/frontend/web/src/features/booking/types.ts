@@ -6,6 +6,14 @@ export function publicBookingReadPath(bookingId: string): string {
   return `/api/booking/public/${encodeURIComponent(bookingId)}`;
 }
 
+export function publicBookingPaymentPath(bookingId: string): string {
+  return `/api/booking/public/${encodeURIComponent(bookingId)}/payment`;
+}
+
+export function publicBookingPaymentInitiationPath(bookingId: string): string {
+  return `/api/booking/public/${encodeURIComponent(bookingId)}/payment/initiation`;
+}
+
 export function bookingAccessStorageKey(bookingId: string): string {
   return `tc.booking.access.${bookingId}`;
 }
@@ -58,4 +66,19 @@ export type PublicBookingReadResult = {
   }>;
   monetary: PublicBookingInitiationResult["monetary"];
   hold: PublicBookingInitiationResult["hold"];
+};
+
+export type PublicBookingPaymentReadResult = {
+  bookingId: string;
+  bookingStatus: string;
+  bookingConfirmed: boolean;
+  paymentId: string;
+  paymentStatus: string;
+  amount: number | null;
+  currencyCode: string | null;
+  providerInitiationPossible: boolean;
+  latestAttemptStatus: string | null;
+  refundStatus: string | null;
+  safeAction: string;
+  redirectUri: string | null;
 };

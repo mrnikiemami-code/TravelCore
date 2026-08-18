@@ -35,7 +35,7 @@ public sealed class PaymentFoundationHostTests
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<RefundSucceededOutboxDispatcher>());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<IPaymentSucceededIntegrationHandler>());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<IRefundSucceededIntegrationHandler>());
-            Assert.NotNull(scope.ServiceProvider.GetRequiredService<IBookingPaymentCompensationRequiredHandler>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<IPublicBookingPaymentService>());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<TravelCore.Modules.Booking.Infrastructure.Services.BookingCompensationOutboxDispatcher>());
         }
 

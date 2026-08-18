@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Routing;
 using TravelCore.Modules.Booking.Contracts;
 using TravelCore.Modules.Booking.Domain;
 using TravelCore.Modules.Booking.Infrastructure.Services;
+using TravelCore.Modules.Payment.Contracts;
 
 namespace TravelCore.Modules.Booking.Infrastructure.Endpoints;
 
 /// <summary>
-/// Anonymous public Booking initiation and authorized private reads (TC-P19-T008 / P19-R8).
-/// Pending initiation only — no confirmation, payment, listing, or public cancellation.
+/// Anonymous public Booking initiation and authorized private reads/payment (TC-P19-T008 / TC-P20-T007).
+/// Pending initiation and Booking-scoped Payment only — no confirmation, listing, or public cancellation.
 /// </summary>
 internal static class PublicBookingEndpoints
 {
@@ -70,19 +71,105 @@ internal static class PublicBookingEndpoints
             IPublicBookingReadService reads,
             CancellationToken cancellationToken) =>
         {
-            httpContext.Request.Headers.TryGetValue(
-                PublicBookingCompositionBoundary.AccessTokenHeader,
-                out var tokenValues);
             var read = await reads.GetAuthorizedAsync(
                 bookingId,
-                tokenValues.ToString(),
+                ReadAccessToken(httpContext),
                 PublicBookingActorClaims.TryReadActorId(httpContext.User),
                 cancellationToken);
             return read is null ? Results.NotFound() : Results.Ok(read);
         });
 
+        group.MapGet("/{bookingId:guid}/payment", async Task<IResult> (
+            Guid bookingId,
+            HttpContext httpContext,
+            IPublicBookingReadService reads,
+            IPublicBookingPaymentService payments,
+            CancellationToken cancellationToken) =>
+        {
+            var booking = await reads.GetAuthorizedAsync(
+                bookingId,
+                ReadAccessToken(httpContext),
+                PublicBookingActorClaims.TryReadActorId(httpContext.User),
+                cancellationToken);
+            if (booking is null)
+            {
+                return Results.NotFound();
+            }
+
+            var payment = await payments.GetByBookingIdAsync(bookingId, cancellationToken);
+            return Results.Ok(Compose(booking, payment));
+        });
+
+        group.MapPost("/{bookingId:guid}/payment/initiation", async Task<IResult> (
+            Guid bookingId,
+            PublicPaymentInitiationRequest? request,
+            HttpContext httpContext,
+            IPublicBookingReadService reads,
+            IPublicBookingPaymentService payments,
+            CancellationToken cancellationToken) =>
+        {
+            var booking = await reads.GetAuthorizedAsync(
+                bookingId,
+                ReadAccessToken(httpContext),
+                PublicBookingActorClaims.TryReadActorId(httpContext.User),
+                cancellationToken);
+            if (booking is null)
+            {
+                return Results.NotFound();
+            }
+
+            var idempotency = request?.IdempotencyKey;
+            if (string.IsNullOrWhiteSpace(idempotency)
+                && httpContext.Request.Headers.TryGetValue(
+                    PublicBookingCompositionBoundary.IdempotencyHeader,
+                    out var values)
+                && !string.IsNullOrWhiteSpace(values.ToString()))
+            {
+                idempotency = values.ToString();
+            }
+
+            var result = await payments.InitiateForBookingAsync(bookingId, idempotency, cancellationToken);
+            var body = Compose(booking, result.Payment);
+            return result.Status switch
+            {
+                PublicPaymentCommandStatus.ProviderUnavailable => Results.Problem(
+                    detail: "Online payment is not currently available.",
+                    statusCode: StatusCodes.Status503ServiceUnavailable,
+                    title: "Payment provider is not configured.",
+                    extensions: new Dictionary<string, object?> { ["payment"] = body }),
+                PublicPaymentCommandStatus.BookingIneligible => Results.Problem(
+                    detail: "Booking is not eligible for Payment initiation.",
+                    statusCode: StatusCodes.Status422UnprocessableEntity,
+                    title: "Payment initiation rejected."),
+                _ => Results.Ok(body),
+            };
+        });
+
         return endpoints;
     }
+
+    private static string? ReadAccessToken(HttpContext httpContext)
+    {
+        httpContext.Request.Headers.TryGetValue(
+            PublicBookingCompositionBoundary.AccessTokenHeader,
+            out var tokenValues);
+        return tokenValues.ToString();
+    }
+
+    private static PublicBookingPaymentRead Compose(PublicBookingRead booking, PublicPaymentRead payment) =>
+        new(
+            booking.BookingId,
+            booking.Status,
+            booking.Confirmed,
+            payment.PaymentId,
+            payment.PaymentStatus,
+            payment.Amount ?? booking.Monetary?.TotalAmount,
+            payment.CurrencyCode ?? booking.Monetary?.Currency,
+            payment.ProviderInitiationPossible,
+            payment.LatestAttemptStatus,
+            payment.RefundStatus,
+            payment.SafeAction,
+            payment.RedirectUri);
 
     private static PublicBookingInitiationRequest MergeIdempotency(
         PublicBookingInitiationRequest request,

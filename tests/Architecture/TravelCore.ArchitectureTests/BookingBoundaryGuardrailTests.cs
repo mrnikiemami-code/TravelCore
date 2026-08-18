@@ -595,7 +595,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.False(PublicBookingCompositionBoundary.PublicCancellationImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicListingImplemented);
         Assert.False(PublicBookingCompositionBoundary.ConfirmEndpointImplemented);
-        Assert.False(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
+        Assert.True(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
         Assert.False(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
         Assert.True(BookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.True(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
@@ -613,9 +613,12 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains("MapGroup(PublicBookingCompositionBoundary.PublicApiGroup)", endpoints, StringComparison.Ordinal);
         Assert.Contains("MapPost(\"/initiations\"", endpoints, StringComparison.Ordinal);
         Assert.Contains("MapGet(\"/{bookingId:guid}\"", endpoints, StringComparison.Ordinal);
+        Assert.Contains("MapGet(\"/{bookingId:guid}/payment\"", endpoints, StringComparison.Ordinal);
+        Assert.Contains("MapPost(\"/{bookingId:guid}/payment/initiation\"", endpoints, StringComparison.Ordinal);
         Assert.DoesNotContain("MapPost(\"/confirm", endpoints, StringComparison.Ordinal);
         Assert.DoesNotContain("PaymentIntent", endpoints, StringComparison.Ordinal);
         Assert.DoesNotContain("MapPost(\"/cancel", endpoints, StringComparison.Ordinal);
+        Assert.DoesNotContain("MapPost(\"/refund", endpoints, StringComparison.Ordinal);
 
         var bookPage = Path.Combine(
             RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "tours", "[slug]", "book", "page.tsx");
@@ -633,6 +636,22 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains("robots: { index: false, follow: false }", statusText, StringComparison.Ordinal);
         Assert.DoesNotContain("رزرو قطعی شد", statusText, StringComparison.Ordinal);
         Assert.DoesNotContain("Booking confirmed", statusText, StringComparison.Ordinal);
+
+        var paymentPage = Path.Combine(
+            RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "bookings", "[bookingId]", "payment", "page.tsx");
+        var returnPage = Path.Combine(
+            RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "bookings", "[bookingId]", "payment", "return", "page.tsx");
+        Assert.True(File.Exists(paymentPage), paymentPage);
+        Assert.True(File.Exists(returnPage), returnPage);
+        var paymentText = File.ReadAllText(paymentPage);
+        var returnText = File.ReadAllText(returnPage);
+        Assert.Contains("robots: { index: false, follow: false }", paymentText, StringComparison.Ordinal);
+        Assert.Contains("robots: { index: false, follow: false }", returnText, StringComparison.Ordinal);
+        Assert.Contains("Browser return is a sibling route and also does not mark Payment successful", paymentText, StringComparison.Ordinal);
+        Assert.Contains("BrowserReturn != PaymentSuccess", returnText, StringComparison.Ordinal);
+        Assert.DoesNotContain("accessToken", paymentText, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("cardNumber", paymentText + returnText, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("cvv", paymentText + returnText, StringComparison.OrdinalIgnoreCase);
 
         Assert.False(File.Exists(Path.Combine(
             RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "bookings", "page.tsx")));

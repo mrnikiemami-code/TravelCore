@@ -78,3 +78,17 @@ public interface IPublicBookingReadService
         Guid? actorId,
         CancellationToken cancellationToken = default);
 }
+
+public sealed record PublicBookingPaymentRead(
+    Guid BookingId,
+    string BookingStatus,
+    bool BookingConfirmed,
+    Guid PaymentId,
+    string PaymentStatus,
+    decimal? Amount,
+    string? CurrencyCode,
+    bool ProviderInitiationPossible,
+    string? LatestAttemptStatus,
+    string? RefundStatus,
+    string SafeAction,
+    string? RedirectUri);

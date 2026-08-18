@@ -129,7 +129,7 @@ public sealed class BookingPhaseBoundaryGuardrailTests
         Assert.True(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
         Assert.False(BookingOrchestrationBoundary.FakePaymentImplemented);
         Assert.False(PublicBookingCompositionBoundary.ConfirmEndpointImplemented);
-        Assert.False(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
+        Assert.True(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicListingImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicCancellationImplemented);
         Assert.False(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
@@ -154,6 +154,10 @@ public sealed class BookingPhaseBoundaryGuardrailTests
             RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "plan", "page.tsx")));
         Assert.True(File.Exists(Path.Combine(
             RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "bookings", "[bookingId]", "page.tsx")));
+        Assert.True(File.Exists(Path.Combine(
+            RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "bookings", "[bookingId]", "payment", "page.tsx")));
+        Assert.True(File.Exists(Path.Combine(
+            RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "bookings", "[bookingId]", "payment", "return", "page.tsx")));
         Assert.False(File.Exists(Path.Combine(
             RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "bookings", "page.tsx")));
         Assert.False(Directory.Exists(Path.Combine(

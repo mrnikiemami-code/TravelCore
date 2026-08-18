@@ -70,6 +70,9 @@ export function PublicBookingStatusView({
           <LtrValue>{data.hold.status}</LtrValue>
         </Text>
       ) : null}
+      <a className="underline" href={`/${locale}/bookings/${encodeURIComponent(bookingId)}/payment`}>
+        {copy.payTitle}
+      </a>
       <ul className="list-inside list-disc">
         {data.passengers.map((passenger) => (
           <li key={passenger.passengerId}>

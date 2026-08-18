@@ -18,6 +18,6 @@ public static class PublicBookingCompositionBoundary
     public const bool PublicCancellationImplemented = false;
     public const bool PublicListingImplemented = false;
     public const bool ConfirmEndpointImplemented = false;
-    public const bool PaymentEndpointImplemented = false;
+    public const bool PaymentEndpointImplemented = true;
     public const bool AgencyOriginOnPublicInitiationImplemented = false;
 }

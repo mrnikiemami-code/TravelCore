@@ -453,6 +453,16 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Contains("BookingCompensationOutboxDispatcher", bookingModule, StringComparison.Ordinal);
         Assert.True(PaymentRefundBoundary.RefundAggregateImplemented);
         Assert.False(PaymentRefundBoundary.PublicRefundApiImplemented);
+        Assert.False(PublicPaymentCompositionBoundary.PublicRefundApiImplemented);
+        Assert.False(PublicPaymentCompositionBoundary.PublicPaymentListImplemented);
+        Assert.False(PublicPaymentCompositionBoundary.GenericPaymentLookupImplemented);
+        Assert.False(PublicPaymentCompositionBoundary.ClientAmountAuthorityImplemented);
+        Assert.False(PublicPaymentCompositionBoundary.CardCollectionImplemented);
+        Assert.Equal("BrowserReturn != PaymentSuccess", PublicPaymentCompositionBoundary.BrowserReturnIsNotPaymentSuccess);
+        Assert.Equal("/api/booking/public/{bookingId}/payment", PublicPaymentCompositionBoundary.StatusRoute);
+        Assert.Equal(
+            "/api/booking/public/{bookingId}/payment/initiation",
+            PublicPaymentCompositionBoundary.InitiationRoute);
         Assert.False(PaymentRefundBoundary.PartialRefundImplemented);
         Assert.False(RefundSuccessOutboxBoundary.EventMeansBookingCancelled);
         Assert.Equal("Payment != Refund", PaymentRefundBoundary.PaymentIsNotRefund);
