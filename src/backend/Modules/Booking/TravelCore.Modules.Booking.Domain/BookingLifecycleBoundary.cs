@@ -1,7 +1,7 @@
 namespace TravelCore.Modules.Booking.Domain;
 
 /// <summary>
-/// P19-R2 lifecycle semantics. Confirmation preconditions remain deferred (R3/R5/R6).
+/// P19-R2 lifecycle semantics. Executable confirmation remains deferred (P19-R6).
 /// </summary>
 public static class BookingLifecycleBoundary
 {

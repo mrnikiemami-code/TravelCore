@@ -68,12 +68,13 @@ public sealed class Booking
 
         if (Status == BookingStatus.Cancelled)
         {
-            throw new InvalidOperationException("Cancelled Booking cannot be reopened or cancelled again.");
+            return;
         }
 
         if (Status != BookingStatus.Pending)
         {
-            throw new InvalidOperationException("Only Pending Booking can be cancelled in T002.");
+            throw new InvalidOperationException(
+                "Confirmed Booking cancellation is deferred (P19-R6). Only Pending Booking can be cancelled.");
         }
 
         Status = BookingStatus.Cancelled;

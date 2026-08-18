@@ -218,6 +218,11 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains("QuoteExpired != BookingStatus", text, StringComparison.Ordinal);
         Assert.Contains("QuoteExpiresAt != CapacityHold.ExpiresAt", text, StringComparison.Ordinal);
         Assert.Contains("BudgetPreference != BookingMonetarySnapshot", text, StringComparison.Ordinal);
+        Assert.Contains("Booking != Payment", text, StringComparison.Ordinal);
+        Assert.Contains("BookingMonetarySnapshot != PaymentTransaction", text, StringComparison.Ordinal);
+        Assert.Contains("PaymentSucceeded != BookingConfirmed", text, StringComparison.Ordinal);
+        Assert.Contains("BookingCancelled != PaymentRefunded", text, StringComparison.Ordinal);
+        Assert.Contains("DEFERRED to Payment integration", text, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -355,6 +360,51 @@ public sealed class BookingBoundaryGuardrailTests
         var plan = File.ReadAllText(Path.Combine(RepoRoot, "docs", "plans", "P19-implementation-plan.md"));
         Assert.Contains("PlannerTravelerComposition != BookingPassenger", plan, StringComparison.Ordinal);
         Assert.Contains("BookingPassenger != Party Person Master", plan, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Booking_T006_Orchestration_Does_Not_Implement_Payment_Or_Confirm()
+    {
+        Assert.Equal("Booking != Payment", BookingOrchestrationBoundary.BookingIsNotPayment);
+        Assert.Equal("BookingStatus != PaymentStatus", BookingOrchestrationBoundary.BookingStatusIsNotPaymentStatus);
+        Assert.Equal("BookingMonetarySnapshot != PaymentTransaction", BookingOrchestrationBoundary.BookingMonetarySnapshotIsNotPaymentTransaction);
+        Assert.Equal("PaymentSucceeded != BookingConfirmed", BookingOrchestrationBoundary.PaymentSucceededIsNotBookingConfirmed);
+        Assert.Equal("BookingCancelled != PaymentRefunded", BookingOrchestrationBoundary.BookingCancelledIsNotPaymentRefunded);
+        Assert.Equal("DEFERRED to Payment integration", BookingOrchestrationBoundary.ExecutableConfirmWorkflow);
+        Assert.Equal("DEFERRED", BookingOrchestrationBoundary.ConfirmedCancellation);
+        Assert.False(BookingOrchestrationBoundary.FakePaymentImplemented);
+        Assert.False(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
+        Assert.False(BookingOrchestrationBoundary.CallerControlledPaymentBooleanImplemented);
+        Assert.False(BookingOrchestrationBoundary.ConfirmedToCancelledImplemented);
+        Assert.True(BookingOrchestrationBoundary.PendingCancellationImplemented);
+        Assert.True(BookingOrchestrationBoundary.PendingCancellationReleasesActiveHold);
+        Assert.False(BookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.False(BookingLifecycleBoundary.UnrestrictedConfirmationImplemented);
+        Assert.False(BookingLifecycleBoundary.ConfirmedToCancelledImplemented);
+        Assert.DoesNotContain("AwaitingPayment", Enum.GetNames<BookingStatus>());
+        Assert.DoesNotContain("Paid", Enum.GetNames<BookingStatus>());
+        Assert.DoesNotContain("Refunded", Enum.GetNames<BookingStatus>());
+        Assert.Null(typeof(Booking).GetMethod("Confirm"));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType(
+            "TravelCore.Modules.Booking.Domain.BookingOrchestrationBoundary"));
+        var service = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Booking",
+            "TravelCore.Modules.Booking.Infrastructure",
+            "Services",
+            "BookingCancellationService.cs"));
+        Assert.Contains("pg_advisory_xact_lock", service, StringComparison.Ordinal);
+        Assert.DoesNotContain("paymentSucceeded", service, StringComparison.Ordinal);
+        Assert.DoesNotContain("isPaid", service, StringComparison.Ordinal);
+        var plan = File.ReadAllText(Path.Combine(RepoRoot, "docs", "plans", "P19-implementation-plan.md"));
+        Assert.Contains("Booking != Payment", plan, StringComparison.Ordinal);
+        Assert.Contains("BookingMonetarySnapshot != PaymentTransaction", plan, StringComparison.Ordinal);
+        Assert.Contains("PaymentSucceeded != BookingConfirmed", plan, StringComparison.Ordinal);
+        Assert.Contains("BookingCancelled != PaymentRefunded", plan, StringComparison.Ordinal);
+        Assert.Contains("DEFERRED to Payment integration", plan, StringComparison.Ordinal);
     }
 
     [Fact]

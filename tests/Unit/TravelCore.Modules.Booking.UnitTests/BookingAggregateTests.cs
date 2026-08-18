@@ -52,13 +52,17 @@ public sealed class BookingAggregateTests
     }
 
     [Fact]
-    public void Cancelled_Cannot_Reopen_Or_Cancel_Again()
+    public void Repeated_CancelPending_Is_Idempotent_And_Does_Not_Reopen()
     {
         var booking = BookingAggregate.Create(new TourDepartureReference(Guid.Parse("0198b3e0-0000-7000-8000-000000000103")), Now);
-        booking.CancelPending(Instant.FromUtc(2026, 8, 18, 2, 0));
+        var first = Instant.FromUtc(2026, 8, 18, 2, 0);
+        booking.CancelPending(first);
+        booking.CancelPending(Instant.FromUtc(2026, 8, 18, 3, 0));
 
-        Assert.Throws<InvalidOperationException>(
-            () => booking.CancelPending(Instant.FromUtc(2026, 8, 18, 3, 0)));
+        Assert.Equal(BookingStatus.Cancelled, booking.Status);
+        Assert.Equal(first, booking.StatusChangedAt);
+        Assert.False(BookingOrchestrationBoundary.ConfirmedToCancelledImplemented);
+        Assert.Equal("DEFERRED", BookingOrchestrationBoundary.ConfirmedCancellation);
     }
 
     [Fact]

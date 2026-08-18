@@ -30,6 +30,7 @@ public sealed class BookingModule : ITravelCoreModule
         services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingCapacityService>();
         services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingPeopleService>();
         services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingQuoteService>();
+        services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingCancellationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
