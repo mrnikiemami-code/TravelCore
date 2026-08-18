@@ -6,7 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Flight.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Flight.Domain</AssemblyName>
-    <Description>Flight domain marker (TC-P22-T001). No FlightBooking / itinerary / offer / PNR / ticket yet.</Description>
+    <Description>FlightBooking itinerary/passenger domain (TC-P22-T002 / P22-R2). No status, search, offer, PNR, ticket, or Payment.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TravelCore.Modules.Flight.Contracts\TravelCore.Modules.Flight.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 </Project>

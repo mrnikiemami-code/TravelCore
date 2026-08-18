@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Flight.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Flight.Infrastructure</AssemblyName>
-    <Description>Flight infrastructure: schema flight foundation (TC-P22-T001 / P22-R1). No product tables or endpoints.</Description>
+    <Description>Flight infrastructure: FlightBooking itinerary persistence (TC-P22-T002 / P22-R2). No endpoints.</Description>
   </PropertyGroup>
 
   <ItemGroup>

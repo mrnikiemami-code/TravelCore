@@ -20,7 +20,7 @@ public sealed class FlightScaffoldingSmokeTests
     {
         var marker = typeof(FlightDomainAssemblyMarker);
         Assert.Equal("TravelCore.Modules.Flight.Domain", marker.Namespace);
-        Assert.Null(marker.Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBooking"));
+        Assert.Null(marker.Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBookingStatus"));
         Assert.Null(marker.Assembly.GetType("TravelCore.Modules.Flight.Domain.BookingBase"));
         Assert.Null(marker.Assembly.GetType("TravelCore.Modules.Flight.Domain.GenericBookingAggregate"));
     }
@@ -49,9 +49,9 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.False(FlightOwnershipBoundary.GenericBookingAbstractionImplemented);
         Assert.False(FlightOwnershipBoundary.SeparateFlightBookingModuleImplemented);
         Assert.False(FlightOwnershipBoundary.SeparateFlightBookingSchemaImplemented);
-        Assert.False(FlightOwnershipBoundary.FlightBookingAggregateImplemented);
-        Assert.False(FlightOwnershipBoundary.ItineraryModelImplemented);
-        Assert.False(FlightOwnershipBoundary.PassengerModelImplemented);
+        Assert.True(FlightOwnershipBoundary.FlightBookingAggregateImplemented);
+        Assert.True(FlightOwnershipBoundary.ItineraryModelImplemented);
+        Assert.True(FlightOwnershipBoundary.PassengerModelImplemented);
         Assert.False(FlightOwnershipBoundary.SearchModelImplemented);
         Assert.False(FlightOwnershipBoundary.OfferModelImplemented);
         Assert.False(FlightOwnershipBoundary.PnrModelImplemented);
@@ -62,7 +62,7 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.False(FlightOwnershipBoundary.SupplierSdkImplemented);
         Assert.False(FlightOwnershipBoundary.SharedDbContextImplemented);
         Assert.False(FlightOwnershipBoundary.PeerSchemaForeignKeyImplemented);
-        Assert.False(FlightOwnershipBoundary.ProductTablesImplemented);
+        Assert.True(FlightOwnershipBoundary.ProductTablesImplemented);
     }
 
     [Fact]

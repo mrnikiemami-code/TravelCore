@@ -3,7 +3,7 @@ namespace TravelCore.Modules.Flight.Contracts;
 /// <summary>
 /// P22-R1: Flight is the independent live-flight commerce / transaction owner
 /// (schema <c>flight</c>). TourDepartureTransportSegment remains Tour-owned package transport.
-/// FlightBooking is owned inside Flight but is not implemented in T001.
+/// FlightBooking is owned inside Flight. T002 implements the itinerary/passenger aggregate; status/search/offer/PNR remain out of scope.
 /// </summary>
 public static class FlightOwnershipBoundary
 {
@@ -20,8 +20,8 @@ public static class FlightOwnershipBoundary
     public const string ProductionReservationSource = "NONE";
     public const string ProductionTicketingSource = "NONE";
     public const string ProviderSecretPosture = "SecureConfigurationNotSourceControl";
-    public const string AirportAuthorityStatus = "OPEN (P22-R2)";
-    public const string AirlineAuthorityStatus = "OPEN (P22-R2)";
+    public const string AirportAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
+    public const string AirlineAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirportCandidateOwner = "ReferenceData";
     public const string AirlineCandidateOwner = "ReferenceData";
 
@@ -44,11 +44,11 @@ public static class FlightOwnershipBoundary
     public const bool GenericBookingAbstractionImplemented = false;
     public const bool SeparateFlightBookingModuleImplemented = false;
     public const bool SeparateFlightBookingSchemaImplemented = false;
-    public const bool FlightBookingAggregateImplemented = false;
+    public const bool FlightBookingAggregateImplemented = true;
     public const bool FlightBookingStatusImplemented = false;
-    public const bool ItineraryModelImplemented = false;
-    public const bool SegmentModelImplemented = false;
-    public const bool PassengerModelImplemented = false;
+    public const bool ItineraryModelImplemented = true;
+    public const bool SegmentModelImplemented = true;
+    public const bool PassengerModelImplemented = true;
     public const bool SearchModelImplemented = false;
     public const bool AvailabilityModelImplemented = false;
     public const bool OfferModelImplemented = false;
@@ -64,5 +64,5 @@ public static class FlightOwnershipBoundary
     public const bool SharedDbContextImplemented = false;
     public const bool PeerSchemaForeignKeyImplemented = false;
     public const bool TourPersistenceDependencyImplemented = false;
-    public const bool ProductTablesImplemented = false;
+    public const bool ProductTablesImplemented = true;
 }
