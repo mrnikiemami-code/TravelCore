@@ -6,10 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.HotelBooking.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.HotelBooking.Contracts</AssemblyName>
-    <Description>HotelBooking module contracts. Ownership + availability source port (TC-P21-T003 / P21-R3).</Description>
+    <Description>HotelBooking module contracts. Ownership + availability/rate source ports (TC-P21-T004 / P21-R4).</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
   </ItemGroup>
 </Project>

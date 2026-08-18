@@ -105,4 +105,39 @@ public sealed class HotelBooking
 
         return booking;
     }
+
+    public void EnsureMatchesRateOffer(
+        HotelPlaceReference place,
+        LocalDate checkInDate,
+        LocalDate checkOutDate,
+        IEnumerable<RoomReservationId> roomIds)
+    {
+        ArgumentNullException.ThrowIfNull(roomIds);
+        if (place.PlaceId != Place.PlaceId)
+        {
+            throw new ArgumentException("HotelPlaceReference does not match HotelBooking.", nameof(place));
+        }
+
+        if (checkInDate != CheckInDate || checkOutDate != CheckOutDate)
+        {
+            throw new ArgumentException("Stay dates do not match HotelBooking.");
+        }
+
+        var expected = _rooms.Select(r => r.Id).ToHashSet();
+        var actual = roomIds.ToHashSet();
+        if (actual.Count != expected.Count || !expected.SetEquals(actual))
+        {
+            throw new ArgumentException("Room set does not match HotelBooking.");
+        }
+    }
+
+    /// <summary>
+    /// Stay place/dates/rooms/occupancy cannot change after an accepted commercial snapshot.
+    /// Amendment/requote workflow is deferred (P21-R5–R8).
+    /// </summary>
+    public void GuardAgainstSilentStayAmendmentAfterAcceptedRateOffer()
+    {
+        throw new InvalidOperationException(
+            "HotelBooking place, stay dates, rooms, and occupancy cannot change after an accepted rate offer; requote/amendment is not implemented.");
+    }
 }

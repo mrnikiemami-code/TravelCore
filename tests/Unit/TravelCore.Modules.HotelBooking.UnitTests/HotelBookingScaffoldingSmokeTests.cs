@@ -51,7 +51,7 @@ public sealed class HotelBookingScaffoldingSmokeTests
         Assert.True(HotelBookingOwnershipBoundary.AvailabilityHoldModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SupplierAdapterImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SupplierSdkImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.CancellationModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);

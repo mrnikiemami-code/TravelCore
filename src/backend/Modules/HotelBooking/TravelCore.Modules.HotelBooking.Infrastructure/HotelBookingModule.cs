@@ -7,14 +7,15 @@ using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.HotelBooking.Contracts;
 using TravelCore.Modules.HotelBooking.Infrastructure.Availability;
+using TravelCore.Modules.HotelBooking.Infrastructure.Rates;
 using TravelCore.Modules.HotelBooking.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.HotelBooking.Infrastructure;
 
 /// <summary>
-/// Host composition for HotelBooking. Schema, stay aggregate, availability hold port.
-/// No public endpoints. No production availability source.
+/// Host composition for HotelBooking. Schema, stay aggregate, availability hold, rate-offer snapshot.
+/// No public endpoints. No production availability or rate source.
 /// </summary>
 public sealed class HotelBookingModule : ITravelCoreModule
 {
@@ -26,6 +27,8 @@ public sealed class HotelBookingModule : ITravelCoreModule
         services.TryAddSingleton<IClock>(SystemClock.Instance);
         services.AddSingleton<IHotelAvailabilitySourceResolver, HotelAvailabilitySourceResolver>();
         services.AddScoped<HotelAvailabilityHoldService>();
+        services.AddSingleton<IHotelRateOfferSourceResolver, HotelRateOfferSourceResolver>();
+        services.AddScoped<HotelRateOfferAcceptanceService>();
 
         services.AddDbContext<HotelBookingDbContext>((_, options) =>
         {

@@ -32,8 +32,12 @@ public sealed class HotelBookingFoundationHostTests
             Assert.Equal("hotel_booking", db.Model.GetDefaultSchema());
             Assert.False(db.Database.HasPendingModelChanges());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<HotelAvailabilityHoldService>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<HotelRateOfferAcceptanceService>());
             var resolver = scope.ServiceProvider.GetRequiredService<IHotelAvailabilitySourceResolver>();
             Assert.Empty(resolver.ListConfiguredKeys());
+            var rateResolver = scope.ServiceProvider.GetRequiredService<IHotelRateOfferSourceResolver>();
+            Assert.Empty(rateResolver.ListConfiguredKeys());
+            Assert.Null(scope.ServiceProvider.GetService<IHotelRateOfferSource>());
         }
 
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });
@@ -43,6 +47,8 @@ public sealed class HotelBookingFoundationHostTests
         Assert.Equal(HttpStatusCode.NotFound, post.StatusCode);
         using var availability = await client.GetAsync("/api/hotel-booking/availability", ct);
         Assert.Equal(HttpStatusCode.NotFound, availability.StatusCode);
+        using var rates = await client.GetAsync("/api/hotel-booking/rates", ct);
+        Assert.Equal(HttpStatusCode.NotFound, rates.StatusCode);
         using var reserve = await client.PostAsync("/api/hotel-booking/reserve", content: null, ct);
         Assert.Equal(HttpStatusCode.NotFound, reserve.StatusCode);
     }

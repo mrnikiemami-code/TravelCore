@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.HotelBooking.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.HotelBooking.Infrastructure</AssemblyName>
-    <Description>HotelBooking infrastructure: owned schema hotel_booking (TC-P21-T001). No product tables yet.</Description>
+    <Description>HotelBooking infrastructure: schema hotel_booking, stay, hold, rate-offer snapshots (TC-P21-T004).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TravelCore.Modules.HotelBooking.Contracts\TravelCore.Modules.HotelBooking.Contracts.csproj" />
     <ProjectReference Include="..\TravelCore.Modules.HotelBooking.Domain\TravelCore.Modules.HotelBooking.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
     <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
     <ProjectReference Include="..\..\..\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
   </ItemGroup>

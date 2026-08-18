@@ -48,7 +48,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.True(HotelBookingOwnershipBoundary.AvailabilityHoldModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SupplierAdapterImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SupplierSdkImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.CancellationModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
@@ -135,6 +135,9 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.Contains(
             domain.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name == "TravelCore.Identifiers");
+        Assert.Contains(
+            domain.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Money");
         Assert.DoesNotContain(
             domain.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name is "TravelCore.Modules.Place.Domain"
@@ -163,7 +166,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(HotelBookingStatus|RoomInventory|Allotment|HotelRateOffer|RatePlan|HotelQuote|HotelBookingMonetarySnapshot|CancellationPolicySnapshot|CancellationPolicy|CancellationPenalty|CancellationRequest|BookingBase|GenericBookingAggregate|SupplierReservation|SupplierBookingAttempt)\b",
+            @"\b(class|record|enum|struct|interface)\s+(HotelBookingStatus|RoomInventory|Allotment|HotelRateOffer(?!Snapshot)|RatePlan|HotelQuote|CancellationPolicy(?!Snapshot)|CancellationPenalty(?!Rule)|CancellationRequest|BookingBase|GenericBookingAggregate|SupplierReservation|SupplierBookingAttempt)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -272,6 +275,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.Contains("P21-R1 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P21-R2 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P21-R3 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("P21-R4 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("schema `hotel_booking`", text, StringComparison.Ordinal);
         Assert.Contains("Hotel Catalog != Hotel Booking", text, StringComparison.Ordinal);
         Assert.Contains("HotelBooking != Tour Booking", text, StringComparison.Ordinal);
@@ -296,8 +300,58 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.Contains("AddDbContext<HotelBookingDbContext>", module, StringComparison.Ordinal);
         Assert.Contains("IHotelAvailabilitySourceResolver", module, StringComparison.Ordinal);
         Assert.DoesNotContain("IHotelAvailabilitySource,", module, StringComparison.Ordinal);
+        Assert.Contains("IHotelRateOfferSourceResolver", module, StringComparison.Ordinal);
+        Assert.DoesNotContain("IHotelRateOfferSource,", module, StringComparison.Ordinal);
         Assert.DoesNotContain("MapGet", module, StringComparison.Ordinal);
         Assert.DoesNotContain("MapPost", module, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void HotelBooking_T004_Rate_Offer_Snapshots_Keep_R5_Through_R8_Out()
+    {
+        var domain = typeof(HotelBookingDomainAssemblyMarker).Assembly;
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelRateOfferSnapshot"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelRateOfferSnapshotId"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelRoomRateSnapshot"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBookingMonetarySnapshot"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelChargeComponentSnapshot"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelCancellationPolicySnapshot"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelCancellationPenaltyRule"));
+        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelRateOffer"));
+        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBookingStatus"));
+        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.SupplierReservation"));
+        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.CancellationPolicy"));
+        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.CancellationPenalty"));
+        Assert.True(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
+        Assert.False(HotelBookingOwnershipBoundary.CancellationModelImplemented);
+        Assert.False(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
+        Assert.False(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
+        Assert.Equal("NONE", HotelRateOfferOwnershipBoundary.NamedHotelSupplier);
+        Assert.Equal("NONE", HotelRateOfferOwnershipBoundary.ProductionHotelRateSource);
+        Assert.False(HotelRateOfferOwnershipBoundary.ProductionFakeRateSourceImplemented);
+        Assert.Equal("IHotelRateOfferSource", HotelRateOfferOwnershipBoundary.SourcePortName);
+        Assert.Equal("DEFERRED", HotelRateOfferOwnershipBoundary.P20PartialRefund);
+        Assert.False(HotelRateOfferOwnershipBoundary.PartialRefundExecutionImplemented);
+        Assert.False(TravelCore.Modules.Payment.Domain.PaymentRefundBoundary.PartialRefundImplemented);
+        Assert.Equal("NO", HotelRateOfferOwnershipBoundary.PricingModuleGeneralized);
+
+        var paymentRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
+        var paymentText = string.Join(
+            '\n',
+            Directory.EnumerateFiles(paymentRoot, "*.cs", SearchOption.AllDirectories)
+                .Where(p => !IsGeneratedOrBin(p))
+                .Select(File.ReadAllText));
+        Assert.Contains("PartialRefundImplemented = false", paymentText, StringComparison.Ordinal);
+        Assert.DoesNotContain("PartialRefundStatus", paymentText, StringComparison.Ordinal);
+
+        var pricingRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Pricing");
+        Assert.True(Directory.Exists(pricingRoot), pricingRoot);
+        Assert.DoesNotContain(
+            Directory.EnumerateFiles(pricingRoot, "*.cs", SearchOption.AllDirectories)
+                .Where(p => !IsGeneratedOrBin(p))
+                .Select(p => Path.GetRelativePath(RepoRoot, p)),
+            path => path.Contains("HotelBooking", StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>
