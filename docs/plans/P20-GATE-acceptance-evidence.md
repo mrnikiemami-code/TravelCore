@@ -97,7 +97,7 @@ Recorded from T009 PASS (`e5ba5e6`) and re-confirmed in this Gate commit:
 | `dotnet build TravelCore.sln` | **PASS** | 0 Error(s) |
 | Payment.UnitTests | **PASS** | **81** |
 | Booking.UnitTests | **PASS** | **54** |
-| ArchitectureTests | **PASS** | **285** at T009; Gate adds one evidence-file test |
+| ArchitectureTests | **PASS** | **286** |
 | Persistence.IntegrationTests | **PASS** | **81** |
 | Host.IntegrationTests | **PASS** | **56** |
 | Frontend `npm run typecheck` | **PASS** | clean |
