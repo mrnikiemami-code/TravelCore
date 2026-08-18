@@ -7,6 +7,8 @@ namespace TravelCore.Modules.Booking.Infrastructure.Services;
 
 /// <summary>
 /// Booking-owned authoritative payment-success confirmation orchestration (P20-R5).
+/// Payment success is independent of Booking confirmation. Business refusal records
+/// BookingConfirmationRecoveryIssue and does not Refund.
 /// </summary>
 public sealed class BookingPaymentConfirmationService
 {
@@ -42,15 +44,59 @@ public sealed class BookingPaymentConfirmationService
             throw new InvalidOperationException("Payment is not authoritatively successful.");
         }
 
+        if (booking.Status == BookingStatus.Confirmed)
+        {
+            await tx.CommitAsync(cancellationToken);
+            return;
+        }
+
+        if (booking.Status == BookingStatus.Cancelled)
+        {
+            await RecordRecoveryAsync(
+                booking.Id,
+                evidence.PaymentId,
+                BookingConfirmationRecoveryReason.CancelledBooking,
+                now,
+                cancellationToken);
+            await tx.CommitAsync(cancellationToken);
+            return;
+        }
+
         if (booking.MonetarySnapshot is null)
         {
-            throw new InvalidOperationException("BookingMonetarySnapshot is required.");
+            await RecordRecoveryAsync(
+                booking.Id,
+                evidence.PaymentId,
+                BookingConfirmationRecoveryReason.MissingMonetarySnapshot,
+                now,
+                cancellationToken);
+            await tx.CommitAsync(cancellationToken);
+            return;
         }
 
         if (booking.MonetarySnapshot.Total.Amount != evidence.Amount
             || !string.Equals(booking.MonetarySnapshot.Total.Currency.Value, evidence.CurrencyCode, StringComparison.Ordinal))
         {
-            throw new InvalidOperationException("Payment evidence does not match Booking monetary obligation.");
+            await RecordRecoveryAsync(
+                booking.Id,
+                evidence.PaymentId,
+                BookingConfirmationRecoveryReason.MonetaryMismatch,
+                now,
+                cancellationToken);
+            await tx.CommitAsync(cancellationToken);
+            return;
+        }
+
+        if (booking.Contact is null || booking.PassengerCount == 0)
+        {
+            await RecordRecoveryAsync(
+                booking.Id,
+                evidence.PaymentId,
+                BookingConfirmationRecoveryReason.MissingPeoplePrerequisites,
+                now,
+                cancellationToken);
+            await tx.CommitAsync(cancellationToken);
+            return;
         }
 
         var hold = await _db.CapacityHolds.SingleOrDefaultAsync(
@@ -58,7 +104,10 @@ public sealed class BookingPaymentConfirmationService
             cancellationToken);
         if (hold is null || hold.ExpiresAt <= now)
         {
-            throw new InvalidOperationException("Active, unexpired CapacityHold is required for confirmation.");
+            var reason = await ResolveMissingActiveHoldReasonAsync(bookingId, cancellationToken);
+            await RecordRecoveryAsync(booking.Id, evidence.PaymentId, reason, now, cancellationToken);
+            await tx.CommitAsync(cancellationToken);
+            return;
         }
 
         await AcquireLockAsync(hold.TourDeparture.LogicalId, cancellationToken);
@@ -70,6 +119,41 @@ public sealed class BookingPaymentConfirmationService
 
         await _db.SaveChangesAsync(cancellationToken);
         await tx.CommitAsync(cancellationToken);
+    }
+
+    private async Task<BookingConfirmationRecoveryReason> ResolveMissingActiveHoldReasonAsync(
+        BookingId bookingId,
+        CancellationToken cancellationToken)
+    {
+        var holds = await _db.CapacityHolds
+            .Where(x => x.BookingId == bookingId)
+            .Select(x => x.Status)
+            .ToListAsync(cancellationToken);
+        if (holds.Contains(CapacityHoldStatus.Released))
+        {
+            return BookingConfirmationRecoveryReason.ReleasedHold;
+        }
+
+        return BookingConfirmationRecoveryReason.ExpiredHold;
+    }
+
+    private async Task RecordRecoveryAsync(
+        BookingId bookingId,
+        Guid paymentId,
+        BookingConfirmationRecoveryReason reason,
+        Instant now,
+        CancellationToken cancellationToken)
+    {
+        var existing = await _db.ConfirmationRecoveryIssues
+            .SingleOrDefaultAsync(x => x.BookingId == bookingId, cancellationToken);
+        if (existing is not null)
+        {
+            return;
+        }
+
+        _db.ConfirmationRecoveryIssues.Add(
+            BookingConfirmationRecoveryIssue.Create(bookingId, paymentId, reason, now));
+        await _db.SaveChangesAsync(cancellationToken);
     }
 
     private Task AcquireLockAsync(Guid id, CancellationToken cancellationToken)

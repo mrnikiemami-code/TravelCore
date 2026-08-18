@@ -48,18 +48,27 @@ internal static class VerifiedProviderOutcomeApplier
         {
             case ProviderVerificationOutcome.Succeeded:
                 var snapshot = payment.ExecutionSnapshot;
-                if (snapshot is not null
-                    && result.ReportedAmount is decimal reportedAmount
-                    && reportedAmount != snapshot.Amount.Amount)
+                if (snapshot is not null)
                 {
-                    return VerificationApplyStatus.AmountMismatch;
-                }
+                    if (result.ReportedAmount is not decimal reportedAmount)
+                    {
+                        return VerificationApplyStatus.AmountMismatch;
+                    }
 
-                if (snapshot is not null
-                    && !string.IsNullOrWhiteSpace(result.ReportedCurrencyCode)
-                    && !string.Equals(result.ReportedCurrencyCode, snapshot.Amount.Currency.Value, StringComparison.Ordinal))
-                {
-                    return VerificationApplyStatus.CurrencyMismatch;
+                    if (reportedAmount != snapshot.Amount.Amount)
+                    {
+                        return VerificationApplyStatus.AmountMismatch;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(result.ReportedCurrencyCode))
+                    {
+                        return VerificationApplyStatus.CurrencyMismatch;
+                    }
+
+                    if (!string.Equals(result.ReportedCurrencyCode, snapshot.Amount.Currency.Value, StringComparison.Ordinal))
+                    {
+                        return VerificationApplyStatus.CurrencyMismatch;
+                    }
                 }
                 if (attempt.Status == PaymentAttemptStatus.Failed)
                 {

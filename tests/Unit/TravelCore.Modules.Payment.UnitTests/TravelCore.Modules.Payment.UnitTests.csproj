@@ -25,7 +25,9 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Contracts\TravelCore.Modules.Payment.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Domain\TravelCore.Modules.Payment.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Infrastructure\TravelCore.Modules.Payment.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Booking\TravelCore.Modules.Booking.Contracts\TravelCore.Modules.Booking.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
   </ItemGroup>
 
 </Project>

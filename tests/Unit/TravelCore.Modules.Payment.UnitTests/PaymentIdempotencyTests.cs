@@ -57,6 +57,7 @@ public sealed class PaymentIdempotencyTests
         var fake = new FakePaymentProviderGateway(TestKey);
         var clock = new FixedClock(Now);
         var payment = PaymentAggregate.Create(Booking, Now);
+        BindSnapshot(payment);
         db.Payments.Add(payment);
         await db.SaveChangesAsync();
         var service = CreateInitiation(db, fake, clock);
@@ -78,6 +79,7 @@ public sealed class PaymentIdempotencyTests
         };
         var clock = new FixedClock(Now);
         var payment = PaymentAggregate.Create(Booking, Now);
+        BindSnapshot(payment);
         db.Payments.Add(payment);
         await db.SaveChangesAsync();
         var service = CreateInitiation(db, fake, clock);
@@ -96,6 +98,7 @@ public sealed class PaymentIdempotencyTests
         await using var db = CreateDb();
         var fake = new FakePaymentProviderGateway(TestKey) { ThrowOnInitiate = true };
         var payment = PaymentAggregate.Create(Booking, Now);
+        BindSnapshot(payment);
         db.Payments.Add(payment);
         await db.SaveChangesAsync();
         var service = CreateInitiation(db, fake, new FixedClock(Now));
@@ -225,6 +228,12 @@ public sealed class PaymentIdempotencyTests
         Assert.Equal(PaymentStatus.Pending, reloaded.Status);
         Assert.Equal(PaymentReconciliationIssueKind.ContradictoryProviderState, db.ReconciliationIssues.Single().Kind);
     }
+
+    private static void BindSnapshot(PaymentAggregate payment) =>
+        payment.BindExecutionSnapshot(
+            Guid.Parse("0198b3e0-0000-7000-8000-000000000901"),
+            new TravelCore.Money.Money(100m, "USD"),
+            Now);
 
     private static PaymentInitiationService CreateInitiation(
         PaymentDbContext db,

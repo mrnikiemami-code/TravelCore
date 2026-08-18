@@ -30,6 +30,7 @@ internal sealed class PaymentAttemptRecheckService
     {
         var payment = await _db.Payments
             .Include(item => item.Attempts)
+            .Include(item => item.ExecutionSnapshot)
             .SingleOrDefaultAsync(
                 item => item.Attempts.Any(attempt => attempt.Id == attemptId),
                 cancellationToken);

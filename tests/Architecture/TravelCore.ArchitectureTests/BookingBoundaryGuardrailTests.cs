@@ -412,6 +412,8 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.False(BookingOrchestrationBoundary.ConfirmedToCancelledImplemented);
         Assert.True(BookingOrchestrationBoundary.PendingCancellationImplemented);
         Assert.True(BookingOrchestrationBoundary.PendingCancellationReleasesActiveHold);
+        Assert.True(BookingOrchestrationBoundary.ConfirmationRecoveryEvidenceImplemented);
+        Assert.Equal("RecoveryIssue != Refund", BookingOrchestrationBoundary.RecoveryIssueIsNotRefund);
         Assert.True(BookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(BookingLifecycleBoundary.UnrestrictedConfirmationImplemented);
         Assert.False(BookingLifecycleBoundary.ConfirmedToCancelledImplemented);

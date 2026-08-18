@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P20-T005` RESULT (`a7efa07`) → do **not** execute T006 until T005 ACCEPTED; do not invent P20-R6–R8 |
+| Current Next Task | Architect review of `TC-P20-T005-VERIFY` RESULT → do **not** execute T006 until T005 ACCEPTED; do not invent P20-R6–R8 |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |

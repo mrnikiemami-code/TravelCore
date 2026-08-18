@@ -113,6 +113,7 @@ internal sealed class PaymentCallbackProcessor
         var paymentId = _db.Entry(attempt).Property<PaymentId>("PaymentId").CurrentValue;
         return await _db.Payments
             .Include(item => item.Attempts)
+            .Include(item => item.ExecutionSnapshot)
             .SingleAsync(item => item.Id == paymentId, cancellationToken);
     }
 

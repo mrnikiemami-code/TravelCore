@@ -65,6 +65,11 @@ internal sealed class PaymentInitiationService
             throw new InvalidOperationException("Payment already succeeded.");
         }
 
+        if (payment.ExecutionSnapshot is null)
+        {
+            throw new InvalidOperationException("PaymentExecutionSnapshot must be prepared before initiation.");
+        }
+
         if (!string.IsNullOrWhiteSpace(idempotencyKey))
         {
             var key = PaymentInitiationIdempotencyRecord.Normalize(idempotencyKey);
@@ -141,11 +146,8 @@ internal sealed class PaymentInitiationService
         {
             throw new InvalidOperationException("A server-configured ProviderKey is required for initiation.");
         }
-        var execution = payment.ExecutionSnapshot;
-        if (execution is null && _preparation is not null)
-        {
-            throw new InvalidOperationException("PaymentExecutionSnapshot must be prepared before initiation.");
-        }
+        var execution = payment.ExecutionSnapshot
+            ?? throw new InvalidOperationException("PaymentExecutionSnapshot must be prepared before initiation.");
 
         var gateway = _resolver.Resolve(providerKey)
             ?? throw new InvalidOperationException("Configured Payment provider is not registered.");
@@ -159,8 +161,8 @@ internal sealed class PaymentInitiationService
                     attempt.Id.Value,
                     payment.Booking.BookingId,
                     providerKey,
-                    execution?.Amount.Amount ?? 0m,
-                    execution?.Amount.Currency.Value ?? "USD"),
+                    execution.Amount.Amount,
+                    execution.Amount.Currency.Value),
                 cancellationToken);
         }
         catch (OperationCanceledException)
@@ -216,6 +218,7 @@ internal sealed class PaymentInitiationService
     {
         var payment = await _db.Payments
             .Include(item => item.Attempts)
+            .Include(item => item.ExecutionSnapshot)
             .SingleOrDefaultAsync(item => item.Id == paymentId, cancellationToken);
         if (payment is null)
         {

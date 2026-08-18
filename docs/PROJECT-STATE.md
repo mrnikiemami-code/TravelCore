@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P20-T005` — implemented on `a7efa07`, awaiting architect acceptance |
-| Current Next Task | Submit `TC-P20-T005 RESULT` for architect review/acceptance; do **not** execute T006 until T005 ACCEPTED; do not invent P20-R6–R8 |
+| Current Active Product Task | `TC-P20-T005-VERIFY` — T005 verification/correction, awaiting architect review |
+| Current Next Task | Return `TC-P20-T005-VERIFY RESULT`; do **not** execute T006 until T005 ACCEPTED; do not invent P20-R6–R8 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -240,7 +240,7 @@
 | P20-T002 | **COMPLETE / ACCEPTED** (`75a4f84`) — Payment aggregate + PaymentAttempt · PaymentStatus Pending/Succeeded · PaymentAttemptStatus Created/Initiated/Succeeded/Failed |
 | P20-T003 | **COMPLETE / ACCEPTED** (`32e555d`) — provider-neutral initiation/verification/callback · no named provider |
 | P20-T004 | **COMPLETE / ACCEPTED** (`f286d9f`) — one Booking/one Payment · attempt retry safety · reconciliation baseline · Payment.Version concurrency |
-| P20-T005 | **IMPLEMENTED / AWAITING ACCEPTANCE** (`a7efa07`) — PaymentExecutionSnapshot · Booking obligation binding · amount/currency integrity · payment-driven Booking confirmation |
+| P20-T005 | **IMPLEMENTED / VERIFICATION PENDING** (`a7efa07` + VERIFY correction) — PaymentExecutionSnapshot · Booking obligation binding · amount/currency integrity · payment-driven Booking confirmation · BookingConfirmationRecoveryIssue |
 | P20-R1 (Payment ownership / schema / target) | **RESOLVED** — independent Payment module · schema `payment` · initial Payment target = Booking · Tour Booking scope · Payment does not own Booking/Pricing · **Payment != Booking** · **PaymentStatus != BookingStatus** · **PaymentSucceeded != BookingConfirmed** |
 | P20-R2 (Payment aggregate / attempts / lifecycle) | **RESOLVED** — Payment = one logical Booking collection · PaymentAttempt = one execution attempt · **Payment != PaymentAttempt** · **PaymentStatus != PaymentAttemptStatus** · **Failed PaymentAttempt != Failed Payment** · statuses Pending/Succeeded and Created/Initiated/Succeeded/Failed · at most one successful attempt · no attempt after success · verified provider evidence required for success |
 | P20-R3 (Provider abstraction / initiation / verification / callback) | **RESOLVED** — Payment core is provider-neutral · NamedProvider = NONE · **BrowserReturn != PaymentSuccess** · **UnverifiedCallback != PaymentSuccess** · initiation/verification/query are neutral ports · network ambiguity is not definitive failure · Booking confirmation remains R5 · callback replay/reconciliation remains R4 · amount mismatch enforcement deferred to R5 |

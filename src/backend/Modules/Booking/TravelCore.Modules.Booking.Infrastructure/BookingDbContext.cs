@@ -29,6 +29,9 @@ public sealed class BookingDbContext : DbContext
     public DbSet<TravelCore.Modules.Booking.Domain.BookingPublicIdempotencyRecord> PublicIdempotency =>
         Set<TravelCore.Modules.Booking.Domain.BookingPublicIdempotencyRecord>();
 
+    public DbSet<TravelCore.Modules.Booking.Domain.BookingConfirmationRecoveryIssue> ConfirmationRecoveryIssues =>
+        Set<TravelCore.Modules.Booking.Domain.BookingConfirmationRecoveryIssue>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

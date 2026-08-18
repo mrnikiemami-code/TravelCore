@@ -310,6 +310,10 @@ public sealed class PaymentProviderBoundaryTests
         await using var db = CreateDb();
         var fake = new FakePaymentProviderGateway(TestKey) { ThrowOnInitiate = true };
         var payment = PaymentAggregate.Create(Booking, Now);
+        payment.BindExecutionSnapshot(
+            Guid.Parse("0198b3e0-0000-7000-8000-000000000902"),
+            new TravelCore.Money.Money(100m, "USD"),
+            Now);
         db.Payments.Add(payment);
         await db.SaveChangesAsync();
 
@@ -335,6 +339,10 @@ public sealed class PaymentProviderBoundaryTests
         await using var db = CreateDb();
         var fake = new FakePaymentProviderGateway(TestKey);
         var payment = PaymentAggregate.Create(Booking, Now);
+        payment.BindExecutionSnapshot(
+            Guid.Parse("0198b3e0-0000-7000-8000-000000000903"),
+            new TravelCore.Money.Money(250m, "IRR"),
+            Now);
         db.Payments.Add(payment);
         await db.SaveChangesAsync();
 
@@ -347,6 +355,8 @@ public sealed class PaymentProviderBoundaryTests
         var result = await service.InitiateAsync(payment.Id);
 
         Assert.Equal(PaymentInitiationOutcome.Initiated, result.Outcome);
+        Assert.Equal(250m, fake.ReportedAmount);
+        Assert.Equal("IRR", fake.ReportedCurrencyCode);
         var reloaded = await db.Payments.Include(item => item.Attempts).SingleAsync(item => item.Id == payment.Id);
         var attempt = reloaded.Attempts.Single();
         Assert.Equal(PaymentAttemptStatus.Initiated, attempt.Status);

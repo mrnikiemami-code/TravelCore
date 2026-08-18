@@ -1,8 +1,8 @@
 namespace TravelCore.Modules.Payment.Contracts;
 
 /// <summary>
-/// Provider-neutral verification/status-query result. Reported amount is evidence only;
-/// executable mismatch enforcement is deferred to P20-R5.
+/// Provider-neutral verification/status-query result. When PaymentExecutionSnapshot exists,
+/// omitted or mismatched amount/currency cannot produce Payment success (P20-R5).
 /// </summary>
 public sealed class PaymentVerificationResult
 {
