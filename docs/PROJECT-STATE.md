@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P19 — Tour Booking** (**IN PROGRESS** — T009 hardening/evidence; **P19-R1–R8 RESOLVED**; GATE NOT EXECUTED) |
+| Current Phase | **P19 — Tour Booking** (**COMPLETE** — `TC-P19-GATE` evidence; **P19-R1–R8 RESOLVED**; next **P20 — Payment (PLANNED)**) |
 | Previous Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` ACCEPTED `73605aa`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P19-T009` — Tour Booking hardening and evidence pack (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Architect review of `TC-P19-T009` → `TC-P19-GATE` only after ACCEPT (no new Booking product; do not start P20) |
+| Current Active Product Task | `TC-P19-GATE` — P19 Tour Booking Acceptance Gate (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P19-GATE` → next phase from SoT is **P20 — Payment (PLANNED)**; do not start P20 here |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -232,7 +232,7 @@
 | P18-FIX-TOUR-ROUTE | **COMPLETE / ACCEPTED** (`d302ad4`) — remove legacy `/tours/[productKey]` |
 | P18-T009 | **COMPLETE / ACCEPTED** (`ad05e0f`) — hardening and evidence pack |
 | P18-GATE | **COMPLETE / ACCEPTED** (`73605aa`) — Acceptance evidence (no new product capability) |
-| P19 | **IN PROGRESS** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T008 ACCEPTED · T009 hardening/evidence awaiting review · GATE NOT EXECUTED |
+| P19 | **COMPLETE** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE evidence [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md) |
 | P19 Plan | `TC-P19-PLAN` COMPLETE / ACCEPTED (`9d4266b`) — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md) |
 | P19-T001 | **COMPLETE / ACCEPTED** (`e198daa`) — Booking module scaffolding (`booking` schema) |
 | P19-T002 | **COMPLETE / ACCEPTED** (`7caa90a`) — Booking aggregate + Pending/Confirmed/Cancelled lifecycle (`bookings` table) |
@@ -242,8 +242,8 @@
 | P19-T006 | **COMPLETE / ACCEPTED** (`9dca5ef`) — Pending cancellation + Active-hold release; Confirm/Payment DEFERRED |
 | P19-T007 | **COMPLETE / ACCEPTED** (`2e7937a`) — Direct/Agency source on one Booking aggregate; logical AgencyProfile/Offer refs |
 | P19-T008 | **COMPLETE / ACCEPTED** (`5b4361e`) — public Pending Booking initiation, hashed access token, object-level reads, noindex transaction pages |
-| P19-T009 | **DELIVERED** — hardening/evidence pack; no new Booking capability; GATE NOT EXECUTED |
-| P19-GATE | **NOT EXECUTED** |
+| P19-T009 | **COMPLETE / ACCEPTED** (`3a1f5a1`) — hardening/evidence pack; no new Booking capability |
+| P19-GATE | **DELIVERED** — [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md); P19 COMPLETE; Payment/Confirm remain DEFERRED; P20 not started |
 | P19-R1 (Booking ownership / schema / target) | **RESOLVED** — independent Booking module · schema `booking` · initial target = TourDeparture (logical) · Tour owns capacity definition · Booking owns consumption |
 | P19-R2 (Lifecycle / aggregate) | **RESOLVED** — independent Booking aggregate targets one logical TourDeparture · statuses Pending/Confirmed/Cancelled · **Confirmed != PaymentSucceeded** · **Cancelled != Refunded** · Create→Pending · Pending→Cancelled · no unrestricted Confirm · no Confirmed→Cancelled · table `bookings` |
 | P19-R3 (Capacity consumption / hold / concurrency) | **RESOLVED** — Tour owns definition · Booking owns consumption · CapacityHold Active/Consumed/Released/Expired · **CapacityHoldStatus != BookingStatus** · explicit ExpiresAt · advisory-lock concurrency · idempotent hold · confirmation remains R6 |

@@ -81,7 +81,26 @@ public sealed class BookingPhaseBoundaryGuardrailTests
         Assert.Contains("TC-P19-T009", text, StringComparison.Ordinal);
         Assert.DoesNotContain("TC-P19-GATE COMPLETE", text, StringComparison.Ordinal);
         Assert.DoesNotContain("P19 COMPLETE", text, StringComparison.Ordinal);
-        Assert.False(File.Exists(Path.Combine(RepoRoot, "docs", "plans", "P19-GATE-acceptance-evidence.md")));
+    }
+
+    [Fact]
+    public void P19_GateEvidence_Exists_And_Closes_Phase()
+    {
+        var path = Path.Combine(RepoRoot, "docs", "plans", "P19-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(path), path);
+        var text = File.ReadAllText(path);
+        Assert.Contains("TC-P19-T001", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P19-T009", text, StringComparison.Ordinal);
+        Assert.Contains("P19-R1", text, StringComparison.Ordinal);
+        Assert.Contains("P19-R8", text, StringComparison.Ordinal);
+        Assert.Contains("Booking != Tour", text, StringComparison.Ordinal);
+        Assert.Contains("PublicExperience != Booking Source of Truth", text, StringComparison.Ordinal);
+        Assert.Contains("BookingId != Access Credential", text, StringComparison.Ordinal);
+        Assert.Contains("Payment execution remains **DEFERRED**", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P19-GATE COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("P19 COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("no new Booking capability", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("P20 — Payment (PLANNED)", text, StringComparison.Ordinal);
     }
 
     [Fact]
