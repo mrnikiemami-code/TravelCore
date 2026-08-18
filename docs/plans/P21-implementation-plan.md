@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P21-PLAN` |
 | Phase | P21 — Hotel Booking |
-| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2 = RESOLVED** · **P21-R3 = RESOLVED** · **P21-R4 = RESOLVED** · **P21-R5 = RESOLVED** · **P21-R6 = RESOLVED** · **P21-R7 = RESOLVED** · **P21-R8 = RESOLVED** · T001–T009 ACCEPTED · **TC-P21-GATE** evidence authored · P21 COMPLETE · P22 NOT STARTED |
+| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2 = RESOLVED** · **P21-R3 = RESOLVED** · **P21-R4 = RESOLVED** · **P21-R5 = RESOLVED** · **P21-R6 = RESOLVED** · **P21-R7 = RESOLVED** · **P21-R8 = RESOLVED** · T001–T009 ACCEPTED · **TC-P21-GATE COMPLETE / ACCEPTED** (`858b4be` / docs `d6bd842`) · P21 COMPLETE |
 | Baseline | `96be199` (`docs(p20): record ArchitectureTests 286 in GATE evidence` · `TC-P20-GATE` ACCEPTED `fc41756`) |
 | Authoritative sources | `docs/ROADMAP.md` § P21 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § HotelBooking · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `hotel_booking`) · `08-persistence-and-migrations.md` · P07 Place (`Hotel Catalog ≠ Hotel Booking`) · P12 Pricing · P19 Tour Booking · P20 Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -285,7 +285,7 @@ Tasks below are **planning slots**. They do **not** authorize implementation unt
 
 ### TC-P21-GATE — Acceptance Gate
 
-- Evidence only [`P21-GATE-acceptance-evidence.md`](P21-GATE-acceptance-evidence.md). No new HotelBooking product in GATE. Do not start P22 inside GATE. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**.
+- Evidence only [`P21-GATE-acceptance-evidence.md`](P21-GATE-acceptance-evidence.md). No new HotelBooking product in GATE. Do not start P22 inside GATE. **COMPLETE / ACCEPTED** (`858b4be` / docs `d6bd842`).
 
 Do not manufacture empty capabilities merely to fill numbering. A slot may become VACANT only if the matching R# has no independent product slice after architect lock.
 
