@@ -259,8 +259,7 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Contains("UnverifiedCallback != PaymentSuccess", text, StringComparison.Ordinal);
         Assert.Contains("P20-R5", text, StringComparison.Ordinal);
         Assert.Contains("P20-R8", text, StringComparison.Ordinal);
-        Assert.DoesNotContain("P20 COMPLETE", text, StringComparison.Ordinal);
-        Assert.DoesNotContain("TC-P20-GATE COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P20-GATE", text, StringComparison.Ordinal);
     }
 
     [Fact]

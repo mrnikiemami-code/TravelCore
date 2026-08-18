@@ -72,7 +72,26 @@ public sealed class PaymentPhaseBoundaryGuardrailTests
 
         Assert.DoesNotContain("TC-P20-GATE COMPLETE", text, StringComparison.Ordinal);
         Assert.DoesNotContain("P20 COMPLETE", text, StringComparison.Ordinal);
-        Assert.False(File.Exists(Path.Combine(RepoRoot, "docs", "plans", "P20-GATE-acceptance-evidence.md")));
+    }
+
+    [Fact]
+    public void P20_GateEvidence_Exists_And_Closes_Phase()
+    {
+        var path = Path.Combine(RepoRoot, "docs", "plans", "P20-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(path), path);
+        var text = File.ReadAllText(path);
+        Assert.Contains("TC-P20-T001", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P20-T009", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R1", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R8", text, StringComparison.Ordinal);
+        Assert.Contains("Payment != Booking", text, StringComparison.Ordinal);
+        Assert.Contains("PaymentSucceeded != BookingConfirmed", text, StringComparison.Ordinal);
+        Assert.Contains("BrowserReturn != PaymentSuccess", text, StringComparison.Ordinal);
+        Assert.Contains("Production Provider: NONE / NOT CONFIGURED", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P20-GATE COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("P20 COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("no new Payment capability", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("P21 — Hotel Booking (PLANNED)", text, StringComparison.Ordinal);
     }
 
     [Fact]
