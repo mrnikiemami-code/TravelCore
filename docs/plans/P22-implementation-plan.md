@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P22-PLAN` |
 | Phase | P22 — Flight |
-| Status | PLAN authored; **P22-R1–R8 OPEN**; no Flight product code |
+| Status | PLAN ACCEPTED · **P22-R1 = RESOLVED** · **P22-R2–R8 OPEN** · T001 implemented / awaiting architect review · **TC-P22-T002 NOT EXECUTED** |
 | Baseline | `d6bd842` (`docs(hotel-booking): add TC-P21-GATE result envelope` · GATE evidence `858b4be` · architect `TC-P21-GATE = ACCEPTED`) |
 | Authoritative sources | `docs/ROADMAP.md` § P22 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Flight / Tour · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `flight`) · `06-cross-module-communication.md` Example 7 · `15-future-architecture-transition-map.md` § U · P11-R5 (`TourDepartureTransportSegment`) · P12 Pricing · P19 Booking · P20 Payment · P21 HotelBooking · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -351,7 +351,7 @@ Classifications are **planning inventory**, not architect locks.
 
 | ID | Topic | Status |
 |----|-------|--------|
-| **P22-R1** | Flight ownership / module / schema and Tour boundary | **OPEN** |
+| **P22-R1** | Flight ownership / module / schema and Tour boundary | **RESOLVED** — independent Flight module · schema `flight` · FlightBooking owned inside Flight · **Flight != Tour** · **FlightBooking != Tour Booking** · **FlightBooking != HotelBooking** · **Tour Package Flight != live Flight inventory** |
 | **P22-R2** | Itinerary / segment / airport / airline / passenger model | **OPEN** |
 | **P22-R3** | Search / availability / offer authority and supplier capability | **OPEN** |
 | **P22-R4** | Fare offer / revalidation / monetary snapshot / fare rules | **OPEN** |
@@ -368,8 +368,7 @@ Inherited locked facts (not new P22 decisions): Tour ≠ live Flight; schema nam
 
 ### TC-P22-T001 — Flight module / schema foundation
 
-- Depends on **P22-R1**. Scaffold only after R1 lock. Independent `Flight.Contracts` / `Flight.Domain` / `Flight.Infrastructure` · schema `flight` · logical ReferenceData refs only. **No** itinerary/offer/reservation/ticketing/Payment target/API/frontend.
-- **Do not write T001 in this PLAN task.**
+- Depends on **P22-R1**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Independent `Flight.Contracts` / `Flight.Domain` / `Flight.Infrastructure` · schema `flight` · FlightBooking ownership assigned to Flight without implementing the aggregate · **TC-P22-T002 NOT EXECUTED**.
 
 ### TC-P22-T002 — Itinerary / segment / passenger structure
 
@@ -449,7 +448,7 @@ This PLAN task is **not** Gate-ready and must not mark P22 READY_FOR_GATE.
 - Branch `main` · fast-forward push only · no force.
 - Docs-only: `docs/plans/P22-implementation-plan.md` · SoT · this envelope.
 - **No** `src/...Flight` product code · **no** migration · **no** API · **no** frontend product · **no** packages.
-- Do **not** execute `TC-P22-T001` until PLAN ACCEPTED and P22-R1 locked.
+- Do **not** execute `TC-P22-T002` until T001 ACCEPTED and P22-R2 locked.
 
 ---
 
@@ -463,7 +462,9 @@ This PLAN task is **not** Gate-ready and must not mark P22 READY_FOR_GATE.
 - Airline owner candidate: **ReferenceData**
 - Named Flight Supplier: **NONE**
 - Payment current target kinds: TourBooking, HotelBooking; Flight support: **NO**
-- P22-R1 through P22-R8: **OPEN**
+- P22-R1: **RESOLVED**
+- P22-R2 through P22-R8: **OPEN**
 - T001–T009 + GATE sequenced
-- T001 executed: **NO**
+- T001 executed: **YES** (awaiting architect review)
+- **TC-P22-T002 NOT EXECUTED**
 - P23 started: **NO**

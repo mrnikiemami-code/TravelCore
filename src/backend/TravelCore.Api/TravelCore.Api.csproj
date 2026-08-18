@@ -25,6 +25,7 @@
     <ProjectReference Include="..\Modules\Booking\TravelCore.Modules.Booking.Infrastructure\TravelCore.Modules.Booking.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Payment\TravelCore.Modules.Payment.Infrastructure\TravelCore.Modules.Payment.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Infrastructure\TravelCore.Modules.HotelBooking.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Flight\TravelCore.Modules.Flight.Infrastructure\TravelCore.Modules.Flight.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

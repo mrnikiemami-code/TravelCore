@@ -59,6 +59,9 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Contracts\TravelCore.Modules.HotelBooking.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Domain\TravelCore.Modules.HotelBooking.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Infrastructure\TravelCore.Modules.HotelBooking.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Contracts\TravelCore.Modules.Flight.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Domain\TravelCore.Modules.Flight.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Infrastructure\TravelCore.Modules.Flight.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Domain\TravelCore.Modules.Search.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Infrastructure\TravelCore.Modules.Search.Infrastructure.csproj" />
   </ItemGroup>
