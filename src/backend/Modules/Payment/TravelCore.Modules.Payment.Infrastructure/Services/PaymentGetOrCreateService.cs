@@ -7,7 +7,7 @@ using PaymentAggregate = TravelCore.Modules.Payment.Domain.Payment;
 namespace TravelCore.Modules.Payment.Infrastructure.Services;
 
 /// <summary>
-/// Database-backed GetOrCreate: one Booking -> one logical Payment (P20-R4).
+/// Database-backed GetOrCreate: one Tour Booking -> one Payment, one HotelBooking -> one Payment (P21-R6).
 /// </summary>
 internal sealed class PaymentGetOrCreateService
 {
@@ -24,7 +24,7 @@ internal sealed class PaymentGetOrCreateService
         BookingReference booking,
         CancellationToken cancellationToken = default)
     {
-        var existing = await FindAsync(booking, cancellationToken);
+        var existing = await FindTourAsync(booking, cancellationToken);
         if (existing is not null)
         {
             return existing;
@@ -45,13 +45,50 @@ internal sealed class PaymentGetOrCreateService
                 _db.Entry(attempt).State = EntityState.Detached;
             }
 
-            return await FindAsync(booking, cancellationToken)
+            return await FindTourAsync(booking, cancellationToken)
                 ?? throw new InvalidOperationException("Concurrent Payment create did not converge.");
         }
     }
 
-    private Task<PaymentAggregate?> FindAsync(BookingReference booking, CancellationToken cancellationToken) =>
+    public async Task<PaymentAggregate> GetOrCreateAsync(
+        HotelBookingPaymentReference hotelBooking,
+        CancellationToken cancellationToken = default)
+    {
+        var existing = await FindHotelAsync(hotelBooking, cancellationToken);
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        var created = PaymentAggregate.CreateForHotel(hotelBooking, _clock.GetCurrentInstant());
+        _db.Payments.Add(created);
+        try
+        {
+            await _db.SaveChangesAsync(cancellationToken);
+            return created;
+        }
+        catch (DbUpdateException)
+        {
+            _db.Entry(created).State = EntityState.Detached;
+            foreach (var attempt in created.Attempts)
+            {
+                _db.Entry(attempt).State = EntityState.Detached;
+            }
+
+            return await FindHotelAsync(hotelBooking, cancellationToken)
+                ?? throw new InvalidOperationException("Concurrent HotelBooking Payment create did not converge.");
+        }
+    }
+
+    private Task<PaymentAggregate?> FindTourAsync(BookingReference booking, CancellationToken cancellationToken) =>
         _db.Payments
             .Include(item => item.Attempts)
             .SingleOrDefaultAsync(item => item.Booking == booking, cancellationToken);
+
+    private Task<PaymentAggregate?> FindHotelAsync(
+        HotelBookingPaymentReference hotelBooking,
+        CancellationToken cancellationToken) =>
+        _db.Payments
+            .Include(item => item.Attempts)
+            .SingleOrDefaultAsync(item => item.HotelBooking == hotelBooking, cancellationToken);
 }

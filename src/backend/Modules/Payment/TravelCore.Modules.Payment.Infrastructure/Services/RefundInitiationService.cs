@@ -113,7 +113,7 @@ internal sealed class RefundInitiationService
                     refund.Id.Value,
                     attempt.Id.Value,
                     payment.Id.Value,
-                    payment.Booking.BookingId,
+                    payment.TargetReferenceId,
                     providerKey,
                     collection.ProviderTransactionReference,
                     refund.Amount.Amount,

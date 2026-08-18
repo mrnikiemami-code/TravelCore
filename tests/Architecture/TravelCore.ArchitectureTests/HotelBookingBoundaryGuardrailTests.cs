@@ -50,7 +50,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.False(HotelBookingOwnershipBoundary.SupplierSdkImplemented);
         Assert.True(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.CancellationModelImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingUiImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SharedDbContextImplemented);
@@ -83,7 +83,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.True(HotelBookingStayBoundary.SupplierReservationImplemented);
         Assert.False(HotelBookingStayBoundary.RateQuoteImplemented);
         Assert.False(HotelBookingStayBoundary.CancellationImplemented);
-        Assert.False(HotelBookingStayBoundary.PaymentIntegrationImplemented);
+        Assert.True(HotelBookingStayBoundary.PaymentIntegrationImplemented);
         Assert.Equal(new[] { "Adult", "Child" }, Enum.GetNames<HotelGuestCategory>());
         Assert.NotEqual(
             typeof(TravelCore.Modules.Booking.Domain.BookingPassenger),
@@ -105,17 +105,23 @@ public sealed class HotelBookingBoundaryGuardrailTests
         var infra = Projects.Single(p => p.Name == "TravelCore.Modules.HotelBooking.Infrastructure");
         var hits = infra.ProjectReferences
             .Select(r => Path.GetFileNameWithoutExtension(r)!)
-            .Where(IsForbiddenPeerModule)
+            .Where(name =>
+                IsForbiddenPeerModule(name)
+                && !string.Equals(name, "TravelCore.Modules.Payment.Contracts", StringComparison.Ordinal))
             .ToList();
         Assert.True(
             hits.Count == 0,
             "HotelBooking.Infrastructure must not project-reference peer business modules:\n" + string.Join('\n', hits));
+        Assert.Contains(
+            infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Modules.Payment.Contracts");
         Assert.DoesNotContain(
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name is "TravelCore.Modules.Place.Infrastructure"
                 or "TravelCore.Modules.Place.Domain"
                 or "TravelCore.Modules.Booking.Infrastructure"
                 or "TravelCore.Modules.Payment.Infrastructure"
+                or "TravelCore.Modules.Payment.Domain"
                 or "TravelCore.Modules.Pricing.Infrastructure");
     }
 
@@ -329,7 +335,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.True(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.CancellationModelImplemented);
         Assert.True(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
         Assert.Equal("NONE", HotelRateOfferOwnershipBoundary.NamedHotelSupplier);
         Assert.Equal("NONE", HotelRateOfferOwnershipBoundary.ProductionHotelRateSource);
@@ -343,7 +349,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.Equal("NONE", HotelReservationOwnershipBoundary.ProductionHotelReservationSource);
         Assert.Equal("IHotelReservationSource", HotelReservationOwnershipBoundary.SourcePortName);
         Assert.False(HotelReservationOwnershipBoundary.ProductionFakeReservationSourceImplemented);
-        Assert.False(HotelReservationOwnershipBoundary.PaymentRequiredForConfirmation);
+        Assert.True(HotelReservationOwnershipBoundary.PaymentRequiredForConfirmation);
         Assert.False(HotelReservationOwnershipBoundary.CancellationExecutionImplemented);
         Assert.False(HotelReservationOwnershipBoundary.PublicReservationApiImplemented);
 

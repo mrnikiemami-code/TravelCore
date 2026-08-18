@@ -10,6 +10,7 @@ using TravelCore.Modules.HotelBooking.Infrastructure.Availability;
 using TravelCore.Modules.HotelBooking.Infrastructure.Rates;
 using TravelCore.Modules.HotelBooking.Infrastructure.Reservations;
 using TravelCore.Modules.HotelBooking.Infrastructure.Services;
+using TravelCore.Modules.Payment.Contracts;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.HotelBooking.Infrastructure;
@@ -32,6 +33,14 @@ public sealed class HotelBookingModule : ITravelCoreModule
         services.AddScoped<HotelRateOfferAcceptanceService>();
         services.AddSingleton<IHotelReservationSourceResolver, HotelReservationSourceResolver>();
         services.AddScoped<HotelSupplierReservationService>();
+        services.AddScoped<HotelBookingPaymentObligationQueryService>();
+        services.AddScoped<IHotelBookingPaymentObligationQuery>(
+            sp => sp.GetRequiredService<HotelBookingPaymentObligationQueryService>());
+        services.AddScoped<IHotelBookingPaymentSucceededIntegrationHandler, HotelBookingPaymentSucceededIntegrationHandler>();
+        services.AddScoped<IHotelBookingRefundSucceededIntegrationHandler, HotelBookingRefundSucceededIntegrationHandler>();
+        services.AddScoped<HotelBookingCompensationOutboxDispatcher>();
+        services.AddScoped<HotelSupplierReservationRequiredOutboxDispatcher>();
+        services.AddHostedService<HotelBookingCompensationOutboxHostedService>();
 
         services.AddDbContext<HotelBookingDbContext>((_, options) =>
         {

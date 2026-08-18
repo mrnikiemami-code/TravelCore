@@ -57,6 +57,23 @@ public sealed class HotelBookingDbContext : DbContext
     public DbSet<HotelBookingReconciliationIssue> HotelBookingReconciliationIssues =>
         Set<HotelBookingReconciliationIssue>();
 
+    public DbSet<HotelBookingPaymentEvidence> HotelBookingPaymentEvidence =>
+        Set<HotelBookingPaymentEvidence>();
+
+    public DbSet<HotelBookingPaymentCompensationEvidence> PaymentCompensationEvidence =>
+        Set<HotelBookingPaymentCompensationEvidence>();
+
+    public DbSet<HotelBookingRefundInvariantIssue> RefundInvariantIssues =>
+        Set<HotelBookingRefundInvariantIssue>();
+
+    public DbSet<HotelBookingOutboxMessage> OutboxMessages => Set<HotelBookingOutboxMessage>();
+
+    public DbSet<HotelBookingPaymentSuccessInboxRecord> PaymentSuccessInbox =>
+        Set<HotelBookingPaymentSuccessInboxRecord>();
+
+    public DbSet<HotelBookingRefundSuccessInboxRecord> RefundSuccessInbox =>
+        Set<HotelBookingRefundSuccessInboxRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

@@ -59,5 +59,10 @@ public sealed class HotelBookingFoundationHostTests
         Assert.Equal(HttpStatusCode.NotFound, reservations.StatusCode);
         using var confirm = await client.PostAsync("/api/hotel-booking/confirm", content: null, ct);
         Assert.Equal(HttpStatusCode.NotFound, confirm.StatusCode);
+        using var pay = await client.PostAsync("/api/hotel-booking/payment", content: null, ct);
+        Assert.Equal(HttpStatusCode.NotFound, pay.StatusCode);
+        using var generic = await client.PostAsync(
+            "/api/payment/hotel-booking/0198b3e0-0000-7000-8000-000000000021", content: null, ct);
+        Assert.Equal(HttpStatusCode.NotFound, generic.StatusCode);
     }
 }

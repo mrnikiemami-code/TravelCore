@@ -8,6 +8,7 @@ namespace TravelCore.Modules.Payment.Domain;
 /// One logical full-return obligation for a successful Payment (TC-P20-T006 / P20-R6).
 /// Amount/currency are copied from PaymentExecutionSnapshot and are immutable.
 /// Successful Refund does not rewrite PaymentStatus.Succeeded.
+/// Target is copied from Payment (exactly one of Tour Booking or HotelBooking).
 /// </summary>
 public sealed class Refund
 {
@@ -21,13 +22,20 @@ public sealed class Refund
     private Refund(
         RefundId id,
         PaymentId paymentId,
-        BookingReference booking,
+        BookingReference? booking,
+        HotelBookingPaymentReference? hotelBooking,
         MoneyValue amount,
         Instant createdAt)
     {
+        if (booking is null == hotelBooking is null)
+        {
+            throw new ArgumentException("A Refund must belong to exactly one supported target.");
+        }
+
         Id = id;
         PaymentId = paymentId;
         Booking = booking;
+        HotelBooking = hotelBooking;
         Amount = amount;
         Status = RefundStatus.Pending;
         CreatedAt = createdAt;
@@ -39,7 +47,17 @@ public sealed class Refund
 
     public PaymentId PaymentId { get; private set; }
 
-    public BookingReference Booking { get; private set; }
+    public BookingReference? Booking { get; private set; }
+
+    public HotelBookingPaymentReference? HotelBooking { get; private set; }
+
+    public PaymentTargetKind TargetKind =>
+        HotelBooking is not null ? PaymentTargetKind.HotelBooking : PaymentTargetKind.TourBooking;
+
+    public Guid TargetReferenceId =>
+        HotelBooking?.HotelBookingId
+        ?? Booking?.BookingId
+        ?? throw new InvalidOperationException("Refund has no target.");
 
     public MoneyValue Amount { get; private set; }
 
@@ -79,6 +97,7 @@ public sealed class Refund
             RefundId.New(),
             payment.Id,
             payment.Booking,
+            payment.HotelBooking,
             payment.ExecutionSnapshot.Amount,
             now);
     }

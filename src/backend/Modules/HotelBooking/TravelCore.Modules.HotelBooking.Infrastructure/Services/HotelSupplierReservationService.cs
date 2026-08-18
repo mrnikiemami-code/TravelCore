@@ -51,6 +51,22 @@ public sealed class HotelSupplierReservationService
             throw new InvalidOperationException("Cancelled HotelBooking cannot start a supplier reservation.");
         }
 
+        var paymentEvidence = await _db.HotelBookingPaymentEvidence
+            .SingleOrDefaultAsync(x => x.HotelBookingId == hotelBookingId, cancellationToken);
+
+        if (existingReservation is null && paymentEvidence is null)
+        {
+            throw new InvalidOperationException(
+                "Authoritative Payment success is required before final supplier reservation initiation.");
+        }
+
+        if (existingReservation is not null
+            && existingReservation.Status == HotelSupplierReservationStatus.Confirmed
+            && booking.Status == HotelBookingStatus.Pending)
+        {
+            return existingReservation;
+        }
+
         if (existingReservation is not null
             && existingReservation.Status == HotelSupplierReservationStatus.Confirmed
             && booking.Status == HotelBookingStatus.Confirmed)
@@ -81,6 +97,19 @@ public sealed class HotelSupplierReservationService
         if (source.RequiresActiveHold
             && !await HasActiveUnexpiredHoldAsync(booking, now, cancellationToken))
         {
+            if (paymentEvidence is not null)
+            {
+                var reason = await ResolveHoldCompensationReasonAsync(booking.Id, now, cancellationToken);
+                await HotelBookingPaymentRecovery.RecordCompensationAsync(
+                    _db,
+                    booking.Id,
+                    paymentEvidence.PaymentId,
+                    reason,
+                    now,
+                    cancellationToken);
+                await _db.SaveChangesAsync(cancellationToken);
+            }
+
             throw new InvalidOperationException(
                 "Reservation initiation requires an Active unexpired HotelAvailabilityHold.");
         }
@@ -186,6 +215,18 @@ public sealed class HotelSupplierReservationService
                 if (openAttempt is not null)
                 {
                     reservation.FailAttempt(openAttempt.Id, now);
+                    var paymentEvidence = await _db.HotelBookingPaymentEvidence
+                        .SingleOrDefaultAsync(x => x.HotelBookingId == booking.Id, cancellationToken);
+                    if (paymentEvidence is not null)
+                    {
+                        await HotelBookingPaymentRecovery.RecordCompensationAsync(
+                            _db,
+                            booking.Id,
+                            paymentEvidence.PaymentId,
+                            HotelBookingPaymentCompensationReason.SupplierReservationNotCreated,
+                            now,
+                            cancellationToken);
+                    }
                 }
 
                 break;
@@ -193,6 +234,18 @@ public sealed class HotelSupplierReservationService
                 if (openAttempt is not null && source.NotFoundProvesNoReservation)
                 {
                     reservation.FailAttempt(openAttempt.Id, now);
+                    var paymentEvidence = await _db.HotelBookingPaymentEvidence
+                        .SingleOrDefaultAsync(x => x.HotelBookingId == booking.Id, cancellationToken);
+                    if (paymentEvidence is not null)
+                    {
+                        await HotelBookingPaymentRecovery.RecordCompensationAsync(
+                            _db,
+                            booking.Id,
+                            paymentEvidence.PaymentId,
+                            HotelBookingPaymentCompensationReason.SupplierReservationNotCreated,
+                            now,
+                            cancellationToken);
+                    }
                 }
                 else if (openAttempt is not null)
                 {
@@ -213,6 +266,19 @@ public sealed class HotelSupplierReservationService
                     if (openAttempt is not null)
                     {
                         reservation.FailAttempt(openAttempt.Id, now);
+                    }
+
+                    var paymentEvidence = await _db.HotelBookingPaymentEvidence
+                        .SingleOrDefaultAsync(x => x.HotelBookingId == booking.Id, cancellationToken);
+                    if (paymentEvidence is not null && booking.Status == HotelBookingStatus.Pending)
+                    {
+                        await HotelBookingPaymentRecovery.RecordCompensationAsync(
+                            _db,
+                            booking.Id,
+                            paymentEvidence.PaymentId,
+                            HotelBookingPaymentCompensationReason.SupplierReservationCancelled,
+                            now,
+                            cancellationToken);
                     }
                 }
                 catch (InvalidOperationException)
@@ -260,6 +326,19 @@ public sealed class HotelSupplierReservationService
         if (result.Outcome == HotelReservationSourceOutcome.Failed)
         {
             reservation.FailAttempt(attempt.Id, now);
+            var paymentEvidence = await _db.HotelBookingPaymentEvidence
+                .SingleOrDefaultAsync(x => x.HotelBookingId == booking.Id, cancellationToken);
+            if (paymentEvidence is not null)
+            {
+                await HotelBookingPaymentRecovery.RecordCompensationAsync(
+                    _db,
+                    booking.Id,
+                    paymentEvidence.PaymentId,
+                    HotelBookingPaymentCompensationReason.SupplierReservationNotCreated,
+                    now,
+                    cancellationToken);
+            }
+
             return;
         }
 
@@ -364,17 +443,51 @@ public sealed class HotelSupplierReservationService
             supplierConfirmationCode,
             confirmedRooms,
             requestedRooms);
-        booking.ConfirmFromAuthoritativeSupplierReservation(
-            reservation,
-            now,
-            snapshot.Place,
-            snapshot.CheckInDate,
-            snapshot.CheckOutDate,
-            confirmedRooms,
-            reportedTotal,
-            cancellationTermsMatch,
-            snapshot.Monetary,
-            existingIssues);
+
+        var paymentEvidence = await _db.HotelBookingPaymentEvidence
+            .SingleOrDefaultAsync(x => x.HotelBookingId == booking.Id, cancellationToken);
+        if (paymentEvidence is null || !paymentEvidence.MatchesMonetarySnapshot(snapshot.Monetary))
+        {
+            if (paymentEvidence is not null)
+            {
+                PersistIssue(
+                    booking.Id,
+                    paymentEvidence.Amount != snapshot.Monetary.Total.Amount
+                        ? HotelBookingReconciliationIssueKind.MonetaryMismatch
+                        : HotelBookingReconciliationIssueKind.CurrencyMismatch,
+                    now,
+                    reservation.Id,
+                    attempt.Id,
+                    "Payment evidence does not match monetary snapshot.");
+            }
+
+            return;
+        }
+
+        if (existingIssues.Any(issue => issue.BlocksConfirmation))
+        {
+            return;
+        }
+
+        try
+        {
+            booking.ConfirmFromAuthoritativePaymentAndSupplierEvidence(
+                reservation,
+                paymentEvidence,
+                now,
+                snapshot.Place,
+                snapshot.CheckInDate,
+                snapshot.CheckOutDate,
+                confirmedRooms,
+                reportedTotal,
+                cancellationTermsMatch,
+                snapshot.Monetary,
+                existingIssues);
+        }
+        catch (InvalidOperationException)
+        {
+            // Reservation is Confirmed; HotelBooking stays Pending when dual-evidence is incomplete.
+        }
     }
 
     private void PersistIssue(
@@ -408,6 +521,22 @@ public sealed class HotelSupplierReservationService
         }
 
         return sourceKey;
+    }
+
+    private async Task<HotelBookingPaymentCompensationReason> ResolveHoldCompensationReasonAsync(
+        HotelBookingId hotelBookingId,
+        Instant now,
+        CancellationToken cancellationToken)
+    {
+        var holds = await _db.HotelAvailabilityHolds
+            .Where(x => x.HotelBookingId == hotelBookingId)
+            .ToListAsync(cancellationToken);
+        if (holds.Any(h => h.Status == HotelAvailabilityHoldStatus.Released))
+        {
+            return HotelBookingPaymentCompensationReason.HoldReleased;
+        }
+
+        return HotelBookingPaymentCompensationReason.HoldExpired;
     }
 
     private async Task<bool> HasActiveUnexpiredHoldAsync(

@@ -75,7 +75,7 @@ internal sealed class PaymentOperationalQueryService : IPaymentOperationalQuery
 
         return new PaymentOperationalRead(
             payment.Id.Value,
-            payment.Booking.BookingId,
+            payment.Booking?.BookingId ?? Guid.Empty,
             payment.Status.ToString(),
             payment.ExecutionSnapshot?.Amount.Amount,
             payment.ExecutionSnapshot?.Amount.Currency.Value,
@@ -113,7 +113,9 @@ internal sealed class PaymentOperationalQueryService : IPaymentOperationalQuery
                     refundIssues),
             paymentIssues,
             descriptor,
-            compensation);
+            compensation,
+            payment.TargetKind.ToString(),
+            payment.TargetReferenceId);
     }
 
     public async Task<ProviderCapabilityStatus> RecheckPaymentAttemptAsync(

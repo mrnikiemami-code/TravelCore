@@ -11,7 +11,7 @@ namespace TravelCore.Modules.Payment.Infrastructure.Services;
 /// <summary>
 /// Trusted internal initiation with GetOrCreate, scoped idempotency, and no retry on ambiguity (P20-R4).
 /// </summary>
-internal sealed class PaymentInitiationService
+internal sealed class PaymentInitiationService : IHotelBookingPaymentInitiationService
 {
     private readonly PaymentDbContext _db;
     private readonly IPaymentProviderResolver _resolver;
@@ -47,6 +47,15 @@ internal sealed class PaymentInitiationService
         CancellationToken cancellationToken = default)
     {
         var payment = await _getOrCreate.GetOrCreateAsync(booking, cancellationToken);
+        return await InitiateAsync(payment.Id, idempotencyKey, cancellationToken);
+    }
+
+    public async Task<PaymentInitiationResult> InitiateForHotelBookingAsync(
+        HotelBookingPaymentReference hotelBooking,
+        string? idempotencyKey,
+        CancellationToken cancellationToken = default)
+    {
+        var payment = await _getOrCreate.GetOrCreateAsync(hotelBooking, cancellationToken);
         return await InitiateAsync(payment.Id, idempotencyKey, cancellationToken);
     }
 
@@ -164,7 +173,7 @@ internal sealed class PaymentInitiationService
                 new PaymentInitiationRequest(
                     payment.Id.Value,
                     attempt.Id.Value,
-                    payment.Booking.BookingId,
+                    payment.TargetReferenceId,
                     providerKey,
                     execution.Amount.Amount,
                     execution.Amount.Currency.Value),

@@ -4,9 +4,8 @@ using TravelCore.Modules.Payment.Contracts;
 namespace TravelCore.Modules.Payment.Domain;
 
 /// <summary>
-/// Logical monetary collection for exactly one Booking (TC-P20-T002 / P20-R2).
-/// Owns PaymentAttempt children. Does not own Booking, Pricing, or Refund.
-/// Authoritative success remains a trusted-evidence boundary (P20-R3).
+/// Logical monetary collection for exactly one supported target (Tour Booking or HotelBooking).
+/// Not an open TargetType platform (P21-R6). Owns PaymentAttempt children.
 /// </summary>
 public sealed class Payment
 {
@@ -16,10 +15,20 @@ public sealed class Payment
     {
     }
 
-    private Payment(PaymentId id, BookingReference booking, Instant createdAt)
+    private Payment(
+        PaymentId id,
+        BookingReference? booking,
+        HotelBookingPaymentReference? hotelBooking,
+        Instant createdAt)
     {
+        if ((booking is null) == (hotelBooking is null))
+        {
+            throw new ArgumentException("A Payment must belong to exactly one supported target.");
+        }
+
         Id = id;
         Booking = booking;
+        HotelBooking = hotelBooking;
         Status = PaymentStatus.Pending;
         CreatedAt = createdAt;
         StatusChangedAt = createdAt;
@@ -28,7 +37,17 @@ public sealed class Payment
 
     public PaymentId Id { get; private set; }
 
-    public BookingReference Booking { get; private set; }
+    public BookingReference? Booking { get; private set; }
+
+    public HotelBookingPaymentReference? HotelBooking { get; private set; }
+
+    public PaymentTargetKind TargetKind =>
+        HotelBooking is not null ? PaymentTargetKind.HotelBooking : PaymentTargetKind.TourBooking;
+
+    public Guid TargetReferenceId =>
+        HotelBooking?.HotelBookingId
+        ?? Booking?.BookingId
+        ?? throw new InvalidOperationException("Payment has no target.");
 
     public PaymentStatus Status { get; private set; }
 
@@ -51,7 +70,17 @@ public sealed class Payment
             throw new ArgumentException("CreatedAt cannot be default.", nameof(now));
         }
 
-        return new Payment(PaymentId.New(), booking, now);
+        return new Payment(PaymentId.New(), booking, hotelBooking: null, now);
+    }
+
+    public static Payment CreateForHotel(HotelBookingPaymentReference hotelBooking, Instant now)
+    {
+        if (now == default)
+        {
+            throw new ArgumentException("CreatedAt cannot be default.", nameof(now));
+        }
+
+        return new Payment(PaymentId.New(), booking: null, hotelBooking, now);
     }
 
     public PaymentAttempt CreateAttempt(Instant now)

@@ -25,7 +25,30 @@ public sealed class HotelSupplierReservationPersistenceTests
     }
 
     [Fact]
-    public async Task Complete_Source_Confirms_Booking_Without_Payment()
+    public async Task Initiate_Without_Payment_Evidence_Is_Blocked()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        await using (var migrate = _postgres.CreateDbContext())
+        {
+            await HotelBookingMigrator.MigrateAsync(migrate, ct);
+        }
+
+        var source = new FakeHotelReservationSource();
+        await using (var db = _postgres.CreateDbContext())
+        {
+            var booking = await SeedPendingBookingWithOfferAndHoldAsync(db, ct, withPaymentEvidence: false);
+            source.NextCreate = Complete(booking, booking.Rooms.Select(r => r.Id.Value).ToArray(), 1_000_000m);
+            var service = CreateService(db, source);
+            var blocked = await Assert.ThrowsAsync<InvalidOperationException>(
+                () => service.InitiateAsync(booking.Id, "key-1", cancellationToken: ct));
+            Assert.Contains("Payment", blocked.Message, StringComparison.OrdinalIgnoreCase);
+            Assert.Equal(0, source.CreateCalls);
+            Assert.Equal(HotelBookingStatus.Pending, booking.Status);
+        }
+    }
+
+    [Fact]
+    public async Task Complete_Source_With_Payment_Evidence_Confirms_Booking()
     {
         var ct = TestContext.Current.CancellationToken;
         await using (var migrate = _postgres.CreateDbContext())
@@ -208,6 +231,13 @@ public sealed class HotelSupplierReservationPersistenceTests
                 "test-source",
                 T0,
                 booking.Rooms.Select(r => r.Id).ToArray()));
+        db.HotelBookingPaymentEvidence.Add(
+            HotelBookingPaymentEvidence.Record(
+                booking.Id,
+                Guid.CreateVersion7(),
+                1_000_000m,
+                "IRR",
+                T0.Plus(Duration.FromMinutes(2))));
         await db.SaveChangesAsync(ct);
 
         var source = new FakeHotelReservationSource();
@@ -232,7 +262,7 @@ public sealed class HotelSupplierReservationPersistenceTests
         HotelSupplierReservationId reservationId;
         await using (var db = _postgres.CreateDbContext())
         {
-            var booking = await SeedPendingBookingWithOfferAndHoldAsync(db, ct);
+            var booking = await SeedPendingBookingWithOfferAndHoldAsync(db, ct, withPaymentEvidence: false);
             bookingId = booking.Id;
             var reservation = HotelSupplierReservation.StartPending(booking.Id, "test-source", T0);
             var attempt = reservation.StartAttempt(T0);
@@ -258,7 +288,7 @@ public sealed class HotelSupplierReservationPersistenceTests
             var rechecked = await service.RecheckAsync(reservationId, ct);
             Assert.Equal(HotelSupplierReservationStatus.Confirmed, rechecked.Status);
             var loaded = await db.HotelBookings.SingleAsync(x => x.Id == bookingId, ct);
-            Assert.Equal(HotelBookingStatus.Confirmed, loaded.Status);
+            Assert.Equal(HotelBookingStatus.Pending, loaded.Status);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -353,7 +383,8 @@ public sealed class HotelSupplierReservationPersistenceTests
 
     private static async Task<Stay> SeedPendingBookingWithOfferAndHoldAsync(
         HotelBookingDbContext db,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool withPaymentEvidence = true)
     {
         var booking = CreateBooking();
         db.HotelBookings.Add(booking);
@@ -369,6 +400,17 @@ public sealed class HotelSupplierReservationPersistenceTests
             $"src-hold-{booking.Id.Value:N}",
             booking.Rooms.ToDictionary(r => r.Id, r => $"sel-{r.Ordinal}"));
         db.HotelAvailabilityHolds.Add(hold);
+        if (withPaymentEvidence)
+        {
+            db.HotelBookingPaymentEvidence.Add(
+                HotelBookingPaymentEvidence.Record(
+                    booking.Id,
+                    Guid.CreateVersion7(),
+                    1_000_000m,
+                    "IRR",
+                    T0.Plus(Duration.FromMinutes(2))));
+        }
+
         await db.SaveChangesAsync(cancellationToken);
         return booking;
     }

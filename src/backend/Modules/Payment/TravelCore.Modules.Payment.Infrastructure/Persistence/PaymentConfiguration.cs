@@ -15,6 +15,9 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<PaymentAgg
         {
             table.HasCheckConstraint("ck_payments_status", "status IN (1, 2)");
             table.HasCheckConstraint("ck_payments_version_nonnegative", "version >= 0");
+            table.HasCheckConstraint(
+                "ck_payments_exactly_one_target",
+                "(booking_id IS NOT NULL AND hotel_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NOT NULL)");
         });
         builder.HasKey(x => x.Id);
 
@@ -25,9 +28,17 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<PaymentAgg
         builder.Property(x => x.Booking)
             .HasColumnName("booking_id")
             .HasConversion(
-                reference => reference.BookingId,
-                value => new BookingReference(value))
-            .IsRequired();
+                reference => reference.HasValue ? reference.Value.BookingId : (Guid?)null,
+                value => value.HasValue ? new BookingReference(value.Value) : null);
+
+        builder.Property(x => x.HotelBooking)
+            .HasColumnName("hotel_booking_id")
+            .HasConversion(
+                reference => reference.HasValue ? reference.Value.HotelBookingId : (Guid?)null,
+                value => value.HasValue ? new HotelBookingPaymentReference(value.Value) : null);
+
+        builder.Ignore(x => x.TargetKind);
+        builder.Ignore(x => x.TargetReferenceId);
 
         builder.Property(x => x.Status)
             .HasColumnName("status")
@@ -78,6 +89,12 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<PaymentAgg
 
         builder.HasIndex(x => x.Booking)
             .IsUnique()
+            .HasFilter("booking_id IS NOT NULL")
             .HasDatabaseName("ux_payments_booking_id");
+
+        builder.HasIndex(x => x.HotelBooking)
+            .IsUnique()
+            .HasFilter("hotel_booking_id IS NOT NULL")
+            .HasDatabaseName("ux_payments_hotel_booking_id");
     }
 }

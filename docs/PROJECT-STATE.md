@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R5 RESOLVED** · **P21-R6–R8 OPEN** · T004 ACCEPTED · T005 awaiting architect review · T006 NOT EXECUTED) |
+| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R6 RESOLVED** · **P21-R7–R8 OPEN** · T005 ACCEPTED · T006 implemented / AWAITING_ARCHITECT_REVIEW · T007 NOT EXECUTED) |
 | Previous Phase | **P20 — Payment** (**COMPLETE** — `TC-P20-GATE` ACCEPTED `fc41756` · docs `96be199`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P21-T005` — HotelBooking lifecycle, supplier reservation, confirmation, reconciliation (AWAITING_ARCHITECT_REVIEW; T006 NOT EXECUTED) |
-| Current Next Task | Architect review of `TC-P21-T005`; do not invent R6–R8; do not execute T006 |
+| Current Active Product Task | `TC-P21-T006` — HotelBooking typed Payment integration, pay-first orchestration, dual-evidence confirmation, full-refund compensation (AWAITING_ARCHITECT_REVIEW; T007 NOT EXECUTED) |
+| Current Next Task | Architect review of `TC-P21-T006`; do not invent R7–R8; do not execute T007 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -235,19 +235,24 @@
 | P19 | **COMPLETE** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE ACCEPTED (`d258933`) [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md) |
 | P19-GATE | **COMPLETE / ACCEPTED** (`d258933`) — [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md); Payment/Confirm remain DEFERRED into P20 |
 | P20 | **COMPLETE** — GATE ACCEPTED · **P20-R1–R8 RESOLVED** · T001–T009 ACCEPTED [`docs/plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md) |
-| P21 | **IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R5 RESOLVED** · **P21-R6–R8 OPEN** · T004 ACCEPTED · T005 awaiting architect review · T006 NOT EXECUTED |
+| P21 | **IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R6 RESOLVED** · **P21-R7–R8 OPEN** · T005 ACCEPTED · T006 implemented / AWAITING_ARCHITECT_REVIEW · T007 NOT EXECUTED |
 | P21 Plan | `TC-P21-PLAN` COMPLETE / ACCEPTED (`f0ec6ae`) — [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) |
 | P21-T001 | **COMPLETE / ACCEPTED** (`7af55b2` / docs `7ebd0f1`) — independent HotelBooking module · schema `hotel_booking` · logical PlaceId / `HotelPlaceReference` |
 | P21-T002 | **COMPLETE / ACCEPTED** (`a844bcf` / docs `a0f5c99`) — HotelBooking stay aggregate · LocalDate CheckIn/CheckOut · 1..N RoomReservations · room-assigned Adult/Child guests · LeadGuest · contact snapshot |
 | P21-T003 | **COMPLETE / ACCEPTED** (`2696407` / docs `77a9b8f` / VERIFY `5824acd` / `14c594c`) — IHotelAvailabilitySource port · HotelAvailabilityHold Requested/Active/Released/Expired · one hold covers complete room set · production source NONE · no fake production availability |
 | P21-T003-VERIFY | **COMPLETE / ACCEPTED** (`5824acd` / docs `14c594c`) — explained `a844bcf`→`a0f5c99` as T002 result docs only · stay test asserts lead guest on ordinal-ordered room |
 | P21-T004 | **COMPLETE / ACCEPTED** (`9d24b84` / docs `9f38ef6`) — `IHotelRateOfferSource` · immutable `HotelRateOfferSnapshot` / `HotelBookingMonetarySnapshot` / `HotelCancellationPolicySnapshot` · Production Hotel Rate Source = NONE · no fake production prices · Pricing module not generalized · P20 Partial Refund remains DEFERRED |
-| P21-T005 | **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW** (`8cc1b28`) — HotelBookingStatus Pending/Confirmed/Cancelled · `IHotelReservationSource` · HotelSupplierReservation + attempts + idempotency + reconciliation · Production Hotel Reservation Source = NONE · confirmation is not Payment-driven · T006 NOT EXECUTED |
+| P21-T005 | **COMPLETE / ACCEPTED** (`8cc1b28` / docs `53e6e14`) — HotelBookingStatus Pending/Confirmed/Cancelled · `IHotelReservationSource` · HotelSupplierReservation + attempts + idempotency + reconciliation · Production Hotel Reservation Source = NONE · Named Hotel Supplier = NONE |
+| P21-T006 | **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW** — typed HotelBooking Payment target · pay-first supplier reservation · dual-evidence confirmation · Hotel-specific payment/refund/compensation events · full Refund compensation · no public HotelBooking Payment API · T007 NOT EXECUTED |
+| P21-T007 | **NOT EXECUTED** — cancellation / amendments remain P21-R7 |
 | P21-R1 (HotelBooking ownership / schema / catalog reference) | **RESOLVED** — independent HotelBooking module · schema `hotel_booking` · Place is hotel catalog owner · logical PlaceId / `HotelPlaceReference` · no peer-schema FK · no shared DbContext · **HotelBooking != Place** · **HotelBooking != Tour Booking** · named supplier = NONE |
 | P21-R2 (Stay / rooms / guests / occupancy / multi-room) | **RESOLVED** — NodaTime LocalDate CheckIn/CheckOut · Nights derived · 1..N RoomReservations · guests assigned per room · Adult/Child · Child AgeAtCheckIn · no BirthDate · exactly one LeadGuest · HotelBookingContactSnapshot · occupancy is requested composition not availability |
 | P21-R3 (Availability / inventory / hold / supplier-neutral boundary) | **RESOLVED** — IHotelAvailabilitySource is availability authority · Place/Search are not live availability · Production Availability Source = NONE · one HotelAvailabilityHold covers complete room set · Requested/Active/Released/Expired · no rate/payment |
 | P21-R4 (Commercial rate / monetary snapshot / cancellation terms) | **RESOLVED** — live offered hotel commercial rate ≠ HotelBookingMonetarySnapshot ≠ Payment · cancellation terms ≠ cancellation execution ≠ Refund · Production Hotel Rate Source = NONE · Named Hotel Supplier = NONE · Pricing module not generalized · P20 Partial Refund remains DEFERRED |
-| P21-R5 (Lifecycle / supplier reservation / confirmation / reconciliation) | **RESOLVED** — HotelBookingStatus Pending/Confirmed/Cancelled · HotelAvailabilityHold ≠ HotelSupplierReservation ≠ HotelBooking · Production Hotel Reservation Source = NONE · NetworkTimeout ≠ Attempt.Failed · confirmation is not Payment-driven · cancellation execution remains R7 |
+| P21-R5 (Lifecycle / supplier reservation / confirmation / reconciliation) | **RESOLVED** — HotelBookingStatus Pending/Confirmed/Cancelled · HotelAvailabilityHold ≠ HotelSupplierReservation ≠ HotelBooking · Production Hotel Reservation Source = NONE · NetworkTimeout ≠ Attempt.Failed · cancellation execution remains R7 · PayNow confirmation/payment rules locked by P21-R6 |
+| P21-R6 (Payment integration / compensation) | **RESOLVED** — Payment remains independent Payment module · Payment now supports two explicitly closed target kinds: TourBooking and HotelBooking · no arbitrary generic TargetType/TargetId target platform · one HotelBooking -> one logical Payment · HotelBooking payment amount/currency come from immutable HotelBookingMonetarySnapshot · P21 baseline collection mode = full TravelCore PayNow · PayAtProperty = DEFERRED · deposit/partial collection = DEFERRED · Payment must succeed before new final supplier reservation initiation · final PayNow HotelBooking confirmation requires BOTH authoritative Payment success and authoritative SupplierReservation confirmation · Payment-only does not confirm · Supplier-only does not confirm new PayNow HotelBooking · durable outbox/inbox connects Payment and HotelBooking · Payment success + authoritative inability to confirm creates full financial compensation requirement · existing Payment-owned Refund executes compensation · partial Refund remains DEFERRED · ambiguous supplier reservation outcome is rechecked before Refund · Refund success may system-cancel only Pending unconfirmed HotelBooking · Confirmed cancellation remains R7 · no distributed transaction · no real Payment provider · no real Hotel supplier · Production Payment Provider = NONE · Named Hotel Supplier = NONE |
+| P21-R7 (Cancellation / amendment / refund-policy boundary) | **OPEN** |
+| P21-R8 (Public UX / authorization / privacy / supplier readiness) | **OPEN** |
 | P20 Plan | `TC-P20-PLAN` COMPLETE / ACCEPTED (`aca9c44`) — [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
 | P20-T001 | **COMPLETE / ACCEPTED** (`1ec8963`) — independent Payment module · schema `payment` · initial target = Booking · Tour Booking scope |
 | P20-T002 | **COMPLETE / ACCEPTED** (`75a4f84`) — Payment aggregate + PaymentAttempt · PaymentStatus Pending/Succeeded · PaymentAttemptStatus Created/Initiated/Succeeded/Failed |

@@ -28,10 +28,30 @@ internal static class RefundSucceededOutboxWriter
             return;
         }
 
+        if (refund.HotelBooking is { } hotel)
+        {
+            var hotelMessage = new HotelBookingRefundSucceededIntegrationEvent(
+                refund.Id.Value,
+                refund.PaymentId.Value,
+                hotel.HotelBookingId,
+                now,
+                refund.Amount.Amount,
+                refund.Amount.Currency.Value);
+
+            db.OutboxMessages.Add(
+                PaymentOutboxMessage.Create(
+                    refund.Id.Value,
+                    now,
+                    HotelBookingRefundSuccessOutboxBoundary.MessageType,
+                    HotelBookingRefundSucceededOutboxSerializer.Serialize(hotelMessage)));
+            return;
+        }
+
         var message = new RefundSucceededIntegrationEvent(
             refund.Id.Value,
             refund.PaymentId.Value,
-            refund.Booking.BookingId,
+            refund.Booking?.BookingId
+                ?? throw new InvalidOperationException("Tour Refund is missing BookingReference."),
             now,
             refund.Amount.Amount,
             refund.Amount.Currency.Value);

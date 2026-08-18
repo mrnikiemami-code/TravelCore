@@ -181,6 +181,8 @@ public sealed class PaymentPhaseBoundaryGuardrailTests
             paymentInfra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name is "TravelCore.Modules.Booking.Infrastructure"
                 or "TravelCore.Modules.Booking.Domain"
+                or "TravelCore.Modules.HotelBooking.Infrastructure"
+                or "TravelCore.Modules.HotelBooking.Domain"
                 or "TravelCore.Modules.Pricing.Infrastructure");
         Assert.DoesNotContain(
             bookingInfra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
@@ -190,6 +192,9 @@ public sealed class PaymentPhaseBoundaryGuardrailTests
         Assert.Contains(
             paymentInfra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name == "TravelCore.Modules.Booking.Contracts");
+        Assert.Contains(
+            paymentInfra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Modules.HotelBooking.Contracts");
         Assert.Contains(
             bookingInfra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name == "TravelCore.Modules.Payment.Contracts");

@@ -5,8 +5,7 @@ using MoneyValue = TravelCore.Money.Money;
 namespace TravelCore.Modules.HotelBooking.Domain;
 
 /// <summary>
-/// Hotel stay transaction aggregate. T005 adds HotelBookingStatus (Pending/Confirmed/Cancelled).
-/// Confirmation is supplier-reservation evidence, not Payment.
+/// Hotel stay transaction aggregate. PayNow confirmation requires Payment + supplier evidence (P21-R6).
 /// </summary>
 public sealed class HotelBooking
 {
@@ -17,6 +16,7 @@ public sealed class HotelBooking
         Place = default;
         Contact = null!;
         Status = HotelBookingStatus.Pending;
+        Version = 0;
     }
 
     private HotelBooking(
@@ -32,6 +32,7 @@ public sealed class HotelBooking
         CheckOutDate = checkOutDate;
         Contact = contact;
         Status = HotelBookingStatus.Pending;
+        Version = 0;
     }
 
     public HotelBookingId Id { get; private set; }
@@ -39,6 +40,10 @@ public sealed class HotelBooking
     public HotelBookingStatus Status { get; private set; }
 
     public Instant? ConfirmedAt { get; private set; }
+
+    public Instant? CancelledAt { get; private set; }
+
+    public long Version { get; private set; }
 
     public HotelPlaceReference Place { get; private set; }
 
@@ -114,7 +119,9 @@ public sealed class HotelBooking
     }
 
     /// <summary>
-    /// Constrained Pending → Confirmed. Not a generic Confirm/SetConfirmed surface.
+    /// Constrained Pending → Confirmed. PayNow requires authoritative Payment evidence.
+    /// Already-Confirmed rows stay Confirmed (T005 history is not downgraded).
+    /// Not a generic Confirm/SetConfirmed surface.
     /// </summary>
     public void ConfirmFromAuthoritativeSupplierReservation(
         HotelSupplierReservation reservation,
@@ -126,7 +133,8 @@ public sealed class HotelBooking
         MoneyValue? reportedTotal,
         bool? cancellationTermsMatch,
         HotelBookingMonetarySnapshot monetary,
-        IReadOnlyList<HotelBookingReconciliationIssue> existingIssues)
+        IReadOnlyList<HotelBookingReconciliationIssue> existingIssues,
+        HotelBookingPaymentEvidence? paymentEvidence = null)
     {
         ArgumentNullException.ThrowIfNull(reservation);
         ArgumentNullException.ThrowIfNull(confirmedRooms);
@@ -191,17 +199,19 @@ public sealed class HotelBooking
                 + string.Join(", ", issues));
         }
 
-        Status = HotelBookingStatus.Confirmed;
-        ConfirmedAt = now;
+        EnsurePayNowPaymentEvidence(paymentEvidence, monetary);
+        ApplyConfirmed(now);
     }
 
     /// <summary>
     /// Constrained Pending → Confirmed when caller has already verified stay/money/room evidence.
+    /// PayNow still requires Payment evidence unless the row is already Confirmed.
     /// </summary>
     public void ConfirmFromAuthoritativeSupplierReservation(
         HotelSupplierReservation reservation,
         IReadOnlyCollection<HotelBookingReconciliationIssue> openIssues,
-        Instant now)
+        Instant now,
+        HotelBookingPaymentEvidence? paymentEvidence = null)
     {
         ArgumentNullException.ThrowIfNull(reservation);
         ArgumentNullException.ThrowIfNull(openIssues);
@@ -248,9 +258,105 @@ public sealed class HotelBooking
                 "Blocking HotelBookingReconciliationIssue prevents confirmation.");
         }
 
+        if (paymentEvidence is null)
+        {
+            throw new InvalidOperationException(
+                "PayNow HotelBooking confirmation requires authoritative Payment success evidence.");
+        }
+
+        ApplyConfirmed(now);
+    }
+
+    /// <summary>
+    /// Dual-evidence PayNow confirmation: Payment Succeeded AND SupplierReservation Confirmed.
+    /// </summary>
+    public void ConfirmFromAuthoritativePaymentAndSupplierEvidence(
+        HotelSupplierReservation reservation,
+        HotelBookingPaymentEvidence paymentEvidence,
+        Instant now,
+        HotelPlaceReference reportedPlace,
+        LocalDate reportedCheckIn,
+        LocalDate reportedCheckOut,
+        IReadOnlyCollection<RoomReservationId> confirmedRooms,
+        MoneyValue? reportedTotal,
+        bool? cancellationTermsMatch,
+        HotelBookingMonetarySnapshot monetary,
+        IReadOnlyList<HotelBookingReconciliationIssue> existingIssues)
+    {
+        ArgumentNullException.ThrowIfNull(paymentEvidence);
+        ConfirmFromAuthoritativeSupplierReservation(
+            reservation,
+            now,
+            reportedPlace,
+            reportedCheckIn,
+            reportedCheckOut,
+            confirmedRooms,
+            reportedTotal,
+            cancellationTermsMatch,
+            monetary,
+            existingIssues,
+            paymentEvidence);
+    }
+
+    /// <summary>
+    /// System compensation terminalization: Pending → Cancelled after authoritative full Refund.
+    /// Does not cancel Confirmed HotelBooking (R7). Not a generic Cancel/SetCancelled surface.
+    /// </summary>
+    public void CancelFromAuthoritativePaymentCompensation(Instant now)
+    {
+        EnsureClock(now);
+        if (Status == HotelBookingStatus.Cancelled)
+        {
+            return;
+        }
+
+        if (Status == HotelBookingStatus.Confirmed)
+        {
+            throw new InvalidOperationException(
+                "Confirmed HotelBooking cannot be cancelled by payment compensation.");
+        }
+
+        if (Status != HotelBookingStatus.Pending)
+        {
+            throw new InvalidOperationException($"HotelBooking in status {Status} cannot become Cancelled.");
+        }
+
+        Status = HotelBookingStatus.Cancelled;
+        CancelledAt = now;
+        IncrementVersion();
+    }
+
+    private void EnsurePayNowPaymentEvidence(
+        HotelBookingPaymentEvidence? paymentEvidence,
+        HotelBookingMonetarySnapshot monetary)
+    {
+        if (paymentEvidence is null)
+        {
+            throw new InvalidOperationException(
+                "PayNow HotelBooking confirmation requires authoritative Payment success evidence.");
+        }
+
+        if (!paymentEvidence.HotelBookingId.Equals(Id))
+        {
+            throw new InvalidOperationException(
+                "Payment evidence for another HotelBooking cannot confirm this booking.");
+        }
+
+        if (!paymentEvidence.MatchesMonetarySnapshot(monetary))
+        {
+            throw new InvalidOperationException(
+                "Payment evidence amount/currency does not match HotelBookingMonetarySnapshot.");
+        }
+    }
+
+    private void ApplyConfirmed(Instant now)
+    {
         Status = HotelBookingStatus.Confirmed;
         ConfirmedAt = now;
+        IncrementVersion();
     }
+
+    private void IncrementVersion() => Version++;
 
     public IReadOnlyList<HotelBookingReconciliationIssueKind> CollectConfirmationIssues(
         HotelSupplierReservation reservation,

@@ -144,6 +144,10 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<Instant?>("CancelledAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("cancelled_at");
+
                     b.Property<LocalDate>("CheckInDate")
                         .HasColumnType("date")
                         .HasColumnName("check_in_date");
@@ -165,6 +169,13 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                         .HasColumnType("smallint")
                         .HasDefaultValue((short)1)
                         .HasColumnName("status");
+
+                    b.Property<long>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L)
+                        .HasColumnName("version");
 
                     b.HasKey("Id");
 
@@ -248,6 +259,75 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                     b.ToTable("hotel_booking_monetary_snapshots", "hotel_booking");
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingPaymentCompensationEvidence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Instant>("DetectedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("detected_at");
+
+                    b.Property<Guid>("HotelBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_booking_id");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<short>("Reason")
+                        .HasColumnType("smallint")
+                        .HasColumnName("reason");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelBookingId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_hotel_booking_payment_compensation_evidence_hotel_booking_id");
+
+                    b.ToTable("hotel_booking_payment_compensation_evidence", "hotel_booking", t =>
+                        {
+                            t.HasCheckConstraint("ck_hotel_booking_payment_compensation_reason", "reason IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingPaymentEvidence", b =>
+                {
+                    b.Property<Guid>("HotelBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_booking_id");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("amount");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("currency_code");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<Instant>("VerifiedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("verified_at");
+
+                    b.HasKey("HotelBookingId");
+
+                    b.HasIndex("PaymentId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_hotel_booking_payment_evidence_payment_id");
+
+                    b.ToTable("hotel_booking_payment_evidence", "hotel_booking");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingReconciliationIssue", b =>
                 {
                     b.Property<Guid>("Id")
@@ -288,6 +368,47 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                     b.ToTable("hotel_booking_reconciliation_issues", "hotel_booking", t =>
                         {
                             t.HasCheckConstraint("ck_hotel_booking_reconciliation_issues_kind", "kind IN (1, 2, 3, 4, 5, 6, 7, 8)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingRefundInvariantIssue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Instant>("DetectedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("detected_at");
+
+                    b.Property<Guid>("HotelBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_booking_id");
+
+                    b.Property<short>("Kind")
+                        .HasColumnType("smallint")
+                        .HasColumnName("kind");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<Guid>("RefundId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("refund_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelBookingId");
+
+                    b.HasIndex("RefundId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_hotel_booking_refund_invariant_issues_refund_id");
+
+                    b.ToTable("hotel_booking_refund_invariant_issues", "hotel_booking", t =>
+                        {
+                            t.HasCheckConstraint("ck_hotel_booking_refund_invariant_kind", "kind IN (1, 2)");
                         });
                 });
 
@@ -619,6 +740,72 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                     b.ToTable("room_reservations", "hotel_booking");
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Infrastructure.HotelBookingOutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("message_type");
+
+                    b.Property<Instant>("OccurredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occurred_at");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("payload");
+
+                    b.Property<Instant?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcessedAt")
+                        .HasDatabaseName("ix_hotel_booking_outbox_messages_processed_at");
+
+                    b.ToTable("outbox_messages", "hotel_booking");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Infrastructure.HotelBookingPaymentSuccessInboxRecord", b =>
+                {
+                    b.Property<Guid>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<Instant>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("PaymentId");
+
+                    b.ToTable("payment_success_inbox", "hotel_booking");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Infrastructure.HotelBookingRefundSuccessInboxRecord", b =>
+                {
+                    b.Property<Guid>("RefundId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("refund_id");
+
+                    b.Property<Instant>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("RefundId");
+
+                    b.ToTable("refund_success_inbox", "hotel_booking");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelAvailabilityHold", b =>
                 {
                     b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBooking", null)
@@ -774,12 +961,39 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingPaymentCompensationEvidence", b =>
+                {
+                    b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBooking", null)
+                        .WithMany()
+                        .HasForeignKey("HotelBookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingPaymentEvidence", b =>
+                {
+                    b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBooking", null)
+                        .WithMany()
+                        .HasForeignKey("HotelBookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingReconciliationIssue", b =>
                 {
                     b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBooking", null)
                         .WithMany()
                         .HasForeignKey("HotelBookingId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingRefundInvariantIssue", b =>
+                {
+                    b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBooking", null)
+                        .WithMany()
+                        .HasForeignKey("HotelBookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

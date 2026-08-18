@@ -30,9 +30,28 @@ internal static class PaymentSuccessOutboxWriter
             return;
         }
 
+        if (payment.HotelBooking is { } hotel)
+        {
+            var hotelMessage = new HotelBookingPaymentSucceededIntegrationEvent(
+                payment.Id.Value,
+                hotel.HotelBookingId,
+                now,
+                payment.ExecutionSnapshot.Amount.Amount,
+                payment.ExecutionSnapshot.Amount.Currency.Value);
+
+            db.OutboxMessages.Add(
+                PaymentOutboxMessage.Create(
+                    payment.Id.Value,
+                    now,
+                    HotelBookingPaymentSuccessOutboxBoundary.MessageType,
+                    HotelBookingPaymentSucceededOutboxSerializer.Serialize(hotelMessage)));
+            return;
+        }
+
         var message = new PaymentSucceededIntegrationEvent(
             payment.Id.Value,
-            payment.Booking.BookingId,
+            payment.Booking?.BookingId
+                ?? throw new InvalidOperationException("Tour Payment is missing BookingReference."),
             now,
             payment.ExecutionSnapshot.Amount.Amount,
             payment.ExecutionSnapshot.Amount.Currency.Value);

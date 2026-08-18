@@ -48,6 +48,15 @@ internal sealed class HotelBookingConfiguration : IEntityTypeConfiguration<Hotel
         builder.Property(x => x.ConfirmedAt)
             .HasColumnName("confirmed_at");
 
+        builder.Property(x => x.CancelledAt)
+            .HasColumnName("cancelled_at");
+
+        builder.Property(x => x.Version)
+            .HasColumnName("version")
+            .IsConcurrencyToken()
+            .HasDefaultValue(0L)
+            .IsRequired();
+
         builder.Ignore(x => x.Nights);
         builder.Ignore(x => x.RoomCount);
         builder.Ignore(x => x.GuestCount);

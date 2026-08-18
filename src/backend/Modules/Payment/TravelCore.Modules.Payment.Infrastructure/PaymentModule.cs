@@ -30,16 +30,30 @@ public sealed class PaymentModule : ITravelCoreModule
             .Bind(configuration.GetSection(PaymentProviderOptions.SectionName));
         services.AddSingleton<IPaymentProviderResolver, PaymentProviderResolver>();
         services.AddScoped<PaymentGetOrCreateService>();
-        services.AddScoped<PaymentPreparationService>();
+        services.AddScoped(sp => new PaymentPreparationService(
+            sp.GetRequiredService<PaymentDbContext>(),
+            sp.GetRequiredService<TravelCore.Modules.Booking.Contracts.IBookingPaymentObligationQuery>(),
+            sp.GetRequiredService<IClock>(),
+            sp.GetService<TravelCore.Modules.HotelBooking.Contracts.IHotelBookingPaymentObligationQuery>()));
         services.AddScoped<PaymentInitiationService>();
+        services.AddScoped<IHotelBookingPaymentInitiationService>(sp => sp.GetRequiredService<PaymentInitiationService>());
         services.AddScoped<PaymentCallbackProcessor>();
         services.AddScoped<PaymentAttemptRecheckService>();
         services.AddScoped<PaymentSuccessOutboxDispatcher>();
+        services.AddScoped(sp => new HotelBookingPaymentSuccessOutboxDispatcher(
+            sp.GetRequiredService<PaymentDbContext>(),
+            sp.GetRequiredService<IClock>(),
+            sp.GetService<IHotelBookingPaymentSucceededIntegrationHandler>()));
         services.AddScoped<RefundGetOrCreateService>();
         services.AddScoped<RefundInitiationService>();
         services.AddScoped<RefundAttemptRecheckService>();
         services.AddScoped<RefundSucceededOutboxDispatcher>();
+        services.AddScoped(sp => new HotelBookingRefundSucceededOutboxDispatcher(
+            sp.GetRequiredService<PaymentDbContext>(),
+            sp.GetRequiredService<IClock>(),
+            sp.GetService<IHotelBookingRefundSucceededIntegrationHandler>()));
         services.AddScoped<IBookingPaymentCompensationRequiredHandler, BookingPaymentCompensationRequiredHandler>();
+        services.AddScoped<IHotelBookingPaymentCompensationRequiredHandler, HotelBookingPaymentCompensationRequiredHandler>();
         services.AddHostedService<PaymentSuccessOutboxHostedService>();
         services.AddScoped<IPaymentSuccessEvidenceQuery, PaymentSuccessEvidenceQueryService>();
         services.AddScoped<IPublicBookingPaymentService, PublicBookingPaymentService>();

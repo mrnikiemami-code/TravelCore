@@ -83,7 +83,7 @@ public sealed class HotelSupplierReservationTests
     }
 
     [Fact]
-    public void Authoritative_Complete_Reservation_Confirms_HotelBooking()
+    public void Authoritative_Complete_Reservation_Does_Not_Confirm_Without_Payment_Evidence()
     {
         var booking = TwoRoomBooking();
         var snapshot = AcceptOffer(booking);
@@ -97,8 +97,50 @@ public sealed class HotelSupplierReservationTests
             booking.Rooms.Select(r => r.Id).ToArray(),
             booking.Rooms.Select(r => r.Id).ToArray());
 
-        booking.ConfirmFromAuthoritativeSupplierReservation(
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            booking.ConfirmFromAuthoritativeSupplierReservation(
+                reservation,
+                T0.Plus(Duration.FromMinutes(1)),
+                booking.Place,
+                booking.CheckInDate,
+                booking.CheckOutDate,
+                booking.Rooms.Select(r => r.Id).ToArray(),
+                snapshot.Monetary.Total,
+                cancellationTermsMatch: true,
+                snapshot.Monetary,
+                []));
+
+        Assert.Contains("Payment", ex.Message, StringComparison.OrdinalIgnoreCase);
+        Assert.Equal(HotelBookingStatus.Pending, booking.Status);
+        Assert.Equal(HotelSupplierReservationStatus.Confirmed, reservation.Status);
+        Assert.Equal(HotelSupplierReservationAttemptStatus.Confirmed, attempt.Status);
+        Assert.Null(booking.ConfirmedAt);
+    }
+
+    [Fact]
+    public void Dual_Payment_And_Supplier_Evidence_Confirms_HotelBooking()
+    {
+        var booking = TwoRoomBooking();
+        var snapshot = AcceptOffer(booking);
+        var reservation = HotelSupplierReservation.StartPending(booking.Id, "test-source", T0);
+        var attempt = reservation.StartAttempt(T0);
+        reservation.ConfirmAttempt(
+            attempt.Id,
+            T0.Plus(Duration.FromMinutes(1)),
+            "src-res-1",
+            "CONF-1",
+            booking.Rooms.Select(r => r.Id).ToArray(),
+            booking.Rooms.Select(r => r.Id).ToArray());
+        var evidence = HotelBookingPaymentEvidence.Record(
+            booking.Id,
+            Guid.CreateVersion7(),
+            snapshot.Monetary.Total.Amount,
+            snapshot.Monetary.CurrencyCode.Value,
+            T0.Plus(Duration.FromMinutes(1)));
+
+        booking.ConfirmFromAuthoritativePaymentAndSupplierEvidence(
             reservation,
+            evidence,
             T0.Plus(Duration.FromMinutes(1)),
             booking.Place,
             booking.CheckInDate,
@@ -110,8 +152,19 @@ public sealed class HotelSupplierReservationTests
             []);
 
         Assert.Equal(HotelBookingStatus.Confirmed, booking.Status);
-        Assert.Equal(HotelSupplierReservationStatus.Confirmed, reservation.Status);
-        Assert.Equal(HotelSupplierReservationAttemptStatus.Confirmed, attempt.Status);
+        Assert.Equal(T0.Plus(Duration.FromMinutes(1)), booking.ConfirmedAt);
+        booking.ConfirmFromAuthoritativePaymentAndSupplierEvidence(
+            reservation,
+            evidence,
+            T0.Plus(Duration.FromMinutes(2)),
+            booking.Place,
+            booking.CheckInDate,
+            booking.CheckOutDate,
+            booking.Rooms.Select(r => r.Id).ToArray(),
+            snapshot.Monetary.Total,
+            true,
+            snapshot.Monetary,
+            []);
         Assert.Equal(T0.Plus(Duration.FromMinutes(1)), booking.ConfirmedAt);
     }
 
@@ -313,7 +366,7 @@ public sealed class HotelSupplierReservationTests
         Assert.Equal("IHotelReservationSource", HotelReservationOwnershipBoundary.SourcePortName);
         Assert.False(HotelReservationOwnershipBoundary.ProductionFakeReservationSourceImplemented);
         Assert.False(HotelReservationOwnershipBoundary.NamedSupplierSdkImplemented);
-        Assert.False(HotelReservationOwnershipBoundary.PaymentRequiredForConfirmation);
+        Assert.True(HotelReservationOwnershipBoundary.PaymentRequiredForConfirmation);
         Assert.False(HotelReservationOwnershipBoundary.CancellationExecutionImplemented);
         Assert.False(HotelReservationOwnershipBoundary.PublicReservationApiImplemented);
         Assert.False(HotelReservationOwnershipBoundary.ProcessLocalLockIsAuthority);

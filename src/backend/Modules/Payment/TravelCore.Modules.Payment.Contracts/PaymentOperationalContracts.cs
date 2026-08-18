@@ -52,7 +52,9 @@ public sealed record PaymentOperationalRead(
     RefundOperationalRead? Refund,
     IReadOnlyList<string> ReconciliationKinds,
     PaymentProviderDescriptor? Provider,
-    string? CompensationState);
+    string? CompensationState,
+    string TargetKind = "TourBooking",
+    Guid TargetReferenceId = default);
 
 public interface IPaymentOperationalQuery
 {

@@ -27,7 +27,7 @@ public sealed class PaymentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(7, expectedMigrations.Length);
+            Assert.Equal(8, expectedMigrations.Length);
             Assert.EndsWith("_InitialPaymentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAttemptProviderReferences", expectedMigrations[2], StringComparison.Ordinal);
@@ -35,6 +35,7 @@ public sealed class PaymentMigrationLifecycleTests
             Assert.EndsWith("_AddPaymentExecutionSnapshotAndAmountVerification", expectedMigrations[4], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentSuccessOutbox", expectedMigrations[5], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentRefundAndCompensation", expectedMigrations[6], StringComparison.Ordinal);
+            Assert.EndsWith("_AddHotelBookingPaymentTarget", expectedMigrations[7], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -74,6 +75,13 @@ public sealed class PaymentMigrationLifecycleTests
                 WHERE table_schema = 'payment'
                   AND table_name = 'payments'
                   AND column_name = 'version';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'payment'
+                  AND table_name = 'payments'
+                  AND column_name = 'hotel_booking_id';
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -139,7 +147,8 @@ public sealed class PaymentMigrationLifecycleTests
                   AND tc.constraint_type = 'FOREIGN KEY'
                   AND ccu.table_schema IN (
                         'booking', 'tour', 'pricing', 'party', 'identity',
-                        'agency_marketplace', 'search', 'visa', 'trip_planner');
+                        'agency_marketplace', 'search', 'visa', 'trip_planner',
+                        'hotel_booking');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());

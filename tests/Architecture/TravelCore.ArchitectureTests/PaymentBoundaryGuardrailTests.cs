@@ -72,7 +72,8 @@ public sealed class PaymentBoundaryGuardrailTests
             .Select(r => Path.GetFileNameWithoutExtension(r)!)
             .Where(name =>
                 IsForbiddenPeerModule(name)
-                && !string.Equals(name, "TravelCore.Modules.Booking.Contracts", StringComparison.Ordinal))
+                && !string.Equals(name, "TravelCore.Modules.Booking.Contracts", StringComparison.Ordinal)
+                && !string.Equals(name, "TravelCore.Modules.HotelBooking.Contracts", StringComparison.Ordinal))
             .ToList();
         Assert.True(
             hits.Count == 0,
@@ -81,6 +82,8 @@ public sealed class PaymentBoundaryGuardrailTests
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name is "TravelCore.Modules.Booking.Infrastructure"
                 or "TravelCore.Modules.Booking.Domain"
+                or "TravelCore.Modules.HotelBooking.Infrastructure"
+                or "TravelCore.Modules.HotelBooking.Domain"
                 or "TravelCore.Modules.Pricing.Infrastructure"
                 or "TravelCore.Modules.Pricing.Domain"
                 or "TravelCore.Modules.AgencyMarketplace.Infrastructure");
