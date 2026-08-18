@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Flight.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Flight.Infrastructure</AssemblyName>
-    <Description>Flight infrastructure: itinerary and immutable offer/monetary/fare-rule persistence (TC-P22-T004 / P22-R4). No endpoints.</Description>
+    <Description>Flight infrastructure: itinerary, offer snapshots, and supplier reservation persistence (TC-P22-T005 / P22-R5). No endpoints.</Description>
   </PropertyGroup>
 
   <ItemGroup>

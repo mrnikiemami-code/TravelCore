@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Infrastructure;
+using TravelCore.Modules.Flight.Infrastructure.Services;
 using Xunit;
 
 namespace TravelCore.Host.IntegrationTests;
@@ -33,9 +34,12 @@ public sealed class FlightFoundationHostTests
             var searchResolver = scope.ServiceProvider.GetRequiredService<IFlightSearchSourceResolver>();
             var availabilityResolver = scope.ServiceProvider.GetRequiredService<IFlightOfferAvailabilitySourceResolver>();
             var offerResolver = scope.ServiceProvider.GetRequiredService<IFlightOfferSourceResolver>();
+            var reservationResolver = scope.ServiceProvider.GetRequiredService<IFlightReservationSourceResolver>();
             Assert.Empty(searchResolver.ListConfiguredKeys());
             Assert.Empty(availabilityResolver.ListConfiguredKeys());
             Assert.Empty(offerResolver.ListConfiguredKeys());
+            Assert.Empty(reservationResolver.ListConfiguredKeys());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<FlightSupplierReservationService>());
         }
 
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });

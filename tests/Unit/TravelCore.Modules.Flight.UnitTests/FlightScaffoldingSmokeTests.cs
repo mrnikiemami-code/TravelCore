@@ -58,6 +58,7 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.True(FlightOwnershipBoundary.AvailabilityModelImplemented);
         Assert.True(FlightOwnershipBoundary.OfferModelImplemented);
         Assert.True(FlightOwnershipBoundary.FareModelImplemented);
+        Assert.True(FlightOwnershipBoundary.ReservationModelImplemented);
         Assert.False(FlightOwnershipBoundary.PnrModelImplemented);
         Assert.False(FlightOwnershipBoundary.TicketModelImplemented);
         Assert.False(FlightOwnershipBoundary.PaymentIntegrationImplemented);

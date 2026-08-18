@@ -6,7 +6,7 @@ namespace TravelCore.Modules.Flight.Infrastructure;
 
 /// <summary>
 /// Flight-owned DbContext. Owns PostgreSQL schema <c>flight</c>.
-/// T004 persists itinerary plus immutable offer/monetary/fare-rule snapshots. Same-schema FKs only.
+/// T005 persists itinerary, immutable offer snapshots, and supplier reservation / PNR correlation. Same-schema FKs only.
 /// </summary>
 public sealed class FlightDbContext : DbContext
 {
@@ -39,6 +39,16 @@ public sealed class FlightDbContext : DbContext
         Set<FlightBaggageAllowanceSnapshot>();
 
     public DbSet<FlightOfferIdempotencyRecord> FlightOfferIdempotency => Set<FlightOfferIdempotencyRecord>();
+
+    public DbSet<FlightSupplierReservation> FlightSupplierReservations => Set<FlightSupplierReservation>();
+
+    public DbSet<FlightSupplierReservationAttempt> FlightSupplierReservationAttempts =>
+        Set<FlightSupplierReservationAttempt>();
+
+    public DbSet<FlightSupplierReservationIdempotencyRecord> FlightSupplierReservationIdempotency =>
+        Set<FlightSupplierReservationIdempotencyRecord>();
+
+    public DbSet<FlightReconciliationIssue> FlightReconciliationIssues => Set<FlightReconciliationIssue>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

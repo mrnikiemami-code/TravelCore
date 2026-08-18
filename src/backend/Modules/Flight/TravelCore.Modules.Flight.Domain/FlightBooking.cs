@@ -1,7 +1,7 @@
 namespace TravelCore.Modules.Flight.Domain;
 
 /// <summary>
-/// Flight-owned live-flight transaction aggregate (P22-R2). No lifecycle status, PNR, or Payment.
+/// Flight-owned live-flight transaction aggregate (P22-R2). No lifecycle status, ticketing, or Payment.
 /// </summary>
 public sealed class FlightBooking
 {

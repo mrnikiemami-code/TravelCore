@@ -30,10 +30,11 @@ public sealed class FlightMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(3, expectedMigrations.Length);
+            Assert.Equal(4, expectedMigrations.Length);
             Assert.EndsWith("_InitialFlightScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddFlightBookingItinerary", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddFlightOfferSnapshots", expectedMigrations[2], StringComparison.Ordinal);
+            Assert.EndsWith("_AddFlightSupplierReservations", expectedMigrations[3], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -55,7 +56,7 @@ public sealed class FlightMigrationLifecycleTests
                 WHERE table_schema = 'flight'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(10, await ScalarIntAsync(conn, """
+            Assert.Equal(14, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'flight'
@@ -67,6 +68,8 @@ public sealed class FlightMigrationLifecycleTests
                          "flight_offer_snapshots", "flight_booking_monetary_snapshots",
                          "flight_passenger_category_fare_snapshots", "flight_fare_rule_snapshots",
                          "flight_baggage_allowance_snapshots", "flight_offer_idempotency",
+                         "flight_supplier_reservations", "flight_supplier_reservation_attempts",
+                         "flight_supplier_reservation_idempotency", "flight_reconciliation_issues",
                      })
             {
                 Assert.Equal(1, await ScalarIntAsync(conn, $"""

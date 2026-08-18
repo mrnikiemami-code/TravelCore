@@ -1,7 +1,8 @@
 namespace TravelCore.Modules.Flight.Domain;
 
 /// <summary>
-/// P22-R2 itinerary / reference / passenger invariants. T004 owns accepted offer snapshots; PNR/Payment remain later.
+/// P22-R2 itinerary / reference / passenger invariants. T005 owns supplier reservation / PNR correlation;
+/// ticketing, Payment, and FlightBookingStatus remain later.
 /// </summary>
 public static class FlightItineraryBoundary
 {
@@ -33,6 +34,7 @@ public static class FlightItineraryBoundary
     public const bool BirthDateStoredFlag = false;
     public const bool SearchImplemented = true;
     public const bool OfferImplemented = true;
+    public const bool ReservationImplemented = true;
     public const bool PnrImplemented = false;
     public const bool TicketImplemented = false;
     public const bool PaymentIntegrationImplemented = false;

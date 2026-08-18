@@ -3,7 +3,8 @@ namespace TravelCore.Modules.Flight.Contracts;
 /// <summary>
 /// P22-R1: Flight is the independent live-flight commerce / transaction owner
 /// (schema <c>flight</c>). TourDepartureTransportSegment remains Tour-owned package transport.
-/// FlightBooking is owned inside Flight. T004 adds immutable offer/monetary/fare-rule snapshots; PNR/Payment remain out of scope.
+/// FlightBooking is owned inside Flight. T005 adds supplier reservation / PNR correlation;
+/// ticketing, Payment, and FlightBookingStatus remain out of scope.
 /// </summary>
 public static class FlightOwnershipBoundary
 {
@@ -26,7 +27,9 @@ public static class FlightOwnershipBoundary
     public const string SearchSourcePort = "IFlightSearchSource";
     public const string AvailabilitySourcePort = "IFlightOfferAvailabilitySource";
     public const string OfferSourcePort = "IFlightOfferSource";
-    public const string SourceCapabilities = "Search, AvailabilityCheck, OfferRevalidation";
+    public const string ReservationSourcePort = "IFlightReservationSource";
+    public const string SourceCapabilities =
+        "Search, AvailabilityCheck, OfferRevalidation, ReservationCreate, ReservationQuery";
     public const string AirportAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirlineAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirportCandidateOwner = "ReferenceData";
@@ -60,6 +63,7 @@ public static class FlightOwnershipBoundary
     public const bool AvailabilityModelImplemented = true;
     public const bool OfferModelImplemented = true;
     public const bool FareModelImplemented = true;
+    public const bool ReservationModelImplemented = true;
     public const bool PnrModelImplemented = false;
     public const bool TicketModelImplemented = false;
     public const bool PaymentIntegrationImplemented = false;

@@ -7,6 +7,7 @@ using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Domain;
+using TravelCore.Modules.Flight.Infrastructure.Reservations;
 using TravelCore.Modules.Flight.Infrastructure.Search;
 using TravelCore.Modules.Flight.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
@@ -27,8 +28,10 @@ public sealed class FlightModule : ITravelCoreModule
         services.AddSingleton<IFlightSearchSourceResolver, FlightSearchSourceResolver>();
         services.AddSingleton<IFlightOfferAvailabilitySourceResolver, FlightOfferAvailabilitySourceResolver>();
         services.AddSingleton<IFlightOfferSourceResolver, FlightOfferSourceResolver>();
+        services.AddSingleton<IFlightReservationSourceResolver, FlightReservationSourceResolver>();
         services.AddScoped<FlightLiveSearchService>();
         services.AddScoped<FlightOfferAcceptanceService>();
+        services.AddScoped<FlightSupplierReservationService>();
 
         services.AddDbContext<FlightDbContext>((_, options) =>
         {
