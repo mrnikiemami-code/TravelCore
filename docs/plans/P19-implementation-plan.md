@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P19-PLAN` |
 | Phase | P19 — Tour Booking |
-| Status | PLAN ACCEPTED; **P19-R1 RESOLVED**; **P19-R2 RESOLVED**; P19-R3–R8 OPEN; T002 aggregate/lifecycle |
+| Status | PLAN ACCEPTED; **P19-R1–R3 RESOLVED**; P19-R4–R8 OPEN; T003 capacity hold |
 | Baseline | `73605aa` (`docs(tripplanner): add P18 acceptance gate evidence [TC-P18-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P19 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` (schema `booking`) · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § R Booking / § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P09 Tour · P11 TourDeparture (R3 capacity definition · R7 passenger rules · R8 Published ≠ Bookable) · P12 Pricing (R3–R8 Quote/occupancy/public price) · P13 AgencyMarketplace · P14 PublicExperience (R2 Sticky Action ≠ Booking) · P15 Search · P17 Visa (R8 VisaApplication ≠ Booking) · P18 TripPlanner (Lead ≠ Booking) · P20 Payment (PLANNED) |
 | Backend root | `src/backend` |
@@ -175,20 +175,9 @@ Evaluate whether a Tour Booking **must** reference:
 
 Do not guess. Do not clone TourDeparture as a mutable catalog inside Booking.
 
-### 6.2 Capacity / hold / concurrency (feeds P19-R3)
+### 6.2 Capacity / hold / concurrency (P19-R3 RESOLVED)
 
-Investigate (do not implement):
-
-- requested vs held vs confirmed vs released vs cancelled seats
-- whether checkout requires an explicit hold
-- hold expiration
-- whether a Booking row may exist before capacity is secured
-- Payment failure/timeout vs hold release
-- oversell prevention; optimistic vs pessimistic concurrency; atomic consumption
-- idempotent commands; duplicate submit; race between payment and expiry
-- **Availability Projection** owner (not frontend checks)
-
-Frontend availability is never the correctness boundary.
+Locked: Tour owns capacity **definition**; Booking owns **consumption**. Temporary `CapacityHold` is required. Hold lifecycle: Active / Consumed / Released / Expired. **CapacityHoldStatus != BookingStatus**. **Pending != CapacityHeld**. **Consumed != BookingConfirmed**. **Expired Hold != Expired Booking**. Explicit `ExpiresAt` (no hardcoded timeout). Overbooking prevention is atomic, server-side, database-backed. Process-local locking is not correctness. Idempotent hold required. A Booking row may exist without an Active hold. Confirmation orchestration remains R6. Availability Projection owner remains outside this lock. Frontend availability is never the correctness boundary.
 
 ### 6.3 Lifecycle (P19-R2 RESOLVED; still feeds P19-R6)
 
@@ -273,8 +262,9 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 
 ### TC-P19-T003 — Capacity consumption / hold / concurrency
 
-- Purpose: What “Booking owns consumption” means (**P19-R3**) without stealing TourDeparture definition (P11-R3).
-- Preserve: Capacity Definition remains Tour. No booked-count columns on TourDeparture unless R3 explicitly requires a Tour-owned projection later (do not invent).
+- Purpose: Booking-owned capacity consumption (**P19-R3 RESOLVED**) without stealing TourDeparture definition (P11-R3).
+- Delivered: `CapacityHold` (Active/Consumed/Released/Expired); `DepartureCapacityAccount` per logical TourDeparture; explicit `ExpiresAt`; PostgreSQL advisory-lock concurrency; idempotent hold; release/expire free capacity once; consume remains counted. No Booking confirmation. No public hold API.
+- Preserve: **CapacityDefinition != CapacityConsumption**. **CapacityHoldStatus != BookingStatus**. **Pending != CapacityHeld**. **Consumed != BookingConfirmed**. **Expired Hold != Expired Booking**. **HeldSeatCount != BookingPassenger**. Tour remains definition owner. No process-local lock as correctness.
 
 ### TC-P19-T004 — Booker / passengers / contact / PII
 
@@ -320,7 +310,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 |----|-------|--------|------------------------|
 | **P19-R1** | Booking module ownership / schema / initial target | **RESOLVED** | Independent Booking module. Schema `booking`. Initial logical target = TourDeparture. Tour owns TourProduct, TourDeparture, capacity **definition**. Booking will own capacity **consumption** (implementation deferred to R3). No peer-schema FK. T001: no Booking aggregate, lifecycle, hold, passenger, pricing, payment, or public surface. |
 | **P19-R2** | Booking lifecycle and aggregate boundary | **RESOLVED** | Independent `Booking` aggregate targets exactly one logical TourDeparture. Statuses: Pending, Confirmed, Cancelled. Pending does not imply capacity/payment/quote. **Confirmed != PaymentSucceeded**. **Cancelled != Refunded**. Create → Pending; Pending → Cancelled allowed. No unrestricted Confirm; no Confirmed → Cancelled (R6); no Cancelled → Pending; no generic SetStatus; no extra payment/capacity statuses. Persist `bookings` in schema `booking`. No passenger/quote/payment/agency columns. |
-| **P19-R3** | Capacity reservation / hold / expiry / concurrency | **OPEN** | P11-R3 splits definition (Tour) vs consumption (Booking later). Hold vs confirm vs expire, oversell prevention, and Availability Projection owner are **not** locked. Frontend checks are not correctness. |
+| **P19-R3** | Capacity reservation / hold / expiry / concurrency | **RESOLVED** | Tour owns configured capacity **definition**. Booking owns capacity **consumption**. Temporary `CapacityHold` is required before later confirmation. Hold states: Active / Consumed / Released / Expired. **CapacityHoldStatus != BookingStatus**. Hold has explicit `ExpiresAt` (no hardcoded product timeout). Overbooking prevention is atomic, server-side, database-backed (`pg_advisory_xact_lock` + unique constraints). Process-local locking is forbidden as correctness. Idempotent hold requests required. **Pending != CapacityHeld**. Consumed remains counted; Released/Expired free capacity once. Booking confirmation orchestration remains R6. Tour capacity-definition mutation coordination remains outside this task. |
 | **P19-R4** | Booker / passengers / contact / PII boundary | **OPEN** | P11-R7: actual travellers later. P18-R4: PlannerTravelerComposition ≠ BookingPassenger. Anonymous vs login **not** inherited from P18. Passport/document **not** in by default. BookingPassenger ≠ Party master. |
 | **P19-R5** | Pricing Quote / Booking monetary snapshot | **OPEN** | P12-R4 Quote is Pricing-owned snapshot. Booking historically keeps accepted commercial facts. Whether Quote is mandatory, how expiry works, and post-confirmation authority are **not** locked. ADR 0003 applies. |
 | **P19-R6** | Payment / confirmation / cancellation orchestration | **OPEN** | Payment module is P20. Constitution: Payment events; Booking reacts; no Payment DbContext mutation of Booking. Confirmation dependency on payment, refunds, and recovery races are **not** locked. Do not implement Payment. |

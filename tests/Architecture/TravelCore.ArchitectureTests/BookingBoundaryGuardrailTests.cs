@@ -33,7 +33,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.False(BookingOwnershipBoundary.OwnsTourDeparture);
         Assert.False(BookingOwnershipBoundary.OwnsCapacityDefinition);
         Assert.True(BookingOwnershipBoundary.OwnsCapacityConsumption);
-        Assert.False(BookingOwnershipBoundary.CapacityConsumptionImplemented);
+        Assert.True(BookingOwnershipBoundary.CapacityConsumptionImplemented);
         Assert.False(BookingOwnershipBoundary.OwnsPricing);
         Assert.False(BookingOwnershipBoundary.OwnsQuote);
         Assert.False(BookingOwnershipBoundary.OwnsPayment);
@@ -46,7 +46,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.False(BookingOwnershipBoundary.OwnsTripPlannerLead);
         Assert.True(BookingOwnershipBoundary.BookingAggregateImplemented);
         Assert.True(BookingOwnershipBoundary.BookingStatusImplemented);
-        Assert.False(BookingOwnershipBoundary.CapacityHoldImplemented);
+        Assert.True(BookingOwnershipBoundary.CapacityHoldImplemented);
         Assert.False(BookingOwnershipBoundary.BookingPassengerImplemented);
         Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
         Assert.False(BookingOwnershipBoundary.SearchEngineImplemented);
@@ -103,7 +103,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(CapacityHold|SeatHold|Reservation|ReservedSeats|ConfirmedSeats|ReleasedSeats|BookingPassenger|BookingContactSnapshot|PaymentIntent|PaymentStatus|Quote|Price|Checkout|Lead|VisaApplication|AgencyBooking|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine)\b",
+            @"\b(class|record|enum|struct|interface)\s+(SeatHold|Reservation|ReservedSeats|ConfirmedSeats|ReleasedSeats|BookingPassenger|BookingContactSnapshot|PaymentIntent|PaymentStatus|Quote|Price|Checkout|Lead|VisaApplication|AgencyBooking|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -127,7 +127,7 @@ public sealed class BookingBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T002 still forbids hold/passenger/payment/pricing product types:\n" + string.Join('\n', hits));
+            "T003 still forbids passenger/payment/pricing/public product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.Booking"));
         Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingStatus"));
         Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingPassenger"));
-        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.CapacityHold"));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.CapacityHold"));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "checkout")));
         Assert.False(File.Exists(Path.Combine(
@@ -200,6 +200,9 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains("Confirmed != PaymentSucceeded", text, StringComparison.Ordinal);
         Assert.Contains("Cancelled != Refunded", text, StringComparison.Ordinal);
         Assert.Contains("P19-R2", text, StringComparison.Ordinal);
+        Assert.Contains("CapacityDefinition != CapacityConsumption", text, StringComparison.Ordinal);
+        Assert.Contains("P19-R3", text, StringComparison.Ordinal);
+        Assert.Contains("CapacityHoldStatus != BookingStatus", text, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -233,7 +236,65 @@ public sealed class BookingBoundaryGuardrailTests
             new[] { "CreatedAt", "Id", "Status", "StatusChangedAt", "TourDeparture" },
             typeof(Booking).GetProperties().Select(p => p.Name).OrderBy(n => n, StringComparer.Ordinal).ToArray());
         Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingPassenger"));
-        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.CapacityHold"));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.CapacityHold"));
+    }
+
+    [Fact]
+    public void Booking_T003_CapacityHold_Is_Consumption_Not_Definition_Or_BookingStatus()
+    {
+        Assert.Equal(
+            new[]
+            {
+                CapacityHoldStatus.Active,
+                CapacityHoldStatus.Consumed,
+                CapacityHoldStatus.Released,
+                CapacityHoldStatus.Expired,
+            },
+            Enum.GetValues<CapacityHoldStatus>());
+        Assert.Equal("Tour", CapacityConsumptionBoundary.CapacityDefinitionOwner);
+        Assert.Equal("Booking", CapacityConsumptionBoundary.CapacityConsumptionOwner);
+        Assert.Equal("CapacityDefinition != CapacityConsumption", CapacityConsumptionBoundary.CapacityDefinitionIsNotCapacityConsumption);
+        Assert.Equal("CapacityHoldStatus != BookingStatus", CapacityConsumptionBoundary.CapacityHoldStatusIsNotBookingStatus);
+        Assert.Equal("Pending != CapacityHeld", CapacityConsumptionBoundary.PendingIsNotCapacityHeld);
+        Assert.Equal("Consumed != BookingConfirmed", CapacityConsumptionBoundary.ConsumedIsNotBookingConfirmed);
+        Assert.Equal("Expired Hold != Expired Booking", CapacityConsumptionBoundary.ExpiredHoldIsNotExpiredBooking);
+        Assert.Equal("HeldSeatCount != BookingPassenger", CapacityConsumptionBoundary.HeldSeatCountIsNotBookingPassenger);
+        Assert.Equal("NOT Tour Source of Truth", CapacityConsumptionBoundary.ObservedCapacityIsNotTourSourceOfTruth);
+        Assert.Equal("PostgreSqlAdvisoryTransactionLock", CapacityConsumptionBoundary.ConcurrencyMechanism);
+        Assert.False(CapacityConsumptionBoundary.ProcessLocalLockIsAuthoritative);
+        Assert.False(CapacityConsumptionBoundary.ClientInventedConfiguredCapacityIsAuthoritative);
+        Assert.False(CapacityConsumptionBoundary.UnrestrictedBookingConfirmationImplemented);
+        Assert.False(CapacityConsumptionBoundary.PublicHoldSurfaceImplemented);
+        Assert.False(CapacityConsumptionBoundary.HoldDurationHardcoded);
+        Assert.True(BookingOwnershipBoundary.CapacityHoldImplemented);
+        Assert.True(BookingOwnershipBoundary.CapacityConsumptionImplemented);
+        Assert.False(BookingOwnershipBoundary.BookingPassengerImplemented);
+        Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
+        Assert.DoesNotContain("Expired", Enum.GetNames<BookingStatus>());
+        Assert.Null(typeof(Booking).GetMethod("Confirm"));
+
+        var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking");
+        var lockHits = Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)
+            .Where(p => !IsGeneratedOrBin(p))
+            .SelectMany(path => File.ReadAllLines(path).Select((line, i) => (path, line, i)))
+            .Where(x =>
+            {
+                var trimmed = x.line.TrimStart();
+                return trimmed.Contains("Semaphore", StringComparison.Ordinal)
+                    || trimmed.Contains("Mutex", StringComparison.Ordinal)
+                    || trimmed.Contains("ReaderWriterLock", StringComparison.Ordinal)
+                    || Regex.IsMatch(trimmed, @"\block\s*\(");
+            })
+            .Select(x => $"{Path.GetRelativePath(RepoRoot, x.path)}:{x.i + 1}:{x.line.Trim()}")
+            .ToList();
+        Assert.True(lockHits.Count == 0, "Process-local locks are forbidden as correctness:\n" + string.Join('\n', lockHits));
+
+        var service = File.ReadAllText(Path.Combine(
+            root,
+            "TravelCore.Modules.Booking.Infrastructure",
+            "Services",
+            "BookingCapacityService.cs"));
+        Assert.Contains("pg_advisory_xact_lock", service, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

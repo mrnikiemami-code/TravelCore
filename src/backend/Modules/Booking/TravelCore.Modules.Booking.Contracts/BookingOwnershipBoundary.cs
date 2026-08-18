@@ -3,7 +3,7 @@ namespace TravelCore.Modules.Booking.Contracts;
 /// <summary>
 /// P19-R1: Booking is the independent Tour reservation owner (schema <c>booking</c>).
 /// Initial logical target is TourDeparture. Capacity definition remains Tour-owned.
-/// Capacity consumption ownership is Booking-owned; implementation is deferred to P19-R3.
+/// Capacity consumption ownership is Booking-owned and implemented as temporary CapacityHold (P19-R3).
 /// Not Tour catalog, Pricing, Payment, Party/Identity master, AgencyMarketplace,
 /// Search, SEO, Notification delivery, VisaApplication, or TripPlanner Lead.
 /// </summary>
@@ -29,7 +29,7 @@ public static class BookingOwnershipBoundary
     public const bool OwnsTourDeparture = false;
     public const bool OwnsCapacityDefinition = false;
     public const bool OwnsCapacityConsumption = true;
-    public const bool CapacityConsumptionImplemented = false;
+    public const bool CapacityConsumptionImplemented = true;
     public const bool OwnsPricing = false;
     public const bool OwnsQuote = false;
     public const bool OwnsPayment = false;
@@ -44,7 +44,7 @@ public static class BookingOwnershipBoundary
     public const bool ProductReferencesAreSourceOfTruth = false;
     public const bool BookingAggregateImplemented = true;
     public const bool BookingStatusImplemented = true;
-    public const bool CapacityHoldImplemented = false;
+    public const bool CapacityHoldImplemented = true;
     public const bool BookingPassengerImplemented = false;
     public const bool ContactSnapshotImplemented = false;
     public const bool QuoteIntegrationImplemented = false;

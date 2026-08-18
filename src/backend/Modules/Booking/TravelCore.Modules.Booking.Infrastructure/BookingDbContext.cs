@@ -4,7 +4,7 @@ namespace TravelCore.Modules.Booking.Infrastructure;
 
 /// <summary>
 /// Booking-owned DbContext. Owns PostgreSQL schema <c>booking</c>.
-/// T002: Booking aggregate only; no passengers/holds/payments.
+/// T003: Booking aggregate + capacity holds; no passengers/payments.
 /// </summary>
 public sealed class BookingDbContext : DbContext
 {
@@ -16,6 +16,12 @@ public sealed class BookingDbContext : DbContext
     }
 
     public DbSet<TravelCore.Modules.Booking.Domain.Booking> Bookings => Set<TravelCore.Modules.Booking.Domain.Booking>();
+
+    public DbSet<TravelCore.Modules.Booking.Domain.CapacityHold> CapacityHolds =>
+        Set<TravelCore.Modules.Booking.Domain.CapacityHold>();
+
+    public DbSet<TravelCore.Modules.Booking.Domain.DepartureCapacityAccount> DepartureCapacityAccounts =>
+        Set<TravelCore.Modules.Booking.Domain.DepartureCapacityAccount>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

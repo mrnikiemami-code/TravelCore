@@ -27,6 +27,7 @@ public sealed class BookingModule : ITravelCoreModule
                 connectionString,
                 migrationsHistorySchema: BookingDbContext.SchemaName);
         });
+        services.AddScoped<TravelCore.Modules.Booking.Infrastructure.Services.BookingCapacityService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

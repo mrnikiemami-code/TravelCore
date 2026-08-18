@@ -36,7 +36,7 @@ public sealed class BookingScaffoldingSmokeTests
         Assert.False(BookingOwnershipBoundary.OwnsTourDeparture);
         Assert.False(BookingOwnershipBoundary.OwnsCapacityDefinition);
         Assert.True(BookingOwnershipBoundary.OwnsCapacityConsumption);
-        Assert.False(BookingOwnershipBoundary.CapacityConsumptionImplemented);
+        Assert.True(BookingOwnershipBoundary.CapacityConsumptionImplemented);
         Assert.False(BookingOwnershipBoundary.OwnsPricing);
         Assert.False(BookingOwnershipBoundary.OwnsQuote);
         Assert.False(BookingOwnershipBoundary.OwnsPayment);
@@ -51,7 +51,7 @@ public sealed class BookingScaffoldingSmokeTests
         Assert.False(BookingOwnershipBoundary.ProductReferencesAreSourceOfTruth);
         Assert.True(BookingOwnershipBoundary.BookingAggregateImplemented);
         Assert.True(BookingOwnershipBoundary.BookingStatusImplemented);
-        Assert.False(BookingOwnershipBoundary.CapacityHoldImplemented);
+        Assert.True(BookingOwnershipBoundary.CapacityHoldImplemented);
         Assert.False(BookingOwnershipBoundary.BookingPassengerImplemented);
         Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
         Assert.False(BookingOwnershipBoundary.SearchEngineImplemented);
