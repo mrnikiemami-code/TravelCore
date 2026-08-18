@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Stack, Text } from "@/components/ui";
+import { FieldMessage, LtrValue, Stack, Text } from "@/components/ui";
 import { initiatePublicBookingAction } from "@/features/booking/actions";
 import { getPublicBookingCopy } from "@/features/booking/copy";
 import { bookingAccessStorageKey } from "@/features/booking/types";
@@ -130,21 +130,30 @@ export function PublicBookingPrepareForm({
         </label>
         <label className="flex flex-col gap-1">
           <Text role="label">{copy.email}</Text>
-          <input
-            className="min-h-touch rounded-md border border-border px-3 py-2"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
+          <LtrValue>
+            <input
+              className="min-h-touch rounded-md border border-border px-3 py-2"
+              type="email"
+              autoComplete="email"
+              inputMode="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+          </LtrValue>
         </label>
         <label className="flex flex-col gap-1">
           <Text role="label">{copy.phone}</Text>
-          <input
-            className="min-h-touch rounded-md border border-border px-3 py-2"
-            value={phone}
-            onChange={(event) => setPhone(event.target.value)}
-          />
+          <LtrValue>
+            <input
+              className="min-h-touch rounded-md border border-border px-3 py-2"
+              type="tel"
+              autoComplete="tel"
+              inputMode="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+            />
+          </LtrValue>
         </label>
       </Stack>
 
@@ -154,52 +163,61 @@ export function PublicBookingPrepareForm({
         </Text>
         {passengers.map((passenger, index) => (
           <div key={index} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            <input
-              className="min-h-touch rounded-md border border-border px-3 py-2"
-              placeholder={copy.givenName}
-              value={passenger.givenName}
-              required
-              onChange={(event) =>
-                setPassengers((rows) =>
-                  rows.map((row, i) =>
-                    i === index ? { ...row, givenName: event.target.value } : row,
-                  ),
-                )
-              }
-            />
-            <input
-              className="min-h-touch rounded-md border border-border px-3 py-2"
-              placeholder={copy.familyName}
-              value={passenger.familyName}
-              required
-              onChange={(event) =>
-                setPassengers((rows) =>
-                  rows.map((row, i) =>
-                    i === index ? { ...row, familyName: event.target.value } : row,
-                  ),
-                )
-              }
-            />
-            <select
-              className="min-h-touch rounded-md border border-border bg-background px-3 py-2"
-              value={passenger.category}
-              onChange={(event) =>
-                setPassengers((rows) =>
-                  rows.map((row, i) =>
-                    i === index
-                      ? {
-                          ...row,
-                          category: event.target.value as PassengerDraft["category"],
-                        }
-                      : row,
-                  ),
-                )
-              }
-            >
-              <option value="Adult">{copy.adult}</option>
-              <option value="Child">{copy.child}</option>
-              <option value="Infant">{copy.infant}</option>
-            </select>
+            <label className="flex flex-col gap-1">
+              <Text role="label">{copy.givenName}</Text>
+              <input
+                className="min-h-touch rounded-md border border-border px-3 py-2"
+                autoComplete="given-name"
+                value={passenger.givenName}
+                required
+                onChange={(event) =>
+                  setPassengers((rows) =>
+                    rows.map((row, i) =>
+                      i === index ? { ...row, givenName: event.target.value } : row,
+                    ),
+                  )
+                }
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <Text role="label">{copy.familyName}</Text>
+              <input
+                className="min-h-touch rounded-md border border-border px-3 py-2"
+                autoComplete="family-name"
+                value={passenger.familyName}
+                required
+                onChange={(event) =>
+                  setPassengers((rows) =>
+                    rows.map((row, i) =>
+                      i === index ? { ...row, familyName: event.target.value } : row,
+                    ),
+                  )
+                }
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <Text role="label">{copy.category}</Text>
+              <select
+                className="min-h-touch rounded-md border border-border bg-background px-3 py-2"
+                value={passenger.category}
+                onChange={(event) =>
+                  setPassengers((rows) =>
+                    rows.map((row, i) =>
+                      i === index
+                        ? {
+                            ...row,
+                            category: event.target.value as PassengerDraft["category"],
+                          }
+                        : row,
+                    ),
+                  )
+                }
+              >
+                <option value="Adult">{copy.adult}</option>
+                <option value="Child">{copy.child}</option>
+                <option value="Infant">{copy.infant}</option>
+              </select>
+            </label>
           </div>
         ))}
         <button
@@ -216,7 +234,11 @@ export function PublicBookingPrepareForm({
         </button>
       </Stack>
 
-      {error ? <Text role="caption">{error}</Text> : null}
+      {error ? (
+        <FieldMessage id="public-booking-prepare-error" tone="error">
+          {error}
+        </FieldMessage>
+      ) : null}
       <button
         type="submit"
         className="min-h-touch rounded-md border border-border px-4 py-2"

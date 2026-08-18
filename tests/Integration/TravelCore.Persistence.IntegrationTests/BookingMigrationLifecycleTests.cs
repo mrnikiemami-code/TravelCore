@@ -99,6 +99,30 @@ public sealed class BookingMigrationLifecycleTests
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));
             Assert.False(db.Database.HasPendingModelChanges());
             Assert.Equal("booking", db.Model.GetDefaultSchema());
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'booking'
+                  AND (
+                        column_name ILIKE '%passport%'
+                     OR column_name ILIKE '%national_id%'
+                     OR column_name ILIKE '%nationalid%'
+                     OR column_name ILIKE '%visa_document%'
+                     OR column_name ILIKE '%biometric%'
+                     OR column_name ILIKE '%payment_intent%'
+                     OR column_name ILIKE '%card_number%'
+                     OR column_name ILIKE '%commission%'
+                     OR column_name ILIKE '%settlement%'
+                  );
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'booking'
+                  AND table_name IN (
+                        'payments', 'payment_intents', 'refunds', 'commissions',
+                        'settlements', 'visa_applications', 'opportunities', 'deals');
+                """, ct));
         }
     }
 

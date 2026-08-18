@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P19-PLAN` |
 | Phase | P19 — Tour Booking |
-| Status | PLAN ACCEPTED; **P19-R1–R8 RESOLVED**; T008 public Booking initiation / authorization / privacy |
+| Status | PLAN ACCEPTED; **P19-R1–R8 RESOLVED**; T001–T008 ACCEPTED; T009 hardening/evidence awaiting architect review; **TC-P19-GATE NOT EXECUTED** |
 | Baseline | `73605aa` (`docs(tripplanner): add P18 acceptance gate evidence [TC-P18-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P19 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` (schema `booking`) · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § R Booking / § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P09 Tour · P11 TourDeparture (R3 capacity definition · R7 passenger rules · R8 Published ≠ Bookable) · P12 Pricing (R3–R8 Quote/occupancy/public price) · P13 AgencyMarketplace · P14 PublicExperience (R2 Sticky Action ≠ Booking) · P15 Search · P17 Visa (R8 VisaApplication ≠ Booking) · P18 TripPlanner (Lead ≠ Booking) · P20 Payment (PLANNED) |
 | Backend root | `src/backend` |
@@ -290,6 +290,7 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 ### TC-P19-T009 — Hardening + evidence
 
 - Purpose: Guardrails + evidence pack; **no new capability**. Does **not** execute GATE.
+- Evidence: [`P19-T009-hardening-and-evidence-pack.md`](P19-T009-hardening-and-evidence-pack.md). PLAN and T001–T008 recorded ACCEPTED. P19-R1 through P19-R8 recorded RESOLVED. Payment execution, payment-driven confirmation, and Confirmed cancellation/refund remain DEFERRED. Public initiation ends in Pending. **TC-P19-GATE NOT EXECUTED**. Do **not** mark P19 COMPLETE. Do **not** start P20.
 
 ### TC-P19-GATE — Acceptance Gate
 

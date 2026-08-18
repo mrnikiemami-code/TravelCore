@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LtrValue, Stack, Text } from "@/components/ui";
+import { BidiText, LtrValue, MoneyText, Stack, Text } from "@/components/ui";
 import { readPublicBookingAction } from "@/features/booking/actions";
 import { getPublicBookingCopy } from "@/features/booking/copy";
 import {
@@ -54,18 +54,29 @@ export function PublicBookingStatusView({
       </Text>
       {data.monetary ? (
         <Text>
-          {copy.monetaryLabel}: {data.monetary.totalAmount} {data.monetary.currency}
+          {copy.monetaryLabel}:{" "}
+          <MoneyText
+            money={{
+              amount: String(data.monetary.totalAmount),
+              currencyCode: data.monetary.currency,
+            }}
+            locale={locale}
+          />
         </Text>
       ) : null}
       {data.hold ? (
         <Text>
-          {copy.holdLabel}: {data.hold.seatCount} · {data.hold.status}
+          {copy.holdLabel}: <LtrValue>{String(data.hold.seatCount)}</LtrValue> ·{" "}
+          <LtrValue>{data.hold.status}</LtrValue>
         </Text>
       ) : null}
       <ul className="list-inside list-disc">
         {data.passengers.map((passenger) => (
           <li key={passenger.passengerId}>
-            {passenger.givenName} {passenger.familyName} · {passenger.category}
+            <BidiText>
+              {passenger.givenName} {passenger.familyName}
+            </BidiText>{" "}
+            · <LtrValue>{passenger.category}</LtrValue>
           </li>
         ))}
       </ul>

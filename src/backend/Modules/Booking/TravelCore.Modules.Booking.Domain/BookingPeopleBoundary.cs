@@ -15,6 +15,7 @@ public static class BookingPeopleBoundary
     public const string BookingPassengerIsNotVisaApplication = "BookingPassenger != VisaApplication";
     public const string BookingPassengerIsNotTravelDocument = "BookingPassenger != TravelDocument";
     public const string PassengerPiiIsNotPublicSearch = "Passenger PII != public Search/SEO data";
+    public const string BookingPiiIsNotSearchSeoData = "Booking PII != Search/SEO data";
     public const string PiiRetention = "future explicit operational/legal policy";
     public const bool BirthDateImplemented = false;
     public const bool PassportImplemented = false;
