@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.HotelBooking.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.HotelBooking.UnitTests</AssemblyName>
+    <Description>HotelBooking module unit tests (TC-P21-T001 / P21-R1).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Contracts\TravelCore.Modules.HotelBooking.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Domain\TravelCore.Modules.HotelBooking.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Infrastructure\TravelCore.Modules.HotelBooking.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
+
+</Project>

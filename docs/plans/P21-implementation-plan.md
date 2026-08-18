@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P21-PLAN` |
 | Phase | P21 — Hotel Booking |
-| Status | PLAN AUTHORED · **P21-R1–R8 = OPEN** · awaiting architect acceptance · **no product code** |
+| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2–R8 = OPEN** · T001 implemented / awaiting architect review |
 | Baseline | `96be199` (`docs(p20): record ArchitectureTests 286 in GATE evidence` · `TC-P20-GATE` ACCEPTED `fc41756`) |
 | Authoritative sources | `docs/ROADMAP.md` § P21 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § HotelBooking · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `hotel_booking`) · `08-persistence-and-migrations.md` · P07 Place (`Hotel Catalog ≠ Hotel Booking`) · P12 Pricing · P19 Tour Booking · P20 Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -110,7 +110,7 @@ PLAN records already-locked constitution. **New P21 product semantics stay OPEN.
 
 | ID | Topic | Status |
 |----|--------|--------|
-| **P21-R1** | HotelBooking module ownership / schema / catalog reference | **OPEN** |
+| **P21-R1** | HotelBooking module ownership / schema / catalog reference | **RESOLVED** — independent HotelBooking module · schema `hotel_booking` · Place remains catalog owner · logical PlaceId / `HotelPlaceReference` · no peer-schema FK · no shared DbContext · **HotelBooking != Place** · **HotelBooking != Tour Booking** · named supplier = NONE · product model deferred |
 | **P21-R2** | Stay structure / room reservations / guest occupancy / multi-room scope | **OPEN** |
 | **P21-R3** | Availability/inventory authority / hold / supplier-neutral reservation boundary | **OPEN** |
 | **P21-R4** | Hotel rate offer / quote / monetary snapshot / cancellation policy snapshot | **OPEN** |
@@ -144,13 +144,14 @@ Pricing mandatory ownership of HotelBooking fares = NOT locked (forbidden until 
 ### Candidate R1 posture (not locked)
 
 ```text
-P21-R1 candidate (OPEN — architect must lock):
+P21-R1 RESOLVED:
 
 HotelBooking = Independent Domain Module
-schema candidate = hotel_booking
-catalog reference = logical PlaceId (Hotel-kind)
+schema = hotel_booking
+catalog owner = Place
+catalog reference = logical PlaceId (HotelPlaceReference)
 HotelBooking does not own Place.Hotel
-no HotelBooking aggregate/lifecycle/provider implemented in PLAN
+no HotelBooking aggregate/lifecycle/provider in T001
 ```
 
 ---

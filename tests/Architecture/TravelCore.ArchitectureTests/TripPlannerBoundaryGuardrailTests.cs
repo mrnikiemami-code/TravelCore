@@ -459,6 +459,8 @@ public sealed class TripPlannerBoundaryGuardrailTests
         || name.EndsWith(".Party", StringComparison.OrdinalIgnoreCase)
         || name.Contains(".Booking.", StringComparison.OrdinalIgnoreCase)
         || name.Contains(".Payment.", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".HotelBooking.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".HotelBooking", StringComparison.OrdinalIgnoreCase)
         || name.Contains(".PublicExperience.", StringComparison.OrdinalIgnoreCase)
         || name.EndsWith(".PublicExperience", StringComparison.OrdinalIgnoreCase);
 

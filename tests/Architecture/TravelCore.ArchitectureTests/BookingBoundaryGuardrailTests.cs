@@ -710,6 +710,8 @@ public sealed class BookingBoundaryGuardrailTests
         || name.Contains(".TripPlanner.", StringComparison.OrdinalIgnoreCase)
         || name.EndsWith(".TripPlanner", StringComparison.OrdinalIgnoreCase)
         || name.Contains(".Payment.", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".HotelBooking.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".HotelBooking", StringComparison.OrdinalIgnoreCase)
         || name.Contains(".PublicExperience.", StringComparison.OrdinalIgnoreCase)
         || name.EndsWith(".PublicExperience", StringComparison.OrdinalIgnoreCase);
 

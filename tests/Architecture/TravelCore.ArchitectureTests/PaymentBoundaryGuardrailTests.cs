@@ -533,7 +533,9 @@ public sealed class PaymentBoundaryGuardrailTests
         || name.Contains(".TripPlanner.", StringComparison.OrdinalIgnoreCase)
         || name.EndsWith(".TripPlanner", StringComparison.OrdinalIgnoreCase)
         || name.Contains(".PublicExperience.", StringComparison.OrdinalIgnoreCase)
-        || name.EndsWith(".PublicExperience", StringComparison.OrdinalIgnoreCase);
+        || name.EndsWith(".PublicExperience", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".HotelBooking.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".HotelBooking", StringComparison.OrdinalIgnoreCase);
 
     private static bool IsGeneratedOrBin(string path) =>
         path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase)

@@ -440,7 +440,9 @@ public sealed class VisaBoundaryGuardrailTests
         || name.Contains(".Party.", StringComparison.OrdinalIgnoreCase)
         || name.EndsWith(".Party", StringComparison.OrdinalIgnoreCase)
         || name.Contains(".Booking.", StringComparison.OrdinalIgnoreCase)
-        || name.Contains(".Payment.", StringComparison.OrdinalIgnoreCase);
+        || name.Contains(".Payment.", StringComparison.OrdinalIgnoreCase)
+        || name.Contains(".HotelBooking.", StringComparison.OrdinalIgnoreCase)
+        || name.EndsWith(".HotelBooking", StringComparison.OrdinalIgnoreCase);
 
     private static bool IsGeneratedOrBin(string path) =>
         path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase)

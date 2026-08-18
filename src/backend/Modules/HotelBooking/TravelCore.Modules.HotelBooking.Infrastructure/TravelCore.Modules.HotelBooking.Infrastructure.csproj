@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.HotelBooking.Infrastructure</RootNamespace>
+    <AssemblyName>TravelCore.Modules.HotelBooking.Infrastructure</AssemblyName>
+    <Description>HotelBooking infrastructure: owned schema hotel_booking (TC-P21-T001). No product tables yet.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TravelCore.Modules.HotelBooking.Contracts\TravelCore.Modules.HotelBooking.Contracts.csproj" />
+    <ProjectReference Include="..\TravelCore.Modules.HotelBooking.Domain\TravelCore.Modules.HotelBooking.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />
+    <InternalsVisibleTo Include="TravelCore.Modules.HotelBooking.UnitTests" />
+    <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
+  </ItemGroup>
+
+</Project>
