@@ -4,7 +4,6 @@ namespace TravelCore.Modules.HotelBooking.Contracts;
 /// P21-R1: HotelBooking is the independent hotel-reservation transaction owner
 /// (schema <c>hotel_booking</c>). Place remains hotel/accommodation catalog authority.
 /// HotelBooking references Place only through an opaque logical PlaceId.
-/// No aggregate / rooms / guests / availability / supplier / payment / cancellation in T001.
 /// </summary>
 public static class HotelBookingOwnershipBoundary
 {
@@ -37,10 +36,10 @@ public static class HotelBookingOwnershipBoundary
     public const bool OwnsPayment = false;
     public const bool OwnsPricing = false;
     public const bool GenericBookingAbstractionImplemented = false;
-    public const bool HotelBookingAggregateImplemented = false;
+    public const bool HotelBookingAggregateImplemented = true;
     public const bool HotelBookingStatusImplemented = false;
-    public const bool RoomModelImplemented = false;
-    public const bool GuestModelImplemented = false;
+    public const bool RoomModelImplemented = true;
+    public const bool GuestModelImplemented = true;
     public const bool AvailabilityHoldModelImplemented = false;
     public const bool SupplierAdapterImplemented = false;
     public const bool SupplierSdkImplemented = false;

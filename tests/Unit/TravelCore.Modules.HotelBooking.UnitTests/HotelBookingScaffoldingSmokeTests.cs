@@ -44,10 +44,10 @@ public sealed class HotelBookingScaffoldingSmokeTests
         Assert.False(HotelBookingOwnershipBoundary.OwnsPayment);
         Assert.False(HotelBookingOwnershipBoundary.OwnsPricing);
         Assert.False(HotelBookingOwnershipBoundary.GenericBookingAbstractionImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingAggregateImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingAggregateImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.RoomModelImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.GuestModelImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.RoomModelImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.GuestModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.AvailabilityHoldModelImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SupplierAdapterImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SupplierSdkImplemented);
@@ -88,12 +88,17 @@ public sealed class HotelBookingScaffoldingSmokeTests
     }
 
     [Fact]
-    public void HotelBooking_T001_Has_No_Aggregate_Or_Status()
+    public void HotelBooking_T002_Has_Stay_Rooms_Guests_Without_Status()
     {
         var domain = typeof(HotelBookingDomainAssemblyMarker).Assembly;
-        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBooking"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBooking"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.RoomReservation"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBookingGuest"));
         Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBookingStatus"));
-        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.RoomReservation"));
-        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBookingGuest"));
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingAggregateImplemented);
+        Assert.False(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
+        Assert.True(HotelBookingStayBoundary.MultiRoomSupported);
+        Assert.False(HotelBookingStayBoundary.BirthDateStoredFlag);
+        Assert.False(HotelBookingStayBoundary.PassportStored);
     }
 }

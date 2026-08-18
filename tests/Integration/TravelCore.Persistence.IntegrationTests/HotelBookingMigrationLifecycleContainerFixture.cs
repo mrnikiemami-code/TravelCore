@@ -7,7 +7,7 @@ using Xunit;
 namespace TravelCore.Persistence.IntegrationTests;
 
 /// <summary>
-/// Dedicated clean PostgreSQL for HotelBooking module migration lifecycle (TC-P21-T001).
+/// Dedicated clean PostgreSQL for HotelBooking module migration lifecycle (TC-P21-T002).
 /// </summary>
 public sealed class HotelBookingMigrationLifecycleContainerFixture : IAsyncLifetime
 {

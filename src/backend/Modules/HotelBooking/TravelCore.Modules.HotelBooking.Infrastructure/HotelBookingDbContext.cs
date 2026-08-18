@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.HotelBooking.Domain;
+using HotelBookingAggregate = TravelCore.Modules.HotelBooking.Domain.HotelBooking;
 
 namespace TravelCore.Modules.HotelBooking.Infrastructure;
 
 /// <summary>
 /// HotelBooking-owned DbContext. Owns PostgreSQL schema <c>hotel_booking</c>.
-/// No product tables in T001 (P21-R1 scaffolding only).
+/// T002 persist stay/rooms/guests. Same-schema FKs only.
 /// </summary>
 public sealed class HotelBookingDbContext : DbContext
 {
@@ -14,6 +16,12 @@ public sealed class HotelBookingDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<HotelBookingAggregate> HotelBookings => Set<HotelBookingAggregate>();
+
+    public DbSet<RoomReservation> RoomReservations => Set<RoomReservation>();
+
+    public DbSet<HotelBookingGuest> HotelBookingGuests => Set<HotelBookingGuest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

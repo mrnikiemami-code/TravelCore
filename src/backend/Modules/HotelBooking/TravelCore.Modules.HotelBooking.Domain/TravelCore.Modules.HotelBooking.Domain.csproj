@@ -6,8 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.HotelBooking.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.HotelBooking.Domain</AssemblyName>
-    <Description>HotelBooking domain scaffolding (TC-P21-T001 / P21-R1). No HotelBooking aggregate / lifecycle yet.</Description>
+    <Description>HotelBooking domain (TC-P21-T002 / P21-R2). Stay, rooms, guests, occupancy. No lifecycle.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TravelCore.Modules.HotelBooking.Contracts\TravelCore.Modules.HotelBooking.Contracts.csproj" />
