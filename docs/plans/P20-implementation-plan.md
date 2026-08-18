@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P20-PLAN` |
 | Phase | P20 — Payment |
-| Status | PLAN ACCEPTED · **P20-R1 = RESOLVED** · **P20-R2 = RESOLVED** · **P20-R3 through P20-R8 = OPEN** · T002 Payment/PaymentAttempt lifecycle |
+| Status | PLAN ACCEPTED · **P20-R1 = RESOLVED** · **P20-R2 = RESOLVED** · **P20-R3 = RESOLVED** · **P20-R4 through P20-R8 = OPEN** · T003 provider-neutral initiation/verification/callback |
 | Baseline | `d258933` (`docs(booking): add P19 acceptance gate evidence [TC-P19-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P20 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Payment · `05-dependency-rules.md` · `06-cross-module-communication.md` · `07-data-architecture.md` (schema `payment`) · `08-persistence-and-migrations.md` · `29-module-local-transactional-outbox.md` · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P12 Pricing · P19 Booking (`P19-GATE-acceptance-evidence.md`) |
 | Backend root | `src/backend` |
@@ -158,7 +158,7 @@ PaymentSucceeded != BookingConfirmed
 no Payment aggregate/lifecycle/provider implemented yet
 ```
 
-Keep **P20-R3 through P20-R8 = OPEN**.
+Keep **P20-R4 through P20-R8 = OPEN**.
 
 **P20-R2 lock (architect):**
 
@@ -175,18 +175,43 @@ Payment != PaymentAttempt
 PaymentStatus != PaymentAttemptStatus
 at most one legitimate successful attempt exists
 no further collection attempt after Payment succeeds
-authoritative provider success transition remains deferred to R3
+authoritative provider success requires verified provider evidence
 refund remains R6
 Booking confirmation remains R5
 ```
+
+**P20-R3 lock (architect):**
+
+```
+P20-R3 = RESOLVED
+
+Payment core is provider-neutral
+provider-specific implementation is adapter/infrastructure concern
+NamedProvider = NONE
+BrowserReturn != PaymentSuccess
+UnverifiedCallback != PaymentSuccess
+ClientSuccessFlag != PaymentSuccess
+ProviderRedirect != PaymentSuccess
+ProviderReference != PaymentId
+ProviderReference != PaymentAttemptId
+NetworkTimeout != PaymentAttemptFailed
+provider initiation/verification/query are neutral ports
+authoritative provider verification is required for success
+provider-specific statuses are translated at adapter boundary
+network ambiguity is not definitive payment failure
+Booking confirmation remains R5
+callback replay/reconciliation automation remains R4
+```
+
+Keep **P20-R4 through P20-R8 = OPEN**.
 
 
 
 | ID | Topic | Status | SoT notes (not a lock) |
 |----|-------|--------|------------------------|
 | **P20-R1** | Payment module ownership / target / schema | **RESOLVED** | Independent Payment domain module. Schema `payment`. Initial Payment target = Booking. P20 scope is initially Tour Booking payment. Payment does not own Booking or Pricing. **Payment != Booking**. **PaymentStatus != BookingStatus**. **PaymentSucceeded != BookingConfirmed**. T001: no Payment aggregate/lifecycle/attempt/refund/provider. |
-| **P20-R2** | Payment aggregate vs PaymentAttempt and lifecycle | **RESOLVED** | Payment is one logical Booking monetary collection. PaymentAttempt is one concrete execution attempt. One Payment may have multiple attempts. **Payment != PaymentAttempt**. **PaymentStatus != PaymentAttemptStatus**. **Failed PaymentAttempt != Failed Payment**. PaymentStatus = Pending / Succeeded. PaymentAttemptStatus = Created / Initiated / Succeeded / Failed. At most one successful attempt. No further collection attempt after Payment succeeds. Authoritative provider success remains R3. Refund remains R6. Booking confirmation remains R5. |
-| **P20-R3** | Provider abstraction / initiation / verification / callback security | **OPEN** | Provider-neutral ports required. No named provider SDK in PLAN. Webhook signature/replay, return-URL distrust, secret handling, and initiation redirect/hosted-page shape wait for lock. Do not collect PAN/CVV. |
+| **P20-R2** | Payment aggregate vs PaymentAttempt and lifecycle | **RESOLVED** | Payment is one logical Booking monetary collection. PaymentAttempt is one concrete execution attempt. One Payment may have multiple attempts. **Payment != PaymentAttempt**. **PaymentStatus != PaymentAttemptStatus**. **Failed PaymentAttempt != Failed Payment**. PaymentStatus = Pending / Succeeded. PaymentAttemptStatus = Created / Initiated / Succeeded / Failed. At most one successful attempt. No further collection attempt after Payment succeeds. Authoritative provider success requires verified provider evidence. Refund remains R6. Booking confirmation remains R5. |
+| **P20-R3** | Provider abstraction / initiation / verification / callback security | **RESOLVED** | Payment core is provider-neutral. No named provider selected. **BrowserReturn != PaymentSuccess**. **UnverifiedCallback != PaymentSuccess**. Provider initiation/verification/query are neutral ports. Authoritative provider verification is required for success. Network ambiguity is not definitive failure. Signature validation belongs in adapters. Booking confirmation remains R5. Callback replay/reconciliation remains R4. Amount/currency mismatch enforcement deferred to R5. |
 | **P20-R4** | Idempotency / retries / duplicate payment / reconciliation | **OPEN** | Reuse accepted inbox/outbox conventions. Duplicate submit must not double-charge conceptually. Reconciliation is a **baseline**, not a full accounting product. Do not claim exactly-once provider processing. |
 | **P20-R5** | Booking confirmation integration after authoritative Payment success | **OPEN** | Booking remains Confirm authority. Payment must not write Booking tables. Future Confirm still requires Pending + applicable capacity + accepted snapshot + passenger/contact invariants + Payment satisfaction when required (P19-R6). Handle PaymentSucceeded but Confirm failed explicitly. |
 | **P20-R6** | Refund / cancellation / compensation boundary | **OPEN** | Constitution includes refund foundation. Confirmed Booking cancel remains coupled to refund/consumed-capacity (P19 DEFERRED). Do not assume partial refund. Do not auto-refund merely because Confirm failed unless R# locks that policy. |
@@ -241,7 +266,7 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 
 ### TC-P20-T003 — Provider abstraction + initiation/verification/callback security
 
-- Depends on **P20-R3**. No speculative SDK.
+- Depends on **P20-R3**. No speculative SDK. Implemented after R3 lock: provider-neutral port, trusted initiation/verification/callback processor, generic `/api/payment/providers/{providerKey}/callback`. Amount mismatch executable comparison deferred to R5.
 
 ### TC-P20-T004 — Idempotency / retries / duplicate-payment / reconciliation baseline
 

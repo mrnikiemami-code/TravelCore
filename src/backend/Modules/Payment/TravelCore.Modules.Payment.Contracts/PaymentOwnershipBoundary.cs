@@ -4,7 +4,7 @@ namespace TravelCore.Modules.Payment.Contracts;
 /// P20-R1: Payment is the independent monetary-execution owner (schema <c>payment</c>).
 /// Initial logical target is Booking (Tour Booking scope). Payment does not own Booking,
 /// Pricing/Quote, BookingMonetarySnapshot, settlement, accounting, or agency payout.
-/// No Payment refund / provider / public surface in T002. Aggregate + attempts are implemented (P20-R2).
+/// No Payment refund / named provider SDK / public UX in T003. Provider-neutral ports + callback route (P20-R3).
 /// </summary>
 public static class PaymentOwnershipBoundary
 {
@@ -67,7 +67,8 @@ public static class PaymentOwnershipBoundary
     public const bool RefundImplemented = false;
     public const bool ProviderAdapterImplemented = false;
     public const bool ProviderSdkImplemented = false;
-    public const bool CallbackEndpointImplemented = false;
+    public const bool ProviderPortImplemented = true;
+    public const bool CallbackEndpointImplemented = true;
     public const bool PaymentApiImplemented = false;
     public const bool PaymentUiImplemented = false;
     public const bool BookingConfirmImplemented = false;

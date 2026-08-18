@@ -6,7 +6,7 @@ namespace TravelCore.Modules.Payment.Infrastructure;
 
 /// <summary>
 /// Payment-owned DbContext. Owns PostgreSQL schema <c>payment</c>.
-/// T002: payments + payment_attempts; no provider/refund tables.
+/// T003: payments + payment_attempts with provider-neutral correlation columns. No refund tables.
 /// </summary>
 public sealed class PaymentDbContext : DbContext
 {

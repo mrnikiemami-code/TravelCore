@@ -27,9 +27,10 @@ public sealed class PaymentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.EndsWith("_InitialPaymentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
+            Assert.EndsWith("_AddPaymentAttemptProviderReferences", expectedMigrations[2], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -68,6 +69,16 @@ public sealed class PaymentMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'payment'
                   AND table_name = 'payment_attempts';
+                """, ct));
+            Assert.Equal(3, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'payment'
+                  AND table_name = 'payment_attempts'
+                  AND column_name IN (
+                        'provider_key',
+                        'provider_request_reference',
+                        'provider_transaction_reference');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

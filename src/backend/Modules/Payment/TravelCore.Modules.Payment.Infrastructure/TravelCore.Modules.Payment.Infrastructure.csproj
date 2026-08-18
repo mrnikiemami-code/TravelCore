@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Payment.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Payment.Infrastructure</AssemblyName>
-    <Description>Payment infrastructure: schema payment + payments/payment_attempts (TC-P20-T002 / P20-R2).</Description>
+    <Description>Payment infrastructure: provider-neutral initiation/verification/callback (TC-P20-T003 / P20-R3).</Description>
   </PropertyGroup>
 
   <ItemGroup>

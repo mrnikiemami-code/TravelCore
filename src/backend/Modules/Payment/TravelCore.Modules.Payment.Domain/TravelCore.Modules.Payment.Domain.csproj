@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Payment.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Payment.Domain</AssemblyName>
-    <Description>Payment domain (TC-P20-T002 / P20-R2). Payment aggregate + PaymentAttempt lifecycle.</Description>
+    <Description>Payment domain (TC-P20-T003 / P20-R3). Payment aggregate, attempts, provider-neutral correlation.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="TravelCore.Modules.Payment.Infrastructure" />
     <InternalsVisibleTo Include="TravelCore.Modules.Payment.UnitTests" />
     <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
     <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />

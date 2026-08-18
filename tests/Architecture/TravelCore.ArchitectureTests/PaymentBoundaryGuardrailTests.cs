@@ -50,7 +50,8 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.False(PaymentOwnershipBoundary.RefundImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderAdapterImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderSdkImplemented);
-        Assert.False(PaymentOwnershipBoundary.CallbackEndpointImplemented);
+        Assert.True(PaymentOwnershipBoundary.ProviderPortImplemented);
+        Assert.True(PaymentOwnershipBoundary.CallbackEndpointImplemented);
         Assert.False(PaymentOwnershipBoundary.PaymentApiImplemented);
         Assert.False(PaymentOwnershipBoundary.PaymentUiImplemented);
         Assert.False(PaymentOwnershipBoundary.BookingConfirmImplemented);
@@ -165,9 +166,9 @@ public sealed class PaymentBoundaryGuardrailTests
             "IDPay",
             "PayPal",
             "Adyen",
-            "MapGet(\"/api/payment",
-            "MapPost(\"/api/payment",
-            "MapPut(\"/api/payment",
+            "MapGet(\"/api/payment\"",
+            "MapPost(\"/api/payment\"",
+            "MapPut(\"/api/payment\"",
             "webhook",
             "Webhook",
             "isPaid",
@@ -198,7 +199,7 @@ public sealed class PaymentBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "Payment T001 must not introduce provider/callback/API/UI:\n" + string.Join('\n', hits));
+            "Payment T003 must not introduce named providers, public Payment API/UI, or callback-as-webhook tokens:\n" + string.Join('\n', hits));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "checkout")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "pay")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "payment")));
@@ -242,6 +243,7 @@ public sealed class PaymentBoundaryGuardrailTests
         var text = File.ReadAllText(plan);
         Assert.Contains("P20-R1 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P20-R2 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R3 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("schema `payment`", text, StringComparison.Ordinal);
         Assert.Contains("initial Payment target = Booking", text, StringComparison.Ordinal);
         Assert.Contains("Payment != Booking", text, StringComparison.Ordinal);
@@ -251,7 +253,9 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Contains("PaymentStatus != PaymentAttemptStatus", text, StringComparison.Ordinal);
         Assert.Contains("Failed PaymentAttempt != Failed Payment", text, StringComparison.Ordinal);
         Assert.Contains("PaymentSucceeded != BookingConfirmed", text, StringComparison.Ordinal);
-        Assert.Contains("P20-R3", text, StringComparison.Ordinal);
+        Assert.Contains("BrowserReturn != PaymentSuccess", text, StringComparison.Ordinal);
+        Assert.Contains("UnverifiedCallback != PaymentSuccess", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R4", text, StringComparison.Ordinal);
         Assert.Contains("P20-R8", text, StringComparison.Ordinal);
         Assert.DoesNotContain("P20 COMPLETE", text, StringComparison.Ordinal);
         Assert.DoesNotContain("TC-P20-GATE COMPLETE", text, StringComparison.Ordinal);
@@ -300,6 +304,8 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.False(PaymentLifecycleBoundary.PaymentExpiredStatusImplemented);
         Assert.False(PaymentLifecycleBoundary.CallerControlledSuccessImplemented);
         Assert.False(PaymentLifecycleBoundary.PublicSuccessEndpointImplemented);
+        Assert.True(PaymentLifecycleBoundary.ProviderPortImplemented);
+        Assert.False(PaymentLifecycleBoundary.ProviderAdapterImplemented);
         Assert.DoesNotContain("Failed", Enum.GetNames<PaymentStatus>());
         Assert.DoesNotContain("Refunded", Enum.GetNames<PaymentStatus>());
         Assert.DoesNotContain("Cancelled", Enum.GetNames<PaymentStatus>());
@@ -317,6 +323,51 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Contains("RecordAuthoritativeCollectionSuccess", methodNames);
         Assert.Contains("CreateAttempt", methodNames);
         Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
+    }
+
+    [Fact]
+    public void Payment_T003_ProviderNeutral_Trust_Boundary()
+    {
+        Assert.Equal("BrowserReturn != PaymentSuccess", PaymentProviderTrustBoundary.BrowserReturnIsNotPaymentSuccess);
+        Assert.Equal("UnverifiedCallback != PaymentSuccess", PaymentProviderTrustBoundary.UnverifiedCallbackIsNotPaymentSuccess);
+        Assert.Equal("ClientSuccessFlag != PaymentSuccess", PaymentProviderTrustBoundary.ClientSuccessFlagIsNotPaymentSuccess);
+        Assert.Equal("ProviderRedirect != PaymentSuccess", PaymentProviderTrustBoundary.ProviderRedirectIsNotPaymentSuccess);
+        Assert.Equal("ProviderReference != PaymentId", PaymentProviderTrustBoundary.ProviderReferenceIsNotPaymentId);
+        Assert.Equal("ProviderReference != PaymentAttemptId", PaymentProviderTrustBoundary.ProviderReferenceIsNotPaymentAttemptId);
+        Assert.Equal("NONE", PaymentProviderTrustBoundary.NamedProviderSelected);
+        Assert.Equal("DeferredToR5", PaymentProviderTrustBoundary.AmountMismatchEnforcement);
+        Assert.True(PaymentProviderTrustBoundary.ProviderPortImplemented);
+        Assert.False(PaymentProviderTrustBoundary.NamedProductionAdapterImplemented);
+        Assert.False(PaymentProviderTrustBoundary.ProductionFakeProviderRegistered);
+        Assert.False(PaymentProviderTrustBoundary.AmountMismatchEnforcementImplemented);
+        Assert.True(typeof(IPaymentProviderGateway).IsInterface);
+        Assert.True(typeof(IPaymentProviderResolver).IsInterface);
+        Assert.Contains("InitiatePaymentAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
+        Assert.Contains("VerifyPaymentAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
+        Assert.Contains("QueryPaymentStatusAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
+        Assert.Contains("VerifyCallbackAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));
+        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.GatewayStatus"));
+        Assert.DoesNotContain(
+            typeof(PaymentDomainAssemblyMarker).Assembly.GetTypes().Select(t => t.Name),
+            name => name is "StripeStatus" or "Refund" or "RefundStatus");
+        var module = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Payment",
+            "TravelCore.Modules.Payment.Infrastructure",
+            "PaymentModule.cs"));
+        Assert.DoesNotContain("AddSingleton<IPaymentProviderGateway", module, StringComparison.Ordinal);
+        Assert.Contains("/api/payment/providers", File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Payment",
+            "TravelCore.Modules.Payment.Infrastructure",
+            "Endpoints",
+            "PaymentProviderCallbackEndpoints.cs")), StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

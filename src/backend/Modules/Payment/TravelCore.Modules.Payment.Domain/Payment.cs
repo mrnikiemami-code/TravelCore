@@ -6,6 +6,7 @@ namespace TravelCore.Modules.Payment.Domain;
 /// <summary>
 /// Logical monetary collection for exactly one Booking (TC-P20-T002 / P20-R2).
 /// Owns PaymentAttempt children. Does not own Booking, Pricing, or Refund.
+/// Authoritative success remains a trusted-evidence boundary (P20-R3).
 /// </summary>
 public sealed class Payment
 {
@@ -69,6 +70,37 @@ public sealed class Payment
         FindAttempt(attemptId).MarkInitiated(now);
     }
 
+    public void RecordProviderInitiation(
+        PaymentAttemptId attemptId,
+        Instant now,
+        ProviderKey providerKey,
+        ProviderRequestReference? requestReference,
+        ProviderTransactionReference? transactionReference)
+    {
+        EnsureClock(now);
+        EnsurePending();
+        var attempt = FindAttempt(attemptId);
+        attempt.AttachProviderCorrelation(providerKey, requestReference, transactionReference);
+        attempt.MarkInitiated(now);
+    }
+
+    public void RecordAmbiguousProviderInitiation(
+        PaymentAttemptId attemptId,
+        Instant now,
+        ProviderKey providerKey,
+        ProviderRequestReference? requestReference,
+        ProviderTransactionReference? transactionReference)
+    {
+        EnsureClock(now);
+        EnsurePending();
+        var attempt = FindAttempt(attemptId);
+        attempt.AttachProviderCorrelation(providerKey, requestReference, transactionReference);
+        if (requestReference is not null || transactionReference is not null)
+        {
+            attempt.MarkInitiated(now);
+        }
+    }
+
     public void RecordAttemptFailure(PaymentAttemptId attemptId, Instant now)
     {
         EnsurePending();
@@ -77,18 +109,30 @@ public sealed class Payment
 
     /// <summary>
     /// Trusted-evidence boundary for authoritative collection success.
-    /// Not client/browser-controlled. P20-R3 owns real provider verification.
+    /// Not client/browser/unverified-callback-controlled. Duplicate success is idempotent.
     /// </summary>
     internal void RecordAuthoritativeCollectionSuccess(PaymentAttemptId attemptId, Instant now)
     {
         EnsureClock(now);
+        var attempt = FindAttempt(attemptId);
+        if (Status == PaymentStatus.Succeeded)
+        {
+            if (attempt.Status == PaymentAttemptStatus.Succeeded)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException("A Payment may have at most one successful PaymentAttempt.");
+        }
+
         EnsurePending();
-        if (_attempts.Any(attempt => attempt.Status == PaymentAttemptStatus.Succeeded))
+        if (_attempts.Any(item =>
+                item.Status == PaymentAttemptStatus.Succeeded && !item.Id.Equals(attemptId)))
         {
             throw new InvalidOperationException("A Payment may have at most one successful PaymentAttempt.");
         }
 
-        FindAttempt(attemptId).RecordAuthoritativeSuccess(now);
+        attempt.RecordAuthoritativeSuccess(now);
         Status = PaymentStatus.Succeeded;
         StatusChangedAt = now;
         SucceededAt = now;

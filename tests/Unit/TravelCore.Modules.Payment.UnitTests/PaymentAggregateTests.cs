@@ -105,8 +105,7 @@ public sealed class PaymentAggregateTests
 
         Assert.Throws<InvalidOperationException>(() =>
             payment.InitiateAttempt(attempt.Id, Instant.FromUtc(2026, 8, 18, 6, 21)));
-        Assert.Throws<InvalidOperationException>(() =>
-            payment.RecordAttemptFailure(attempt.Id, Instant.FromUtc(2026, 8, 18, 6, 22)));
+        payment.RecordAttemptFailure(attempt.Id, Instant.FromUtc(2026, 8, 18, 6, 22));
         Assert.Equal(PaymentAttemptStatus.Failed, attempt.Status);
     }
 
@@ -124,8 +123,9 @@ public sealed class PaymentAggregateTests
         Assert.Equal(succeededAt, payment.StatusChangedAt);
         Assert.Equal("PaymentSucceeded != BookingConfirmed", PaymentLifecycleBoundary.PaymentSucceededIsNotBookingConfirmed);
         Assert.Throws<InvalidOperationException>(() => payment.CreateAttempt(Instant.FromUtc(2026, 8, 18, 6, 35)));
-        Assert.Throws<InvalidOperationException>(() =>
-            payment.RecordAuthoritativeCollectionSuccess(attempt.Id, Instant.FromUtc(2026, 8, 18, 6, 36)));
+        payment.RecordAuthoritativeCollectionSuccess(attempt.Id, Instant.FromUtc(2026, 8, 18, 6, 36));
+        Assert.Equal(PaymentStatus.Succeeded, payment.Status);
+        Assert.Equal(succeededAt, payment.SucceededAt);
     }
 
     [Fact]

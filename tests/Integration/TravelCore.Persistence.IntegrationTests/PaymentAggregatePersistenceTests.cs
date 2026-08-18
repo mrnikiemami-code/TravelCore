@@ -37,7 +37,12 @@ public sealed class PaymentAggregatePersistenceTests
         {
             var payment = PaymentAggregate.Create(booking, createdAt);
             var first = payment.CreateAttempt(createdAt);
-            payment.InitiateAttempt(first.Id, Instant.FromUtc(2026, 8, 18, 7, 5));
+            payment.RecordProviderInitiation(
+                first.Id,
+                Instant.FromUtc(2026, 8, 18, 7, 5),
+                new ProviderKey("test"),
+                new ProviderRequestReference("req-persist-1"),
+                new ProviderTransactionReference("txn-persist-1"));
             payment.RecordAttemptFailure(first.Id, Instant.FromUtc(2026, 8, 18, 7, 10));
             var second = payment.CreateAttempt(Instant.FromUtc(2026, 8, 18, 7, 15));
             id = payment.Id;
@@ -56,6 +61,10 @@ public sealed class PaymentAggregatePersistenceTests
             Assert.Equal(booking, loaded.Booking);
             Assert.Equal(2, loaded.Attempts.Count);
             Assert.Equal(PaymentAttemptStatus.Failed, loaded.Attempts.Single(a => a.Id.Equals(firstAttemptId)).Status);
+            var firstLoaded = loaded.Attempts.Single(a => a.Id.Equals(firstAttemptId));
+            Assert.Equal("test", firstLoaded.ProviderKey!.Value.Value);
+            Assert.Equal("req-persist-1", firstLoaded.ProviderRequestReference!.Value.Value);
+            Assert.Equal("txn-persist-1", firstLoaded.ProviderTransactionReference!.Value.Value);
             Assert.Equal(PaymentAttemptStatus.Created, loaded.Attempts.Single(a => a.Id.Equals(secondAttemptId)).Status);
 
             loaded.RecordAuthoritativeCollectionSuccess(secondAttemptId, Instant.FromUtc(2026, 8, 18, 7, 20));
@@ -87,10 +96,20 @@ public sealed class PaymentAggregatePersistenceTests
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'payment'
-                  AND table_name = 'payments'
+                  AND table_name = 'payment_attempts'
                   AND column_name IN (
-                        'provider_transaction_id', 'stripe_id', 'zarinpal_id',
-                        'refund_id', 'is_paid', 'payment_succeeded');
+                        'provider_key', 'provider_request_reference', 'provider_transaction_reference');
+                """;
+            Assert.Equal(3, Convert.ToInt32(await cmd.ExecuteScalarAsync(ct)));
+
+            cmd.CommandText = """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'payment'
+                  AND table_name IN ('payments', 'payment_attempts')
+                  AND column_name IN (
+                        'stripe_id', 'zarinpal_id', 'refund_id', 'is_paid',
+                        'payment_succeeded', 'raw_payload', 'provider_response_json');
                 """;
             Assert.Equal(0, Convert.ToInt32(await cmd.ExecuteScalarAsync(ct)));
 

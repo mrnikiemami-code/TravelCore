@@ -68,7 +68,8 @@ public sealed class PaymentScaffoldingSmokeTests
         Assert.True(PaymentOwnershipBoundary.PaymentAttemptImplemented);
         Assert.False(PaymentOwnershipBoundary.RefundImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderAdapterImplemented);
-        Assert.False(PaymentOwnershipBoundary.CallbackEndpointImplemented);
+        Assert.True(PaymentOwnershipBoundary.ProviderPortImplemented);
+        Assert.True(PaymentOwnershipBoundary.CallbackEndpointImplemented);
         Assert.False(PaymentOwnershipBoundary.PaymentApiImplemented);
         Assert.False(PaymentOwnershipBoundary.PaymentUiImplemented);
         Assert.False(PaymentOwnershipBoundary.BookingConfirmImplemented);
