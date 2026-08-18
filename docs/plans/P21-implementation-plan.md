@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P21-PLAN` |
 | Phase | P21 — Hotel Booking |
-| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2 = RESOLVED** · **P21-R3 = RESOLVED** · **P21-R4 = RESOLVED** · **P21-R5 = RESOLVED** · **P21-R6 = RESOLVED** · **P21-R7 = RESOLVED** · **P21-R8 = RESOLVED** · T008 ACCEPTED (`63b8ce3` / docs `d8bdf0f`) · T009 implemented / AWAITING_ARCHITECT_REVIEW · READY_FOR_GATE · GATE NOT EXECUTED |
+| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2 = RESOLVED** · **P21-R3 = RESOLVED** · **P21-R4 = RESOLVED** · **P21-R5 = RESOLVED** · **P21-R6 = RESOLVED** · **P21-R7 = RESOLVED** · **P21-R8 = RESOLVED** · T001–T009 ACCEPTED · **TC-P21-GATE** evidence authored · P21 COMPLETE · P22 NOT STARTED |
 | Baseline | `96be199` (`docs(p20): record ArchitectureTests 286 in GATE evidence` · `TC-P20-GATE` ACCEPTED `fc41756`) |
 | Authoritative sources | `docs/ROADMAP.md` § P21 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § HotelBooking · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `hotel_booking`) · `08-persistence-and-migrations.md` · P07 Place (`Hotel Catalog ≠ Hotel Booking`) · P12 Pricing · P19 Tour Booking · P20 Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -281,11 +281,11 @@ Tasks below are **planning slots**. They do **not** authorize implementation unt
 
 ### TC-P21-T009 — Hardening + evidence
 
-- Guardrails + evidence pack [`P21-T009-hardening-and-evidence-pack.md`](P21-T009-hardening-and-evidence-pack.md); **no new capability**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**. P21 READY_FOR_GATE. Does **not** execute GATE.
+- Guardrails + evidence pack [`P21-T009-hardening-and-evidence-pack.md`](P21-T009-hardening-and-evidence-pack.md); **no new capability**. **COMPLETE / ACCEPTED** (`ae84f62` / docs `2706bfb`).
 
 ### TC-P21-GATE — Acceptance Gate
 
-- Evidence only. No new HotelBooking product in GATE. Do not start P22 inside GATE.
+- Evidence only [`P21-GATE-acceptance-evidence.md`](P21-GATE-acceptance-evidence.md). No new HotelBooking product in GATE. Do not start P22 inside GATE. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**.
 
 Do not manufacture empty capabilities merely to fill numbering. A slot may become VACANT only if the matching R# has no independent product slice after architect lock.
 

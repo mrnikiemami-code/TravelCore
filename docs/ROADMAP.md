@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R8 RESOLVED**) |
-| Phase Status | P00–P20 COMPLETE · P21 IN_PROGRESS · P21-R1–R8 RESOLVED |
+| Current Phase | **P21 — Hotel Booking** (**COMPLETE** — `TC-P21-GATE` evidence [`docs/plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md) · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW · P22 NOT STARTED) |
+| Phase Status | P00–P21 COMPLETE · GATE AWAITING_ARCHITECT_REVIEW · P22 NOT STARTED · P21-R1–R8 RESOLVED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P21-T009`; do not execute `TC-P21-GATE` |
+| Current Next Task | Architect review of `TC-P21-GATE`; do not start P22 |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -120,7 +120,7 @@
 - **P18** = COMPLETE (`TC-P18-GATE` ACCEPTED `73605aa` · **R1–R8 RESOLVED**) [`plans/P18-GATE-acceptance-evidence.md`](plans/P18-GATE-acceptance-evidence.md)
 - **P19** = COMPLETE (`TC-P19-GATE` ACCEPTED `d258933` · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
 - **P20** = COMPLETE (`TC-P20-GATE` ACCEPTED · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md)
-- **P21** = IN_PROGRESS — Hotel Booking · `TC-P21-PLAN` ACCEPTED [`plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R8 RESOLVED** · T008 ACCEPTED (`63b8ce3` / docs `d8bdf0f`) · T009 implemented / AWAITING_ARCHITECT_REVIEW [`plans/P21-T009-hardening-and-evidence-pack.md`](plans/P21-T009-hardening-and-evidence-pack.md) · READY_FOR_GATE · GATE NOT EXECUTED
+- **P21** = COMPLETE — Hotel Booking · GATE evidence [`plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md) · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW · P22 NOT STARTED
 - **P22–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -592,7 +592,7 @@ Payment را با Price یا Quote ادغام نکنید.
 
 ## P21 — Hotel Booking
 
-**Status:** IN_PROGRESS — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R8 RESOLVED** · T008 ACCEPTED (`63b8ce3` / docs `d8bdf0f`) · T009 implemented / AWAITING_ARCHITECT_REVIEW [`docs/plans/P21-T009-hardening-and-evidence-pack.md`](plans/P21-T009-hardening-and-evidence-pack.md) · READY_FOR_GATE · GATE NOT EXECUTED · PayAtProperty DEFERRED · deposit/partial DEFERRED · Partial Refund DEFERRED · amendments/rebooking DEFERRED · Named Hotel Supplier NONE · Production Payment Provider NONE
+**Status:** COMPLETE — GATE evidence [`docs/plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md) · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW · P22 NOT STARTED · PayAtProperty DEFERRED · deposit/partial DEFERRED · Partial Refund DEFERRED · amendments/rebooking DEFERRED · Named Hotel Supplier NONE · Production Payment Provider NONE
 
 P21-R8 lock: public HotelBooking is a transactional journey, not CRUD; anonymous access uses a HotelBooking-specific opaque token (`X-TravelCore-Hotel-Booking-Access-Token`) independent of Tour Booking; raw token is returned once and only the SHA-256 verifier is persisted; raw token never enters the URL; HotelBookingId/PaymentId/SupplierReservationId are not credentials; authenticated callers still need object-level authorization; initiation is DB-idempotent; customer amount/currency/success are never authoritative; production hotel sources and Payment provider remain NONE; zero sources is valid and must not fabricate availability/rate/reservation/redirect; HotelBooking Payment is HotelBooking-scoped; Payment Succeeded ≠ HotelBooking Confirmed; private transactional pages are noindex; no card collection; confirmed cancellation uses R7 only; partial-penalty cancellation stays blocked; operational reads are read-only; no smart routing/failover.
 
@@ -773,7 +773,7 @@ P26 = Advanced SEO.
 | P18 | Trip Planner / Lead Experience | **COMPLETE** (`TC-P18-GATE` ACCEPTED `73605aa` · R1–R8 RESOLVED) |
 | P19 | Tour Booking | **COMPLETE** (`TC-P19-GATE` ACCEPTED `d258933` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P20 | Payment | **COMPLETE** (`TC-P20-GATE` ACCEPTED · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
-| P21 | Hotel Booking | **IN_PROGRESS** (R1–R8 RESOLVED · T008 ACCEPTED · T009 awaiting review · READY_FOR_GATE · GATE NOT EXECUTED) |
+| P21 | Hotel Booking | **COMPLETE** (R1–R8 RESOLVED · T001–T009 ACCEPTED · GATE awaiting review · P22 NOT STARTED) |
 | P22 | Flight | PLANNED |
 | P23 | Dynamic Package / Flight + Hotel | PLANNED |
 | P24 | B2B / Agency Commerce | PLANNED |

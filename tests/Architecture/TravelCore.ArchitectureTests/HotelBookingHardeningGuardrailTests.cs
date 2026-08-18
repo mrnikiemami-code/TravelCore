@@ -69,6 +69,25 @@ public sealed class HotelBookingHardeningGuardrailTests
     }
 
     [Fact]
+    public void P21_GateEvidence_Exists_And_Closes_Phase()
+    {
+        var path = Path.Combine(RepoRoot, "docs", "plans", "P21-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(path), path);
+        var text = File.ReadAllText(path);
+        Assert.Contains("TC-P21-T001", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P21-T009", text, StringComparison.Ordinal);
+        Assert.Contains("P21-R1", text, StringComparison.Ordinal);
+        Assert.Contains("P21-R8", text, StringComparison.Ordinal);
+        Assert.Contains("HotelBooking != Place", text, StringComparison.Ordinal);
+        Assert.Contains("Payment Succeeded != HotelBooking Confirmed", text, StringComparison.Ordinal);
+        Assert.Contains("Production Hotel Availability Source = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P21-GATE COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("P21 COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("no new product capability", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("P22 — Flight (PLANNED)", text, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void P21_Closed_Lifecycles_And_Targets_Remain_Exact()
     {
         Assert.Equal(

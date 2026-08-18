@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R8 RESOLVED** · T008 ACCEPTED (`63b8ce3` / docs `d8bdf0f`) · T009 implemented / AWAITING_ARCHITECT_REVIEW · READY_FOR_GATE · GATE NOT EXECUTED) |
+| Current Phase | **P21 — Hotel Booking** (**COMPLETE** — `TC-P21-GATE` evidence [`docs/plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md) · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW · P22 NOT STARTED) |
 | Previous Phase | **P20 — Payment** (**COMPLETE** — `TC-P20-GATE` ACCEPTED `fc41756` · docs `96be199`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P21-T009` — Hotel Booking hardening, adversarial regression, and acceptance evidence pack (AWAITING_ARCHITECT_REVIEW; GATE NOT EXECUTED) |
-| Current Next Task | Architect review of `TC-P21-T009`; do not execute `TC-P21-GATE` |
+| Current Active Product Task | `TC-P21-GATE` — Hotel Booking acceptance gate (AWAITING_ARCHITECT_REVIEW; P22 NOT STARTED) |
+| Current Next Task | Architect review of `TC-P21-GATE`; do not start P22 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -235,7 +235,7 @@
 | P19 | **COMPLETE** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE ACCEPTED (`d258933`) [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md) |
 | P19-GATE | **COMPLETE / ACCEPTED** (`d258933`) — [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md); Payment/Confirm remain DEFERRED into P20 |
 | P20 | **COMPLETE** — GATE ACCEPTED · **P20-R1–R8 RESOLVED** · T001–T009 ACCEPTED [`docs/plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md) |
-| P21 | **IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R8 RESOLVED** · T008 ACCEPTED (`63b8ce3` / docs `d8bdf0f`) · T009 implemented / AWAITING_ARCHITECT_REVIEW [`docs/plans/P21-T009-hardening-and-evidence-pack.md`](plans/P21-T009-hardening-and-evidence-pack.md) · READY_FOR_GATE · GATE NOT EXECUTED |
+| P21 | **COMPLETE** — GATE evidence [`docs/plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md) · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW · P22 NOT STARTED |
 | P21 Plan | `TC-P21-PLAN` COMPLETE / ACCEPTED (`f0ec6ae`) — [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) |
 | P21-T001 | **COMPLETE / ACCEPTED** (`7af55b2` / docs `7ebd0f1`) — independent HotelBooking module · schema `hotel_booking` · logical PlaceId / `HotelPlaceReference` |
 | P21-T002 | **COMPLETE / ACCEPTED** (`a844bcf` / docs `a0f5c99`) — HotelBooking stay aggregate · LocalDate CheckIn/CheckOut · 1..N RoomReservations · room-assigned Adult/Child guests · LeadGuest · contact snapshot |
@@ -246,7 +246,8 @@
 | P21-T006 | **COMPLETE / ACCEPTED** (`f2d4946` / docs `790765b`) — typed HotelBooking Payment target · pay-first supplier reservation · dual-evidence confirmation · Hotel-specific payment/refund/compensation events · full Refund compensation · no public HotelBooking Payment API |
 | P21-T007 | **COMPLETE / ACCEPTED** (`c3fabe9` / docs `836cd92`) — Confirmed HotelBooking cancellation process · immutable `HotelCancellationPolicySnapshot` evaluation at RequestedAt · supplier cancellation attempts · Penalty=0 full Refund after authoritative cancel · Penalty=Total no Refund · partial penalty blocked before supplier side effect · Partial Refund DEFERRED · amendments DEFERRED |
 | P21-T008 | **COMPLETE / ACCEPTED** (`63b8ce3` / docs `d8bdf0f`) — public transactional HotelBooking journey (not CRUD) · independent `X-TravelCore-Hotel-Booking-Access-Token` · SHA-256 verifier only · Place-child `/places/[slug]/book` entry · private noindex hotel-booking pages · HotelBooking-scoped payment/cancel using R7 · read-only operational query · production sources/provider NONE |
-| P21-T009 | **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW** — hardening + evidence pack [`docs/plans/P21-T009-hardening-and-evidence-pack.md`](plans/P21-T009-hardening-and-evidence-pack.md) · no new product capability · READY_FOR_GATE · GATE NOT EXECUTED |
+| P21-T009 | **COMPLETE / ACCEPTED** (`ae84f62` / docs `2706bfb`) — hardening + evidence pack [`docs/plans/P21-T009-hardening-and-evidence-pack.md`](plans/P21-T009-hardening-and-evidence-pack.md) · no new product capability · READY_FOR_GATE |
+| P21-GATE | **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW** — [`docs/plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md) · P21 COMPLETE locally · P22 NOT STARTED |
 | P21-R1 (HotelBooking ownership / schema / catalog reference) | **RESOLVED** — independent HotelBooking module · schema `hotel_booking` · Place is hotel catalog owner · logical PlaceId / `HotelPlaceReference` · no peer-schema FK · no shared DbContext · **HotelBooking != Place** · **HotelBooking != Tour Booking** · named supplier = NONE |
 | P21-R2 (Stay / rooms / guests / occupancy / multi-room) | **RESOLVED** — NodaTime LocalDate CheckIn/CheckOut · Nights derived · 1..N RoomReservations · guests assigned per room · Adult/Child · Child AgeAtCheckIn · no BirthDate · exactly one LeadGuest · HotelBookingContactSnapshot · occupancy is requested composition not availability |
 | P21-R3 (Availability / inventory / hold / supplier-neutral boundary) | **RESOLVED** — IHotelAvailabilitySource is availability authority · Place/Search are not live availability · Production Availability Source = NONE · one HotelAvailabilityHold covers complete room set · Requested/Active/Released/Expired · no rate/payment |
