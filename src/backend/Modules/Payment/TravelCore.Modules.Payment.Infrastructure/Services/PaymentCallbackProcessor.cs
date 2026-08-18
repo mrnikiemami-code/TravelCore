@@ -66,11 +66,12 @@ internal sealed class PaymentCallbackProcessor
             return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.UnknownAttempt);
         }
 
+        var now = _clock.GetCurrentInstant();
         var status = VerifiedProviderOutcomeApplier.ApplyVerification(
             payment,
             attempt,
             verification.Result,
-            _clock.GetCurrentInstant());
+            now);
         if (status is VerificationApplyStatus.AmountMismatch or VerificationApplyStatus.CurrencyMismatch)
         {
             _db.ReconciliationIssues.Add(
@@ -80,8 +81,10 @@ internal sealed class PaymentCallbackProcessor
                     status == VerificationApplyStatus.AmountMismatch
                         ? PaymentReconciliationIssueKind.AmountMismatch
                         : PaymentReconciliationIssueKind.CurrencyMismatch,
-                    _clock.GetCurrentInstant()));
+                    now));
         }
+
+        PaymentSuccessOutboxWriter.EnqueueIfSucceeded(_db, payment, now, status);
         await _db.SaveChangesAsync(cancellationToken);
         return new PaymentCallbackProcessResult(PaymentCallbackProcessStatus.Applied);
     }

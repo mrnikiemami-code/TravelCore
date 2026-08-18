@@ -65,11 +65,12 @@ internal sealed class PaymentAttemptRecheckService
                 attempt.ProviderTransactionReference),
             cancellationToken);
 
+        var now = _clock.GetCurrentInstant();
         var status = VerifiedProviderOutcomeApplier.ApplyVerification(
             payment,
             attempt,
             result,
-            _clock.GetCurrentInstant());
+            now);
         if (status == VerificationApplyStatus.Contradiction)
         {
             _db.ReconciliationIssues.Add(
@@ -77,7 +78,7 @@ internal sealed class PaymentAttemptRecheckService
                     payment.Id,
                     attempt.Id,
                     PaymentReconciliationIssueKind.ContradictoryProviderState,
-                    _clock.GetCurrentInstant()));
+                    now));
         }
         else if (status is VerificationApplyStatus.AmountMismatch or VerificationApplyStatus.CurrencyMismatch)
         {
@@ -88,9 +89,10 @@ internal sealed class PaymentAttemptRecheckService
                     status == VerificationApplyStatus.AmountMismatch
                         ? PaymentReconciliationIssueKind.AmountMismatch
                         : PaymentReconciliationIssueKind.CurrencyMismatch,
-                    _clock.GetCurrentInstant()));
+                    now));
         }
 
+        PaymentSuccessOutboxWriter.EnqueueIfSucceeded(_db, payment, now, status);
         await _db.SaveChangesAsync(cancellationToken);
         return result;
     }

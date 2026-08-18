@@ -8,6 +8,7 @@ using TravelCore.Modularity;
 using TravelCore.Modules.Booking.Contracts;
 using TravelCore.Modules.Booking.Infrastructure.Endpoints;
 using TravelCore.Modules.Booking.Infrastructure.Services;
+using TravelCore.Modules.Payment.Contracts;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Booking.Infrastructure;
@@ -38,6 +39,7 @@ public sealed class BookingModule : ITravelCoreModule
         services.AddScoped<BookingQuoteService>();
         services.AddScoped<BookingCancellationService>();
         services.AddScoped<BookingPaymentConfirmationService>();
+        services.AddScoped<IPaymentSucceededIntegrationHandler, BookingPaymentSucceededIntegrationHandler>();
         services.AddScoped<BookingPaymentObligationQueryService>();
         services.AddScoped<BookingCreationService>();
         services.AddScoped<PublicBookingSurfaceService>();

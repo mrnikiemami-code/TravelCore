@@ -413,6 +413,42 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Contains("version", paymentConfiguration, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void Payment_T005_Durability_Uses_Module_Local_Outbox()
+    {
+        Assert.True(PaymentSuccessOutboxBoundary.TransactionalOutboxImplemented);
+        Assert.False(PaymentSuccessOutboxBoundary.EventMeansBookingConfirmed);
+        Assert.Equal("at-least-once", PaymentSuccessOutboxBoundary.DeliverySemantics);
+        Assert.Equal("idempotent/effectively-once", PaymentSuccessOutboxBoundary.LocalEffectSemantics);
+        Assert.Equal("PaymentSucceeded != BookingConfirmed", PaymentOwnershipBoundary.PaymentSucceededIsNotBookingConfirmed);
+        Assert.False(PaymentOwnershipBoundary.SharedDbContextImplemented);
+        Assert.False(PaymentOwnershipBoundary.PeerSchemaForeignKeyImplemented);
+        Assert.False(PaymentOwnershipBoundary.BookingConfirmImplemented);
+        var module = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Payment",
+            "TravelCore.Modules.Payment.Infrastructure",
+            "PaymentModule.cs"));
+        Assert.Contains("PaymentSuccessOutboxDispatcher", module, StringComparison.Ordinal);
+        Assert.DoesNotContain(
+            Projects.Single(p => p.Name == "TravelCore.Modules.Payment.Infrastructure")
+                .ProjectReferences
+                .Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Modules.Booking.Infrastructure");
+        var bookingModule = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Booking",
+            "TravelCore.Modules.Booking.Infrastructure",
+            "BookingModule.cs"));
+        Assert.Contains("IPaymentSucceededIntegrationHandler", bookingModule, StringComparison.Ordinal);
+    }
+
     private static bool IsForbiddenPeerModule(string name) =>
         name.Contains(".Booking.", StringComparison.OrdinalIgnoreCase)
         || name.EndsWith(".Booking", StringComparison.OrdinalIgnoreCase)

@@ -9,4 +9,8 @@
     <Description>Payment module contracts. Ownership + provider-neutral gateway port (TC-P20-T003 / P20-R3).</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
 </Project>

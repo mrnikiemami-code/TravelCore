@@ -32,6 +32,8 @@ public sealed class BookingDbContext : DbContext
     public DbSet<TravelCore.Modules.Booking.Domain.BookingConfirmationRecoveryIssue> ConfirmationRecoveryIssues =>
         Set<TravelCore.Modules.Booking.Domain.BookingConfirmationRecoveryIssue>();
 
+    public DbSet<PaymentSuccessInboxRecord> PaymentSuccessInbox => Set<PaymentSuccessInboxRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

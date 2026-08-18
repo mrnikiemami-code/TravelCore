@@ -26,6 +26,8 @@ public sealed class PaymentDbContext : DbContext
 
     public DbSet<PaymentReconciliationIssue> ReconciliationIssues => Set<PaymentReconciliationIssue>();
 
+    public DbSet<PaymentOutboxMessage> OutboxMessages => Set<PaymentOutboxMessage>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

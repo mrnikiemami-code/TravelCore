@@ -27,12 +27,13 @@ public sealed class PaymentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(5, expectedMigrations.Length);
+            Assert.Equal(6, expectedMigrations.Length);
             Assert.EndsWith("_InitialPaymentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAttemptProviderReferences", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentIdempotencyAndReconciliation", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentExecutionSnapshotAndAmountVerification", expectedMigrations[4], StringComparison.Ordinal);
+            Assert.EndsWith("_AddPaymentSuccessOutbox", expectedMigrations[5], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -54,7 +55,7 @@ public sealed class PaymentMigrationLifecycleTests
                 WHERE table_schema = 'payment'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(4, await ScalarIntAsync(conn, """
+            Assert.Equal(5, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'payment'
@@ -90,6 +91,12 @@ public sealed class PaymentMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'payment'
                   AND table_name = 'payment_reconciliation_issues';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'payment'
+                  AND table_name = 'outbox_messages';
                 """, ct));
             Assert.Equal(3, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

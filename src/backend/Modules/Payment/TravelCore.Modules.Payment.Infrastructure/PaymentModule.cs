@@ -34,6 +34,8 @@ public sealed class PaymentModule : ITravelCoreModule
         services.AddScoped<PaymentInitiationService>();
         services.AddScoped<PaymentCallbackProcessor>();
         services.AddScoped<PaymentAttemptRecheckService>();
+        services.AddScoped<PaymentSuccessOutboxDispatcher>();
+        services.AddHostedService<PaymentSuccessOutboxHostedService>();
         services.AddScoped<IPaymentSuccessEvidenceQuery, PaymentSuccessEvidenceQueryService>();
 
         services.AddDbContext<PaymentDbContext>((_, options) =>

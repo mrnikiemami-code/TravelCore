@@ -27,7 +27,7 @@ public sealed class BookingMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(8, expectedMigrations.Length);
+            Assert.Equal(9, expectedMigrations.Length);
             Assert.EndsWith("_InitialBookingScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddBookingAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddCapacityHoldAndDepartureAccount", expectedMigrations[2], StringComparison.Ordinal);
@@ -36,6 +36,7 @@ public sealed class BookingMigrationLifecycleTests
             Assert.EndsWith("_AddBookingSourceContext", expectedMigrations[5], StringComparison.Ordinal);
             Assert.EndsWith("_AddPublicBookingAccessAndIdempotency", expectedMigrations[6], StringComparison.Ordinal);
             Assert.EndsWith("_AddBookingConfirmationRecoveryIssue", expectedMigrations[7], StringComparison.Ordinal);
+            Assert.EndsWith("_AddPaymentSuccessInbox", expectedMigrations[8], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -61,7 +62,7 @@ public sealed class BookingMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'booking'
-                  AND table_name NOT IN ('__EFMigrationsHistory', 'bookings', 'capacity_holds', 'departure_capacity_accounts', 'booking_passengers', 'booking_monetary_snapshots', 'booking_monetary_snapshot_components', 'booking_access_credentials', 'booking_public_idempotency', 'booking_confirmation_recovery_issues');
+                  AND table_name NOT IN ('__EFMigrationsHistory', 'bookings', 'capacity_holds', 'departure_capacity_accounts', 'booking_passengers', 'booking_monetary_snapshots', 'booking_monetary_snapshot_components', 'booking_access_credentials', 'booking_public_idempotency', 'booking_confirmation_recovery_issues', 'payment_success_inbox');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

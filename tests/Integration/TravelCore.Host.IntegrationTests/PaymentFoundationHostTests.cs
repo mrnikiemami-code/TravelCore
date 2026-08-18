@@ -2,7 +2,9 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TravelCore.Modules.Payment.Contracts;
 using TravelCore.Modules.Payment.Infrastructure;
+using TravelCore.Modules.Payment.Infrastructure.Services;
 using Xunit;
 
 namespace TravelCore.Host.IntegrationTests;
@@ -29,6 +31,8 @@ public sealed class PaymentFoundationHostTests
             Assert.Equal("payment", PaymentDbContext.SchemaName);
             Assert.Equal("payment", db.Model.GetDefaultSchema());
             Assert.False(db.Database.HasPendingModelChanges());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<PaymentSuccessOutboxDispatcher>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<IPaymentSucceededIntegrationHandler>());
         }
 
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });
