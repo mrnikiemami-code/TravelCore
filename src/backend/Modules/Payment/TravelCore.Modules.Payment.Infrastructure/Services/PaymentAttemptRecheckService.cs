@@ -67,7 +67,7 @@ internal sealed class PaymentAttemptRecheckService
         var status = VerifiedProviderOutcomeApplier.ApplyVerification(
             payment,
             attempt,
-            result.Outcome,
+            result,
             _clock.GetCurrentInstant());
         if (status == VerificationApplyStatus.Contradiction)
         {
@@ -76,6 +76,17 @@ internal sealed class PaymentAttemptRecheckService
                     payment.Id,
                     attempt.Id,
                     PaymentReconciliationIssueKind.ContradictoryProviderState,
+                    _clock.GetCurrentInstant()));
+        }
+        else if (status is VerificationApplyStatus.AmountMismatch or VerificationApplyStatus.CurrencyMismatch)
+        {
+            _db.ReconciliationIssues.Add(
+                PaymentReconciliationIssue.Create(
+                    payment.Id,
+                    attempt.Id,
+                    status == VerificationApplyStatus.AmountMismatch
+                        ? PaymentReconciliationIssueKind.AmountMismatch
+                        : PaymentReconciliationIssueKind.CurrencyMismatch,
                     _clock.GetCurrentInstant()));
         }
 

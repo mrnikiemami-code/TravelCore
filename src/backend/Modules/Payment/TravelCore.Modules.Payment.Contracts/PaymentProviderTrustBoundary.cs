@@ -13,9 +13,9 @@ public static class PaymentProviderTrustBoundary
     public const string ProviderReferenceIsNotPaymentAttemptId = "ProviderReference != PaymentAttemptId";
     public const string NetworkTimeoutIsNotAttemptFailed = "NetworkTimeout != PaymentAttemptFailed";
     public const string NamedProviderSelected = "NONE";
-    public const string AmountMismatchEnforcement = "DeferredToR5";
+    public const string AmountMismatchEnforcement = "ExecutionSnapshotMatchRequired";
     public const bool ProviderPortImplemented = true;
     public const bool NamedProductionAdapterImplemented = false;
     public const bool ProductionFakeProviderRegistered = false;
-    public const bool AmountMismatchEnforcementImplemented = false;
+    public const bool AmountMismatchEnforcementImplemented = true;
 }

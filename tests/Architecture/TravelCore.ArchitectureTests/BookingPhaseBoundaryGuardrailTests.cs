@@ -123,10 +123,10 @@ public sealed class BookingPhaseBoundaryGuardrailTests
         Assert.False(BookingOwnershipBoundary.OwnsTripPlannerLead);
         Assert.False(BookingOwnershipBoundary.OwnsAgencyMarketplace);
         Assert.True(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
-        Assert.False(BookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(BookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(BookingLifecycleBoundary.UnrestrictedConfirmationImplemented);
         Assert.False(BookingLifecycleBoundary.ConfirmedToCancelledImplemented);
-        Assert.False(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
+        Assert.True(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
         Assert.False(BookingOrchestrationBoundary.FakePaymentImplemented);
         Assert.False(PublicBookingCompositionBoundary.ConfirmEndpointImplemented);
         Assert.False(PublicBookingCompositionBoundary.PaymentEndpointImplemented);

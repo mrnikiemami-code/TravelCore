@@ -11,10 +11,10 @@ public static class BookingOrchestrationBoundary
     public const string BookingMonetarySnapshotIsNotPaymentTransaction = "BookingMonetarySnapshot != PaymentTransaction";
     public const string PaymentSucceededIsNotBookingConfirmed = "PaymentSucceeded != BookingConfirmed";
     public const string BookingCancelledIsNotPaymentRefunded = "BookingCancelled != PaymentRefunded";
-    public const string ExecutableConfirmWorkflow = "DEFERRED to Payment integration";
+    public const string ExecutableConfirmWorkflow = "AuthoritativePaymentSuccessRequired";
     public const string ConfirmedCancellation = "DEFERRED";
     public const bool FakePaymentImplemented = false;
-    public const bool PaymentDrivenConfirmationImplemented = false;
+    public const bool PaymentDrivenConfirmationImplemented = true;
     public const bool CallerControlledPaymentBooleanImplemented = false;
     public const bool ConfirmedToCancelledImplemented = false;
     public const bool PendingCancellationImplemented = true;

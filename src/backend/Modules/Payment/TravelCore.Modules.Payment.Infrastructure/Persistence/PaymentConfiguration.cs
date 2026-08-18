@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TravelCore.Money;
 using TravelCore.Modules.Payment.Contracts;
 using TravelCore.Modules.Payment.Domain;
 using PaymentAggregate = TravelCore.Modules.Payment.Domain.Payment;
@@ -47,6 +48,24 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<PaymentAgg
             .HasColumnName("version")
             .IsConcurrencyToken()
             .IsRequired();
+
+        builder.OwnsOne(x => x.ExecutionSnapshot, owned =>
+        {
+            owned.Property(x => x.BookingSnapshotId)
+                .HasColumnName("booking_snapshot_id");
+            owned.Property(x => x.CapturedAt)
+                .HasColumnName("execution_captured_at");
+            owned.OwnsOne(x => x.Amount, money =>
+            {
+                money.Property(m => m.Amount)
+                    .HasColumnName("execution_amount")
+                    .HasPrecision(18, 2);
+                money.Property(m => m.Currency)
+                    .HasConversion(c => c.Value, value => CurrencyCode.Parse(value))
+                    .HasColumnName("execution_currency")
+                    .HasMaxLength(3);
+            });
+        });
 
         builder.HasMany(x => x.Attempts)
             .WithOne()

@@ -28,11 +28,17 @@ internal sealed class FakePaymentProviderGateway : IPaymentProviderGateway
 
     public Uri RedirectUri { get; set; } = new("https://example.test/redirect");
 
+    public decimal? ReportedAmount { get; set; }
+
+    public string? ReportedCurrencyCode { get; set; }
+
     public Task<PaymentInitiationResult> InitiatePaymentAsync(
         PaymentInitiationRequest request,
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        ReportedAmount ??= request.Amount;
+        ReportedCurrencyCode ??= request.CurrencyCode;
         if (ThrowOnInitiate)
         {
             throw new InvalidOperationException("Simulated provider network failure.");
@@ -87,5 +93,7 @@ internal sealed class FakePaymentProviderGateway : IPaymentProviderGateway
         ProviderKey = Key,
         RequestReference = RequestReference,
         TransactionReference = TransactionReference,
+        ReportedAmount = ReportedAmount,
+        ReportedCurrencyCode = ReportedCurrencyCode,
     };
 }

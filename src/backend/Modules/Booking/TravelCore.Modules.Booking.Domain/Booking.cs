@@ -198,6 +198,37 @@ public sealed class Booking
         MonetarySnapshot = BookingMonetarySnapshot.CopyFrom(Id, quote, now);
     }
 
+    public void ConfirmFromAuthoritativePaymentSuccess(Instant now)
+    {
+        if (now == default)
+        {
+            throw new ArgumentException("StatusChangedAt cannot be default.", nameof(now));
+        }
+
+        if (Status == BookingStatus.Confirmed)
+        {
+            return;
+        }
+
+        if (Status != BookingStatus.Pending)
+        {
+            throw new InvalidOperationException("Only Pending Booking can be confirmed.");
+        }
+
+        if (MonetarySnapshot is null)
+        {
+            throw new InvalidOperationException("BookingMonetarySnapshot is required for confirmation.");
+        }
+
+        if (Contact is null || _passengers.Count == 0)
+        {
+            throw new InvalidOperationException("Passenger/contact prerequisites are not satisfied.");
+        }
+
+        Status = BookingStatus.Confirmed;
+        StatusChangedAt = now;
+    }
+
     public int PassengerCount => _passengers.Count;
 
     private void EnsureQuoteTargetsThisDeparture(AuthoritativeQuoteFacts quote)

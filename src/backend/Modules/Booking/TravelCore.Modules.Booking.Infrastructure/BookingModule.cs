@@ -37,10 +37,13 @@ public sealed class BookingModule : ITravelCoreModule
         services.AddScoped<BookingPeopleService>();
         services.AddScoped<BookingQuoteService>();
         services.AddScoped<BookingCancellationService>();
+        services.AddScoped<BookingPaymentConfirmationService>();
+        services.AddScoped<BookingPaymentObligationQueryService>();
         services.AddScoped<BookingCreationService>();
         services.AddScoped<PublicBookingSurfaceService>();
         services.AddScoped<IPublicBookingInitiationService>(sp => sp.GetRequiredService<PublicBookingSurfaceService>());
         services.AddScoped<IPublicBookingReadService>(sp => sp.GetRequiredService<PublicBookingSurfaceService>());
+        services.AddScoped<IBookingPaymentObligationQuery>(sp => sp.GetRequiredService<BookingPaymentObligationQueryService>());
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)

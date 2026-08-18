@@ -18,19 +18,22 @@ internal sealed class PaymentInitiationService
     private readonly IOptions<PaymentProviderOptions> _options;
     private readonly IClock _clock;
     private readonly PaymentGetOrCreateService _getOrCreate;
+    private readonly PaymentPreparationService? _preparation;
 
     public PaymentInitiationService(
         PaymentDbContext db,
         IPaymentProviderResolver resolver,
         IOptions<PaymentProviderOptions> options,
         IClock clock,
-        PaymentGetOrCreateService getOrCreate)
+        PaymentGetOrCreateService getOrCreate,
+        PaymentPreparationService? preparation = null)
     {
         _db = db;
         _resolver = resolver;
         _options = options;
         _clock = clock;
         _getOrCreate = getOrCreate;
+        _preparation = preparation;
     }
 
     public Task<PaymentInitiationResult> InitiateAsync(
@@ -52,6 +55,10 @@ internal sealed class PaymentInitiationService
         string? idempotencyKey,
         CancellationToken cancellationToken = default)
     {
+        if (_preparation is not null)
+        {
+            await _preparation.PrepareAsync(paymentId, cancellationToken);
+        }
         var payment = await LoadAsync(paymentId, cancellationToken);
         if (payment.Status == PaymentStatus.Succeeded)
         {
@@ -134,6 +141,11 @@ internal sealed class PaymentInitiationService
         {
             throw new InvalidOperationException("A server-configured ProviderKey is required for initiation.");
         }
+        var execution = payment.ExecutionSnapshot;
+        if (execution is null && _preparation is not null)
+        {
+            throw new InvalidOperationException("PaymentExecutionSnapshot must be prepared before initiation.");
+        }
 
         var gateway = _resolver.Resolve(providerKey)
             ?? throw new InvalidOperationException("Configured Payment provider is not registered.");
@@ -146,7 +158,9 @@ internal sealed class PaymentInitiationService
                     payment.Id.Value,
                     attempt.Id.Value,
                     payment.Booking.BookingId,
-                    providerKey),
+                    providerKey,
+                    execution?.Amount.Amount ?? 0m,
+                    execution?.Amount.Currency.Value ?? "USD"),
                 cancellationToken);
         }
         catch (OperationCanceledException)

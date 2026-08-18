@@ -10,6 +10,8 @@ internal enum VerificationApplyStatus
     Applied = 1,
     Unchanged = 2,
     Contradiction = 3,
+    AmountMismatch = 4,
+    CurrencyMismatch = 5,
 }
 
 /// <summary>
@@ -21,14 +23,44 @@ internal static class VerifiedProviderOutcomeApplier
         PaymentAggregate payment,
         PaymentAttempt attempt,
         ProviderVerificationOutcome outcome,
+        Instant now) =>
+        ApplyVerification(
+            payment,
+            attempt,
+            new PaymentVerificationResult
+            {
+                Outcome = outcome,
+                ProviderKey = attempt.ProviderKey ?? new ProviderKey("test-provider"),
+            },
+            now);
+
+    public static VerificationApplyStatus ApplyVerification(
+        PaymentAggregate payment,
+        PaymentAttempt attempt,
+        PaymentVerificationResult result,
         Instant now)
     {
         ArgumentNullException.ThrowIfNull(payment);
         ArgumentNullException.ThrowIfNull(attempt);
+        ArgumentNullException.ThrowIfNull(result);
 
-        switch (outcome)
+        switch (result.Outcome)
         {
             case ProviderVerificationOutcome.Succeeded:
+                var snapshot = payment.ExecutionSnapshot;
+                if (snapshot is not null
+                    && result.ReportedAmount is decimal reportedAmount
+                    && reportedAmount != snapshot.Amount.Amount)
+                {
+                    return VerificationApplyStatus.AmountMismatch;
+                }
+
+                if (snapshot is not null
+                    && !string.IsNullOrWhiteSpace(result.ReportedCurrencyCode)
+                    && !string.Equals(result.ReportedCurrencyCode, snapshot.Amount.Currency.Value, StringComparison.Ordinal))
+                {
+                    return VerificationApplyStatus.CurrencyMismatch;
+                }
                 if (attempt.Status == PaymentAttemptStatus.Failed)
                 {
                     return VerificationApplyStatus.Contradiction;

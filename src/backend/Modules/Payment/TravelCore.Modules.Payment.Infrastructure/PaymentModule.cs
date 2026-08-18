@@ -30,9 +30,11 @@ public sealed class PaymentModule : ITravelCoreModule
             .Bind(configuration.GetSection(PaymentProviderOptions.SectionName));
         services.AddSingleton<IPaymentProviderResolver, PaymentProviderResolver>();
         services.AddScoped<PaymentGetOrCreateService>();
+        services.AddScoped<PaymentPreparationService>();
         services.AddScoped<PaymentInitiationService>();
         services.AddScoped<PaymentCallbackProcessor>();
         services.AddScoped<PaymentAttemptRecheckService>();
+        services.AddScoped<IPaymentSuccessEvidenceQuery, PaymentSuccessEvidenceQueryService>();
 
         services.AddDbContext<PaymentDbContext>((_, options) =>
         {

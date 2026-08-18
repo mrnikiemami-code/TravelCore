@@ -70,7 +70,9 @@ public sealed class PaymentBoundaryGuardrailTests
         var infra = Projects.Single(p => p.Name == "TravelCore.Modules.Payment.Infrastructure");
         var hits = infra.ProjectReferences
             .Select(r => Path.GetFileNameWithoutExtension(r)!)
-            .Where(IsForbiddenPeerModule)
+            .Where(name =>
+                IsForbiddenPeerModule(name)
+                && !string.Equals(name, "TravelCore.Modules.Booking.Contracts", StringComparison.Ordinal))
             .ToList();
         Assert.True(
             hits.Count == 0,
@@ -79,7 +81,6 @@ public sealed class PaymentBoundaryGuardrailTests
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name is "TravelCore.Modules.Booking.Infrastructure"
                 or "TravelCore.Modules.Booking.Domain"
-                or "TravelCore.Modules.Booking.Contracts"
                 or "TravelCore.Modules.Pricing.Infrastructure"
                 or "TravelCore.Modules.Pricing.Domain"
                 or "TravelCore.Modules.AgencyMarketplace.Infrastructure");
@@ -336,11 +337,11 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Equal("ProviderReference != PaymentId", PaymentProviderTrustBoundary.ProviderReferenceIsNotPaymentId);
         Assert.Equal("ProviderReference != PaymentAttemptId", PaymentProviderTrustBoundary.ProviderReferenceIsNotPaymentAttemptId);
         Assert.Equal("NONE", PaymentProviderTrustBoundary.NamedProviderSelected);
-        Assert.Equal("DeferredToR5", PaymentProviderTrustBoundary.AmountMismatchEnforcement);
+        Assert.Equal("ExecutionSnapshotMatchRequired", PaymentProviderTrustBoundary.AmountMismatchEnforcement);
         Assert.True(PaymentProviderTrustBoundary.ProviderPortImplemented);
         Assert.False(PaymentProviderTrustBoundary.NamedProductionAdapterImplemented);
         Assert.False(PaymentProviderTrustBoundary.ProductionFakeProviderRegistered);
-        Assert.False(PaymentProviderTrustBoundary.AmountMismatchEnforcementImplemented);
+        Assert.True(PaymentProviderTrustBoundary.AmountMismatchEnforcementImplemented);
         Assert.True(typeof(IPaymentProviderGateway).IsInterface);
         Assert.True(typeof(IPaymentProviderResolver).IsInterface);
         Assert.Contains("InitiatePaymentAsync", typeof(IPaymentProviderGateway).GetMethods().Select(m => m.Name));

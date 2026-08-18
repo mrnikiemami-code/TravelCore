@@ -12,7 +12,7 @@ internal sealed class PaymentReconciliationIssueConfiguration
     {
         builder.ToTable("payment_reconciliation_issues", table =>
         {
-            table.HasCheckConstraint("ck_payment_reconciliation_issues_kind", "kind IN (1, 2)");
+            table.HasCheckConstraint("ck_payment_reconciliation_issues_kind", "kind IN (1, 2, 3, 4)");
         });
         builder.HasKey(x => x.Id);
 

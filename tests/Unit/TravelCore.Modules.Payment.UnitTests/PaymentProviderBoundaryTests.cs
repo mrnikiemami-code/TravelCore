@@ -31,11 +31,11 @@ public sealed class PaymentProviderBoundaryTests
         Assert.Equal("ProviderReference != PaymentAttemptId", PaymentProviderTrustBoundary.ProviderReferenceIsNotPaymentAttemptId);
         Assert.Equal("NetworkTimeout != PaymentAttemptFailed", PaymentProviderTrustBoundary.NetworkTimeoutIsNotAttemptFailed);
         Assert.Equal("NONE", PaymentProviderTrustBoundary.NamedProviderSelected);
-        Assert.Equal("DeferredToR5", PaymentProviderTrustBoundary.AmountMismatchEnforcement);
+        Assert.Equal("ExecutionSnapshotMatchRequired", PaymentProviderTrustBoundary.AmountMismatchEnforcement);
         Assert.True(PaymentProviderTrustBoundary.ProviderPortImplemented);
         Assert.False(PaymentProviderTrustBoundary.NamedProductionAdapterImplemented);
         Assert.False(PaymentProviderTrustBoundary.ProductionFakeProviderRegistered);
-        Assert.False(PaymentProviderTrustBoundary.AmountMismatchEnforcementImplemented);
+        Assert.True(PaymentProviderTrustBoundary.AmountMismatchEnforcementImplemented);
         Assert.False(PaymentLifecycleBoundary.CallerControlledSuccessImplemented);
         Assert.False(PaymentLifecycleBoundary.PublicSuccessEndpointImplemented);
         Assert.False(PaymentLifecycleBoundary.BookingConfirmImplemented);

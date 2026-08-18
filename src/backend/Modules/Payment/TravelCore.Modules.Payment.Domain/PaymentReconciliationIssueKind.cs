@@ -7,4 +7,6 @@ public enum PaymentReconciliationIssueKind
 {
     ContradictoryProviderState = 1,
     UnknownProviderTransaction = 2,
+    AmountMismatch = 3,
+    CurrencyMismatch = 4,
 }

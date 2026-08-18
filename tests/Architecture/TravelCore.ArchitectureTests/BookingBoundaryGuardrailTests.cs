@@ -66,7 +66,8 @@ public sealed class BookingBoundaryGuardrailTests
                 IsForbiddenPeerModule(name)
                 && !string.Equals(name, "TravelCore.Modules.Pricing.Contracts", StringComparison.Ordinal)
                 && !string.Equals(name, "TravelCore.Modules.Tour.Contracts", StringComparison.Ordinal)
-                && !string.Equals(name, "TravelCore.Modules.AgencyMarketplace.Contracts", StringComparison.Ordinal))
+                && !string.Equals(name, "TravelCore.Modules.AgencyMarketplace.Contracts", StringComparison.Ordinal)
+                && !string.Equals(name, "TravelCore.Modules.Payment.Contracts", StringComparison.Ordinal))
             .ToList();
         Assert.True(
             hits.Count == 0,
@@ -80,6 +81,9 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Contains(
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name == "TravelCore.Modules.AgencyMarketplace.Contracts");
+        Assert.Contains(
+            infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
+            name => name == "TravelCore.Modules.Payment.Contracts");
         Assert.DoesNotContain(
             infra.ProjectReferences.Select(r => Path.GetFileNameWithoutExtension(r)!),
             name => name is "TravelCore.Modules.Pricing.Infrastructure" or "TravelCore.Modules.Pricing.Domain");
@@ -400,15 +404,15 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.Equal("BookingMonetarySnapshot != PaymentTransaction", BookingOrchestrationBoundary.BookingMonetarySnapshotIsNotPaymentTransaction);
         Assert.Equal("PaymentSucceeded != BookingConfirmed", BookingOrchestrationBoundary.PaymentSucceededIsNotBookingConfirmed);
         Assert.Equal("BookingCancelled != PaymentRefunded", BookingOrchestrationBoundary.BookingCancelledIsNotPaymentRefunded);
-        Assert.Equal("DEFERRED to Payment integration", BookingOrchestrationBoundary.ExecutableConfirmWorkflow);
+        Assert.Equal("AuthoritativePaymentSuccessRequired", BookingOrchestrationBoundary.ExecutableConfirmWorkflow);
         Assert.Equal("DEFERRED", BookingOrchestrationBoundary.ConfirmedCancellation);
         Assert.False(BookingOrchestrationBoundary.FakePaymentImplemented);
-        Assert.False(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
+        Assert.True(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
         Assert.False(BookingOrchestrationBoundary.CallerControlledPaymentBooleanImplemented);
         Assert.False(BookingOrchestrationBoundary.ConfirmedToCancelledImplemented);
         Assert.True(BookingOrchestrationBoundary.PendingCancellationImplemented);
         Assert.True(BookingOrchestrationBoundary.PendingCancellationReleasesActiveHold);
-        Assert.False(BookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(BookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(BookingLifecycleBoundary.UnrestrictedConfirmationImplemented);
         Assert.False(BookingLifecycleBoundary.ConfirmedToCancelledImplemented);
         Assert.DoesNotContain("AwaitingPayment", Enum.GetNames<BookingStatus>());
@@ -454,7 +458,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(BookingOwnershipBoundary.QuoteIntegrationImplemented);
         Assert.False(BookingOwnershipBoundary.OwnsQuote);
         Assert.False(BookingOwnershipBoundary.OwnsPricing);
-        Assert.False(BookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(BookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.DoesNotContain("Quoted", Enum.GetNames<BookingStatus>());
         Assert.DoesNotContain("PriceLocked", Enum.GetNames<BookingStatus>());
         Assert.DoesNotContain("QuoteExpired", Enum.GetNames<BookingStatus>());
@@ -591,8 +595,8 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.False(PublicBookingCompositionBoundary.ConfirmEndpointImplemented);
         Assert.False(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
         Assert.False(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
-        Assert.False(BookingOwnershipBoundary.PaymentIntegrationImplemented);
-        Assert.False(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
+        Assert.True(BookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
         Assert.Null(typeof(Booking).GetMethod("Confirm"));
 
         var endpoints = File.ReadAllText(Path.Combine(

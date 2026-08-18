@@ -27,11 +27,12 @@ public sealed class PaymentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.EndsWith("_InitialPaymentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAttemptProviderReferences", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentIdempotencyAndReconciliation", expectedMigrations[3], StringComparison.Ordinal);
+            Assert.EndsWith("_AddPaymentExecutionSnapshotAndAmountVerification", expectedMigrations[4], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())

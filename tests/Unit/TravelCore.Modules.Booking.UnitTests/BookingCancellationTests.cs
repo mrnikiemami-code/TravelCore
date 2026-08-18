@@ -31,8 +31,8 @@ public sealed class BookingCancellationTests
         Assert.Equal("Booking != Payment", BookingOrchestrationBoundary.BookingIsNotPayment);
         Assert.Equal("BookingCancelled != PaymentRefunded", BookingOrchestrationBoundary.BookingCancelledIsNotPaymentRefunded);
         Assert.Equal("PaymentSucceeded != BookingConfirmed", BookingOrchestrationBoundary.PaymentSucceededIsNotBookingConfirmed);
-        Assert.Equal("DEFERRED to Payment integration", BookingOrchestrationBoundary.ExecutableConfirmWorkflow);
-        Assert.False(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
+        Assert.Equal("AuthoritativePaymentSuccessRequired", BookingOrchestrationBoundary.ExecutableConfirmWorkflow);
+        Assert.True(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
         Assert.False(BookingOrchestrationBoundary.CallerControlledPaymentBooleanImplemented);
         Assert.False(BookingOrchestrationBoundary.FakePaymentImplemented);
     }
@@ -47,7 +47,7 @@ public sealed class BookingCancellationTests
         Assert.DoesNotContain("paymentSucceeded", names);
         Assert.DoesNotContain("isPaid", names);
         Assert.DoesNotContain("Confirm", typeof(BookingAggregate).GetMethods().Select(m => m.Name));
-        Assert.False(BookingOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(BookingOwnershipBoundary.PaymentIntegrationImplemented);
     }
 
     private static AuthoritativeQuoteFacts QuoteFacts()

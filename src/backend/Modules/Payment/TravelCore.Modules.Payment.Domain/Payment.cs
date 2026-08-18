@@ -40,6 +40,8 @@ public sealed class Payment
 
     public long Version { get; private set; }
 
+    public PaymentExecutionSnapshot? ExecutionSnapshot { get; private set; }
+
     public IReadOnlyList<PaymentAttempt> Attempts => _attempts;
 
     public static Payment Create(BookingReference booking, Instant now)
@@ -66,6 +68,25 @@ public sealed class Payment
         _attempts.Add(attempt);
         IncrementVersion();
         return attempt;
+    }
+
+    public void BindExecutionSnapshot(Guid bookingSnapshotId, global::TravelCore.Money.Money amount, Instant now)
+    {
+        EnsureClock(now);
+        ArgumentNullException.ThrowIfNull(amount);
+
+        if (ExecutionSnapshot is null)
+        {
+            ExecutionSnapshot = PaymentExecutionSnapshot.Create(bookingSnapshotId, amount, now);
+            IncrementVersion();
+            return;
+        }
+
+        if (!ExecutionSnapshot.Matches(bookingSnapshotId, amount))
+        {
+            throw new InvalidOperationException(
+                "PaymentExecutionSnapshot is already bound; overwrite with different obligation is forbidden.");
+        }
     }
 
     public void InitiateAttempt(PaymentAttemptId attemptId, Instant now)
@@ -180,6 +201,7 @@ public sealed class Payment
     }
 
     private void IncrementVersion() => Version++;
+
 
     private static void EnsureClock(Instant now)
     {

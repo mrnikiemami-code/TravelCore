@@ -8,4 +8,6 @@ public sealed record PaymentInitiationRequest(
     Guid PaymentId,
     Guid PaymentAttemptId,
     Guid BookingId,
-    ProviderKey ProviderKey);
+    ProviderKey ProviderKey,
+    decimal Amount,
+    string CurrencyCode);
