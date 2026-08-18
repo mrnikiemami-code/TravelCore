@@ -204,6 +204,12 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P18 COMPLETE:** `TC-P18-GATE` evidence [`docs/plans/P18-GATE-acceptance-evidence.md`](../../../docs/plans/P18-GATE-acceptance-evidence.md) — no new TripPlanner capability in Gate.
 - Invariant: **TripPlanner != Booking · TripPlanner != Payment · TripPlanner != Pricing · TripPlanner != CRM · TripPlanner != Search · TripPlanner != Notification delivery · TripPlanner != Party/Identity**.
 
+| Booking | `Booking/TravelCore.Modules.Booking.{Domain,Contracts,Infrastructure}` | `booking` |
+
+- **Booking:** Booking module scaffolding (`TC-P19-T001`) — schema `booking`; initial logical target = TourDeparture; **Booking != Tour**; **Booking != TourDeparture**; **Booking != Pricing**; **Booking != Payment**; **Booking != TripPlanner Lead**; **Booking != VisaApplication**; Tour owns capacity definition; Booking owns consumption (not implemented in T001); no Booking aggregate/lifecycle/hold/passenger/public types in T001; no peer FK.
+- **P19-R1 RESOLVED:** independent Booking module with schema `booking`. Owns future transactional Tour booking facts and (later) capacity consumption. Does not own TourProduct/TourDeparture catalog, capacity definition, Pricing/Quote, Payment, Party/Identity master, AgencyMarketplace, Search, SEO, Notification delivery, VisaApplication, or TripPlanner Lead. Product references are opaque logical ids only (`TourDepartureReference`).
+- Invariant: **Booking != Tour · Booking != TourDeparture · Booking != Price · Booking != Quote · Booking != Payment · Booking != Lead · Booking != VisaApplication**.
+
 ## Host
 
 `TravelCore.Api` remains the composition host. Modules register explicitly via `ITravelCoreModule` (no assembly scanning).

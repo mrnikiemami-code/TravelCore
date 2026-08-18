@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Booking.Contracts</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Booking.Contracts</AssemblyName>
+    <Description>Booking module contracts. Ownership boundary only in T001 (TC-P19-T001 / P19-R1).</Description>
+  </PropertyGroup>
+
+</Project>

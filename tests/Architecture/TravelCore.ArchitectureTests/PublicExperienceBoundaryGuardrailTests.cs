@@ -77,7 +77,7 @@ public sealed class PublicExperienceBoundaryGuardrailTests
             hits.Count == 0,
             "Public Experience must not own Tour/Booking/Search/SEO types:\n" + string.Join('\n', hits));
 
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
         Assert.True(
             Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Search")),

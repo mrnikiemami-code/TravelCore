@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P19-PLAN` |
 | Phase | P19 — Tour Booking |
-| Status | PLAN authored; **P19-R1–R8 OPEN**; no Booking product code |
+| Status | PLAN ACCEPTED; **P19-R1 RESOLVED**; P19-R2–R8 OPEN; T001 scaffolding |
 | Baseline | `73605aa` (`docs(tripplanner): add P18 acceptance gate evidence [TC-P18-GATE]`) |
 | Authoritative sources | `docs/ROADMAP.md` § P19 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` · `05-dependency-rules.md` · `07-data-architecture.md` (schema `booking`) · `docs/domain/module-ownership-matrix.md` · `15-future-architecture-transition-map.md` § R Booking / § S Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) · P09 Tour · P11 TourDeparture (R3 capacity definition · R7 passenger rules · R8 Published ≠ Bookable) · P12 Pricing (R3–R8 Quote/occupancy/public price) · P13 AgencyMarketplace · P14 PublicExperience (R2 Sticky Action ≠ Booking) · P15 Search · P17 Visa (R8 VisaApplication ≠ Booking) · P18 TripPlanner (Lead ≠ Booking) · P20 Payment (PLANNED) |
 | Backend root | `src/backend` |
@@ -255,9 +255,9 @@ Do **not** execute any product task until PLAN ACCEPT **and** the matching R# is
 
 ### TC-P19-T001 — Booking module scaffolding / ownership / target boundary
 
-- Purpose: Independent Booking module + ownership contracts (**requires P19-R1 lock**).
-- Expected shape (not a field lock): Contracts/Domain/Infrastructure scaffolding; schema `booking` (SoT candidate); host registration; no peer FKs; opaque logical refs only. T001 must **not** invent full Booking/Passenger/hold/payment product types unless R1 explicitly includes a minimal identity-only aggregate.
-- Forbidden kept: Booking tables beyond scaffolding lock · Payment · Pricing mutation · TourDeparture clone · Agency settlement · public checkout · inventing R2–R8.
+- Purpose: Independent Booking module + ownership contracts (**P19-R1 RESOLVED**).
+- Delivered: Contracts/Domain/Infrastructure scaffolding; schema `booking`; `BookingOwnershipBoundary`; opaque `TourDepartureReference`; host registration; no peer FKs; no Booking aggregate/lifecycle/hold/passenger/payment/public types.
+- Forbidden kept: Booking product tables · Payment · Pricing mutation · TourDeparture clone · Agency settlement · public checkout · inventing R2–R8.
 
 ### TC-P19-T002 — Booking aggregate + lifecycle boundary
 
@@ -311,7 +311,7 @@ Do not manufacture empty capabilities merely to fill numbering. T006 may remain 
 
 | ID | Topic | Status | SoT notes (not a lock) |
 |----|-------|--------|------------------------|
-| **P19-R1** | Booking module ownership / schema / initial target | **OPEN** | Constitution already names Booking as independent Commerce module; schema `booking` is listed. Candidate target = TourDeparture (P12-R3). PLAN does **not** lock aggregates, fields, or “must reference Quote/AgencyOffer”. No peer-schema FK. T001 waits for lock. |
+| **P19-R1** | Booking module ownership / schema / initial target | **RESOLVED** | Independent Booking module. Schema `booking`. Initial logical target = TourDeparture. Tour owns TourProduct, TourDeparture, capacity **definition**. Booking will own capacity **consumption** (implementation deferred to R3). No peer-schema FK. T001: no Booking aggregate, lifecycle, hold, passenger, pricing, payment, or public surface. |
 | **P19-R2** | Booking lifecycle and aggregate boundary | **OPEN** | Constitution: Booking owns reservation/order state, status, confirmation, cancellation foundation. Exact status set **not** locked. Avoid workflow engine. BookingStatus ≠ PaymentStatus ≠ TourDepartureStatus. |
 | **P19-R3** | Capacity reservation / hold / expiry / concurrency | **OPEN** | P11-R3 splits definition (Tour) vs consumption (Booking later). Hold vs confirm vs expire, oversell prevention, and Availability Projection owner are **not** locked. Frontend checks are not correctness. |
 | **P19-R4** | Booker / passengers / contact / PII boundary | **OPEN** | P11-R7: actual travellers later. P18-R4: PlannerTravelerComposition ≠ BookingPassenger. Anonymous vs login **not** inherited from P18. Passport/document **not** in by default. BookingPassenger ≠ Party master. |

@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P19 — Tour Booking** (**PLAN authored** — `TC-P19-PLAN`; **P19-R1–R8 OPEN**; no product) |
+| Current Phase | **P19 — Tour Booking** (**IN PROGRESS** — T001 scaffolding; **P19-R1 RESOLVED**; R2–R8 OPEN) |
 | Previous Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` ACCEPTED `73605aa`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P19-PLAN` — Tour Booking architecture/implementation plan (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Architect review of `TC-P19-PLAN` → do not execute T001 until PLAN ACCEPT and P19-R1 lock |
+| Current Active Product Task | `TC-P19-T001` — Booking module foundation (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P19-T001` → T002 only after ACCEPT and P19-R2 lock |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -232,8 +232,10 @@
 | P18-FIX-TOUR-ROUTE | **COMPLETE / ACCEPTED** (`d302ad4`) — remove legacy `/tours/[productKey]` |
 | P18-T009 | **COMPLETE / ACCEPTED** (`ad05e0f`) — hardening and evidence pack |
 | P18-GATE | **COMPLETE / ACCEPTED** (`73605aa`) — Acceptance evidence (no new product capability) |
-| P19 | **PLAN authored** — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md) · **P19-R1–R8 OPEN** · no Booking product |
-| P19-R1 (Booking ownership / schema / target) | **OPEN** |
+| P19 | **IN PROGRESS** — Plan ACCEPTED · **P19-R1 RESOLVED** · R2–R8 OPEN · T001 scaffolding |
+| P19 Plan | `TC-P19-PLAN` COMPLETE / ACCEPTED (`9d4266b`) — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md) |
+| P19-T001 | **DELIVERED** — Booking module scaffolding (`booking` schema) |
+| P19-R1 (Booking ownership / schema / target) | **RESOLVED** — independent Booking module · schema `booking` · initial target = TourDeparture (logical) · Tour owns capacity definition · Booking owns consumption (not implemented in T001) · no Booking aggregate/lifecycle yet |
 | P19-R2 (Lifecycle / aggregate) | **OPEN** |
 | P19-R3 (Capacity consumption / hold / concurrency) | **OPEN** |
 | P19-R4 (Booker / passengers / contact / PII) | **OPEN** |

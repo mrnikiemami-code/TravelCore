@@ -132,11 +132,11 @@ public sealed class AgencyMarketplaceBoundaryGuardrailTests
     }
 
     [Fact]
-    public void Booking_And_Payment_Modules_DoNotExist_Yet()
+    public void Booking_Exists_Independently_And_Payment_DoesNotExist_Yet()
     {
         var booking = Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking");
         var payment = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
-        Assert.False(Directory.Exists(booking), "Booking module must not exist in P13 scaffolding.");
+        Assert.True(Directory.Exists(booking), "P19 owns Booking independently; AgencyMarketplace must not absorb it.");
         Assert.False(Directory.Exists(payment), "Payment module must not exist in P13 scaffolding.");
     }
 

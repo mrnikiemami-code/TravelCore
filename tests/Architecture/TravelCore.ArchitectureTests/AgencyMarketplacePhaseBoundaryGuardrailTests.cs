@@ -95,7 +95,7 @@ public sealed class AgencyMarketplacePhaseBoundaryGuardrailTests
             "Agency Marketplace must not own Price/capacity/SEO/Booking identifiers:\n"
             + string.Join('\n', hits));
 
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
     }
 

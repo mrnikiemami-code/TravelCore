@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Booking.Domain</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Booking.Domain</AssemblyName>
+    <Description>Booking domain marker only (TC-P19-T001 / P19-R1). No EF/ASP.NET. No Booking aggregate.</Description>
+  </PropertyGroup>
+
+</Project>

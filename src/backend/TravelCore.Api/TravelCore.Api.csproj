@@ -22,6 +22,7 @@
     <ProjectReference Include="..\Modules\Ugc\TravelCore.Modules.Ugc.Infrastructure\TravelCore.Modules.Ugc.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Visa\TravelCore.Modules.Visa.Infrastructure\TravelCore.Modules.Visa.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\TripPlanner\TravelCore.Modules.TripPlanner.Infrastructure\TravelCore.Modules.TripPlanner.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Booking\TravelCore.Modules.Booking.Infrastructure\TravelCore.Modules.Booking.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

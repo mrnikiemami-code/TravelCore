@@ -124,7 +124,7 @@ public sealed class UgcPhaseBoundaryGuardrailTests
         Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Comment).GetProperty("ParentCommentId"));
         Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.Travelogue).GetProperty("ContentItemId"));
         Assert.Null(typeof(TravelCore.Modules.Ugc.Domain.UserPhoto).GetProperty("StorageKey"));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
     }
 

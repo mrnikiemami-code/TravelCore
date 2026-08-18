@@ -115,7 +115,7 @@ public sealed class PricingPhaseBoundaryGuardrailTests
         Assert.DoesNotContain("Book Now", loader, StringComparison.Ordinal);
         Assert.DoesNotContain("CreateQuote", loader, StringComparison.Ordinal);
 
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
     }
 }

@@ -65,7 +65,7 @@ public sealed class PublicExperiencePhaseBoundaryGuardrailTests
     [Fact]
     public void PublicExperience_DoesNot_Own_Booking_Payment_Or_Search_Module()
     {
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
         Assert.True(
             Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Search")),

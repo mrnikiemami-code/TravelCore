@@ -397,7 +397,7 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.NotNull(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.TripPlanner.Domain.TripIntent"));
         Assert.NotNull(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.TripPlanner.Domain.Lead"));
         Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.TripPlanner.Domain.Booking"));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Notification")));
     }
