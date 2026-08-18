@@ -10,11 +10,12 @@
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <RootNamespace>TravelCore.Modules.Payment.UnitTests</RootNamespace>
     <AssemblyName>TravelCore.Modules.Payment.UnitTests</AssemblyName>
-    <Description>Payment module scaffolding unit tests (TC-P20-T001 / P20-R1).</Description>
+    <Description>Payment module unit tests (TC-P20-T002 / P20-R2).</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NodaTime" Version="3.3.3" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
 

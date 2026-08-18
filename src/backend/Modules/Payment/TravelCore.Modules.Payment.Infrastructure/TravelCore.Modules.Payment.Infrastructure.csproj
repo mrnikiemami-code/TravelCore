@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Payment.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Payment.Infrastructure</AssemblyName>
-    <Description>Payment infrastructure: owned schema payment (TC-P20-T001). No product tables yet.</Description>
+    <Description>Payment infrastructure: schema payment + payments/payment_attempts (TC-P20-T002 / P20-R2).</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>

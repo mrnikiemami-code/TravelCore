@@ -44,9 +44,9 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.False(PaymentOwnershipBoundary.OwnsPricing);
         Assert.False(PaymentOwnershipBoundary.OwnsQuote);
         Assert.False(PaymentOwnershipBoundary.OwnsBookingMonetarySnapshot);
-        Assert.False(PaymentOwnershipBoundary.PaymentAggregateImplemented);
-        Assert.False(PaymentOwnershipBoundary.PaymentStatusImplemented);
-        Assert.False(PaymentOwnershipBoundary.PaymentAttemptImplemented);
+        Assert.True(PaymentOwnershipBoundary.PaymentAggregateImplemented);
+        Assert.True(PaymentOwnershipBoundary.PaymentStatusImplemented);
+        Assert.True(PaymentOwnershipBoundary.PaymentAttemptImplemented);
         Assert.False(PaymentOwnershipBoundary.RefundImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderAdapterImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderSdkImplemented);
@@ -57,9 +57,9 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.False(PaymentOwnershipBoundary.SharedDbContextImplemented);
         Assert.False(PaymentOwnershipBoundary.PeerSchemaForeignKeyImplemented);
         Assert.False(PaymentOwnershipBoundary.GeneralizedTargetTypeImplemented);
-        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Payment"));
-        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.PaymentStatus"));
-        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.PaymentAttempt"));
+        Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Payment"));
+        Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.PaymentStatus"));
+        Assert.NotNull(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.PaymentAttempt"));
         Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
     }
 
@@ -125,7 +125,7 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(Payment|PaymentStatus|PaymentAttempt|PaymentIntent|Refund|RefundStatus|Stripe|Zarinpal|IDPay|PayPal|Adyen|Checkout|Wallet|Settlement|JournalEntry|Ledger|Commission|Payout)\b",
+            @"\b(class|record|enum|struct|interface)\s+(PaymentIntent|Refund|RefundStatus|Stripe|Zarinpal|IDPay|PayPal|Adyen|Checkout|Wallet|Settlement|JournalEntry|Ledger|Commission|Payout|StripeStatus|ZarinpalStatus|GatewayStatus)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -149,7 +149,7 @@ public sealed class PaymentBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T001 forbids Payment aggregate/status/attempt/refund/provider product types:\n" + string.Join('\n', hits));
+            "T002 forbids refund/provider product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -241,13 +241,17 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.True(File.Exists(plan), plan);
         var text = File.ReadAllText(plan);
         Assert.Contains("P20-R1 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R2 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("schema `payment`", text, StringComparison.Ordinal);
         Assert.Contains("initial Payment target = Booking", text, StringComparison.Ordinal);
         Assert.Contains("Payment != Booking", text, StringComparison.Ordinal);
         Assert.Contains("Payment != Pricing", text, StringComparison.Ordinal);
+        Assert.Contains("Payment != PaymentAttempt", text, StringComparison.Ordinal);
         Assert.Contains("PaymentStatus != BookingStatus", text, StringComparison.Ordinal);
+        Assert.Contains("PaymentStatus != PaymentAttemptStatus", text, StringComparison.Ordinal);
+        Assert.Contains("Failed PaymentAttempt != Failed Payment", text, StringComparison.Ordinal);
         Assert.Contains("PaymentSucceeded != BookingConfirmed", text, StringComparison.Ordinal);
-        Assert.Contains("P20-R2", text, StringComparison.Ordinal);
+        Assert.Contains("P20-R3", text, StringComparison.Ordinal);
         Assert.Contains("P20-R8", text, StringComparison.Ordinal);
         Assert.DoesNotContain("P20 COMPLETE", text, StringComparison.Ordinal);
         Assert.DoesNotContain("TC-P20-GATE COMPLETE", text, StringComparison.Ordinal);
@@ -269,6 +273,50 @@ public sealed class PaymentBoundaryGuardrailTests
         Assert.Contains("AddDbContext<PaymentDbContext>", module, StringComparison.Ordinal);
         Assert.DoesNotContain("MapGet", module, StringComparison.Ordinal);
         Assert.DoesNotContain("MapPost", module, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Payment_T002_Lifecycle_Is_Pending_Succeeded_With_Distinct_Attempts()
+    {
+        Assert.Equal(
+            new[] { PaymentStatus.Pending, PaymentStatus.Succeeded },
+            Enum.GetValues<PaymentStatus>());
+        Assert.Equal(
+            new[]
+            {
+                PaymentAttemptStatus.Created,
+                PaymentAttemptStatus.Initiated,
+                PaymentAttemptStatus.Succeeded,
+                PaymentAttemptStatus.Failed,
+            },
+            Enum.GetValues<PaymentAttemptStatus>());
+        Assert.Equal("Payment != PaymentAttempt", PaymentLifecycleBoundary.PaymentIsNotPaymentAttempt);
+        Assert.Equal("PaymentStatus != PaymentAttemptStatus", PaymentLifecycleBoundary.PaymentStatusIsNotPaymentAttemptStatus);
+        Assert.Equal("Failed PaymentAttempt != Failed Payment", PaymentLifecycleBoundary.FailedAttemptIsNotFailedPayment);
+        Assert.Equal("PaymentSucceeded != BookingConfirmed", PaymentLifecycleBoundary.PaymentSucceededIsNotBookingConfirmed);
+        Assert.False(PaymentLifecycleBoundary.PaymentFailedStatusImplemented);
+        Assert.False(PaymentLifecycleBoundary.PaymentRefundedStatusImplemented);
+        Assert.False(PaymentLifecycleBoundary.PaymentCancelledStatusImplemented);
+        Assert.False(PaymentLifecycleBoundary.PaymentExpiredStatusImplemented);
+        Assert.False(PaymentLifecycleBoundary.CallerControlledSuccessImplemented);
+        Assert.False(PaymentLifecycleBoundary.PublicSuccessEndpointImplemented);
+        Assert.DoesNotContain("Failed", Enum.GetNames<PaymentStatus>());
+        Assert.DoesNotContain("Refunded", Enum.GetNames<PaymentStatus>());
+        Assert.DoesNotContain("Cancelled", Enum.GetNames<PaymentStatus>());
+        Assert.DoesNotContain("Expired", Enum.GetNames<PaymentStatus>());
+        var paymentType = typeof(TravelCore.Modules.Payment.Domain.Payment);
+        var methodNames = paymentType.GetMethods(
+                System.Reflection.BindingFlags.Instance
+                | System.Reflection.BindingFlags.Public
+                | System.Reflection.BindingFlags.NonPublic
+                | System.Reflection.BindingFlags.DeclaredOnly)
+            .Select(m => m.Name)
+            .ToArray();
+        Assert.DoesNotContain("SetStatus", methodNames);
+        Assert.DoesNotContain("MarkSucceeded", methodNames);
+        Assert.Contains("RecordAuthoritativeCollectionSuccess", methodNames);
+        Assert.Contains("CreateAttempt", methodNames);
+        Assert.Null(typeof(PaymentDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Payment.Domain.Refund"));
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

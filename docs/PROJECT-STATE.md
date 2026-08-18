@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P20 — Payment** (**PLAN ACCEPTED** · **P20-R1 = RESOLVED** · **P20-R2–R8 OPEN** · T001 scaffolding) |
+| Current Phase | **P20 — Payment** (**PLAN ACCEPTED** · **P20-R1–R2 = RESOLVED** · **P20-R3–R8 OPEN** · T002 lifecycle) |
 | Previous Phase | **P18 — Trip Planner / Lead Experience** (**COMPLETE** — `TC-P18-GATE` ACCEPTED `73605aa`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P20-T001` — Payment module foundation (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Architect review of `TC-P20-T001` RESULT → do **not** execute T002 until T001 ACCEPTED; do not invent P20-R2–R8 |
+| Current Active Product Task | `TC-P20-T002` — Payment aggregate / PaymentAttempt lifecycle (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P20-T002` RESULT → do **not** execute T003 until T002 ACCEPTED; do not invent P20-R3–R8 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -234,11 +234,13 @@
 | P18-GATE | **COMPLETE / ACCEPTED** (`73605aa`) — Acceptance evidence (no new product capability) |
 | P19 | **COMPLETE** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE ACCEPTED (`d258933`) [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md) |
 | P19-GATE | **COMPLETE / ACCEPTED** (`d258933`) — [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md); Payment/Confirm remain DEFERRED into P20 |
-| P20 | **IN PROGRESS** — PLAN ACCEPTED · **P20-R1 = RESOLVED** · **P20-R2–R8 OPEN** · T001 scaffolding (no Payment aggregate) [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
+| P20 | **IN PROGRESS** — PLAN ACCEPTED · **P20-R1–R2 = RESOLVED** · **P20-R3–R8 OPEN** · T002 lifecycle [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
 | P20 Plan | `TC-P20-PLAN` COMPLETE / ACCEPTED (`aca9c44`) — [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
-| P20-T001 | **IMPLEMENTED** (awaiting architect ACCEPT) — independent Payment module · schema `payment` · initial target = Booking · Tour Booking scope · no aggregate/status/attempt/refund/provider/API/UI |
+| P20-T001 | **COMPLETE / ACCEPTED** (`1ec8963`) — independent Payment module · schema `payment` · initial target = Booking · Tour Booking scope |
+| P20-T002 | **IMPLEMENTED** (awaiting architect ACCEPT) — Payment aggregate + PaymentAttempt · PaymentStatus Pending/Succeeded · PaymentAttemptStatus Created/Initiated/Succeeded/Failed |
 | P20-R1 (Payment ownership / schema / target) | **RESOLVED** — independent Payment module · schema `payment` · initial Payment target = Booking · Tour Booking scope · Payment does not own Booking/Pricing · **Payment != Booking** · **PaymentStatus != BookingStatus** · **PaymentSucceeded != BookingConfirmed** |
-| P20-R2 through P20-R8 | **OPEN** |
+| P20-R2 (Payment aggregate / attempts / lifecycle) | **RESOLVED** — Payment = one logical Booking collection · PaymentAttempt = one execution attempt · **Payment != PaymentAttempt** · **PaymentStatus != PaymentAttemptStatus** · **Failed PaymentAttempt != Failed Payment** · statuses Pending/Succeeded and Created/Initiated/Succeeded/Failed · at most one successful attempt · no attempt after success · provider success deferred to R3 |
+| P20-R3 through P20-R8 | **OPEN** |
 | P19 Plan | `TC-P19-PLAN` COMPLETE / ACCEPTED (`9d4266b`) — [`docs/plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md) |
 | P19-T001 | **COMPLETE / ACCEPTED** (`e198daa`) — Booking module scaffolding (`booking` schema) |
 | P19-T002 | **COMPLETE / ACCEPTED** (`7caa90a`) — Booking aggregate + Pending/Confirmed/Cancelled lifecycle (`bookings` table) |

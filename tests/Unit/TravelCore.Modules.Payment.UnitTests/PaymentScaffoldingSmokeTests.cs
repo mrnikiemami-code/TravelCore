@@ -60,10 +60,12 @@ public sealed class PaymentScaffoldingSmokeTests
         Assert.False(PaymentOwnershipBoundary.OwnsAccountingLedger);
         Assert.False(PaymentOwnershipBoundary.OwnsAgencySettlement);
         Assert.True(PaymentOwnershipBoundary.ProductReferencesAreLogicalOnly);
-        Assert.False(PaymentOwnershipBoundary.GeneralizedTargetTypeImplemented);
-        Assert.False(PaymentOwnershipBoundary.PaymentAggregateImplemented);
-        Assert.False(PaymentOwnershipBoundary.PaymentStatusImplemented);
-        Assert.False(PaymentOwnershipBoundary.PaymentAttemptImplemented);
+        Assert.Equal("Payment != PaymentAttempt", PaymentOwnershipBoundary.PaymentIsNotPaymentAttempt);
+        Assert.Equal("PaymentStatus != PaymentAttemptStatus", PaymentOwnershipBoundary.PaymentStatusIsNotPaymentAttemptStatus);
+        Assert.Equal("Failed PaymentAttempt != Failed Payment", PaymentOwnershipBoundary.FailedAttemptIsNotFailedPayment);
+        Assert.True(PaymentOwnershipBoundary.PaymentAggregateImplemented);
+        Assert.True(PaymentOwnershipBoundary.PaymentStatusImplemented);
+        Assert.True(PaymentOwnershipBoundary.PaymentAttemptImplemented);
         Assert.False(PaymentOwnershipBoundary.RefundImplemented);
         Assert.False(PaymentOwnershipBoundary.ProviderAdapterImplemented);
         Assert.False(PaymentOwnershipBoundary.CallbackEndpointImplemented);
@@ -101,12 +103,13 @@ public sealed class PaymentScaffoldingSmokeTests
     }
 
     [Fact]
-    public void Payment_T001_Has_No_Product_Lifecycle_Types()
+    public void Payment_T002_Has_Aggregate_And_Attempts_Without_Refund()
     {
         var domain = typeof(PaymentDomainAssemblyMarker).Assembly;
-        Assert.Null(domain.GetType("TravelCore.Modules.Payment.Domain.Payment"));
-        Assert.Null(domain.GetType("TravelCore.Modules.Payment.Domain.PaymentStatus"));
-        Assert.Null(domain.GetType("TravelCore.Modules.Payment.Domain.PaymentAttempt"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.Payment"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.PaymentStatus"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.PaymentAttempt"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.Payment.Domain.PaymentAttemptStatus"));
         Assert.Null(domain.GetType("TravelCore.Modules.Payment.Domain.Refund"));
         Assert.Null(domain.GetType("TravelCore.Modules.Payment.Domain.RefundStatus"));
     }

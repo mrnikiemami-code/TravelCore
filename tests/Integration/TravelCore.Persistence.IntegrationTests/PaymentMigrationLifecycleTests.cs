@@ -27,8 +27,9 @@ public sealed class PaymentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Single(expectedMigrations);
+            Assert.Equal(2, expectedMigrations.Length);
             Assert.EndsWith("_InitialPaymentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
+            Assert.EndsWith("_AddPaymentAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -50,18 +51,30 @@ public sealed class PaymentMigrationLifecycleTests
                 WHERE table_schema = 'payment'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(0, await ScalarIntAsync(conn, """
+            Assert.Equal(2, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'payment'
                   AND table_name NOT IN ('__EFMigrationsHistory');
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'payment'
+                  AND table_name = 'payments';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'payment'
+                  AND table_name = 'payment_attempts';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'payment'
                   AND table_name IN (
-                        'payments', 'payment_attempts', 'payment_transactions',
+                        'payment_transactions',
                         'refunds', 'provider_callbacks', 'settlements', 'wallets');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """

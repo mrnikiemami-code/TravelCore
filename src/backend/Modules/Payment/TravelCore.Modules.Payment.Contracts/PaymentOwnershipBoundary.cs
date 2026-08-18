@@ -4,7 +4,7 @@ namespace TravelCore.Modules.Payment.Contracts;
 /// P20-R1: Payment is the independent monetary-execution owner (schema <c>payment</c>).
 /// Initial logical target is Booking (Tour Booking scope). Payment does not own Booking,
 /// Pricing/Quote, BookingMonetarySnapshot, settlement, accounting, or agency payout.
-/// No Payment aggregate / status / attempt / refund / provider in T001.
+/// No Payment refund / provider / public surface in T002. Aggregate + attempts are implemented (P20-R2).
 /// </summary>
 public static class PaymentOwnershipBoundary
 {
@@ -42,7 +42,9 @@ public static class PaymentOwnershipBoundary
     public const string BrowserReturnIsNotPaymentSuccess = "BrowserReturn != PaymentSuccess";
     public const string ClientAmountIsNotAuthoritative = "ClientAmount != AuthoritativePaymentAmount";
     public const string ClientCurrencyIsNotAuthoritative = "ClientCurrency != AuthoritativePaymentCurrency";
-    public const string UnverifiedCallbackIsNotPaymentSuccess = "UnverifiedCallback != PaymentSuccess";
+    public const string PaymentIsNotPaymentAttempt = "Payment != PaymentAttempt";
+    public const string PaymentStatusIsNotPaymentAttemptStatus = "PaymentStatus != PaymentAttemptStatus";
+    public const string FailedAttemptIsNotFailedPayment = "Failed PaymentAttempt != Failed Payment";
 
     public const bool OwnsBooking = false;
     public const bool OwnsBookingStatus = false;
@@ -59,9 +61,9 @@ public static class PaymentOwnershipBoundary
     public const bool ProductReferencesAreLogicalOnly = true;
     public const bool ProductReferencesAreSourceOfTruth = false;
     public const bool GeneralizedTargetTypeImplemented = false;
-    public const bool PaymentAggregateImplemented = false;
-    public const bool PaymentStatusImplemented = false;
-    public const bool PaymentAttemptImplemented = false;
+    public const bool PaymentAggregateImplemented = true;
+    public const bool PaymentStatusImplemented = true;
+    public const bool PaymentAttemptImplemented = true;
     public const bool RefundImplemented = false;
     public const bool ProviderAdapterImplemented = false;
     public const bool ProviderSdkImplemented = false;

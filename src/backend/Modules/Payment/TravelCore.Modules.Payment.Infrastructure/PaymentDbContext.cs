@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.Payment.Domain;
+using PaymentAggregate = TravelCore.Modules.Payment.Domain.Payment;
 
 namespace TravelCore.Modules.Payment.Infrastructure;
 
 /// <summary>
 /// Payment-owned DbContext. Owns PostgreSQL schema <c>payment</c>.
-/// No product tables in T001 (P20-R1 scaffolding only).
+/// T002: payments + payment_attempts; no provider/refund tables.
 /// </summary>
 public sealed class PaymentDbContext : DbContext
 {
@@ -14,6 +16,10 @@ public sealed class PaymentDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<PaymentAggregate> Payments => Set<PaymentAggregate>();
+
+    public DbSet<PaymentAttempt> PaymentAttempts => Set<PaymentAttempt>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
