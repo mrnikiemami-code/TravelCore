@@ -40,7 +40,7 @@ public static class HotelBookingOwnershipBoundary
     public const bool HotelBookingStatusImplemented = false;
     public const bool RoomModelImplemented = true;
     public const bool GuestModelImplemented = true;
-    public const bool AvailabilityHoldModelImplemented = false;
+    public const bool AvailabilityHoldModelImplemented = true;
     public const bool SupplierAdapterImplemented = false;
     public const bool SupplierSdkImplemented = false;
     public const bool RateQuoteModelImplemented = false;

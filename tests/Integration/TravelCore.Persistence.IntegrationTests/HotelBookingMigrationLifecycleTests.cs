@@ -27,9 +27,10 @@ public sealed class HotelBookingMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Equal(3, expectedMigrations.Length);
             Assert.EndsWith("_InitialHotelBookingScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddHotelBookingStayStructure", expectedMigrations[1], StringComparison.Ordinal);
+            Assert.EndsWith("_AddHotelAvailabilityHold", expectedMigrations[2], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -69,12 +70,29 @@ public sealed class HotelBookingMigrationLifecycleTests
                 WHERE table_schema = 'hotel_booking'
                   AND table_name = 'hotel_booking_guests';
                 """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_availability_holds';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_availability_hold_rooms';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_hold_idempotency';
+                """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'hotel_booking'
                   AND table_name IN (
-                        'hotel_booking_holds',
                         'supplier_reservations',
                         'hotel_rates',
                         'hotel_quotes',

@@ -2,7 +2,9 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TravelCore.Modules.HotelBooking.Contracts;
 using TravelCore.Modules.HotelBooking.Infrastructure;
+using TravelCore.Modules.HotelBooking.Infrastructure.Services;
 using Xunit;
 
 namespace TravelCore.Host.IntegrationTests;
@@ -29,6 +31,9 @@ public sealed class HotelBookingFoundationHostTests
             Assert.Equal("hotel_booking", HotelBookingDbContext.SchemaName);
             Assert.Equal("hotel_booking", db.Model.GetDefaultSchema());
             Assert.False(db.Database.HasPendingModelChanges());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<HotelAvailabilityHoldService>());
+            var resolver = scope.ServiceProvider.GetRequiredService<IHotelAvailabilitySourceResolver>();
+            Assert.Empty(resolver.ListConfiguredKeys());
         }
 
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });

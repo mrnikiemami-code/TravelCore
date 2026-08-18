@@ -23,6 +23,13 @@ public sealed class HotelBookingDbContext : DbContext
 
     public DbSet<HotelBookingGuest> HotelBookingGuests => Set<HotelBookingGuest>();
 
+    public DbSet<HotelAvailabilityHold> HotelAvailabilityHolds => Set<HotelAvailabilityHold>();
+
+    public DbSet<HotelAvailabilityHoldRoom> HotelAvailabilityHoldRooms => Set<HotelAvailabilityHoldRoom>();
+
+    public DbSet<HotelAvailabilityHoldIdempotencyRecord> HotelAvailabilityHoldIdempotency =>
+        Set<HotelAvailabilityHoldIdempotencyRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

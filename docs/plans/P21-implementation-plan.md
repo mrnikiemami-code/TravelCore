@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P21-PLAN` |
 | Phase | P21 — Hotel Booking |
-| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2 = RESOLVED** · **P21-R3–R8 = OPEN** · T002 implemented / awaiting architect review |
+| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2 = RESOLVED** · **P21-R3 = RESOLVED** · **P21-R4–R8 = OPEN** · T003 implemented / awaiting architect review |
 | Baseline | `96be199` (`docs(p20): record ArchitectureTests 286 in GATE evidence` · `TC-P20-GATE` ACCEPTED `fc41756`) |
 | Authoritative sources | `docs/ROADMAP.md` § P21 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § HotelBooking · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `hotel_booking`) · `08-persistence-and-migrations.md` · P07 Place (`Hotel Catalog ≠ Hotel Booking`) · P12 Pricing · P19 Tour Booking · P20 Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -112,7 +112,7 @@ PLAN records already-locked constitution. **New P21 product semantics stay OPEN.
 |----|--------|--------|
 | **P21-R1** | HotelBooking module ownership / schema / catalog reference | **RESOLVED** — independent HotelBooking module · schema `hotel_booking` · Place remains catalog owner · logical PlaceId / `HotelPlaceReference` · no peer-schema FK · no shared DbContext · **HotelBooking != Place** · **HotelBooking != Tour Booking** · named supplier = NONE · product model deferred |
 | **P21-R2** | Stay structure / room reservations / guest occupancy / multi-room scope | **RESOLVED** — NodaTime LocalDate CheckIn/CheckOut · Nights derived · 1..N RoomReservations · guests assigned per room · Adult/Child · Child AgeAtCheckIn · no BirthDate · exactly one LeadGuest · HotelBookingContactSnapshot · occupancy is requested composition not availability |
-| **P21-R3** | Availability/inventory authority / hold / supplier-neutral reservation boundary | **OPEN** |
+| **P21-R3** | Availability/inventory authority / hold / supplier-neutral reservation boundary | **RESOLVED** — IHotelAvailabilitySource port · Production Availability Source = NONE · one HotelAvailabilityHold covers complete room set · Requested/Active/Released/Expired · no fake production availability · no HotelBookingStatus |
 | **P21-R4** | Hotel rate offer / quote / monetary snapshot / cancellation policy snapshot | **OPEN** |
 | **P21-R5** | HotelBooking lifecycle / confirmation authority / supplier orchestration / idempotency / reconciliation | **OPEN** |
 | **P21-R6** | Payment integration / target extension / financial compensation / refund dependency | **OPEN** |
@@ -252,12 +252,12 @@ Tasks below are **planning slots**. They do **not** authorize implementation unt
 
 ### TC-P21-T002 — Stay / room / guest structure
 
-- Depends on **P21-R2**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**
-- Locked: NodaTime `LocalDate` CheckIn/CheckOut · derived Nights · 1..N `RoomReservation` · room-assigned Adult/Child guests · Child `AgeAtCheckIn` · no BirthDate · exactly one LeadGuest · `HotelBookingContactSnapshot` · occupancy is requested composition, not availability.
+- Depends on **P21-R2**. **COMPLETE / ACCEPTED** (`a844bcf` / docs `a0f5c99`)
 
 ### TC-P21-T003 — Availability / inventory / supplier reservation boundary
 
-- Depends on **P21-R3**.
+- Depends on **P21-R3**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**
+- Locked: `IHotelAvailabilitySource` is availability authority · Production source = NONE · `HotelAvailabilityHold` Requested/Active/Released/Expired · one hold covers complete room set · no fake production availability · no rate/payment/HotelBookingStatus.
 
 ### TC-P21-T004 — Rate offer / monetary / cancellation-policy snapshot
 

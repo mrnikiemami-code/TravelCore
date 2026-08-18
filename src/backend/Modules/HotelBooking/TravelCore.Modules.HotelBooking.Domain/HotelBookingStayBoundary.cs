@@ -17,7 +17,7 @@ public static class HotelBookingStayBoundary
     public const bool HotelBookingStatusImplemented = false;
     public const bool BirthDateStoredFlag = false;
     public const bool PassportStored = false;
-    public const bool AvailabilityHoldImplemented = false;
+    public const bool AvailabilityHoldImplemented = true;
     public const bool SupplierReservationImplemented = false;
     public const bool RateQuoteImplemented = false;
     public const bool CancellationImplemented = false;

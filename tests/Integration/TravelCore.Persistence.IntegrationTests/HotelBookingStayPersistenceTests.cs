@@ -98,6 +98,7 @@ public sealed class HotelBookingStayPersistenceTests
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'hotel_booking'
+                  AND table_name IN ('hotel_bookings', 'room_reservations', 'hotel_booking_guests')
                   AND (
                         column_name IN (
                             'nights', 'status', 'rate_plan_id', 'rate_offer_id', 'quote_id',

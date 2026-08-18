@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R2 RESOLVED** · **P21-R3–R8 OPEN**) |
-| Phase Status | P00–P20 COMPLETE · P21 IN_PROGRESS · P21-R1–R2 RESOLVED · P21-R3–R8 OPEN |
+| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R3 RESOLVED** · **P21-R4–R8 OPEN**) |
+| Phase Status | P00–P20 COMPLETE · P21 IN_PROGRESS · P21-R1–R3 RESOLVED · P21-R4–R8 OPEN |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P21-T002` → T003 only after ACCEPT; do not invent R3–R8 |
+| Current Next Task | Architect review of `TC-P21-T003` → T004 only after ACCEPT; do not invent R4–R8 |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -120,7 +120,7 @@
 - **P18** = COMPLETE (`TC-P18-GATE` ACCEPTED `73605aa` · **R1–R8 RESOLVED**) [`plans/P18-GATE-acceptance-evidence.md`](plans/P18-GATE-acceptance-evidence.md)
 - **P19** = COMPLETE (`TC-P19-GATE` ACCEPTED `d258933` · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
 - **P20** = COMPLETE (`TC-P20-GATE` ACCEPTED · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md)
-- **P21** = IN_PROGRESS — Hotel Booking · `TC-P21-PLAN` ACCEPTED [`plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R2 RESOLVED** · **P21-R3–R8 OPEN**
+- **P21** = IN_PROGRESS — Hotel Booking · `TC-P21-PLAN` ACCEPTED [`plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R3 RESOLVED** · **P21-R4–R8 OPEN**
 - **P22–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -592,7 +592,7 @@ Payment را با Price یا Quote ادغام نکنید.
 
 ## P21 — Hotel Booking
 
-**Status:** IN_PROGRESS — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R2 RESOLVED** · **P21-R3–R8 OPEN** · T002 awaiting review
+**Status:** IN_PROGRESS — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R3 RESOLVED** · **P21-R4–R8 OPEN** · T003 awaiting review
 
 جدا از Place Hotel Catalog: provider abstraction · mapping · search · availability · rooms · rates · cancellation rules · Quote · reservation · booking · voucher · provider sync.
 

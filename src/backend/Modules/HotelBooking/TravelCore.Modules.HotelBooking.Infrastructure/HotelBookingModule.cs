@@ -2,13 +2,19 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.HotelBooking.Contracts;
+using TravelCore.Modules.HotelBooking.Infrastructure.Availability;
+using TravelCore.Modules.HotelBooking.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.HotelBooking.Infrastructure;
 
 /// <summary>
-/// Host composition entry for HotelBooking (TC-P21-T001 / P21-R1). Schema ownership only — no endpoints.
+/// Host composition for HotelBooking. Schema, stay aggregate, availability hold port.
+/// No public endpoints. No production availability source.
 /// </summary>
 public sealed class HotelBookingModule : ITravelCoreModule
 {
@@ -16,6 +22,10 @@ public sealed class HotelBookingModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
+
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
+        services.AddSingleton<IHotelAvailabilitySourceResolver, HotelAvailabilitySourceResolver>();
+        services.AddScoped<HotelAvailabilityHoldService>();
 
         services.AddDbContext<HotelBookingDbContext>((_, options) =>
         {

@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R2 RESOLVED** · **P21-R3–R8 OPEN** · T002 awaiting review) |
+| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R3 RESOLVED** · **P21-R4–R8 OPEN** · T003 awaiting review) |
 | Previous Phase | **P20 — Payment** (**COMPLETE** — `TC-P20-GATE` ACCEPTED `fc41756` · docs `96be199`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P21-T002` — Hotel stay, multi-room reservation structure, guests, occupancy, and contact snapshot (AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Architect review of `TC-P21-T002` → T003 only after ACCEPT; do not invent R3–R8 |
+| Current Active Product Task | `TC-P21-T003` — Authoritative hotel availability source, multi-room hold, idempotency, and supplier-neutral inventory boundary (AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Architect review of `TC-P21-T003` → T004 only after ACCEPT; do not invent R4–R8 |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -235,12 +235,14 @@
 | P19 | **COMPLETE** — Plan ACCEPTED · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE ACCEPTED (`d258933`) [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md) |
 | P19-GATE | **COMPLETE / ACCEPTED** (`d258933`) — [`docs/plans/P19-GATE-acceptance-evidence.md`](plans/P19-GATE-acceptance-evidence.md); Payment/Confirm remain DEFERRED into P20 |
 | P20 | **COMPLETE** — GATE ACCEPTED · **P20-R1–R8 RESOLVED** · T001–T009 ACCEPTED [`docs/plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md) |
-| P21 | **IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R2 RESOLVED** · **P21-R3–R8 OPEN** · T002 awaiting review |
+| P21 | **IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R3 RESOLVED** · **P21-R4–R8 OPEN** · T003 awaiting review |
 | P21 Plan | `TC-P21-PLAN` COMPLETE / ACCEPTED (`f0ec6ae`) — [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) |
 | P21-T001 | **COMPLETE / ACCEPTED** (`7af55b2` / docs `7ebd0f1`) — independent HotelBooking module · schema `hotel_booking` · logical PlaceId / `HotelPlaceReference` |
-| P21-T002 | **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW** — HotelBooking stay aggregate · LocalDate CheckIn/CheckOut · 1..N RoomReservations · room-assigned Adult/Child guests · LeadGuest · contact snapshot · no status/availability/supplier/rate/payment |
+| P21-T002 | **COMPLETE / ACCEPTED** (`a844bcf` / docs `a0f5c99`) — HotelBooking stay aggregate · LocalDate CheckIn/CheckOut · 1..N RoomReservations · room-assigned Adult/Child guests · LeadGuest · contact snapshot |
+| P21-T003 | **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW** — IHotelAvailabilitySource port · HotelAvailabilityHold Requested/Active/Released/Expired · one hold covers complete room set · production source NONE · no fake production availability |
 | P21-R1 (HotelBooking ownership / schema / catalog reference) | **RESOLVED** — independent HotelBooking module · schema `hotel_booking` · Place is hotel catalog owner · logical PlaceId / `HotelPlaceReference` · no peer-schema FK · no shared DbContext · **HotelBooking != Place** · **HotelBooking != Tour Booking** · named supplier = NONE |
 | P21-R2 (Stay / rooms / guests / occupancy / multi-room) | **RESOLVED** — NodaTime LocalDate CheckIn/CheckOut · Nights derived · 1..N RoomReservations · guests assigned per room · Adult/Child · Child AgeAtCheckIn · no BirthDate · exactly one LeadGuest · HotelBookingContactSnapshot · occupancy is requested composition not availability |
+| P21-R3 (Availability / inventory / hold / supplier-neutral boundary) | **RESOLVED** — IHotelAvailabilitySource is availability authority · Place/Search are not live availability · Production Availability Source = NONE · one HotelAvailabilityHold covers complete room set · Requested/Active/Released/Expired · no HotelBookingStatus · no rate/payment |
 | P20 Plan | `TC-P20-PLAN` COMPLETE / ACCEPTED (`aca9c44`) — [`docs/plans/P20-implementation-plan.md`](plans/P20-implementation-plan.md) |
 | P20-T001 | **COMPLETE / ACCEPTED** (`1ec8963`) — independent Payment module · schema `payment` · initial target = Booking · Tour Booking scope |
 | P20-T002 | **COMPLETE / ACCEPTED** (`75a4f84`) — Payment aggregate + PaymentAttempt · PaymentStatus Pending/Succeeded · PaymentAttemptStatus Created/Initiated/Succeeded/Failed |
