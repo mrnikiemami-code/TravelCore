@@ -1,6 +1,6 @@
 using NodaTime;
 
-namespace TravelCore.Modules.Flight.Domain;
+namespace TravelCore.Modules.Flight.Contracts;
 
 public static class FlightTimeZone
 {

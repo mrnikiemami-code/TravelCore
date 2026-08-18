@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P22-PLAN` |
 | Phase | P22 — Flight |
-| Status | PLAN ACCEPTED · **P22-R1 = RESOLVED** · **P22-R2 = RESOLVED** · **P22-R3–R8 OPEN** · T001 ACCEPTED · T002 implemented / awaiting architect review · **TC-P22-T003 NOT EXECUTED** |
+| Status | PLAN ACCEPTED · **P22-R1 = RESOLVED** · **P22-R2 = RESOLVED** · **P22-R3 = RESOLVED** · **P22-R4–R8 OPEN** · T001–T002 ACCEPTED · T003 implemented / awaiting review · **TC-P22-T004 NOT EXECUTED** |
 | Baseline | `d6bd842` (`docs(hotel-booking): add TC-P21-GATE result envelope` · GATE evidence `858b4be` · architect `TC-P21-GATE = ACCEPTED`) |
 | Authoritative sources | `docs/ROADMAP.md` § P22 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Flight / Tour · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `flight`) · `06-cross-module-communication.md` Example 7 · `15-future-architecture-transition-map.md` § U · P11-R5 (`TourDepartureTransportSegment`) · P12 Pricing · P19 Booking · P20 Payment · P21 HotelBooking · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -353,7 +353,7 @@ Classifications are **planning inventory**, not architect locks.
 |----|-------|--------|
 | **P22-R1** | Flight ownership / module / schema and Tour boundary | **RESOLVED** — independent Flight module · schema `flight` · FlightBooking owned inside Flight · **Flight != Tour** · **FlightBooking != Tour Booking** · **FlightBooking != HotelBooking** · **Tour Package Flight != live Flight inventory** |
 | **P22-R2** | Itinerary / segment / airport / airline / passenger model | **RESOLVED** — FlightBooking aggregate · OneWay=1 journey · RoundTrip=2 journeys · MultiCity DEFERRED · Journey 1..N Segments · no FlightLeg · Airport/Airline authority = ReferenceData · Flight stores IATA logical references only · Adult/Child/Infant · no BirthDate/passport |
-| **P22-R3** | Search / availability / offer authority and supplier capability | **OPEN** |
+| **P22-R3** | Search / availability / offer authority and supplier capability | **RESOLVED** — live Flight search/availability is external source-authoritative · TravelCore-owned seat inventory not implemented · `IFlightSearchSource` + `IFlightOfferAvailabilitySource` · timeout/Unknown ≠ Unavailable · no hold/PNR · Named Flight Supplier = NONE · Production Search/Availability Source = NONE. **P22-R3 = RESOLVED**. **TC-P22-T004 NOT EXECUTED**. |
 | **P22-R4** | Fare offer / revalidation / monetary snapshot / fare rules | **OPEN** |
 | **P22-R5** | Supplier reservation / PNR lifecycle, idempotency, reconciliation | **OPEN** |
 | **P22-R6** | Payment ordering / typed Flight target / ticketing / compensation | **OPEN** |
@@ -372,11 +372,11 @@ Inherited locked facts (not new P22 decisions): Tour ≠ live Flight; schema nam
 
 ### TC-P22-T002 — Itinerary / segment / passenger structure
 
-- Depends on **P22-R2**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** FlightBooking · OneWay/RoundTrip · journeys/segments · IATA references · Adult/Child/Infant · **TC-P22-T003 NOT EXECUTED**.
+- Depends on **P22-R2**. **COMPLETE / ACCEPTED** (`9518018` / docs `7a1bf45`). FlightBooking · OneWay/RoundTrip · journeys/segments · IATA references · Adult/Child/Infant.
 
 ### TC-P22-T003 — Search / availability / offer source boundary
 
-- Depends on **P22-R3**. Production sources remain NONE unless a later lock says otherwise.
+- Depends on **P22-R3**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** `IFlightSearchSource` · `IFlightOfferAvailabilitySource` · external source-authoritative · zero production sources · **TC-P22-T004 NOT EXECUTED**.
 
 ### TC-P22-T004 — Fare / monetary / fare-rules snapshots
 
@@ -464,9 +464,9 @@ This PLAN task is **not** Gate-ready and must not mark P22 READY_FOR_GATE.
 - Payment current target kinds: TourBooking, HotelBooking; Flight support: **NO**
 - P22-R1: **RESOLVED**
 - P22-R2: **RESOLVED**
-- P22-R3 through P22-R8: **OPEN**
+- P22-R4 through P22-R8: **OPEN**
 - T001–T009 + GATE sequenced
 - T001 executed: **YES** (ACCEPTED)
 - T002 executed: **YES** (awaiting architect review)
-- **TC-P22-T003 NOT EXECUTED**
+- **TC-P22-T004 NOT EXECUTED**
 - P23 started: **NO**

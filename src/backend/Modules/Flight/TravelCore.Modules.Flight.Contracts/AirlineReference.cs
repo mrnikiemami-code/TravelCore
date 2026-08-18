@@ -1,7 +1,7 @@
-namespace TravelCore.Modules.Flight.Domain;
+namespace TravelCore.Modules.Flight.Contracts;
 
 /// <summary>
-/// Logical airline/carrier reference. ReferenceData is the catalog authority; T002 stores a
+/// Logical airline/carrier reference. ReferenceData is the catalog authority; Flight stores a
 /// validated IATA code without a Flight Airline aggregate or peer-schema FK.
 /// </summary>
 public readonly record struct AirlineReference

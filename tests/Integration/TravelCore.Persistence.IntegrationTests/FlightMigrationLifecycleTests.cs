@@ -1,6 +1,7 @@
 using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Domain;
 using TravelCore.Modules.Flight.Infrastructure;
 using Xunit;

@@ -1,4 +1,4 @@
-namespace TravelCore.Modules.Flight.Domain;
+namespace TravelCore.Modules.Flight.Contracts;
 
 /// <summary>
 /// Baseline trip types for P22-R2. MultiCity remains DEFERRED.

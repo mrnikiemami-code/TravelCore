@@ -6,7 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Flight.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Flight.Contracts</AssemblyName>
-    <Description>Flight module contracts and ownership boundary (TC-P22-T001 / P22-R1). No product APIs yet.</Description>
+    <Description>Flight module contracts: ownership boundary and live search/availability ports (TC-P22-T003 / P22-R3).</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
 
 </Project>

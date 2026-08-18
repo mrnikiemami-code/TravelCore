@@ -2,6 +2,7 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Infrastructure;
 using Xunit;
 
@@ -29,6 +30,10 @@ public sealed class FlightFoundationHostTests
             Assert.Equal("flight", FlightDbContext.SchemaName);
             Assert.Equal("flight", db.Model.GetDefaultSchema());
             Assert.False(db.Database.HasPendingModelChanges());
+            var searchResolver = scope.ServiceProvider.GetRequiredService<IFlightSearchSourceResolver>();
+            var availabilityResolver = scope.ServiceProvider.GetRequiredService<IFlightOfferAvailabilitySourceResolver>();
+            Assert.Empty(searchResolver.ListConfiguredKeys());
+            Assert.Empty(availabilityResolver.ListConfiguredKeys());
         }
 
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });

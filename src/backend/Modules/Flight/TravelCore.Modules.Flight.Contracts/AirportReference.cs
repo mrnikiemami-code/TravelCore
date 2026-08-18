@@ -1,8 +1,8 @@
-namespace TravelCore.Modules.Flight.Domain;
+namespace TravelCore.Modules.Flight.Contracts;
 
 /// <summary>
-/// Logical airport reference. ReferenceData is the catalog authority, but no airport catalog
-/// exists yet, so T002 stores a validated IATA code — not a catalog entity id and not a peer-schema FK.
+/// Logical airport reference. ReferenceData is the catalog authority; Flight stores a validated
+/// IATA code — not a catalog entity id and not a peer-schema FK.
 /// </summary>
 public readonly record struct AirportReference
 {

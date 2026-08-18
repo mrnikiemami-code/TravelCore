@@ -1,4 +1,5 @@
 using NodaTime;
+using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Domain;
 using Xunit;
 

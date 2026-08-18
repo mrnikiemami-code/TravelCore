@@ -2,13 +2,18 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
+using TravelCore.Modules.Flight.Contracts;
+using TravelCore.Modules.Flight.Domain;
+using TravelCore.Modules.Flight.Infrastructure.Search;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Flight.Infrastructure;
 
 /// <summary>
-/// Host composition entry for Flight (TC-P22-T001 / P22-R1). Schema foundation only; zero endpoints.
+/// Host composition entry for Flight. Zero production sources; zero endpoints.
 /// </summary>
 public sealed class FlightModule : ITravelCoreModule
 {
@@ -16,6 +21,11 @@ public sealed class FlightModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
+
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
+        services.AddSingleton<IFlightSearchSourceResolver, FlightSearchSourceResolver>();
+        services.AddSingleton<IFlightOfferAvailabilitySourceResolver, FlightOfferAvailabilitySourceResolver>();
+        services.AddScoped<FlightLiveSearchService>();
 
         services.AddDbContext<FlightDbContext>((_, options) =>
         {

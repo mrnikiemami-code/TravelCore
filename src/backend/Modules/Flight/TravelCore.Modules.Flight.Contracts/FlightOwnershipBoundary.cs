@@ -3,7 +3,7 @@ namespace TravelCore.Modules.Flight.Contracts;
 /// <summary>
 /// P22-R1: Flight is the independent live-flight commerce / transaction owner
 /// (schema <c>flight</c>). TourDepartureTransportSegment remains Tour-owned package transport.
-/// FlightBooking is owned inside Flight. T002 implements the itinerary/passenger aggregate; status/search/offer/PNR remain out of scope.
+/// FlightBooking is owned inside Flight. T003 adds live search/availability ports; accepted offer/PNR/Payment remain out of scope.
 /// </summary>
 public static class FlightOwnershipBoundary
 {
@@ -15,11 +15,16 @@ public static class FlightOwnershipBoundary
     public const string MoneyModel = "TravelCore.Money";
     public const string TemporalModel = "NodaTime";
     public const string NamedFlightSupplier = "NONE";
+    public const string ProductionSearchSource = "NONE";
     public const string ProductionAvailabilitySource = "NONE";
     public const string ProductionRateSource = "NONE";
     public const string ProductionReservationSource = "NONE";
     public const string ProductionTicketingSource = "NONE";
     public const string ProviderSecretPosture = "SecureConfigurationNotSourceControl";
+    public const string InventoryAuthority = "external source-authoritative";
+    public const string SearchSourcePort = "IFlightSearchSource";
+    public const string AvailabilitySourcePort = "IFlightOfferAvailabilitySource";
+    public const string SourceCapabilities = "Search, AvailabilityCheck";
     public const string AirportAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirlineAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirportCandidateOwner = "ReferenceData";
@@ -49,8 +54,8 @@ public static class FlightOwnershipBoundary
     public const bool ItineraryModelImplemented = true;
     public const bool SegmentModelImplemented = true;
     public const bool PassengerModelImplemented = true;
-    public const bool SearchModelImplemented = false;
-    public const bool AvailabilityModelImplemented = false;
+    public const bool SearchModelImplemented = true;
+    public const bool AvailabilityModelImplemented = true;
     public const bool OfferModelImplemented = false;
     public const bool FareModelImplemented = false;
     public const bool PnrModelImplemented = false;

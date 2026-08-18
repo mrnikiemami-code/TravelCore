@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Domain;
 
 namespace TravelCore.Modules.Flight.Infrastructure.Persistence;
