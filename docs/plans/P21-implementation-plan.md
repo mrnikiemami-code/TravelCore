@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P21-PLAN` |
 | Phase | P21 — Hotel Booking |
-| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2 = RESOLVED** · **P21-R3 = RESOLVED** · **P21-R4–R8 = OPEN** · T003 implemented / awaiting architect review |
+| Status | PLAN ACCEPTED · **P21-R1 = RESOLVED** · **P21-R2 = RESOLVED** · **P21-R3 = RESOLVED** · **P21-R4–R8 = OPEN** · T003 implemented / lineage VERIFY awaiting review · T003 not architect-accepted |
 | Baseline | `96be199` (`docs(p20): record ArchitectureTests 286 in GATE evidence` · `TC-P20-GATE` ACCEPTED `fc41756`) |
 | Authoritative sources | `docs/ROADMAP.md` § P21 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § HotelBooking · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `hotel_booking`) · `08-persistence-and-migrations.md` · P07 Place (`Hotel Catalog ≠ Hotel Booking`) · P12 Pricing · P19 Tour Booking · P20 Payment · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -256,8 +256,9 @@ Tasks below are **planning slots**. They do **not** authorize implementation unt
 
 ### TC-P21-T003 — Availability / inventory / supplier reservation boundary
 
-- Depends on **P21-R3**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**
+- Depends on **P21-R3**. **IMPLEMENTED / LINEAGE VERIFICATION PENDING** (`2696407` / docs `77a9b8f`) — **not architect-accepted**
 - Locked: `IHotelAvailabilitySource` is availability authority · Production source = NONE · `HotelAvailabilityHold` Requested/Active/Released/Expired · one hold covers complete room set · no fake production availability · no rate/payment/HotelBookingStatus.
+- `TC-P21-T003-VERIFY` (`5824acd`): `a0f5c99` is T002 result docs only; stay persistence asserts LeadGuest on ordinal-ordered room. T004 not executed.
 
 ### TC-P21-T004 — Rate offer / monetary / cancellation-policy snapshot
 

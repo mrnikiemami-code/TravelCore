@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P21-T003` → T004 only after ACCEPT; do not invent R4–R8 |
+| Current Next Task | Architect review of `TC-P21-T003-VERIFY` → T003 ACCEPT then T004; do not invent R4–R8; do not execute T004 |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -592,7 +592,7 @@ Payment را با Price یا Quote ادغام نکنید.
 
 ## P21 — Hotel Booking
 
-**Status:** IN_PROGRESS — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R3 RESOLVED** · **P21-R4–R8 OPEN** · T003 awaiting review
+**Status:** IN_PROGRESS — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R3 RESOLVED** · **P21-R4–R8 OPEN** · T003-VERIFY awaiting review; T003 not architect-accepted
 
 جدا از Place Hotel Catalog: provider abstraction · mapping · search · availability · rooms · rates · cancellation rules · Quote · reservation · booking · voucher · provider sync.
 
