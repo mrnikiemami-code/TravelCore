@@ -18,4 +18,12 @@ public interface IHotelReservationSource
     Task<HotelReservationQueryResult> QueryReservationStatusAsync(
         string sourceReservationReference,
         CancellationToken cancellationToken = default);
+
+    Task<HotelReservationCancellationSourceResult> InitiateCancellationAsync(
+        HotelReservationCancellationRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<HotelReservationCancellationQueryResult> QueryCancellationStatusAsync(
+        HotelReservationCancellationQueryRequest request,
+        CancellationToken cancellationToken = default);
 }

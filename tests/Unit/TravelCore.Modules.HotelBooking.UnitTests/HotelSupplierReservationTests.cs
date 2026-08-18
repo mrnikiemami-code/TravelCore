@@ -367,7 +367,7 @@ public sealed class HotelSupplierReservationTests
         Assert.False(HotelReservationOwnershipBoundary.ProductionFakeReservationSourceImplemented);
         Assert.False(HotelReservationOwnershipBoundary.NamedSupplierSdkImplemented);
         Assert.True(HotelReservationOwnershipBoundary.PaymentRequiredForConfirmation);
-        Assert.False(HotelReservationOwnershipBoundary.CancellationExecutionImplemented);
+        Assert.True(HotelReservationOwnershipBoundary.CancellationExecutionImplemented);
         Assert.False(HotelReservationOwnershipBoundary.PublicReservationApiImplemented);
         Assert.False(HotelReservationOwnershipBoundary.ProcessLocalLockIsAuthority);
         Assert.Equal("Pending, Confirmed, Cancelled", HotelReservationOwnershipBoundary.HotelBookingStatuses);

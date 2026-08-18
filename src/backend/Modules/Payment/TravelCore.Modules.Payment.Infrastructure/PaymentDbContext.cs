@@ -36,6 +36,9 @@ public sealed class PaymentDbContext : DbContext
 
     public DbSet<PaymentCompensationInboxRecord> CompensationInbox => Set<PaymentCompensationInboxRecord>();
 
+    public DbSet<PaymentHotelBookingCancellationRefundInboxRecord> HotelBookingCancellationRefundInbox =>
+        Set<PaymentHotelBookingCancellationRefundInboxRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

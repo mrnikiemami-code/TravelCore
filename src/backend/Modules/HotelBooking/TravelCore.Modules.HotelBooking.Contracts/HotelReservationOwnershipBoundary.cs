@@ -35,6 +35,6 @@ public static class HotelReservationOwnershipBoundary
     public const bool SmartRoutingImplemented = false;
     public const bool ProcessLocalLockIsAuthority = false;
     public const bool PaymentRequiredForConfirmation = true;
-    public const bool CancellationExecutionImplemented = false;
+    public const bool CancellationExecutionImplemented = true;
     public const bool PublicReservationApiImplemented = false;
 }

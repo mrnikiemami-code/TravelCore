@@ -239,6 +239,29 @@ public sealed class HotelSupplierReservation
         IncrementVersion();
     }
 
+    /// <summary>
+    /// Constrained Confirmed → Cancelled after verified supplier cancellation (P21-R7).
+    /// Distinct from CancelFromSource, which must not silently cancel a Confirmed reservation.
+    /// </summary>
+    public void CancelFromAuthoritativeSupplierCancellation(Instant now)
+    {
+        EnsureClock(now);
+        if (Status == HotelSupplierReservationStatus.Cancelled)
+        {
+            return;
+        }
+
+        if (Status != HotelSupplierReservationStatus.Confirmed)
+        {
+            throw new InvalidOperationException(
+                "Authoritative supplier cancellation of a reservation requires Confirmed status.");
+        }
+
+        Status = HotelSupplierReservationStatus.Cancelled;
+        CancelledAt = now;
+        IncrementVersion();
+    }
+
     private HotelSupplierReservationAttempt RequireAttempt(HotelSupplierReservationAttemptId attemptId) =>
         _attempts.Single(a => a.Id.Equals(attemptId));
 

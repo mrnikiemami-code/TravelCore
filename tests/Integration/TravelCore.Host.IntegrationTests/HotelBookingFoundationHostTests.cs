@@ -39,6 +39,7 @@ public sealed class HotelBookingFoundationHostTests
             Assert.Empty(rateResolver.ListConfiguredKeys());
             Assert.Null(scope.ServiceProvider.GetService<IHotelRateOfferSource>());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<HotelSupplierReservationService>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<HotelBookingCancellationService>());
             var reservationResolver = scope.ServiceProvider.GetRequiredService<IHotelReservationSourceResolver>();
             Assert.Empty(reservationResolver.ListConfiguredKeys());
             Assert.Null(scope.ServiceProvider.GetService<IHotelReservationSource>());
@@ -61,6 +62,10 @@ public sealed class HotelBookingFoundationHostTests
         Assert.Equal(HttpStatusCode.NotFound, confirm.StatusCode);
         using var pay = await client.PostAsync("/api/hotel-booking/payment", content: null, ct);
         Assert.Equal(HttpStatusCode.NotFound, pay.StatusCode);
+        using var cancel = await client.PostAsync("/api/hotel-booking/cancel", content: null, ct);
+        Assert.Equal(HttpStatusCode.NotFound, cancel.StatusCode);
+        using var cancellations = await client.GetAsync("/api/hotel-booking/cancellations", ct);
+        Assert.Equal(HttpStatusCode.NotFound, cancellations.StatusCode);
         using var generic = await client.PostAsync(
             "/api/payment/hotel-booking/0198b3e0-0000-7000-8000-000000000021", content: null, ct);
         Assert.Equal(HttpStatusCode.NotFound, generic.StatusCode);

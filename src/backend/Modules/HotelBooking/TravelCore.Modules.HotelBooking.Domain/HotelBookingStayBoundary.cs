@@ -20,7 +20,7 @@ public static class HotelBookingStayBoundary
     public const bool AvailabilityHoldImplemented = true;
     public const bool SupplierReservationImplemented = true;
     public const bool RateQuoteImplemented = false;
-    public const bool CancellationImplemented = false;
+    public const bool CancellationImplemented = true;
     public const bool PaymentIntegrationImplemented = true;
     public const bool MultiRoomSupported = true;
 }

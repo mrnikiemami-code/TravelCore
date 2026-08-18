@@ -55,5 +55,10 @@ public sealed class HotelBookingReconciliationIssue
     public string Detail { get; private set; }
 
     public bool BlocksConfirmation =>
-        Kind is not HotelBookingReconciliationIssueKind.AmbiguousReservationOutcome;
+        Kind is not HotelBookingReconciliationIssueKind.AmbiguousReservationOutcome
+            and not HotelBookingReconciliationIssueKind.SupplierCancellationAmbiguous
+            and not HotelBookingReconciliationIssueKind.SupplierCancellationContradiction
+            and not HotelBookingReconciliationIssueKind.SupplierCancellationEconomicsMismatch
+            and not HotelBookingReconciliationIssueKind.MissingPaymentEvidence
+            and not HotelBookingReconciliationIssueKind.RefundInvariantMismatch;
 }

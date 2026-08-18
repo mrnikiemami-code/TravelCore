@@ -516,6 +516,18 @@ public sealed class HotelSupplierReservationPersistenceTests
                 sourceReservationReference,
                 [],
                 null));
+
+        public Task<HotelReservationCancellationSourceResult> InitiateCancellationAsync(
+            HotelReservationCancellationRequest request,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(new HotelReservationCancellationSourceResult(
+                HotelReservationCancellationSourceOutcome.Unknown));
+
+        public Task<HotelReservationCancellationQueryResult> QueryCancellationStatusAsync(
+            HotelReservationCancellationQueryRequest request,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(new HotelReservationCancellationQueryResult(
+                HotelReservationCancellationQueryStatus.PendingUnknown));
     }
 
     private sealed class FixedClock(Instant now) : IClock

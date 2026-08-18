@@ -13,7 +13,7 @@ internal sealed class HotelBookingReconciliationIssueConfiguration
         {
             table.HasCheckConstraint(
                 "ck_hotel_booking_reconciliation_issues_kind",
-                "kind IN (1, 2, 3, 4, 5, 6, 7, 8)");
+                "kind IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)");
         });
         builder.HasKey(x => x.Id);
 

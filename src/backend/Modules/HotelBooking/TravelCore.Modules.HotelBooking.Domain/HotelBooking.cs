@@ -326,6 +326,52 @@ public sealed class HotelBooking
         IncrementVersion();
     }
 
+    /// <summary>
+    /// Constrained Confirmed → Cancelled after authoritative supplier cancellation (P21-R7).
+    /// Not a generic Cancel/SetCancelled/ForceCancel surface. R6 compensation remains Pending-only.
+    /// </summary>
+    public void CancelFromAuthoritativeSupplierCancellation(
+        HotelSupplierReservation reservation,
+        Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(reservation);
+        EnsureClock(now);
+
+        if (Status == HotelBookingStatus.Cancelled)
+        {
+            if (reservation.HotelBookingId.Equals(Id)
+                && reservation.Status == HotelSupplierReservationStatus.Cancelled)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(
+                "Cancelled HotelBooking cannot be reopened or reassigned from later cancellation evidence.");
+        }
+
+        if (Status != HotelBookingStatus.Confirmed)
+        {
+            throw new InvalidOperationException(
+                "R7 customer cancellation requires HotelBookingStatus Confirmed.");
+        }
+
+        if (!reservation.HotelBookingId.Equals(Id))
+        {
+            throw new InvalidOperationException(
+                "Supplier cancellation evidence for another HotelBooking cannot cancel this booking.");
+        }
+
+        if (reservation.Status != HotelSupplierReservationStatus.Cancelled)
+        {
+            throw new InvalidOperationException(
+                "HotelBooking cancellation requires an authoritatively Cancelled HotelSupplierReservation.");
+        }
+
+        Status = HotelBookingStatus.Cancelled;
+        CancelledAt = now;
+        IncrementVersion();
+    }
+
     private void EnsurePayNowPaymentEvidence(
         HotelBookingPaymentEvidence? paymentEvidence,
         HotelBookingMonetarySnapshot monetary)

@@ -54,6 +54,14 @@ public sealed class HotelBookingDbContext : DbContext
     public DbSet<HotelSupplierReservationIdempotencyRecord> HotelSupplierReservationIdempotency =>
         Set<HotelSupplierReservationIdempotencyRecord>();
 
+    public DbSet<HotelBookingCancellation> HotelBookingCancellations => Set<HotelBookingCancellation>();
+
+    public DbSet<HotelSupplierCancellationAttempt> HotelSupplierCancellationAttempts =>
+        Set<HotelSupplierCancellationAttempt>();
+
+    public DbSet<HotelBookingCancellationIdempotencyRecord> HotelBookingCancellationIdempotency =>
+        Set<HotelBookingCancellationIdempotencyRecord>();
+
     public DbSet<HotelBookingReconciliationIssue> HotelBookingReconciliationIssues =>
         Set<HotelBookingReconciliationIssue>();
 

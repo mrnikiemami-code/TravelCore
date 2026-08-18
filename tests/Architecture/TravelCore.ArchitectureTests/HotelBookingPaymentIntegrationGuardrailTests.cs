@@ -45,6 +45,7 @@ public sealed class HotelBookingPaymentIntegrationGuardrailTests
         Assert.Null(typeof(HotelBooking).GetMethod("ForceCancel"));
         Assert.NotNull(typeof(HotelBooking).GetMethod(nameof(HotelBooking.ConfirmFromAuthoritativePaymentAndSupplierEvidence)));
         Assert.NotNull(typeof(HotelBooking).GetMethod(nameof(HotelBooking.CancelFromAuthoritativePaymentCompensation)));
+        Assert.NotNull(typeof(HotelBooking).GetMethod(nameof(HotelBooking.CancelFromAuthoritativeSupplierCancellation)));
         Assert.Equal(
             new[] { "Pending", "Confirmed", "Cancelled" },
             Enum.GetNames<HotelBookingStatus>());
@@ -64,7 +65,10 @@ public sealed class HotelBookingPaymentIntegrationGuardrailTests
             HotelBookingCompensationOutboxBoundary.MessageType);
         Assert.False(HotelBookingPaymentSuccessOutboxBoundary.EventMeansHotelBookingConfirmed);
         Assert.False(HotelBookingRefundSuccessOutboxBoundary.EventMeansHotelBookingCancelled);
-        Assert.False(HotelBookingCompensationOutboxBoundary.EventAmountIsAuthoritative);
+        Assert.NotEqual(
+            HotelBookingCompensationOutboxBoundary.MessageType,
+            HotelBookingCancellationRefundOutboxBoundary.MessageType);
+        Assert.False(HotelBookingCancellationRefundOutboxBoundary.EventAmountIsAuthoritative);
     }
 
     [Fact]

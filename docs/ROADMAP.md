@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R6 RESOLVED** · **P21-R7–R8 OPEN**) |
-| Phase Status | P00–P20 COMPLETE · P21 IN_PROGRESS · P21-R1–R6 RESOLVED · P21-R7–R8 OPEN |
+| Current Phase | **P21 — Hotel Booking** (**IN_PROGRESS** — `TC-P21-PLAN` ACCEPTED · **P21-R1–R7 RESOLVED** · **P21-R8 OPEN**) |
+| Phase Status | P00–P20 COMPLETE · P21 IN_PROGRESS · P21-R1–R7 RESOLVED · P21-R8 OPEN |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P21-T006`; do not invent R7–R8; do not execute T007 |
+| Current Next Task | Architect review of `TC-P21-T007`; do not invent R8; do not execute T008 |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -120,7 +120,7 @@
 - **P18** = COMPLETE (`TC-P18-GATE` ACCEPTED `73605aa` · **R1–R8 RESOLVED**) [`plans/P18-GATE-acceptance-evidence.md`](plans/P18-GATE-acceptance-evidence.md)
 - **P19** = COMPLETE (`TC-P19-GATE` ACCEPTED `d258933` · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
 - **P20** = COMPLETE (`TC-P20-GATE` ACCEPTED · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md)
-- **P21** = IN_PROGRESS — Hotel Booking · `TC-P21-PLAN` ACCEPTED [`plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R6 RESOLVED** · **P21-R7–R8 OPEN** · T006 AWAITING_ARCHITECT_REVIEW · T007 NOT EXECUTED
+- **P21** = IN_PROGRESS — Hotel Booking · `TC-P21-PLAN` ACCEPTED [`plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R7 RESOLVED** · **P21-R8 OPEN** · T006 ACCEPTED (`f2d4946` / docs `790765b`) · T007 implemented / AWAITING_ARCHITECT_REVIEW · T008 NOT EXECUTED
 - **P22–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -592,7 +592,9 @@ Payment را با Price یا Quote ادغام نکنید.
 
 ## P21 — Hotel Booking
 
-**Status:** IN_PROGRESS — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R6 RESOLVED** · **P21-R7–R8 OPEN** · T005 ACCEPTED (`8cc1b28` / docs `53e6e14`) · T006 implemented / AWAITING_ARCHITECT_REVIEW · T007 NOT EXECUTED · PayAtProperty DEFERRED · deposit/partial DEFERRED · Partial Refund DEFERRED · Confirmed cancellation = R7 · Production Payment Provider NONE · Named Hotel Supplier NONE
+**Status:** IN_PROGRESS — `TC-P21-PLAN` ACCEPTED [`docs/plans/P21-implementation-plan.md`](plans/P21-implementation-plan.md) · **P21-R1–R7 RESOLVED** · **P21-R8 OPEN** · T006 ACCEPTED (`f2d4946` / docs `790765b`) · T007 implemented / AWAITING_ARCHITECT_REVIEW · T008 NOT EXECUTED · PayAtProperty DEFERRED · deposit/partial DEFERRED · Partial Refund DEFERRED · amendments/rebooking DEFERRED · no public cancellation API · Named Hotel Supplier NONE · Production Payment Provider NONE
+
+P21-R7 lock: customer cancellation targets Confirmed HotelBooking; HotelBookingCancellation is separate process state; economics from immutable HotelCancellationPolicySnapshot at RequestedAt Instant; PenaltyAmount = 0 => full Refund; PenaltyAmount = TotalAmount => no Refund; partial penalty requires Partial Refund and is not executable; partial-refund-required cancellation is rejected before supplier cancellation; supplier cancellation is authoritative, durable, idempotent, and ambiguity-aware; network timeout is not failure or success; HotelBooking remains Confirmed until supplier cancellation is authoritative; authoritative supplier cancellation performs Confirmed → Cancelled; full Refund is requested only after that; HotelBookingCancelled != RefundSucceeded; Payment owns Refund and remains Succeeded; no-refund completes without Refund; full-refund completes after RefundSucceeded; no distributed transaction.
 
 جدا از Place Hotel Catalog: provider abstraction · mapping · search · availability · rooms · rates · cancellation rules · Quote · reservation · booking · voucher · provider sync.
 

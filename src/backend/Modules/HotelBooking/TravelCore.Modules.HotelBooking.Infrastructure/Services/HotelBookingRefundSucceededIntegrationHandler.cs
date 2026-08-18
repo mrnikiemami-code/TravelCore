@@ -47,8 +47,26 @@ internal sealed class HotelBookingRefundSucceededIntegrationHandler : IHotelBook
 
         var reservation = await _db.HotelSupplierReservations
             .SingleOrDefaultAsync(x => x.HotelBookingId == bookingId, cancellationToken);
+        var cancellation = await _db.HotelBookingCancellations
+            .Include(x => x.Attempts)
+            .SingleOrDefaultAsync(x => x.HotelBookingId == bookingId, cancellationToken);
 
-        if (booking.Status == HotelBookingStatus.Confirmed
+        if (cancellation is not null
+            && cancellation.PaymentId == message.PaymentId
+            && cancellation.RequiresFullRefund)
+        {
+            if (booking.Status == HotelBookingStatus.Cancelled
+                && cancellation.Status is HotelBookingCancellationStatus.RefundPending
+                    or HotelBookingCancellationStatus.Completed)
+            {
+                cancellation.CompleteFromAuthoritativeRefundSuccess(now);
+            }
+            else
+            {
+                PersistRefundMismatch(booking.Id, now);
+            }
+        }
+        else if (booking.Status == HotelBookingStatus.Confirmed
             || reservation is { Status: HotelSupplierReservationStatus.Confirmed })
         {
             var kind = booking.Status == HotelBookingStatus.Confirmed
@@ -82,6 +100,14 @@ internal sealed class HotelBookingRefundSucceededIntegrationHandler : IHotelBook
             _db.ChangeTracker.Clear();
         }
     }
+
+    private void PersistRefundMismatch(HotelBookingId hotelBookingId, Instant now) =>
+        _db.HotelBookingReconciliationIssues.Add(
+            new HotelBookingReconciliationIssue(
+                hotelBookingId,
+                HotelBookingReconciliationIssueKind.RefundInvariantMismatch,
+                now,
+                detail: "RefundSucceeded did not match R7 cancellation completion invariants."));
 
     private async Task TryReleaseHoldAsync(
         HotelBookingId hotelBookingId,

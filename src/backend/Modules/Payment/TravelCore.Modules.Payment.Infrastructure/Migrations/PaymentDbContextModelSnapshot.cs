@@ -389,6 +389,30 @@ namespace TravelCore.Modules.Payment.Infrastructure.Migrations
                     b.ToTable("compensation_inbox", "payment");
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Payment.Infrastructure.PaymentHotelBookingCancellationRefundInboxRecord", b =>
+                {
+                    b.Property<Guid>("HotelBookingCancellationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_booking_cancellation_id");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<Instant>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("HotelBookingCancellationId");
+
+                    b.HasIndex("PaymentId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_hotel_booking_cancellation_refund_inbox_payment_id");
+
+                    b.ToTable("hotel_booking_cancellation_refund_inbox", "payment");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Payment.Infrastructure.PaymentOutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")

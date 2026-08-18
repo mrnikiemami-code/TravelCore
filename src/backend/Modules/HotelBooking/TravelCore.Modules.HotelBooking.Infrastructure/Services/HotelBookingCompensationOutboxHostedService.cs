@@ -26,6 +26,9 @@ internal sealed class HotelBookingCompensationOutboxHostedService : BackgroundSe
                 await using var scope = _scopes.CreateAsyncScope();
                 var compensation = scope.ServiceProvider.GetRequiredService<HotelBookingCompensationOutboxDispatcher>();
                 await compensation.DispatchPendingAsync(take: 50, stoppingToken);
+                var cancellationRefund = scope.ServiceProvider
+                    .GetRequiredService<HotelBookingCancellationRefundOutboxDispatcher>();
+                await cancellationRefund.DispatchPendingAsync(take: 50, stoppingToken);
                 var reservationRequired = scope.ServiceProvider
                     .GetRequiredService<HotelSupplierReservationRequiredOutboxDispatcher>();
                 await reservationRequired.DispatchPendingAsync(take: 50, stoppingToken);

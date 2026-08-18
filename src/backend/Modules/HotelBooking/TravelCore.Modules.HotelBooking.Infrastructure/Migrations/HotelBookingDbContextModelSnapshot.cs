@@ -187,6 +187,101 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingCancellation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Instant?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("completed_at");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("currency_code");
+
+                    b.Property<short>("FinancialOutcome")
+                        .HasColumnType("smallint")
+                        .HasColumnName("financial_outcome");
+
+                    b.Property<Guid>("HotelBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_booking_id");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<decimal>("PenaltyAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("penalty_amount");
+
+                    b.Property<decimal>("RefundAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("refund_amount");
+
+                    b.Property<Instant>("RequestedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("requested_at");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.Property<long>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint")
+                        .HasColumnName("version");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelBookingId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_hotel_booking_cancellations_hotel_booking_id");
+
+                    b.ToTable("hotel_booking_cancellations", "hotel_booking", t =>
+                        {
+                            t.HasCheckConstraint("ck_hotel_booking_cancellations_financial_outcome", "financial_outcome IN (1, 2)");
+
+                            t.HasCheckConstraint("ck_hotel_booking_cancellations_status", "status IN (1, 2, 3, 4)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingCancellationIdempotencyRecord", b =>
+                {
+                    b.Property<Guid>("HotelBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_booking_id");
+
+                    b.Property<string>("IdempotencyKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("idempotency_key");
+
+                    b.Property<Guid?>("AttemptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_supplier_cancellation_attempt_id");
+
+                    b.Property<Guid>("CancellationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_booking_cancellation_id");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.HasKey("HotelBookingId", "IdempotencyKey");
+
+                    b.HasIndex("CancellationId");
+
+                    b.ToTable("hotel_booking_cancellation_idempotency", "hotel_booking");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingGuest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -367,7 +462,7 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
 
                     b.ToTable("hotel_booking_reconciliation_issues", "hotel_booking", t =>
                         {
-                            t.HasCheckConstraint("ck_hotel_booking_reconciliation_issues_kind", "kind IN (1, 2, 3, 4, 5, 6, 7, 8)");
+                            t.HasCheckConstraint("ck_hotel_booking_reconciliation_issues_kind", "kind IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)");
                         });
                 });
 
@@ -584,6 +679,49 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                     b.HasKey("HotelRateOfferSnapshotId", "RoomReservationId");
 
                     b.ToTable("hotel_room_rate_snapshots", "hotel_booking");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelSupplierCancellationAttempt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("CancellationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("hotel_booking_cancellation_id");
+
+                    b.Property<Instant?>("ConfirmedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("confirmed_at");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Instant?>("FailedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("failed_at");
+
+                    b.Property<Instant?>("InitiatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("initiated_at");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CancellationId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_hotel_supplier_cancellation_attempts_one_unresolved")
+                        .HasFilter("status IN (1, 2)");
+
+                    b.ToTable("hotel_supplier_cancellation_attempts", "hotel_booking", t =>
+                        {
+                            t.HasCheckConstraint("ck_hotel_supplier_cancellation_attempts_status", "status IN (1, 2, 3, 4)");
+                        });
                 });
 
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelSupplierReservation", b =>
@@ -867,6 +1005,24 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingCancellation", b =>
+                {
+                    b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBooking", null)
+                        .WithMany()
+                        .HasForeignKey("HotelBookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingCancellationIdempotencyRecord", b =>
+                {
+                    b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBookingCancellation", null)
+                        .WithMany()
+                        .HasForeignKey("CancellationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingGuest", b =>
                 {
                     b.HasOne("TravelCore.Modules.HotelBooking.Domain.RoomReservation", null)
@@ -1137,6 +1293,15 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
                     b.Navigation("Amount");
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelSupplierCancellationAttempt", b =>
+                {
+                    b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBookingCancellation", null)
+                        .WithMany("Attempts")
+                        .HasForeignKey("CancellationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelSupplierReservation", b =>
                 {
                     b.HasOne("TravelCore.Modules.HotelBooking.Domain.HotelBooking", null)
@@ -1181,6 +1346,11 @@ namespace TravelCore.Modules.HotelBooking.Infrastructure.Migrations
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBooking", b =>
                 {
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingCancellation", b =>
+                {
+                    b.Navigation("Attempts");
                 });
 
             modelBuilder.Entity("TravelCore.Modules.HotelBooking.Domain.HotelBookingMonetarySnapshot", b =>

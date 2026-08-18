@@ -33,12 +33,14 @@ public sealed class HotelBookingModule : ITravelCoreModule
         services.AddScoped<HotelRateOfferAcceptanceService>();
         services.AddSingleton<IHotelReservationSourceResolver, HotelReservationSourceResolver>();
         services.AddScoped<HotelSupplierReservationService>();
+        services.AddScoped<HotelBookingCancellationService>();
         services.AddScoped<HotelBookingPaymentObligationQueryService>();
         services.AddScoped<IHotelBookingPaymentObligationQuery>(
             sp => sp.GetRequiredService<HotelBookingPaymentObligationQueryService>());
         services.AddScoped<IHotelBookingPaymentSucceededIntegrationHandler, HotelBookingPaymentSucceededIntegrationHandler>();
         services.AddScoped<IHotelBookingRefundSucceededIntegrationHandler, HotelBookingRefundSucceededIntegrationHandler>();
         services.AddScoped<HotelBookingCompensationOutboxDispatcher>();
+        services.AddScoped<HotelBookingCancellationRefundOutboxDispatcher>();
         services.AddScoped<HotelSupplierReservationRequiredOutboxDispatcher>();
         services.AddHostedService<HotelBookingCompensationOutboxHostedService>();
 

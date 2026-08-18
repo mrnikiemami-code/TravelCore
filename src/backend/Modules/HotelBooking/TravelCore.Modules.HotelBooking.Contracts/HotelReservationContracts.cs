@@ -196,3 +196,139 @@ public sealed class HotelReservationQueryResult
 
     public MoneyValue? ReportedTotal { get; }
 }
+
+public sealed class HotelReservationCancellationRequest
+{
+    public HotelReservationCancellationRequest(
+        Guid hotelBookingId,
+        Guid hotelBookingCancellationId,
+        string sourceKey,
+        string sourceReservationReference,
+        string idempotencyKey)
+    {
+        if (hotelBookingId == Guid.Empty)
+        {
+            throw new ArgumentException("HotelBookingId is required.", nameof(hotelBookingId));
+        }
+
+        if (hotelBookingCancellationId == Guid.Empty)
+        {
+            throw new ArgumentException("HotelBookingCancellationId is required.", nameof(hotelBookingCancellationId));
+        }
+
+        if (string.IsNullOrWhiteSpace(sourceKey))
+        {
+            throw new ArgumentException("SourceKey is required.", nameof(sourceKey));
+        }
+
+        if (string.IsNullOrWhiteSpace(sourceReservationReference))
+        {
+            throw new ArgumentException("SourceReservationReference is required.", nameof(sourceReservationReference));
+        }
+
+        if (string.IsNullOrWhiteSpace(idempotencyKey))
+        {
+            throw new ArgumentException("IdempotencyKey is required.", nameof(idempotencyKey));
+        }
+
+        HotelBookingId = hotelBookingId;
+        HotelBookingCancellationId = hotelBookingCancellationId;
+        SourceKey = sourceKey.Trim().ToLowerInvariant();
+        SourceReservationReference = sourceReservationReference.Trim();
+        IdempotencyKey = idempotencyKey.Trim();
+    }
+
+    public Guid HotelBookingId { get; }
+
+    public Guid HotelBookingCancellationId { get; }
+
+    public string SourceKey { get; }
+
+    public string SourceReservationReference { get; }
+
+    public string IdempotencyKey { get; }
+}
+
+public enum HotelReservationCancellationSourceOutcome
+{
+    Confirmed = 1,
+    Failed = 2,
+    Timeout = 3,
+    Unknown = 4,
+}
+
+public sealed class HotelReservationCancellationSourceResult
+{
+    public HotelReservationCancellationSourceResult(
+        HotelReservationCancellationSourceOutcome outcome,
+        MoneyValue? reportedCancellationFee = null)
+    {
+        Outcome = outcome;
+        ReportedCancellationFee = reportedCancellationFee;
+    }
+
+    public HotelReservationCancellationSourceOutcome Outcome { get; }
+
+    public MoneyValue? ReportedCancellationFee { get; }
+}
+
+public sealed class HotelReservationCancellationQueryRequest
+{
+    public HotelReservationCancellationQueryRequest(
+        Guid hotelBookingId,
+        string sourceKey,
+        string sourceReservationReference,
+        bool sourceVerified = true)
+    {
+        if (hotelBookingId == Guid.Empty)
+        {
+            throw new ArgumentException("HotelBookingId is required.", nameof(hotelBookingId));
+        }
+
+        if (string.IsNullOrWhiteSpace(sourceKey))
+        {
+            throw new ArgumentException("SourceKey is required.", nameof(sourceKey));
+        }
+
+        if (string.IsNullOrWhiteSpace(sourceReservationReference))
+        {
+            throw new ArgumentException("SourceReservationReference is required.", nameof(sourceReservationReference));
+        }
+
+        HotelBookingId = hotelBookingId;
+        SourceKey = sourceKey.Trim().ToLowerInvariant();
+        SourceReservationReference = sourceReservationReference.Trim();
+        SourceVerified = sourceVerified;
+    }
+
+    public Guid HotelBookingId { get; }
+
+    public string SourceKey { get; }
+
+    public string SourceReservationReference { get; }
+
+    public bool SourceVerified { get; }
+}
+
+public enum HotelReservationCancellationQueryStatus
+{
+    Cancelled = 1,
+    Active = 2,
+    PendingUnknown = 3,
+    NotFound = 4,
+}
+
+public sealed class HotelReservationCancellationQueryResult
+{
+    public HotelReservationCancellationQueryResult(
+        HotelReservationCancellationQueryStatus status,
+        MoneyValue? reportedCancellationFee = null)
+    {
+        Status = status;
+        ReportedCancellationFee = reportedCancellationFee;
+    }
+
+    public HotelReservationCancellationQueryStatus Status { get; }
+
+    public MoneyValue? ReportedCancellationFee { get; }
+}

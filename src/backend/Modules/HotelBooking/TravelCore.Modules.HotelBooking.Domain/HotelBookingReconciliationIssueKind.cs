@@ -10,4 +10,9 @@ public enum HotelBookingReconciliationIssueKind : short
     CancellationTermsMismatch = 6,
     ContradictorySupplierEvidence = 7,
     AmbiguousReservationOutcome = 8,
+    SupplierCancellationAmbiguous = 9,
+    SupplierCancellationContradiction = 10,
+    SupplierCancellationEconomicsMismatch = 11,
+    MissingPaymentEvidence = 12,
+    RefundInvariantMismatch = 13,
 }

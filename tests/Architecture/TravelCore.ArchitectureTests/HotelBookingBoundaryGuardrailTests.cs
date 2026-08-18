@@ -49,7 +49,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.False(HotelBookingOwnershipBoundary.SupplierAdapterImplemented);
         Assert.False(HotelBookingOwnershipBoundary.SupplierSdkImplemented);
         Assert.True(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.CancellationModelImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.CancellationModelImplemented);
         Assert.True(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingUiImplemented);
@@ -82,7 +82,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.True(HotelBookingStayBoundary.AvailabilityHoldImplemented);
         Assert.True(HotelBookingStayBoundary.SupplierReservationImplemented);
         Assert.False(HotelBookingStayBoundary.RateQuoteImplemented);
-        Assert.False(HotelBookingStayBoundary.CancellationImplemented);
+        Assert.True(HotelBookingStayBoundary.CancellationImplemented);
         Assert.True(HotelBookingStayBoundary.PaymentIntegrationImplemented);
         Assert.Equal(new[] { "Adult", "Child" }, Enum.GetNames<HotelGuestCategory>());
         Assert.NotEqual(
@@ -333,7 +333,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.CancellationPolicy"));
         Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.CancellationPenalty"));
         Assert.True(HotelBookingOwnershipBoundary.RateQuoteModelImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.CancellationModelImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.CancellationModelImplemented);
         Assert.True(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
         Assert.True(HotelBookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(HotelBookingOwnershipBoundary.HotelBookingApiImplemented);
@@ -350,7 +350,7 @@ public sealed class HotelBookingBoundaryGuardrailTests
         Assert.Equal("IHotelReservationSource", HotelReservationOwnershipBoundary.SourcePortName);
         Assert.False(HotelReservationOwnershipBoundary.ProductionFakeReservationSourceImplemented);
         Assert.True(HotelReservationOwnershipBoundary.PaymentRequiredForConfirmation);
-        Assert.False(HotelReservationOwnershipBoundary.CancellationExecutionImplemented);
+        Assert.True(HotelReservationOwnershipBoundary.CancellationExecutionImplemented);
         Assert.False(HotelReservationOwnershipBoundary.PublicReservationApiImplemented);
 
         var paymentRoot = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
