@@ -8,6 +8,7 @@ using TravelCore.Modularity;
 using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Domain;
 using TravelCore.Modules.Flight.Infrastructure.Search;
+using TravelCore.Modules.Flight.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Flight.Infrastructure;
@@ -25,7 +26,9 @@ public sealed class FlightModule : ITravelCoreModule
         services.TryAddSingleton<IClock>(SystemClock.Instance);
         services.AddSingleton<IFlightSearchSourceResolver, FlightSearchSourceResolver>();
         services.AddSingleton<IFlightOfferAvailabilitySourceResolver, FlightOfferAvailabilitySourceResolver>();
+        services.AddSingleton<IFlightOfferSourceResolver, FlightOfferSourceResolver>();
         services.AddScoped<FlightLiveSearchService>();
+        services.AddScoped<FlightOfferAcceptanceService>();
 
         services.AddDbContext<FlightDbContext>((_, options) =>
         {

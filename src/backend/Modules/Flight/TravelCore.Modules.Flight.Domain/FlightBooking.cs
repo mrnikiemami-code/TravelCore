@@ -1,7 +1,7 @@
 namespace TravelCore.Modules.Flight.Domain;
 
 /// <summary>
-/// Flight-owned live-flight transaction aggregate (P22-R2). No lifecycle status, fare, PNR, or Payment.
+/// Flight-owned live-flight transaction aggregate (P22-R2). No lifecycle status, PNR, or Payment.
 /// </summary>
 public sealed class FlightBooking
 {
@@ -103,5 +103,65 @@ public sealed class FlightBooking
         }
 
         return booking;
+    }
+
+    public void EnsureMatchesCommercialOffer(
+        FlightTripType tripType,
+        IReadOnlyList<FlightOfferSegmentIdentity> segments,
+        FlightPassengerCount passengers)
+    {
+        ArgumentNullException.ThrowIfNull(segments);
+        ArgumentNullException.ThrowIfNull(passengers);
+
+        if (tripType != TripType)
+        {
+            throw new ArgumentException("Offer trip type does not match persisted FlightBooking.", nameof(tripType));
+        }
+
+        var expected = _journeys
+            .OrderBy(j => j.Ordinal)
+            .SelectMany(j => j.Segments
+                .OrderBy(s => s.Ordinal)
+                .Select(s => new FlightOfferSegmentIdentity(
+                    j.Ordinal,
+                    s.Ordinal,
+                    s.Origin,
+                    s.Destination,
+                    s.DepartureAt,
+                    s.ArrivalAt,
+                    s.MarketingCarrier,
+                    s.OperatingCarrier,
+                    s.FlightNumber)))
+            .ToArray();
+
+        if (segments.Count == 0 || segments.Count != expected.Length)
+        {
+            throw new ArgumentException(
+                "Accepted offer must cover every FlightSegment of the persisted FlightBooking exactly once.",
+                nameof(segments));
+        }
+
+        var offered = segments.OrderBy(s => s.JourneyOrdinal).ThenBy(s => s.SegmentOrdinal).ToArray();
+        for (var i = 0; i < expected.Length; i++)
+        {
+            if (!expected[i].Equals(offered[i]))
+            {
+                throw new ArgumentException(
+                    "Offer itinerary identity does not match persisted FlightBooking.",
+                    nameof(segments));
+            }
+        }
+
+        var adultCount = _passengers.Count(p => p.Category == FlightPassengerCategory.Adult);
+        var childCount = _passengers.Count(p => p.Category == FlightPassengerCategory.Child);
+        var infantCount = _passengers.Count(p => p.Category == FlightPassengerCategory.Infant);
+        if (passengers.AdultCount != adultCount
+            || passengers.ChildCount != childCount
+            || passengers.InfantCount != infantCount)
+        {
+            throw new ArgumentException(
+                "Offer passenger composition does not match persisted FlightBooking.",
+                nameof(passengers));
+        }
     }
 }

@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Flight.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.Flight.Domain</AssemblyName>
-    <Description>FlightBooking itinerary/passenger domain (TC-P22-T002 / P22-R2). No status, search, offer, PNR, ticket, or Payment.</Description>
+    <Description>FlightBooking itinerary and immutable offer/monetary/fare-rule snapshots (TC-P22-T004 / P22-R4). No PNR, ticket, or Payment.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,5 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TravelCore.Modules.Flight.Contracts\TravelCore.Modules.Flight.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
   </ItemGroup>
 </Project>

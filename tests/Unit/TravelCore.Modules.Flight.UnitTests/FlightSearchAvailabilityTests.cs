@@ -180,8 +180,10 @@ public sealed class FlightSearchAvailabilityTests
     {
         Assert.NotEqual(typeof(FlightBooking), typeof(FlightSearchResult));
         Assert.NotEqual(typeof(FlightBooking), typeof(FlightSearchOption));
-        Assert.Null(typeof(FlightLiveSearchService).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightOfferSnapshot"));
-        Assert.Null(typeof(FlightLiveSearchService).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBookingMonetarySnapshot"));
+        Assert.NotEqual(typeof(FlightSearchResult), typeof(FlightOfferSnapshot));
+        Assert.NotEqual(typeof(FlightSearchOption), typeof(FlightOfferSnapshot));
+        Assert.NotNull(typeof(FlightLiveSearchService).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightOfferSnapshot"));
+        Assert.NotNull(typeof(FlightLiveSearchService).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBookingMonetarySnapshot"));
         Assert.Null(typeof(FlightLiveSearchService).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightAvailabilityHold"));
         Assert.Null(typeof(FlightLiveSearchService).Assembly.GetType("TravelCore.Modules.Flight.Domain.SeatInventory"));
     }

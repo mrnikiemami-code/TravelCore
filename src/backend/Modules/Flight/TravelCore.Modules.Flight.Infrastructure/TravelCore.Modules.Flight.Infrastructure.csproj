@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Flight.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.Flight.Infrastructure</AssemblyName>
-    <Description>Flight infrastructure: FlightBooking itinerary persistence (TC-P22-T002 / P22-R2). No endpoints.</Description>
+    <Description>Flight infrastructure: itinerary and immutable offer/monetary/fare-rule persistence (TC-P22-T004 / P22-R4). No endpoints.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TravelCore.Modules.Flight.Contracts\TravelCore.Modules.Flight.Contracts.csproj" />
     <ProjectReference Include="..\TravelCore.Modules.Flight.Domain\TravelCore.Modules.Flight.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
     <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
     <ProjectReference Include="..\..\..\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
   </ItemGroup>

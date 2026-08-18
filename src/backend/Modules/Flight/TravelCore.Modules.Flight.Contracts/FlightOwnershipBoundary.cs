@@ -3,7 +3,7 @@ namespace TravelCore.Modules.Flight.Contracts;
 /// <summary>
 /// P22-R1: Flight is the independent live-flight commerce / transaction owner
 /// (schema <c>flight</c>). TourDepartureTransportSegment remains Tour-owned package transport.
-/// FlightBooking is owned inside Flight. T003 adds live search/availability ports; accepted offer/PNR/Payment remain out of scope.
+/// FlightBooking is owned inside Flight. T004 adds immutable offer/monetary/fare-rule snapshots; PNR/Payment remain out of scope.
 /// </summary>
 public static class FlightOwnershipBoundary
 {
@@ -18,13 +18,15 @@ public static class FlightOwnershipBoundary
     public const string ProductionSearchSource = "NONE";
     public const string ProductionAvailabilitySource = "NONE";
     public const string ProductionRateSource = "NONE";
+    public const string ProductionOfferSource = "NONE";
     public const string ProductionReservationSource = "NONE";
     public const string ProductionTicketingSource = "NONE";
     public const string ProviderSecretPosture = "SecureConfigurationNotSourceControl";
     public const string InventoryAuthority = "external source-authoritative";
     public const string SearchSourcePort = "IFlightSearchSource";
     public const string AvailabilitySourcePort = "IFlightOfferAvailabilitySource";
-    public const string SourceCapabilities = "Search, AvailabilityCheck";
+    public const string OfferSourcePort = "IFlightOfferSource";
+    public const string SourceCapabilities = "Search, AvailabilityCheck, OfferRevalidation";
     public const string AirportAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirlineAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirportCandidateOwner = "ReferenceData";
@@ -56,8 +58,8 @@ public static class FlightOwnershipBoundary
     public const bool PassengerModelImplemented = true;
     public const bool SearchModelImplemented = true;
     public const bool AvailabilityModelImplemented = true;
-    public const bool OfferModelImplemented = false;
-    public const bool FareModelImplemented = false;
+    public const bool OfferModelImplemented = true;
+    public const bool FareModelImplemented = true;
     public const bool PnrModelImplemented = false;
     public const bool TicketModelImplemented = false;
     public const bool PaymentIntegrationImplemented = false;

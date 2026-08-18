@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P22 — Flight** (**IN_PROGRESS** — `TC-P22-PLAN` ACCEPTED [`docs/plans/P22-implementation-plan.md`](plans/P22-implementation-plan.md) · **P22-R1–R3 = RESOLVED** · **P22-R4–R8 OPEN** · T003 awaiting review · T004 NOT EXECUTED) |
-| Phase Status | P00–P21 COMPLETE · P22 IN_PROGRESS · P22-R1–R3 RESOLVED · P22-R4–R8 OPEN |
+| Current Phase | **P22 — Flight** (**IN_PROGRESS** — `TC-P22-PLAN` ACCEPTED [`docs/plans/P22-implementation-plan.md`](plans/P22-implementation-plan.md) · **P22-R1–R4 = RESOLVED** · **P22-R5–R8 OPEN** · T004 awaiting review · T005 NOT EXECUTED) |
+| Phase Status | P00–P21 COMPLETE · P22 IN_PROGRESS · P22-R1–R4 RESOLVED · P22-R5–R8 OPEN |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P22-T003 RESULT`; do **not** execute T004 until T003 ACCEPTED and P22-R4 locked |
+| Current Next Task | Return `TC-P22-T004 RESULT`; do **not** execute T005 until T004 ACCEPTED and P22-R5 locked |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -121,7 +121,7 @@
 - **P19** = COMPLETE (`TC-P19-GATE` ACCEPTED `d258933` · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
 - **P20** = COMPLETE (`TC-P20-GATE` ACCEPTED · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md)
 - **P21** = COMPLETE (`TC-P21-GATE` ACCEPTED `858b4be` / docs `d6bd842` · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md)
-- **P22** = IN_PROGRESS / PLAN ACCEPTED [`plans/P22-implementation-plan.md`](plans/P22-implementation-plan.md) · **P22-R1–R3 = RESOLVED** · **P22-R4–R8 OPEN** · T001–T002 ACCEPTED · T003 awaiting review · T004 NOT EXECUTED
+- **P22** = IN_PROGRESS / PLAN ACCEPTED [`plans/P22-implementation-plan.md`](plans/P22-implementation-plan.md) · **P22-R1–R4 = RESOLVED** · **P22-R5–R8 OPEN** · T001–T003 ACCEPTED · T004 awaiting review · T005 NOT EXECUTED
 - **P23–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -605,7 +605,7 @@ P21-R7 lock: customer cancellation targets Confirmed HotelBooking; HotelBookingC
 
 ## P22 — Flight
 
-**Status:** IN_PROGRESS — PLAN ACCEPTED [`docs/plans/P22-implementation-plan.md`](plans/P22-implementation-plan.md) · **P22-R1–R3 = RESOLVED** · **P22-R4–R8 OPEN** · T003 awaiting review · T004 NOT EXECUTED
+**Status:** IN_PROGRESS — PLAN ACCEPTED [`docs/plans/P22-implementation-plan.md`](plans/P22-implementation-plan.md) · **P22-R1–R4 = RESOLVED** · **P22-R5–R8 OPEN** · T004 awaiting review · T005 NOT EXECUTED
 
 provider abstraction · airport/reference · one-way · round-trip · multi-city در صورت تأیید · search · fare · baggage · passenger rules · Quote · booking/order · provider references.
 
@@ -775,7 +775,7 @@ P26 = Advanced SEO.
 | P19 | Tour Booking | **COMPLETE** (`TC-P19-GATE` ACCEPTED `d258933` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P20 | Payment | **COMPLETE** (`TC-P20-GATE` ACCEPTED · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P21 | Hotel Booking | **COMPLETE** (`TC-P21-GATE` ACCEPTED `858b4be` / docs `d6bd842` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
-| P22 | Flight | **IN_PROGRESS** (PLAN ACCEPTED · R1–R3 RESOLVED · R4–R8 OPEN · T003 awaiting review · T004 NOT EXECUTED) |
+| P22 | Flight | **IN_PROGRESS** (PLAN ACCEPTED · R1–R4 RESOLVED · R5–R8 OPEN · T004 awaiting review · T005 NOT EXECUTED) |
 | P23 | Dynamic Package / Flight + Hotel | PLANNED |
 | P24 | B2B / Agency Commerce | PLANNED |
 | P25 | Notification | PLANNED |

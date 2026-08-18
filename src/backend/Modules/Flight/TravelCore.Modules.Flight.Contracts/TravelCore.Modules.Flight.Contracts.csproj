@@ -6,11 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.Flight.Contracts</RootNamespace>
     <AssemblyName>TravelCore.Modules.Flight.Contracts</AssemblyName>
-    <Description>Flight module contracts: ownership boundary and live search/availability ports (TC-P22-T003 / P22-R3).</Description>
+    <Description>Flight module contracts: ownership, search/availability, and commercial offer ports (TC-P22-T004 / P22-R4).</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="3.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
   </ItemGroup>
 
 </Project>

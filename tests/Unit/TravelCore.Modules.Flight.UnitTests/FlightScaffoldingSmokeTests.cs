@@ -36,6 +36,7 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionSearchSource);
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionAvailabilitySource);
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionRateSource);
+        Assert.Equal("NONE", FlightOwnershipBoundary.ProductionOfferSource);
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionReservationSource);
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionTicketingSource);
         Assert.Equal("Flight != Tour", FlightOwnershipBoundary.FlightIsNotTour);
@@ -55,7 +56,8 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.True(FlightOwnershipBoundary.PassengerModelImplemented);
         Assert.True(FlightOwnershipBoundary.SearchModelImplemented);
         Assert.True(FlightOwnershipBoundary.AvailabilityModelImplemented);
-        Assert.False(FlightOwnershipBoundary.OfferModelImplemented);
+        Assert.True(FlightOwnershipBoundary.OfferModelImplemented);
+        Assert.True(FlightOwnershipBoundary.FareModelImplemented);
         Assert.False(FlightOwnershipBoundary.PnrModelImplemented);
         Assert.False(FlightOwnershipBoundary.TicketModelImplemented);
         Assert.False(FlightOwnershipBoundary.PaymentIntegrationImplemented);

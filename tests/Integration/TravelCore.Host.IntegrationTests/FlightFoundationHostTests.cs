@@ -32,8 +32,10 @@ public sealed class FlightFoundationHostTests
             Assert.False(db.Database.HasPendingModelChanges());
             var searchResolver = scope.ServiceProvider.GetRequiredService<IFlightSearchSourceResolver>();
             var availabilityResolver = scope.ServiceProvider.GetRequiredService<IFlightOfferAvailabilitySourceResolver>();
+            var offerResolver = scope.ServiceProvider.GetRequiredService<IFlightOfferSourceResolver>();
             Assert.Empty(searchResolver.ListConfiguredKeys());
             Assert.Empty(availabilityResolver.ListConfiguredKeys());
+            Assert.Empty(offerResolver.ListConfiguredKeys());
         }
 
         using var client = factory.CreateClient(new() { AllowAutoRedirect = false });

@@ -8,4 +8,5 @@ public enum FlightSourceCapability : short
 {
     Search = 1,
     AvailabilityCheck = 2,
+    OfferRevalidation = 3,
 }
