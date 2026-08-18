@@ -47,7 +47,8 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(BookingOwnershipBoundary.BookingAggregateImplemented);
         Assert.True(BookingOwnershipBoundary.BookingStatusImplemented);
         Assert.True(BookingOwnershipBoundary.CapacityHoldImplemented);
-        Assert.False(BookingOwnershipBoundary.BookingPassengerImplemented);
+        Assert.True(BookingOwnershipBoundary.BookingPassengerImplemented);
+        Assert.True(BookingOwnershipBoundary.ContactSnapshotImplemented);
         Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
         Assert.False(BookingOwnershipBoundary.SearchEngineImplemented);
         Assert.False(BookingOwnershipBoundary.AiInfrastructureImplemented);
@@ -103,7 +104,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(SeatHold|Reservation|ReservedSeats|ConfirmedSeats|ReleasedSeats|BookingPassenger|BookingContactSnapshot|PaymentIntent|PaymentStatus|Quote|Price|Checkout|Lead|VisaApplication|AgencyBooking|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine)\b",
+            @"\b(class|record|enum|struct|interface)\s+(SeatHold|Reservation|ReservedSeats|ConfirmedSeats|ReleasedSeats|PaymentIntent|PaymentStatus|Quote|Price|Checkout|Lead|VisaApplication|AgencyBooking|SearchIndex|RuleEngine|PolicyEngine|WorkflowEngine|TravelDocument|Passport)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -175,7 +176,7 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.True(hits.Count == 0, "Booking T002 must not introduce Search/AI/public API:\n" + string.Join('\n', hits));
         Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.Booking"));
         Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingStatus"));
-        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingPassenger"));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingPassenger"));
         Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.CapacityHold"));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "checkout")));
@@ -233,9 +234,21 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.DoesNotContain("SetStatus", methodNames);
         Assert.Contains("CancelPending", methodNames);
         Assert.Equal(
-            new[] { "CreatedAt", "Id", "Status", "StatusChangedAt", "TourDeparture" },
+            new[]
+            {
+                "ActorReference",
+                "Contact",
+                "CreatedAt",
+                "Id",
+                "PartyReference",
+                "PassengerCount",
+                "Passengers",
+                "Status",
+                "StatusChangedAt",
+                "TourDeparture",
+            },
             typeof(Booking).GetProperties().Select(p => p.Name).OrderBy(n => n, StringComparer.Ordinal).ToArray());
-        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingPassenger"));
+        Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.BookingPassenger"));
         Assert.NotNull(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.CapacityHold"));
     }
 
@@ -268,7 +281,8 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.False(CapacityConsumptionBoundary.HoldDurationHardcoded);
         Assert.True(BookingOwnershipBoundary.CapacityHoldImplemented);
         Assert.True(BookingOwnershipBoundary.CapacityConsumptionImplemented);
-        Assert.False(BookingOwnershipBoundary.BookingPassengerImplemented);
+        Assert.True(BookingOwnershipBoundary.BookingPassengerImplemented);
+        Assert.True(BookingOwnershipBoundary.ContactSnapshotImplemented);
         Assert.False(BookingOwnershipBoundary.PublicBookingSurfaceImplemented);
         Assert.DoesNotContain("Expired", Enum.GetNames<BookingStatus>());
         Assert.Null(typeof(Booking).GetMethod("Confirm"));
@@ -295,6 +309,37 @@ public sealed class BookingBoundaryGuardrailTests
             "Services",
             "BookingCapacityService.cs"));
         Assert.Contains("pg_advisory_xact_lock", service, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Booking_T004_People_Are_Transaction_Snapshots_Not_Masters()
+    {
+        Assert.Equal(
+            new[] { TravelerCategory.Adult, TravelerCategory.Child, TravelerCategory.Infant },
+            Enum.GetValues<TravelerCategory>());
+        Assert.Equal("PlannerTravelerComposition != BookingPassenger", BookingPeopleBoundary.PlannerTravelerCompositionIsNotBookingPassenger);
+        Assert.Equal("BookingPassenger != Party Person Master", BookingPeopleBoundary.BookingPassengerIsNotPartyPersonMaster);
+        Assert.Equal("BookingContactSnapshot != Party", BookingPeopleBoundary.BookingContactSnapshotIsNotParty);
+        Assert.Equal("BookingContactSnapshot != Identity Account", BookingPeopleBoundary.BookingContactSnapshotIsNotIdentityAccount);
+        Assert.Equal("BookingPassenger != CapacityHold", BookingPeopleBoundary.BookingPassengerIsNotCapacityHold);
+        Assert.Equal("BookingPassenger != VisaApplication", BookingPeopleBoundary.BookingPassengerIsNotVisaApplication);
+        Assert.Equal("BookingPassenger != TravelDocument", BookingPeopleBoundary.BookingPassengerIsNotTravelDocument);
+        Assert.Equal("Passenger PII != public Search/SEO data", BookingPeopleBoundary.PassengerPiiIsNotPublicSearch);
+        Assert.Equal("future explicit operational/legal policy", BookingPeopleBoundary.PiiRetention);
+        Assert.False(BookingPeopleBoundary.BirthDateImplemented);
+        Assert.False(BookingPeopleBoundary.PassportImplemented);
+        Assert.False(BookingPeopleBoundary.DocumentUploadImplemented);
+        Assert.False(BookingPeopleBoundary.InfantSeatPolicyImplemented);
+        Assert.False(BookingPeopleBoundary.PostConfirmationPassengerAmendmentImplemented);
+        Assert.True(BookingPeopleBoundary.AllowPassengerCountAtMostHeldSeats);
+        Assert.True(BookingOwnershipBoundary.BookingPassengerImplemented);
+        Assert.True(BookingOwnershipBoundary.ContactSnapshotImplemented);
+        Assert.DoesNotContain("PassengerPending", Enum.GetNames<BookingStatus>());
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.TravelDocument"));
+        Assert.Null(typeof(BookingDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Booking.Domain.Passport"));
+        var plan = File.ReadAllText(Path.Combine(RepoRoot, "docs", "plans", "P19-implementation-plan.md"));
+        Assert.Contains("PlannerTravelerComposition != BookingPassenger", plan, StringComparison.Ordinal);
+        Assert.Contains("BookingPassenger != Party Person Master", plan, StringComparison.Ordinal);
     }
 
     private static bool IsForbiddenPeerModule(string name) =>

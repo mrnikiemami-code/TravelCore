@@ -27,10 +27,11 @@ public sealed class BookingMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(3, expectedMigrations.Length);
+            Assert.Equal(4, expectedMigrations.Length);
             Assert.EndsWith("_InitialBookingScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddBookingAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddCapacityHoldAndDepartureAccount", expectedMigrations[2], StringComparison.Ordinal);
+            Assert.EndsWith("_AddBookingPassengerAndContactSnapshot", expectedMigrations[3], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -56,7 +57,7 @@ public sealed class BookingMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'booking'
-                  AND table_name NOT IN ('__EFMigrationsHistory', 'bookings', 'capacity_holds', 'departure_capacity_accounts');
+                  AND table_name NOT IN ('__EFMigrationsHistory', 'bookings', 'capacity_holds', 'departure_capacity_accounts', 'booking_passengers');
                 """, ct));
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
@@ -74,13 +75,13 @@ public sealed class BookingMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'booking'
-                  AND table_name = 'departure_capacity_accounts';
+                  AND table_name = 'booking_passengers';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'booking'
-                  AND table_name IN ('booking_passengers', 'booking_holds', 'booking_payments', 'booking_events');
+                  AND table_name IN ('booking_holds', 'booking_payments', 'booking_events');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
