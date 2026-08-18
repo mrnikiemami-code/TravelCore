@@ -27,11 +27,12 @@ public sealed class HotelBookingMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(4, expectedMigrations.Length);
+            Assert.Equal(5, expectedMigrations.Length);
             Assert.EndsWith("_InitialHotelBookingScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddHotelBookingStayStructure", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddHotelAvailabilityHold", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddHotelRateOfferSnapshots", expectedMigrations[3], StringComparison.Ordinal);
+            Assert.EndsWith("_AddHotelSupplierReservation", expectedMigrations[4], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -118,6 +119,30 @@ public sealed class HotelBookingMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'hotel_booking'
                   AND table_name = 'hotel_cancellation_penalty_rules';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_supplier_reservations';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_supplier_reservation_attempts';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_supplier_reservation_idempotency';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_booking_reconciliation_issues';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

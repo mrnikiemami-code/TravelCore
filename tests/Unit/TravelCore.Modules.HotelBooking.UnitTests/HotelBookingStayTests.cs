@@ -32,6 +32,8 @@ public sealed class HotelBookingStayTests
     {
         var booking = OneRoomBooking(new LocalDate(2026, 8, 18), new LocalDate(2026, 8, 19));
         Assert.Equal(1, booking.Nights);
+        Assert.Equal(HotelBookingStatus.Pending, booking.Status);
+        Assert.Null(booking.ConfirmedAt);
         Assert.Equal(1, booking.RoomCount);
         Assert.Equal(1, booking.GuestCount);
         Assert.Equal(1, booking.AdultCount);
@@ -81,6 +83,7 @@ public sealed class HotelBookingStayTests
         Assert.Equal(3, booking.GuestCount);
         Assert.Equal(2, booking.AdultCount);
         Assert.Equal(1, booking.ChildCount);
+        Assert.Equal(HotelBookingStatus.Pending, booking.Status);
         Assert.Equal(2, booking.Rooms[0].GuestCount);
         Assert.Equal(1, booking.Rooms[0].AdultCount);
         Assert.Equal(1, booking.Rooms[0].ChildCount);

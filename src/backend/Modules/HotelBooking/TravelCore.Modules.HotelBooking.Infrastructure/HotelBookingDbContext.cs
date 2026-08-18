@@ -46,6 +46,17 @@ public sealed class HotelBookingDbContext : DbContext
     public DbSet<HotelRateOfferIdempotencyRecord> HotelRateOfferIdempotency =>
         Set<HotelRateOfferIdempotencyRecord>();
 
+    public DbSet<HotelSupplierReservation> HotelSupplierReservations => Set<HotelSupplierReservation>();
+
+    public DbSet<HotelSupplierReservationAttempt> HotelSupplierReservationAttempts =>
+        Set<HotelSupplierReservationAttempt>();
+
+    public DbSet<HotelSupplierReservationIdempotencyRecord> HotelSupplierReservationIdempotency =>
+        Set<HotelSupplierReservationIdempotencyRecord>();
+
+    public DbSet<HotelBookingReconciliationIssue> HotelBookingReconciliationIssues =>
+        Set<HotelBookingReconciliationIssue>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

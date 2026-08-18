@@ -1,11 +1,12 @@
 using NodaTime;
+using TravelCore.Money;
+using MoneyValue = TravelCore.Money.Money;
 
 namespace TravelCore.Modules.HotelBooking.Domain;
 
 /// <summary>
-/// Hotel stay transaction aggregate (TC-P21-T002 / P21-R2).
-/// One HotelPlaceReference, LocalDate stay, one or more RoomReservations, room-assigned guests.
-/// No HotelBookingStatus / availability / supplier / rate / payment in T002.
+/// Hotel stay transaction aggregate. T005 adds HotelBookingStatus (Pending/Confirmed/Cancelled).
+/// Confirmation is supplier-reservation evidence, not Payment.
 /// </summary>
 public sealed class HotelBooking
 {
@@ -15,6 +16,7 @@ public sealed class HotelBooking
     {
         Place = default;
         Contact = null!;
+        Status = HotelBookingStatus.Pending;
     }
 
     private HotelBooking(
@@ -29,9 +31,14 @@ public sealed class HotelBooking
         CheckInDate = checkInDate;
         CheckOutDate = checkOutDate;
         Contact = contact;
+        Status = HotelBookingStatus.Pending;
     }
 
     public HotelBookingId Id { get; private set; }
+
+    public HotelBookingStatus Status { get; private set; }
+
+    public Instant? ConfirmedAt { get; private set; }
 
     public HotelPlaceReference Place { get; private set; }
 
@@ -104,6 +111,206 @@ public sealed class HotelBooking
         }
 
         return booking;
+    }
+
+    /// <summary>
+    /// Constrained Pending → Confirmed. Not a generic Confirm/SetConfirmed surface.
+    /// </summary>
+    public void ConfirmFromAuthoritativeSupplierReservation(
+        HotelSupplierReservation reservation,
+        Instant now,
+        HotelPlaceReference reportedPlace,
+        LocalDate reportedCheckIn,
+        LocalDate reportedCheckOut,
+        IReadOnlyCollection<RoomReservationId> confirmedRooms,
+        MoneyValue? reportedTotal,
+        bool? cancellationTermsMatch,
+        HotelBookingMonetarySnapshot monetary,
+        IReadOnlyList<HotelBookingReconciliationIssue> existingIssues)
+    {
+        ArgumentNullException.ThrowIfNull(reservation);
+        ArgumentNullException.ThrowIfNull(confirmedRooms);
+        ArgumentNullException.ThrowIfNull(monetary);
+        ArgumentNullException.ThrowIfNull(existingIssues);
+        EnsureClock(now);
+
+        if (Status == HotelBookingStatus.Confirmed)
+        {
+            if (reservation.HotelBookingId.Equals(Id)
+                && reservation.Status == HotelSupplierReservationStatus.Confirmed)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(
+                "Confirmed HotelBooking cannot be reopened or reassigned from later evidence.");
+        }
+
+        if (Status == HotelBookingStatus.Cancelled)
+        {
+            throw new InvalidOperationException(
+                "Cancelled HotelBooking cannot be reopened by confirmation evidence.");
+        }
+
+        if (Status != HotelBookingStatus.Pending)
+        {
+            throw new InvalidOperationException($"HotelBooking in status {Status} cannot become Confirmed.");
+        }
+
+        if (!reservation.HotelBookingId.Equals(Id))
+        {
+            throw new InvalidOperationException(
+                "Supplier reservation evidence for another HotelBooking cannot confirm this booking.");
+        }
+
+        if (reservation.Status != HotelSupplierReservationStatus.Confirmed)
+        {
+            throw new InvalidOperationException(
+                "HotelBooking confirmation requires an authoritative Confirmed HotelSupplierReservation.");
+        }
+
+        if (existingIssues.Any(issue => issue.BlocksConfirmation))
+        {
+            throw new InvalidOperationException(
+                "Blocking HotelBookingReconciliationIssue prevents confirmation.");
+        }
+
+        var issues = CollectConfirmationIssues(
+            reservation,
+            reportedPlace,
+            reportedCheckIn,
+            reportedCheckOut,
+            confirmedRooms,
+            reportedTotal,
+            cancellationTermsMatch,
+            monetary);
+        if (issues.Count > 0)
+        {
+            throw new InvalidOperationException(
+                "Authoritative reservation evidence does not satisfy HotelBooking confirmation invariants: "
+                + string.Join(", ", issues));
+        }
+
+        Status = HotelBookingStatus.Confirmed;
+        ConfirmedAt = now;
+    }
+
+    /// <summary>
+    /// Constrained Pending → Confirmed when caller has already verified stay/money/room evidence.
+    /// </summary>
+    public void ConfirmFromAuthoritativeSupplierReservation(
+        HotelSupplierReservation reservation,
+        IReadOnlyCollection<HotelBookingReconciliationIssue> openIssues,
+        Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(reservation);
+        ArgumentNullException.ThrowIfNull(openIssues);
+        EnsureClock(now);
+
+        if (Status == HotelBookingStatus.Confirmed)
+        {
+            if (reservation.HotelBookingId.Equals(Id)
+                && reservation.Status == HotelSupplierReservationStatus.Confirmed)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(
+                "Confirmed HotelBooking cannot be reopened or reassigned from later evidence.");
+        }
+
+        if (Status == HotelBookingStatus.Cancelled)
+        {
+            throw new InvalidOperationException(
+                "Cancelled HotelBooking cannot be reopened by confirmation evidence.");
+        }
+
+        if (Status != HotelBookingStatus.Pending)
+        {
+            throw new InvalidOperationException($"HotelBooking in status {Status} cannot become Confirmed.");
+        }
+
+        if (!reservation.HotelBookingId.Equals(Id))
+        {
+            throw new InvalidOperationException(
+                "Supplier reservation evidence for another HotelBooking cannot confirm this booking.");
+        }
+
+        if (reservation.Status != HotelSupplierReservationStatus.Confirmed)
+        {
+            throw new InvalidOperationException(
+                "HotelBooking confirmation requires an authoritative Confirmed HotelSupplierReservation.");
+        }
+
+        if (openIssues.Any(issue => issue.BlocksConfirmation))
+        {
+            throw new InvalidOperationException(
+                "Blocking HotelBookingReconciliationIssue prevents confirmation.");
+        }
+
+        Status = HotelBookingStatus.Confirmed;
+        ConfirmedAt = now;
+    }
+
+    public IReadOnlyList<HotelBookingReconciliationIssueKind> CollectConfirmationIssues(
+        HotelSupplierReservation reservation,
+        HotelPlaceReference reportedPlace,
+        LocalDate reportedCheckIn,
+        LocalDate reportedCheckOut,
+        IReadOnlyCollection<RoomReservationId> confirmedRooms,
+        MoneyValue? reportedTotal,
+        bool? cancellationTermsMatch,
+        HotelBookingMonetarySnapshot monetary)
+    {
+        ArgumentNullException.ThrowIfNull(reservation);
+        ArgumentNullException.ThrowIfNull(confirmedRooms);
+        ArgumentNullException.ThrowIfNull(monetary);
+
+        var issues = new List<HotelBookingReconciliationIssueKind>();
+        if (reportedPlace.PlaceId != Place.PlaceId)
+        {
+            issues.Add(HotelBookingReconciliationIssueKind.HotelMismatch);
+        }
+
+        if (reportedCheckIn != CheckInDate || reportedCheckOut != CheckOutDate)
+        {
+            issues.Add(HotelBookingReconciliationIssueKind.StayMismatch);
+        }
+
+        var expectedRooms = _rooms.Select(r => r.Id).ToHashSet();
+        var actualRooms = confirmedRooms.ToHashSet();
+        if (actualRooms.Count != expectedRooms.Count || !expectedRooms.SetEquals(actualRooms))
+        {
+            issues.Add(HotelBookingReconciliationIssueKind.RoomSetMismatch);
+        }
+
+        if (reportedTotal is not null)
+        {
+            if (reportedTotal.Currency != monetary.CurrencyCode)
+            {
+                issues.Add(HotelBookingReconciliationIssueKind.CurrencyMismatch);
+            }
+
+            if (reportedTotal.Amount != monetary.Total.Amount)
+            {
+                issues.Add(HotelBookingReconciliationIssueKind.MonetaryMismatch);
+            }
+        }
+
+        if (cancellationTermsMatch == false)
+        {
+            issues.Add(HotelBookingReconciliationIssueKind.CancellationTermsMismatch);
+        }
+
+        return issues;
+    }
+
+    private static void EnsureClock(Instant now)
+    {
+        if (now == default)
+        {
+            throw new ArgumentException("Instant cannot be default.", nameof(now));
+        }
     }
 
     public void EnsureMatchesRateOffer(

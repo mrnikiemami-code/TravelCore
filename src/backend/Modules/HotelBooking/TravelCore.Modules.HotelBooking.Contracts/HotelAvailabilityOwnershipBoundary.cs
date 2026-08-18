@@ -23,6 +23,6 @@ public static class HotelAvailabilityOwnershipBoundary
     public const bool SmartRoutingImplemented = false;
     public const bool HardcodedTtlImplemented = false;
     public const bool ProcessLocalLockIsAuthority = false;
-    public const bool HotelBookingStatusImplemented = false;
+    public const bool HotelBookingStatusImplemented = true;
     public const bool PublicAvailabilityApiImplemented = false;
 }

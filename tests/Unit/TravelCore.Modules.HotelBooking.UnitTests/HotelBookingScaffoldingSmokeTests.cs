@@ -45,7 +45,7 @@ public sealed class HotelBookingScaffoldingSmokeTests
         Assert.False(HotelBookingOwnershipBoundary.OwnsPricing);
         Assert.False(HotelBookingOwnershipBoundary.GenericBookingAbstractionImplemented);
         Assert.True(HotelBookingOwnershipBoundary.HotelBookingAggregateImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
         Assert.True(HotelBookingOwnershipBoundary.RoomModelImplemented);
         Assert.True(HotelBookingOwnershipBoundary.GuestModelImplemented);
         Assert.True(HotelBookingOwnershipBoundary.AvailabilityHoldModelImplemented);
@@ -88,15 +88,15 @@ public sealed class HotelBookingScaffoldingSmokeTests
     }
 
     [Fact]
-    public void HotelBooking_T002_Has_Stay_Rooms_Guests_Without_Status()
+    public void HotelBooking_T002_Has_Stay_Rooms_Guests_And_T005_Status()
     {
         var domain = typeof(HotelBookingDomainAssemblyMarker).Assembly;
         Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBooking"));
         Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.RoomReservation"));
         Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBookingGuest"));
-        Assert.Null(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBookingStatus"));
+        Assert.NotNull(domain.GetType("TravelCore.Modules.HotelBooking.Domain.HotelBookingStatus"));
         Assert.True(HotelBookingOwnershipBoundary.HotelBookingAggregateImplemented);
-        Assert.False(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
+        Assert.True(HotelBookingOwnershipBoundary.HotelBookingStatusImplemented);
         Assert.True(HotelBookingStayBoundary.MultiRoomSupported);
         Assert.False(HotelBookingStayBoundary.BirthDateStoredFlag);
         Assert.False(HotelBookingStayBoundary.PassportStored);

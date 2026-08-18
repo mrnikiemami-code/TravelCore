@@ -79,7 +79,9 @@ public sealed class HotelBookingStayPersistenceTests
             Assert.Equal(1, rooms[0].AdultCount);
             Assert.Equal(1, rooms[0].ChildCount);
             Assert.Equal(1, rooms[1].GuestCount);
-            Assert.Equal(rooms[0].Guests.Single(g => g.IsLeadGuest).Id, loaded.LeadGuest.Id);
+            Assert.Equal(loaded.LeadGuest.Id, rooms[0].Guests.Single(g => g.IsLeadGuest).Id);
+            Assert.Equal(HotelBookingStatus.Pending, loaded.Status);
+            Assert.Null(loaded.ConfirmedAt);
             Assert.All(loaded.Guests, g => Assert.Contains(g.RoomReservationId, rooms.Select(r => r.Id)));
             Assert.Equal(8, rooms[0].Guests.Single(g => g.Category == HotelGuestCategory.Child).AgeAtCheckIn!.Value.Years);
             Assert.Null(loaded.LeadGuest.AgeAtCheckIn);
@@ -87,21 +89,33 @@ public sealed class HotelBookingStayPersistenceTests
 
             var conn = db.Database.GetDbConnection();
             await db.Database.OpenConnectionAsync(ct);
-            Assert.Equal(4, await ScalarIntAsync(conn, """
+            Assert.Equal(5, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'hotel_booking'
                   AND table_name = 'hotel_bookings'
-                  AND column_name IN ('id', 'place_id', 'check_in_date', 'check_out_date');
+                  AND column_name IN ('id', 'place_id', 'check_in_date', 'check_out_date', 'status');
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.columns
                 WHERE table_schema = 'hotel_booking'
-                  AND table_name IN ('hotel_bookings', 'room_reservations', 'hotel_booking_guests')
+                  AND table_name IN ('room_reservations', 'hotel_booking_guests')
                   AND (
                         column_name IN (
                             'nights', 'status', 'rate_plan_id', 'rate_offer_id', 'quote_id',
+                            'payment_id', 'supplier_reservation_id', 'birth_date', 'passport')
+                        OR column_name LIKE '%price%'
+                        OR column_name LIKE '%amount%');
+                """, ct));
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.columns
+                WHERE table_schema = 'hotel_booking'
+                  AND table_name = 'hotel_bookings'
+                  AND (
+                        column_name IN (
+                            'nights', 'rate_plan_id', 'rate_offer_id', 'quote_id',
                             'payment_id', 'supplier_reservation_id', 'birth_date', 'passport')
                         OR column_name LIKE '%price%'
                         OR column_name LIKE '%amount%');

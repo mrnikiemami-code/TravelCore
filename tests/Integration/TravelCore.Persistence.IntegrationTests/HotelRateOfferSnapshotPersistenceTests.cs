@@ -187,7 +187,7 @@ public sealed class HotelRateOfferSnapshotPersistenceTests
                 booking.Rooms.Select(r => new HotelRoomRateLine(r.Id, new MoneyValue(500_000m, CurrencyCode.Parse("IRR")))).ToArray(),
                 [new HotelCancellationPenaltyRuleDraft(T0, null, new MoneyValue(1_000_000m, CurrencyCode.Parse("IRR")))]));
 
-        Assert.Equal(0, await db.HotelRateOfferSnapshots.CountAsync(ct));
+        Assert.Equal(0, await db.HotelRateOfferSnapshots.CountAsync(x => x.HotelBookingId == booking.Id, ct));
     }
 
     private static Stay CreateBooking() =>

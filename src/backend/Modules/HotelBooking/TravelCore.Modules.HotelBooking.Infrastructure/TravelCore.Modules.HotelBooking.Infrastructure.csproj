@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.HotelBooking.Infrastructure</RootNamespace>
     <AssemblyName>TravelCore.Modules.HotelBooking.Infrastructure</AssemblyName>
-    <Description>HotelBooking infrastructure: schema hotel_booking, stay, hold, rate-offer snapshots (TC-P21-T004).</Description>
+    <Description>HotelBooking infrastructure: schema hotel_booking, stay, hold, rate snapshots, supplier reservation (TC-P21-T005).</Description>
   </PropertyGroup>
 
   <ItemGroup>

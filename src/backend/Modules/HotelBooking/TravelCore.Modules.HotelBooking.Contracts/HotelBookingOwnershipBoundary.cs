@@ -37,7 +37,7 @@ public static class HotelBookingOwnershipBoundary
     public const bool OwnsPricing = false;
     public const bool GenericBookingAbstractionImplemented = false;
     public const bool HotelBookingAggregateImplemented = true;
-    public const bool HotelBookingStatusImplemented = false;
+    public const bool HotelBookingStatusImplemented = true;
     public const bool RoomModelImplemented = true;
     public const bool GuestModelImplemented = true;
     public const bool AvailabilityHoldModelImplemented = true;

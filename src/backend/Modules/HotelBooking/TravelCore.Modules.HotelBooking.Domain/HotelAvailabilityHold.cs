@@ -62,6 +62,11 @@ public sealed class HotelAvailabilityHold
     public bool IsTerminal =>
         Status is HotelAvailabilityHoldStatus.Released or HotelAvailabilityHoldStatus.Expired;
 
+    public bool IsActiveAndUnexpired(Instant now) =>
+        Status == HotelAvailabilityHoldStatus.Active
+        && ExpiresAt is { } expires
+        && now < expires;
+
     public static HotelAvailabilityHold StartRequested(
         HotelBookingId hotelBookingId,
         string sourceKey,

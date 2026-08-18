@@ -33,8 +33,8 @@ public static class HotelRateOfferOwnershipBoundary
     public const bool ImplicitFxImplemented = false;
     public const bool SilentRepricingImplemented = false;
     public const bool ProcessLocalLockIsAuthority = false;
-    public const bool HotelBookingStatusImplemented = false;
-    public const bool SupplierReservationImplemented = false;
+    public const bool HotelBookingStatusImplemented = true;
+    public const bool SupplierReservationImplemented = true;
     public const bool PaymentIntegrationImplemented = false;
     public const bool PartialRefundExecutionImplemented = false;
     public const bool CancellationExecutionImplemented = false;

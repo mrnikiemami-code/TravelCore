@@ -1,7 +1,7 @@
 namespace TravelCore.Modules.HotelBooking.Domain;
 
 /// <summary>
-/// P21-R2 stay/room/guest invariants. Lifecycle/status remains R5.
+/// P21-R2 stay/room/guest invariants. T005 implements HotelBookingStatus and supplier reservation.
 /// </summary>
 public static class HotelBookingStayBoundary
 {
@@ -14,11 +14,11 @@ public static class HotelBookingStayBoundary
     public const string BirthDateStored = "NO";
     public const string IdentityConvention = "UUIDv7";
 
-    public const bool HotelBookingStatusImplemented = false;
+    public const bool HotelBookingStatusImplemented = true;
     public const bool BirthDateStoredFlag = false;
     public const bool PassportStored = false;
     public const bool AvailabilityHoldImplemented = true;
-    public const bool SupplierReservationImplemented = false;
+    public const bool SupplierReservationImplemented = true;
     public const bool RateQuoteImplemented = false;
     public const bool CancellationImplemented = false;
     public const bool PaymentIntegrationImplemented = false;

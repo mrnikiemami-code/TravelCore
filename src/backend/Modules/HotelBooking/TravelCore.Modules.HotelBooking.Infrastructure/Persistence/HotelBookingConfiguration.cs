@@ -14,6 +14,9 @@ internal sealed class HotelBookingConfiguration : IEntityTypeConfiguration<Hotel
             table.HasCheckConstraint(
                 "ck_hotel_bookings_checkout_after_checkin",
                 "check_out_date > check_in_date");
+            table.HasCheckConstraint(
+                "ck_hotel_bookings_status",
+                "status IN (1, 2, 3)");
         });
         builder.HasKey(x => x.Id);
 
@@ -35,6 +38,15 @@ internal sealed class HotelBookingConfiguration : IEntityTypeConfiguration<Hotel
         builder.Property(x => x.CheckOutDate)
             .HasColumnName("check_out_date")
             .IsRequired();
+
+        builder.Property(x => x.Status)
+            .HasColumnName("status")
+            .HasConversion<short>()
+            .HasDefaultValue(HotelBookingStatus.Pending)
+            .IsRequired();
+
+        builder.Property(x => x.ConfirmedAt)
+            .HasColumnName("confirmed_at");
 
         builder.Ignore(x => x.Nights);
         builder.Ignore(x => x.RoomCount);
