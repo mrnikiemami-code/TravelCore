@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P24 — B2B / Agency Commerce** (**IN_PROGRESS** — `TC-P24-T002` implemented · AWAITING_ARCHITECT_REVIEW · P24-R1/R2 RESOLVED) |
+| Current Phase | **P24 — B2B / Agency Commerce** (**IN_PROGRESS** — `TC-P24-T003` implemented · AWAITING_ARCHITECT_REVIEW · P24-R1–R3 RESOLVED) |
 | Previous Phase | **P23 — Dynamic Package / Flight + Hotel** (**COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md)) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P24-T002` — Agency business identity boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P24-T002 RESULT`; do **not** execute `TC-P24-T003` |
+| Current Active Product Task | `TC-P24-T003` — Agency membership & Access relationship boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P24-T003 RESULT`; do **not** execute `TC-P24-T004` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -269,11 +269,13 @@
 | P22-T009 | **COMPLETE / ACCEPTED** (`856bb06` / docs `e76b562`) — hardening + evidence pack [`docs/plans/P22-T009-hardening-and-evidence-pack.md`](plans/P22-T009-hardening-and-evidence-pack.md) · no new Flight capability · READY_FOR_GATE |
 | P22-GATE | **COMPLETE / ACCEPTED** (`2a372ae` / docs `ed040f0`) — [`docs/plans/P22-GATE-acceptance-evidence.md`](plans/P22-GATE-acceptance-evidence.md); P22 COMPLETE; P23 PLAN authored separately |
 | P23 | **COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · T001–T009 ACCEPTED · **P23-R1–R8 RESOLVED** · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md) |
-| P24 | **IN_PROGRESS** — `TC-P24-T002` implemented · **P24-R1/R2 RESOLVED** · AWAITING_ARCHITECT_REVIEW |
+| P24 | **IN_PROGRESS** — `TC-P24-T003` implemented · **P24-R1–R3 RESOLVED** · AWAITING_ARCHITECT_REVIEW |
 | P24 T001 | `TC-P24-T001` **COMPLETE / ACCEPTED** (`cc4adcc`) — B2B module + schema `b2b` foundation |
-| P24 T002 | `TC-P24-T002` implemented / AWAITING_ARCHITECT_REVIEW — AgencyReference/AgencyRelationshipBoundary/AgencyMembershipBoundary; no Agency aggregate; TC-P24-T003 NOT EXECUTED |
+| P24 T002 | `TC-P24-T002` **COMPLETE / ACCEPTED** (`e811513`) — AgencyReference/AgencyRelationshipBoundary/AgencyMembershipBoundary |
+| P24 T003 | `TC-P24-T003` implemented / AWAITING_ARCHITECT_REVIEW — AgencyMemberReference/AgencyAccessRelationshipBoundary; no user/role/permission storage; TC-P24-T004 NOT EXECUTED |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |
+| P24-R3 (agency membership & Access relationship boundary) | **RESOLVED** |
 | P23-GATE | **COMPLETE / ACCEPTED** (re-execution after `TC-P23-GATE-SYNC` `2881e6d`) |
 | P23 Plan | `TC-P23-PLAN` ACCEPTED — [`docs/plans/P23-implementation-plan.md`](plans/P23-implementation-plan.md) |
 | P23 T001 | `TC-P23-T001` implemented / AWAITING_ARCHITECT_REVIEW — DynamicPackage module + schema `dynamic_package` foundation; DynamicPackageBooking ownership assigned; aggregate not implemented; TC-P23-T002 NOT EXECUTED |

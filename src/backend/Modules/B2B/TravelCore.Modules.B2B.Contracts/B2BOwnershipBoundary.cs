@@ -42,7 +42,13 @@ public static class B2BOwnershipBoundary
     public const bool AgencyReferenceBoundaryImplemented = true;
     public const bool AgencyMembershipBoundaryImplemented = true;
     public const bool AgencyRelationshipBoundaryImplemented = true;
+    public const bool AgencyMemberReferenceImplemented = true;
+    public const bool AgencyAccessRelationshipBoundaryImplemented = true;
     public const bool AgencyUserEntityImplemented = false;
+    public const bool OwnsUsers = false;
+    public const bool OwnsAuthentication = false;
+    public const bool OwnsAuthorizationPolicies = false;
+    public const bool OwnsInvitationFlow = false;
     public const bool ContractEntityImplemented = false;
     public const bool CommissionEntityImplemented = false;
     public const bool CreditLimitEntityImplemented = false;
