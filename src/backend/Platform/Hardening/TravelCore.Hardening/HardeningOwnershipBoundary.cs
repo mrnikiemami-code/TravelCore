@@ -28,4 +28,5 @@ public static class HardeningOwnershipBoundary
     public const bool OwnsBookingExecution = false;
     public const bool OwnsPaymentExecution = false;
     public const bool FoundationBoundaryImplemented = true;
+    public const bool HardeningGuardrailsImplemented = true;
 }
