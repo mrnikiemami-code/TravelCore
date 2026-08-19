@@ -49,6 +49,9 @@ internal sealed class FlightBookingConfiguration : IEntityTypeConfiguration<Flig
             .IsConcurrencyToken()
             .IsRequired();
 
+        builder.Property(x => x.ActorAccountId)
+            .HasColumnName("actor_account_id");
+
         builder.Ignore(x => x.JourneyCount);
         builder.Ignore(x => x.PassengerCount);
         builder.Ignore(x => x.Outbound);

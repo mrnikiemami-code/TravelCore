@@ -56,8 +56,8 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.True(FlightOwnershipBoundary.TicketModelImplemented);
         Assert.True(FlightOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.True(FlightOwnershipBoundary.CancellationModelImplemented);
-        Assert.False(FlightOwnershipBoundary.PublicApiImplemented);
-        Assert.False(FlightOwnershipBoundary.FrontendImplemented);
+        Assert.True(FlightOwnershipBoundary.PublicApiImplemented);
+        Assert.True(FlightOwnershipBoundary.FrontendImplemented);
         Assert.False(FlightOwnershipBoundary.SupplierSdkImplemented);
         Assert.False(FlightOwnershipBoundary.SharedDbContextImplemented);
         Assert.False(FlightOwnershipBoundary.PeerSchemaForeignKeyImplemented);
@@ -164,7 +164,7 @@ public sealed class FlightBoundaryGuardrailTests
     }
 
     [Fact]
-    public void Host_Registers_FlightModule_With_No_Endpoints()
+    public void Host_Registers_FlightModule_With_Public_Transactional_Endpoints()
     {
         var program = File.ReadAllText(Path.Combine(RepoRoot, "src", "backend", "TravelCore.Api", "Program.cs"));
         Assert.Contains("new FlightModule()", program, StringComparison.Ordinal);
@@ -177,9 +177,9 @@ public sealed class FlightBoundaryGuardrailTests
             "TravelCore.Modules.Flight.Infrastructure",
             "FlightModule.cs"));
         Assert.Contains("AddDbContext<FlightDbContext>", module, StringComparison.Ordinal);
-        Assert.DoesNotContain("MapGet", module, StringComparison.Ordinal);
-        Assert.DoesNotContain("MapPost", module, StringComparison.Ordinal);
-        Assert.DoesNotContain("/api/flight", module, StringComparison.Ordinal);
+        Assert.Contains("MapPublicFlightBookingEndpoints", module, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/flight-bookings", module, StringComparison.Ordinal);
+        Assert.DoesNotContain("ForceConfirm", module, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -275,8 +275,9 @@ public sealed class FlightBoundaryGuardrailTests
 
         Assert.True(hits.Count == 0, "Flight T001 must not add peer SQL, APIs, or SDKs:\n" + string.Join('\n', hits));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "flight")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "flights")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "flight-bookings")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "flight-booking")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "flights")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "flight-bookings")));
     }
 
     [Fact]
@@ -299,7 +300,7 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.Contains("P22-R5 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P22-R6 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P22-R7 = RESOLVED", text, StringComparison.Ordinal);
-        Assert.Contains("TC-P22-T008 NOT EXECUTED", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P22-T009 NOT EXECUTED", text, StringComparison.Ordinal);
     }
 
     private static bool IsGeneratedOrBin(string path)

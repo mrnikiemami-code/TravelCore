@@ -33,6 +33,12 @@ public sealed class FlightBooking
 
     public Instant? CancelledAt { get; private set; }
 
+    /// <summary>
+    /// Optional logical authenticated actor id captured at initiation.
+    /// Not an Identity/Party entity and not an authorization credential by itself.
+    /// </summary>
+    public Guid? ActorAccountId { get; private set; }
+
     public long Version { get; private set; }
 
     public IReadOnlyList<FlightJourney> Journeys => _journeys;
@@ -116,6 +122,16 @@ public sealed class FlightBooking
         }
 
         return booking;
+    }
+
+    public void AttachActorAccount(Guid actorAccountId)
+    {
+        if (actorAccountId == Guid.Empty)
+        {
+            throw new ArgumentException("Actor account id cannot be empty.", nameof(actorAccountId));
+        }
+
+        ActorAccountId = actorAccountId;
     }
 
     public void EnsureMatchesCommercialOffer(

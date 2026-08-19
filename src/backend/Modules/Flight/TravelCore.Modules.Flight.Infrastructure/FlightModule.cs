@@ -8,6 +8,7 @@ using TravelCore.Modularity;
 using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Domain;
 using TravelCore.Modules.Flight.Infrastructure.Cancellations;
+using TravelCore.Modules.Flight.Infrastructure.Endpoints;
 using TravelCore.Modules.Flight.Infrastructure.Reservations;
 using TravelCore.Modules.Flight.Infrastructure.Search;
 using TravelCore.Modules.Flight.Infrastructure.Services;
@@ -18,7 +19,7 @@ using TravelCore.Persistence.PostgreSql;
 namespace TravelCore.Modules.Flight.Infrastructure;
 
 /// <summary>
-/// Host composition entry for Flight. Zero production sources; zero endpoints.
+/// Host composition entry for Flight. Zero production sources; public transactional journey (P22-R8).
 /// </summary>
 public sealed class FlightModule : ITravelCoreModule
 {
@@ -47,6 +48,18 @@ public sealed class FlightModule : ITravelCoreModule
         services.AddScoped<FlightCompensationOutboxDispatcher>();
         services.AddScoped<FlightTicketingRequiredOutboxDispatcher>();
         services.AddScoped<FlightBookingCancellationRefundOutboxDispatcher>();
+        services.AddScoped<PublicFlightBookingSurfaceService>();
+        services.AddScoped<IPublicFlightBookingSearchService>(
+            sp => sp.GetRequiredService<PublicFlightBookingSurfaceService>());
+        services.AddScoped<IPublicFlightBookingInitiationService>(
+            sp => sp.GetRequiredService<PublicFlightBookingSurfaceService>());
+        services.AddScoped<IPublicFlightBookingReadService>(
+            sp => sp.GetRequiredService<PublicFlightBookingSurfaceService>());
+        services.AddScoped<IPublicFlightBookingJourneyService>(
+            sp => sp.GetRequiredService<PublicFlightBookingSurfaceService>());
+        services.AddScoped<FlightOperationalQueryService>();
+        services.AddScoped<IFlightOperationalQuery>(
+            sp => sp.GetRequiredService<FlightOperationalQueryService>());
         services.AddHostedService<FlightOutboxHostedService>();
 
         services.AddDbContext<FlightDbContext>((_, options) =>
@@ -64,5 +77,6 @@ public sealed class FlightModule : ITravelCoreModule
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
+        endpoints.MapPublicFlightBookingEndpoints();
     }
 }

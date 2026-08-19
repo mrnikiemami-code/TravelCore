@@ -64,7 +64,7 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.True(FlightOwnershipBoundary.CancellationModelImplemented);
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionCancellationSource);
         Assert.Equal("IFlightCancellationSource", FlightOwnershipBoundary.CancellationSourcePort);
-        Assert.False(FlightOwnershipBoundary.FrontendImplemented);
+        Assert.True(FlightOwnershipBoundary.FrontendImplemented);
         Assert.False(FlightOwnershipBoundary.SupplierSdkImplemented);
         Assert.False(FlightOwnershipBoundary.SharedDbContextImplemented);
         Assert.False(FlightOwnershipBoundary.PeerSchemaForeignKeyImplemented);

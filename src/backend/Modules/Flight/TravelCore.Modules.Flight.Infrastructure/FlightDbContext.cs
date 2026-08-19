@@ -80,6 +80,11 @@ public sealed class FlightDbContext : DbContext
     public DbSet<FlightBookingCancellationIdempotencyRecord> FlightBookingCancellationIdempotency =>
         Set<FlightBookingCancellationIdempotencyRecord>();
 
+    public DbSet<FlightBookingAccessCredential> AccessCredentials => Set<FlightBookingAccessCredential>();
+
+    public DbSet<FlightBookingPublicIdempotencyRecord> PublicIdempotency =>
+        Set<FlightBookingPublicIdempotencyRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

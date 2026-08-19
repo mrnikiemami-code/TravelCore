@@ -71,8 +71,8 @@ public static class FlightOwnershipBoundary
     public const bool TicketModelImplemented = true;
     public const bool PaymentIntegrationImplemented = true;
     public const bool CancellationModelImplemented = true;
-    public const bool PublicApiImplemented = false;
-    public const bool FrontendImplemented = false;
+    public const bool PublicApiImplemented = true;
+    public const bool FrontendImplemented = true;
     public const bool SupplierSdkImplemented = false;
     public const bool SupplierAdapterImplemented = false;
     public const bool SharedDbContextImplemented = false;
