@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P28 — Performance & Scale** (**READY_FOR_GATE** — `TC-P28-T009` implemented) |
+| Current Phase | **P28 — Performance & Scale** (**COMPLETE / ACCEPTED** — `TC-P28-GATE`) |
 | Previous Phase | **P27 — Analytics + Product Intelligence** (**COMPLETE / ACCEPTED** — `TC-P27-GATE` `fb55c0a`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P28-T009` — hardening and evidence pack (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW · **READY_FOR_GATE**) |
-| Current Next Task | Return `TC-P28-T009 RESULT`; do **not** execute `TC-P28-GATE` |
+| Current Active Product Task | `TC-P28-GATE` — P28 acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | Await architect for **P29** plan envelope; do **not** start P29 autonomously |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -323,8 +323,9 @@
 | P28 T006 | `TC-P28-T006` **COMPLETE / ACCEPTED** (`fce389d`) — caching boundary and policy architecture · **P28-R4 RESOLVED** |
 | P28 T007 | `TC-P28-T007` **COMPLETE / ACCEPTED** (`6edae65` / fix `46bf7ff`) — scaling and infrastructure boundary · **P28-R8 RESOLVED** |
 | P28 T008 | `TC-P28-T008` **COMPLETE / ACCEPTED** (`13a424e`) — operational hardening · **P28-R5/R6/R7 RESOLVED** |
-| P28 T009 | `TC-P28-T009` implemented / AWAITING_ARCHITECT_REVIEW — evidence pack · **READY_FOR_GATE** |
-| P28 GATE | `TC-P28-GATE` **NOT EXECUTED** |
+| P28 T009 | `TC-P28-T009` **COMPLETE / ACCEPTED** (`100da60`) — evidence pack · **READY_FOR_GATE** |
+| P28 GATE | `TC-P28-GATE` **COMPLETE / ACCEPTED** (gate commit pending) — [`docs/plans/P28-GATE-acceptance-evidence.md`](plans/P28-GATE-acceptance-evidence.md) |
+| P28 | **COMPLETE** — `TC-P28-GATE` implemented · **P28-R1–R8 RESOLVED** |
 | P28-R5 (CDN/static delivery) | **RESOLVED** |
 | P28-R6 (frontend CWV/bundle) | **RESOLVED** |
 | P28-R7 (Search read performance) | **RESOLVED** |

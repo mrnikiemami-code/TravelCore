@@ -126,4 +126,29 @@ public sealed class PerformanceHardeningGuardrailTests
             Assert.Contains(item, text, StringComparison.Ordinal);
         }
     }
+
+    [Fact]
+    public void P28_Gate_Evidence_Locks_Acceptance_Artifacts()
+    {
+        var evidence = Path.Combine(RepoRoot, "docs", "plans", "P28-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(evidence), evidence);
+        var text = File.ReadAllText(evidence);
+
+        string[] required =
+        [
+            "TC-P28-GATE",
+            "P28 COMPLETE",
+            "P28-R1",
+            "P28-R8",
+            "TC-P28-T009",
+            "No new Performance product capability",
+            "P29",
+            "NOT STARTED",
+        ];
+
+        foreach (var item in required)
+        {
+            Assert.Contains(item, text, StringComparison.Ordinal);
+        }
+    }
 }
