@@ -14,7 +14,7 @@ public static class PerformanceFoundationBoundary
         "Distributed complexity requires measured operational need";
 
     public const bool SeparatePerformanceFoundationImplemented = true;
-    public const bool MeasurementBoundaryImplemented = false;
+    public const bool MeasurementBoundaryImplemented = true;
     public const bool RedisClientImplemented = false;
     public const bool CachePolicyImplemented = false;
     public const bool CdnIntegrationImplemented = false;
