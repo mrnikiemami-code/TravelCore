@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-UIVAL-T005` — Destination Landing validation (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **`TC-UIVAL-T006`** — Hotel Detail validation |
+| Current Active Product Task | `TC-UIVAL-T007` — Home / Discovery validation (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **`TC-UIVAL-T008`** — Content Article validation |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -354,8 +354,10 @@
 | UIVAL T002 | `TC-UIVAL-T002` **COMPLETE / ACCEPTED** (`b776346`) — foreign tour detail · [`docs/plans/UIVAL-T002-foreign-tour-detail-validation-evidence.md`](plans/UIVAL-T002-foreign-tour-detail-validation-evidence.md) |
 | UIVAL T003 | `TC-UIVAL-T003` **COMPLETE / ACCEPTED** (`2a2b6f2`) — experience tour detail · [`docs/plans/UIVAL-T003-experience-tour-detail-validation-evidence.md`](plans/UIVAL-T003-experience-tour-detail-validation-evidence.md) |
 | UIVAL T004 | `TC-UIVAL-T004` **COMPLETE / ACCEPTED** (`f037632`) — tour listing · [`docs/plans/UIVAL-T004-tour-listing-search-validation-evidence.md`](plans/UIVAL-T004-tour-listing-search-validation-evidence.md) |
-| UIVAL T005 | `TC-UIVAL-T005` **COMPLETE / ACCEPTED** — destination landing · [`docs/plans/UIVAL-T005-destination-landing-validation-evidence.md`](plans/UIVAL-T005-destination-landing-validation-evidence.md) |
-| UIVAL T006 | `TC-UIVAL-T006` — Hotel Detail validation (**NEXT**) |
+| UIVAL T005 | `TC-UIVAL-T005` **COMPLETE / ACCEPTED** (`70c87ea`) — destination landing |
+| UIVAL T006 | `TC-UIVAL-T006` **COMPLETE / ACCEPTED** — hotel detail · [`docs/plans/UIVAL-T006-hotel-detail-validation-evidence.md`](plans/UIVAL-T006-hotel-detail-validation-evidence.md) |
+| UIVAL T007 | `TC-UIVAL-T007` **COMPLETE / ACCEPTED** — home/discovery · [`docs/plans/UIVAL-T007-home-discovery-validation-evidence.md`](plans/UIVAL-T007-home-discovery-validation-evidence.md) |
+| UIVAL T008 | `TC-UIVAL-T008` — Content Article validation (**NEXT**) |
 | UIVAL | **IN PROGRESS** — product evolution track after master roadmap |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
