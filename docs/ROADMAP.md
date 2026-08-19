@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P25 — Notification** (**COMPLETE** — `TC-P25-GATE` implemented · acceptance evidence) |
-| Phase Status | P00–P25 COMPLETE (P25 gate awaiting architect review) · P26 plan not started |
+| Current Phase | **P26 — Advanced SEO + Content Graph** (**PLANNED** — `TC-P26-PLAN` authored) |
+| Phase Status | P00–P25 COMPLETE · P26 plan authored · product NOT_STARTED |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P25-GATE RESULT`; do **not** start P26 until architect issues next phase envelope |
+| Current Next Task | Return `TC-P26-PLAN RESULT`; do **not** execute product tasks until architect accepts PLAN |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -124,7 +124,8 @@
 - **P22** = COMPLETE (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
 - **P23** = COMPLETE (`TC-P23-GATE` re-execution · **P23-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
 - **P24** = COMPLETE (`TC-P24-GATE` implemented · P24-R1–R8 RESOLVED)
-- **P25** = **COMPLETE** (`TC-P25-GATE` implemented · P25-R1–R8 RESOLVED · awaiting architect review)
+- **P25** = **COMPLETE** (`TC-P25-GATE` ACCEPTED `ed5c95f`)
+- **P26** = PLANNED / NOT_STARTED (`TC-P26-PLAN` authored · awaiting architect review)
 - **P26–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -646,7 +647,7 @@ Email · SMS · In-app · احتمالاً push/webhook بعداً · Preference
 
 ## P26 — Advanced SEO + Content Graph
 
-**Status:** PLANNED
+**Status:** PLANNED (`TC-P26-PLAN` authored · product NOT_STARTED)
 
 پس از وجود محتوای/موجودی معنادار: Destination hubs · content clusters · internal link graph · programmatic landings · route quality · orphan detection · indexation quality · sitemap scaling · structured data completeness · SEO landing factory.
 
@@ -782,7 +783,7 @@ P26 = Advanced SEO.
 | P23 | Dynamic Package / Flight + Hotel | **COMPLETE** (GATE re-execution · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P24 | B2B / Agency Commerce | COMPLETE (`TC-P24-GATE` implemented · P24-R1–R8 RESOLVED) |
 | P25 | Notification | COMPLETE (GATE evidence executed) |
-| P26 | Advanced SEO + Content Graph | PLANNED |
+| P26 | Advanced SEO + Content Graph | PLANNED (PLAN authored) |
 | P27 | Analytics + Product Intelligence | PLANNED |
 | P28 | Performance & Scale | PLANNED |
 | P29 | Production Hardening | PLANNED |

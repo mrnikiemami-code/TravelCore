@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P25 — Notification** (**COMPLETE** — `TC-P25-GATE` implemented · acceptance evidence) |
-| Previous Phase | **P24 — B2B / Agency Commerce** (**COMPLETE / ACCEPTED**) |
+| Current Phase | **P26 — Advanced SEO + Content Graph** (**PLANNED** — `TC-P26-PLAN` authored · awaiting architect review) |
+| Previous Phase | **P25 — Notification** (**COMPLETE / ACCEPTED** — `TC-P25-GATE` `ed5c95f`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P25-GATE` — P25 acceptance gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P25-GATE RESULT`; do **not** start P26 until architect issues next phase envelope |
+| Current Active Product Task | `TC-P26-PLAN` — P26 architecture implementation plan (AUTHORED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P26-PLAN RESULT`; do **not** execute `TC-P26-T002` until architect accepts PLAN |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -291,7 +291,9 @@
 | P25 T007 | `TC-P25-T007` **COMPLETE / ACCEPTED** (`b53f3b7`) — event/template boundaries; P25-R4/R6 RESOLVED |
 | P25 T008 | `TC-P25-T008` **COMPLETE / ACCEPTED** (`20b02aa`) — hardening guardrails; P25-R5/R7/R8 RESOLVED |
 | P25 T009 | `TC-P25-T009` **COMPLETE / ACCEPTED** (`9fad4d6`) — evidence pack; **READY_FOR_GATE** |
-| P25 GATE | `TC-P25-GATE` implemented / AWAITING_ARCHITECT_REVIEW — gate artifact `docs/plans/P25-GATE-acceptance-evidence.md`; no new capability; **P25 COMPLETE**; **P26 PLANNED / NOT_STARTED** |
+| P25 GATE | `TC-P25-GATE` **COMPLETE / ACCEPTED** (`ed5c95f`) — **P25 COMPLETE** |
+| P26 | **PLANNED / NOT_STARTED** — `TC-P26-PLAN` authored · awaiting architect review |
+| P26 Plan | [`docs/plans/P26-implementation-plan.md`](plans/P26-implementation-plan.md) |
 | P25-R2 (channel boundary Email/SMS/In-app) | **RESOLVED** |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |
