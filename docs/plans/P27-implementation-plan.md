@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P27-PLAN` |
 | Phase | P27 — Analytics + Product Intelligence |
-| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T006 provider abstraction boundary executed |
-| Baseline | `59e50d0` (`feat(analytics): define T005 product event taxonomy boundary`) |
+| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T007 event ingestion boundary executed |
+| Baseline | `ec6207c` (`feat(analytics): define T006 provider abstraction boundary`) |
 | Authoritative sources | `docs/ROADMAP.md` § P27 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` · `docs/pages/09-page-state-and-composition-rules.md` §19 · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P25 Notification · P26 SEO |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Analytics + Product Intelligence phase.
 
-> **Envelope note:** `TC-P27-PLAN`–`T005` ACCEPTED · `TC-P27-T006` implemented (provider abstraction) · **do not execute `TC-P27-T007` until architect accepts `T006`**.
+> **Envelope note:** `TC-P27-PLAN`–`T006` ACCEPTED · `TC-P27-T007` implemented (ingestion/publisher boundary) · **do not execute `TC-P27-T008` until architect accepts `T007`**.
 
 ---
 
@@ -81,9 +81,9 @@ P27 must preserve:
 | `P27-R1` | Analytics module ownership / schema posture vs domain modules / Observability | **RESOLVED** — independent Analytics module · schema `analytics` · **Analytics != Booking/Payment/Search/SEO/Content/Notification/Observability** · semantic consumption only · no peer-schema FK · T004 foundation only |
 | `P27-R2` | Product event taxonomy boundary | **RESOLVED** — canonical event kinds owned by Analytics contracts · roadmap events covered · publishers emit semantic facts only · no vendor taxonomy · no event persistence in T005 |
 | `P27-R3` | Provider abstraction / dispatch boundary | **RESOLVED** — provider-neutral dispatch contracts · no named production analytics vendor · zero-provider posture valid · T006 port only |
-| `P27-R4` | Privacy / PII interaction boundary | **OPEN** — analytics must not become PII SoR · opaque resource/session references only · Booking/Party remain identity SoR |
+| `P27-R4` | Privacy / PII interaction boundary | **RESOLVED** — analytics must not become PII SoR · opaque resource/session references only · Booking/Party remain identity SoR · T007 boundary only |
 | `P27-R5` | Consent / attribution interaction boundary | **OPEN** — analytics consent/attribution distinct from TripPlanner consent and Notification preferences · marketing vs product analytics separation preserved |
-| `P27-R6` | Event ingestion / idempotency boundary | **OPEN** — downstream async ingestion · failed analytics must not fail domain transactions · idempotent event dispatch posture required |
+| `P27-R6` | Event ingestion / idempotency boundary | **RESOLVED** — downstream async ingestion · failed analytics must not fail domain transactions · idempotent dispatch posture · non-blocking · T007 port only |
 | `P27-R7` | Public/admin operational boundary | **OPEN** — internal read/ops posture only until explicit product lock · no public analytics mutation/query API by default |
 | `P27-R8` | Deferred/out-of-scope posture (warehouse, BI dashboards, ML, streaming) | **OPEN** — data warehouse · BI dashboards · ML recommendation · real-time streaming analytics · cross-vendor identity graph remain DEFERRED unless explicitly locked |
 
@@ -98,8 +98,8 @@ Proposed sequence after plan acceptance:
 3. `TC-P27-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
 4. `TC-P27-T004` — analytics module/schema foundation (**IMPLEMENTED / ACCEPTED**)
 5. `TC-P27-T005` — product event taxonomy boundary (**IMPLEMENTED / ACCEPTED**)
-6. `TC-P27-T006` — provider abstraction / dispatch boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-7. `TC-P27-T007` — event ingestion / publisher interaction boundary (**NOT EXECUTED**)
+6. `TC-P27-T006` — provider abstraction / dispatch boundary (**IMPLEMENTED / ACCEPTED**)
+7. `TC-P27-T007` — event ingestion / publisher interaction boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 8. `TC-P27-T008` — hardening and guardrails (**NOT EXECUTED**)
 9. `TC-P27-T009` — evidence pack (**NOT EXECUTED**)
 10. `TC-P27-GATE` — acceptance gate (**NOT EXECUTED**)
@@ -140,7 +140,7 @@ Proposed sequence after plan acceptance:
 ### TC-P27-T007 — Event ingestion / publisher interaction boundary
 
 - Purpose: define Analytics-owned ingestion/idempotency posture and publisher interaction contracts without domain transaction coupling or PII SoR takeover.
-- Delivered: semantic publisher boundary · idempotency boundary · non-blocking dispatch posture · opaque reference semantics · guardrail tests.
+- Delivered: `AnalyticsPublisherInteractionBoundary` · `AnalyticsIdempotencyBoundary` · `IAnalyticsSemanticEventConsumer` · `AnalyticsEventIngestionBoundary` · `AnalyticsPrivacyBoundary` · guardrail tests.
 - Forbidden in this task: outbox consumer runtime at scale · event persistence tables beyond T004 foundation · provider execution · public API/UI · migrations beyond T004 schema foundation.
 
 ### TC-P27-T006 — Provider abstraction / dispatch boundary

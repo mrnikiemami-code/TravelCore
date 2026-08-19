@@ -60,7 +60,7 @@ public static class AnalyticsOwnershipBoundary
     public const bool ProviderPortImplemented = true;
     public const bool ProviderAbstractionImplemented = true;
     public const bool ProviderImplemented = false;
-    public const bool IngestionBoundaryImplemented = false;
+    public const bool IngestionBoundaryImplemented = true;
     public const bool PreferenceBoundaryImplemented = false;
     public const bool OperationalBoundaryImplemented = false;
     public const bool DeferredScopeBoundaryImplemented = false;
