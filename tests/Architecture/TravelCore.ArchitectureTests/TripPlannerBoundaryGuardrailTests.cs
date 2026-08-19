@@ -399,7 +399,9 @@ public sealed class TripPlannerBoundaryGuardrailTests
         Assert.Null(typeof(TripPlannerDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.TripPlanner.Domain.Booking"));
         Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Booking")));
         Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment")));
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Notification")));
+        Assert.True(Directory.Exists(Path.Combine(RepoRoot, "src", "backend", "Modules", "Notification")));
+        Assert.False(TripPlannerNotificationBoundary.NotificationProviderImplemented);
+        Assert.Equal("NotificationIntent != NotificationDelivery", TripPlannerNotificationBoundary.NotificationIntentNotEqualNotificationDelivery);
     }
 
     [Fact]

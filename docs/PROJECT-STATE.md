@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P25 — Notification** (**IN_PROGRESS** — `TC-P25-T003` implemented · plan-driven) |
+| Current Phase | **P25 — Notification** (**IN_PROGRESS** — `TC-P25-T004` implemented · module foundation) |
 | Previous Phase | **P23 — Dynamic Package / Flight + Hotel** (**COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md)) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P25-T003` — plan decision inventory + execution sequence (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P25-T003 RESULT`; do **not** continue to `TC-P25-T004` |
+| Current Active Product Task | `TC-P25-T004` — Notification module/schema foundation (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P25-T004 RESULT`; do **not** continue to `TC-P25-T005` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -280,11 +280,13 @@
 | P24 T008 | `TC-P24-T008` **COMPLETE / ACCEPTED** (`c24cee4`) — hardening + guardrails (`B2BOwnershipBoundary` hardening flags + `B2BHardeningGuardrailTests`) |
 | P24 T009 | `TC-P24-T009` **COMPLETE / ACCEPTED** (`5267860`) — `docs/plans/P24-T009-hardening-and-evidence-pack.md`; adversarial architecture review complete; `P24 READY_FOR_GATE` |
 | P24 GATE | `TC-P24-GATE` implemented / AWAITING_ARCHITECT_REVIEW — gate artifact `docs/plans/P24-GATE-acceptance-evidence.md`; no new capability; `P24 COMPLETE`; `P25 IN_PROGRESS / PLAN authored` |
-| P25 | **IN_PROGRESS** — plan authored + plan-driven progression (`TC-P25-T003`) |
-| P25 Plan | `TC-P25-PLAN` COMPLETE / ACCEPTED (`39bd2b8`) — expanded by `TC-P25-T003` — [`docs/plans/P25-implementation-plan.md`](plans/P25-implementation-plan.md) |
+| P25 | **IN_PROGRESS** — plan authored + module foundation (`TC-P25-T004`) |
+| P25 Plan | `TC-P25-PLAN` COMPLETE / ACCEPTED — expanded through `TC-P25-T004` — [`docs/plans/P25-implementation-plan.md`](plans/P25-implementation-plan.md) |
 | P25 T001 | `TC-P25-T001` **COMPLETE / ACCEPTED** (`39bd2b8`) — P25 architecture implementation plan; no product code |
 | P25 T002 | `TC-P25-T002` **COMPLETE / ACCEPTED** (`90789c5`) — plan-driven SoT alignment; no product code |
-| P25 T003 | `TC-P25-T003` implemented / AWAITING_ARCHITECT_REVIEW — plan decision inventory + execution sequence; P25-R1–R8 OPEN; `TC-P25-T004` NOT EXECUTED |
+| P25 T003 | `TC-P25-T003` **COMPLETE / ACCEPTED** (`926ef5c`) — plan decision inventory + execution sequence; no product code |
+| P25 T004 | `TC-P25-T004` implemented / AWAITING_ARCHITECT_REVIEW — independent Notification module + schema `notification`; P25-R1 RESOLVED; `TC-P25-T005` NOT EXECUTED |
+| P25-R1 (Notification module ownership / schema / downstream posture) | **RESOLVED** |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |
 | P24-R3 (agency membership & Access relationship boundary) | **RESOLVED** |

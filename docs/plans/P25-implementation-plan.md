@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P25-PLAN` |
 | Phase | P25 — Notification |
-| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T003 plan-driven progression · **no product execution yet** |
-| Baseline | `90789c5` (`docs(p25): align T002 plan-driven phase state`) |
+| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T004 progression · product foundation started |
+| Baseline | `926ef5c` (`docs(p25): expand T003 plan decision inventory and execution sequence`) |
 | Authoritative sources | `docs/ROADMAP.md` § P25 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` § V · P18 TripPlanner notification intent boundaries · P19 Booking · P20 Payment · P24 B2B |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Notification phase.
 
-> **Envelope note:** `TC-P25-T001`–`T002` ACCEPTED · `TC-P25-T003` implemented (plan decision inventory + execution sequence) · **do not execute `TC-P25-T004` until architect accepts `T003`**.
+> **Envelope note:** `TC-P25-T001`–`T003` ACCEPTED · `TC-P25-T004` implemented (module/schema foundation) · **do not execute `TC-P25-T005` until architect accepts `T004`**.
 
 ---
 
@@ -24,7 +24,7 @@ This document is the architecture plan for the Notification phase.
 | Authoritative next phase | **P25 — Notification** |
 | Declared status before this plan | **PLANNED / NOT_STARTED** |
 | PLAN already existed? | **YES** — minimal plan authored in `TC-P25-T001` |
-| Dedicated Notification module/schema in SoT today? | **NO** — Notification is architecture-listed only; no `notification` schema yet |
+| Dedicated Notification module/schema in SoT today? | **YES** — `TC-P25-T004` delivered independent module + schema `notification` (no product tables) |
 | Notification provider implemented? | **NO** — TripPlanner/Payment/Booking expose intent/boundary markers only |
 
 ---
@@ -60,7 +60,7 @@ P25 must preserve:
 - P24 B2B is complete; B2B does not own notification delivery.
 - P20 Payment owns money movement; `OwnsNotificationDelivery = false`.
 - P18 TripPlanner owns lead/contact/consent facts; `TripPlannerNotificationBoundary` marks provider as not implemented.
-- Notification module is listed in architecture docs and module-ownership matrix but has no backend module scaffolding yet.
+- Notification module scaffolding delivered via `TC-P25-T004` (schema `notification`; no product tables). Further R2–R8 decisions remain OPEN until architect lock.
 - Transition map § V targets P25 for channels/provider abstraction.
 
 ---
@@ -69,7 +69,7 @@ P25 must preserve:
 
 | ID | Topic | Status |
 |----|-------|--------|
-| `P25-R1` | Notification module ownership / schema / downstream posture vs Booking/Payment/TripPlanner | **OPEN** — independent Notification module candidate · schema `notification` · **Notification != Booking** · **Notification != Payment** · **Notification != Identity** · **Notification != Access** · **Notification != Party** · **Notification != TripPlanner** · **Notification != B2B** · semantic event consumption only · no peer-schema FK |
+| `P25-R1` | Notification module ownership / schema / downstream posture vs Booking/Payment/TripPlanner | **RESOLVED** — independent Notification module · schema `notification` · **Notification != Booking** · **Notification != Payment** · **Notification != Identity** · **Notification != Access** · **Notification != Party** · **Notification != TripPlanner** · **Notification != B2B** · semantic event consumption only · no peer-schema FK · host registers after B2B without endpoints |
 | `P25-R2` | Channel boundary (Email / SMS / In-app) | **OPEN** — channel taxonomy and delivery-state ownership in Notification · publishers do not call providers directly |
 | `P25-R3` | Provider abstraction boundary | **OPEN** — provider-neutral delivery contracts · no named production provider · zero-provider posture valid until explicit lock |
 | `P25-R4` | Template / orchestration boundary | **OPEN** — template/render orchestration owned by Notification · business modules publish semantic intent/facts only |
@@ -86,14 +86,20 @@ Proposed sequence after plan acceptance:
 
 1. `TC-P25-T001` — P25 architecture implementation plan (**IMPLEMENTED / ACCEPTED**)
 2. `TC-P25-T002` — plan-driven SoT alignment (**IMPLEMENTED / ACCEPTED**)
-3. `TC-P25-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-4. `TC-P25-T004` — ownership/module/schema foundation (**NOT EXECUTED**)
+3. `TC-P25-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
+4. `TC-P25-T004` — ownership/module/schema foundation (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 5. `TC-P25-T005` — channel boundary (**NOT EXECUTED**)
 6. `TC-P25-T006` — provider abstraction boundary (**NOT EXECUTED**)
 7. `TC-P25-T007` — event consumption / template orchestration boundary (**NOT EXECUTED**)
 8. `TC-P25-T008` — hardening and guardrails (**NOT EXECUTED**)
 9. `TC-P25-T009` — evidence pack (**NOT EXECUTED**)
 10. `TC-P25-GATE` — acceptance gate (**NOT EXECUTED**)
+
+### TC-P25-T004 — Ownership/module/schema foundation
+
+- Purpose: introduce independent Notification module scaffolding with schema `notification` only.
+- Delivered: Contracts/Domain/Infrastructure · `NotificationOwnershipBoundary` · `NotificationPublisherBoundary` · `NotificationDbContext` · host registration after B2B · EnsureSchema migration · guardrail tests.
+- Forbidden in this task: provider SDK · channel/template/delivery persistence · API/frontend · peer-schema FK · shared DbContext.
 
 ### TC-P25-T003 — Plan decision inventory + execution sequence
 
