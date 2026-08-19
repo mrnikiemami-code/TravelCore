@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P24 — B2B / Agency Commerce** (**IN_PROGRESS** — `TC-P24-T009` implemented · READY_FOR_GATE · AWAITING_ARCHITECT_REVIEW) |
+| Current Phase | **P24 — B2B / Agency Commerce** (**COMPLETE** — `TC-P24-GATE` implemented · AWAITING_ARCHITECT_REVIEW) |
 | Previous Phase | **P23 — Dynamic Package / Flight + Hotel** (**COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md)) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P24-T009` — B2B hardening and evidence pack (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P24-T009 RESULT`; do **not** execute `TC-P24-GATE` |
+| Current Active Product Task | `TC-P24-GATE` — P24 acceptance gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P24-GATE RESULT`; do **not** start `P25` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -269,7 +269,7 @@
 | P22-T009 | **COMPLETE / ACCEPTED** (`856bb06` / docs `e76b562`) — hardening + evidence pack [`docs/plans/P22-T009-hardening-and-evidence-pack.md`](plans/P22-T009-hardening-and-evidence-pack.md) · no new Flight capability · READY_FOR_GATE |
 | P22-GATE | **COMPLETE / ACCEPTED** (`2a372ae` / docs `ed040f0`) — [`docs/plans/P22-GATE-acceptance-evidence.md`](plans/P22-GATE-acceptance-evidence.md); P22 COMPLETE; P23 PLAN authored separately |
 | P23 | **COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · T001–T009 ACCEPTED · **P23-R1–R8 RESOLVED** · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md) |
-| P24 | **IN_PROGRESS** — `TC-P24-T009` implemented · **P24-R1–R8 RESOLVED** · **READY_FOR_GATE** · AWAITING_ARCHITECT_REVIEW |
+| P24 | **COMPLETE** — `TC-P24-GATE` implemented · **P24-R1–R8 RESOLVED** · AWAITING_ARCHITECT_REVIEW |
 | P24 T001 | `TC-P24-T001` **COMPLETE / ACCEPTED** (`cc4adcc`) — B2B module + schema `b2b` foundation |
 | P24 T002 | `TC-P24-T002` **COMPLETE / ACCEPTED** (`e811513`) — AgencyReference/AgencyRelationshipBoundary/AgencyMembershipBoundary |
 | P24 T003 | `TC-P24-T003` **COMPLETE / ACCEPTED** (`2f4788a`) — AgencyMemberReference/AgencyAccessRelationshipBoundary |
@@ -278,7 +278,8 @@
 | P24 T006 | `TC-P24-T006` **COMPLETE / ACCEPTED** (`d7429c7`) — AgencyPaymentRelationshipBoundary/PaymentResponsibilityReference/CommercialPaymentCapabilityReference; PaymentTargetKind unchanged |
 | P24 T007 | `TC-P24-T007` **COMPLETE / ACCEPTED** (`cd7ee5e`) — AgencyOperationalBoundary/AgencyReportingReference/AgencyOperationalCapabilityReference; no Admin/Public API |
 | P24 T008 | `TC-P24-T008` **COMPLETE / ACCEPTED** (`c24cee4`) — hardening + guardrails (`B2BOwnershipBoundary` hardening flags + `B2BHardeningGuardrailTests`) |
-| P24 T009 | `TC-P24-T009` implemented / AWAITING_ARCHITECT_REVIEW — `docs/plans/P24-T009-hardening-and-evidence-pack.md` created; adversarial architecture review complete; `P24 READY_FOR_GATE`; `TC-P24-GATE` NOT EXECUTED |
+| P24 T009 | `TC-P24-T009` **COMPLETE / ACCEPTED** (`5267860`) — `docs/plans/P24-T009-hardening-and-evidence-pack.md`; adversarial architecture review complete; `P24 READY_FOR_GATE` |
+| P24 GATE | `TC-P24-GATE` implemented / AWAITING_ARCHITECT_REVIEW — gate artifact `docs/plans/P24-GATE-acceptance-evidence.md`; no new capability; `P24 COMPLETE`; `P25` NOT STARTED |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |
 | P24-R3 (agency membership & Access relationship boundary) | **RESOLVED** |

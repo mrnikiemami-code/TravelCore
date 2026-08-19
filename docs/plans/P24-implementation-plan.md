@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P24-PLAN` |
 | Phase | P24 — B2B / Agency Commerce |
-| Status | PLAN ACCEPTED · **P24-R1–R8 = RESOLVED** · T001–T009 implemented · **READY_FOR_GATE** |
+| Status | **COMPLETE / GATE EXECUTED** · **P24-R1–R8 = RESOLVED** · T001–T009 accepted |
 | Baseline | `eea58e2` (`docs(dynamic-package): complete P23 acceptance gate`) |
 | Authoritative sources | `docs/ROADMAP.md` § P24 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/15-future-architecture-transition-map.md` · P13 Agency Marketplace · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · P23 DynamicPackage |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document defines the P24 execution architecture and task decomposition.
 
-> **Envelope note:** `TC-P24-T001`–`T008` ACCEPTED · `TC-P24-T009` evidence pack + hardening review delivered · **do not execute `TC-P24-GATE`** until architect accepts T009.
+> **Envelope note:** `TC-P24-T001`–`T009` ACCEPTED in repository SoT · `TC-P24-GATE` executed (awaiting architect acceptance) · **do not start `P25` product tasks**.
 
 ---
 
@@ -94,17 +94,17 @@ Proposed sequence after plan acceptance:
 6. `TC-P24-T006` — agency commerce payment boundary (**IMPLEMENTED / ACCEPTED**)
 7. `TC-P24-T007` — agency commerce operational boundary (**IMPLEMENTED / ACCEPTED**)
 8. `TC-P24-T008` — hardening and guardrails (**IMPLEMENTED / ACCEPTED**)
-9. `TC-P24-T009` — evidence pack (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-10. `TC-P24-GATE` — acceptance gate
+9. `TC-P24-T009` — evidence pack (**IMPLEMENTED / ACCEPTED**)
+10. `TC-P24-GATE` — acceptance gate (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 
-### TC-P24-T009 — Hardening and evidence pack
+### TC-P24-GATE — Acceptance gate
 
-- Depends on **P24-R1–R8**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Adversarial architecture review completed · evidence pack added (`docs/plans/P24-T009-hardening-and-evidence-pack.md`) · no ownership/dependency/financial execution leakage introduced · phase recorded as **P24 READY_FOR_GATE** · **TC-P24-GATE NOT EXECUTED**.
+- Depends on **P24-R1–R8** and accepted T001–T009 evidence. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Gate artifact added (`docs/plans/P24-GATE-acceptance-evidence.md`) · no new capability added · P24 recorded as **COMPLETE** · next phase (`P25`) remains **PLANNED / NOT_STARTED**.
 
 ---
 
 ## 7. Plan outcome
 
-- `TC-P24-T001`–`T008` **EXECUTED / ACCEPTED**.
-- `TC-P24-T009` **EXECUTED** (hardening evidence pack + review).
-- `P24` is **READY_FOR_GATE**. `TC-P24-GATE` remains **NOT EXECUTED**.
+- `TC-P24-T001`–`T009` **EXECUTED / ACCEPTED**.
+- `TC-P24-GATE` **EXECUTED** (acceptance evidence only, no product changes).
+- `P24` is **COMPLETE**. `P25` remains **PLANNED / NOT_STARTED**.
