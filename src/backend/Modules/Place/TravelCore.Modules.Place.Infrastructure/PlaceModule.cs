@@ -36,11 +36,13 @@ public sealed class PlaceModule : ITravelCoreModule
         });
 
         services.AddScoped<IPlaceService, PlaceApplicationService>();
+        services.AddScoped<IPlacePublicHotelBrowseQuery, PlacePublicQuery>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         endpoints.MapPlaceEndpoints();
+        endpoints.MapPlacePublicEndpoints();
     }
 }

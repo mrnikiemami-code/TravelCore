@@ -35,6 +35,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />
     <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
+    <InternalsVisibleTo Include="TravelCore.Modules.Place.UnitTests" />
   </ItemGroup>
 
 </Project>

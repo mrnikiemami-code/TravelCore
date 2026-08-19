@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Moderation Operations** (**COMPLETE / ACCEPTED** — `TC-MODOPS-GATE`) |
-| Previous Phase | **Discovery Linking** (**COMPLETE / ACCEPTED** — `TC-DISCLINK-GATE` `38604d3`) |
+| Current Phase | **Hotel Catalog Browse Index** (**COMPLETE / ACCEPTED** — `TC-HOTIDX-GATE`) |
+| Previous Phase | **Moderation Operations** (**COMPLETE / ACCEPTED** — `TC-MODOPS-GATE` `9961699`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-MODOPS-GATE` — Moderation Operations acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **Architect product prioritization** — evolution tracks exhausted (through MODOPS) |
+| Current Active Product Task | `TC-HOTIDX-GATE` — Hotel Catalog Browse Index acceptance gate (**IN PROGRESS**) |
+| Current Next Task | Complete `TC-HOTIDX-T001`–`T015` + `TC-HOTIDX-GATE` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -395,6 +395,9 @@
 | MODOPS T001–T015 | **COMPLETE / ACCEPTED** — Moderation Operations Sequence |
 | MODOPS GATE | `TC-MODOPS-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/MODOPS-GATE-acceptance-evidence.md`](plans/MODOPS-GATE-acceptance-evidence.md) |
 | MODOPS | **COMPLETE** — ROADMAP Moderation Operations Sequence exhausted |
+| HOTIDX Plan | `TC-HOTIDX-PLAN` **IN PROGRESS** — [`docs/plans/HOTIDX-implementation-plan.md`](plans/HOTIDX-implementation-plan.md) |
+| HOTIDX T001–T015 | **IN PROGRESS** — Hotel Catalog Browse Index Sequence |
+| HOTIDX GATE | `TC-HOTIDX-GATE` — pending acceptance |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |

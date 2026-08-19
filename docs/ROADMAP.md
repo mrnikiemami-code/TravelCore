@@ -878,6 +878,22 @@ Live admin UGC moderation workflow after DISCLINK — closes PRODSURF-T015 defer
 
 ---
 
+## Hotel Catalog Browse Index Sequence
+
+**Status:** **COMPLETE / ACCEPTED** (`TC-HOTIDX-GATE`)
+
+**Implementation plan:** [`docs/plans/HOTIDX-implementation-plan.md`](plans/HOTIDX-implementation-plan.md)
+
+Public hotel discovery browse after MODOPS — closes DISCLINK-T014 deferral:
+
+1. Public hotel browse API with locale slug (`/api/place/public/hotels`)
+2. `/hotels` discovery index + SEO metadata
+3. Home discovery hotels entry · links to `/hotels/[slug]` detail
+4. Places route retained · discovery-not-search boundary
+5. Personalized hotel feed deferred
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -921,3 +937,4 @@ Live admin UGC moderation workflow after DISCLINK — closes PRODSURF-T015 defer
 | PROVINT | Provider Integration Readiness Sequence | **COMPLETE / ACCEPTED** (`TC-PROVINT-GATE`) |
 | DISCLINK | Discovery Linking Sequence | **COMPLETE / ACCEPTED** (`TC-DISCLINK-GATE`) |
 | MODOPS | Moderation Operations Sequence | **COMPLETE / ACCEPTED** (`TC-MODOPS-GATE`) |
+| HOTIDX | Hotel Catalog Browse Index Sequence | **IN PROGRESS** (`TC-HOTIDX-PLAN`) |

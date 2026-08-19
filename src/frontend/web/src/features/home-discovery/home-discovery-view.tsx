@@ -18,6 +18,7 @@ function productionLinks(locale: AppLocale): DiscoveryLink[] {
   if (locale === "fa") {
     return [
       { href: `/${locale}/tours`, label: "فهرست تورها", hint: "کشف تور" },
+      { href: `/${locale}/hotels`, label: "هتل‌ها", hint: "Hotel catalog browse" },
       { href: `/${locale}/travelogues`, label: "سفرنامه‌ها", hint: "UGC travelogues" },
       { href: `/${locale}/plan`, label: "برنامه‌ریز سفر", hint: "Trip Planner" },
       { href: `/${locale}/flights`, label: "جستجوی پرواز", hint: "Flight search" },
@@ -27,6 +28,7 @@ function productionLinks(locale: AppLocale): DiscoveryLink[] {
   if (locale === "ar") {
     return [
       { href: `/${locale}/tours`, label: "قائمة الجولات", hint: "Tour discovery" },
+      { href: `/${locale}/hotels`, label: "الفنادق", hint: "Hotel catalog browse" },
       { href: `/${locale}/travelogues`, label: "Travelogues", hint: "UGC travelogues" },
       { href: `/${locale}/plan`, label: "مخطط الرحلة", hint: "Trip planner" },
       { href: `/${locale}/flights`, label: "البحث عن رحلات", hint: "Flight search" },
@@ -35,6 +37,7 @@ function productionLinks(locale: AppLocale): DiscoveryLink[] {
   }
   return [
     { href: `/${locale}/tours`, label: "Tour listing", hint: "Tour discovery" },
+    { href: `/${locale}/hotels`, label: "Hotels", hint: "Hotel catalog browse" },
     { href: `/${locale}/travelogues`, label: "Travelogues", hint: "UGC travelogues" },
     { href: `/${locale}/plan`, label: "Trip planner", hint: "Lead experience" },
     { href: `/${locale}/flights`, label: "Flight search", hint: "Flight booking search" },
