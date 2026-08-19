@@ -101,4 +101,14 @@ public static class AccessAuthorizationPolicies
     /// Agency Marketplace offer moderation: Access-backed <c>agency.marketplace.offers.moderate</c>.
     /// </summary>
     public const string AgencyMarketplaceOffersModerate = "Access.AgencyMarketplace.Offers.Moderate";
+
+    /// <summary>
+    /// UGC moderation queue reads: Access-backed <c>ugc.moderation.read</c>.
+    /// </summary>
+    public const string UgcModerationRead = "Access.Ugc.Moderation.Read";
+
+    /// <summary>
+    /// UGC moderation mutations: Access-backed <c>ugc.moderation.moderate</c>.
+    /// </summary>
+    public const string UgcModerationModerate = "Access.Ugc.Moderation.Moderate";
 }

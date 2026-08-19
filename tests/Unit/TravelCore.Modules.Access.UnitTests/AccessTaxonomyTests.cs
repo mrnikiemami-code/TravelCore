@@ -58,7 +58,10 @@ public sealed class AccessTaxonomyTests
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "pricing.prices.read");
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "pricing.prices.write");
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "agency.marketplace.offers.moderate");
+        Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "ugc.moderation.read");
+        Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "ugc.moderation.moderate");
         Assert.DoesNotContain(AccessPermissionCatalog.AgencyPresentationBaseline, x => x.Code == "agency.marketplace.offers.moderate");
+        Assert.DoesNotContain(AccessPermissionCatalog.AgencyPresentationBaseline, x => x.Code == "ugc.moderation.read");
         Assert.Equal("admin", AccessPermissionCatalog.AdminRoleCode);
     }
 }

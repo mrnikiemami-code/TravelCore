@@ -862,6 +862,22 @@ P26 = Advanced SEO.
 
 ---
 
+## Moderation Operations Sequence
+
+**Status:** **COMPLETE / ACCEPTED** (`TC-MODOPS-GATE`)
+
+**Implementation plan:** [`docs/plans/MODOPS-implementation-plan.md`](plans/MODOPS-implementation-plan.md)
+
+Live admin UGC moderation workflow after DISCLINK — closes PRODSURF-T015 deferral:
+
+1. Access permissions + authorization policies (`ugc.moderation.read` / `ugc.moderation.moderate`)
+2. UGC moderation contracts + service + admin HTTP endpoints
+3. Admin route `/admin/ugc/moderation` + workflow island
+4. Catalog hub link · noindex admin metadata
+5. Review/photo/comment queues · report-driven · bulk moderation deferred
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -904,3 +920,4 @@ P26 = Advanced SEO.
 | PRODSURF | Product Surface Completion Sequence | **COMPLETE / ACCEPTED** (`TC-PRODSURF-GATE`) |
 | PROVINT | Provider Integration Readiness Sequence | **COMPLETE / ACCEPTED** (`TC-PROVINT-GATE`) |
 | DISCLINK | Discovery Linking Sequence | **COMPLETE / ACCEPTED** (`TC-DISCLINK-GATE`) |
+| MODOPS | Moderation Operations Sequence | **COMPLETE / ACCEPTED** (`TC-MODOPS-GATE`) |

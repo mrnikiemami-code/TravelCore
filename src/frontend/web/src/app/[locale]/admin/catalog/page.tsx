@@ -7,6 +7,7 @@ import { getAdminPlaceWorkflowCopy } from "@/features/admin-place/copy";
 import { getAdminContentWorkflowCopy } from "@/features/admin-content/copy";
 import { getAdminTourWorkflowCopy } from "@/features/admin-tour/copy";
 import { getAdminDepartureWorkflowCopy } from "@/features/admin-departure/copy";
+import { getAdminUgcModerationCopy } from "@/features/admin-ugc-moderation/copy";
 import { getDestinationHierarchyWorkflowCopy } from "@/features/admin-destination-hierarchy/copy";
 import { getApiBaseUrl } from "@/lib/api/config";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
@@ -31,6 +32,7 @@ export default async function AdminCatalogHubPage({
   const contentCopy = getAdminContentWorkflowCopy(locale);
   const tourCopy = getAdminTourWorkflowCopy(locale);
   const departureCopy = getAdminDepartureWorkflowCopy(locale);
+  const ugcModerationCopy = getAdminUgcModerationCopy(locale);
   const apiConfigured = Boolean(getApiBaseUrl());
 
   return (
@@ -89,6 +91,14 @@ export default async function AdminCatalogHubPage({
                 href={`/${locale}/admin/catalog/departures`}
               >
                 {departureCopy.navLabel}
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="min-h-touch inline-flex items-center underline-offset-2 hover:underline"
+                href={`/${locale}/admin/ugc/moderation`}
+              >
+                {ugcModerationCopy.navLabel}
               </Link>
             </li>
             <li>
@@ -153,6 +163,12 @@ export default async function AdminCatalogHubPage({
           href={`/${locale}/admin/catalog/departures`}
         >
           {departureCopy.hubCta}
+        </Link>
+        <Link
+          className="min-h-touch inline-flex w-fit items-center rounded-md border border-border px-4"
+          href={`/${locale}/admin/ugc/moderation`}
+        >
+          {ugcModerationCopy.hubCta}
         </Link>
         <Link
           className="min-h-touch inline-flex w-fit items-center rounded-md border border-border px-4"

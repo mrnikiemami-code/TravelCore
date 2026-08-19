@@ -28,6 +28,7 @@ const ALLOWED_USE_CLIENT = new Set([
   path.normalize("features/admin-content/content-workflow-island.tsx"),
   path.normalize("features/admin-departure/departure-workflow-island.tsx"),
   path.normalize("features/admin-tour/tour-workflow-island.tsx"),
+  path.normalize("features/admin-ugc-moderation/ugc-moderation-workflow-island.tsx"),
   path.normalize("features/trip-planner/trip-planner-workflow-island.tsx"),
   path.normalize("features/booking/prepare-form.tsx"),
   path.normalize("features/booking/payment-view.tsx"),

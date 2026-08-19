@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Ugc.Contracts;
 using TravelCore.Modules.Ugc.Infrastructure.Endpoints;
@@ -35,16 +37,19 @@ public sealed class UgcModule : ITravelCoreModule
         services.AddSingleton<IUserPhotoMediaAssetValidator, StructuralUserPhotoMediaAssetValidator>();
         services.AddSingleton<ICommentTargetValidator, StructuralCommentTargetValidator>();
         services.AddSingleton<IUgcReportTargetValidator, StructuralUgcReportTargetValidator>();
+        services.TryAddSingleton<IClock>(SystemClock.Instance);
         services.AddScoped<UgcPublicQuery>();
         services.AddScoped<IUgcPublicReviewQuery>(sp => sp.GetRequiredService<UgcPublicQuery>());
         services.AddScoped<IUgcPublicTravelogueQuery>(sp => sp.GetRequiredService<UgcPublicQuery>());
         services.AddScoped<IUgcPublicUserPhotoQuery>(sp => sp.GetRequiredService<UgcPublicQuery>());
         services.AddScoped<IUgcPublicCommentQuery>(sp => sp.GetRequiredService<UgcPublicQuery>());
+        services.AddScoped<IUgcModerationService, UgcModerationService>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         endpoints.MapUgcPublicEndpoints();
+        endpoints.MapUgcAdminEndpoints();
     }
 }

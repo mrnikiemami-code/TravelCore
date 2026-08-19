@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Discovery Linking** (**COMPLETE / ACCEPTED** — `TC-DISCLINK-GATE`) |
-| Previous Phase | **Provider Integration Readiness** (**COMPLETE / ACCEPTED** — `TC-PROVINT-GATE` `7065f33`) |
+| Current Phase | **Moderation Operations** (**COMPLETE / ACCEPTED** — `TC-MODOPS-GATE`) |
+| Previous Phase | **Discovery Linking** (**COMPLETE / ACCEPTED** — `TC-DISCLINK-GATE` `38604d3`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-DISCLINK-GATE` — Discovery Linking acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **Architect product prioritization** — evolution tracks exhausted (through DISCLINK) |
+| Current Active Product Task | `TC-MODOPS-GATE` — Moderation Operations acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **Architect product prioritization** — evolution tracks exhausted (through MODOPS) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -391,6 +391,10 @@
 | DISCLINK T001–T015 | **COMPLETE / ACCEPTED** — Discovery Linking Sequence |
 | DISCLINK GATE | `TC-DISCLINK-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/DISCLINK-GATE-acceptance-evidence.md`](plans/DISCLINK-GATE-acceptance-evidence.md) |
 | DISCLINK | **COMPLETE** — ROADMAP Discovery Linking Sequence exhausted |
+| MODOPS Plan | `TC-MODOPS-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/MODOPS-implementation-plan.md`](plans/MODOPS-implementation-plan.md) |
+| MODOPS T001–T015 | **COMPLETE / ACCEPTED** — Moderation Operations Sequence |
+| MODOPS GATE | `TC-MODOPS-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/MODOPS-GATE-acceptance-evidence.md`](plans/MODOPS-GATE-acceptance-evidence.md) |
+| MODOPS | **COMPLETE** — ROADMAP Moderation Operations Sequence exhausted |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |
