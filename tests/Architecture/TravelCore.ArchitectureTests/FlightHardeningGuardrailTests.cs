@@ -221,7 +221,38 @@ public sealed class FlightHardeningGuardrailTests
         Assert.Null(typeof(FlightContractsAssemblyMarker).Assembly.GetType(
             "TravelCore.Modules.Flight.Contracts.IFlightSupplierGateway"));
         Assert.Null(typeof(FlightBooking).Assembly.GetType("TravelCore.Modules.Flight.Domain.PNR"));
-        Assert.False(File.Exists(Path.Combine(RepoRoot, "docs", "plans", "P22-GATE-acceptance-evidence.md")));
+    }
+
+    [Fact]
+    public void P22_GateEvidence_Exists_And_Closes_Phase()
+    {
+        var path = Path.Combine(RepoRoot, "docs", "plans", "P22-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(path), path);
+        var text = File.ReadAllText(path);
+        Assert.Contains("TC-P22-T001", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P22-T009", text, StringComparison.Ordinal);
+        Assert.Contains("P22-R1", text, StringComparison.Ordinal);
+        Assert.Contains("P22-R8", text, StringComparison.Ordinal);
+        Assert.Contains("Flight != Tour", text, StringComparison.Ordinal);
+        Assert.Contains("FlightBooking != Tour Booking", text, StringComparison.Ordinal);
+        Assert.Contains("FlightBooking != HotelBooking", text, StringComparison.Ordinal);
+        Assert.Contains("Payment Succeeded != FlightBooking Confirmed", text, StringComparison.Ordinal);
+        Assert.Contains("PNR Confirmed != FlightBooking Confirmed", text, StringComparison.Ordinal);
+        Assert.Contains("Ticket Issued != FlightBooking Confirmed", text, StringComparison.Ordinal);
+        Assert.Contains("FlightBookingCancelled != RefundSucceeded", text, StringComparison.Ordinal);
+        Assert.Contains("X-TravelCore-Flight-Booking-Access-Token", text, StringComparison.Ordinal);
+        Assert.Contains("Production Flight Search Source = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("Production Flight Availability Source = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("Production Flight Offer Source = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("Production Flight Reservation Source = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("Production Flight Ticketing Source = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("Production Flight Cancellation Source = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("Named Flight Supplier = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("Production Payment Provider = NONE", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P22-GATE COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("P22 COMPLETE", text, StringComparison.Ordinal);
+        Assert.Contains("no new product capability", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("P23 — Dynamic Package / Flight + Hotel (PLANNED)", text, StringComparison.Ordinal);
     }
 
     [Fact]
