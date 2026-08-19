@@ -30,8 +30,9 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Post-P29 — Continuous Evolution** (**COMPLETE / ACCEPTED** — `TC-Post-P29-GATE` `f0d897b`) |
-| Previous Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
+| Current Phase | **UI Validation** (**IN PROGRESS** — `TC-UIVAL-PLAN` accepted · `TC-UIVAL-T001` next) |
+| Previous Phase | **Post-P29 — Continuous Evolution** (**COMPLETE / ACCEPTED** — `TC-Post-P29-GATE` `f0d897b`) |
+| Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-Post-P29-GATE` — Post-P29 acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **Roadmap complete** — await architect for next planning decision / product backlog prioritization |
+| Current Active Product Task | `TC-UIVAL-PLAN` — UI Validation implementation plan (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **`TC-UIVAL-T001`** — Foundation primitives validation |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
