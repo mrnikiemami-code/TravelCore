@@ -98,4 +98,32 @@ public sealed class PerformanceHardeningGuardrailTests
         Assert.Contains("PerformanceDeferredScopeBoundary", plan, StringComparison.Ordinal);
         Assert.Contains("operational hardening", plan, StringComparison.OrdinalIgnoreCase);
     }
+
+    [Fact]
+    public void P28_Evidence_Pack_Locks_T009_Hardening_Artifacts()
+    {
+        var evidence = Path.Combine(RepoRoot, "docs", "plans", "P28-T009-hardening-and-evidence-pack.md");
+        Assert.True(File.Exists(evidence), evidence);
+        var text = File.ReadAllText(evidence);
+
+        string[] required =
+        [
+            "TC-P28-T009",
+            "P28-R1",
+            "P28-R8",
+            "profile-before-optimize",
+            "Redis/cache != SoR",
+            "cache != SoR",
+            "Performance != Observability",
+            "Search != ranking engine",
+            "READY_FOR_GATE",
+            "TC-P28-GATE",
+            "NOT EXECUTED",
+        ];
+
+        foreach (var item in required)
+        {
+            Assert.Contains(item, text, StringComparison.Ordinal);
+        }
+    }
 }

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P28-PLAN` |
 | Phase | P28 — Performance & Scale |
-| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002–T007 ACCEPTED · T008 hardening executed |
+| Status | PLAN ACCEPTED · **P28 READY_FOR_GATE** · T002–T008 ACCEPTED · T009 evidence executed |
 | Baseline | `ddbc0ba` (`docs: add P28 implementation plan`) |
 | Authoritative sources | `docs/ROADMAP.md` § P28 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/10-ui-constitution.md` §13 · `docs/architecture/15-future-architecture-transition-map.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P15 Search · P27 Analytics · P26 SEO |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document is the architecture plan for the Performance & Scale phase.
 
-> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T007` ACCEPTED · `TC-P28-T008` implemented (operational hardening) · **do not execute `TC-P28-T009` until architect accepts `T008`**.
+> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T008` ACCEPTED · `TC-P28-T009` implemented (evidence pack) · **READY_FOR_GATE** · **do not execute `TC-P28-GATE` until architect accepts `T009`**.
 
 ---
 
@@ -104,8 +104,8 @@ Proposed sequence after plan acceptance:
 5. `TC-P28-T005` — data access and read optimization boundary (**ACCEPTED** · `05d50c8`)
 6. `TC-P28-T006` — caching boundary and cache policy architecture (**ACCEPTED** · `fce389d`)
 7. `TC-P28-T007` — scaling and infrastructure boundary (**ACCEPTED** · `6edae65` / fix `46bf7ff`)
-8. `TC-P28-T008` — operational hardening and deferred scope boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-9. `TC-P28-T009` — evidence pack (**NOT EXECUTED**)
+8. `TC-P28-T008` — operational hardening and deferred scope boundary (**ACCEPTED** · `13a424e`)
+9. `TC-P28-T009` — evidence pack (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW** · **READY_FOR_GATE**)
 10. `TC-P28-GATE` — acceptance gate (**NOT EXECUTED**)
 
 > Note: `TC-P28-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25/P26/P27 progression where PLAN equals T001 authoring.
