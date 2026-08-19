@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P27 — Analytics + Product Intelligence** (**PLANNED** — P26 COMPLETE) |
-| Previous Phase | **P26 — Advanced SEO + Content Graph** (**COMPLETE / ACCEPTED** — `TC-P26-GATE` `c8664f8`) |
+| Current Phase | **P27 — Analytics + Product Intelligence** (**PLANNED** — `TC-P27-PLAN` authored · awaiting architect review) |
+| Previous Phase | **P26 — Advanced SEO + Content Graph** (**COMPLETE / ACCEPTED** — `TC-P26-GATE` `931ea19`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P26-GATE` — P26 acceptance gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P26-GATE RESULT`; do **not** start P27 product tasks until architect accepts GATE |
+| Current Active Product Task | `TC-P27-PLAN` — P27 architecture implementation plan (AUTHORED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P27-PLAN RESULT`; do **not** execute `TC-P27-T002` until architect accepts PLAN |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
