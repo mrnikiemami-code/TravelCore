@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P23-PLAN` |
 | Phase | P23 — Dynamic Package / Flight + Hotel |
-| Status | PLAN authored · **P23-R1 = OPEN** · **P23-R2 = OPEN** · **P23-R3 = OPEN** · **P23-R4 = OPEN** · **P23-R5 = OPEN** · **P23-R6 = OPEN** · **P23-R7 = OPEN** · **P23-R8 = OPEN** · T001–T009 + GATE sequenced · **not COMPLETE** · **TC-P23-T001 NOT EXECUTED** |
+| Status | PLAN ACCEPTED · **P23-R1 = RESOLVED** · **P23-R2 = OPEN** · **P23-R3 = OPEN** · **P23-R4 = OPEN** · **P23-R5 = OPEN** · **P23-R6 = OPEN** · **P23-R7 = OPEN** · **P23-R8 = OPEN** · T001 implemented / awaiting architect review · **TC-P23-T002 NOT EXECUTED** · **not COMPLETE** |
 | Baseline | `2a372ae` (`feat(flight): close P22 with acceptance gate evidence [TC-P22-GATE]`) · GATE docs `ed040f0` · architect `TC-P22-GATE = ACCEPTED` |
 | Authoritative sources | `docs/ROADMAP.md` § P23 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Tour / Booking / Pricing / Payment / HotelBooking / Flight / Search / SEO · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` · `06-cross-module-communication.md` Example 7 · `15-future-architecture-transition-map.md` § T/U · P11 Tour transport · P12 Pricing · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -70,7 +70,7 @@ P21 delivered HotelBooking. P22 delivered Flight. P23 must coordinate them, not 
 | P22 evidence | [`P22-GATE-acceptance-evidence.md`](P22-GATE-acceptance-evidence.md) |
 | Baseline HEAD | `2a372ae` (product) / starting docs HEAD `ed040f0` |
 | P00–P22 | COMPLETE |
-| DynamicPackage module / schema | **NONE** — not in `04` / matrix / `07` / `Program.cs` |
+| DynamicPackage module / schema | **FOUNDATION ONLY** — independent `DynamicPackage.Contracts` / `Domain` / `Infrastructure` · schema `dynamic_package` · EnsureSchema migration · **no product tables** · **DynamicPackageBooking not implemented** |
 | Flight | Independent module · schema `flight` · `FlightBooking` inside Flight · OneWay/RoundTrip · MultiCity DEFERRED · PNR-first Payment · triple-evidence confirmation |
 | HotelBooking | Independent module · schema `hotel_booking` · hold then PayNow reservation · dual-evidence confirmation |
 | Tour transport | `TourDepartureTransportSegment` — Sequence / Mode / Origin+Destination labels only |
@@ -80,7 +80,7 @@ P21 delivered HotelBooking. P22 delivered Flight. P23 must coordinate them, not 
 | Search | Schema `search` · not live supplier truth · not transaction SoT |
 | SEO | IndexPolicy owner · transactional Flight/Hotel/Tour booking pages hardcoded noindex |
 | Named suppliers / SDKs | **NONE** |
-| Host composition | `Program.cs` registers `HotelBookingModule` then `FlightModule` · **no DynamicPackage module** |
+| Host composition | `Program.cs` registers `HotelBookingModule` then `FlightModule` then `DynamicPackageModule` · DynamicPackage has **no endpoints** |
 
 ---
 
@@ -627,7 +627,7 @@ Ready later if P23 stores: package id, component ids, locale, currency, immutabl
 
 | ID | Topic | Status |
 |----|-------|--------|
-| **P23-R1** | Ownership / module / schema / transaction boundary (`DynamicPackage` vs Booking vs Tour vs no owner) | **OPEN** |
+| **P23-R1** | Ownership / module / schema / transaction boundary (`DynamicPackage` vs Booking vs Tour vs no owner) | **RESOLVED** — independent DynamicPackage module · schema `dynamic_package` · DynamicPackageBooking owned inside DynamicPackage · **DynamicPackage != Tour** · **DynamicPackage != Tour Booking** · **DynamicPackage != Flight** · **DynamicPackage != HotelBooking** · **DynamicPackageBooking != FlightBooking** · **DynamicPackageBooking != HotelBooking** · **Tour Package Flight != live Flight inventory** · Flight/Hotel/Payment execution ownership unchanged |
 | **P23-R2** | Component composition cardinality + package lifecycle statuses | **OPEN** |
 | **P23-R3** | Search / combination / revalidation authority | **OPEN** |
 | **P23-R4** | Package quote / monetary snapshot / currency / discount | **OPEN** |
@@ -648,7 +648,7 @@ Do **not** execute any of these in this PLAN task.
 
 ### TC-P23-T001 — DynamicPackage module / schema foundation
 
-- Depends on **P23-R1**. Scaffold `DynamicPackage.Contracts` / `Domain` / `Infrastructure` · schema `dynamic_package` (if R1 locks) · assign `DynamicPackageBooking` ownership · logical refs only · no Payment kind yet · no Flight/Hotel behavior change beyond contracts they already expose.
+- Depends on **P23-R1**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Independent `DynamicPackage.Contracts` / `DynamicPackage.Domain` / `DynamicPackage.Infrastructure` · schema `dynamic_package` · DynamicPackageBooking ownership assigned to DynamicPackage without implementing the aggregate · no Payment kind yet · no Flight/Hotel behavior change · **TC-P23-T002 NOT EXECUTED**.
 
 ### TC-P23-T002 — Composition + package lifecycle
 
@@ -793,24 +793,22 @@ This PLAN task is **not** Gate-ready and must not mark P23 COMPLETE or READY_FOR
 
 ## 37. Repository safety
 
-- Branch `main` · docs-only for this task.
-- **No** `src/...DynamicPackage` product code · **no** migration · **no** API · **no** frontend product · **no** packages.
-- **No** behavior change to Flight, HotelBooking, Payment, Pricing, Search, Booking, Tour, Place, SEO, ReferenceData.
-- Do **not** execute `TC-P23-T001` until PLAN is ACCEPTED and P23-R1 is locked.
-- User instruction for this execution: **do not commit or push**.
+- Branch `main` · T001 adds DynamicPackage foundation only (schema EnsureSchema; no product tables; no endpoints).
+- **No** DynamicPackageBooking aggregate · **no** fourth Payment target · **no** Flight/Hotel/Payment/Pricing behavior change.
+- Do **not** execute `TC-P23-T002` until T001 ACCEPTED and P23-R2 locked.
 
 ---
 
 ## 38. PLAN Done criteria
 
 - Dynamic Package phase title: **P23 — Dynamic Package / Flight + Hotel**
-- docs-only: **YES**
-- Recommended owner: **new DynamicPackage module** (OPEN)
-- Recommended schema: **`dynamic_package`** (OPEN; not in `07` today)
-- New persistent package aggregate: **YES** — `DynamicPackageBooking` (OPEN)
+- Recommended owner: **new DynamicPackage module** (**RESOLVED at R1**)
+- Recommended schema: **`dynamic_package`** (**RESOLVED at R1**)
+- New persistent package aggregate: **YES** — `DynamicPackageBooking` (ownership assigned; aggregate **not implemented** in T001)
 - FlightBooking ownership unchanged: **YES**
 - HotelBooking ownership unchanged: **YES**
-- P23-R1 through P23-R8: **OPEN**
+- P23-R1: **RESOLVED**
+- P23-R2 through P23-R8: **OPEN**
 - T001–T009 + GATE sequenced
-- T001 executed: **NO**
+- T001 executed: **YES** (awaiting architect review)
 - P23 COMPLETE: **NO**

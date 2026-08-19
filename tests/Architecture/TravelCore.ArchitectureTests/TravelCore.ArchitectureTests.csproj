@@ -62,6 +62,9 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Contracts\TravelCore.Modules.Flight.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Domain\TravelCore.Modules.Flight.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Infrastructure\TravelCore.Modules.Flight.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\DynamicPackage\TravelCore.Modules.DynamicPackage.Contracts\TravelCore.Modules.DynamicPackage.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\DynamicPackage\TravelCore.Modules.DynamicPackage.Domain\TravelCore.Modules.DynamicPackage.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\DynamicPackage\TravelCore.Modules.DynamicPackage.Infrastructure\TravelCore.Modules.DynamicPackage.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Domain\TravelCore.Modules.Search.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Infrastructure\TravelCore.Modules.Search.Infrastructure.csproj" />
   </ItemGroup>
