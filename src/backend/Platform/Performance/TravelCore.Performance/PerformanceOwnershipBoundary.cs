@@ -26,4 +26,5 @@ public static class PerformanceOwnershipBoundary
     public const bool OwnsSeoEditorial = false;
     public const bool OwnsMediaBinaryStorage = false;
     public const bool FoundationBoundaryImplemented = true;
+    public const bool HardeningGuardrailsImplemented = true;
 }

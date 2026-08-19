@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P28 — Performance & Scale** (**IN_PROGRESS** — `TC-P28-T007` implemented) |
+| Current Phase | **P28 — Performance & Scale** (**IN_PROGRESS** — `TC-P28-T008` implemented) |
 | Previous Phase | **P27 — Analytics + Product Intelligence** (**COMPLETE / ACCEPTED** — `TC-P27-GATE` `fb55c0a`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P28-T007` — scaling and infrastructure boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P28-T007 RESULT`; do **not** continue to `TC-P28-T008` |
+| Current Active Product Task | `TC-P28-T008` — operational hardening and deferred scope (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P28-T008 RESULT`; do **not** continue to `TC-P28-T009` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -321,7 +321,11 @@
 | P28 T004 | `TC-P28-T004` **COMPLETE / ACCEPTED** (`e2eee8a`) — runtime boundary and interaction model |
 | P28 T005 | `TC-P28-T005` **COMPLETE / ACCEPTED** (`05d50c8`) — data access and read optimization boundary · **P28-R2/R3 RESOLVED** |
 | P28 T006 | `TC-P28-T006` **COMPLETE / ACCEPTED** (`fce389d`) — caching boundary and policy architecture · **P28-R4 RESOLVED** |
-| P28 T007 | `TC-P28-T007` implemented / AWAITING_ARCHITECT_REVIEW — scaling and infrastructure boundary · **P28-R8 RESOLVED** |
+| P28 T007 | `TC-P28-T007` **COMPLETE / ACCEPTED** (`6edae65` / fix `46bf7ff`) — scaling and infrastructure boundary · **P28-R8 RESOLVED** |
+| P28 T008 | `TC-P28-T008` implemented / AWAITING_ARCHITECT_REVIEW — operational hardening · **P28-R5/R6/R7 RESOLVED** |
+| P28-R5 (CDN/static delivery) | **RESOLVED** |
+| P28-R6 (frontend CWV/bundle) | **RESOLVED** |
+| P28-R7 (Search read performance) | **RESOLVED** |
 | P28-R8 (deferred distributed scale posture) | **RESOLVED** |
 | P28-R4 (Redis cache abstraction) | **RESOLVED** |
 | P28-R2 (PostgreSQL query/index posture) | **RESOLVED** |

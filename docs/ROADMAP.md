@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P28 — Performance & Scale** (**IN_PROGRESS** — `TC-P28-T007` implemented) |
-| Phase Status | P00–P27 COMPLETE · P28 IN_PROGRESS · T007 scaling boundary executed |
+| Current Phase | **P28 — Performance & Scale** (**IN_PROGRESS** — `TC-P28-T008` implemented) |
+| Phase Status | P00–P27 COMPLETE · P28 IN_PROGRESS · T008 hardening executed |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P28-T007 RESULT`; do **not** continue to `TC-P28-T008` |
+| Current Next Task | Return `TC-P28-T008 RESULT`; do **not** continue to `TC-P28-T009` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -127,7 +127,7 @@
 - **P25** = **COMPLETE** (`TC-P25-GATE` ACCEPTED `ed5c95f`)
 - **P26** = **COMPLETE** (`TC-P26-GATE` implemented · P26-R1–R8 RESOLVED)
 - **P27** = **COMPLETE** (`TC-P27-GATE` ACCEPTED `fb55c0a` · P27-R1–R8 RESOLVED)
-- **P28** = **IN_PROGRESS** (`TC-P28-T007` implemented · P28-R1–R4/R8 RESOLVED · R5–R7 OPEN)
+- **P28** = **IN_PROGRESS** (`TC-P28-T008` implemented · **P28-R1–R8 ALL RESOLVED**)
 - **P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -673,7 +673,7 @@ Analytics پشت abstraction معقول؛ فراخوانی provider-specific د�
 
 ## P28 — Performance & Scale
 
-**Status:** IN_PROGRESS — `TC-P28-T007` implemented · **P28-R1–R4/R8 RESOLVED** · R5–R7 OPEN
+**Status:** IN_PROGRESS — `TC-P28-T008` implemented · **P28-R1–R8 ALL RESOLVED**
 
 قبل از بهینه‌سازی، profile کنید.
 
@@ -681,7 +681,7 @@ PostgreSQL queries/indexes · Dapper projections در صورت توجیه · Red
 
 پیچیدگی توزیع‌شده بدون نیاز اندازه‌گیری‌شده معرفی نشود.
 
-**Implementation plan:** [`docs/plans/P28-implementation-plan.md`](plans/P28-implementation-plan.md) · **P28-R1–R4/R8 RESOLVED** · R5–R7 OPEN
+**Implementation plan:** [`docs/plans/P28-implementation-plan.md`](plans/P28-implementation-plan.md) · **P28-R1–R8 ALL RESOLVED**
 
 ---
 
@@ -791,6 +791,6 @@ P26 = Advanced SEO.
 | P25 | Notification | COMPLETE (GATE evidence executed) |
 | P26 | Advanced SEO + Content Graph | **COMPLETE** (GATE evidence executed) |
 | P27 | Analytics + Product Intelligence | **COMPLETE** (GATE evidence executed) |
-| P28 | Performance & Scale | **IN_PROGRESS** (`TC-P28-T007` implemented) |
+| P28 | Performance & Scale | **IN_PROGRESS** (`TC-P28-T008` implemented) |
 | P29 | Production Hardening | PLANNED |
 | Post-P29 | Continuous Evolution | PLANNED |

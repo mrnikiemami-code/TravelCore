@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P28-PLAN` |
 | Phase | P28 — Performance & Scale |
-| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002–T006 ACCEPTED · T007 scaling boundary executed |
+| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002–T007 ACCEPTED · T008 hardening executed |
 | Baseline | `ddbc0ba` (`docs: add P28 implementation plan`) |
 | Authoritative sources | `docs/ROADMAP.md` § P28 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/10-ui-constitution.md` §13 · `docs/architecture/15-future-architecture-transition-map.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P15 Search · P27 Analytics · P26 SEO |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document is the architecture plan for the Performance & Scale phase.
 
-> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T006` ACCEPTED · `TC-P28-T007` implemented (scaling/infrastructure boundary) · **do not execute `TC-P28-T008` until architect accepts `T007`**.
+> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T007` ACCEPTED · `TC-P28-T008` implemented (operational hardening) · **do not execute `TC-P28-T009` until architect accepts `T008`**.
 
 ---
 
@@ -86,9 +86,9 @@ P28 must preserve:
 | `P28-R2` | PostgreSQL query/index optimization boundary | **RESOLVED** — module-owned schema data access · no cross-schema DbContext shortcuts · measurement before query tuning (T005) |
 | `P28-R3` | Read-model projection boundary (Dapper vs EF) | **RESOLVED** — evidence-based read optimization · Dapper justified by evidence only · EF write/migration owner preserved (T005) |
 | `P28-R4` | Redis cache abstraction boundary | **RESOLVED** — cache != SoR · eligibility/invalidation/consistency policy architecture (T006) |
-| `P28-R5` | CDN / static delivery boundary | **OPEN** — CDN for static/media delivery posture · Media app-proxy foundation preserved |
-| `P28-R6` | Frontend rendering / bundle / CWV boundary | **OPEN** — Server Component first · minimal hydration · bundle/third-party control · CWV targets from UI constitution |
-| `P28-R7` | Search read performance boundary | **OPEN** — Search read latency posture · **Search != ranking engine** · no Search SoR takeover |
+| `P28-R5` | CDN / static delivery boundary | **RESOLVED** — CDN posture boundary declared · vendor product DEFERRED (T008) |
+| `P28-R6` | Frontend rendering / bundle / CWV boundary | **RESOLVED** — UI Constitution CWV posture · bundle platform DEFERRED (T008) |
+| `P28-R7` | Search read performance boundary | **RESOLVED** — Search read latency posture · ranking engine DEFERRED (T008) |
 | `P28-R8` | Load testing / deferred distributed scale posture | **RESOLVED** — scaling/infrastructure boundary · deferred microservice/mesh/multi-region (T007) |
 
 ---
@@ -103,8 +103,8 @@ Proposed sequence after plan acceptance:
 4. `TC-P28-T004` — runtime performance boundary and module interaction model (**ACCEPTED** · `e2eee8a`)
 5. `TC-P28-T005` — data access and read optimization boundary (**ACCEPTED** · `05d50c8`)
 6. `TC-P28-T006` — caching boundary and cache policy architecture (**ACCEPTED** · `fce389d`)
-7. `TC-P28-T007` — scaling and infrastructure boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-8. `TC-P28-T008` — frontend/CWV/CDN/Search + hardening guardrails (**NOT EXECUTED**)
+7. `TC-P28-T007` — scaling and infrastructure boundary (**ACCEPTED** · `6edae65` / fix `46bf7ff`)
+8. `TC-P28-T008` — operational hardening and deferred scope boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 9. `TC-P28-T009` — evidence pack (**NOT EXECUTED**)
 10. `TC-P28-GATE` — acceptance gate (**NOT EXECUTED**)
 
@@ -135,11 +135,11 @@ Proposed sequence after plan acceptance:
 - Delivered: `docs/plans/P28-T009-hardening-and-evidence-pack.md` · evidence-pack architecture lock test · SoT sync · **READY_FOR_GATE**.
 - Forbidden in this task: production CDN vendor lock-in · Redis cluster product · load-test infrastructure beyond boundary · GATE execution.
 
-### TC-P28-T008 — Frontend/CWV/CDN/Search + hardening guardrails
+### TC-P28-T008 — Operational hardening and deferred performance scope
 
-- Purpose: consolidate CDN/static delivery, frontend CWV/bundle posture, Search read performance, and hardening guardrails; resolve R5/R6/R7.
-- Delivered: CDN/static delivery boundary · frontend performance boundary · search read performance boundary · hardening guardrail tests.
-- Forbidden in this task: third-party script platform · ranking engine · microservice extraction · evidence pack (T009) · GATE.
+- Purpose: consolidate operational readiness, performance risk boundaries, and deferred optimization catalog; resolve R5/R6/R7.
+- Delivered: `PerformanceOperationalBoundary` · `PerformanceDeferredScopeBoundary` · hardening guardrail tests · **P28-R5/R6/R7 RESOLVED**.
+- Forbidden in this task: production optimization · benchmark claims without evidence · Redis/cache/CDN product · infrastructure deployment · API/frontend.
 
 ### TC-P28-T007 — Scaling and infrastructure boundary
 

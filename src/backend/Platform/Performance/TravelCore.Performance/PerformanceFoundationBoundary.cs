@@ -19,6 +19,7 @@ public static class PerformanceFoundationBoundary
     public const bool DataAccessBoundaryImplemented = true;
     public const bool CacheBoundaryImplemented = true;
     public const bool ScalingBoundaryImplemented = true;
+    public const bool HardeningBoundaryImplemented = true;
     public const bool RedisClientImplemented = false;
     public const bool CachePolicyImplemented = false;
     public const bool CdnIntegrationImplemented = false;

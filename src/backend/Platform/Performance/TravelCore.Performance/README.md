@@ -10,6 +10,7 @@ This project declares architecture posture only in early P28 tasks:
 - data access and read optimization boundaries (T005)
 - caching boundary and cache policy architecture (T006)
 - scaling and infrastructure boundary (T007)
+- operational hardening and deferred scope (T008)
 - Redis/cache non-SoR markers
 - justified Dapper read posture
 - module ownership preservation
