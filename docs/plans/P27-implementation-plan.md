@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P27-PLAN` |
 | Phase | P27 — Analytics + Product Intelligence |
-| Status | PLAN AUTHORED · **P27 NOT_STARTED** · awaiting architect review |
-| Baseline | `931ea19` (`docs(p26): add GATE acceptance evidence and close phase`) |
+| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T002 plan-driven SoT alignment executed |
+| Baseline | `f1e6f09` (`docs: add P27 implementation plan`) |
 | Authoritative sources | `docs/ROADMAP.md` § P27 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` · `docs/pages/09-page-state-and-composition-rules.md` §19 · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P25 Notification · P26 SEO |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Analytics + Product Intelligence phase.
 
-> **Envelope note:** `TC-P27-PLAN` authored only · **do not execute `TC-P27-T002` until architect accepts PLAN**.
+> **Envelope note:** `TC-P27-PLAN` ACCEPTED · `TC-P27-T002` implemented (plan-driven SoT alignment) · **do not execute `TC-P27-T003` until architect accepts `T002`**.
 
 ---
 
@@ -93,8 +93,8 @@ P27 must preserve:
 
 Proposed sequence after plan acceptance:
 
-1. `TC-P27-PLAN` — P27 architecture implementation plan (**THIS TASK / AWAITING_ARCHITECT_REVIEW**)
-2. `TC-P27-T002` — plan-driven SoT alignment (**NOT EXECUTED**)
+1. `TC-P27-PLAN` — P27 architecture implementation plan (**ACCEPTED** · `f1e6f09`)
+2. `TC-P27-T002` — plan-driven SoT alignment (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 3. `TC-P27-T003` — plan decision inventory + execution sequence authoring (**NOT EXECUTED**)
 4. `TC-P27-T004` — analytics module/schema foundation (**NOT EXECUTED**)
 5. `TC-P27-T005` — product event taxonomy boundary (**NOT EXECUTED**)

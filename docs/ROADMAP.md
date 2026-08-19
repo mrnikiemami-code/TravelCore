@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P27 — Analytics + Product Intelligence** (**PLANNED** — `TC-P27-PLAN` authored · awaiting architect review) |
-| Phase Status | P00–P26 COMPLETE · P27 PLAN authored · product execution NOT_STARTED |
+| Current Phase | **P27 — Analytics + Product Intelligence** (**IN_PROGRESS** — `TC-P27-T002` implemented · plan-driven) |
+| Phase Status | P00–P26 COMPLETE · P27 IN_PROGRESS · T002 SoT alignment executed |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P27-PLAN RESULT`; do **not** execute `TC-P27-T002` until architect accepts PLAN |
+| Current Next Task | Return `TC-P27-T002 RESULT`; do **not** continue to `TC-P27-T003` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -659,7 +659,7 @@ Programmatic SEO فقط با inventory/value · unique purpose · content qualit
 
 ## P27 — Analytics + Product Intelligence
 
-**Status:** PLANNED — `TC-P27-PLAN` authored · awaiting architect review · [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md)
+**Status:** IN_PROGRESS — `TC-P27-PLAN` ACCEPTED · `TC-P27-T002` implemented · [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md)
 
 رویدادهایی مانند SearchPerformed · SearchResultClicked · SearchNoResults · FilterApplied · TourViewed · HotelViewed · QuoteCreated · BookingStarted · BookingCompleted.
 

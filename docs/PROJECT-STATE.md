@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P27 — Analytics + Product Intelligence** (**PLANNED** — `TC-P27-PLAN` authored · awaiting architect review) |
+| Current Phase | **P27 — Analytics + Product Intelligence** (**IN_PROGRESS** — `TC-P27-T002` implemented · plan-driven) |
 | Previous Phase | **P26 — Advanced SEO + Content Graph** (**COMPLETE / ACCEPTED** — `TC-P26-GATE` `931ea19`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P27-PLAN` — P27 architecture implementation plan (AUTHORED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P27-PLAN RESULT`; do **not** execute `TC-P27-T002` until architect accepts PLAN |
+| Current Active Product Task | `TC-P27-T002` — plan-driven P27 documentation alignment (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P27-T002 RESULT`; do **not** continue to `TC-P27-T003` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -303,7 +303,10 @@
 | P26 T007 | `TC-P26-T007` **COMPLETE / ACCEPTED** (`c8664f8`) — programmatic landing + route quality; P26-R4/R5 RESOLVED |
 | P26 T008 | `TC-P26-T008` **COMPLETE / ACCEPTED** (`c8664f8`) — hardening guardrails; P26-R6/R7/R8 RESOLVED |
 | P26 T009 | `TC-P26-T009` **COMPLETE / ACCEPTED** (`c8664f8`) — evidence pack; **READY_FOR_GATE** |
-| P26 GATE | `TC-P26-GATE` implemented / AWAITING_ARCHITECT_REVIEW — [`docs/plans/P26-GATE-acceptance-evidence.md`](plans/P26-GATE-acceptance-evidence.md) |
+| P26 GATE | `TC-P26-GATE` **COMPLETE / ACCEPTED** (`931ea19`) — [`docs/plans/P26-GATE-acceptance-evidence.md`](plans/P26-GATE-acceptance-evidence.md) |
+| P27 | **IN_PROGRESS** — `TC-P27-T002` implemented · plan-driven SoT alignment · **P27-R1–R8 OPEN** |
+| P27 Plan | `TC-P27-PLAN` **COMPLETE / ACCEPTED** (`f1e6f09`) — [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md) |
+| P27 T002 | `TC-P27-T002` implemented / AWAITING_ARCHITECT_REVIEW — plan-driven SoT alignment; no product code |
 | P26-R1 (content graph ownership / schema posture) | **RESOLVED** |
 | P26-R2 (hub/cluster taxonomy) | **RESOLVED** |
 | P26-R3 (internal link graph boundary) | **RESOLVED** |
