@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P23-PLAN` |
 | Phase | P23 — Dynamic Package / Flight + Hotel |
-| Status | PLAN ACCEPTED · **P23-R1 = RESOLVED** · **P23-R2–R6 OPEN** · **P23-R7 = OPEN** · **P23-R8 = OPEN** · T001–T006 implemented · **not COMPLETE** |
+| Status | PLAN ACCEPTED · **P23-R1 = RESOLVED** · **P23-R2–R6 OPEN** · **P23-R7 = OPEN** · **P23-R8 = OPEN** · T001–T007 implemented · **not COMPLETE** |
 | Baseline | `2a372ae` (`feat(flight): close P22 with acceptance gate evidence [TC-P22-GATE]`) · GATE docs `ed040f0` · architect `TC-P22-GATE = ACCEPTED` |
 | Authoritative sources | `docs/ROADMAP.md` § P23 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Tour / Booking / Pricing / Payment / HotelBooking / Flight / Search / SEO · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` · `06-cross-module-communication.md` Example 7 · `15-future-architecture-transition-map.md` § T/U · P11 Tour transport · P12 Pricing · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -671,9 +671,9 @@ Do **not** execute any of these in this PLAN task.
 
 - Depends on **P23-R6**. **TC-P23-T006 EXECUTED.** PackagePaymentBoundary: no new PaymentTargetKind (requires DynamicPackageBooking aggregate first), component payments remain component-owned, transient obligation only. No distributed transactions, no compensation implemented, no Payment/Flight/Hotel changes.
 
-### TC-P23-T007 — Package cancellation / refund boundary
+### TC-P23-T007 — Package confirmation / consistency boundary
 
-- Depends on **P23-R7**. Whole-package cancel · Partial Refund slices blocked · Payment owns Refund.
+- Depends on **P23-R7**. **TC-P23-T007 EXECUTED.** Defines confirmation posture via transient `TransientPackageConfirmation` (plus `PackageConfirmationBoundary`), with confirmation meaning + consistency only; no persistence, no saga, no compensation, no payment execution, no public API.
 
 ### TC-P23-T008 — Public UX / auth / privacy / operational reads / SEO
 
@@ -796,7 +796,7 @@ This PLAN task is **not** Gate-ready and must not mark P23 COMPLETE or READY_FOR
 
 - Branch `main` · T001 adds DynamicPackage foundation only (schema EnsureSchema; no product tables; no endpoints).
 - **No** DynamicPackageBooking aggregate · **no** fourth Payment target · **no** Flight/Hotel/Payment/Pricing behavior change.
-- Do **not** execute `TC-P23-T007` until T006 payment boundary validated and P23-R6 locked.
+- Do **not** execute `TC-P23-T008` until T007 confirmation boundary validated and P23-R7 locked.
 
 ---
 
