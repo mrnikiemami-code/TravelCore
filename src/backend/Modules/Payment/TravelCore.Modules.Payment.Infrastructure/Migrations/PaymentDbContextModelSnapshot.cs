@@ -38,6 +38,10 @@ namespace TravelCore.Modules.Payment.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<Guid?>("FlightBooking")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
                     b.Property<Guid?>("HotelBooking")
                         .HasColumnType("uuid")
                         .HasColumnName("hotel_booking_id");
@@ -66,6 +70,11 @@ namespace TravelCore.Modules.Payment.Infrastructure.Migrations
                         .HasDatabaseName("ux_payments_booking_id")
                         .HasFilter("booking_id IS NOT NULL");
 
+                    b.HasIndex("FlightBooking")
+                        .IsUnique()
+                        .HasDatabaseName("ux_payments_flight_booking_id")
+                        .HasFilter("flight_booking_id IS NOT NULL");
+
                     b.HasIndex("HotelBooking")
                         .IsUnique()
                         .HasDatabaseName("ux_payments_hotel_booking_id")
@@ -73,7 +82,7 @@ namespace TravelCore.Modules.Payment.Infrastructure.Migrations
 
                     b.ToTable("payments", "payment", t =>
                         {
-                            t.HasCheckConstraint("ck_payments_exactly_one_target", "(booking_id IS NOT NULL AND hotel_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NOT NULL)");
+                            t.HasCheckConstraint("ck_payments_exactly_one_target", "(booking_id IS NOT NULL AND hotel_booking_id IS NULL AND flight_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NOT NULL AND flight_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NULL AND flight_booking_id IS NOT NULL)");
 
                             t.HasCheckConstraint("ck_payments_status", "status IN (1, 2)");
 
@@ -227,6 +236,10 @@ namespace TravelCore.Modules.Payment.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<Guid?>("FlightBooking")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
                     b.Property<Guid?>("HotelBooking")
                         .HasColumnType("uuid")
                         .HasColumnName("hotel_booking_id");
@@ -260,7 +273,7 @@ namespace TravelCore.Modules.Payment.Infrastructure.Migrations
 
                     b.ToTable("refunds", "payment", t =>
                         {
-                            t.HasCheckConstraint("ck_refunds_exactly_one_target", "(booking_id IS NOT NULL AND hotel_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NOT NULL)");
+                            t.HasCheckConstraint("ck_refunds_exactly_one_target", "(booking_id IS NOT NULL AND hotel_booking_id IS NULL AND flight_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NOT NULL AND flight_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NULL AND flight_booking_id IS NOT NULL)");
 
                             t.HasCheckConstraint("ck_refunds_status", "status IN (1, 2)");
 

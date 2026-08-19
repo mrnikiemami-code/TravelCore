@@ -23,13 +23,16 @@ public static class FlightReservationOwnershipBoundary
         "FlightSupplierReservation.Confirmed != Payment succeeded";
     public const string ConfirmationIsNotTicket =
         "FlightSupplierReservation.Confirmed != ticket issued";
+    public const string FlightBookingConfirmedRequiresTripleEvidence =
+        "FlightBooking.Confirmed = Reservation.Confirmed AND Payment.Succeeded AND all required tickets Issued";
+    public const string Capabilities = "ReservationCreate, ReservationQuery";
+    public const string TicketingCapabilities = "TicketCreate, TicketQuery";
     public const string OfferExpiryIsNotReservationExpiry =
         "OfferExpiresAt != ReservationExpiresAt";
     public const string TicketingDeadlineIsNotReservationExpiry =
         "TicketingDeadline != ReservationExpiresAt";
     public const string ReservationStatuses = "Pending, Confirmed, Expired, Cancelled";
     public const string AttemptStatuses = "Created, Initiated, Confirmed, Failed";
-    public const string Capabilities = "ReservationCreate, ReservationQuery";
 
     public const bool ProductionFakeReservationSourceImplemented = false;
     public const bool NamedSupplierSdkImplemented = false;
@@ -38,9 +41,9 @@ public static class FlightReservationOwnershipBoundary
     public const bool HardcodedReservationTtlImplemented = false;
     public const bool ProcessLocalLockIsAuthority = false;
     public const bool PaymentRequiredForReservation = false;
-    public const bool FlightBookingStatusImplemented = false;
+    public const bool FlightBookingStatusImplemented = true;
     public const bool PnrTypeImplemented = false;
-    public const bool TicketImplemented = false;
+    public const bool TicketImplemented = true;
     public const bool CancellationExecutionImplemented = false;
     public const bool PublicReservationApiImplemented = false;
 }

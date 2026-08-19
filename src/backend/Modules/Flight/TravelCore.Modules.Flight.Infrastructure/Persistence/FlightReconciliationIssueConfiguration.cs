@@ -12,7 +12,7 @@ internal sealed class FlightReconciliationIssueConfiguration : IEntityTypeConfig
         {
             table.HasCheckConstraint(
                 "ck_flight_reconciliation_issues_kind",
-                "kind IN (1, 2, 3, 4, 5, 6, 7)");
+                "kind IN (1, 2, 3, 4, 5, 6, 7, 8, 9)");
         });
         builder.HasKey(x => x.Id);
 

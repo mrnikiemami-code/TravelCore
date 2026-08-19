@@ -92,9 +92,9 @@ public sealed class PaymentHotelTargetPersistenceTests
                 SELECT COUNT(*)::int
                 FROM pg_indexes
                 WHERE schemaname = 'payment'
-                  AND indexname IN ('ux_payments_booking_id', 'ux_payments_hotel_booking_id');
+                  AND indexname IN ('ux_payments_booking_id', 'ux_payments_hotel_booking_id', 'ux_payments_flight_booking_id');
                 """;
-            Assert.Equal(2, Convert.ToInt32(await cmd.ExecuteScalarAsync(ct)));
+            Assert.Equal(3, Convert.ToInt32(await cmd.ExecuteScalarAsync(ct)));
 
             cmd.CommandText = """
                 SELECT COUNT(*)::int

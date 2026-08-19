@@ -17,7 +17,7 @@ internal sealed class RefundConfiguration : IEntityTypeConfiguration<Refund>
             table.HasCheckConstraint("ck_refunds_version_nonnegative", "version >= 0");
             table.HasCheckConstraint(
                 "ck_refunds_exactly_one_target",
-                "(booking_id IS NOT NULL AND hotel_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NOT NULL)");
+                "(booking_id IS NOT NULL AND hotel_booking_id IS NULL AND flight_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NOT NULL AND flight_booking_id IS NULL) OR (booking_id IS NULL AND hotel_booking_id IS NULL AND flight_booking_id IS NOT NULL)");
         });
         builder.HasKey(x => x.Id);
 
@@ -41,6 +41,12 @@ internal sealed class RefundConfiguration : IEntityTypeConfiguration<Refund>
             .HasConversion(
                 reference => reference.HasValue ? reference.Value.HotelBookingId : (Guid?)null,
                 value => value.HasValue ? new HotelBookingPaymentReference(value.Value) : null);
+
+        builder.Property(x => x.FlightBooking)
+            .HasColumnName("flight_booking_id")
+            .HasConversion(
+                reference => reference.HasValue ? reference.Value.FlightBookingId : (Guid?)null,
+                value => value.HasValue ? new FlightBookingPaymentReference(value.Value) : null);
 
         builder.Ignore(x => x.TargetKind);
         builder.Ignore(x => x.TargetReferenceId);

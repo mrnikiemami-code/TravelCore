@@ -67,15 +67,38 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<Instant?>("CancelledAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("cancelled_at");
+
+                    b.Property<Instant?>("ConfirmedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("confirmed_at");
+
+                    b.Property<short>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasDefaultValue((short)1)
+                        .HasColumnName("status");
+
                     b.Property<short>("TripType")
                         .HasColumnType("smallint")
                         .HasColumnName("trip_type");
+
+                    b.Property<long>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint")
+                        .HasColumnName("version");
 
                     b.HasKey("Id");
 
                     b.ToTable("flight_bookings", "flight", t =>
                         {
+                            t.HasCheckConstraint("ck_flight_bookings_status", "status IN (1, 2, 3)");
+
                             t.HasCheckConstraint("ck_flight_bookings_trip_type", "trip_type IN (1, 2)");
+
+                            t.HasCheckConstraint("ck_flight_bookings_version_nonnegative", "version >= 0");
                         });
                 });
 
@@ -96,6 +119,75 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                         .HasDatabaseName("ux_flight_booking_monetary_snapshots_flight_booking_id");
 
                     b.ToTable("flight_booking_monetary_snapshots", "flight");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingPaymentCompensationEvidence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Instant>("DetectedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("detected_at");
+
+                    b.Property<Guid>("FlightBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<short>("Reason")
+                        .HasColumnType("smallint")
+                        .HasColumnName("reason");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlightBookingId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_flight_booking_payment_compensation_evidence_flight_booking_id");
+
+                    b.ToTable("flight_booking_payment_compensation_evidence", "flight", t =>
+                        {
+                            t.HasCheckConstraint("ck_flight_booking_payment_compensation_reason", "reason IN (1, 2, 3, 4)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingPaymentEvidence", b =>
+                {
+                    b.Property<Guid>("FlightBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("amount");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("currency_code");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<Instant>("VerifiedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("verified_at");
+
+                    b.HasKey("FlightBookingId");
+
+                    b.HasIndex("PaymentId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_flight_booking_payment_evidence_payment_id");
+
+                    b.ToTable("flight_booking_payment_evidence", "flight");
                 });
 
             modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightFareRulesSnapshot", b =>
@@ -350,7 +442,7 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
 
                     b.ToTable("flight_reconciliation_issues", "flight", t =>
                         {
-                            t.HasCheckConstraint("ck_flight_reconciliation_issues_kind", "kind IN (1, 2, 3, 4, 5, 6, 7)");
+                            t.HasCheckConstraint("ck_flight_reconciliation_issues_kind", "kind IN (1, 2, 3, 4, 5, 6, 7, 8, 9)");
                         });
                 });
 
@@ -573,6 +665,193 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                     b.ToTable("flight_supplier_reservation_idempotency", "flight");
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightTicket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid>("FlightBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
+                    b.Property<Instant?>("IssuedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("issued_at");
+
+                    b.Property<Guid>("PassengerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_passenger_id");
+
+                    b.Property<string>("SourceKey")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("source_key");
+
+                    b.Property<string>("SourceTicketNumber")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("source_ticket_number");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SourceTicketNumber")
+                        .IsUnique()
+                        .HasDatabaseName("ux_flight_tickets_source_ticket_number")
+                        .HasFilter("source_ticket_number IS NOT NULL");
+
+                    b.HasIndex("FlightBookingId", "PassengerId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_flight_tickets_booking_passenger");
+
+                    b.ToTable("flight_tickets", "flight", t =>
+                        {
+                            t.HasCheckConstraint("ck_flight_tickets_status", "status IN (1, 2)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightTicketingAttempt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Instant?>("FailedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("failed_at");
+
+                    b.Property<Guid>("FlightBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
+                    b.Property<Instant?>("InitiatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("initiated_at");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.Property<Instant?>("SucceededAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("succeeded_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlightBookingId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_flight_ticketing_attempts_one_unresolved")
+                        .HasFilter("status IN (1, 2)");
+
+                    b.ToTable("flight_ticketing_attempts", "flight", t =>
+                        {
+                            t.HasCheckConstraint("ck_flight_ticketing_attempts_status", "status IN (1, 2, 3, 4)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightTicketingIdempotencyRecord", b =>
+                {
+                    b.Property<Guid>("FlightBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
+                    b.Property<string>("IdempotencyKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("idempotency_key");
+
+                    b.Property<Guid>("AttemptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_ticketing_attempt_id");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.HasKey("FlightBookingId", "IdempotencyKey");
+
+                    b.ToTable("flight_ticketing_idempotency", "flight");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Infrastructure.FlightOutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("message_type");
+
+                    b.Property<Instant>("OccurredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occurred_at");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("payload");
+
+                    b.Property<Instant?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcessedAt")
+                        .HasDatabaseName("ix_flight_outbox_messages_processed_at");
+
+                    b.ToTable("outbox_messages", "flight");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Infrastructure.FlightPaymentSuccessInboxRecord", b =>
+                {
+                    b.Property<Guid>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<Instant>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("PaymentId");
+
+                    b.ToTable("flight_payment_success_inbox", "flight");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Infrastructure.FlightRefundSuccessInboxRecord", b =>
+                {
+                    b.Property<Guid>("RefundId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("refund_id");
+
+                    b.Property<Instant>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.HasKey("RefundId");
+
+                    b.ToTable("flight_refund_success_inbox", "flight");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBaggageAllowanceSnapshot", b =>
                 {
                     b.HasOne("TravelCore.Modules.Flight.Domain.FlightFareRulesSnapshot", null)
@@ -692,6 +971,24 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Total")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingPaymentCompensationEvidence", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Flight.Domain.FlightBooking", null)
+                        .WithMany()
+                        .HasForeignKey("FlightBookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingPaymentEvidence", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Flight.Domain.FlightBooking", null)
+                        .WithMany()
+                        .HasForeignKey("FlightBookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -869,6 +1166,33 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                     b.HasOne("TravelCore.Modules.Flight.Domain.FlightSupplierReservation", null)
                         .WithMany()
                         .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightTicket", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Flight.Domain.FlightBooking", null)
+                        .WithMany()
+                        .HasForeignKey("FlightBookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightTicketingAttempt", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Flight.Domain.FlightBooking", null)
+                        .WithMany()
+                        .HasForeignKey("FlightBookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightTicketingIdempotencyRecord", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Flight.Domain.FlightBooking", null)
+                        .WithMany()
+                        .HasForeignKey("FlightBookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

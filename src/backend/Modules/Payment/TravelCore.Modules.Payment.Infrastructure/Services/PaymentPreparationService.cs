@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using TravelCore.Modules.Booking.Contracts;
+using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.HotelBooking.Contracts;
 using TravelCore.Modules.Payment.Contracts;
 using TravelCore.Modules.Payment.Domain;
@@ -16,18 +17,21 @@ internal sealed class PaymentPreparationService
     private readonly PaymentDbContext _db;
     private readonly IBookingPaymentObligationQuery _bookingObligations;
     private readonly IHotelBookingPaymentObligationQuery? _hotelObligations;
+    private readonly IFlightBookingPaymentObligationQuery? _flightObligations;
     private readonly IClock _clock;
 
     public PaymentPreparationService(
         PaymentDbContext db,
         IBookingPaymentObligationQuery bookingObligations,
         IClock clock,
-        IHotelBookingPaymentObligationQuery? hotelObligations = null)
+        IHotelBookingPaymentObligationQuery? hotelObligations = null,
+        IFlightBookingPaymentObligationQuery? flightObligations = null)
     {
         _db = db;
         _bookingObligations = bookingObligations;
         _clock = clock;
         _hotelObligations = hotelObligations;
+        _flightObligations = flightObligations;
     }
 
     public async Task PrepareAsync(PaymentId paymentId, CancellationToken cancellationToken = default)
@@ -36,6 +40,27 @@ internal sealed class PaymentPreparationService
             .Include(x => x.ExecutionSnapshot)
             .SingleOrDefaultAsync(x => x.Id == paymentId, cancellationToken)
             ?? throw new InvalidOperationException("Payment was not found.");
+
+        if (payment.FlightBooking is { } flight)
+        {
+            var flightObligation = _flightObligations is null
+                ? throw new InvalidOperationException("FlightBooking payment obligation query is not registered.")
+                : await _flightObligations.GetByFlightBookingIdAsync(flight.FlightBookingId, cancellationToken)
+                    ?? throw new InvalidOperationException("FlightBooking payment obligation was not found.");
+            if (!flightObligation.PaymentEligible
+                || !string.Equals(flightObligation.FlightBookingStatus, "Pending", StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    "FlightBooking is not eligible for Payment preparation. Confirmed supplier reservation is required before Payment.");
+            }
+
+            payment.BindExecutionSnapshot(
+                flightObligation.SnapshotId,
+                new global::TravelCore.Money.Money(flightObligation.Amount, flightObligation.CurrencyCode),
+                _clock.GetCurrentInstant());
+            await _db.SaveChangesAsync(cancellationToken);
+            return;
+        }
 
         if (payment.HotelBooking is { } hotel)
         {

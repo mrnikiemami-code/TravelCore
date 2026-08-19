@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
@@ -23,6 +24,11 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Contracts\TravelCore.Modules.Flight.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Domain\TravelCore.Modules.Flight.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Infrastructure\TravelCore.Modules.Flight.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Contracts\TravelCore.Modules.Payment.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Domain\TravelCore.Modules.Payment.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Infrastructure\TravelCore.Modules.Payment.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Booking\TravelCore.Modules.Booking.Contracts\TravelCore.Modules.Booking.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Contracts\TravelCore.Modules.HotelBooking.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
   </ItemGroup>
 

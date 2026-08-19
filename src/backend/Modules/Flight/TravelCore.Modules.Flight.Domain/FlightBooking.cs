@@ -1,7 +1,10 @@
+using NodaTime;
+
 namespace TravelCore.Modules.Flight.Domain;
 
 /// <summary>
-/// Flight-owned live-flight transaction aggregate (P22-R2). No lifecycle status, ticketing, or Payment.
+/// Flight-owned live-flight transaction aggregate (P22-R2 / P22-R6).
+/// Status is independent of PNR, Payment, and tickets until all three confirm.
 /// </summary>
 public sealed class FlightBooking
 {
@@ -16,11 +19,21 @@ public sealed class FlightBooking
     {
         Id = id;
         TripType = tripType;
+        Status = FlightBookingStatus.Pending;
+        Version = 0;
     }
 
     public FlightBookingId Id { get; private set; }
 
     public FlightTripType TripType { get; private set; }
+
+    public FlightBookingStatus Status { get; private set; }
+
+    public Instant? ConfirmedAt { get; private set; }
+
+    public Instant? CancelledAt { get; private set; }
+
+    public long Version { get; private set; }
 
     public IReadOnlyList<FlightJourney> Journeys => _journeys;
 
@@ -162,6 +175,119 @@ public sealed class FlightBooking
             throw new ArgumentException(
                 "Offer passenger composition does not match persisted FlightBooking.",
                 nameof(passengers));
+        }
+    }
+
+    /// <summary>
+    /// Triple-evidence confirmation: Confirmed reservation + Payment Succeeded + all passenger tickets Issued.
+    /// Not a generic Confirm/SetConfirmed surface. PNR or Payment alone cannot confirm.
+    /// </summary>
+    public void ConfirmFromAuthoritativeReservationPaymentAndTickets(
+        FlightSupplierReservation reservation,
+        FlightBookingPaymentEvidence paymentEvidence,
+        IReadOnlyList<FlightTicket> tickets,
+        FlightBookingMonetarySnapshot monetary,
+        IReadOnlyList<FlightReconciliationIssue> existingIssues,
+        Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(reservation);
+        ArgumentNullException.ThrowIfNull(paymentEvidence);
+        ArgumentNullException.ThrowIfNull(tickets);
+        ArgumentNullException.ThrowIfNull(monetary);
+        ArgumentNullException.ThrowIfNull(existingIssues);
+        EnsureClock(now);
+
+        if (Status == FlightBookingStatus.Confirmed)
+        {
+            return;
+        }
+
+        if (Status == FlightBookingStatus.Cancelled)
+        {
+            throw new InvalidOperationException("Cancelled FlightBooking cannot become Confirmed.");
+        }
+
+        if (Status != FlightBookingStatus.Pending)
+        {
+            throw new InvalidOperationException($"FlightBooking in status {Status} cannot become Confirmed.");
+        }
+
+        if (!reservation.FlightBookingId.Equals(Id)
+            || reservation.Status != FlightSupplierReservationStatus.Confirmed)
+        {
+            throw new InvalidOperationException(
+                "FlightBooking confirmation requires an authoritatively Confirmed FlightSupplierReservation.");
+        }
+
+        if (!paymentEvidence.FlightBookingId.Equals(Id)
+            || !paymentEvidence.MatchesMonetarySnapshot(monetary))
+        {
+            throw new InvalidOperationException(
+                "Payment evidence amount/currency does not match FlightBookingMonetarySnapshot.");
+        }
+
+        if (existingIssues.Any(issue => issue.FlightBookingId.Equals(Id) && issue.BlocksConfirmation))
+        {
+            throw new InvalidOperationException(
+                "Blocking Flight reconciliation evidence prevents confirmation.");
+        }
+
+        var passengerIds = _passengers.Select(p => p.Id).ToHashSet();
+        if (passengerIds.Count == 0)
+        {
+            throw new InvalidOperationException("FlightBooking confirmation requires passengers.");
+        }
+
+        var issuedForBooking = tickets
+            .Where(t => t.FlightBookingId.Equals(Id) && t.Status == FlightTicketStatus.Issued)
+            .Select(t => t.PassengerId)
+            .ToHashSet();
+        if (!passengerIds.SetEquals(issuedForBooking))
+        {
+            throw new InvalidOperationException(
+                "FlightBooking confirmation requires an Issued ticket for every passenger.");
+        }
+
+        Status = FlightBookingStatus.Confirmed;
+        ConfirmedAt = now;
+        IncrementVersion();
+    }
+
+    /// <summary>
+    /// System compensation terminalization: Pending → Cancelled after authoritative full Refund.
+    /// Does not cancel Confirmed FlightBooking (R7). Not a generic Cancel/SetCancelled surface.
+    /// </summary>
+    public void CancelFromAuthoritativePaymentCompensation(Instant now)
+    {
+        EnsureClock(now);
+        if (Status == FlightBookingStatus.Cancelled)
+        {
+            return;
+        }
+
+        if (Status == FlightBookingStatus.Confirmed)
+        {
+            throw new InvalidOperationException(
+                "Confirmed FlightBooking cannot be cancelled by payment compensation.");
+        }
+
+        if (Status != FlightBookingStatus.Pending)
+        {
+            throw new InvalidOperationException($"FlightBooking in status {Status} cannot become Cancelled.");
+        }
+
+        Status = FlightBookingStatus.Cancelled;
+        CancelledAt = now;
+        IncrementVersion();
+    }
+
+    private void IncrementVersion() => Version++;
+
+    private static void EnsureClock(Instant now)
+    {
+        if (now == default)
+        {
+            throw new ArgumentException("Timestamp cannot be default.", nameof(now));
         }
     }
 }

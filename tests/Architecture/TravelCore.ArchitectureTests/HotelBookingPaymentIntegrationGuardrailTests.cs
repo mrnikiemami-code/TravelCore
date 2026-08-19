@@ -17,10 +17,11 @@ public sealed class HotelBookingPaymentIntegrationGuardrailTests
     public void Payment_Targets_Are_Closed_Tour_And_Hotel_Only()
     {
         Assert.Equal(
-            new[] { PaymentTargetKind.TourBooking, PaymentTargetKind.HotelBooking },
+            new[] { PaymentTargetKind.TourBooking, PaymentTargetKind.HotelBooking, PaymentTargetKind.FlightBooking },
             Enum.GetValues<PaymentTargetKind>());
         Assert.Equal(1, (int)PaymentTargetKind.TourBooking);
         Assert.Equal(2, (int)PaymentTargetKind.HotelBooking);
+        Assert.Equal(3, (int)PaymentTargetKind.FlightBooking);
         Assert.False(PaymentOwnershipBoundary.GeneralizedTargetTypeImplemented);
         Assert.Null(typeof(Payment).GetProperty("TargetType"));
         Assert.False(PaymentRefundBoundary.PartialRefundImplemented);

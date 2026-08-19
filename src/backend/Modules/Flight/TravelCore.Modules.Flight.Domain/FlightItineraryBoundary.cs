@@ -27,7 +27,7 @@ public static class FlightItineraryBoundary
     public const string NationalityStored = "NO";
     public const string PassportStored = "NO";
 
-    public const bool FlightBookingStatusImplemented = false;
+    public const bool FlightBookingStatusImplemented = true;
     public const bool FlightLegImplemented = false;
     public const bool MultiCityImplemented = false;
     public const bool ConnectingSegmentsSupported = true;
@@ -36,6 +36,6 @@ public static class FlightItineraryBoundary
     public const bool OfferImplemented = true;
     public const bool ReservationImplemented = true;
     public const bool PnrImplemented = false;
-    public const bool TicketImplemented = false;
-    public const bool PaymentIntegrationImplemented = false;
+    public const bool TicketImplemented = true;
+    public const bool PaymentIntegrationImplemented = true;
 }

@@ -80,6 +80,36 @@ internal sealed class PaymentGetOrCreateService
         }
     }
 
+    public async Task<PaymentAggregate> GetOrCreateAsync(
+        FlightBookingPaymentReference flightBooking,
+        CancellationToken cancellationToken = default)
+    {
+        var existing = await FindFlightAsync(flightBooking, cancellationToken);
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        var created = PaymentAggregate.CreateForFlight(flightBooking, _clock.GetCurrentInstant());
+        _db.Payments.Add(created);
+        try
+        {
+            await _db.SaveChangesAsync(cancellationToken);
+            return created;
+        }
+        catch (DbUpdateException)
+        {
+            _db.Entry(created).State = EntityState.Detached;
+            foreach (var attempt in created.Attempts)
+            {
+                _db.Entry(attempt).State = EntityState.Detached;
+            }
+
+            return await FindFlightAsync(flightBooking, cancellationToken)
+                ?? throw new InvalidOperationException("Concurrent FlightBooking Payment create did not converge.");
+        }
+    }
+
     private Task<PaymentAggregate?> FindTourAsync(BookingReference booking, CancellationToken cancellationToken) =>
         _db.Payments
             .Include(item => item.Attempts)
@@ -91,4 +121,11 @@ internal sealed class PaymentGetOrCreateService
         _db.Payments
             .Include(item => item.Attempts)
             .SingleOrDefaultAsync(item => item.HotelBooking == hotelBooking, cancellationToken);
+
+    private Task<PaymentAggregate?> FindFlightAsync(
+        FlightBookingPaymentReference flightBooking,
+        CancellationToken cancellationToken) =>
+        _db.Payments
+            .Include(item => item.Attempts)
+            .SingleOrDefaultAsync(item => item.FlightBooking == flightBooking, cancellationToken);
 }

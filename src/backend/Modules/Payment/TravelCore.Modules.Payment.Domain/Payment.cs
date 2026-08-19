@@ -4,8 +4,8 @@ using TravelCore.Modules.Payment.Contracts;
 namespace TravelCore.Modules.Payment.Domain;
 
 /// <summary>
-/// Logical monetary collection for exactly one supported target (Tour Booking or HotelBooking).
-/// Not an open TargetType platform (P21-R6). Owns PaymentAttempt children.
+/// Logical monetary collection for exactly one supported target
+/// (Tour Booking, HotelBooking, or FlightBooking). Not an open TargetType platform (P22-R6).
 /// </summary>
 public sealed class Payment
 {
@@ -19,16 +19,15 @@ public sealed class Payment
         PaymentId id,
         BookingReference? booking,
         HotelBookingPaymentReference? hotelBooking,
+        FlightBookingPaymentReference? flightBooking,
         Instant createdAt)
     {
-        if ((booking is null) == (hotelBooking is null))
-        {
-            throw new ArgumentException("A Payment must belong to exactly one supported target.");
-        }
+        EnsureExactlyOneTarget(booking, hotelBooking, flightBooking);
 
         Id = id;
         Booking = booking;
         HotelBooking = hotelBooking;
+        FlightBooking = flightBooking;
         Status = PaymentStatus.Pending;
         CreatedAt = createdAt;
         StatusChangedAt = createdAt;
@@ -41,11 +40,18 @@ public sealed class Payment
 
     public HotelBookingPaymentReference? HotelBooking { get; private set; }
 
+    public FlightBookingPaymentReference? FlightBooking { get; private set; }
+
     public PaymentTargetKind TargetKind =>
-        HotelBooking is not null ? PaymentTargetKind.HotelBooking : PaymentTargetKind.TourBooking;
+        FlightBooking is not null
+            ? PaymentTargetKind.FlightBooking
+            : HotelBooking is not null
+                ? PaymentTargetKind.HotelBooking
+                : PaymentTargetKind.TourBooking;
 
     public Guid TargetReferenceId =>
-        HotelBooking?.HotelBookingId
+        FlightBooking?.FlightBookingId
+        ?? HotelBooking?.HotelBookingId
         ?? Booking?.BookingId
         ?? throw new InvalidOperationException("Payment has no target.");
 
@@ -70,7 +76,7 @@ public sealed class Payment
             throw new ArgumentException("CreatedAt cannot be default.", nameof(now));
         }
 
-        return new Payment(PaymentId.New(), booking, hotelBooking: null, now);
+        return new Payment(PaymentId.New(), booking, hotelBooking: null, flightBooking: null, now);
     }
 
     public static Payment CreateForHotel(HotelBookingPaymentReference hotelBooking, Instant now)
@@ -80,7 +86,17 @@ public sealed class Payment
             throw new ArgumentException("CreatedAt cannot be default.", nameof(now));
         }
 
-        return new Payment(PaymentId.New(), booking: null, hotelBooking, now);
+        return new Payment(PaymentId.New(), booking: null, hotelBooking, flightBooking: null, now);
+    }
+
+    public static Payment CreateForFlight(FlightBookingPaymentReference flightBooking, Instant now)
+    {
+        if (now == default)
+        {
+            throw new ArgumentException("CreatedAt cannot be default.", nameof(now));
+        }
+
+        return new Payment(PaymentId.New(), booking: null, hotelBooking: null, flightBooking, now);
     }
 
     public PaymentAttempt CreateAttempt(Instant now)
@@ -237,6 +253,20 @@ public sealed class Payment
         if (now == default)
         {
             throw new ArgumentException("Timestamp cannot be default.", nameof(now));
+        }
+    }
+
+    private static void EnsureExactlyOneTarget(
+        BookingReference? booking,
+        HotelBookingPaymentReference? hotelBooking,
+        FlightBookingPaymentReference? flightBooking)
+    {
+        var count = (booking is null ? 0 : 1)
+            + (hotelBooking is null ? 0 : 1)
+            + (flightBooking is null ? 0 : 1);
+        if (count != 1)
+        {
+            throw new ArgumentException("A Payment must belong to exactly one supported target.");
         }
     }
 }

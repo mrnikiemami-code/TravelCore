@@ -43,7 +43,7 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.False(FlightOwnershipBoundary.SeparateFlightBookingModuleImplemented);
         Assert.False(FlightOwnershipBoundary.SeparateFlightBookingSchemaImplemented);
         Assert.True(FlightOwnershipBoundary.FlightBookingAggregateImplemented);
-        Assert.False(FlightOwnershipBoundary.FlightBookingStatusImplemented);
+        Assert.True(FlightOwnershipBoundary.FlightBookingStatusImplemented);
         Assert.True(FlightOwnershipBoundary.ItineraryModelImplemented);
         Assert.True(FlightOwnershipBoundary.SegmentModelImplemented);
         Assert.True(FlightOwnershipBoundary.PassengerModelImplemented);
@@ -53,8 +53,8 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.True(FlightOwnershipBoundary.FareModelImplemented);
         Assert.True(FlightOwnershipBoundary.ReservationModelImplemented);
         Assert.False(FlightOwnershipBoundary.PnrModelImplemented);
-        Assert.False(FlightOwnershipBoundary.TicketModelImplemented);
-        Assert.False(FlightOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(FlightOwnershipBoundary.TicketModelImplemented);
+        Assert.True(FlightOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(FlightOwnershipBoundary.CancellationModelImplemented);
         Assert.False(FlightOwnershipBoundary.PublicApiImplemented);
         Assert.False(FlightOwnershipBoundary.FrontendImplemented);
@@ -66,7 +66,7 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightJourney"));
         Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightSegment"));
         Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightPassenger"));
-        Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBookingStatus"));
+        Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBookingStatus"));
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.BookingBase"));
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.GenericBookingAggregate"));
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.Airport"));
@@ -75,7 +75,7 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightLeg"));
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightOffer"));
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.PNR"));
-        Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightTicket"));
+        Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightTicket"));
         Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightSupplierReservation"));
         Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightSupplierReservationAttempt"));
         Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightReconciliationIssue"));
@@ -83,7 +83,7 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.NotNull(typeof(FlightContractsAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Contracts.IFlightOfferAvailabilitySource"));
         Assert.NotNull(typeof(FlightContractsAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Contracts.IFlightOfferSource"));
         Assert.NotNull(typeof(FlightContractsAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Contracts.IFlightReservationSource"));
-        Assert.Null(typeof(FlightContractsAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Contracts.IFlightTicketingSource"));
+        Assert.NotNull(typeof(FlightContractsAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Contracts.IFlightTicketingSource"));
         Assert.Null(typeof(FlightContractsAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Contracts.IFlightSupplierGateway"));
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.SeatInventory"));
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightAvailabilityHold"));
@@ -94,11 +94,11 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionSearchSource);
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionOfferSource);
         Assert.Equal("NONE", FlightOwnershipBoundary.ProductionReservationSource);
-        Assert.Equal("Search, AvailabilityCheck, OfferRevalidation, ReservationCreate, ReservationQuery", FlightOwnershipBoundary.SourceCapabilities);
+        Assert.Equal("Search, AvailabilityCheck, OfferRevalidation, ReservationCreate, ReservationQuery, TicketCreate, TicketQuery", FlightOwnershipBoundary.SourceCapabilities);
         Assert.Equal("IFlightReservationSource", FlightOwnershipBoundary.ReservationSourcePort);
-        Assert.False(FlightReservationOwnershipBoundary.FlightBookingStatusImplemented);
+        Assert.True(FlightReservationOwnershipBoundary.FlightBookingStatusImplemented);
         Assert.False(FlightReservationOwnershipBoundary.PnrTypeImplemented);
-        Assert.False(FlightReservationOwnershipBoundary.TicketImplemented);
+        Assert.True(FlightReservationOwnershipBoundary.TicketImplemented);
         Assert.False(FlightReservationOwnershipBoundary.PaymentRequiredForReservation);
         Assert.False(FlightReservationOwnershipBoundary.CancellationExecutionImplemented);
         Assert.Equal(
@@ -112,7 +112,7 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.Equal("ReferenceData", FlightItineraryBoundary.AirportAuthority);
         Assert.Equal("ReferenceData", FlightItineraryBoundary.AirlineAuthority);
         Assert.Equal("DEFERRED", FlightItineraryBoundary.MultiCity);
-        Assert.False(FlightItineraryBoundary.FlightBookingStatusImplemented);
+        Assert.True(FlightItineraryBoundary.FlightBookingStatusImplemented);
         Assert.False(FlightItineraryBoundary.FlightLegImplemented);
         Assert.True(FlightItineraryBoundary.ConnectingSegmentsSupported);
     }
@@ -197,7 +197,8 @@ public sealed class FlightBoundaryGuardrailTests
             "PaymentTargetKind.cs"));
         Assert.Contains("TourBooking", payment, StringComparison.Ordinal);
         Assert.Contains("HotelBooking", payment, StringComparison.Ordinal);
-        Assert.DoesNotContain("Flight", payment, StringComparison.Ordinal);
+        Assert.Contains("FlightBooking", payment, StringComparison.Ordinal);
+        Assert.DoesNotContain("Generic", payment, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -207,7 +208,7 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(FlightBookingStatus|Airport|Airline|Carrier|FlightItinerary|FlightLeg|PNR|FlightTicket|BookingBase|Booking<|GenericBookingAggregate|IFlightTicketingSource|IFlightSupplierGateway|SeatInventory|FlightInventory|InventoryBucket|FlightAvailabilityHold)\b",
+            @"\b(class|record|enum|struct|interface)\s+(Airport|Airline|Carrier|FlightItinerary|FlightLeg|PNR|BookingBase|Booking<|GenericBookingAggregate|IFlightSupplierGateway|SeatInventory|FlightInventory|InventoryBucket|FlightAvailabilityHold)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -291,7 +292,8 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.Contains("P22-R3 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P22-R4 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P22-R5 = RESOLVED", text, StringComparison.Ordinal);
-        Assert.Contains("TC-P22-T006 NOT EXECUTED", text, StringComparison.Ordinal);
+        Assert.Contains("P22-R6 = RESOLVED", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P22-T007 NOT EXECUTED", text, StringComparison.Ordinal);
     }
 
     private static bool IsGeneratedOrBin(string path)

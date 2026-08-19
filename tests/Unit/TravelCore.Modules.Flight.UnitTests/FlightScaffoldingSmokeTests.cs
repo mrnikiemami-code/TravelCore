@@ -20,7 +20,6 @@ public sealed class FlightScaffoldingSmokeTests
     {
         var marker = typeof(FlightDomainAssemblyMarker);
         Assert.Equal("TravelCore.Modules.Flight.Domain", marker.Namespace);
-        Assert.Null(marker.Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBookingStatus"));
         Assert.Null(marker.Assembly.GetType("TravelCore.Modules.Flight.Domain.BookingBase"));
         Assert.Null(marker.Assembly.GetType("TravelCore.Modules.Flight.Domain.GenericBookingAggregate"));
     }
@@ -52,6 +51,7 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.False(FlightOwnershipBoundary.SeparateFlightBookingModuleImplemented);
         Assert.False(FlightOwnershipBoundary.SeparateFlightBookingSchemaImplemented);
         Assert.True(FlightOwnershipBoundary.FlightBookingAggregateImplemented);
+        Assert.True(FlightOwnershipBoundary.FlightBookingStatusImplemented);
         Assert.True(FlightOwnershipBoundary.ItineraryModelImplemented);
         Assert.True(FlightOwnershipBoundary.PassengerModelImplemented);
         Assert.True(FlightOwnershipBoundary.SearchModelImplemented);
@@ -60,8 +60,8 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.True(FlightOwnershipBoundary.FareModelImplemented);
         Assert.True(FlightOwnershipBoundary.ReservationModelImplemented);
         Assert.False(FlightOwnershipBoundary.PnrModelImplemented);
-        Assert.False(FlightOwnershipBoundary.TicketModelImplemented);
-        Assert.False(FlightOwnershipBoundary.PaymentIntegrationImplemented);
+        Assert.True(FlightOwnershipBoundary.TicketModelImplemented);
+        Assert.True(FlightOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(FlightOwnershipBoundary.PublicApiImplemented);
         Assert.False(FlightOwnershipBoundary.FrontendImplemented);
         Assert.False(FlightOwnershipBoundary.SupplierSdkImplemented);

@@ -32,10 +32,10 @@ public sealed class PaymentHotelBookingTargetTests
         Assert.Null(payment.HotelBooking);
         Assert.Equal(Tour.BookingId, payment.TargetReferenceId);
         Assert.Equal(
-            new[] { PaymentTargetKind.TourBooking, PaymentTargetKind.HotelBooking },
+            new[] { PaymentTargetKind.TourBooking, PaymentTargetKind.HotelBooking, PaymentTargetKind.FlightBooking },
             Enum.GetValues<PaymentTargetKind>());
+        Assert.Contains("FlightBooking", Enum.GetNames<PaymentTargetKind>());
         Assert.DoesNotContain("Order", Enum.GetNames<PaymentTargetKind>());
-        Assert.DoesNotContain("Flight", Enum.GetNames<PaymentTargetKind>());
         Assert.DoesNotContain("Visa", Enum.GetNames<PaymentTargetKind>());
         Assert.DoesNotContain("Subscription", Enum.GetNames<PaymentTargetKind>());
         Assert.DoesNotContain("Generic", Enum.GetNames<PaymentTargetKind>());
@@ -72,7 +72,7 @@ public sealed class PaymentHotelBookingTargetTests
     {
         Assert.Equal(1, typeof(PaymentAggregate).GetConstructors(
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-            .Count(c => c.GetParameters().Length == 4));
+            .Count(c => c.GetParameters().Length == 5));
         var payment = PaymentAggregate.CreateForHotel(Hotel, Now);
         Assert.True(payment.Booking is null ^ payment.HotelBooking is null);
     }

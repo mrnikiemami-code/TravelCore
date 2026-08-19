@@ -8,7 +8,7 @@ namespace TravelCore.Modules.Payment.Domain;
 /// One logical full-return obligation for a successful Payment (TC-P20-T006 / P20-R6).
 /// Amount/currency are copied from PaymentExecutionSnapshot and are immutable.
 /// Successful Refund does not rewrite PaymentStatus.Succeeded.
-/// Target is copied from Payment (exactly one of Tour Booking or HotelBooking).
+/// Target is copied from Payment (exactly one of Tour Booking, HotelBooking, or FlightBooking).
 /// </summary>
 public sealed class Refund
 {
@@ -24,10 +24,14 @@ public sealed class Refund
         PaymentId paymentId,
         BookingReference? booking,
         HotelBookingPaymentReference? hotelBooking,
+        FlightBookingPaymentReference? flightBooking,
         MoneyValue amount,
         Instant createdAt)
     {
-        if (booking is null == hotelBooking is null)
+        var count = (booking is null ? 0 : 1)
+            + (hotelBooking is null ? 0 : 1)
+            + (flightBooking is null ? 0 : 1);
+        if (count != 1)
         {
             throw new ArgumentException("A Refund must belong to exactly one supported target.");
         }
@@ -36,6 +40,7 @@ public sealed class Refund
         PaymentId = paymentId;
         Booking = booking;
         HotelBooking = hotelBooking;
+        FlightBooking = flightBooking;
         Amount = amount;
         Status = RefundStatus.Pending;
         CreatedAt = createdAt;
@@ -51,11 +56,18 @@ public sealed class Refund
 
     public HotelBookingPaymentReference? HotelBooking { get; private set; }
 
+    public FlightBookingPaymentReference? FlightBooking { get; private set; }
+
     public PaymentTargetKind TargetKind =>
-        HotelBooking is not null ? PaymentTargetKind.HotelBooking : PaymentTargetKind.TourBooking;
+        FlightBooking is not null
+            ? PaymentTargetKind.FlightBooking
+            : HotelBooking is not null
+                ? PaymentTargetKind.HotelBooking
+                : PaymentTargetKind.TourBooking;
 
     public Guid TargetReferenceId =>
-        HotelBooking?.HotelBookingId
+        FlightBooking?.FlightBookingId
+        ?? HotelBooking?.HotelBookingId
         ?? Booking?.BookingId
         ?? throw new InvalidOperationException("Refund has no target.");
 
@@ -98,6 +110,7 @@ public sealed class Refund
             payment.Id,
             payment.Booking,
             payment.HotelBooking,
+            payment.FlightBooking,
             payment.ExecutionSnapshot.Amount,
             now);
     }

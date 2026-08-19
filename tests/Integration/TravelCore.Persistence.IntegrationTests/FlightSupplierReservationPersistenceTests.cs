@@ -63,7 +63,9 @@ public sealed class FlightSupplierReservationPersistenceTests
             Assert.Equal("ABC123", loaded.ReservationLocator);
             Assert.Single(loaded.Attempts);
             Assert.Equal(FlightSupplierReservationAttemptStatus.Confirmed, loaded.Attempts[0].Status);
-            Assert.Null(typeof(FlightBooking).GetProperty("Status"));
+            var loadedBooking = await db.FlightBookings.SingleAsync(x => x.Id == bookingId, ct);
+            Assert.Equal(FlightBookingStatus.Pending, loadedBooking.Status);
+            Assert.NotNull(typeof(FlightBooking).GetProperty("Status"));
         }
     }
 

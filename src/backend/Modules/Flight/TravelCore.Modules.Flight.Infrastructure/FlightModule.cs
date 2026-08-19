@@ -10,6 +10,8 @@ using TravelCore.Modules.Flight.Domain;
 using TravelCore.Modules.Flight.Infrastructure.Reservations;
 using TravelCore.Modules.Flight.Infrastructure.Search;
 using TravelCore.Modules.Flight.Infrastructure.Services;
+using TravelCore.Modules.Flight.Infrastructure.Ticketing;
+using TravelCore.Modules.Payment.Contracts;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Modules.Flight.Infrastructure;
@@ -29,9 +31,19 @@ public sealed class FlightModule : ITravelCoreModule
         services.AddSingleton<IFlightOfferAvailabilitySourceResolver, FlightOfferAvailabilitySourceResolver>();
         services.AddSingleton<IFlightOfferSourceResolver, FlightOfferSourceResolver>();
         services.AddSingleton<IFlightReservationSourceResolver, FlightReservationSourceResolver>();
+        services.AddSingleton<IFlightTicketingSourceResolver, FlightTicketingSourceResolver>();
         services.AddScoped<FlightLiveSearchService>();
         services.AddScoped<FlightOfferAcceptanceService>();
         services.AddScoped<FlightSupplierReservationService>();
+        services.AddScoped<FlightTicketingService>();
+        services.AddScoped<FlightBookingPaymentObligationQueryService>();
+        services.AddScoped<IFlightBookingPaymentObligationQuery>(
+            sp => sp.GetRequiredService<FlightBookingPaymentObligationQueryService>());
+        services.AddScoped<IFlightBookingPaymentSucceededIntegrationHandler, FlightBookingPaymentSucceededIntegrationHandler>();
+        services.AddScoped<IFlightBookingRefundSucceededIntegrationHandler, FlightBookingRefundSucceededIntegrationHandler>();
+        services.AddScoped<FlightCompensationOutboxDispatcher>();
+        services.AddScoped<FlightTicketingRequiredOutboxDispatcher>();
+        services.AddHostedService<FlightOutboxHostedService>();
 
         services.AddDbContext<FlightDbContext>((_, options) =>
         {

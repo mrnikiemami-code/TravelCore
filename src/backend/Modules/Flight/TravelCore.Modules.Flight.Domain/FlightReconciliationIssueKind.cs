@@ -9,4 +9,6 @@ public enum FlightReconciliationIssueKind : short
     OfferMismatch = 5,
     AmbiguousReservationOutcome = 6,
     ContradictorySupplierEvidence = 7,
+    TicketSetMismatch = 8,
+    PaymentEvidenceMismatch = 9,
 }

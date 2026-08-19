@@ -14,6 +14,12 @@ internal sealed class FlightBookingConfiguration : IEntityTypeConfiguration<Flig
             table.HasCheckConstraint(
                 "ck_flight_bookings_trip_type",
                 "trip_type IN (1, 2)");
+            table.HasCheckConstraint(
+                "ck_flight_bookings_status",
+                "status IN (1, 2, 3)");
+            table.HasCheckConstraint(
+                "ck_flight_bookings_version_nonnegative",
+                "version >= 0");
         });
         builder.HasKey(x => x.Id);
 
@@ -24,6 +30,23 @@ internal sealed class FlightBookingConfiguration : IEntityTypeConfiguration<Flig
         builder.Property(x => x.TripType)
             .HasColumnName("trip_type")
             .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.Status)
+            .HasColumnName("status")
+            .HasConversion<short>()
+            .HasDefaultValue(FlightBookingStatus.Pending)
+            .IsRequired();
+
+        builder.Property(x => x.ConfirmedAt)
+            .HasColumnName("confirmed_at");
+
+        builder.Property(x => x.CancelledAt)
+            .HasColumnName("cancelled_at");
+
+        builder.Property(x => x.Version)
+            .HasColumnName("version")
+            .IsConcurrencyToken()
             .IsRequired();
 
         builder.Ignore(x => x.JourneyCount);

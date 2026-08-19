@@ -50,6 +50,27 @@ public sealed class FlightDbContext : DbContext
 
     public DbSet<FlightReconciliationIssue> FlightReconciliationIssues => Set<FlightReconciliationIssue>();
 
+    public DbSet<FlightTicket> FlightTickets => Set<FlightTicket>();
+
+    public DbSet<FlightTicketingAttempt> FlightTicketingAttempts => Set<FlightTicketingAttempt>();
+
+    public DbSet<FlightTicketingIdempotencyRecord> FlightTicketingIdempotency =>
+        Set<FlightTicketingIdempotencyRecord>();
+
+    public DbSet<FlightBookingPaymentEvidence> FlightBookingPaymentEvidence =>
+        Set<FlightBookingPaymentEvidence>();
+
+    public DbSet<FlightBookingPaymentCompensationEvidence> PaymentCompensationEvidence =>
+        Set<FlightBookingPaymentCompensationEvidence>();
+
+    public DbSet<FlightOutboxMessage> OutboxMessages => Set<FlightOutboxMessage>();
+
+    public DbSet<FlightPaymentSuccessInboxRecord> PaymentSuccessInbox =>
+        Set<FlightPaymentSuccessInboxRecord>();
+
+    public DbSet<FlightRefundSuccessInboxRecord> RefundSuccessInbox =>
+        Set<FlightRefundSuccessInboxRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

@@ -30,6 +30,24 @@ internal static class PaymentSuccessOutboxWriter
             return;
         }
 
+        if (payment.FlightBooking is { } flight)
+        {
+            var flightMessage = new FlightBookingPaymentSucceededIntegrationEvent(
+                payment.Id.Value,
+                flight.FlightBookingId,
+                now,
+                payment.ExecutionSnapshot.Amount.Amount,
+                payment.ExecutionSnapshot.Amount.Currency.Value);
+
+            db.OutboxMessages.Add(
+                PaymentOutboxMessage.Create(
+                    payment.Id.Value,
+                    now,
+                    FlightBookingPaymentSuccessOutboxBoundary.MessageType,
+                    FlightBookingPaymentSucceededOutboxSerializer.Serialize(flightMessage)));
+            return;
+        }
+
         if (payment.HotelBooking is { } hotel)
         {
             var hotelMessage = new HotelBookingPaymentSucceededIntegrationEvent(

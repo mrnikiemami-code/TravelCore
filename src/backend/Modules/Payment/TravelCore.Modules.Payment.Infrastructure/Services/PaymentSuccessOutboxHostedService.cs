@@ -28,10 +28,14 @@ internal sealed class PaymentSuccessOutboxHostedService : BackgroundService
                 await paymentDispatcher.DispatchPendingAsync(take: 50, stoppingToken);
                 var hotelPaymentDispatcher = scope.ServiceProvider.GetRequiredService<HotelBookingPaymentSuccessOutboxDispatcher>();
                 await hotelPaymentDispatcher.DispatchPendingAsync(take: 50, stoppingToken);
+                var flightPaymentDispatcher = scope.ServiceProvider.GetRequiredService<FlightBookingPaymentSuccessOutboxDispatcher>();
+                await flightPaymentDispatcher.DispatchPendingAsync(take: 50, stoppingToken);
                 var refundDispatcher = scope.ServiceProvider.GetRequiredService<RefundSucceededOutboxDispatcher>();
                 await refundDispatcher.DispatchPendingAsync(take: 50, stoppingToken);
                 var hotelRefundDispatcher = scope.ServiceProvider.GetRequiredService<HotelBookingRefundSucceededOutboxDispatcher>();
                 await hotelRefundDispatcher.DispatchPendingAsync(take: 50, stoppingToken);
+                var flightRefundDispatcher = scope.ServiceProvider.GetRequiredService<FlightBookingRefundSucceededOutboxDispatcher>();
+                await flightRefundDispatcher.DispatchPendingAsync(take: 50, stoppingToken);
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {

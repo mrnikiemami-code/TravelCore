@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P22-PLAN` |
 | Phase | P22 — Flight |
-| Status | PLAN ACCEPTED · **P22-R1 = RESOLVED** · **P22-R2 = RESOLVED** · **P22-R3 = RESOLVED** · **P22-R4 = RESOLVED** · **P22-R5 = RESOLVED** · **P22-R6–R8 OPEN** · T001–T004 ACCEPTED · T005 implemented / awaiting review · **TC-P22-T006 NOT EXECUTED** |
+| Status | PLAN ACCEPTED · **P22-R1 = RESOLVED** · **P22-R2 = RESOLVED** · **P22-R3 = RESOLVED** · **P22-R4 = RESOLVED** · **P22-R5 = RESOLVED** · **P22-R6 = RESOLVED** · **P22-R7–R8 OPEN** · T001–T005 ACCEPTED · T006 implemented / awaiting review · **TC-P22-T007 NOT EXECUTED** |
 | Baseline | `d6bd842` (`docs(hotel-booking): add TC-P21-GATE result envelope` · GATE evidence `858b4be` · architect `TC-P21-GATE = ACCEPTED`) |
 | Authoritative sources | `docs/ROADMAP.md` § P22 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Flight / Tour · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `flight`) · `06-cross-module-communication.md` Example 7 · `15-future-architecture-transition-map.md` § U · P11-R5 (`TourDepartureTransportSegment`) · P12 Pricing · P19 Booking · P20 Payment · P21 HotelBooking · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -355,8 +355,8 @@ Classifications are **planning inventory**, not architect locks.
 | **P22-R2** | Itinerary / segment / airport / airline / passenger model | **RESOLVED** — FlightBooking aggregate · OneWay=1 journey · RoundTrip=2 journeys · MultiCity DEFERRED · Journey 1..N Segments · no FlightLeg · Airport/Airline authority = ReferenceData · Flight stores IATA logical references only · Adult/Child/Infant · no BirthDate/passport |
 | **P22-R3** | Search / availability / offer authority and supplier capability | **RESOLVED** — live Flight search/availability is external source-authoritative · TravelCore-owned seat inventory not implemented · `IFlightSearchSource` + `IFlightOfferAvailabilitySource` · timeout/Unknown ≠ Unavailable · no hold/PNR · Named Flight Supplier = NONE · Production Search/Availability Source = NONE. **P22-R3 = RESOLVED**. |
 | **P22-R4** | Fare offer / revalidation / monetary snapshot / fare rules | **RESOLVED** — `IFlightOfferSource` is commercial fare authority · immutable `FlightOfferSnapshot` + `FlightBookingMonetarySnapshot` + `FlightFareRulesSnapshot` · BaseFare + Taxes + Fees = TotalAmount · one CurrencyCode · no silent repricing · source `OfferExpiresAt` · `TicketingDeadline != OfferExpiresAt` · timeout/Unknown/Changed cannot accept · Production Offer Source = NONE. **P22-R4 = RESOLVED**. |
-| **P22-R5** | Supplier reservation / PNR lifecycle, idempotency, reconciliation | **RESOLVED** — `IFlightReservationSource` is reservation/PNR authority · one `FlightSupplierReservation` per `FlightBooking` · statuses Pending/Confirmed/Expired/Cancelled · attempt Created/Initiated/Confirmed/Failed · timeout ≠ Failed · `ReservationLocator` is opaque PNR fact (no type named PNR) · `ReservationExpiresAt` source-authored · no payment gating · Production Reservation Source = NONE. **P22-R5 = RESOLVED**. **TC-P22-T006 NOT EXECUTED**. |
-| **P22-R6** | Payment ordering / typed Flight target / ticketing / compensation | **OPEN** |
+| **P22-R5** | Supplier reservation / PNR lifecycle, idempotency, reconciliation | **RESOLVED** — `IFlightReservationSource` is reservation/PNR authority · one `FlightSupplierReservation` per `FlightBooking` · statuses Pending/Confirmed/Expired/Cancelled · attempt Created/Initiated/Confirmed/Failed · timeout ≠ Failed · `ReservationLocator` is opaque PNR fact (no type named PNR) · `ReservationExpiresAt` source-authored · no payment gating · Production Reservation Source = NONE. **P22-R5 = RESOLVED**. |
+| **P22-R6** | Payment ordering / typed Flight target / ticketing / compensation | **RESOLVED** — PNR-first: Accepted offer → Confirmed `FlightSupplierReservation` → Payment → tickets → `FlightBooking` Confirmed · `PaymentTargetKind` is exactly TourBooking, HotelBooking, FlightBooking · one FlightBooking → one Payment · amount from `FlightBookingMonetarySnapshot` · `IFlightTicketingSource` TicketCreate/TicketQuery · per-passenger `FlightTicket` Pending/Issued · timeout leaves ticketing attempt Initiated · Production Ticketing Source = NONE · full Refund compensation when paid booking cannot be ticketed · Partial Refund DEFERRED. **P22-R6 = RESOLVED**. **TC-P22-T007 NOT EXECUTED**. |
 | **P22-R7** | Cancellation / void / refund / partial-refund dependency | **OPEN** |
 | **P22-R8** | Public UX / auth / privacy / operational / provider readiness | **OPEN** |
 
@@ -384,11 +384,11 @@ Inherited locked facts (not new P22 decisions): Tour ≠ live Flight; schema nam
 
 ### TC-P22-T005 — Reservation / PNR / reconciliation
 
-- Depends on **P22-R5**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** `IFlightReservationSource` · `FlightSupplierReservation` + attempts + idempotency + reconciliation · `ReservationLocator` · Production Reservation Source = NONE · no Payment/ticketing/`FlightBookingStatus` · **TC-P22-T006 NOT EXECUTED**.
+- Depends on **P22-R5**. **COMPLETE / ACCEPTED.** `IFlightReservationSource` · `FlightSupplierReservation` + attempts + idempotency + reconciliation · `ReservationLocator` · Production Reservation Source = NONE.
 
 ### TC-P22-T006 — Payment integration / ticketing / compensation
 
-- Depends on **P22-R6**. Typed Flight target only if R6 locks it. Dual/triple evidence as locked.
+- Depends on **P22-R6**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Typed Flight Payment target · PNR-before-Payment · `IFlightTicketingSource` · per-passenger tickets · triple-evidence confirmation · full Refund compensation · **TC-P22-T007 NOT EXECUTED**.
 
 ### TC-P22-T007 — Cancellation / void / refund boundary
 
@@ -461,16 +461,18 @@ This PLAN task is **not** Gate-ready and must not mark P22 READY_FOR_GATE.
 - Airport owner candidate: **ReferenceData** (**OPEN** if catalog is implemented)
 - Airline owner candidate: **ReferenceData**
 - Named Flight Supplier: **NONE**
-- Payment current target kinds: TourBooking, HotelBooking; Flight support: **NO**
+- Payment current target kinds: TourBooking, HotelBooking, FlightBooking
 - P22-R1: **RESOLVED**
 - P22-R2: **RESOLVED**
 - P22-R5: **RESOLVED**
-- P22-R6 through P22-R8: **OPEN**
+- P22-R6: **RESOLVED**
+- P22-R7 through P22-R8: **OPEN**
 - T001–T009 + GATE sequenced
 - T001 executed: **YES** (ACCEPTED)
 - T002 executed: **YES** (ACCEPTED)
 - T003 executed: **YES** (ACCEPTED)
 - T004 executed: **YES** (ACCEPTED)
-- T005 executed: **YES** (awaiting architect review)
-- **TC-P22-T006 NOT EXECUTED**
+- T005 executed: **YES** (ACCEPTED)
+- T006 executed: **YES** (awaiting architect review)
+- **TC-P22-T007 NOT EXECUTED**
 - P23 started: **NO**

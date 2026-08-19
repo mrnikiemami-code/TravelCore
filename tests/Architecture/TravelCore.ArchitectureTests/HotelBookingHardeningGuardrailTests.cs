@@ -138,7 +138,7 @@ public sealed class HotelBookingHardeningGuardrailTests
             },
             Enum.GetValues<HotelSupplierCancellationAttemptStatus>());
         Assert.Equal(
-            new[] { PaymentTargetKind.TourBooking, PaymentTargetKind.HotelBooking },
+            new[] { PaymentTargetKind.TourBooking, PaymentTargetKind.HotelBooking, PaymentTargetKind.FlightBooking },
             Enum.GetValues<PaymentTargetKind>());
         Assert.Equal(
             new[] { PaymentStatus.Pending, PaymentStatus.Succeeded },

@@ -22,6 +22,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="TravelCore.Modules.Payment.Infrastructure" />
     <InternalsVisibleTo Include="TravelCore.Modules.Payment.UnitTests" />
+    <InternalsVisibleTo Include="TravelCore.Modules.Flight.UnitTests" />
     <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
     <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />
     <InternalsVisibleTo Include="TravelCore.Host.IntegrationTests" />

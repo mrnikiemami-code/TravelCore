@@ -27,7 +27,7 @@ public sealed class PaymentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(9, expectedMigrations.Length);
+            Assert.Equal(10, expectedMigrations.Length);
             Assert.EndsWith("_InitialPaymentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAttemptProviderReferences", expectedMigrations[2], StringComparison.Ordinal);
@@ -37,6 +37,7 @@ public sealed class PaymentMigrationLifecycleTests
             Assert.EndsWith("_AddPaymentRefundAndCompensation", expectedMigrations[6], StringComparison.Ordinal);
             Assert.EndsWith("_AddHotelBookingPaymentTarget", expectedMigrations[7], StringComparison.Ordinal);
             Assert.EndsWith("_AddHotelBookingCancellationRefundInbox", expectedMigrations[8], StringComparison.Ordinal);
+            Assert.EndsWith("_AddFlightBookingPaymentTarget", expectedMigrations[9], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())

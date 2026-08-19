@@ -48,9 +48,31 @@ internal sealed class PaymentSuccessEvidenceQueryService : IPaymentSuccessEviden
             return null;
         }
 
-        return new HotelBookingPaymentSuccessEvidenceRead(
+            return new HotelBookingPaymentSuccessEvidenceRead(
             payment.Id.Value,
             payment.HotelBooking.Value.HotelBookingId,
+            payment.Status.ToString(),
+            payment.ExecutionSnapshot.Amount.Amount,
+            payment.ExecutionSnapshot.Amount.Currency.Value,
+            payment.Status == PaymentStatus.Succeeded);
+    }
+
+    public async Task<FlightBookingPaymentSuccessEvidenceRead?> GetByFlightBookingIdAsync(
+        Guid flightBookingId,
+        CancellationToken cancellationToken = default)
+    {
+        var reference = new FlightBookingPaymentReference(flightBookingId);
+        var payment = await _db.Payments
+            .Include(x => x.ExecutionSnapshot)
+            .SingleOrDefaultAsync(x => x.FlightBooking == reference, cancellationToken);
+        if (payment?.ExecutionSnapshot is null || payment.FlightBooking is null)
+        {
+            return null;
+        }
+
+        return new FlightBookingPaymentSuccessEvidenceRead(
+            payment.Id.Value,
+            payment.FlightBooking.Value.FlightBookingId,
             payment.Status.ToString(),
             payment.ExecutionSnapshot.Amount.Amount,
             payment.ExecutionSnapshot.Amount.Currency.Value,

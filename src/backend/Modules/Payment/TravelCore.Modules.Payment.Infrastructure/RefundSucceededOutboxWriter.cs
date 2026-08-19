@@ -28,6 +28,25 @@ internal static class RefundSucceededOutboxWriter
             return;
         }
 
+        if (refund.FlightBooking is { } flight)
+        {
+            var flightMessage = new FlightBookingRefundSucceededIntegrationEvent(
+                refund.Id.Value,
+                refund.PaymentId.Value,
+                flight.FlightBookingId,
+                now,
+                refund.Amount.Amount,
+                refund.Amount.Currency.Value);
+
+            db.OutboxMessages.Add(
+                PaymentOutboxMessage.Create(
+                    refund.Id.Value,
+                    now,
+                    FlightBookingRefundSuccessOutboxBoundary.MessageType,
+                    FlightBookingRefundSucceededOutboxSerializer.Serialize(flightMessage)));
+            return;
+        }
+
         if (refund.HotelBooking is { } hotel)
         {
             var hotelMessage = new HotelBookingRefundSucceededIntegrationEvent(

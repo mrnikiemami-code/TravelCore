@@ -29,14 +29,16 @@ public sealed class FlightSupplierReservationTests
             new[] { "Created", "Initiated", "Confirmed", "Failed" },
             Enum.GetNames<FlightSupplierReservationAttemptStatus>());
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.PNR"));
-        Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBookingStatus"));
-        Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightTicket"));
-        Assert.False(FlightOwnershipBoundary.FlightBookingStatusImplemented);
+        Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightBookingStatus"));
+        Assert.NotNull(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.FlightTicket"));
+        Assert.True(FlightOwnershipBoundary.FlightBookingStatusImplemented);
         Assert.False(FlightReservationOwnershipBoundary.PnrTypeImplemented);
         Assert.False(FlightReservationOwnershipBoundary.PaymentRequiredForReservation);
-        Assert.False(FlightReservationOwnershipBoundary.TicketImplemented);
+        Assert.True(FlightReservationOwnershipBoundary.TicketImplemented);
         Assert.Equal(FlightSourceCapability.ReservationCreate, (FlightSourceCapability)4);
         Assert.Equal(FlightSourceCapability.ReservationQuery, (FlightSourceCapability)5);
+        Assert.Equal(FlightSourceCapability.TicketCreate, (FlightSourceCapability)6);
+        Assert.Equal(FlightSourceCapability.TicketQuery, (FlightSourceCapability)7);
         Assert.Equal(
             "OfferExpiresAt != ReservationExpiresAt",
             FlightReservationOwnershipBoundary.OfferExpiryIsNotReservationExpiry);

@@ -34,9 +34,11 @@ public sealed class PaymentModule : ITravelCoreModule
             sp.GetRequiredService<PaymentDbContext>(),
             sp.GetRequiredService<TravelCore.Modules.Booking.Contracts.IBookingPaymentObligationQuery>(),
             sp.GetRequiredService<IClock>(),
-            sp.GetService<TravelCore.Modules.HotelBooking.Contracts.IHotelBookingPaymentObligationQuery>()));
+            sp.GetService<TravelCore.Modules.HotelBooking.Contracts.IHotelBookingPaymentObligationQuery>(),
+            sp.GetService<TravelCore.Modules.Flight.Contracts.IFlightBookingPaymentObligationQuery>()));
         services.AddScoped<PaymentInitiationService>();
         services.AddScoped<IHotelBookingPaymentInitiationService>(sp => sp.GetRequiredService<PaymentInitiationService>());
+        services.AddScoped<IFlightBookingPaymentInitiationService>(sp => sp.GetRequiredService<PaymentInitiationService>());
         services.AddScoped<PaymentCallbackProcessor>();
         services.AddScoped<PaymentAttemptRecheckService>();
         services.AddScoped<PaymentSuccessOutboxDispatcher>();
@@ -44,6 +46,10 @@ public sealed class PaymentModule : ITravelCoreModule
             sp.GetRequiredService<PaymentDbContext>(),
             sp.GetRequiredService<IClock>(),
             sp.GetService<IHotelBookingPaymentSucceededIntegrationHandler>()));
+        services.AddScoped(sp => new FlightBookingPaymentSuccessOutboxDispatcher(
+            sp.GetRequiredService<PaymentDbContext>(),
+            sp.GetRequiredService<IClock>(),
+            sp.GetService<IFlightBookingPaymentSucceededIntegrationHandler>()));
         services.AddScoped<RefundGetOrCreateService>();
         services.AddScoped<RefundInitiationService>();
         services.AddScoped<RefundAttemptRecheckService>();
@@ -52,8 +58,13 @@ public sealed class PaymentModule : ITravelCoreModule
             sp.GetRequiredService<PaymentDbContext>(),
             sp.GetRequiredService<IClock>(),
             sp.GetService<IHotelBookingRefundSucceededIntegrationHandler>()));
+        services.AddScoped(sp => new FlightBookingRefundSucceededOutboxDispatcher(
+            sp.GetRequiredService<PaymentDbContext>(),
+            sp.GetRequiredService<IClock>(),
+            sp.GetService<IFlightBookingRefundSucceededIntegrationHandler>()));
         services.AddScoped<IBookingPaymentCompensationRequiredHandler, BookingPaymentCompensationRequiredHandler>();
         services.AddScoped<IHotelBookingPaymentCompensationRequiredHandler, HotelBookingPaymentCompensationRequiredHandler>();
+        services.AddScoped<IFlightBookingPaymentCompensationRequiredHandler, FlightBookingPaymentCompensationRequiredHandler>();
         services.AddScoped<IHotelBookingCancellationRefundRequiredHandler, HotelBookingCancellationRefundRequiredHandler>();
         services.AddHostedService<PaymentSuccessOutboxHostedService>();
         services.AddScoped<IPaymentSuccessEvidenceQuery, PaymentSuccessEvidenceQueryService>();

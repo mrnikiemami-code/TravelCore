@@ -19,6 +19,14 @@ public sealed record HotelBookingPaymentSuccessEvidenceRead(
     string CurrencyCode,
     bool IsAuthoritativeSuccess);
 
+public sealed record FlightBookingPaymentSuccessEvidenceRead(
+    Guid PaymentId,
+    Guid FlightBookingId,
+    string PaymentStatus,
+    decimal Amount,
+    string CurrencyCode,
+    bool IsAuthoritativeSuccess);
+
 public interface IPaymentSuccessEvidenceQuery
 {
     Task<PaymentSuccessEvidenceRead?> GetByBookingIdAsync(
@@ -29,4 +37,9 @@ public interface IPaymentSuccessEvidenceQuery
         Guid hotelBookingId,
         CancellationToken cancellationToken = default) =>
         Task.FromResult<HotelBookingPaymentSuccessEvidenceRead?>(null);
+
+    Task<FlightBookingPaymentSuccessEvidenceRead?> GetByFlightBookingIdAsync(
+        Guid flightBookingId,
+        CancellationToken cancellationToken = default) =>
+        Task.FromResult<FlightBookingPaymentSuccessEvidenceRead?>(null);
 }

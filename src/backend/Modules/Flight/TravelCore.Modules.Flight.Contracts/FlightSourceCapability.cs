@@ -11,4 +11,6 @@ public enum FlightSourceCapability : short
     OfferRevalidation = 3,
     ReservationCreate = 4,
     ReservationQuery = 5,
+    TicketCreate = 6,
+    TicketQuery = 7,
 }

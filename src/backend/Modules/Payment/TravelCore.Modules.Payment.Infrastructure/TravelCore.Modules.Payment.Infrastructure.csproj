@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Booking\TravelCore.Modules.Booking.Contracts\TravelCore.Modules.Booking.Contracts.csproj" />
     <ProjectReference Include="..\..\HotelBooking\TravelCore.Modules.HotelBooking.Contracts\TravelCore.Modules.HotelBooking.Contracts.csproj" />
+    <ProjectReference Include="..\..\Flight\TravelCore.Modules.Flight.Contracts\TravelCore.Modules.Flight.Contracts.csproj" />
     <ProjectReference Include="..\TravelCore.Modules.Payment.Contracts\TravelCore.Modules.Payment.Contracts.csproj" />
     <ProjectReference Include="..\TravelCore.Modules.Payment.Domain\TravelCore.Modules.Payment.Domain.csproj" />
     <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
@@ -34,6 +35,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />
     <InternalsVisibleTo Include="TravelCore.Modules.Payment.UnitTests" />
+    <InternalsVisibleTo Include="TravelCore.Modules.Flight.UnitTests" />
     <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
   </ItemGroup>
 
