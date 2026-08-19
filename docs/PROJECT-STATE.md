@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **UI Validation** (**COMPLETE / ACCEPTED** — `TC-UIVAL-GATE`) |
-| Previous Phase | **Post-P29 — Continuous Evolution** (**COMPLETE / ACCEPTED** — `TC-Post-P29-GATE` `f0d897b`) |
+| Current Phase | **SEO Validation** (**COMPLETE / ACCEPTED** — `TC-SEOVAL-GATE`) |
+| Previous Phase | **UI Validation** (**COMPLETE / ACCEPTED** — `TC-UIVAL-GATE` `8204605`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-UIVAL-GATE` — UI Validation acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **SEO Validation Sequence** (ROADMAP § SEO Validation) — await architect prioritization / `TC-SEOVAL-PLAN` |
+| Current Active Product Task | `TC-SEOVAL-GATE` — SEO Validation acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **Architect product prioritization** — master roadmap + UIVAL + SEOVAL validation tracks exhausted; await next ROADMAP evolution item |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -367,7 +367,10 @@
 | UIVAL T015 | `TC-UIVAL-T015` **COMPLETE / ACCEPTED** — agency surfaces |
 | UIVAL GATE | `TC-UIVAL-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/UIVAL-GATE-acceptance-evidence.md`](plans/UIVAL-GATE-acceptance-evidence.md) |
 | UIVAL | **COMPLETE** — ROADMAP UI Validation Sequence exhausted |
-| UIVAL | **IN PROGRESS** — product evolution track after master roadmap |
+| SEOVAL Plan | `TC-SEOVAL-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/SEOVAL-implementation-plan.md`](plans/SEOVAL-implementation-plan.md) |
+| SEOVAL T001–T015 | **COMPLETE / ACCEPTED** — ROADMAP SEO Validation Sequence |
+| SEOVAL GATE | `TC-SEOVAL-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/SEOVAL-GATE-acceptance-evidence.md`](plans/SEOVAL-GATE-acceptance-evidence.md) |
+| SEOVAL | **COMPLETE** — ROADMAP SEO Validation Sequence exhausted |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |

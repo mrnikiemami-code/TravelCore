@@ -742,6 +742,8 @@ security/authorization review · rate limiting · audit · content sanitization 
 
 ## SEO Validation Sequence
 
+**Status:** **COMPLETE / ACCEPTED** (`TC-SEOVAL-GATE`)
+
 ترتیب اعتبارسنجی SEO:
 
 1. URL/locale constitution
@@ -804,3 +806,4 @@ P26 = Advanced SEO.
 | P29 | Production Hardening | **COMPLETE / ACCEPTED** |
 | Post-P29 | Continuous Evolution | **COMPLETE / ACCEPTED** |
 | UIVAL | UI Validation Sequence | **COMPLETE / ACCEPTED** (`TC-UIVAL-GATE`) |
+| SEOVAL | SEO Validation Sequence | **COMPLETE / ACCEPTED** (`TC-SEOVAL-GATE`) |
