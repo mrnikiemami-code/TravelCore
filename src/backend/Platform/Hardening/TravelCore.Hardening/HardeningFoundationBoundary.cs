@@ -14,7 +14,7 @@ public static class HardeningFoundationBoundary
     public const bool SeparateHardeningFoundationImplemented = true;
     public const bool SecurityBoundaryImplemented = true;
     public const bool RateLimitBoundaryImplemented = true;
-    public const bool AuditBoundaryImplemented = false;
+    public const bool AuditBoundaryImplemented = true;
     public const bool FileSecurityBoundaryImplemented = false;
     public const bool BackupDrBoundaryImplemented = false;
     public const bool OperationalPlatformBoundaryImplemented = false;

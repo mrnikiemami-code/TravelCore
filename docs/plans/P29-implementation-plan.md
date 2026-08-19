@@ -86,7 +86,7 @@ P29 must preserve:
 |----|-------|--------|
 | `P29-R1` | Security foundation / authorization review boundary vs domain modules | **RESOLVED** — domain owns authorization facts · Platform cross-cutting posture · T003 boundary only |
 | `P29-R2` | Rate limiting / abuse protection boundary | **RESOLVED** — cross-cutting posture · no WAF/rate-limit product · T004 boundary only |
-| `P29-R3` | Audit trail / compliance event boundary vs row metadata | **OPEN** |
+| `P29-R3` | Audit trail / compliance event boundary vs row metadata | **RESOLVED** — row metadata vs audit-event product · no mega-table · T005 boundary only |
 | `P29-R4` | Content sanitization / file security boundary vs P06 Media | **OPEN** |
 | `P29-R5` | Backup/restore / DR / DB recovery boundary | **OPEN** |
 | `P29-R6` | Health / observability / metrics / tracing / error monitoring extension | **OPEN** |
@@ -102,8 +102,8 @@ Proposed sequence after plan acceptance:
 1. `TC-P29-PLAN` — P29 architecture implementation plan (**ACCEPTED** · `6aab050`)
 2. `TC-P29-T002` — production hardening foundation boundary (**ACCEPTED** · `8308bb2`)
 3. `TC-P29-T003` — security / authorization review boundary (**ACCEPTED** · `ae4ecbf` · **P29-R1 RESOLVED**)
-4. `TC-P29-T004` — rate limiting / abuse protection boundary (**IN PROGRESS**)
-5. `TC-P29-T005` — audit / compliance event boundary
+4. `TC-P29-T004` — rate limiting / abuse protection boundary (**ACCEPTED** · `96cd326` · **P29-R2 RESOLVED**)
+5. `TC-P29-T005` — audit / compliance event boundary (**IN PROGRESS**)
 6. `TC-P29-T006` — content sanitization / file security boundary
 7. `TC-P29-T007` — backup/restore / DR / DB recovery boundary
 8. `TC-P29-T008` — operational platform hardening (health/observability/secrets/deployment) + production verification + runbooks + deferred scope
@@ -160,6 +160,12 @@ Proposed sequence after plan acceptance:
 ### TC-P29-T005 — Audit / compliance event boundary
 
 - Purpose: define audit-event storage posture vs row metadata; high-risk business audit events boundary without audit product.
+- Forbidden in this task: audit log storage product · SIEM integration · cross-module audit mega-table · API/frontend.
+
+### TC-P29-T005 — Audit / compliance event boundary
+
+- Purpose: define audit-event storage posture vs row metadata; high-risk business audit events boundary without audit product.
+- Delivered: `HardeningAuditBoundary` · `HardeningRowMetadataInteractionBoundary` · guardrail tests · **P29-R3 RESOLVED**.
 - Forbidden in this task: audit log storage product · SIEM integration · cross-module audit mega-table · API/frontend.
 
 ### TC-P29-T004 — Rate limiting / abuse protection boundary

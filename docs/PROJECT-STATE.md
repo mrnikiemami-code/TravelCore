@@ -329,9 +329,9 @@
 | P29 Plan | `TC-P29-PLAN` **COMPLETE / ACCEPTED** (`6aab050`) — [`docs/plans/P29-implementation-plan.md`](plans/P29-implementation-plan.md) |
 | P29 T002 | `TC-P29-T002` **COMPLETE / ACCEPTED** (`8308bb2`) — production hardening foundation boundary |
 | P29 T003 | `TC-P29-T003` **COMPLETE / ACCEPTED** (`ae4ecbf`) — security / authorization review boundary · **P29-R1 RESOLVED** |
-| P29 T004 | `TC-P29-T004` **IN PROGRESS** — rate limiting / abuse protection boundary · **P29-R2 RESOLVED** |
-| P29-R2 (rate limiting / abuse protection) | **RESOLVED** |
-| P29 | **IN PROGRESS** — T004 rate limit boundary · **P29-R3–R8 OPEN** |
+| P29 T004 | `TC-P29-T004` **COMPLETE / ACCEPTED** (`96cd326`) — rate limiting / abuse protection boundary · **P29-R2 RESOLVED** |
+| P29 T005 | `TC-P29-T005` **IN PROGRESS** — audit / compliance event boundary · **P29-R3 RESOLVED** |
+| P29 | **IN PROGRESS** — T005 audit boundary · **P29-R4–R8 OPEN** |
 | P28-R5 (CDN/static delivery) | **RESOLVED** |
 | P28-R6 (frontend CWV/bundle) | **RESOLVED** |
 | P28-R7 (Search read performance) | **RESOLVED** |
