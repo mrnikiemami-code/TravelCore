@@ -65,4 +65,7 @@
 | `TravelCore.ArchitectureTests` (Analytics filter) | **PASS** (527+) |
 | `git diff --check` | **PASS** |
 
-**P27 = COMPLETE**
+- `P27 COMPLETE`: **YES**
+- Next phase (P28): **NOT STARTED**
+
+**TC-P27-GATE COMPLETE** · **P27 COMPLETE** · PLAN + T002–T009 ACCEPTED · P27-R1–R8 RESOLVED.
