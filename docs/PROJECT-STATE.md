@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE`) |
+| Current Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | Previous Phase | **P28 — Performance & Scale** (**COMPLETE / ACCEPTED** — `TC-P28-GATE` `fef29ab`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -331,11 +331,11 @@
 | P29 T003 | `TC-P29-T003` **COMPLETE / ACCEPTED** (`ae4ecbf`) — security / authorization review boundary · **P29-R1 RESOLVED** |
 | P29 T004 | `TC-P29-T004` **COMPLETE / ACCEPTED** (`96cd326`) — rate limiting / abuse protection boundary · **P29-R2 RESOLVED** |
 | P29 T005 | `TC-P29-T005` **COMPLETE / ACCEPTED** (`8d52ace` / fix `11051a9`) — audit / compliance event boundary · **P29-R3 RESOLVED** |
-| P29 T006 | `TC-P29-T006` **COMPLETE / ACCEPTED** — content sanitization / file security boundary · **P29-R4 RESOLVED** |
-| P29 T007 | `TC-P29-T007` **COMPLETE / ACCEPTED** — backup/restore / DR / DB recovery boundary · **P29-R5 RESOLVED** |
-| P29 T008 | `TC-P29-T008` **COMPLETE / ACCEPTED** — operational hardening · **P29-R6/R7/R8 RESOLVED** |
-| P29 T009 | `TC-P29-T009` **COMPLETE / ACCEPTED** — evidence pack · **READY_FOR_GATE** |
-| P29 GATE | `TC-P29-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/P29-GATE-acceptance-evidence.md`](plans/P29-GATE-acceptance-evidence.md) |
+| P29 T006 | `TC-P29-T006` **COMPLETE / ACCEPTED** (`79fab46`) — content sanitization / file security boundary · **P29-R4 RESOLVED** |
+| P29 T007 | `TC-P29-T007` **COMPLETE / ACCEPTED** (`f2d636a`) — backup/restore / DR / DB recovery boundary · **P29-R5 RESOLVED** |
+| P29 T008 | `TC-P29-T008` **COMPLETE / ACCEPTED** (`471a2e7`) — operational hardening · **P29-R6/R7/R8 RESOLVED** |
+| P29 T009 | `TC-P29-T009` **COMPLETE / ACCEPTED** (`30ec571`) — evidence pack · **READY_FOR_GATE** |
+| P29 GATE | `TC-P29-GATE` **COMPLETE / ACCEPTED** (`f866cb2`) — [`docs/plans/P29-GATE-acceptance-evidence.md`](plans/P29-GATE-acceptance-evidence.md) |
 | P29 | **COMPLETE** — `TC-P29-GATE` implemented · **P29-R1–R8 RESOLVED** |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |

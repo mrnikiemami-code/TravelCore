@@ -104,11 +104,11 @@ Proposed sequence after plan acceptance:
 3. `TC-P29-T003` — security / authorization review boundary (**ACCEPTED** · `ae4ecbf` · **P29-R1 RESOLVED**)
 4. `TC-P29-T004` — rate limiting / abuse protection boundary (**ACCEPTED** · `96cd326` · **P29-R2 RESOLVED**)
 5. `TC-P29-T005` — audit / compliance event boundary (**ACCEPTED** · `8d52ace` / fix `11051a9` · **P29-R3 RESOLVED**)
-6. `TC-P29-T006` — content sanitization / file security boundary (**ACCEPTED**)
-7. `TC-P29-T007` — backup/restore / DR / DB recovery boundary (**ACCEPTED**)
-8. `TC-P29-T008` — operational platform hardening + production verification + runbooks + deferred scope (**ACCEPTED** · **P29-R6/R7/R8 RESOLVED**)
-9. `TC-P29-T009` — evidence pack (**ACCEPTED** · **READY_FOR_GATE**)
-10. `TC-P29-GATE` — acceptance gate (**COMPLETE**)
+6. `TC-P29-T006` — content sanitization / file security boundary (**ACCEPTED** · `79fab46` · **P29-R4 RESOLVED**)
+7. `TC-P29-T007` — backup/restore / DR / DB recovery boundary (**ACCEPTED** · `f2d636a` · **P29-R5 RESOLVED**)
+8. `TC-P29-T008` — operational platform hardening + production verification + runbooks + deferred scope (**ACCEPTED** · `471a2e7` · **P29-R6/R7/R8 RESOLVED**)
+9. `TC-P29-T009` — evidence pack (**ACCEPTED** · `30ec571` · **READY_FOR_GATE**)
+10. `TC-P29-GATE` — acceptance gate (**COMPLETE** · `f866cb2`)
 
 > Note: `TC-P29-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25/P26/P27/P28 progression where PLAN equals T001 authoring.
 
