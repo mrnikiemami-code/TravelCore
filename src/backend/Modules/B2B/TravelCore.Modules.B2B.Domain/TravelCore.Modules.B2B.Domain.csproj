@@ -6,7 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Modules.B2B.Domain</RootNamespace>
     <AssemblyName>TravelCore.Modules.B2B.Domain</AssemblyName>
-    <Description>B2B domain marker (TC-P24-T001). No agency/contract/credit entities yet.</Description>
+    <Description>B2B domain boundary models (TC-P24-T001/T002). No Agency aggregate persistence.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
 
 </Project>

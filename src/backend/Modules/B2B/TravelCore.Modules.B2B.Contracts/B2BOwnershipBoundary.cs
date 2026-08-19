@@ -39,6 +39,9 @@ public static class B2BOwnershipBoundary
     public const bool SeparateB2BModuleImplemented = true;
     public const bool SeparateB2BSchemaImplemented = true;
     public const bool AgencyEntityImplemented = false;
+    public const bool AgencyReferenceBoundaryImplemented = true;
+    public const bool AgencyMembershipBoundaryImplemented = true;
+    public const bool AgencyRelationshipBoundaryImplemented = true;
     public const bool AgencyUserEntityImplemented = false;
     public const bool ContractEntityImplemented = false;
     public const bool CommissionEntityImplemented = false;
