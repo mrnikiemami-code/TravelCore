@@ -304,7 +304,7 @@
 | P26 T008 | `TC-P26-T008` **COMPLETE / ACCEPTED** (`c8664f8`) — hardening guardrails; P26-R6/R7/R8 RESOLVED |
 | P26 T009 | `TC-P26-T009` **COMPLETE / ACCEPTED** (`c8664f8`) — evidence pack; **READY_FOR_GATE** |
 | P26 GATE | `TC-P26-GATE` **COMPLETE / ACCEPTED** (`931ea19`) — [`docs/plans/P26-GATE-acceptance-evidence.md`](plans/P26-GATE-acceptance-evidence.md) |
-| P27 | **IN_PROGRESS** — `TC-P27-T002` implemented · plan-driven SoT alignment · **P27-R1–R8 OPEN** |
+| P27 | **IN_PROGRESS** — `TC-P27-T004` implemented · **P27-R1 RESOLVED** · R2–R8 OPEN |
 | P27 Plan | `TC-P27-PLAN` **COMPLETE / ACCEPTED** (`f1e6f09`) — [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md) |
 | P27 T002 | `TC-P27-T002` **COMPLETE / ACCEPTED** (`994a94e`) — plan-driven SoT alignment; no product code |
 | P27 T003 | `TC-P27-T003` **COMPLETE / ACCEPTED** (`0e998aa`) — decision inventory + execution sequence; no product code |

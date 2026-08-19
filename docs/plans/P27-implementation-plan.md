@@ -94,7 +94,7 @@ P27 must preserve:
 Proposed sequence after plan acceptance:
 
 1. `TC-P27-PLAN` — P27 architecture implementation plan (**ACCEPTED** · `f1e6f09`)
-2. `TC-P27-T002` — plan-driven SoT alignment (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
+2. `TC-P27-T002` — plan-driven SoT alignment (**IMPLEMENTED / ACCEPTED**)
 3. `TC-P27-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
 4. `TC-P27-T004` — analytics module/schema foundation (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 5. `TC-P27-T005` — product event taxonomy boundary (**NOT EXECUTED**)
