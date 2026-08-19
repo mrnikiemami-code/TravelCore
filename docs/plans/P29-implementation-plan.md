@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P29-PLAN` |
 | Phase | P29 — Production Hardening |
-| Status | **PLAN ACCEPTED** · **T002 IN PROGRESS** |
+| Status | **P29 COMPLETE / ACCEPTED** · GATE executed |
 | Baseline | `fef29ab` (`docs: complete P28 acceptance gate`) |
 | Authoritative sources | `docs/ROADMAP.md` § P29 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/08-persistence-and-migrations.md` · `docs/architecture/10-ui-constitution.md` · `docs/architecture/14-engineering-quality-constitution.md` · `docs/architecture/15-future-architecture-transition-map.md` § X · `docs/architecture/21-health-check-foundation.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P25 Notification · P26 SEO · P27 Analytics · P28 Performance |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document is the architecture plan for the Production Hardening phase.
 
-> **Envelope note:** `TC-P29-PLAN` ACCEPTED · `TC-P29-T002` foundation boundary · **do not start T003 without architect envelope**.
+> **Envelope note:** `TC-P29-PLAN` ACCEPTED · `TC-P29-T002`–`T009` ACCEPTED · `TC-P29-GATE` COMPLETE · **P29 COMPLETE** · **do not start Post-P29 without architect envelope**.
 
 ---
 
@@ -87,11 +87,11 @@ P29 must preserve:
 | `P29-R1` | Security foundation / authorization review boundary vs domain modules | **RESOLVED** — domain owns authorization facts · Platform cross-cutting posture · T003 boundary only |
 | `P29-R2` | Rate limiting / abuse protection boundary | **RESOLVED** — cross-cutting posture · no WAF/rate-limit product · T004 boundary only |
 | `P29-R3` | Audit trail / compliance event boundary vs row metadata | **RESOLVED** — row metadata vs audit-event product · no mega-table · T005 boundary only |
-| `P29-R4` | Content sanitization / file security boundary vs P06 Media | **OPEN** |
-| `P29-R5` | Backup/restore / DR / DB recovery boundary | **OPEN** |
-| `P29-R6` | Health / observability / metrics / tracing / error monitoring extension | **OPEN** |
-| `P29-R7` | Deployment / CI/CD / environment config / secret management boundary | **OPEN** |
-| `P29-R8` | Production verification (SEO/mobile/a11y) + operational runbooks + deferred scope | **OPEN** |
+| `P29-R4` | Content sanitization / file security boundary vs P06 Media | **RESOLVED** — content/file security posture · P06 delivery preserved · AV DEFERRED · T006 |
+| `P29-R5` | Backup/restore / DR / DB recovery boundary | **RESOLVED** — backup/DR/DB recovery posture · cloud backup DEFERRED · T007 |
+| `P29-R6` | Health / observability / metrics / tracing / error monitoring extension | **RESOLVED** — Health/Observability extension · APM DEFERRED · T008 |
+| `P29-R7` | Deployment / CI/CD / environment config / secret management boundary | **RESOLVED** — deployment/secrets posture · secret manager/CI YAML DEFERRED · T008 |
+| `P29-R8` | Production verification (SEO/mobile/a11y) + operational runbooks + deferred scope | **RESOLVED** — verification + runbooks posture · audit products DEFERRED · T008 |
 
 ---
 
@@ -103,12 +103,12 @@ Proposed sequence after plan acceptance:
 2. `TC-P29-T002` — production hardening foundation boundary (**ACCEPTED** · `8308bb2`)
 3. `TC-P29-T003` — security / authorization review boundary (**ACCEPTED** · `ae4ecbf` · **P29-R1 RESOLVED**)
 4. `TC-P29-T004` — rate limiting / abuse protection boundary (**ACCEPTED** · `96cd326` · **P29-R2 RESOLVED**)
-5. `TC-P29-T005` — audit / compliance event boundary (**IN PROGRESS**)
-6. `TC-P29-T006` — content sanitization / file security boundary
-7. `TC-P29-T007` — backup/restore / DR / DB recovery boundary
-8. `TC-P29-T008` — operational platform hardening (health/observability/secrets/deployment) + production verification + runbooks + deferred scope
-9. `TC-P29-T009` — evidence pack
-10. `TC-P29-GATE` — acceptance gate
+5. `TC-P29-T005` — audit / compliance event boundary (**ACCEPTED** · `8d52ace` / fix `11051a9` · **P29-R3 RESOLVED**)
+6. `TC-P29-T006` — content sanitization / file security boundary (**ACCEPTED**)
+7. `TC-P29-T007` — backup/restore / DR / DB recovery boundary (**ACCEPTED**)
+8. `TC-P29-T008` — operational platform hardening + production verification + runbooks + deferred scope (**ACCEPTED** · **P29-R6/R7/R8 RESOLVED**)
+9. `TC-P29-T009` — evidence pack (**ACCEPTED** · **READY_FOR_GATE**)
+10. `TC-P29-GATE` — acceptance gate (**COMPLETE**)
 
 > Note: `TC-P29-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25/P26/P27/P28 progression where PLAN equals T001 authoring.
 
@@ -125,42 +125,35 @@ Proposed sequence after plan acceptance:
 | `P29-R7` | `TC-P29-T008` | Deployment/CI/CD/env/secrets boundary (no YAML product in early tasks) |
 | `P29-R8` | `TC-P29-T008` | Production SEO/mobile/a11y verification + runbooks + deferred catalog |
 
-### TC-P29-T002 — Production hardening foundation boundary
-
-- Purpose: establish Platform-owned production hardening foundation markers without security product or premature tooling.
-- Delivered: `TravelCore.Hardening` · `HardeningFoundationBoundary` · `HardeningOwnershipBoundary` · guardrail tests (**ACCEPTED** · `8308bb2`).
-- Forbidden in this task: rate limiter · audit store · secret manager · backup automation · API/frontend · module ownership changes.
-
 ### TC-P29-GATE — Acceptance gate
 
 - Purpose: final P29 acceptance evidence only; verify PLAN + T002–T009 accepted and P29-R1–R8 RESOLVED.
-- Delivered (future): `docs/plans/P29-GATE-acceptance-evidence.md` · gate evidence architecture lock test · SoT sync marking **P29 COMPLETE**.
+- Delivered: `docs/plans/P29-GATE-acceptance-evidence.md` · gate evidence architecture lock test · SoT sync marking **P29 COMPLETE**.
 - Forbidden in this task: new hardening product beyond accepted boundaries · Post-P29 evolution · penetration-test vendor lock-in.
 
 ### TC-P29-T009 — Evidence pack
 
 - Purpose: adversarial architecture review evidence and gate-readiness documentation without new product capability.
+- Delivered: `docs/plans/P29-T009-hardening-and-evidence-pack.md` · evidence-pack architecture lock test · SoT sync · **READY_FOR_GATE**.
 - Forbidden in this task: production security vendor lock-in · backup automation product · CI/CD YAML beyond boundary · GATE execution.
 
 ### TC-P29-T008 — Operational platform hardening and deferred scope
 
 - Purpose: consolidate Health/Observability extension, deployment/secrets posture, production verification, operational runbooks, and deferred hardening catalog; resolve R6/R7/R8.
+- Delivered: `HardeningOperationalBoundary` · `HardeningDeferredScopeBoundary` · `HardeningHealthObservabilityInteractionBoundary` · `HardeningDeploymentSecretsBoundary` · `HardeningProductionVerificationBoundary` · hardening guardrail tests · **P29-R6/R7/R8 RESOLVED**.
 - Forbidden in this task: APM vendor product · secret manager integration · CI pipeline YAML · production penetration testing · API/frontend product.
 
 ### TC-P29-T007 — Backup/restore / DR / DB recovery boundary
 
 - Purpose: define backup ownership, restore posture, DR principles, and DB recovery boundary without cloud backup product.
+- Delivered: `HardeningBackupDrBoundary` · `HardeningDbRecoveryBoundary` · guardrail tests · **P29-R5 RESOLVED**.
 - Forbidden in this task: cloud backup vendor · automated restore drills product · multi-region active-active · API/frontend.
 
 ### TC-P29-T006 — Content sanitization / file security boundary
 
 - Purpose: define content sanitization and file-security interaction with P06 Media without reopening delivery ownership or implementing AV scanner product.
+- Delivered: `HardeningContentSanitizationBoundary` · `HardeningMediaFileSecurityInteractionBoundary` · guardrail tests · **P29-R4 RESOLVED**.
 - Forbidden in this task: malware scanner vendor · Media delivery rewrite · upload pipeline product · API/frontend.
-
-### TC-P29-T005 — Audit / compliance event boundary
-
-- Purpose: define audit-event storage posture vs row metadata; high-risk business audit events boundary without audit product.
-- Forbidden in this task: audit log storage product · SIEM integration · cross-module audit mega-table · API/frontend.
 
 ### TC-P29-T005 — Audit / compliance event boundary
 
