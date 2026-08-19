@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-UIVAL-T007` — Home / Discovery validation (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **`TC-UIVAL-T008`** — Content Article validation |
+| Current Active Product Task | `TC-UIVAL-T010` — Visa validation (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **`TC-UIVAL-T011`** — Booking/Checkout validation |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -356,8 +356,11 @@
 | UIVAL T004 | `TC-UIVAL-T004` **COMPLETE / ACCEPTED** (`f037632`) — tour listing · [`docs/plans/UIVAL-T004-tour-listing-search-validation-evidence.md`](plans/UIVAL-T004-tour-listing-search-validation-evidence.md) |
 | UIVAL T005 | `TC-UIVAL-T005` **COMPLETE / ACCEPTED** (`70c87ea`) — destination landing |
 | UIVAL T006 | `TC-UIVAL-T006` **COMPLETE / ACCEPTED** — hotel detail · [`docs/plans/UIVAL-T006-hotel-detail-validation-evidence.md`](plans/UIVAL-T006-hotel-detail-validation-evidence.md) |
-| UIVAL T007 | `TC-UIVAL-T007` **COMPLETE / ACCEPTED** — home/discovery · [`docs/plans/UIVAL-T007-home-discovery-validation-evidence.md`](plans/UIVAL-T007-home-discovery-validation-evidence.md) |
-| UIVAL T008 | `TC-UIVAL-T008` — Content Article validation (**NEXT**) |
+| UIVAL T007 | `TC-UIVAL-T007` **COMPLETE / ACCEPTED** (`a1dd434`) — home/discovery |
+| UIVAL T008 | `TC-UIVAL-T008` **COMPLETE / ACCEPTED** — content article |
+| UIVAL T009 | `TC-UIVAL-T009` **COMPLETE / ACCEPTED** — travelogue |
+| UIVAL T010 | `TC-UIVAL-T010` **COMPLETE / ACCEPTED** — visa |
+| UIVAL T011 | `TC-UIVAL-T011` — Booking/Checkout validation (**NEXT**) |
 | UIVAL | **IN PROGRESS** — product evolution track after master roadmap |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |

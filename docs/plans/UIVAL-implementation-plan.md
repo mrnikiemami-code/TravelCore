@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-UIVAL-PLAN` |
 | Track | UI Validation Sequence (product evolution) |
-| Status | **IN PROGRESS** · T007 **COMPLETE** · T008 next |
+| Status | **IN PROGRESS** · T010 **COMPLETE** · T011 next |
 | Baseline | `b27f820` (`docs: sync Post-P29 full task ledger in SoT`) |
 | Authoritative sources | `docs/ROADMAP.md` § UI Validation Sequence · `docs/ui/*` · `docs/architecture/10-ui-constitution.md` · `docs/ui/04-page-archetype-contract.md` · P02 foundation evidence |
 | Frontend root | `src/frontend/web` |
@@ -75,9 +75,9 @@ Full browser E2E farm is **out of scope** unless a future task explicitly adds i
 | `TC-UIVAL-T005` | 5. Destination Landing | Surface validation + evidence (**COMPLETE**) |
 | `TC-UIVAL-T006` | 6. Hotel Detail | Surface validation + evidence (**COMPLETE**) |
 | `TC-UIVAL-T007` | 7. Home / Discovery | Surface validation + evidence (**COMPLETE**) |
-| `TC-UIVAL-T008` | 8. Content Article | Surface validation + evidence |
-| `TC-UIVAL-T009` | 9. Travelogue | Surface validation + evidence |
-| `TC-UIVAL-T010` | 10. Visa | Surface validation + evidence |
+| `TC-UIVAL-T008` | 8. Content Article | Surface validation + evidence (**COMPLETE**) |
+| `TC-UIVAL-T009` | 9. Travelogue | Surface validation + evidence (**COMPLETE**) |
+| `TC-UIVAL-T010` | 10. Visa | Surface validation + evidence (**COMPLETE**) |
 | `TC-UIVAL-T011` | 11. Booking/Checkout | Surface validation + evidence |
 | `TC-UIVAL-T012` | 12. Flight Search | Surface validation + evidence |
 | `TC-UIVAL-T013` | 13. Hotel Booking Search | Surface validation + evidence |
