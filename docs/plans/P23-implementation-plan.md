@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P23-PLAN` |
 | Phase | P23 — Dynamic Package / Flight + Hotel |
-| Status | PLAN ACCEPTED · **P23-R1 = RESOLVED** · **P23-R2 = OPEN** · **P23-R3 = OPEN** · **P23-R4 = OPEN** · **P23-R5 = OPEN** · **P23-R6 = OPEN** · **P23-R7 = OPEN** · **P23-R8 = OPEN** · T001 implemented / awaiting architect review · **TC-P23-T002 NOT EXECUTED** · **not COMPLETE** |
+| Status | PLAN ACCEPTED · **P23-R1 = RESOLVED** · **P23-R2 = OPEN** · **P23-R3 = OPEN** · **P23-R4 = OPEN** · **P23-R5 = OPEN** · **P23-R6 = OPEN** · **P23-R7 = OPEN** · **P23-R8 = OPEN** · T001 implemented / awaiting architect review · **TC-P23-T002 EXECUTED** · **not COMPLETE** |
 | Baseline | `2a372ae` (`feat(flight): close P22 with acceptance gate evidence [TC-P22-GATE]`) · GATE docs `ed040f0` · architect `TC-P22-GATE = ACCEPTED` |
 | Authoritative sources | `docs/ROADMAP.md` § P23 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Tour / Booking / Pricing / Payment / HotelBooking / Flight / Search / SEO · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` · `06-cross-module-communication.md` Example 7 · `15-future-architecture-transition-map.md` § T/U · P11 Tour transport · P12 Pricing · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -648,11 +648,12 @@ Do **not** execute any of these in this PLAN task.
 
 ### TC-P23-T001 — DynamicPackage module / schema foundation
 
-- Depends on **P23-R1**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Independent `DynamicPackage.Contracts` / `DynamicPackage.Domain` / `DynamicPackage.Infrastructure` · schema `dynamic_package` · DynamicPackageBooking ownership assigned to DynamicPackage without implementing the aggregate · no Payment kind yet · no Flight/Hotel behavior change · **TC-P23-T002 NOT EXECUTED**.
+- Depends on **P23-R1**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Independent `DynamicPackage.Contracts` / `DynamicPackage.Domain` / `DynamicPackage.Infrastructure` · schema `dynamic_package` · DynamicPackageBooking ownership assigned to DynamicPackage without implementing the aggregate · no Payment kind yet · no Flight/Hotel behavior change · **TC-P23-T002 EXECUTED**.
 
-### TC-P23-T002 — Composition + package lifecycle
+### TC-P23-T002 — Composition boundary only (P23-R2)
 
-- Depends on **P23-R2**. Cardinality 1+1 · package statuses Pending/Confirmed/Cancelled · no mega-status.
+- Depends on **P23-R2**. Exactly one `FlightBookingId` reference + exactly one `HotelBookingId` reference.
+- No `DynamicPackageBooking` aggregate, no package lifecycle/status, no payment/reservation/orchestration/quote/offer/money.
 
 ### TC-P23-T003 — Search composition / revalidation
 
@@ -795,7 +796,7 @@ This PLAN task is **not** Gate-ready and must not mark P23 COMPLETE or READY_FOR
 
 - Branch `main` · T001 adds DynamicPackage foundation only (schema EnsureSchema; no product tables; no endpoints).
 - **No** DynamicPackageBooking aggregate · **no** fourth Payment target · **no** Flight/Hotel/Payment/Pricing behavior change.
-- Do **not** execute `TC-P23-T002` until T001 ACCEPTED and P23-R2 locked.
+- Do **not** execute `TC-P23-T003` until T002 composition boundary validated and P23-R2 locked.
 
 ---
 

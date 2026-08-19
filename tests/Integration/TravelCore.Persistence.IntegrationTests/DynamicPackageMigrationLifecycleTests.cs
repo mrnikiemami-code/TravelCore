@@ -19,7 +19,7 @@ public sealed class DynamicPackageMigrationLifecycleTests
     }
 
     [Fact]
-    public async Task DynamicPackageMigrationLifecycle_Apply_EnsureSchema_Only()
+    public async Task DynamicPackageMigrationLifecycle_Apply_CompositionBoundary()
     {
         var ct = TestContext.Current.CancellationToken;
         string[] expectedMigrations;
@@ -27,8 +27,13 @@ public sealed class DynamicPackageMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Single(expectedMigrations);
-            Assert.EndsWith("_InitialDynamicPackageScaffolding", expectedMigrations[0], StringComparison.Ordinal);
+            Assert.Equal(2, expectedMigrations.Length);
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_InitialDynamicPackageScaffolding", StringComparison.Ordinal));
+            Assert.Contains(
+                expectedMigrations,
+                m => m.EndsWith("_AddPackageCompositionBoundary", StringComparison.Ordinal));
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -50,7 +55,8 @@ public sealed class DynamicPackageMigrationLifecycleTests
                 WHERE table_schema = 'dynamic_package'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(0, await ScalarIntAsync(conn, """
+            // T002: package_compositions table exists now.
+            Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'dynamic_package'
@@ -60,12 +66,28 @@ public sealed class DynamicPackageMigrationLifecycleTests
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'dynamic_package'
-                  AND table_name IN (
-                    'dynamic_package_bookings',
-                    'package_compositions',
-                    'package_offers',
-                    'package_sagas'
-                  );
+                  AND table_name = 'dynamic_package_bookings';
+                """, ct));
+
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'dynamic_package'
+                  AND table_name = 'package_compositions';
+                """, ct));
+
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'dynamic_package'
+                  AND table_name = 'package_offers';
+                """, ct));
+
+            Assert.Equal(0, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'dynamic_package'
+                  AND table_name = 'package_sagas';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

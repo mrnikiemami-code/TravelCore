@@ -44,7 +44,7 @@ public static class DynamicPackageOwnershipBoundary
     public const bool SeparateDynamicPackageSchemaImplemented = true;
     public const bool DynamicPackageBookingAggregateImplemented = false;
     public const bool DynamicPackageBookingStatusImplemented = false;
-    public const bool CompositionModelImplemented = false;
+    public const bool CompositionModelImplemented = true;
     public const bool PackageOfferModelImplemented = false;
     public const bool PackageMonetaryModelImplemented = false;
     public const bool OrchestrationModelImplemented = false;
@@ -60,5 +60,5 @@ public static class DynamicPackageOwnershipBoundary
     public const bool FlightPersistenceDependencyImplemented = false;
     public const bool HotelBookingPersistenceDependencyImplemented = false;
     public const bool PaymentPersistenceDependencyImplemented = false;
-    public const bool ProductTablesImplemented = false;
+    public const bool ProductTablesImplemented = true;
 }

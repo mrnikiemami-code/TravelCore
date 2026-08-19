@@ -64,7 +64,7 @@ public sealed class DynamicPackageBoundaryGuardrailTests
         Assert.True(DynamicPackageOwnershipBoundary.SeparateDynamicPackageModuleImplemented);
         Assert.True(DynamicPackageOwnershipBoundary.SeparateDynamicPackageSchemaImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.DynamicPackageBookingAggregateImplemented);
-        Assert.False(DynamicPackageOwnershipBoundary.CompositionModelImplemented);
+        Assert.True(DynamicPackageOwnershipBoundary.CompositionModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PackageOfferModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PackageMonetaryModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.OrchestrationModelImplemented);
@@ -79,7 +79,7 @@ public sealed class DynamicPackageBoundaryGuardrailTests
         Assert.False(DynamicPackageOwnershipBoundary.FlightPersistenceDependencyImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.HotelBookingPersistenceDependencyImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PaymentPersistenceDependencyImplemented);
-        Assert.False(DynamicPackageOwnershipBoundary.ProductTablesImplemented);
+        Assert.True(DynamicPackageOwnershipBoundary.ProductTablesImplemented);
         Assert.Null(typeof(DynamicPackageDomainAssemblyMarker).Assembly.GetType(
             "TravelCore.Modules.DynamicPackage.Domain.DynamicPackageBooking"));
         Assert.Null(typeof(DynamicPackageDomainAssemblyMarker).Assembly.GetType(
@@ -199,13 +199,13 @@ public sealed class DynamicPackageBoundaryGuardrailTests
     }
 
     [Fact]
-    public void DynamicPackage_T001_MustNotImplement_Deferred_Product_Types()
+    public void DynamicPackage_T002_MustNotImplement_Deferred_Product_Types()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "DynamicPackage");
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(DynamicPackageBooking|DynamicPackageBookingId|DynamicPackageBookingStatus|PackageComposition|PackageOffer|PackageMonetarySnapshot|PackageSaga|IPackageCompositionSource|IPackageOrchestrationSource|IDynamicPackageSearchSource|BookingBase|Booking<|GenericBookingAggregate)\b",
+            @"\b(class|record|enum|struct|interface)\s+(DynamicPackageBooking|DynamicPackageBookingId|DynamicPackageBookingStatus|PackageOffer|PackageMonetarySnapshot|PackageSaga|IPackageCompositionSource|IPackageOrchestrationSource|IDynamicPackageSearchSource|BookingBase|Booking<|GenericBookingAggregate)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -229,7 +229,7 @@ public sealed class DynamicPackageBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T001 forbids DynamicPackage deferred product types:\n" + string.Join('\n', hits));
+            "T002 forbids DynamicPackage deferred product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]
@@ -286,7 +286,7 @@ public sealed class DynamicPackageBoundaryGuardrailTests
         Assert.Contains("DynamicPackageBooking != FlightBooking", text, StringComparison.Ordinal);
         Assert.Contains("DynamicPackageBooking != HotelBooking", text, StringComparison.Ordinal);
         Assert.Contains("TC-P23-GATE", text, StringComparison.Ordinal);
-        Assert.Contains("TC-P23-T002 NOT EXECUTED", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P23-T002 EXECUTED", text, StringComparison.Ordinal);
     }
 
     private static bool IsGeneratedOrBin(string path)

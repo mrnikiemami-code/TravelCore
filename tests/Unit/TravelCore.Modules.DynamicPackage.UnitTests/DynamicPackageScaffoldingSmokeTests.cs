@@ -54,7 +54,7 @@ public sealed class DynamicPackageScaffoldingSmokeTests
         Assert.True(DynamicPackageOwnershipBoundary.SeparateDynamicPackageModuleImplemented);
         Assert.True(DynamicPackageOwnershipBoundary.SeparateDynamicPackageSchemaImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.DynamicPackageBookingAggregateImplemented);
-        Assert.False(DynamicPackageOwnershipBoundary.CompositionModelImplemented);
+        Assert.True(DynamicPackageOwnershipBoundary.CompositionModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.OrchestrationModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PublicApiImplemented);
@@ -62,7 +62,7 @@ public sealed class DynamicPackageScaffoldingSmokeTests
         Assert.False(DynamicPackageOwnershipBoundary.SupplierSdkImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.SharedDbContextImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PeerSchemaForeignKeyImplemented);
-        Assert.False(DynamicPackageOwnershipBoundary.ProductTablesImplemented);
+        Assert.True(DynamicPackageOwnershipBoundary.ProductTablesImplemented);
     }
 
     [Fact]

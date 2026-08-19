@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TravelCore.Modules.DynamicPackage.Domain;
 
 namespace TravelCore.Modules.DynamicPackage.Infrastructure;
 
@@ -21,4 +22,7 @@ public sealed class DynamicPackageDbContext : DbContext
         modelBuilder.HasDefaultSchema(SchemaName);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(DynamicPackageDbContext).Assembly);
     }
+
+    // P23-R2: composition boundary persistence only (no booking lifecycle / payment / orchestration).
+    public DbSet<PackageComposition> PackageCompositions => Set<PackageComposition>();
 }

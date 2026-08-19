@@ -9,4 +9,8 @@
     <Description>DynamicPackage domain marker (TC-P23-T001). No DynamicPackageBooking / composition / saga yet.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
+  </ItemGroup>
+
 </Project>
