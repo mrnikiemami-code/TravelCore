@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **Post-P29 — Continuous Evolution** (**PLAN IN PROGRESS** — `TC-Post-P29-PLAN`) |
-| Phase Status | P00–P29 COMPLETE · Post-P29 PLAN IN PROGRESS |
+| Current Phase | **Post-P29 — Continuous Evolution** (**COMPLETE / ACCEPTED** — `TC-Post-P29-GATE`) |
+| Phase Status | P00–P29 COMPLETE · **Post-P29 COMPLETE** · Master roadmap phases exhausted |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await architect **Post-P29** plan envelope; do **not** start Post-P29 autonomously |
+| Current Next Task | **Roadmap complete** — await architect for next planning decision / product backlog prioritization |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -128,7 +128,8 @@
 - **P26** = **COMPLETE** (`TC-P26-GATE` implemented · P26-R1–R8 RESOLVED)
 - **P27** = **COMPLETE** (`TC-P27-GATE` ACCEPTED `fb55c0a` · P27-R1–R8 RESOLVED)
 - **P28** = **COMPLETE** (`TC-P28-GATE` · **P28-R1–R8 RESOLVED**)
-- **P29 و Post-P29** = PLANNED / NOT_STARTED
+- **P29** = **COMPLETE** (`TC-P29-GATE` `f866cb2` · **P29-R1–R8 RESOLVED**)
+- **Post-P29** = **COMPLETE** (`TC-Post-P29-GATE` · **Post-P29-R1–R8 RESOLVED**)
 
 کار آینده را COMPLETE علامت نزنید.
 
@@ -697,13 +698,15 @@ security/authorization review · rate limiting · audit · content sanitization 
 
 ## Post-P29 — Continuous Evolution
 
-**Status:** PLANNED
+**Status:** COMPLETE / ACCEPTED (`TC-Post-P29-GATE`)
 
 پس از production، کار با متریک واقعی محصول ادامه می‌یابد.
 
 تحول بالقوهٔ بعدی (بدون تعهد از قبل): موتور Search اختصاصی · provider بیشتر · personalization · recommendation · loyalty · promotions · pricing پیشرفته · اپ موبایل · تجزیهٔ یک ماژول **فقط** با شواهد مقیاس/تیم/عملیات.
 
 به microservices پیش‌تعهد نکنید. هر تحول معماری عمده نیاز به ADR دارد.
+
+**Implementation plan:** [`docs/plans/Post-P29-implementation-plan.md`](plans/Post-P29-implementation-plan.md) · **Post-P29-R1–R8 ALL RESOLVED**
 
 ---
 
@@ -794,5 +797,5 @@ P26 = Advanced SEO.
 | P26 | Advanced SEO + Content Graph | **COMPLETE** (GATE evidence executed) |
 | P27 | Analytics + Product Intelligence | **COMPLETE** (GATE evidence executed) |
 | P28 | Performance & Scale | **COMPLETE / ACCEPTED** |
-| P29 | Production Hardening | PLANNED |
-| Post-P29 | Continuous Evolution | PLANNED |
+| P29 | Production Hardening | **COMPLETE / ACCEPTED** |
+| Post-P29 | Continuous Evolution | **COMPLETE / ACCEPTED** |

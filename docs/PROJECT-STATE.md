@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Post-P29 — Continuous Evolution** (**PLAN IN PROGRESS** — `TC-Post-P29-PLAN`) |
+| Current Phase | **Post-P29 — Continuous Evolution** (**COMPLETE / ACCEPTED** — `TC-Post-P29-GATE`) |
 | Previous Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P29-GATE` — P29 acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | Await architect for **Post-P29** plan envelope; do **not** start Post-P29 autonomously |
+| Current Active Product Task | `TC-Post-P29-GATE` — Post-P29 acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **Roadmap complete** — await architect for next planning decision / product backlog prioritization |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -337,6 +337,17 @@
 | P29 T009 | `TC-P29-T009` **COMPLETE / ACCEPTED** (`30ec571`) — evidence pack · **READY_FOR_GATE** |
 | P29 GATE | `TC-P29-GATE` **COMPLETE / ACCEPTED** (`f866cb2`) — [`docs/plans/P29-GATE-acceptance-evidence.md`](plans/P29-GATE-acceptance-evidence.md) |
 | P29 | **COMPLETE** — `TC-P29-GATE` implemented · **P29-R1–R8 RESOLVED** |
+| Post-P29 Plan | `TC-Post-P29-PLAN` **COMPLETE / ACCEPTED** (`012c07f`) — [`docs/plans/Post-P29-implementation-plan.md`](plans/Post-P29-implementation-plan.md) |
+| Post-P29 T002 | `TC-Post-P29-T002` **COMPLETE / ACCEPTED** — continuous evolution foundation boundary |
+| Post-P29 T003 | `TC-Post-P29-T003` **COMPLETE / ACCEPTED** — metrics-driven evolution gate · **Post-P29-R1 RESOLVED** |
+| Post-P29 T004 | `TC-Post-P29-T004` **COMPLETE / ACCEPTED** — search engine evolution boundary · **Post-P29-R2 RESOLVED** |
+| Post-P29 T005 | `TC-Post-P29-T005` **COMPLETE / ACCEPTED** — provider expansion boundary · **Post-P29-R3 RESOLVED** |
+| Post-P29 T006 | `TC-Post-P29-T006` **COMPLETE / ACCEPTED** — personalization/recommendation boundary · **Post-P29-R4 RESOLVED** |
+| Post-P29 T007 | `TC-Post-P29-T007` **COMPLETE / ACCEPTED** — loyalty/promotions boundary · **Post-P29-R5 RESOLVED** |
+| Post-P29 T008 | `TC-Post-P29-T008` **COMPLETE / ACCEPTED** — operational evolution + deferred scope · **Post-P29-R6/R7/R8 RESOLVED** |
+| Post-P29 T009 | `TC-Post-P29-T009` **COMPLETE / ACCEPTED** — evidence pack · **READY_FOR_GATE** |
+| Post-P29 GATE | `TC-Post-P29-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/Post-P29-GATE-acceptance-evidence.md`](plans/Post-P29-GATE-acceptance-evidence.md) |
+| Post-P29 | **COMPLETE** — `TC-Post-P29-GATE` implemented · **Post-P29-R1–R8 RESOLVED** |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |
