@@ -49,6 +49,15 @@ internal static class UgcPublicEndpoints
             }
         });
 
+        publicUgc.MapGet("/travelogues/{travelogueId:guid}", async Task<IResult> (
+            Guid travelogueId,
+            IUgcPublicTravelogueQuery query,
+            CancellationToken cancellationToken) =>
+        {
+            var item = await query.GetByIdAsync(travelogueId, cancellationToken);
+            return item is null ? Results.NotFound() : Results.Ok(item);
+        });
+
         publicUgc.MapGet("/user-photos", async Task<IResult> (
             IUgcPublicUserPhotoQuery query,
             CancellationToken cancellationToken) =>

@@ -74,6 +74,35 @@ internal sealed class UgcPublicQuery :
             .Take(UgcPublicEligibility.MaxTravelogues)
             .ToList();
 
+        return await MapTraveloguesAsync(eligible, cancellationToken);
+    }
+
+    public async Task<EligiblePublicTravelogue?> GetByIdAsync(
+        Guid travelogueId,
+        CancellationToken cancellationToken = default)
+    {
+        if (travelogueId == Guid.Empty)
+        {
+            return null;
+        }
+
+        var row = await _db.Travelogues
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id.Value == travelogueId, cancellationToken);
+        if (row is null
+            || !UgcPublicEligibility.IsPubliclyEligible(row.ModerationStatus.Value, row.PublicationStatus.Value))
+        {
+            return null;
+        }
+
+        var mapped = await MapTraveloguesAsync([row], cancellationToken);
+        return mapped.Count == 0 ? null : mapped[0];
+    }
+
+    private async Task<IReadOnlyList<EligiblePublicTravelogue>> MapTraveloguesAsync(
+        IReadOnlyList<Travelogue> eligible,
+        CancellationToken cancellationToken)
+    {
         var commentsByTravelogue = await LoadCommentsByParentsAsync(
             CommentTargetType.Travelogue,
             eligible.Select(x => x.Id.Value).ToList(),

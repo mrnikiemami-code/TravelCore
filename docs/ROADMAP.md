@@ -810,6 +810,23 @@ P26 = Advanced SEO.
 
 ---
 
+## Product Surface Completion Sequence
+
+**Status:** **COMPLETE / ACCEPTED** (`TC-PRODSURF-GATE`)
+
+**Implementation plan:** [`docs/plans/PRODSURF-implementation-plan.md`](plans/PRODSURF-implementation-plan.md)
+
+بستن gapهای UIVAL→production پس از LAUNCHOPS:
+
+1. UGC travelogue public GetById API
+2. Production `/travelogues/[travelogueId]` + SEO metadata
+3. Production `/hotels/[slug]` Place catalog Hotel route + SEO
+4. Production `/hotels/[slug]/book` transactional prepare (noindex)
+5. UIVAL dev routes retained · UGC ≠ Content boundary
+6. Real providers + live moderation workflow deferred
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -849,3 +866,4 @@ P26 = Advanced SEO.
 | SEOVAL | SEO Validation Sequence | **COMPLETE / ACCEPTED** (`TC-SEOVAL-GATE`) |
 | PRODDEL | Product Delivery Sequence | **COMPLETE / ACCEPTED** (`TC-PRODDEL-GATE`) |
 | LAUNCHOPS | Launch Operations Sequence | **COMPLETE / ACCEPTED** (`TC-LAUNCHOPS-GATE`) |
+| PRODSURF | Product Surface Completion Sequence | **COMPLETE / ACCEPTED** (`TC-PRODSURF-GATE`) |

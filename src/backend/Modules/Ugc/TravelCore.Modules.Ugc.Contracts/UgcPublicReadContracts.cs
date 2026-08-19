@@ -78,6 +78,10 @@ public interface IUgcPublicTravelogueQuery
     Task<IReadOnlyList<EligiblePublicTravelogue>> ListByLocaleAsync(
         string localeCode,
         CancellationToken cancellationToken = default);
+
+    Task<EligiblePublicTravelogue?> GetByIdAsync(
+        Guid travelogueId,
+        CancellationToken cancellationToken = default);
 }
 
 public interface IUgcPublicUserPhotoQuery
