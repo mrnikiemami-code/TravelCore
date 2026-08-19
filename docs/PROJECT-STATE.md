@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P24-T004` — Agency commercial profile boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P24-T004 RESULT`; do **not** execute `TC-P24-T005` |
+| Current Active Product Task | `TC-P24-T005` — Agency distribution boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P24-T005 RESULT`; do **not** execute `TC-P24-T006` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -274,8 +274,9 @@
 | P24 T002 | `TC-P24-T002` **COMPLETE / ACCEPTED** (`e811513`) — AgencyReference/AgencyRelationshipBoundary/AgencyMembershipBoundary |
 | P24 | **IN_PROGRESS** — `TC-P24-T004` implemented · **P24-R1–R4 RESOLVED** · AWAITING_ARCHITECT_REVIEW |
 | P24 T003 | `TC-P24-T003` **COMPLETE / ACCEPTED** (`2f4788a`) — AgencyMemberReference/AgencyAccessRelationshipBoundary |
-| P24 T004 | `TC-P24-T004` implemented / AWAITING_ARCHITECT_REVIEW — AgencyCommercialProfileBoundary/AgencyBusinessReference/CommercialCapabilityReference; TC-P24-T005 NOT EXECUTED |
-| P24-R4 (agency commercial profile boundary) | **RESOLVED** |
+| P24 T004 | `TC-P24-T004` **COMPLETE / ACCEPTED** (`e186796`) — AgencyCommercialProfileBoundary/AgencyBusinessReference/CommercialCapabilityReference |
+| P24 T005 | `TC-P24-T005` implemented / AWAITING_ARCHITECT_REVIEW — AgencyDistributionBoundary/SalesChannelReference/DistributionCapabilityReference; TC-P24-T006 NOT EXECUTED |
+| P24-R5 (agency distribution boundary) | **RESOLVED** |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |
 | P24-R3 (agency membership & Access relationship boundary) | **RESOLVED** |

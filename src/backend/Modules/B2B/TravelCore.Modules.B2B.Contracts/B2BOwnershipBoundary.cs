@@ -47,6 +47,13 @@ public static class B2BOwnershipBoundary
     public const bool AgencyCommercialProfileBoundaryImplemented = true;
     public const bool AgencyBusinessReferenceImplemented = true;
     public const bool CommercialCapabilityReferenceImplemented = true;
+    public const bool AgencyDistributionBoundaryImplemented = true;
+    public const bool SalesChannelReferenceImplemented = true;
+    public const bool DistributionCapabilityReferenceImplemented = true;
+    public const bool OwnsSalesChannelPersistence = false;
+    public const bool OwnsCommission = false;
+    public const bool OwnsAgencyPricing = false;
+    public const bool OwnsDiscountRules = false;
     public const bool AgencyUserEntityImplemented = false;
     public const bool OwnsUsers = false;
     public const bool OwnsAuthentication = false;
