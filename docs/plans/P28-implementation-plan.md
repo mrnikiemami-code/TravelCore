@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P28-PLAN` |
 | Phase | P28 — Performance & Scale |
-| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002–T004 ACCEPTED · T005 data access boundary executed |
+| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002–T005 ACCEPTED · T006 cache boundary executed |
 | Baseline | `ddbc0ba` (`docs: add P28 implementation plan`) |
 | Authoritative sources | `docs/ROADMAP.md` § P28 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/10-ui-constitution.md` §13 · `docs/architecture/15-future-architecture-transition-map.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P15 Search · P27 Analytics · P26 SEO |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document is the architecture plan for the Performance & Scale phase.
 
-> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T004` ACCEPTED · `TC-P28-T005` implemented (data access boundary) · **do not execute `TC-P28-T006` until architect accepts `T005`**.
+> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T005` ACCEPTED · `TC-P28-T006` implemented (cache boundary) · **do not execute `TC-P28-T007` until architect accepts `T006`**.
 
 ---
 
@@ -85,7 +85,7 @@ P28 must preserve:
 | `P28-R1` | Measurement / profiling posture vs Observability | **RESOLVED** — profile-before-optimize · Observability owns platform telemetry · Performance measurement foundation (T003) |
 | `P28-R2` | PostgreSQL query/index optimization boundary | **RESOLVED** — module-owned schema data access · no cross-schema DbContext shortcuts · measurement before query tuning (T005) |
 | `P28-R3` | Read-model projection boundary (Dapper vs EF) | **RESOLVED** — evidence-based read optimization · Dapper justified by evidence only · EF write/migration owner preserved (T005) |
-| `P28-R4` | Redis cache abstraction boundary | **OPEN** — cache != SoR · invalidation posture · locale-aware cache keys where applicable |
+| `P28-R4` | Redis cache abstraction boundary | **RESOLVED** — cache != SoR · eligibility/invalidation/consistency policy architecture (T006) |
 | `P28-R5` | CDN / static delivery boundary | **OPEN** — CDN for static/media delivery posture · Media app-proxy foundation preserved |
 | `P28-R6` | Frontend rendering / bundle / CWV boundary | **OPEN** — Server Component first · minimal hydration · bundle/third-party control · CWV targets from UI constitution |
 | `P28-R7` | Search read performance boundary | **OPEN** — Search read latency posture · **Search != ranking engine** · no Search SoR takeover |
@@ -101,8 +101,8 @@ Proposed sequence after plan acceptance:
 2. `TC-P28-T002` — performance foundation boundary (**ACCEPTED** · `38d9ca4`)
 3. `TC-P28-T003` — measurement/observability interaction boundary (**ACCEPTED** · `4ac1876`)
 4. `TC-P28-T004` — runtime performance boundary and module interaction model (**ACCEPTED** · `e2eee8a`)
-5. `TC-P28-T005` — data access and read optimization boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-6. `TC-P28-T006` — Redis cache abstraction boundary (**NOT EXECUTED**)
+5. `TC-P28-T005` — data access and read optimization boundary (**ACCEPTED** · `05d50c8`)
+6. `TC-P28-T006` — caching boundary and cache policy architecture (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 7. `TC-P28-T007` — frontend performance/CWV + hardening guardrails (**NOT EXECUTED**)
 8. `TC-P28-T008` — hardening guardrails consolidation (**NOT EXECUTED**)
 9. `TC-P28-T009` — evidence pack (**NOT EXECUTED**)
@@ -147,11 +147,11 @@ Proposed sequence after plan acceptance:
 - Delivered: CDN/static delivery boundary · frontend performance boundary · search read performance boundary · guardrail tests.
 - Forbidden in this task: third-party script platform · ranking engine · microservice extraction · evidence pack (T009) · GATE.
 
-### TC-P28-T006 — Redis cache abstraction boundary
+### TC-P28-T006 — Caching boundary and cache policy architecture
 
-- Purpose: define platform cache contracts without Redis-as-SoR or cross-module cache ownership leaks.
-- Delivered: cache key/locale conventions · invalidation posture contracts · cache abstraction boundary · guardrail tests.
-- Forbidden in this task: Redis cluster operations · cache-as-authority persistence · domain write-path cache takeover · public API/UI.
+- Purpose: define cache ownership, eligibility, invalidation, and consistency boundaries without Redis/cache provider product.
+- Delivered: `PerformanceCacheBoundary` · `PerformanceCachePolicyBoundary` · guardrail tests · **P28-R4 RESOLVED**.
+- Forbidden in this task: Redis client · cache provider · distributed cache deployment · cache-as-authority · API/frontend.
 
 ### TC-P28-T005 — Data access and read optimization boundary
 
