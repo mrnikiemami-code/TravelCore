@@ -51,7 +51,7 @@ public sealed class NotificationChannelBoundaryGuardrailTests
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "Notification");
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(EmailProvider|SmsProvider|PushProvider|INotificationProvider|ISmtpClient|SmtpClient|TwilioClient|NotificationDelivery|DeliveryAttempt|ChannelPreference|NotificationTemplate)\b",
+            @"\b(class|record|enum|struct|interface)\s+(EmailProvider|SmsProvider|PushProvider|ISmtpClient|SmtpClient|TwilioClient|SendGridClient|NotificationDelivery|DeliveryAttempt|ChannelPreference|NotificationTemplate)\b",
             RegexOptions.Compiled);
 
         var hits = Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)

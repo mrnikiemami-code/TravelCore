@@ -47,6 +47,8 @@ public sealed class NotificationScaffoldingSmokeTests
         Assert.False(NotificationOwnershipBoundary.OwnsB2BCommerce);
         Assert.True(NotificationOwnershipBoundary.SeparateNotificationModuleImplemented);
         Assert.True(NotificationOwnershipBoundary.SeparateNotificationSchemaImplemented);
+        Assert.True(NotificationOwnershipBoundary.ProviderPortImplemented);
+        Assert.True(NotificationOwnershipBoundary.ProviderAbstractionImplemented);
         Assert.False(NotificationOwnershipBoundary.ProviderImplemented);
         Assert.False(NotificationOwnershipBoundary.ProductTablesImplemented);
         Assert.False(NotificationOwnershipBoundary.PublicApiImplemented);
@@ -89,5 +91,18 @@ public sealed class NotificationScaffoldingSmokeTests
         Assert.Equal(NotificationChannelKind.Email, NotificationChannelReference.Email.Kind);
         Assert.Equal(NotificationChannelKind.Sms, NotificationChannelReference.Sms.Kind);
         Assert.Equal(NotificationChannelKind.InApp, NotificationChannelReference.InApp.Kind);
+    }
+
+    [Fact]
+    public void ProviderBoundary_Keeps_T006_Port_Only()
+    {
+        Assert.True(NotificationProviderTrustBoundary.ProviderPortImplemented);
+        Assert.True(NotificationProviderTrustBoundary.ZeroProviderPostureValid);
+        Assert.Equal("NONE", NotificationProviderTrustBoundary.NamedProviderSelected);
+        Assert.False(NotificationProviderTrustBoundary.NamedProductionAdapterImplemented);
+        Assert.False(NotificationProviderBoundary.NamedProductionAdapterImplemented);
+        Assert.False(NotificationProviderBoundary.ProviderExecutionPersistenceImplemented);
+        Assert.NotNull(typeof(INotificationDeliveryProvider));
+        Assert.NotNull(typeof(INotificationProviderResolver));
     }
 }

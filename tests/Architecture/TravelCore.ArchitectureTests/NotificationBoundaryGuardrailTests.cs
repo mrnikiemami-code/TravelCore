@@ -92,7 +92,7 @@ public sealed class NotificationBoundaryGuardrailTests
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(EmailProvider|SmsProvider|PushProvider|NotificationTemplate|DeliveryAttempt|NotificationDelivery|ChannelPreference|WebhookEndpoint|INotificationProvider|ISmtpClient)\b",
+            @"\b(class|record|enum|struct|interface)\s+(EmailProvider|SmsProvider|PushProvider|NotificationTemplate|DeliveryAttempt|NotificationDelivery|ChannelPreference|WebhookEndpoint|ISmtpClient|SmtpClient|TwilioClient|SendGridClient)\b",
             RegexOptions.Compiled);
 
         var hits = Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)

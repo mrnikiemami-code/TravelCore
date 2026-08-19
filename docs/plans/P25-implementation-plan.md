@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P25-PLAN` |
 | Phase | P25 — Notification |
-| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T005 progression · channel boundary delivered |
-| Baseline | `b6a090a` (`feat(notification): add T004 module schema foundation`) |
+| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T006 progression · provider abstraction delivered |
+| Baseline | `72b1d99` (`feat(notification): define T005 channel boundary`) |
 | Authoritative sources | `docs/ROADMAP.md` § P25 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` § V · P18 TripPlanner notification intent boundaries · P19 Booking · P20 Payment · P24 B2B |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Notification phase.
 
-> **Envelope note:** `TC-P25-T001`–`T004` ACCEPTED · `TC-P25-T005` implemented (channel boundary) · **do not execute `TC-P25-T006` until architect accepts `T005`**.
+> **Envelope note:** `TC-P25-T001`–`T005` ACCEPTED · `TC-P25-T006` implemented (provider abstraction) · **do not execute `TC-P25-T007` until architect accepts `T006`**.
 
 ---
 
@@ -71,7 +71,7 @@ P25 must preserve:
 |----|-------|--------|
 | `P25-R1` | Notification module ownership / schema / downstream posture vs Booking/Payment/TripPlanner | **RESOLVED** — independent Notification module · schema `notification` · **Notification != Booking** · **Notification != Payment** · **Notification != Identity** · **Notification != Access** · **Notification != Party** · **Notification != TripPlanner** · **Notification != B2B** · semantic event consumption only · no peer-schema FK · host registers after B2B without endpoints |
 | `P25-R2` | Channel boundary (Email / SMS / In-app) | **RESOLVED** — `NotificationChannelKind` / `NotificationChannelBoundary` / `NotificationChannelReference` in Notification.Domain · channel taxonomy only · Notification owns channel semantics · publishers do not call providers directly · no channel persistence · no provider execution |
-| `P25-R3` | Provider abstraction boundary | **OPEN** — provider-neutral delivery contracts · no named production provider · zero-provider posture valid until explicit lock |
+| `P25-R3` | Provider abstraction boundary | **RESOLVED** — `NotificationProviderKey` / `INotificationDeliveryProvider` / `INotificationProviderResolver` / `NotificationProviderTrustBoundary` / `NotificationProviderBoundary` · provider-neutral delivery contracts · no named production provider · zero-provider posture valid until explicit lock |
 | `P25-R4` | Template / orchestration boundary | **OPEN** — template/render orchestration owned by Notification · business modules publish semantic intent/facts only |
 | `P25-R5` | Preferences / consent interaction boundary | **OPEN** — delivery preferences distinct from TripPlanner consent snapshots · marketing vs transactional separation preserved |
 | `P25-R6` | Event consumption / idempotency boundary | **OPEN** — downstream async consumer · failed Notification must not rollback committed SoR transactions · idempotent delivery posture required |
@@ -88,12 +88,18 @@ Proposed sequence after plan acceptance:
 2. `TC-P25-T002` — plan-driven SoT alignment (**IMPLEMENTED / ACCEPTED**)
 3. `TC-P25-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
 4. `TC-P25-T004` — ownership/module/schema foundation (**IMPLEMENTED / ACCEPTED**)
-5. `TC-P25-T005` — channel boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-6. `TC-P25-T006` — provider abstraction boundary (**NOT EXECUTED**)
+5. `TC-P25-T005` — channel boundary (**IMPLEMENTED / ACCEPTED**)
+6. `TC-P25-T006` — provider abstraction boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 7. `TC-P25-T007` — event consumption / template orchestration boundary (**NOT EXECUTED**)
 8. `TC-P25-T008` — hardening and guardrails (**NOT EXECUTED**)
 9. `TC-P25-T009` — evidence pack (**NOT EXECUTED**)
 10. `TC-P25-GATE` — acceptance gate (**NOT EXECUTED**)
+
+### TC-P25-T006 — Provider abstraction boundary
+
+- Purpose: define Notification-owned provider-neutral delivery contracts without named production adapters or delivery persistence.
+- Delivered: `NotificationProviderKey` · `NotificationProviderCapability` · `NotificationDeliveryRequest`/`NotificationDeliveryResult` · `INotificationDeliveryProvider` · `INotificationProviderResolver` · `NotificationProviderTrustBoundary` · `NotificationProviderBoundary` · `ProviderPortImplemented`/`ProviderAbstractionImplemented` flags · guardrail tests.
+- Forbidden in this task: named production adapters (SMTP/SMS vendors) · delivery persistence · template orchestration · event consumption · API/frontend · migrations beyond T004 schema foundation.
 
 ### TC-P25-T005 — Channel boundary
 
