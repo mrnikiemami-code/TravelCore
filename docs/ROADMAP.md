@@ -827,6 +827,24 @@ P26 = Advanced SEO.
 
 ---
 
+## Provider Integration Readiness Sequence
+
+**Status:** **COMPLETE / ACCEPTED** (`TC-PROVINT-GATE`)
+
+**Implementation plan:** [`docs/plans/PROVINT-implementation-plan.md`](plans/PROVINT-implementation-plan.md)
+
+آماده‌سازی یکپارچه‌سازی provider بدون انتخاب vendor:
+
+1. Payment provider readiness (P20 checklist + zero gateway guard)
+2. Hotel source adapter checklists (availability · rate · reservation)
+3. Flight source adapter checklist (capability-split ports)
+4. NONE production source posture across modules
+5. Configuration / secrets posture · Post-P29-R3 boundary
+6. Architecture SDK ban · test-only fakes
+7. Named vendor selection + live credentials deferred
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -867,3 +885,4 @@ P26 = Advanced SEO.
 | PRODDEL | Product Delivery Sequence | **COMPLETE / ACCEPTED** (`TC-PRODDEL-GATE`) |
 | LAUNCHOPS | Launch Operations Sequence | **COMPLETE / ACCEPTED** (`TC-LAUNCHOPS-GATE`) |
 | PRODSURF | Product Surface Completion Sequence | **COMPLETE / ACCEPTED** (`TC-PRODSURF-GATE`) |
+| PROVINT | Provider Integration Readiness Sequence | **COMPLETE / ACCEPTED** (`TC-PROVINT-GATE`) |

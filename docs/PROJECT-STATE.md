@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Product Surface Completion** (**COMPLETE / ACCEPTED** — `TC-PRODSURF-GATE`) |
-| Previous Phase | **Launch Operations** (**COMPLETE / ACCEPTED** — `TC-LAUNCHOPS-GATE` `027063b`) |
+| Current Phase | **Provider Integration Readiness** (**COMPLETE / ACCEPTED** — `TC-PROVINT-GATE`) |
+| Previous Phase | **Product Surface Completion** (**COMPLETE / ACCEPTED** — `TC-PRODSURF-GATE` `b39d1f0`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-PRODSURF-GATE` — Product Surface Completion acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **Architect product prioritization** — evolution tracks exhausted (UIVAL · SEOVAL · PRODDEL · LAUNCHOPS · PRODSURF) |
+| Current Active Product Task | `TC-PROVINT-GATE` — Provider Integration Readiness acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **Architect product prioritization** — evolution tracks exhausted (UIVAL · SEOVAL · PRODDEL · LAUNCHOPS · PRODSURF · PROVINT) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -383,6 +383,10 @@
 | PRODSURF T001–T015 | **COMPLETE / ACCEPTED** — Product Surface Completion Sequence |
 | PRODSURF GATE | `TC-PRODSURF-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/PRODSURF-GATE-acceptance-evidence.md`](plans/PRODSURF-GATE-acceptance-evidence.md) |
 | PRODSURF | **COMPLETE** — ROADMAP Product Surface Completion Sequence exhausted |
+| PROVINT Plan | `TC-PROVINT-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/PROVINT-implementation-plan.md`](plans/PROVINT-implementation-plan.md) |
+| PROVINT T001–T015 | **COMPLETE / ACCEPTED** — Provider Integration Readiness Sequence |
+| PROVINT GATE | `TC-PROVINT-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/PROVINT-GATE-acceptance-evidence.md`](plans/PROVINT-GATE-acceptance-evidence.md) |
+| PROVINT | **COMPLETE** — ROADMAP Provider Integration Readiness Sequence exhausted |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |
