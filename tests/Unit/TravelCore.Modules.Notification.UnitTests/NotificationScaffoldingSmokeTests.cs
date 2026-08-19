@@ -118,4 +118,15 @@ public sealed class NotificationScaffoldingSmokeTests
         Assert.NotNull(typeof(INotificationTemplateOrchestrator));
         Assert.Equal("lead-submitted", NotificationTemplateReference.FromKey("lead-submitted").TemplateKey);
     }
+
+    [Fact]
+    public void HardeningBoundary_Keeps_T008_Guardrails_Only()
+    {
+        Assert.True(NotificationOwnershipBoundary.HardeningGuardrailsImplemented);
+        Assert.True(NotificationConsentInteractionBoundary.PreferenceBoundaryImplemented);
+        Assert.True(NotificationOperationalBoundary.OperationalBoundaryImplemented);
+        Assert.True(NotificationDeferredScopeBoundary.DeferredScopeBoundaryImplemented);
+        Assert.Equal("DEFERRED", NotificationDeferredScopeBoundary.PushNotifications);
+        Assert.Equal("NOT ALLOWED", NotificationOperationalBoundary.FakeProductionSendSuccess);
+    }
 }

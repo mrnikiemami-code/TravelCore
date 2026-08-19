@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P25-T007` — event consumption / template orchestration boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P25-T007 RESULT`; do **not** continue to `TC-P25-T008` |
+| Current Active Product Task | `TC-P25-T008` — hardening and guardrails (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P25-T008 RESULT`; do **not** continue to `TC-P25-T009` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -288,7 +288,8 @@
 | P25 T004 | `TC-P25-T004` **COMPLETE / ACCEPTED** (`b6a090a`) — independent Notification module + schema `notification`; P25-R1 RESOLVED |
 | P25 T005 | `TC-P25-T005` **COMPLETE / ACCEPTED** (`72b1d99`) — channel boundary; P25-R2 RESOLVED |
 | P25 T006 | `TC-P25-T006` **COMPLETE / ACCEPTED** (`3b0583f`) — provider abstraction boundary; P25-R3 RESOLVED |
-| P25 T007 | `TC-P25-T007` implemented / AWAITING_ARCHITECT_REVIEW — event consumption + template orchestration boundaries; P25-R4/R6 RESOLVED; `TC-P25-T008` NOT EXECUTED |
+| P25 T007 | `TC-P25-T007` **COMPLETE / ACCEPTED** (`b53f3b7`) — event/template boundaries; P25-R4/R6 RESOLVED |
+| P25 T008 | `TC-P25-T008` implemented / AWAITING_ARCHITECT_REVIEW — hardening guardrails; P25-R5/R7/R8 RESOLVED; `TC-P25-T009` NOT EXECUTED |
 | P25-R2 (channel boundary Email/SMS/In-app) | **RESOLVED** |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |

@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P25-PLAN` |
 | Phase | P25 — Notification |
-| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T007 progression · event/template boundary delivered |
-| Baseline | `3b0583f` (`feat(notification): define T006 provider abstraction boundary`) |
+| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T008 progression · hardening guardrails delivered |
+| Baseline | `b53f3b7` (`test(notification): fix T007 template reference assertion`) |
 | Authoritative sources | `docs/ROADMAP.md` § P25 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` § V · P18 TripPlanner notification intent boundaries · P19 Booking · P20 Payment · P24 B2B |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Notification phase.
 
-> **Envelope note:** `TC-P25-T001`–`T006` ACCEPTED · `TC-P25-T007` implemented (event/template boundary) · **do not execute `TC-P25-T008` until architect accepts `T007`**.
+> **Envelope note:** `TC-P25-T001`–`T007` ACCEPTED · `TC-P25-T008` implemented (hardening guardrails) · **do not execute `TC-P25-T009` until architect accepts `T008`**.
 
 ---
 
@@ -73,10 +73,10 @@ P25 must preserve:
 | `P25-R2` | Channel boundary (Email / SMS / In-app) | **RESOLVED** — `NotificationChannelKind` / `NotificationChannelBoundary` / `NotificationChannelReference` in Notification.Domain · channel taxonomy only · Notification owns channel semantics · publishers do not call providers directly · no channel persistence · no provider execution |
 | `P25-R3` | Provider abstraction boundary | **RESOLVED** — `NotificationProviderKey` / `INotificationDeliveryProvider` / `INotificationProviderResolver` / `NotificationProviderTrustBoundary` / `NotificationProviderBoundary` · provider-neutral delivery contracts · no named production provider · zero-provider posture valid until explicit lock |
 | `P25-R4` | Template / orchestration boundary | **RESOLVED** — `NotificationTemplateReference` / `NotificationTemplateBoundary` / `INotificationTemplateOrchestrator` · Notification owns template orchestration semantics · business modules publish intent/facts only · no template persistence/rendering engine |
-| `P25-R5` | Preferences / consent interaction boundary | **OPEN** — delivery preferences distinct from TripPlanner consent snapshots · marketing vs transactional separation preserved |
+| `P25-R5` | Preferences / consent interaction boundary | **RESOLVED** — `NotificationConsentInteractionBoundary` / `NotificationPreferenceBoundary` · delivery preferences distinct from TripPlanner consent snapshots · marketing vs transactional separation preserved · no preference persistence |
 | `P25-R6` | Event consumption / idempotency boundary | **RESOLVED** — `NotificationSemanticEventEnvelope` / `INotificationSemanticEventConsumer` / `NotificationIdempotencyBoundary` / `NotificationEventConsumptionBoundary` · downstream async consumer posture · failed Notification must not rollback committed SoR · idempotent delivery posture declared |
-| `P25-R7` | Public/admin operational boundary | **OPEN** — no fake production send success · internal read/ops posture only until explicit product lock |
-| `P25-R8` | Deferred/out-of-scope posture (push/webhook/marketing platform/advanced routing) | **OPEN** — push/webhook/campaign tooling remain deferred unless explicitly locked |
+| `P25-R7` | Public/admin operational boundary | **RESOLVED** — `NotificationOperationalBoundary` · no fake production send success · internal read/ops posture only until explicit product lock · no public/admin API |
+| `P25-R8` | Deferred/out-of-scope posture (push/webhook/marketing platform/advanced routing) | **RESOLVED** — `NotificationDeferredScopeBoundary` · push/webhook/campaign/advanced routing remain DEFERRED unless explicitly locked |
 
 ---
 
@@ -90,10 +90,16 @@ Proposed sequence after plan acceptance:
 4. `TC-P25-T004` — ownership/module/schema foundation (**IMPLEMENTED / ACCEPTED**)
 5. `TC-P25-T005` — channel boundary (**IMPLEMENTED / ACCEPTED**)
 6. `TC-P25-T006` — provider abstraction boundary (**IMPLEMENTED / ACCEPTED**)
-7. `TC-P25-T007` — event consumption / template orchestration boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-8. `TC-P25-T008` — hardening and guardrails (**NOT EXECUTED**)
+7. `TC-P25-T007` — event consumption / template orchestration boundary (**IMPLEMENTED / ACCEPTED**)
+8. `TC-P25-T008` — hardening and guardrails (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 9. `TC-P25-T009` — evidence pack (**NOT EXECUTED**)
 10. `TC-P25-GATE` — acceptance gate (**NOT EXECUTED**)
+
+### TC-P25-T008 — Hardening and guardrails
+
+- Purpose: consolidate accepted Notification boundaries; resolve remaining R5/R7/R8 posture; forbid deferred/public-ops product types.
+- Delivered: `NotificationConsentInteractionBoundary` · `NotificationPreferenceBoundary` · `NotificationOperationalBoundary` · `NotificationDeferredScopeBoundary` · `HardeningGuardrailsImplemented` flag · `NotificationHardeningGuardrailTests`.
+- Forbidden in this task: push/webhook/campaign runtime · public/admin operational APIs · fake send success · preference persistence · evidence pack (T009) · GATE.
 
 ### TC-P25-T007 — Event consumption / template orchestration boundary
 

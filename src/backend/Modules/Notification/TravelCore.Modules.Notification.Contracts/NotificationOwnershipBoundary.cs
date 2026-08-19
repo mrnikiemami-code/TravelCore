@@ -47,6 +47,10 @@ public static class NotificationOwnershipBoundary
     public const bool ChannelPersistenceImplemented = false;
     public const bool TemplateOrchestrationImplemented = true;
     public const bool EventConsumptionBoundaryImplemented = true;
+    public const bool PreferenceBoundaryImplemented = true;
+    public const bool OperationalBoundaryImplemented = true;
+    public const bool DeferredScopeBoundaryImplemented = true;
+    public const bool HardeningGuardrailsImplemented = true;
     public const bool DeliveryStatePersistenceImplemented = false;
     public const bool PreferencePersistenceImplemented = false;
     public const bool PublicApiImplemented = false;
