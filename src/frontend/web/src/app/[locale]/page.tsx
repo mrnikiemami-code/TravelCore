@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/shell";
 import { Text } from "@/components/ui";
 import { HomeDiscoveryView } from "@/features/home-discovery/home-discovery-view";
+import { loadHomeDiscoveryComposition } from "@/features/home-discovery/load-home-discovery-composition";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
 import { loadComposedSeoMetadata } from "@/lib/seo/load-composed-metadata";
 import {
@@ -83,6 +84,7 @@ export default async function LocaleHomePage({
   }
 
   const locale: AppLocale = localeParam;
+  const composition = await loadHomeDiscoveryComposition(locale);
 
   return (
     <PublicShell
@@ -101,7 +103,7 @@ export default async function LocaleHomePage({
         </Text>
       }
     >
-      <HomeDiscoveryView locale={locale} />
+      <HomeDiscoveryView locale={locale} composition={composition} />
     </PublicShell>
   );
 }

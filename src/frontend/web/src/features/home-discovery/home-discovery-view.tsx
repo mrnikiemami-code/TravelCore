@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container, LtrValue, Stack, Surface, Text } from "@/components/ui";
+import type { HomeDiscoveryComposition } from "@/features/home-discovery/types";
 import type { AppLocale } from "@/lib/i18n";
 
 type DiscoveryLink = {
@@ -10,6 +11,7 @@ type DiscoveryLink = {
 
 export type HomeDiscoveryViewProps = {
   locale: AppLocale;
+  composition?: HomeDiscoveryComposition;
   /** UIVAL dev route may include `/dev/*` links; production home must not. */
   includeDevLinks?: boolean;
 };
@@ -60,12 +62,47 @@ function devValidationLinks(locale: AppLocale): DiscoveryLink[] {
   ];
 }
 
+function sectionCopy(locale: AppLocale) {
+  if (locale === "fa") {
+    return {
+      paths: "مسیرهای کشف",
+      travelogues: "سفرنامه‌های اخیر",
+      hotels: "هتل‌های فعال",
+      seeAllTravelogues: "همه سفرنامه‌ها",
+      seeAllHotels: "همه هتل‌ها",
+      noTravelogues: "سفرنامه‌ای برای پیش‌نمایش نیست.",
+      noHotels: "هتلی برای پیش‌نمایش نیست.",
+    };
+  }
+  if (locale === "ar") {
+    return {
+      paths: "مسارات الاكتشاف",
+      travelogues: "Travelogues حديثة",
+      hotels: "فنادق نشطة",
+      seeAllTravelogues: "كل Travelogues",
+      seeAllHotels: "كل الفنادق",
+      noTravelogues: "لا travelogues للمعاينة.",
+      noHotels: "لا فنادق للمعاينة.",
+    };
+  }
+  return {
+    paths: "Discovery paths",
+    travelogues: "Recent travelogues",
+    hotels: "Active hotels",
+    seeAllTravelogues: "All travelogues",
+    seeAllHotels: "All hotels",
+    noTravelogues: "No travelogues to preview.",
+    noHotels: "No hotels to preview.",
+  };
+}
+
 /**
  * Home / Discovery entry surface (Server Component).
- * Workflow entry points — not a personalized feed or search engine.
+ * Curated composition from public loaders — not a personalized feed or search engine.
  */
 export function HomeDiscoveryView({
   locale,
+  composition,
   includeDevLinks = false,
 }: HomeDiscoveryViewProps) {
   const title =
@@ -76,14 +113,18 @@ export function HomeDiscoveryView({
         : "Discover TravelCore";
   const subtitle =
     locale === "fa"
-      ? "ورودی‌های عمومی محصول — نه فید شخصی‌سازی‌شده"
+      ? "ترکیب کشف عمومی — نه فید شخصی‌سازی‌شده · نه موتور جستجو"
       : locale === "ar"
-        ? "نقاط دخول عامة للمنتج — وليس خلاصة مخصصة"
-        : "Public product entry points — not a personalized feed";
+        ? "تكوين اكتشاف عام — وليس خلاصة مخصصة · ليس محرك بحث"
+        : "Public discovery composition — not a personalized feed · not a search engine";
+  const copy = sectionCopy(locale);
 
   const links = includeDevLinks
     ? [...productionLinks(locale), ...devValidationLinks(locale)]
     : productionLinks(locale);
+
+  const travelogues = composition?.travelogues ?? [];
+  const hotels = composition?.hotels ?? [];
 
   return (
     <div className="py-8">
@@ -103,11 +144,67 @@ export function HomeDiscoveryView({
 
           <Stack gap="md">
             <Text as="h2" role="title">
-              {locale === "fa"
-                ? "مسیرهای کشف"
-                : locale === "ar"
-                  ? "مسارات الاكتشاف"
-                  : "Discovery paths"}
+              {copy.travelogues}
+            </Text>
+            {travelogues.length === 0 ? (
+              <Text role="muted">{copy.noTravelogues}</Text>
+            ) : (
+              <ul className="flex flex-col gap-2">
+                {travelogues.map((item) => (
+                  <li key={item.travelogueId}>
+                    <Link
+                      href={`/${locale}/travelogues/${encodeURIComponent(item.travelogueId)}`}
+                      className="min-h-touch block rounded-md border border-border px-4 py-3 underline-offset-2 hover:underline"
+                    >
+                      <Text role="label">{item.title}</Text>
+                      <Text role="caption">{item.body.slice(0, 120)}</Text>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link
+              href={`/${locale}/travelogues`}
+              className="min-h-touch inline-flex w-fit underline-offset-2 hover:underline"
+            >
+              {copy.seeAllTravelogues}
+            </Link>
+          </Stack>
+
+          <Stack gap="md">
+            <Text as="h2" role="title">
+              {copy.hotels}
+            </Text>
+            {hotels.length === 0 ? (
+              <Text role="muted">{copy.noHotels}</Text>
+            ) : (
+              <ul className="flex flex-col gap-2">
+                {hotels.map((item) => (
+                  <li key={item.placeId}>
+                    <Link
+                      href={`/${locale}/hotels/${encodeURIComponent(item.slug)}`}
+                      className="min-h-touch block rounded-md border border-border px-4 py-3 underline-offset-2 hover:underline"
+                    >
+                      <Text role="label">{item.name}</Text>
+                      <Text role="caption">
+                        <LtrValue>{item.slug}</LtrValue>
+                      </Text>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link
+              href={`/${locale}/hotels`}
+              className="min-h-touch inline-flex w-fit underline-offset-2 hover:underline"
+            >
+              {copy.seeAllHotels}
+            </Link>
+          </Stack>
+
+          <Stack gap="md">
+            <Text as="h2" role="title">
+              {copy.paths}
             </Text>
             <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {links.map((item) => (

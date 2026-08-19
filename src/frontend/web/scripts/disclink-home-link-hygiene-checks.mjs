@@ -6,6 +6,7 @@ import { pagePath, read } from "./disclink-common.mjs";
 
 const home = read(pagePath([]));
 assert.doesNotMatch(home, /includeDevLinks/);
-assert.match(home, /<HomeDiscoveryView locale=\{locale\} \/>/);
+assert.match(home, /loadHomeDiscoveryComposition/);
+assert.match(home, /composition=\{composition\}/);
 
 console.log("disclink-home-link-hygiene-checks: PASS");

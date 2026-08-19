@@ -894,6 +894,21 @@ Public hotel discovery browse after MODOPS — closes DISCLINK-T014 deferral:
 
 ---
 
+## Home Discovery Composition Sequence
+
+**Status:** **COMPLETE / ACCEPTED** (`TC-HOMFEED-GATE`)
+
+**Implementation plan:** [`docs/plans/HOMFEED-implementation-plan.md`](plans/HOMFEED-implementation-plan.md)
+
+Curated home discovery composition after HOTIDX — closes DISCLINK-T015 deferral:
+
+1. Home composition loader (travelogues + hotels previews)
+2. Preview sections with index and detail links
+3. Discovery entry paths retained · not user-personalized · not Search
+4. ML recommendation engine deferred
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -938,3 +953,4 @@ Public hotel discovery browse after MODOPS — closes DISCLINK-T014 deferral:
 | DISCLINK | Discovery Linking Sequence | **COMPLETE / ACCEPTED** (`TC-DISCLINK-GATE`) |
 | MODOPS | Moderation Operations Sequence | **COMPLETE / ACCEPTED** (`TC-MODOPS-GATE`) |
 | HOTIDX | Hotel Catalog Browse Index Sequence | **COMPLETE / ACCEPTED** (`TC-HOTIDX-GATE`) |
+| HOMFEED | Home Discovery Composition Sequence | **COMPLETE / ACCEPTED** (`TC-HOMFEED-GATE`) |

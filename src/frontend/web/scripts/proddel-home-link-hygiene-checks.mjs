@@ -6,7 +6,8 @@ import { pagePath, read, readSrc } from "./proddel-common.mjs";
 
 const home = read(pagePath([]));
 assert.doesNotMatch(home, /includeDevLinks/);
-assert.match(home, /<HomeDiscoveryView locale=\{locale\} \/>/);
+assert.match(home, /loadHomeDiscoveryComposition/);
+assert.match(home, /composition=\{composition\}/);
 
 const view = readSrc("features/home-discovery/home-discovery-view.tsx");
 assert.match(view, /includeDevLinks/);

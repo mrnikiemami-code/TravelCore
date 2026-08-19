@@ -30,7 +30,9 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Hotel Catalog Browse Index** (**COMPLETE / ACCEPTED** — `TC-HOTIDX-GATE`) |
+| Current Phase | **Post-P29 — Continuous Evolution** (**COMPLETE / ACCEPTED** — `TC-Post-P29-GATE`) |
+| Previous Phase | **Home Discovery Composition** (**COMPLETE / ACCEPTED** — `TC-HOMFEED-GATE`) |
+| Previous Phase | **Hotel Catalog Browse Index** (**COMPLETE / ACCEPTED** — `TC-HOTIDX-GATE` `3b058e2`) |
 | Previous Phase | **Moderation Operations** (**COMPLETE / ACCEPTED** — `TC-MODOPS-GATE` `9961699`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
@@ -72,8 +74,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-HOTIDX-GATE` — Hotel Catalog Browse Index acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **Architect product prioritization** — evolution tracks exhausted (through HOTIDX) |
+| Current Active Product Task | **None** — all ROADMAP product tracks complete |
+| Current Next Task | **Roadmap complete** — await architect for next planning decision / product backlog prioritization |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -399,6 +401,10 @@
 | HOTIDX T001–T015 | **COMPLETE / ACCEPTED** — Hotel Catalog Browse Index Sequence |
 | HOTIDX GATE | `TC-HOTIDX-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/HOTIDX-GATE-acceptance-evidence.md`](plans/HOTIDX-GATE-acceptance-evidence.md) |
 | HOTIDX | **COMPLETE** — ROADMAP Hotel Catalog Browse Index Sequence exhausted · closes DISCLINK-T014 |
+| HOMFEED Plan | `TC-HOMFEED-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/HOMFEED-implementation-plan.md`](plans/HOMFEED-implementation-plan.md) |
+| HOMFEED T001–T015 | **COMPLETE / ACCEPTED** — Home Discovery Composition Sequence |
+| HOMFEED GATE | `TC-HOMFEED-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/HOMFEED-GATE-acceptance-evidence.md`](plans/HOMFEED-GATE-acceptance-evidence.md) |
+| HOMFEED | **COMPLETE** — ROADMAP Home Discovery Composition Sequence exhausted · closes DISCLINK-T015 |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |
