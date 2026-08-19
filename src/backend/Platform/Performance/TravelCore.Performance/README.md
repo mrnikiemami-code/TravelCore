@@ -6,6 +6,7 @@ This project declares architecture posture only in early P28 tasks:
 
 - profile-before-optimize
 - measurement foundation vs Observability separation (T003)
+- runtime boundary and module interaction model (T004)
 - Redis/cache non-SoR markers
 - justified Dapper read posture
 - module ownership preservation

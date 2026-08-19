@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P28-PLAN` |
 | Phase | P28 — Performance & Scale |
-| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002 foundation boundary accepted · T003 measurement boundary executed |
+| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002–T003 ACCEPTED · T004 runtime boundary executed |
 | Baseline | `ddbc0ba` (`docs: add P28 implementation plan`) |
 | Authoritative sources | `docs/ROADMAP.md` § P28 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/10-ui-constitution.md` §13 · `docs/architecture/15-future-architecture-transition-map.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P15 Search · P27 Analytics · P26 SEO |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document is the architecture plan for the Performance & Scale phase.
 
-> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002` ACCEPTED · `TC-P28-T003` implemented (measurement/observability boundary) · **do not execute `TC-P28-T004` until architect accepts `T003`**.
+> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T003` ACCEPTED · `TC-P28-T004` implemented (runtime boundary) · **do not execute `TC-P28-T005` until architect accepts `T004`**.
 
 ---
 
@@ -99,9 +99,9 @@ Proposed sequence after plan acceptance:
 
 1. `TC-P28-PLAN` — P28 architecture implementation plan (**ACCEPTED** · `ddbc0ba`)
 2. `TC-P28-T002` — performance foundation boundary (**ACCEPTED** · `38d9ca4`)
-3. `TC-P28-T003` — measurement/observability interaction boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-4. `TC-P28-T004` — PostgreSQL query/index posture boundary (**NOT EXECUTED**)
-5. `TC-P28-T005` — read-model projection boundary (**NOT EXECUTED**)
+3. `TC-P28-T003` — measurement/observability interaction boundary (**ACCEPTED** · `4ac1876`)
+4. `TC-P28-T004` — runtime performance boundary and module interaction model (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
+5. `TC-P28-T005` — PostgreSQL query/index posture boundary (**NOT EXECUTED**)
 6. `TC-P28-T006` — Redis cache abstraction boundary (**NOT EXECUTED**)
 7. `TC-P28-T007` — frontend performance/CWV + hardening guardrails (**NOT EXECUTED**)
 8. `TC-P28-T008` — hardening guardrails consolidation (**NOT EXECUTED**)
@@ -115,13 +115,13 @@ Proposed sequence after plan acceptance:
 | Decision | Primary task | Notes |
 |----------|--------------|-------|
 | `P28-R1` | `TC-P28-T003` | Measurement/profiling posture; Observability separation |
-| `P28-R2` | `TC-P28-T004` | PostgreSQL query/index boundary per module schema |
-| `P28-R3` | `TC-P28-T005` | Dapper read projection boundary; EF write owner preserved |
-| `P28-R4` | `TC-P28-T006` | Redis cache abstraction; cache != SoR |
-| `P28-R5` | `TC-P28-T007` | CDN/static delivery posture (with Media/P06 foundation) |
-| `P28-R6` | `TC-P28-T007` | Frontend rendering/bundle/CWV hardening |
-| `P28-R7` | `TC-P28-T007` | Search read performance boundary hardening |
-| `P28-R8` | `TC-P28-T008` | Load-test posture + deferred distributed scale guardrails |
+| `P28-R2` | `TC-P28-T005` | PostgreSQL query/index boundary per module schema |
+| `P28-R3` | `TC-P28-T006` | Dapper read projection boundary; EF write owner preserved |
+| `P28-R4` | `TC-P28-T007` | Redis cache abstraction; cache != SoR |
+| `P28-R5` | `TC-P28-T008` | CDN/static delivery posture (with Media/P06 foundation) |
+| `P28-R6` | `TC-P28-T008` | Frontend rendering/bundle/CWV hardening |
+| `P28-R7` | `TC-P28-T008` | Search read performance boundary hardening |
+| `P28-R8` | `TC-P28-T009` | Load-test posture + deferred distributed scale guardrails |
 
 ### TC-P28-GATE — Acceptance gate
 
@@ -159,11 +159,11 @@ Proposed sequence after plan acceptance:
 - Delivered: read projection boundary contracts · Dapper-vs-EF ownership markers · guardrail tests.
 - Forbidden in this task: Dapper in write paths · cross-module shared read DbContext · Search ranking engine.
 
-### TC-P28-T004 — PostgreSQL query/index posture boundary
+### TC-P28-T004 — Runtime performance boundary and module interaction model
 
-- Purpose: define module-owned query/index optimization posture without peer-schema FK or shared DbContext shortcuts.
-- Delivered: query/index ownership boundary · module schema index posture contracts · guardrail tests.
-- Forbidden in this task: cross-schema query shortcuts · production query tuning without measurement posture (R1).
+- Purpose: define measurement-driven runtime boundary and domain interaction contracts without infrastructure product.
+- Delivered: `PerformanceRuntimeBoundary` · `PerformanceModuleInteractionBoundary` · guardrail tests.
+- Forbidden in this task: runtime cache/CDN hooks · database tuning · cross-module performance hooks · API/frontend · business ownership transfer.
 
 ### TC-P28-T003 — Measurement/observability interaction boundary
 
