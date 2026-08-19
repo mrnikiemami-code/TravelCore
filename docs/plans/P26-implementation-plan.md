@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P26-PLAN` |
 | Phase | P26 — Advanced SEO + Content Graph |
-| Status | PLAN ACCEPTED · **P26 IN_PROGRESS** · T002 plan-driven progression · **no product execution yet** |
-| Baseline | `b5467f9` (`docs: add P26 implementation plan`) |
+| Status | PLAN ACCEPTED · **P26 IN_PROGRESS** · T001–T003 plan-driven progression · **no product execution yet** |
+| Baseline | `a984edb` (`docs(p26): align T002 plan-driven phase state`) |
 | Authoritative sources | `docs/ROADMAP.md` § P26 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/12-seo-constitution.md` · `docs/architecture/15-future-architecture-transition-map.md` § W · `docs/seo/01`–`05` · ADR 0007–0010 · P05 SEO engine · P08 Content · P14 enrichment · P15 Search |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Advanced SEO + Content Graph phase.
 
-> **Envelope note:** `TC-P26-PLAN` ACCEPTED · `TC-P26-T002` implemented (plan-driven SoT alignment) · **do not execute `TC-P26-T003` until architect accepts `T002`**.
+> **Envelope note:** `TC-P26-T001`–`T002` ACCEPTED · `TC-P26-T003` implemented (plan decision inventory + execution sequence) · **do not execute `TC-P26-T004` until architect accepts `T003`**.
 
 ---
 
@@ -95,8 +95,8 @@ P26 must preserve:
 Proposed sequence after plan acceptance:
 
 1. `TC-P26-PLAN` — P26 architecture implementation plan (**IMPLEMENTED / ACCEPTED**)
-2. `TC-P26-T002` — plan-driven SoT alignment (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-3. `TC-P26-T003` — plan decision inventory + execution sequence authoring (**NOT EXECUTED**)
+2. `TC-P26-T002` — plan-driven SoT alignment (**IMPLEMENTED / ACCEPTED**)
+3. `TC-P26-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 4. `TC-P26-T004` — content graph module/schema foundation (**NOT EXECUTED**)
 5. `TC-P26-T005` — hub/cluster boundary (**NOT EXECUTED**)
 6. `TC-P26-T006` — internal link graph boundary (**NOT EXECUTED**)
@@ -106,6 +106,67 @@ Proposed sequence after plan acceptance:
 10. `TC-P26-GATE` — acceptance gate (**NOT EXECUTED**)
 
 > Note: `TC-P26-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25 progression where PLAN equals T001 authoring.
+
+### Decision-to-task mapping (authoritative progression)
+
+| Decision | Primary task | Notes |
+|----------|--------------|-------|
+| `P26-R1` | `TC-P26-T004` | Content graph ownership/schema foundation in existing SEO module |
+| `P26-R2` | `TC-P26-T005` | Hub/cluster taxonomy boundary |
+| `P26-R3` | `TC-P26-T006` | Internal link graph boundary |
+| `P26-R4` | `TC-P26-T007` | Programmatic landing posture + quality gates |
+| `P26-R5` | `TC-P26-T007` | Route quality / orphan / indexation quality markers |
+| `P26-R6` | `TC-P26-T008` | Graph-aware sitemap/structured-data completeness posture |
+| `P26-R7` | `TC-P26-T008` | Public/admin operational boundary hardening |
+| `P26-R8` | `TC-P26-T008` | Deferred/out-of-scope posture hardening |
+
+### TC-P26-GATE — Acceptance gate
+
+- Purpose: final P26 acceptance evidence only; verify PLAN + T001–T009 accepted and P26-R1–R8 RESOLVED.
+- Delivered: `docs/plans/P26-GATE-acceptance-evidence.md` · gate evidence architecture lock test · SoT sync marking **P26 COMPLETE**.
+- Forbidden in this task: new SEO/graph capability · public graph mutation API · thin URL factory · next phase (P27) execution.
+
+### TC-P26-T009 — Evidence pack
+
+- Purpose: adversarial architecture review evidence and gate-readiness documentation without new product capability.
+- Delivered: `docs/plans/P26-T009-hardening-and-evidence-pack.md` · evidence-pack architecture lock test · SoT sync · **READY_FOR_GATE**.
+- Forbidden in this task: external crawl · AI landing copy · bulk factory · public API/UI · SEO/Content/Destination ownership changes · GATE execution.
+
+### TC-P26-T008 — Hardening and guardrails
+
+- Purpose: consolidate accepted SEO graph boundaries; resolve R6/R7/R8 posture; forbid deferred/public-ops product types.
+- Delivered: graph operational boundary types · sitemap/JSON-LD graph-aware completeness posture · deferred-scope boundary · hardening guardrail tests.
+- Forbidden in this task: external link ingestion · public graph mutation API · fake index success · evidence pack (T009) · GATE.
+
+### TC-P26-T007 — Programmatic landing + route quality boundary
+
+- Purpose: define controlled programmatic landing posture and route quality/orphan/indexation observability without bulk URL factory or fake index success.
+- Delivered: programmatic landing boundary · route quality markers · orphan/unpublished route detection posture · guardrail tests.
+- Forbidden in this task: bulk thin URL factory · AI-generated landing copy · Search ranking manipulation · public factory API · migrations beyond T004 graph foundation.
+
+### TC-P26-T006 — Internal link graph boundary
+
+- Purpose: define SEO-owned directed semantic link graph mechanics without Content editorial takeover or external crawl.
+- Delivered: internal link edge boundary types · graph orchestration/indexation implication contracts · guardrail tests.
+- Forbidden in this task: Content editorial link SoR · external backlink crawl · public graph mutation API · hub/cluster taxonomy (T005) · programmatic factory (T007).
+
+### TC-P26-T005 — Hub/cluster boundary
+
+- Purpose: define SEO-owned hub/cluster taxonomy for Destination hubs and content clusters without duplicating editorial or hierarchy SoR.
+- Delivered: hub/cluster boundary types · taxonomy reference semantics · guardrail tests.
+- Forbidden in this task: hub editorial content duplication · Destination hierarchy SoR takeover · internal link edges (T006) · public API/UI · migrations beyond T004 graph foundation.
+
+### TC-P26-T004 — Content graph module/schema foundation
+
+- Purpose: extend the existing **SEO** module with content graph scaffolding in schema `seo`; do **not** create a parallel module or Content/Destination graph SoR.
+- Delivered: graph ownership boundary · `SeoResourceType + ResourceId` reference semantics · contracts/domain/infrastructure extensions within SEO · migration for declared graph foundation tables only · guardrail tests proving SEO/Content/Destination/Search separation.
+- Forbidden in this task: hub/cluster taxonomy (T005) · link edges (T006) · programmatic factory (T007) · public API/UI · peer-schema FK · shared DbContext · Content editorial bodies · Search ranking SoR.
+
+### TC-P26-T003 — Plan decision inventory + execution sequence
+
+- Purpose: expand the approved P26 plan from PLAN-authored baseline into an executable decision inventory, decision-to-task mapping, and per-task briefs without adding product code.
+- Delivered: sections 0–12 in this document · P26-R1–R8 enumerated OPEN · execution sequence through GATE · decision-to-task mapping · task briefs T004–T009 + GATE · envelope note updated.
+- Forbidden in this task: module code · schema/migration · API · frontend · graph tables · product tests beyond docs validation.
 
 ---
 
@@ -176,9 +237,8 @@ Proposed sequence after plan acceptance:
 
 ---
 
-## 12. Done-when (PLAN task)
+## 12. Done-when (plan-driven tasks T001–T003)
 
-- `docs/plans/P26-implementation-plan.md` exists with sections 0–12, R1–R8 OPEN inventory, execution sequence, IN/OUT/DEFERRED, blockers.
-- `docs/plans/P26-PLAN-task-envelope.md` captures architect envelope reference.
-- `docs/PROJECT-STATE.md` and `docs/ROADMAP.md` declare P26 PLAN authored / NOT_STARTED product execution.
-- No product code, migration, API, frontend, or package dependency changes in PLAN task.
+- `TC-P26-T001`–`T003` establish the authoritative P26 execution map with R1–R8 OPEN inventory, decision-to-task mapping, and task briefs through GATE.
+- Product tasks (`T004+`) may begin only after architect acceptance of the corresponding prior task.
+- `P26-GATE` closes the phase after R1–R8 are RESOLVED and T004–T009 are accepted.
