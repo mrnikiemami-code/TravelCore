@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P23 — Dynamic Package / Flight + Hotel** (**READY_FOR_COMPLETE_GATE** — T001–T009 implemented · **P23-R1–R8 RESOLVED** · P23 not COMPLETE) |
-| Previous Phase | **P22 — Flight** (**COMPLETE / ACCEPTED** — `TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0`) |
+| Current Phase | **P24 — B2B / Agency Commerce** (**PLANNED** — P23 COMPLETE / GATE ACCEPTED pending architect review · **P24 NOT STARTED**) |
+| Previous Phase | **P23 — Dynamic Package / Flight + Hotel** (**COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md)) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P23-GATE` — Acceptance Gate (READY_FOR_COMPLETE_GATE after GATE-SYNC) |
-| Current Next Task | Re-execute `TC-P23-GATE`; do **not** start `P24` |
+| Current Active Product Task | `TC-P23-GATE` — Acceptance Gate re-execution (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Await `TC-P24-PLAN`; do **not** start P24 product |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -268,7 +268,8 @@
 | P22-T008 | **COMPLETE / ACCEPTED** (`d7c61d7` / docs `65cf720`) — public transactional FlightBooking journey (not CRUD) · independent `X-TravelCore-Flight-Booking-Access-Token` · SHA-256 verifier only · private noindex flight-booking pages · FlightBooking-scoped payment/cancel using R7 · read-only operational query · production sources/provider NONE |
 | P22-T009 | **COMPLETE / ACCEPTED** (`856bb06` / docs `e76b562`) — hardening + evidence pack [`docs/plans/P22-T009-hardening-and-evidence-pack.md`](plans/P22-T009-hardening-and-evidence-pack.md) · no new Flight capability · READY_FOR_GATE |
 | P22-GATE | **COMPLETE / ACCEPTED** (`2a372ae` / docs `ed040f0`) — [`docs/plans/P22-GATE-acceptance-evidence.md`](plans/P22-GATE-acceptance-evidence.md); P22 COMPLETE; P23 PLAN authored separately |
-| P23 | **READY_FOR_COMPLETE_GATE** — T001–T009 implemented · **P23-R1–R8 RESOLVED** · evidence pack `docs/plans/P23-T009-hardening-and-evidence-pack.md` · P23 not COMPLETE |
+| P23 | **COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · T001–T009 ACCEPTED · **P23-R1–R8 RESOLVED** · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md) |
+| P23-GATE | **COMPLETE / ACCEPTED** (re-execution after `TC-P23-GATE-SYNC` `2881e6d`) |
 | P23 Plan | `TC-P23-PLAN` ACCEPTED — [`docs/plans/P23-implementation-plan.md`](plans/P23-implementation-plan.md) |
 | P23 T001 | `TC-P23-T001` implemented / AWAITING_ARCHITECT_REVIEW — DynamicPackage module + schema `dynamic_package` foundation; DynamicPackageBooking ownership assigned; aggregate not implemented; TC-P23-T002 NOT EXECUTED |
 | P23-R1 (ownership / module / schema / transaction boundary) | **RESOLVED** |
