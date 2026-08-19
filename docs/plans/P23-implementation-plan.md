@@ -657,7 +657,7 @@ Do **not** execute any of these in this PLAN task.
 
 ### TC-P23-T003 — Search composition / revalidation
 
-- Depends on **P23-R3**. Transient candidates · both-side revalidation · Search module not live SoT · zero sources honest.
+- Depends on **P23-R3**. **TC-P23-T003 EXECUTED.** Transient candidate composed from exactly one FlightComponent reference and exactly one HotelComponent reference; non-persistent and non-transactional; no PackageBooking/payment/reservation/orchestration.
 
 ### TC-P23-T004 — Package offer / monetary / currency
 
@@ -796,7 +796,7 @@ This PLAN task is **not** Gate-ready and must not mark P23 COMPLETE or READY_FOR
 
 - Branch `main` · T001 adds DynamicPackage foundation only (schema EnsureSchema; no product tables; no endpoints).
 - **No** DynamicPackageBooking aggregate · **no** fourth Payment target · **no** Flight/Hotel/Payment/Pricing behavior change.
-- Do **not** execute `TC-P23-T003` until T002 composition boundary validated and P23-R2 locked.
+- Do **not** execute `TC-P23-T004` until T003 revalidation authority boundary validated and P23-R3 locked.
 
 ---
 

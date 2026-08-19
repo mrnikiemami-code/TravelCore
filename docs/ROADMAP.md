@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P23 — Dynamic Package / Flight + Hotel** (**IN_PROGRESS** — `TC-P23-T001` foundation implemented · `TC-P23-T002` composition boundary implemented · **P23-R1 RESOLVED** · **P23-R2 OPEN** · **P23-R3–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · P23 not COMPLETE) |
+| Current Phase | **P23 — Dynamic Package / Flight + Hotel** (**IN_PROGRESS** — `TC-P23-T001` foundation + `TC-P23-T002` composition boundary + `TC-P23-T003` search composition implemented · **P23-R1 RESOLVED** · **P23-R2 OPEN** · **P23-R3 OPEN** · **P23-R4–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · P23 not COMPLETE) |
 | Phase Status | P00–P22 COMPLETE · P22 GATE ACCEPTED (`2a372ae` / docs `ed040f0`) · P23 IN_PROGRESS / T001+T002 implemented · P23-R1 RESOLVED · P23-R2 OPEN · P23-R3–R8 OPEN |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P23-T002 RESULT`; do **not** execute `TC-P23-T003` |
+| Current Next Task | Return `TC-P23-T003 RESULT`; do **not** execute `TC-P23-T004` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -122,7 +122,7 @@
 - **P20** = COMPLETE (`TC-P20-GATE` ACCEPTED · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md)
 - **P21** = COMPLETE (`TC-P21-GATE` ACCEPTED `858b4be` / docs `d6bd842` · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md)
 - **P22** = COMPLETE (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
-- **P23** = IN_PROGRESS — T001 foundation + T002 composition boundary implemented · **P23-R1 RESOLVED** · **P23-R2 OPEN** · **P23-R3–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · not COMPLETE
+- **P23** = IN_PROGRESS — T001 foundation + T002 composition boundary + T003 search composition implemented · **P23-R1 RESOLVED** · **P23-R2 OPEN** · **P23-R3 OPEN** · **P23-R4–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · not COMPLETE
 - **P24–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -616,7 +616,7 @@ Inventory پرواز نباید سخت به یک provider قفل شود.
 
 ## P23 — Dynamic Package / Flight + Hotel
 
-**Status:** IN_PROGRESS (`TC-P23-T001` foundation + `TC-P23-T002` composition boundary implemented · **P23-R1 RESOLVED** · **P23-R2 OPEN** · **P23-R3–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · P23 not COMPLETE)
+**Status:** IN_PROGRESS (`TC-P23-T001` foundation + `TC-P23-T002` composition boundary + `TC-P23-T003` search composition implemented · **P23-R1 RESOLVED** · **P23-R2 OPEN** · **P23-R3 OPEN** · **P23-R4–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · P23 not COMPLETE)
 
 پس از پایدار شدن HotelBooking و Flight: خرید ترکیبی مثل Flight + Hotel.
 
