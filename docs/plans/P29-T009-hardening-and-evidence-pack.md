@@ -29,9 +29,9 @@
 | T003 | `ae4ecbf` | Security/authorization boundary — P29-R1 |
 | T004 | `96cd326` | Rate limiting / abuse protection — P29-R2 |
 | T005 | `8d52ace` / fix `11051a9` | Audit / compliance event — P29-R3 |
-| T006 | TBD | Content/file security — P29-R4 |
-| T007 | TBD | Backup/DR / DB recovery — P29-R5 |
-| T008 | TBD | Operational hardening + deferred scope — P29-R6/R7/R8 |
+| T006 | `79fab46` | Content/file security — P29-R4 |
+| T007 | `f2d636a` | Backup/DR / DB recovery — P29-R5 |
+| T008 | `471a2e7` | Operational hardening + deferred scope — P29-R6/R7/R8 |
 
 Architect acceptance of PLAN and T002–T008 is as issued. T009 prepares gate evidence; it does **not** execute `TC-P29-GATE`.
 

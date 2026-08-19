@@ -1,7 +1,8 @@
 # TC-P29-GATE — P29 Acceptance Evidence
 
 **Task:** `TC-P29-GATE` — P29 Production Hardening Acceptance Gate  
-**Baseline HEAD:** T009 **ACCEPTED**  
+**Baseline HEAD:** `30ec571` (`TC-P29-T009` **ACCEPTED**)  
+**Gate commit:** `f866cb2`  
 **Scope:** Gate / acceptance evidence only — **no new product capability**. Post-P29 is **not executed** here.
 
 ## 1. Preconditions
@@ -36,10 +37,11 @@
 | T003 | `ae4ecbf` | ACCEPTED |
 | T004 | `96cd326` | ACCEPTED |
 | T005 | `8d52ace` / fix `11051a9` | ACCEPTED |
-| T006 | GATE commit ledger | ACCEPTED |
-| T007 | GATE commit ledger | ACCEPTED |
-| T008 | GATE commit ledger | ACCEPTED |
-| T009 | GATE commit ledger | ACCEPTED |
+| T006 | `79fab46` | ACCEPTED |
+| T007 | `f2d636a` | ACCEPTED |
+| T008 | `471a2e7` | ACCEPTED |
+| T009 | `30ec571` | ACCEPTED |
+| GATE | `f866cb2` | ACCEPTED |
 
 ## 4. R1–R8 status
 
