@@ -58,6 +58,7 @@ public static class B2BOwnershipBoundary
     public const bool AgencyReportingReferenceImplemented = true;
     public const bool AgencyOperationalCapabilityReferenceImplemented = true;
     public const bool AgencyOperationalReferenceImplemented = true;
+    public const bool B2BHardeningGuardrailsImplemented = true;
     public const bool OwnsSalesChannelPersistence = false;
     public const bool OwnsCommission = false;
     public const bool OwnsAgencyPricing = false;
@@ -74,6 +75,8 @@ public static class B2BOwnershipBoundary
     public const bool ModifiesPaymentTargets = false;
     public const bool OwnsOperationalAuthorization = false;
     public const bool ExposesOperationalMutation = false;
+    public const bool OwnsProviderExecution = false;
+    public const bool OwnsAdvancedFinanceExecution = false;
     public const bool ContractEntityImplemented = false;
     public const bool CommissionEntityImplemented = false;
     public const bool CreditLimitEntityImplemented = false;

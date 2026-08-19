@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P24-PLAN` |
 | Phase | P24 — B2B / Agency Commerce |
-| Status | PLAN ACCEPTED · **P24-R1–R7 = RESOLVED** · **P24-R8 OPEN** · T001–T007 implemented · **not COMPLETE** |
+| Status | PLAN ACCEPTED · **P24-R1–R8 = RESOLVED** · T001–T008 implemented · **not COMPLETE** |
 | Baseline | `eea58e2` (`docs(dynamic-package): complete P23 acceptance gate`) |
 | Authoritative sources | `docs/ROADMAP.md` § P24 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/15-future-architecture-transition-map.md` · P13 Agency Marketplace · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · P23 DynamicPackage |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document defines the P24 execution architecture and task decomposition.
 
-> **Envelope note:** `TC-P24-T001`–`T006` ACCEPTED · `TC-P24-T007` operational boundary delivered · **do not execute `TC-P24-T008`** until architect accepts T007.
+> **Envelope note:** `TC-P24-T001`–`T007` ACCEPTED · `TC-P24-T008` hardening and guardrails delivered · **do not execute `TC-P24-T009`** until architect accepts T008.
 
 ---
 
@@ -78,7 +78,7 @@ P24 must preserve:
 | `P24-R5` | Agency distribution boundary vs Booking/Pricing/Payment | **RESOLVED** — `AgencyDistributionBoundary` / `SalesChannelReference` / `DistributionCapabilityReference` / `AgencyDistributionReference` · distribution intent only · distribution is not sales implementation · Booking/Pricing/Payment ownership unchanged · no commission/agency pricing/discount/contract/settlement |
 | `P24-R6` | Agency commerce payment boundary vs Payment ownership | **RESOLVED** — `AgencyPaymentRelationshipBoundary` / `PaymentResponsibilityReference` / `CommercialPaymentCapabilityReference` / `AgencyPaymentReference` · PaymentTargetKind unchanged (TourBooking, HotelBooking, FlightBooking) · no Wallet/Credit/Settlement/Invoice/Commission payout · Payment ownership unchanged |
 | `P24-R7` | Agency commerce operational boundary | **RESOLVED** — `AgencyOperationalBoundary` / `AgencyReportingReference` / `AgencyOperationalCapabilityReference` / `AgencyOperationalReference` · no Admin/Public API · no dashboard/reporting engine/audit system · no authorization changes · no booking/payment operation changes |
-| `P24-R8` | Deferred/out-of-scope posture (providers, settlement, advanced finance) | OPEN |
+| `P24-R8` | Deferred/out-of-scope posture (providers, settlement, advanced finance) | **RESOLVED** — hardening and guardrails in place · provider execution not owned by B2B · settlement/advanced finance remain out of scope · no wallet/credit/invoice/commission payout implementation |
 
 ---
 
@@ -92,19 +92,19 @@ Proposed sequence after plan acceptance:
 4. `TC-P24-T004` — agency commercial profile boundary (**IMPLEMENTED / ACCEPTED**)
 5. `TC-P24-T005` — agency distribution boundary (**IMPLEMENTED / ACCEPTED**)
 6. `TC-P24-T006` — agency commerce payment boundary (**IMPLEMENTED / ACCEPTED**)
-7. `TC-P24-T007` — agency commerce operational boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-8. `TC-P24-T008` — hardening and guardrails
-9. `TC-P24-T009` — evidence pack
+7. `TC-P24-T007` — agency commerce operational boundary (**IMPLEMENTED / ACCEPTED**)
+8. `TC-P24-T008` — hardening and guardrails (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
+9. `TC-P24-T009` — evidence pack (**NOT EXECUTED**)
 10. `TC-P24-GATE` — acceptance gate
 
-### TC-P24-T007 — Agency commerce operational boundary
+### TC-P24-T008 — Hardening and guardrails
 
-- Depends on **P24-R7**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Domain boundary models only · no Admin/Public API · no dashboard/reporting engine/audit system · no authorization/booking/payment operation changes · **TC-P24-T008 NOT EXECUTED**.
+- Depends on **P24-R8**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Guardrail-only reinforcement · `B2BOwnershipBoundary` hardening flags · `B2BHardeningGuardrailTests` architecture enforcement · no provider execution, no settlement execution, no advanced-finance implementation · **TC-P24-T009 NOT EXECUTED**.
 
 ---
 
 ## 7. Plan outcome
 
-- `TC-P24-T001`–`T006` **EXECUTED / ACCEPTED**.
-- `TC-P24-T007` **EXECUTED** (boundary only).
-- `TC-P24-T008` remains **NOT EXECUTED**.
+- `TC-P24-T001`–`T007` **EXECUTED / ACCEPTED**.
+- `TC-P24-T008` **EXECUTED** (hardening + guardrails).
+- `TC-P24-T009` remains **NOT EXECUTED**.
