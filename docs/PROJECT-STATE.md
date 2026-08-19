@@ -338,15 +338,15 @@
 | P29 GATE | `TC-P29-GATE` **COMPLETE / ACCEPTED** (`f866cb2`) — [`docs/plans/P29-GATE-acceptance-evidence.md`](plans/P29-GATE-acceptance-evidence.md) |
 | P29 | **COMPLETE** — `TC-P29-GATE` implemented · **P29-R1–R8 RESOLVED** |
 | Post-P29 Plan | `TC-Post-P29-PLAN` **COMPLETE / ACCEPTED** (`012c07f`) — [`docs/plans/Post-P29-implementation-plan.md`](plans/Post-P29-implementation-plan.md) |
-| Post-P29 T002 | `TC-Post-P29-T002` **COMPLETE / ACCEPTED** — continuous evolution foundation boundary |
-| Post-P29 T003 | `TC-Post-P29-T003` **COMPLETE / ACCEPTED** — metrics-driven evolution gate · **Post-P29-R1 RESOLVED** |
-| Post-P29 T004 | `TC-Post-P29-T004` **COMPLETE / ACCEPTED** — search engine evolution boundary · **Post-P29-R2 RESOLVED** |
-| Post-P29 T005 | `TC-Post-P29-T005` **COMPLETE / ACCEPTED** — provider expansion boundary · **Post-P29-R3 RESOLVED** |
-| Post-P29 T006 | `TC-Post-P29-T006` **COMPLETE / ACCEPTED** — personalization/recommendation boundary · **Post-P29-R4 RESOLVED** |
-| Post-P29 T007 | `TC-Post-P29-T007` **COMPLETE / ACCEPTED** — loyalty/promotions boundary · **Post-P29-R5 RESOLVED** |
-| Post-P29 T008 | `TC-Post-P29-T008` **COMPLETE / ACCEPTED** — operational evolution + deferred scope · **Post-P29-R6/R7/R8 RESOLVED** |
-| Post-P29 T009 | `TC-Post-P29-T009` **COMPLETE / ACCEPTED** — evidence pack · **READY_FOR_GATE** |
-| Post-P29 GATE | `TC-Post-P29-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/Post-P29-GATE-acceptance-evidence.md`](plans/Post-P29-GATE-acceptance-evidence.md) |
+| Post-P29 T002 | `TC-Post-P29-T002` **COMPLETE / ACCEPTED** (`9a89aad`) — continuous evolution foundation boundary |
+| Post-P29 T003 | `TC-Post-P29-T003` **COMPLETE / ACCEPTED** (`10ba6a9`) — metrics-driven evolution gate · **Post-P29-R1 RESOLVED** |
+| Post-P29 T004 | `TC-Post-P29-T004` **COMPLETE / ACCEPTED** (`32a9ac9`) — search engine evolution boundary · **Post-P29-R2 RESOLVED** |
+| Post-P29 T005 | `TC-Post-P29-T005` **COMPLETE / ACCEPTED** (`d17f50e`) — provider expansion boundary · **Post-P29-R3 RESOLVED** |
+| Post-P29 T006 | `TC-Post-P29-T006` **COMPLETE / ACCEPTED** (`bd468d1`) — personalization/recommendation boundary · **Post-P29-R4 RESOLVED** |
+| Post-P29 T007 | `TC-Post-P29-T007` **COMPLETE / ACCEPTED** (`17bce33`) — loyalty/promotions boundary · **Post-P29-R5 RESOLVED** |
+| Post-P29 T008 | `TC-Post-P29-T008` **COMPLETE / ACCEPTED** (`1281c84`) — operational evolution + deferred scope · **Post-P29-R6/R7/R8 RESOLVED** |
+| Post-P29 T009 | `TC-Post-P29-T009` **COMPLETE / ACCEPTED** (`9c11aaf`) — evidence pack · **READY_FOR_GATE** |
+| Post-P29 GATE | `TC-Post-P29-GATE` **COMPLETE / ACCEPTED** (`f0d897b`) — [`docs/plans/Post-P29-GATE-acceptance-evidence.md`](plans/Post-P29-GATE-acceptance-evidence.md) |
 | Post-P29 | **COMPLETE** — `TC-Post-P29-GATE` implemented · **Post-P29-R1–R8 RESOLVED** |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |

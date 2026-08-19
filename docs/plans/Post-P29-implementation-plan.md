@@ -98,15 +98,15 @@ Post-P29 must preserve:
 Proposed sequence after plan acceptance:
 
 1. `TC-Post-P29-PLAN` — Post-P29 architecture implementation plan (**ACCEPTED** · `012c07f`)
-2. `TC-Post-P29-T002` — continuous evolution foundation boundary (**ACCEPTED**)
-3. `TC-Post-P29-T003` — metrics-driven evolution gate boundary (**ACCEPTED** · **Post-P29-R1 RESOLVED**)
-4. `TC-Post-P29-T004` — dedicated search engine evolution boundary (**ACCEPTED** · **Post-P29-R2 RESOLVED**)
-5. `TC-Post-P29-T005` — provider expansion boundary (**ACCEPTED** · **Post-P29-R3 RESOLVED**)
-6. `TC-Post-P29-T006` — personalization / recommendation evolution boundary (**ACCEPTED** · **Post-P29-R4 RESOLVED**)
-7. `TC-Post-P29-T007` — loyalty / promotions evolution boundary (**ACCEPTED** · **Post-P29-R5 RESOLVED**)
-8. `TC-Post-P29-T008` — advanced pricing + mobile + module extraction + deferred scope (**ACCEPTED** · **Post-P29-R6/R7/R8 RESOLVED**)
-9. `TC-Post-P29-T009` — evidence pack (**ACCEPTED** · **READY_FOR_GATE**)
-10. `TC-Post-P29-GATE` — acceptance gate (**COMPLETE**)
+2. `TC-Post-P29-T002` — continuous evolution foundation boundary (**ACCEPTED** · `9a89aad`)
+3. `TC-Post-P29-T003` — metrics-driven evolution gate boundary (**ACCEPTED** · `10ba6a9` · **Post-P29-R1 RESOLVED**)
+4. `TC-Post-P29-T004` — dedicated search engine evolution boundary (**ACCEPTED** · `32a9ac9` · **Post-P29-R2 RESOLVED**)
+5. `TC-Post-P29-T005` — provider expansion boundary (**ACCEPTED** · `d17f50e` · **Post-P29-R3 RESOLVED**)
+6. `TC-Post-P29-T006` — personalization / recommendation evolution boundary (**ACCEPTED** · `bd468d1` · **Post-P29-R4 RESOLVED**)
+7. `TC-Post-P29-T007` — loyalty / promotions evolution boundary (**ACCEPTED** · `17bce33` · **Post-P29-R5 RESOLVED**)
+8. `TC-Post-P29-T008` — advanced pricing + mobile + module extraction + deferred scope (**ACCEPTED** · `1281c84` · **Post-P29-R6/R7/R8 RESOLVED**)
+9. `TC-Post-P29-T009` — evidence pack (**ACCEPTED** · `9c11aaf` · **READY_FOR_GATE**)
+10. `TC-Post-P29-GATE` — acceptance gate (**COMPLETE** · `f0d897b`)
 
 > Note: `TC-Post-P29-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established progression where PLAN equals T001 authoring.
 
