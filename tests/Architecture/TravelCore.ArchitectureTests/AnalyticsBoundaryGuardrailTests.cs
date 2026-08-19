@@ -204,8 +204,8 @@ public sealed class AnalyticsBoundaryGuardrailTests
         Assert.Contains("P27-R1", text, StringComparison.Ordinal);
         Assert.Contains("schema `analytics`", text, StringComparison.Ordinal);
         Assert.Contains("Analytics != Booking", text, StringComparison.Ordinal);
-        Assert.Contains("Analytics != Search", text, StringComparison.Ordinal);
-        Assert.Contains("Analytics != Observability", text, StringComparison.Ordinal);
+        Assert.Contains("Analytics != Booking/Payment/Search", text, StringComparison.Ordinal);
+        Assert.Contains("Notification/Observability", text, StringComparison.Ordinal);
         Assert.Contains("TC-P27-T004", text, StringComparison.Ordinal);
     }
 

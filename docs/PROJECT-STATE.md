@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P27 — Analytics + Product Intelligence** (**IN_PROGRESS** — `TC-P27-T004` implemented) |
+| Current Phase | **P27 — Analytics + Product Intelligence** (**IN_PROGRESS** — `TC-P27-T005` implemented) |
 | Previous Phase | **P26 — Advanced SEO + Content Graph** (**COMPLETE / ACCEPTED** — `TC-P26-GATE` `931ea19`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P27-T004` — analytics module/schema foundation (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P27-T004 RESULT`; do **not** continue to `TC-P27-T005` |
+| Current Active Product Task | `TC-P27-T005` — product event taxonomy boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P27-T005 RESULT`; do **not** continue to `TC-P27-T006` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -304,11 +304,12 @@
 | P26 T008 | `TC-P26-T008` **COMPLETE / ACCEPTED** (`c8664f8`) — hardening guardrails; P26-R6/R7/R8 RESOLVED |
 | P26 T009 | `TC-P26-T009` **COMPLETE / ACCEPTED** (`c8664f8`) — evidence pack; **READY_FOR_GATE** |
 | P26 GATE | `TC-P26-GATE` **COMPLETE / ACCEPTED** (`931ea19`) — [`docs/plans/P26-GATE-acceptance-evidence.md`](plans/P26-GATE-acceptance-evidence.md) |
-| P27 | **IN_PROGRESS** — `TC-P27-T004` implemented · **P27-R1 RESOLVED** · R2–R8 OPEN |
+| P27 | **IN_PROGRESS** — `TC-P27-T005` implemented · **P27-R1–R2 RESOLVED** · R3–R8 OPEN |
 | P27 Plan | `TC-P27-PLAN` **COMPLETE / ACCEPTED** (`f1e6f09`) — [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md) |
 | P27 T002 | `TC-P27-T002` **COMPLETE / ACCEPTED** (`994a94e`) — plan-driven SoT alignment; no product code |
 | P27 T003 | `TC-P27-T003` **COMPLETE / ACCEPTED** (`0e998aa`) — decision inventory + execution sequence; no product code |
-| P27 T004 | `TC-P27-T004` implemented / AWAITING_ARCHITECT_REVIEW — independent Analytics module + schema `analytics`; **P27-R1 RESOLVED** |
+| P27 T004 | `TC-P27-T004` **COMPLETE / ACCEPTED** (`fc23f15`) — independent Analytics module + schema `analytics`; **P27-R1 RESOLVED** |
+| P27 T005 | `TC-P27-T005` implemented / AWAITING_ARCHITECT_REVIEW — product event taxonomy boundary; **P27-R2 RESOLVED** |
 | P27-R1 (Analytics module ownership / schema posture) | **RESOLVED** |
 | P26-R1 (content graph ownership / schema posture) | **RESOLVED** |
 | P26-R2 (hub/cluster taxonomy) | **RESOLVED** |

@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TravelCore.Modules.Analytics.Contracts\TravelCore.Modules.Analytics.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Platform\Identifiers\TravelCore.Identifiers\TravelCore.Identifiers.csproj" />
   </ItemGroup>
 

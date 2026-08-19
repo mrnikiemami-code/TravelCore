@@ -43,7 +43,7 @@ public sealed class AnalyticsScaffoldingSmokeTests
         Assert.False(AnalyticsOwnershipBoundary.OwnsPlatformTelemetry);
         Assert.True(AnalyticsOwnershipBoundary.SeparateAnalyticsModuleImplemented);
         Assert.True(AnalyticsOwnershipBoundary.SeparateAnalyticsSchemaImplemented);
-        Assert.False(AnalyticsOwnershipBoundary.EventTaxonomyBoundaryImplemented);
+        Assert.True(AnalyticsOwnershipBoundary.EventTaxonomyBoundaryImplemented);
         Assert.False(AnalyticsOwnershipBoundary.ProviderPortImplemented);
         Assert.False(AnalyticsOwnershipBoundary.ProductTablesImplemented);
         Assert.False(AnalyticsOwnershipBoundary.PublicApiImplemented);

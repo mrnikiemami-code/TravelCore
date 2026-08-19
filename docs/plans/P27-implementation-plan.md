@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P27-PLAN` |
 | Phase | P27 — Analytics + Product Intelligence |
-| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T004 analytics module/schema foundation executed |
-| Baseline | `0e998aa` (`docs(p27): expand T003 plan decision inventory and execution sequence`) |
+| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T005 product event taxonomy boundary executed |
+| Baseline | `fc23f15` (`docs(p27): sync T004 SoT status lines`) |
 | Authoritative sources | `docs/ROADMAP.md` § P27 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` · `docs/pages/09-page-state-and-composition-rules.md` §19 · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P25 Notification · P26 SEO |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Analytics + Product Intelligence phase.
 
-> **Envelope note:** `TC-P27-PLAN`–`T003` ACCEPTED · `TC-P27-T004` implemented (module/schema foundation) · **do not execute `TC-P27-T005` until architect accepts `T004`**.
+> **Envelope note:** `TC-P27-PLAN`–`T004` ACCEPTED · `TC-P27-T005` implemented (event taxonomy boundary) · **do not execute `TC-P27-T006` until architect accepts `T005`**.
 
 ---
 
@@ -79,7 +79,7 @@ P27 must preserve:
 | ID | Topic | Status |
 |----|-------|--------|
 | `P27-R1` | Analytics module ownership / schema posture vs domain modules / Observability | **RESOLVED** — independent Analytics module · schema `analytics` · **Analytics != Booking/Payment/Search/SEO/Content/Notification/Observability** · semantic consumption only · no peer-schema FK · T004 foundation only |
-| `P27-R2` | Product event taxonomy boundary | **OPEN** — canonical event names/kinds owned by Analytics contracts · publishers emit semantic facts only · roadmap events: SearchPerformed · SearchResultClicked · SearchNoResults · FilterApplied · TourViewed · HotelViewed · QuoteCreated · BookingStarted · BookingCompleted |
+| `P27-R2` | Product event taxonomy boundary | **RESOLVED** — canonical event kinds owned by Analytics contracts · roadmap events covered · publishers emit semantic facts only · no vendor taxonomy · no event persistence in T005 |
 | `P27-R3` | Provider abstraction / dispatch boundary | **OPEN** — provider-neutral dispatch contracts · no named production analytics vendor in early tasks · zero-provider posture valid until explicit lock |
 | `P27-R4` | Privacy / PII interaction boundary | **OPEN** — analytics must not become PII SoR · opaque resource/session references only · Booking/Party remain identity SoR |
 | `P27-R5` | Consent / attribution interaction boundary | **OPEN** — analytics consent/attribution distinct from TripPlanner consent and Notification preferences · marketing vs product analytics separation preserved |
@@ -96,8 +96,8 @@ Proposed sequence after plan acceptance:
 1. `TC-P27-PLAN` — P27 architecture implementation plan (**ACCEPTED** · `f1e6f09`)
 2. `TC-P27-T002` — plan-driven SoT alignment (**IMPLEMENTED / ACCEPTED**)
 3. `TC-P27-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
-4. `TC-P27-T004` — analytics module/schema foundation (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-5. `TC-P27-T005` — product event taxonomy boundary (**NOT EXECUTED**)
+4. `TC-P27-T004` — analytics module/schema foundation (**IMPLEMENTED / ACCEPTED**)
+5. `TC-P27-T005` — product event taxonomy boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 6. `TC-P27-T006` — provider abstraction / dispatch boundary (**NOT EXECUTED**)
 7. `TC-P27-T007` — event ingestion / publisher interaction boundary (**NOT EXECUTED**)
 8. `TC-P27-T008` — hardening and guardrails (**NOT EXECUTED**)
@@ -152,7 +152,7 @@ Proposed sequence after plan acceptance:
 ### TC-P27-T005 — Product event taxonomy boundary
 
 - Purpose: define Analytics-owned canonical product event kinds aligned with ROADMAP intent without Search ranking or domain workflow SoR takeover.
-- Delivered: event kind taxonomy · semantic event envelope contracts · roadmap event coverage (SearchPerformed · SearchResultClicked · SearchNoResults · FilterApplied · TourViewed · HotelViewed · QuoteCreated · BookingStarted · BookingCompleted) · guardrail tests.
+- Delivered: `AnalyticsProductEventKind` · `AnalyticsEventTaxonomyBoundary` · `AnalyticsEventReference` · `AnalyticsSemanticEventEnvelope` · guardrail tests · roadmap event coverage (SearchPerformed · SearchResultClicked · SearchNoResults · FilterApplied · TourViewed · HotelViewed · QuoteCreated · BookingStarted · BookingCompleted).
 - Forbidden in this task: provider dispatch execution · event persistence beyond T004 foundation · Search ranking changes · public API/UI · migrations beyond T004 schema foundation.
 
 ### TC-P27-T004 — Analytics module/schema foundation

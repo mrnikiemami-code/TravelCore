@@ -56,7 +56,7 @@ public static class AnalyticsOwnershipBoundary
     public const bool OwnsB2BCommerce = false;
     public const bool SeparateAnalyticsModuleImplemented = true;
     public const bool SeparateAnalyticsSchemaImplemented = true;
-    public const bool EventTaxonomyBoundaryImplemented = false;
+    public const bool EventTaxonomyBoundaryImplemented = true;
     public const bool ProviderPortImplemented = false;
     public const bool ProviderAbstractionImplemented = false;
     public const bool ProviderImplemented = false;
