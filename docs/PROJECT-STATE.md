@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Provider Integration Readiness** (**COMPLETE / ACCEPTED** — `TC-PROVINT-GATE`) |
-| Previous Phase | **Product Surface Completion** (**COMPLETE / ACCEPTED** — `TC-PRODSURF-GATE` `b39d1f0`) |
+| Current Phase | **Discovery Linking** (**COMPLETE / ACCEPTED** — `TC-DISCLINK-GATE`) |
+| Previous Phase | **Provider Integration Readiness** (**COMPLETE / ACCEPTED** — `TC-PROVINT-GATE` `7065f33`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-PROVINT-GATE` — Provider Integration Readiness acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **Architect product prioritization** — evolution tracks exhausted (UIVAL · SEOVAL · PRODDEL · LAUNCHOPS · PRODSURF · PROVINT) |
+| Current Active Product Task | `TC-DISCLINK-GATE` — Discovery Linking acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **Architect product prioritization** — evolution tracks exhausted (through DISCLINK) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -387,6 +387,10 @@
 | PROVINT T001–T015 | **COMPLETE / ACCEPTED** — Provider Integration Readiness Sequence |
 | PROVINT GATE | `TC-PROVINT-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/PROVINT-GATE-acceptance-evidence.md`](plans/PROVINT-GATE-acceptance-evidence.md) |
 | PROVINT | **COMPLETE** — ROADMAP Provider Integration Readiness Sequence exhausted |
+| DISCLINK Plan | `TC-DISCLINK-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/DISCLINK-implementation-plan.md`](plans/DISCLINK-implementation-plan.md) |
+| DISCLINK T001–T015 | **COMPLETE / ACCEPTED** — Discovery Linking Sequence |
+| DISCLINK GATE | `TC-DISCLINK-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/DISCLINK-GATE-acceptance-evidence.md`](plans/DISCLINK-GATE-acceptance-evidence.md) |
+| DISCLINK | **COMPLETE** — ROADMAP Discovery Linking Sequence exhausted |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |

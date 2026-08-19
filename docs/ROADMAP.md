@@ -845,6 +845,23 @@ P26 = Advanced SEO.
 
 ---
 
+## Discovery Linking Sequence
+
+**Status:** **COMPLETE / ACCEPTED** (`TC-DISCLINK-GATE`)
+
+**Implementation plan:** [`docs/plans/DISCLINK-implementation-plan.md`](plans/DISCLINK-implementation-plan.md)
+
+اتصال مسیرهای production به discovery پس از PRODSURF/PROVINT:
+
+1. `/travelogues` discovery index + SEO metadata
+2. UGC composition → travelogue detail links
+3. Hotel book CTA → `/hotels/[slug]/book` canonical path
+4. Home discovery travelogues entry
+5. Places route retained · UGC ≠ Content boundary
+6. Hotel catalog browse index + personalized feed deferred
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -886,3 +903,4 @@ P26 = Advanced SEO.
 | LAUNCHOPS | Launch Operations Sequence | **COMPLETE / ACCEPTED** (`TC-LAUNCHOPS-GATE`) |
 | PRODSURF | Product Surface Completion Sequence | **COMPLETE / ACCEPTED** (`TC-PRODSURF-GATE`) |
 | PROVINT | Provider Integration Readiness Sequence | **COMPLETE / ACCEPTED** (`TC-PROVINT-GATE`) |
+| DISCLINK | Discovery Linking Sequence | **COMPLETE / ACCEPTED** (`TC-DISCLINK-GATE`) |

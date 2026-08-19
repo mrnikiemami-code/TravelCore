@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LtrValue, Stack, Text } from "@/components/ui";
 import type { AppLocale } from "@/lib/i18n";
 import type { UgcCompositionView } from "./load-ugc-composition";
@@ -103,7 +104,12 @@ export function UgcCompositionList({
                 className="rounded-md border border-border p-3 text-sm"
               >
                 <Stack gap="sm">
-                  <Text>{item.title}</Text>
+                  <Link
+                    href={`/${locale}/travelogues/${encodeURIComponent(item.travelogueId)}`}
+                    className="min-h-touch inline-flex underline-offset-2 hover:underline"
+                  >
+                    <Text>{item.title}</Text>
+                  </Link>
                   <Text role="muted">{item.body}</Text>
                   {item.comments.length > 0 ? (
                     <ul className="flex flex-col gap-2">
