@@ -27,7 +27,7 @@ public sealed class PaymentMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(10, expectedMigrations.Length);
+            Assert.Equal(11, expectedMigrations.Length);
             Assert.EndsWith("_InitialPaymentScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAggregateBaseline", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddPaymentAttemptProviderReferences", expectedMigrations[2], StringComparison.Ordinal);
@@ -38,6 +38,7 @@ public sealed class PaymentMigrationLifecycleTests
             Assert.EndsWith("_AddHotelBookingPaymentTarget", expectedMigrations[7], StringComparison.Ordinal);
             Assert.EndsWith("_AddHotelBookingCancellationRefundInbox", expectedMigrations[8], StringComparison.Ordinal);
             Assert.EndsWith("_AddFlightBookingPaymentTarget", expectedMigrations[9], StringComparison.Ordinal);
+            Assert.EndsWith("_AddFlightBookingCancellationRefundInbox", expectedMigrations[10], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -59,7 +60,7 @@ public sealed class PaymentMigrationLifecycleTests
                 WHERE table_schema = 'payment'
                   AND table_name = '__EFMigrationsHistory';
                 """, ct));
-            Assert.Equal(10, await ScalarIntAsync(conn, """
+            Assert.Equal(11, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'payment'
@@ -136,6 +137,12 @@ public sealed class PaymentMigrationLifecycleTests
                 FROM information_schema.tables
                 WHERE table_schema = 'payment'
                   AND table_name = 'hotel_booking_cancellation_refund_inbox';
+                """, ct));
+            Assert.Equal(1, await ScalarIntAsync(conn, """
+                SELECT COUNT(*)::int
+                FROM information_schema.tables
+                WHERE table_schema = 'payment'
+                  AND table_name = 'flight_booking_cancellation_refund_inbox';
                 """, ct));
             Assert.Equal(0, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int

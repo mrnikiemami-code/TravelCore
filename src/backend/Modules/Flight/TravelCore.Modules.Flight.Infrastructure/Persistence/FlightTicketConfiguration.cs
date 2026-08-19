@@ -10,7 +10,7 @@ internal sealed class FlightTicketConfiguration : IEntityTypeConfiguration<Fligh
     {
         builder.ToTable("flight_tickets", table =>
         {
-            table.HasCheckConstraint("ck_flight_tickets_status", "status IN (1, 2)");
+            table.HasCheckConstraint("ck_flight_tickets_status", "status IN (1, 2, 3, 4)");
         });
         builder.HasKey(x => x.Id);
 
@@ -44,6 +44,8 @@ internal sealed class FlightTicketConfiguration : IEntityTypeConfiguration<Fligh
 
         builder.Property(x => x.CreatedAt).HasColumnName("created_at").IsRequired();
         builder.Property(x => x.IssuedAt).HasColumnName("issued_at");
+        builder.Property(x => x.VoidedAt).HasColumnName("voided_at");
+        builder.Property(x => x.RefundedAt).HasColumnName("refunded_at");
 
         builder.HasOne<Domain.FlightBooking>()
             .WithMany()

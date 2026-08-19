@@ -39,6 +39,11 @@ public sealed class FlightSupplierReservationTests
         Assert.Equal(FlightSourceCapability.ReservationQuery, (FlightSourceCapability)5);
         Assert.Equal(FlightSourceCapability.TicketCreate, (FlightSourceCapability)6);
         Assert.Equal(FlightSourceCapability.TicketQuery, (FlightSourceCapability)7);
+        Assert.Equal(FlightSourceCapability.CancellationQuote, (FlightSourceCapability)8);
+        Assert.Equal(FlightSourceCapability.ReservationCancel, (FlightSourceCapability)9);
+        Assert.Equal(FlightSourceCapability.TicketVoid, (FlightSourceCapability)10);
+        Assert.Equal(FlightSourceCapability.TicketRefund, (FlightSourceCapability)11);
+        Assert.Equal(FlightSourceCapability.CancellationQuery, (FlightSourceCapability)12);
         Assert.Equal(
             "OfferExpiresAt != ReservationExpiresAt",
             FlightReservationOwnershipBoundary.OfferExpiryIsNotReservationExpiry);

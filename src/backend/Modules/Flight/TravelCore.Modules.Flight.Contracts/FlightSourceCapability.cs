@@ -2,7 +2,6 @@ namespace TravelCore.Modules.Flight.Contracts;
 
 /// <summary>
 /// Explicit Flight source capabilities. Do not infer behavior from SourceKey or a provider name.
-/// Ticket/Cancel/Refund capabilities are out of T005 scope.
 /// </summary>
 public enum FlightSourceCapability : short
 {
@@ -13,4 +12,9 @@ public enum FlightSourceCapability : short
     ReservationQuery = 5,
     TicketCreate = 6,
     TicketQuery = 7,
+    CancellationQuote = 8,
+    ReservationCancel = 9,
+    TicketVoid = 10,
+    TicketRefund = 11,
+    CancellationQuery = 12,
 }

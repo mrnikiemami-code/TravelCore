@@ -28,6 +28,9 @@ internal sealed class FlightOutboxHostedService : BackgroundService
                 await compensation.DispatchPendingAsync(take: 50, stoppingToken);
                 var ticketingRequired = scope.ServiceProvider.GetRequiredService<FlightTicketingRequiredOutboxDispatcher>();
                 await ticketingRequired.DispatchPendingAsync(take: 50, stoppingToken);
+                var cancellationRefund = scope.ServiceProvider
+                    .GetRequiredService<FlightBookingCancellationRefundOutboxDispatcher>();
+                await cancellationRefund.DispatchPendingAsync(take: 50, stoppingToken);
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {

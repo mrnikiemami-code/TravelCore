@@ -46,6 +46,10 @@ public sealed class FlightTicket
 
     public Instant? IssuedAt { get; private set; }
 
+    public Instant? VoidedAt { get; private set; }
+
+    public Instant? RefundedAt { get; private set; }
+
     public static FlightTicket StartPending(
         FlightBookingId flightBookingId,
         FlightPassengerId passengerId,
@@ -109,5 +113,53 @@ public sealed class FlightTicket
         Status = FlightTicketStatus.Issued;
         SourceTicketNumber = trimmed;
         IssuedAt = now;
+    }
+
+    /// <summary>
+    /// Supplier-authoritative ticket void. Not Payment Refund. Issued only.
+    /// </summary>
+    public void MarkVoided(Instant now)
+    {
+        if (now == default)
+        {
+            throw new ArgumentException("VoidedAt cannot be default.", nameof(now));
+        }
+
+        if (Status == FlightTicketStatus.Voided)
+        {
+            return;
+        }
+
+        if (Status != FlightTicketStatus.Issued)
+        {
+            throw new InvalidOperationException($"Ticket in status {Status} cannot become Voided.");
+        }
+
+        Status = FlightTicketStatus.Voided;
+        VoidedAt = now;
+    }
+
+    /// <summary>
+    /// Supplier-authoritative airline-side ticket refund/reversal. Not Payment Refund. Issued only.
+    /// </summary>
+    public void MarkRefunded(Instant now)
+    {
+        if (now == default)
+        {
+            throw new ArgumentException("RefundedAt cannot be default.", nameof(now));
+        }
+
+        if (Status == FlightTicketStatus.Refunded)
+        {
+            return;
+        }
+
+        if (Status != FlightTicketStatus.Issued)
+        {
+            throw new InvalidOperationException($"Ticket in status {Status} cannot become Refunded.");
+        }
+
+        Status = FlightTicketStatus.Refunded;
+        RefundedAt = now;
     }
 }

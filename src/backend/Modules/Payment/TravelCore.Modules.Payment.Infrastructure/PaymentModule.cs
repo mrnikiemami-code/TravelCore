@@ -66,6 +66,7 @@ public sealed class PaymentModule : ITravelCoreModule
         services.AddScoped<IHotelBookingPaymentCompensationRequiredHandler, HotelBookingPaymentCompensationRequiredHandler>();
         services.AddScoped<IFlightBookingPaymentCompensationRequiredHandler, FlightBookingPaymentCompensationRequiredHandler>();
         services.AddScoped<IHotelBookingCancellationRefundRequiredHandler, HotelBookingCancellationRefundRequiredHandler>();
+        services.AddScoped<IFlightBookingCancellationRefundRequiredHandler, FlightBookingCancellationRefundRequiredHandler>();
         services.AddHostedService<PaymentSuccessOutboxHostedService>();
         services.AddScoped<IPaymentSuccessEvidenceQuery, PaymentSuccessEvidenceQueryService>();
         services.AddScoped<IPublicBookingPaymentService, PublicBookingPaymentService>();

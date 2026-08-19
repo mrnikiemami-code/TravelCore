@@ -4,7 +4,7 @@ namespace TravelCore.Modules.Flight.Contracts;
 /// P22-R1: Flight is the independent live-flight commerce / transaction owner
 /// (schema <c>flight</c>). TourDepartureTransportSegment remains Tour-owned package transport.
 /// FlightBooking is owned inside Flight. T006 adds Payment target, ticketing, and confirmation.
-/// Customer cancellation / void remains P22-R7.
+/// T007 implements confirmed cancellation / ticket void-refund as a separate process.
 /// </summary>
 public static class FlightOwnershipBoundary
 {
@@ -22,6 +22,7 @@ public static class FlightOwnershipBoundary
     public const string ProductionOfferSource = "NONE";
     public const string ProductionReservationSource = "NONE";
     public const string ProductionTicketingSource = "NONE";
+    public const string ProductionCancellationSource = "NONE";
     public const string ProviderSecretPosture = "SecureConfigurationNotSourceControl";
     public const string InventoryAuthority = "external source-authoritative";
     public const string SearchSourcePort = "IFlightSearchSource";
@@ -29,8 +30,9 @@ public static class FlightOwnershipBoundary
     public const string OfferSourcePort = "IFlightOfferSource";
     public const string ReservationSourcePort = "IFlightReservationSource";
     public const string TicketingSourcePort = "IFlightTicketingSource";
+    public const string CancellationSourcePort = "IFlightCancellationSource";
     public const string SourceCapabilities =
-        "Search, AvailabilityCheck, OfferRevalidation, ReservationCreate, ReservationQuery, TicketCreate, TicketQuery";
+        "Search, AvailabilityCheck, OfferRevalidation, ReservationCreate, ReservationQuery, TicketCreate, TicketQuery, CancellationQuote, ReservationCancel, TicketVoid, TicketRefund, CancellationQuery";
     public const string AirportAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirlineAuthorityStatus = "RESOLVED (P22-R2) ReferenceData";
     public const string AirportCandidateOwner = "ReferenceData";
@@ -68,7 +70,7 @@ public static class FlightOwnershipBoundary
     public const bool PnrModelImplemented = false;
     public const bool TicketModelImplemented = true;
     public const bool PaymentIntegrationImplemented = true;
-    public const bool CancellationModelImplemented = false;
+    public const bool CancellationModelImplemented = true;
     public const bool PublicApiImplemented = false;
     public const bool FrontendImplemented = false;
     public const bool SupplierSdkImplemented = false;

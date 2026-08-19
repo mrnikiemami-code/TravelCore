@@ -11,4 +11,8 @@ public enum FlightReconciliationIssueKind : short
     ContradictorySupplierEvidence = 7,
     TicketSetMismatch = 8,
     PaymentEvidenceMismatch = 9,
+    PartialTicketReversal = 10,
+    SupplierCancellationAmbiguous = 11,
+    SupplierEconomicsMismatch = 12,
+    TicketStillActive = 13,
 }

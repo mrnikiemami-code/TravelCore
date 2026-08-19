@@ -162,8 +162,11 @@ public sealed class FlightPaymentTicketingTests
         var attempt = FlightTicketingAttempt.StartCreated(booking.Id, Now);
         attempt.MarkInitiated(Now.Plus(Duration.FromSeconds(1)));
         Assert.Equal(FlightTicketingAttemptStatus.Initiated, attempt.Status);
-        Assert.DoesNotContain("Voided", Enum.GetNames<FlightTicketStatus>());
-        Assert.DoesNotContain("Refunded", Enum.GetNames<FlightTicketStatus>());
+        Assert.DoesNotContain("Cancelling", Enum.GetNames<FlightBookingStatus>());
+        Assert.DoesNotContain("RefundPending", Enum.GetNames<FlightBookingStatus>());
+        Assert.DoesNotContain("Refunded", Enum.GetNames<FlightBookingStatus>());
+        Assert.DoesNotContain("VoidPending", Enum.GetNames<FlightBookingStatus>());
+        Assert.DoesNotContain("Failed", Enum.GetNames<FlightBookingStatus>());
         Assert.Null(typeof(FlightDomainAssemblyMarker).Assembly.GetType("TravelCore.Modules.Flight.Domain.PNR"));
     }
 

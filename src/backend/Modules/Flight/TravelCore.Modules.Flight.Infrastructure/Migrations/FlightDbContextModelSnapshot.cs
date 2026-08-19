@@ -102,6 +102,101 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingCancellation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Instant?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("completed_at");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("currency_code");
+
+                    b.Property<short>("FinancialOutcome")
+                        .HasColumnType("smallint")
+                        .HasColumnName("financial_outcome");
+
+                    b.Property<Guid>("FlightBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("payment_id");
+
+                    b.Property<decimal>("PenaltyAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("penalty_amount");
+
+                    b.Property<decimal>("RefundAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("refund_amount");
+
+                    b.Property<Instant>("RequestedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("requested_at");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.Property<long>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint")
+                        .HasColumnName("version");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlightBookingId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_flight_booking_cancellations_flight_booking_id");
+
+                    b.ToTable("flight_booking_cancellations", "flight", t =>
+                        {
+                            t.HasCheckConstraint("ck_flight_booking_cancellations_financial_outcome", "financial_outcome IN (1, 2)");
+
+                            t.HasCheckConstraint("ck_flight_booking_cancellations_status", "status IN (1, 2, 3, 4)");
+                        });
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingCancellationIdempotencyRecord", b =>
+                {
+                    b.Property<Guid>("FlightBookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_id");
+
+                    b.Property<string>("IdempotencyKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("idempotency_key");
+
+                    b.Property<Guid?>("AttemptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_supplier_reversal_attempt_id");
+
+                    b.Property<Guid>("CancellationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_cancellation_id");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.HasKey("FlightBookingId", "IdempotencyKey");
+
+                    b.HasIndex("CancellationId");
+
+                    b.ToTable("flight_booking_cancellation_idempotency", "flight");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingMonetarySnapshot", b =>
                 {
                     b.Property<Guid>("FlightOfferSnapshotId")
@@ -442,7 +537,7 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
 
                     b.ToTable("flight_reconciliation_issues", "flight", t =>
                         {
-                            t.HasCheckConstraint("ck_flight_reconciliation_issues_kind", "kind IN (1, 2, 3, 4, 5, 6, 7, 8, 9)");
+                            t.HasCheckConstraint("ck_flight_reconciliation_issues_kind", "kind IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)");
                         });
                 });
 
@@ -665,6 +760,68 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                     b.ToTable("flight_supplier_reservation_idempotency", "flight");
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightSupplierReversalAttempt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("CancellationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("flight_booking_cancellation_id");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Instant?>("FailedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("failed_at");
+
+                    b.Property<Instant?>("InitiatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("initiated_at");
+
+                    b.Property<short>("Kind")
+                        .HasColumnType("smallint")
+                        .HasColumnName("kind");
+
+                    b.Property<Guid?>("PassengerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("passenger_id");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.Property<Instant?>("SucceededAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("succeeded_at");
+
+                    b.Property<Guid?>("TicketId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ticket_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CancellationId", "Kind")
+                        .IsUnique()
+                        .HasDatabaseName("ux_flight_supplier_reversal_attempts_one_unresolved_reservation")
+                        .HasFilter("status IN (1, 2) AND ticket_id IS NULL");
+
+                    b.HasIndex("CancellationId", "Kind", "TicketId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_flight_supplier_reversal_attempts_one_unresolved_ticket")
+                        .HasFilter("status IN (1, 2) AND ticket_id IS NOT NULL");
+
+                    b.ToTable("flight_supplier_reversal_attempts", "flight", t =>
+                        {
+                            t.HasCheckConstraint("ck_flight_supplier_reversal_attempts_kind", "kind IN (1, 2, 3)");
+
+                            t.HasCheckConstraint("ck_flight_supplier_reversal_attempts_status", "status IN (1, 2, 3, 4)");
+                        });
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightTicket", b =>
                 {
                     b.Property<Guid>("Id")
@@ -687,6 +844,10 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("flight_passenger_id");
 
+                    b.Property<Instant?>("RefundedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("refunded_at");
+
                     b.Property<string>("SourceKey")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -702,6 +863,10 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                         .HasColumnType("smallint")
                         .HasColumnName("status");
 
+                    b.Property<Instant?>("VoidedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("voided_at");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SourceTicketNumber")
@@ -715,7 +880,7 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
 
                     b.ToTable("flight_tickets", "flight", t =>
                         {
-                            t.HasCheckConstraint("ck_flight_tickets_status", "status IN (1, 2)");
+                            t.HasCheckConstraint("ck_flight_tickets_status", "status IN (1, 2, 3, 4)");
                         });
                 });
 
@@ -857,6 +1022,24 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                     b.HasOne("TravelCore.Modules.Flight.Domain.FlightFareRulesSnapshot", null)
                         .WithMany("Baggage")
                         .HasForeignKey("FlightOfferSnapshotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingCancellation", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Flight.Domain.FlightBooking", null)
+                        .WithMany()
+                        .HasForeignKey("FlightBookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingCancellationIdempotencyRecord", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Flight.Domain.FlightBookingCancellation", null)
+                        .WithMany()
+                        .HasForeignKey("CancellationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1170,6 +1353,15 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightSupplierReversalAttempt", b =>
+                {
+                    b.HasOne("TravelCore.Modules.Flight.Domain.FlightBookingCancellation", null)
+                        .WithMany("Attempts")
+                        .HasForeignKey("CancellationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightTicket", b =>
                 {
                     b.HasOne("TravelCore.Modules.Flight.Domain.FlightBooking", null)
@@ -1202,6 +1394,11 @@ namespace TravelCore.Modules.Flight.Infrastructure.Migrations
                     b.Navigation("Journeys");
 
                     b.Navigation("Passengers");
+                });
+
+            modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingCancellation", b =>
+                {
+                    b.Navigation("Attempts");
                 });
 
             modelBuilder.Entity("TravelCore.Modules.Flight.Domain.FlightBookingMonetarySnapshot", b =>

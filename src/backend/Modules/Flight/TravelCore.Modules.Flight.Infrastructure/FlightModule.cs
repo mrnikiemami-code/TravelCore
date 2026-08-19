@@ -7,6 +7,7 @@ using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Flight.Contracts;
 using TravelCore.Modules.Flight.Domain;
+using TravelCore.Modules.Flight.Infrastructure.Cancellations;
 using TravelCore.Modules.Flight.Infrastructure.Reservations;
 using TravelCore.Modules.Flight.Infrastructure.Search;
 using TravelCore.Modules.Flight.Infrastructure.Services;
@@ -32,10 +33,12 @@ public sealed class FlightModule : ITravelCoreModule
         services.AddSingleton<IFlightOfferSourceResolver, FlightOfferSourceResolver>();
         services.AddSingleton<IFlightReservationSourceResolver, FlightReservationSourceResolver>();
         services.AddSingleton<IFlightTicketingSourceResolver, FlightTicketingSourceResolver>();
+        services.AddSingleton<IFlightCancellationSourceResolver, FlightCancellationSourceResolver>();
         services.AddScoped<FlightLiveSearchService>();
         services.AddScoped<FlightOfferAcceptanceService>();
         services.AddScoped<FlightSupplierReservationService>();
         services.AddScoped<FlightTicketingService>();
+        services.AddScoped<FlightBookingCancellationService>();
         services.AddScoped<FlightBookingPaymentObligationQueryService>();
         services.AddScoped<IFlightBookingPaymentObligationQuery>(
             sp => sp.GetRequiredService<FlightBookingPaymentObligationQueryService>());
@@ -43,6 +46,7 @@ public sealed class FlightModule : ITravelCoreModule
         services.AddScoped<IFlightBookingRefundSucceededIntegrationHandler, FlightBookingRefundSucceededIntegrationHandler>();
         services.AddScoped<FlightCompensationOutboxDispatcher>();
         services.AddScoped<FlightTicketingRequiredOutboxDispatcher>();
+        services.AddScoped<FlightBookingCancellationRefundOutboxDispatcher>();
         services.AddHostedService<FlightOutboxHostedService>();
 
         services.AddDbContext<FlightDbContext>((_, options) =>

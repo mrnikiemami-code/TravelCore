@@ -7,7 +7,8 @@ using TravelCore.Modules.Payment.Contracts;
 namespace TravelCore.Modules.Flight.Infrastructure.Services;
 
 /// <summary>
-/// RefundSucceeded is a trigger. Compensation may Cancel Pending only. Confirmed stays Confirmed (R7).
+/// RefundSucceeded is a trigger. R7 confirmed cancellation completes after FullRefund.
+/// R6 compensation may Cancel Pending only. Confirmed stays Confirmed unless already Cancelled.
 /// PaymentStatus remains Succeeded.
 /// </summary>
 internal sealed class FlightBookingRefundSucceededIntegrationHandler : IFlightBookingRefundSucceededIntegrationHandler
@@ -37,17 +38,48 @@ internal sealed class FlightBookingRefundSucceededIntegrationHandler : IFlightBo
         var now = _clock.GetCurrentInstant();
         var bookingId = FlightBookingId.From(message.FlightBookingId);
         var booking = await _db.FlightBookings
+            .Include(x => x.Passengers)
             .SingleOrDefaultAsync(x => x.Id == bookingId, cancellationToken)
             ?? throw new InvalidOperationException("FlightBooking was not found.");
 
-        if (booking.Status == FlightBookingStatus.Confirmed)
+        var cancellation = await _db.FlightBookingCancellations
+            .Include(x => x.Attempts)
+            .SingleOrDefaultAsync(x => x.FlightBookingId == bookingId, cancellationToken);
+
+        if (cancellation is not null
+            && cancellation.PaymentId == message.PaymentId
+            && cancellation.RequiresFullRefund)
         {
-            _db.FlightReconciliationIssues.Add(
-                new FlightReconciliationIssue(
+            if (booking.Status == FlightBookingStatus.Cancelled
+                && cancellation.Status is FlightBookingCancellationStatus.RefundPending
+                    or FlightBookingCancellationStatus.Completed)
+            {
+                cancellation.CompleteFromAuthoritativeRefundSuccess(now);
+            }
+            else if (booking.Status == FlightBookingStatus.Confirmed)
+            {
+                PersistIssue(
                     booking.Id,
                     FlightReconciliationIssueKind.ContradictorySupplierEvidence,
                     now,
-                    detail: "RefundSucceeded cannot cancel a Confirmed FlightBooking."));
+                    "RefundSucceeded cannot cancel a Confirmed FlightBooking.");
+            }
+            else
+            {
+                PersistIssue(
+                    booking.Id,
+                    FlightReconciliationIssueKind.ContradictorySupplierEvidence,
+                    now,
+                    "RefundSucceeded did not match R7 cancellation completion invariants.");
+            }
+        }
+        else if (booking.Status == FlightBookingStatus.Confirmed)
+        {
+            PersistIssue(
+                booking.Id,
+                FlightReconciliationIssueKind.ContradictorySupplierEvidence,
+                now,
+                "RefundSucceeded cannot cancel a Confirmed FlightBooking.");
         }
         else
         {
@@ -64,6 +96,14 @@ internal sealed class FlightBookingRefundSucceededIntegrationHandler : IFlightBo
             _db.ChangeTracker.Clear();
         }
     }
+
+    private void PersistIssue(
+        FlightBookingId flightBookingId,
+        FlightReconciliationIssueKind kind,
+        Instant now,
+        string detail) =>
+        _db.FlightReconciliationIssues.Add(
+            new FlightReconciliationIssue(flightBookingId, kind, now, detail: detail));
 
     private static bool IsUniqueViolation(DbUpdateException exception)
     {

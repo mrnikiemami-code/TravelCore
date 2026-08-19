@@ -61,5 +61,9 @@ public sealed class FlightReconciliationIssue
 
     public bool BlocksConfirmation =>
         Kind is not FlightReconciliationIssueKind.AmbiguousReservationOutcome
-            and not FlightReconciliationIssueKind.ContradictorySupplierEvidence;
+            and not FlightReconciliationIssueKind.ContradictorySupplierEvidence
+            and not FlightReconciliationIssueKind.PartialTicketReversal
+            and not FlightReconciliationIssueKind.SupplierCancellationAmbiguous
+            and not FlightReconciliationIssueKind.SupplierEconomicsMismatch
+            and not FlightReconciliationIssueKind.TicketStillActive;
 }

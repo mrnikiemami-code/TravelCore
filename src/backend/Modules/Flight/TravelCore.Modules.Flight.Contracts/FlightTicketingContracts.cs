@@ -192,13 +192,13 @@ public static class FlightTicketingOwnershipBoundary
     public const string TicketIsNotPnr = "FlightTicket != ReservationLocator";
     public const string TicketIsNotBooking = "FlightTicket != FlightBooking";
     public const string TimeoutIsNotFailed = "NetworkTimeout != FlightTicketingAttempt.Failed";
-    public const string TicketStatuses = "Pending, Issued";
+    public const string TicketStatuses = "Pending, Issued, Voided, Refunded";
     public const string AttemptStatuses = "Created, Initiated, Succeeded, Failed";
     public const string Capabilities = "TicketCreate, TicketQuery";
     public const bool ProductionFakeTicketingSourceImplemented = false;
     public const bool NamedSupplierSdkImplemented = false;
     public const bool CrossSupplierTicketingAllowed = false;
-    public const bool VoidImplemented = false;
-    public const bool TicketRefundImplemented = false;
+    public const bool VoidImplemented = true;
+    public const bool TicketRefundImplemented = true;
     public const bool PublicTicketingApiImplemented = false;
 }

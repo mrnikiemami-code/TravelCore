@@ -36,13 +36,17 @@ public sealed class FlightFoundationHostTests
             var offerResolver = scope.ServiceProvider.GetRequiredService<IFlightOfferSourceResolver>();
             var reservationResolver = scope.ServiceProvider.GetRequiredService<IFlightReservationSourceResolver>();
             var ticketingResolver = scope.ServiceProvider.GetRequiredService<IFlightTicketingSourceResolver>();
+            var cancellationResolver = scope.ServiceProvider.GetRequiredService<IFlightCancellationSourceResolver>();
             Assert.Empty(searchResolver.ListConfiguredKeys());
             Assert.Empty(availabilityResolver.ListConfiguredKeys());
             Assert.Empty(offerResolver.ListConfiguredKeys());
             Assert.Empty(reservationResolver.ListConfiguredKeys());
             Assert.Empty(ticketingResolver.ListConfiguredKeys());
+            Assert.Empty(cancellationResolver.ListConfiguredKeys());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<FlightSupplierReservationService>());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<FlightTicketingService>());
+            Assert.NotNull(scope.ServiceProvider.GetRequiredService<FlightBookingCancellationService>());
+            Assert.Null(scope.ServiceProvider.GetService<IFlightCancellationSource>());
             Assert.NotNull(scope.ServiceProvider.GetRequiredService<IFlightBookingPaymentObligationQuery>());
         }
 

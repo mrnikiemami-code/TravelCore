@@ -281,6 +281,59 @@ public sealed class FlightBooking
         IncrementVersion();
     }
 
+    /// <summary>
+    /// Confirmed → Cancelled only after authoritative reservation Cancelled and every passenger ticket is Voided or Refunded.
+    /// Not a generic Cancel/SetCancelled/ForceCancel surface. Distinct from R6 payment compensation.
+    /// </summary>
+    public void CancelFromAuthoritativeSupplierReversal(
+        FlightSupplierReservation reservation,
+        IReadOnlyList<FlightTicket> tickets,
+        Instant now)
+    {
+        ArgumentNullException.ThrowIfNull(reservation);
+        ArgumentNullException.ThrowIfNull(tickets);
+        EnsureClock(now);
+
+        if (Status == FlightBookingStatus.Cancelled)
+        {
+            return;
+        }
+
+        if (Status != FlightBookingStatus.Confirmed)
+        {
+            throw new InvalidOperationException(
+                $"FlightBooking in status {Status} cannot be cancelled from supplier reversal.");
+        }
+
+        if (!reservation.FlightBookingId.Equals(Id)
+            || reservation.Status != FlightSupplierReservationStatus.Cancelled)
+        {
+            throw new InvalidOperationException(
+                "FlightBooking cancellation requires an authoritatively Cancelled FlightSupplierReservation.");
+        }
+
+        var passengerIds = _passengers.Select(p => p.Id).ToHashSet();
+        if (passengerIds.Count == 0)
+        {
+            throw new InvalidOperationException("FlightBooking cancellation requires passengers.");
+        }
+
+        var reversedForBooking = tickets
+            .Where(t => t.FlightBookingId.Equals(Id)
+                && t.Status is FlightTicketStatus.Voided or FlightTicketStatus.Refunded)
+            .Select(t => t.PassengerId)
+            .ToHashSet();
+        if (!passengerIds.SetEquals(reversedForBooking))
+        {
+            throw new InvalidOperationException(
+                "FlightBooking cannot become Cancelled while required passenger tickets remain active.");
+        }
+
+        Status = FlightBookingStatus.Cancelled;
+        CancelledAt = now;
+        IncrementVersion();
+    }
+
     private void IncrementVersion() => Version++;
 
     private static void EnsureClock(Instant now)

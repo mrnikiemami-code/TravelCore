@@ -44,6 +44,6 @@ public static class FlightReservationOwnershipBoundary
     public const bool FlightBookingStatusImplemented = true;
     public const bool PnrTypeImplemented = false;
     public const bool TicketImplemented = true;
-    public const bool CancellationExecutionImplemented = false;
+    public const bool CancellationExecutionImplemented = true;
     public const bool PublicReservationApiImplemented = false;
 }

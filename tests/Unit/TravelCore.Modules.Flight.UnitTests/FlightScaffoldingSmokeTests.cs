@@ -61,8 +61,9 @@ public sealed class FlightScaffoldingSmokeTests
         Assert.True(FlightOwnershipBoundary.ReservationModelImplemented);
         Assert.False(FlightOwnershipBoundary.PnrModelImplemented);
         Assert.True(FlightOwnershipBoundary.TicketModelImplemented);
-        Assert.True(FlightOwnershipBoundary.PaymentIntegrationImplemented);
-        Assert.False(FlightOwnershipBoundary.PublicApiImplemented);
+        Assert.True(FlightOwnershipBoundary.CancellationModelImplemented);
+        Assert.Equal("NONE", FlightOwnershipBoundary.ProductionCancellationSource);
+        Assert.Equal("IFlightCancellationSource", FlightOwnershipBoundary.CancellationSourcePort);
         Assert.False(FlightOwnershipBoundary.FrontendImplemented);
         Assert.False(FlightOwnershipBoundary.SupplierSdkImplemented);
         Assert.False(FlightOwnershipBoundary.SharedDbContextImplemented);

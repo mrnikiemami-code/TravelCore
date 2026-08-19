@@ -71,6 +71,15 @@ public sealed class FlightDbContext : DbContext
     public DbSet<FlightRefundSuccessInboxRecord> RefundSuccessInbox =>
         Set<FlightRefundSuccessInboxRecord>();
 
+    public DbSet<FlightBookingCancellation> FlightBookingCancellations =>
+        Set<FlightBookingCancellation>();
+
+    public DbSet<FlightSupplierReversalAttempt> FlightSupplierReversalAttempts =>
+        Set<FlightSupplierReversalAttempt>();
+
+    public DbSet<FlightBookingCancellationIdempotencyRecord> FlightBookingCancellationIdempotency =>
+        Set<FlightBookingCancellationIdempotencyRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
