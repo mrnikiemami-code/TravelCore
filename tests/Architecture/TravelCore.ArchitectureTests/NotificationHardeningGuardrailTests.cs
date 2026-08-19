@@ -106,6 +106,32 @@ public sealed class NotificationHardeningGuardrailTests
         Assert.Contains("hardening and guardrails", plan, StringComparison.OrdinalIgnoreCase);
     }
 
+    [Fact]
+    public void P25_Evidence_Pack_Locks_T009_Hardening_Artifacts()
+    {
+        var evidence = Path.Combine(RepoRoot, "docs", "plans", "P25-T009-hardening-and-evidence-pack.md");
+        Assert.True(File.Exists(evidence), evidence);
+        var text = File.ReadAllText(evidence);
+
+        string[] required =
+        [
+            "TC-P25-T009",
+            "P25-R1",
+            "P25-R8",
+            "Notification != Booking/Payment",
+            "Named Provider = NONE",
+            "FailedDelivery != SourceOfRecordRollback",
+            "READY_FOR_GATE",
+            "TC-P25-GATE",
+            "NOT EXECUTED",
+        ];
+
+        foreach (var item in required)
+        {
+            Assert.Contains(item, text, StringComparison.Ordinal);
+        }
+    }
+
     private static bool IsGeneratedOrBin(string path)
     {
         var normalized = path.Replace('\\', '/');

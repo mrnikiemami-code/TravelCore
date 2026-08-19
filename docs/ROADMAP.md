@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P25 — Notification** (**IN_PROGRESS** — `TC-P25-T008` implemented · hardening guardrails) |
+| Current Phase | **P25 — Notification** (**IN_PROGRESS** — `TC-P25-T009` implemented · READY_FOR_GATE) |
 | Phase Status | P00–P24 COMPLETE · P25 plan authored |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P25-T008 RESULT`; do **not** continue to `TC-P25-T009` |
+| Current Next Task | Return `TC-P25-T009 RESULT`; do **not** continue to `TC-P25-GATE` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -124,7 +124,7 @@
 - **P22** = COMPLETE (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
 - **P23** = COMPLETE (`TC-P23-GATE` re-execution · **P23-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
 - **P24** = COMPLETE (`TC-P24-GATE` implemented · P24-R1–R8 RESOLVED)
-- **P25** = IN_PROGRESS (T008 hardening guardrails implemented / awaiting architect review)
+- **P25** = IN_PROGRESS / **READY_FOR_GATE** (T009 evidence pack implemented / awaiting architect review)
 - **P26–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -781,7 +781,7 @@ P26 = Advanced SEO.
 | P22 | Flight | **COMPLETE** (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P23 | Dynamic Package / Flight + Hotel | **COMPLETE** (GATE re-execution · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P24 | B2B / Agency Commerce | COMPLETE (`TC-P24-GATE` implemented · P24-R1–R8 RESOLVED) |
-| P25 | Notification | IN_PROGRESS (T008 hardening guardrails executed) |
+| P25 | Notification | IN_PROGRESS / READY_FOR_GATE (T009 evidence pack executed) |
 | P26 | Advanced SEO + Content Graph | PLANNED |
 | P27 | Analytics + Product Intelligence | PLANNED |
 | P28 | Performance & Scale | PLANNED |

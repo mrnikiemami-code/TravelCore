@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P25-PLAN` |
 | Phase | P25 — Notification |
-| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T008 progression · hardening guardrails delivered |
-| Baseline | `b53f3b7` (`test(notification): fix T007 template reference assertion`) |
+| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T009 progression · evidence pack delivered · **READY_FOR_GATE** |
+| Baseline | `20b02aa` (`feat(notification): add T008 hardening guardrails`) |
 | Authoritative sources | `docs/ROADMAP.md` § P25 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` § V · P18 TripPlanner notification intent boundaries · P19 Booking · P20 Payment · P24 B2B |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Notification phase.
 
-> **Envelope note:** `TC-P25-T001`–`T007` ACCEPTED · `TC-P25-T008` implemented (hardening guardrails) · **do not execute `TC-P25-T009` until architect accepts `T008`**.
+> **Envelope note:** `TC-P25-T001`–`T008` ACCEPTED · `TC-P25-T009` implemented (evidence pack) · **do not execute `TC-P25-GATE` until architect accepts `T009`**.
 
 ---
 
@@ -91,9 +91,15 @@ Proposed sequence after plan acceptance:
 5. `TC-P25-T005` — channel boundary (**IMPLEMENTED / ACCEPTED**)
 6. `TC-P25-T006` — provider abstraction boundary (**IMPLEMENTED / ACCEPTED**)
 7. `TC-P25-T007` — event consumption / template orchestration boundary (**IMPLEMENTED / ACCEPTED**)
-8. `TC-P25-T008` — hardening and guardrails (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-9. `TC-P25-T009` — evidence pack (**NOT EXECUTED**)
+8. `TC-P25-T008` — hardening and guardrails (**IMPLEMENTED / ACCEPTED**)
+9. `TC-P25-T009` — evidence pack (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 10. `TC-P25-GATE` — acceptance gate (**NOT EXECUTED**)
+
+### TC-P25-T009 — Evidence pack
+
+- Purpose: adversarial architecture review evidence and gate-readiness documentation without new product capability.
+- Delivered: `docs/plans/P25-T009-hardening-and-evidence-pack.md` · evidence-pack architecture lock test · SoT sync.
+- Forbidden in this task: real providers · public API/UI · Booking/Payment changes · GATE execution.
 
 ### TC-P25-T008 — Hardening and guardrails
 
