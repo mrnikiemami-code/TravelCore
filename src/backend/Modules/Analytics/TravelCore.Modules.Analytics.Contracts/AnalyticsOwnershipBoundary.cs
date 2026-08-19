@@ -57,8 +57,8 @@ public static class AnalyticsOwnershipBoundary
     public const bool SeparateAnalyticsModuleImplemented = true;
     public const bool SeparateAnalyticsSchemaImplemented = true;
     public const bool EventTaxonomyBoundaryImplemented = true;
-    public const bool ProviderPortImplemented = false;
-    public const bool ProviderAbstractionImplemented = false;
+    public const bool ProviderPortImplemented = true;
+    public const bool ProviderAbstractionImplemented = true;
     public const bool ProviderImplemented = false;
     public const bool IngestionBoundaryImplemented = false;
     public const bool PreferenceBoundaryImplemented = false;
