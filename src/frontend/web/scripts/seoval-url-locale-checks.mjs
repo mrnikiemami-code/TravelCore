@@ -22,8 +22,8 @@ assert.match(layout, /isAppLocale/);
 assert.match(layout, /dynamicParams\s*=\s*false/);
 
 const rootPage = readSrc("app/page.tsx");
-assert.match(rootPage, /redirect\(`\/\$\{DEFAULT_LOCALE\}`\)/);
-assert.match(rootPage, /Accept-Language/);
+assert.match(rootPage, /negotiateEntryLocale/);
+assert.match(rootPage, /redirect\(`\/\$\{/);
 
 const proxy = readSrc("proxy.ts");
 assert.match(proxy, /Not used for locale negotiation/);

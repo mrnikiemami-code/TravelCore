@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Product Delivery** (**COMPLETE / ACCEPTED** — `TC-PRODDEL-GATE`) |
-| Previous Phase | **SEO Validation** (**COMPLETE / ACCEPTED** — `TC-SEOVAL-GATE` `7964056`) |
+| Current Phase | **Launch Operations** (**COMPLETE / ACCEPTED** — `TC-LAUNCHOPS-GATE`) |
+| Previous Phase | **Product Delivery** (**COMPLETE / ACCEPTED** — `TC-PRODDEL-GATE` `fad38a0`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-PRODDEL-GATE` — Product Delivery acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **Architect product prioritization** — master roadmap + UIVAL + SEOVAL + PRODDEL tracks exhausted |
+| Current Active Product Task | `TC-LAUNCHOPS-GATE` — Launch Operations acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **Architect product prioritization** — all defined evolution tracks exhausted (UIVAL · SEOVAL · PRODDEL · LAUNCHOPS) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -375,6 +375,10 @@
 | PRODDEL T001–T015 | **COMPLETE / ACCEPTED** — Product Delivery Sequence |
 | PRODDEL GATE | `TC-PRODDEL-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/PRODDEL-GATE-acceptance-evidence.md`](plans/PRODDEL-GATE-acceptance-evidence.md) |
 | PRODDEL | **COMPLETE** — ROADMAP Product Delivery Sequence exhausted |
+| LAUNCHOPS Plan | `TC-LAUNCHOPS-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/LAUNCHOPS-implementation-plan.md`](plans/LAUNCHOPS-implementation-plan.md) |
+| LAUNCHOPS T001–T015 | **COMPLETE / ACCEPTED** — Launch Operations Sequence |
+| LAUNCHOPS GATE | `TC-LAUNCHOPS-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/LAUNCHOPS-GATE-acceptance-evidence.md`](plans/LAUNCHOPS-GATE-acceptance-evidence.md) |
+| LAUNCHOPS | **COMPLETE** — ROADMAP Launch Operations Sequence exhausted |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |

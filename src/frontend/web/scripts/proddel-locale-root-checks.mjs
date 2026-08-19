@@ -5,7 +5,8 @@ import assert from "node:assert/strict";
 import { readSrc } from "./proddel-common.mjs";
 
 const root = readSrc("app/page.tsx");
-assert.match(root, /redirect\(`\/\$\{DEFAULT_LOCALE\}`\)/);
+assert.match(root, /negotiateEntryLocale/);
+assert.match(root, /redirect\(`\/\$\{/);
 
 const layout = readSrc("app/[locale]/layout.tsx");
 assert.match(layout, /isAppLocale/);

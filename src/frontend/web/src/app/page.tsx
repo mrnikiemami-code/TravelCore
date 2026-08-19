@@ -1,11 +1,13 @@
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { DEFAULT_LOCALE } from "@/lib/i18n";
+import { negotiateEntryLocale } from "@/lib/i18n";
 
 /**
  * Root `/` is entry only. Canonical public content remains locale-prefixed.
- * Negotiation details (Accept-Language, stored preference) → later SEO/i18n work.
- * Smallest safe behavior: product default locale (`fa`).
+ * Accept-Language applies here only — never overrides explicit `/fa|en|ar/` URLs (ADR 0007).
  */
-export default function RootPage() {
-  redirect(`/${DEFAULT_LOCALE}`);
+export default async function RootPage() {
+  const headerStore = await headers();
+  const locale = negotiateEntryLocale(headerStore.get("accept-language"));
+  redirect(`/${locale}`);
 }

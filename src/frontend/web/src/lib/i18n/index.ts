@@ -19,3 +19,5 @@ export {
   localeFromPathname,
   normalizeUiLocale,
 } from "./ui-labels";
+
+export { negotiateEntryLocale } from "./negotiate-entry-locale";

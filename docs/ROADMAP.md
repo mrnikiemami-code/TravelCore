@@ -790,6 +790,26 @@ P26 = Advanced SEO.
 
 ---
 
+## Launch Operations Sequence
+
+**Status:** **COMPLETE / ACCEPTED** (`TC-LAUNCHOPS-GATE`)
+
+**Implementation plan:** [`docs/plans/LAUNCHOPS-implementation-plan.md`](plans/LAUNCHOPS-implementation-plan.md)
+
+آماده‌سازی عملیاتی production پس از PRODDEL:
+
+1. Root Accept-Language entry negotiation (فقط `/`)
+2. Explicit locale URL override guard
+3. Health endpoints posture
+4. Search Console ops runbook
+5. Production deployment checklist
+6. Public SEO endpoints (sitemap/robots)
+7. Recovery + pipeline readiness
+8. Hardening/health boundaries
+9. Observability/secrets/E2E/GSC deferrals
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -828,3 +848,4 @@ P26 = Advanced SEO.
 | UIVAL | UI Validation Sequence | **COMPLETE / ACCEPTED** (`TC-UIVAL-GATE`) |
 | SEOVAL | SEO Validation Sequence | **COMPLETE / ACCEPTED** (`TC-SEOVAL-GATE`) |
 | PRODDEL | Product Delivery Sequence | **COMPLETE / ACCEPTED** (`TC-PRODDEL-GATE`) |
+| LAUNCHOPS | Launch Operations Sequence | **COMPLETE / ACCEPTED** (`TC-LAUNCHOPS-GATE`) |
