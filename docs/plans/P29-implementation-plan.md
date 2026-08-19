@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P29-PLAN` |
 | Phase | P29 — Production Hardening |
-| Status | **PLAN AUTHORING** · await architect acceptance |
+| Status | **PLAN ACCEPTED** · **T002 IN PROGRESS** |
 | Baseline | `fef29ab` (`docs: complete P28 acceptance gate`) |
 | Authoritative sources | `docs/ROADMAP.md` § P29 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/08-persistence-and-migrations.md` · `docs/architecture/10-ui-constitution.md` · `docs/architecture/14-engineering-quality-constitution.md` · `docs/architecture/15-future-architecture-transition-map.md` § X · `docs/architecture/21-health-check-foundation.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P25 Notification · P26 SEO · P27 Analytics · P28 Performance |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document is the architecture plan for the Production Hardening phase.
 
-> **Envelope note:** `TC-P29-PLAN` authoring · **do not start product tasks without architect execution envelopes**.
+> **Envelope note:** `TC-P29-PLAN` ACCEPTED · `TC-P29-T002` foundation boundary · **do not start T003 without architect envelope**.
 
 ---
 
@@ -99,8 +99,8 @@ P29 must preserve:
 
 Proposed sequence after plan acceptance:
 
-1. `TC-P29-PLAN` — P29 architecture implementation plan
-2. `TC-P29-T002` — production hardening foundation boundary
+1. `TC-P29-PLAN` — P29 architecture implementation plan (**ACCEPTED** · `6aab050`)
+2. `TC-P29-T002` — production hardening foundation boundary (**IN PROGRESS**)
 3. `TC-P29-T003` — security / authorization review boundary
 4. `TC-P29-T004` — rate limiting / abuse protection boundary
 5. `TC-P29-T005` — audit / compliance event boundary
@@ -124,6 +124,12 @@ Proposed sequence after plan acceptance:
 | `P29-R6` | `TC-P29-T008` | Extend Health/Observability; error monitoring posture |
 | `P29-R7` | `TC-P29-T008` | Deployment/CI/CD/env/secrets boundary (no YAML product in early tasks) |
 | `P29-R8` | `TC-P29-T008` | Production SEO/mobile/a11y verification + runbooks + deferred catalog |
+
+### TC-P29-T002 — Production hardening foundation boundary
+
+- Purpose: establish Platform-owned production hardening foundation markers without security product or premature tooling.
+- Delivered: `TravelCore.Hardening` · `HardeningFoundationBoundary` · `HardeningOwnershipBoundary` · guardrail tests.
+- Forbidden in this task: rate limiter · audit store · secret manager · backup automation · API/frontend · module ownership changes.
 
 ### TC-P29-GATE — Acceptance gate
 

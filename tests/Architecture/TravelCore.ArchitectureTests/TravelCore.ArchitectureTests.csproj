@@ -75,6 +75,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Domain\TravelCore.Modules.Analytics.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Infrastructure\TravelCore.Modules.Analytics.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Platform\Performance\TravelCore.Performance\TravelCore.Performance.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Hardening\TravelCore.Hardening\TravelCore.Hardening.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Domain\TravelCore.Modules.Search.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Infrastructure\TravelCore.Modules.Search.Infrastructure.csproj" />
   </ItemGroup>
