@@ -119,6 +119,32 @@ public sealed class AnalyticsHardeningGuardrailTests
         Assert.Contains("hardening and guardrails", plan, StringComparison.OrdinalIgnoreCase);
     }
 
+    [Fact]
+    public void P27_Evidence_Pack_Locks_T009_Hardening_Artifacts()
+    {
+        var evidence = Path.Combine(RepoRoot, "docs", "plans", "P27-T009-hardening-and-evidence-pack.md");
+        Assert.True(File.Exists(evidence), evidence);
+        var text = File.ReadAllText(evidence);
+
+        string[] required =
+        [
+            "TC-P27-T009",
+            "P27-R1",
+            "P27-R8",
+            "Analytics != Booking/Payment",
+            "Named Provider = NONE",
+            "FailedDispatch != SourceOfRecordRollback",
+            "READY_FOR_GATE",
+            "TC-P27-GATE",
+            "NOT EXECUTED",
+        ];
+
+        foreach (var item in required)
+        {
+            Assert.Contains(item, text, StringComparison.Ordinal);
+        }
+    }
+
     private static bool IsGeneratedOrBin(string path)
     {
         var normalized = path.Replace('\\', '/');

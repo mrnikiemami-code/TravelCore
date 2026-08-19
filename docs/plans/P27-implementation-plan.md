@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P27-PLAN` |
 | Phase | P27 — Analytics + Product Intelligence |
-| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T008 hardening guardrails executed |
-| Baseline | `b35e3dc` (`feat(analytics): define T007 event ingestion publisher boundary`) |
+| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T009 evidence pack executed |
+| Baseline | `ac4df32` (`feat(analytics): add T008 hardening guardrails boundary`) |
 | Authoritative sources | `docs/ROADMAP.md` § P27 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` · `docs/pages/09-page-state-and-composition-rules.md` §19 · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P25 Notification · P26 SEO |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Analytics + Product Intelligence phase.
 
-> **Envelope note:** `TC-P27-PLAN`–`T007` ACCEPTED · `TC-P27-T008` implemented (hardening/guardrails) · **do not execute `TC-P27-T009` until architect accepts `T008`**.
+> **Envelope note:** `TC-P27-PLAN`–`T008` ACCEPTED · `TC-P27-T009` implemented (evidence pack) · **do not execute `TC-P27-GATE` until architect accepts `T009`**.
 
 ---
 
@@ -100,8 +100,8 @@ Proposed sequence after plan acceptance:
 5. `TC-P27-T005` — product event taxonomy boundary (**IMPLEMENTED / ACCEPTED**)
 6. `TC-P27-T006` — provider abstraction / dispatch boundary (**IMPLEMENTED / ACCEPTED**)
 7. `TC-P27-T007` — event ingestion / publisher interaction boundary (**IMPLEMENTED / ACCEPTED**)
-8. `TC-P27-T008` — hardening and guardrails (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-9. `TC-P27-T009` — evidence pack (**NOT EXECUTED**)
+8. `TC-P27-T008` — hardening and guardrails (**IMPLEMENTED / ACCEPTED**)
+9. `TC-P27-T009` — evidence pack (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 10. `TC-P27-GATE` — acceptance gate (**NOT EXECUTED**)
 
 > Note: `TC-P27-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25/P26 progression where PLAN equals T001 authoring.

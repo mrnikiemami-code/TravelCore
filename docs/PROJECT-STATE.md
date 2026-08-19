@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P27 — Analytics + Product Intelligence** (**IN_PROGRESS** — `TC-P27-T008` implemented) |
+| Current Phase | **P27 — Analytics + Product Intelligence** (**IN_PROGRESS** — `TC-P27-T009` implemented) |
 | Previous Phase | **P26 — Advanced SEO + Content Graph** (**COMPLETE / ACCEPTED** — `TC-P26-GATE` `931ea19`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P27-T008` — hardening and guardrails (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P27-T008 RESULT`; do **not** continue to `TC-P27-T009` |
+| Current Active Product Task | `TC-P27-T009` — evidence pack (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P27-T009 RESULT`; do **not** continue to `TC-P27-GATE` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -304,7 +304,7 @@
 | P26 T008 | `TC-P26-T008` **COMPLETE / ACCEPTED** (`c8664f8`) — hardening guardrails; P26-R6/R7/R8 RESOLVED |
 | P26 T009 | `TC-P26-T009` **COMPLETE / ACCEPTED** (`c8664f8`) — evidence pack; **READY_FOR_GATE** |
 | P26 GATE | `TC-P26-GATE` **COMPLETE / ACCEPTED** (`931ea19`) — [`docs/plans/P26-GATE-acceptance-evidence.md`](plans/P26-GATE-acceptance-evidence.md) |
-| P27 | **IN_PROGRESS** — `TC-P27-T008` implemented · **P27-R1–R8 RESOLVED** |
+| P27 | **IN_PROGRESS** — `TC-P27-T009` implemented · **P27-R1–R8 RESOLVED** · **READY_FOR_GATE** |
 | P27 Plan | `TC-P27-PLAN` **COMPLETE / ACCEPTED** (`f1e6f09`) — [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md) |
 | P27 T002 | `TC-P27-T002` **COMPLETE / ACCEPTED** (`994a94e`) — plan-driven SoT alignment; no product code |
 | P27 T003 | `TC-P27-T003` **COMPLETE / ACCEPTED** (`0e998aa`) — decision inventory + execution sequence; no product code |
@@ -312,7 +312,8 @@
 | P27 T005 | `TC-P27-T005` **COMPLETE / ACCEPTED** (`59e50d0`) — product event taxonomy boundary; **P27-R2 RESOLVED** |
 | P27 T006 | `TC-P27-T006` **COMPLETE / ACCEPTED** (`ec6207c`) — provider abstraction boundary; **P27-R3 RESOLVED** |
 | P27 T007 | `TC-P27-T007` **COMPLETE / ACCEPTED** (`b35e3dc`) — ingestion/publisher boundary; **P27-R4/R6 RESOLVED** |
-| P27 T008 | `TC-P27-T008` implemented / AWAITING_ARCHITECT_REVIEW — hardening guardrails; **P27-R5/R7/R8 RESOLVED** |
+| P27 T008 | `TC-P27-T008` **COMPLETE / ACCEPTED** (`ac4df32`) — hardening guardrails; **P27-R5/R7/R8 RESOLVED** |
+| P27 T009 | `TC-P27-T009` implemented / AWAITING_ARCHITECT_REVIEW — evidence pack · **READY_FOR_GATE** |
 | P27-R5 (consent / attribution interaction boundary) | **RESOLVED** |
 | P27-R7 (public/admin operational boundary) | **RESOLVED** |
 | P27-R8 (deferred/out-of-scope posture) | **RESOLVED** |
