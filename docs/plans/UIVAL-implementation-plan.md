@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-UIVAL-PLAN` |
 | Track | UI Validation Sequence (product evolution) |
-| Status | **IN PROGRESS** · T001 **COMPLETE** · T002 next |
+| Status | **IN PROGRESS** · T002 **COMPLETE** · T003 next |
 | Baseline | `b27f820` (`docs: sync Post-P29 full task ledger in SoT`) |
 | Authoritative sources | `docs/ROADMAP.md` § UI Validation Sequence · `docs/ui/*` · `docs/architecture/10-ui-constitution.md` · `docs/ui/04-page-archetype-contract.md` · P02 foundation evidence |
 | Frontend root | `src/frontend/web` |
@@ -69,7 +69,7 @@ Full browser E2E farm is **out of scope** unless a future task explicitly adds i
 |------|--------------|---------------------|
 | `TC-UIVAL-PLAN` | — | This plan + SoT sync |
 | `TC-UIVAL-T001` | 1. Foundation primitives | Dev validation route + automated primitive checks + evidence (**COMPLETE**) |
-| `TC-UIVAL-T002` | 2. Foreign Package Tour Detail | Archetype validation matrix + evidence |
+| `TC-UIVAL-T002` | 2. Foreign Package Tour Detail | Archetype validation matrix + evidence (**COMPLETE**) |
 | `TC-UIVAL-T003` | 3. Experience Tour Detail | Archetype validation matrix + evidence |
 | `TC-UIVAL-T004` | 4. Tour Listing/Search | Surface validation + evidence |
 | `TC-UIVAL-T005` | 5. Destination Landing | Surface validation + evidence |

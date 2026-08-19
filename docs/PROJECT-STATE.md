@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-UIVAL-T001` — Foundation primitives validation (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **`TC-UIVAL-T002`** — Foreign Package Tour Detail validation |
+| Current Active Product Task | `TC-UIVAL-T002` — Foreign Package Tour Detail validation (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **`TC-UIVAL-T003`** — Experience Tour Detail validation |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -350,8 +350,9 @@
 | Post-P29 GATE | `TC-Post-P29-GATE` **COMPLETE / ACCEPTED** (`f0d897b`) — [`docs/plans/Post-P29-GATE-acceptance-evidence.md`](plans/Post-P29-GATE-acceptance-evidence.md) |
 | Post-P29 | **COMPLETE** — `TC-Post-P29-GATE` implemented · **Post-P29-R1–R8 RESOLVED** |
 | UIVAL Plan | `TC-UIVAL-PLAN` **COMPLETE / ACCEPTED** (`084b480`) — [`docs/plans/UIVAL-implementation-plan.md`](plans/UIVAL-implementation-plan.md) |
-| UIVAL T001 | `TC-UIVAL-T001` **COMPLETE / ACCEPTED** — foundation primitives validation · [`docs/plans/UIVAL-T001-foundation-primitives-validation-evidence.md`](plans/UIVAL-T001-foundation-primitives-validation-evidence.md) |
-| UIVAL T002 | `TC-UIVAL-T002` — Foreign Package Tour Detail validation (**NEXT**) |
+| UIVAL T001 | `TC-UIVAL-T001` **COMPLETE / ACCEPTED** (`97840cd`) — foundation primitives · [`docs/plans/UIVAL-T001-foundation-primitives-validation-evidence.md`](plans/UIVAL-T001-foundation-primitives-validation-evidence.md) |
+| UIVAL T002 | `TC-UIVAL-T002` **COMPLETE / ACCEPTED** — foreign tour detail · [`docs/plans/UIVAL-T002-foreign-tour-detail-validation-evidence.md`](plans/UIVAL-T002-foreign-tour-detail-validation-evidence.md) |
+| UIVAL T003 | `TC-UIVAL-T003` — Experience Tour Detail validation (**NEXT**) |
 | UIVAL | **IN PROGRESS** — product evolution track after master roadmap |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
