@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P25 — Notification** (**IN_PROGRESS** — `TC-P25-T009` implemented · READY_FOR_GATE) |
-| Phase Status | P00–P24 COMPLETE · P25 plan authored |
+| Current Phase | **P25 — Notification** (**COMPLETE** — `TC-P25-GATE` implemented · acceptance evidence) |
+| Phase Status | P00–P25 COMPLETE (P25 gate awaiting architect review) · P26 plan not started |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P25-T009 RESULT`; do **not** continue to `TC-P25-GATE` |
+| Current Next Task | Return `TC-P25-GATE RESULT`; do **not** start P26 until architect issues next phase envelope |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -124,7 +124,7 @@
 - **P22** = COMPLETE (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
 - **P23** = COMPLETE (`TC-P23-GATE` re-execution · **P23-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
 - **P24** = COMPLETE (`TC-P24-GATE` implemented · P24-R1–R8 RESOLVED)
-- **P25** = IN_PROGRESS / **READY_FOR_GATE** (T009 evidence pack implemented / awaiting architect review)
+- **P25** = **COMPLETE** (`TC-P25-GATE` implemented · P25-R1–R8 RESOLVED · awaiting architect review)
 - **P26–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -638,7 +638,7 @@ Concernهای B2B را از UX مصرف‌کنندهٔ عمومی جدا نگه 
 
 ## P25 — Notification
 
-**Status:** IN_PROGRESS (T005 channel boundary executed)
+**Status:** COMPLETE (`TC-P25-GATE` implemented · P25-R1–R8 RESOLVED · boundary-only foundation delivered)
 
 Email · SMS · In-app · احتمالاً push/webhook بعداً · Preferences · transactional notifications · «خبرم کن» در صورت نیاز محصول · provider abstraction.
 
@@ -781,7 +781,7 @@ P26 = Advanced SEO.
 | P22 | Flight | **COMPLETE** (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P23 | Dynamic Package / Flight + Hotel | **COMPLETE** (GATE re-execution · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P24 | B2B / Agency Commerce | COMPLETE (`TC-P24-GATE` implemented · P24-R1–R8 RESOLVED) |
-| P25 | Notification | IN_PROGRESS / READY_FOR_GATE (T009 evidence pack executed) |
+| P25 | Notification | COMPLETE (GATE evidence executed) |
 | P26 | Advanced SEO + Content Graph | PLANNED |
 | P27 | Analytics + Product Intelligence | PLANNED |
 | P28 | Performance & Scale | PLANNED |

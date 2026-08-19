@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P25-PLAN` |
 | Phase | P25 — Notification |
-| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T009 progression · evidence pack delivered · **READY_FOR_GATE** |
-| Baseline | `20b02aa` (`feat(notification): add T008 hardening guardrails`) |
+| Status | PLAN ACCEPTED · **P25 COMPLETE** · GATE evidence delivered |
+| Baseline | `9fad4d6` (`docs(notification): add P25 hardening evidence pack`) |
 | Authoritative sources | `docs/ROADMAP.md` § P25 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` § V · P18 TripPlanner notification intent boundaries · P19 Booking · P20 Payment · P24 B2B |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Notification phase.
 
-> **Envelope note:** `TC-P25-T001`–`T008` ACCEPTED · `TC-P25-T009` implemented (evidence pack) · **do not execute `TC-P25-GATE` until architect accepts `T009`**.
+> **Envelope note:** `TC-P25-T001`–`T009` ACCEPTED · `TC-P25-GATE` implemented (acceptance evidence) · **P25 COMPLETE** · **P26 not started**.
 
 ---
 
@@ -92,8 +92,14 @@ Proposed sequence after plan acceptance:
 6. `TC-P25-T006` — provider abstraction boundary (**IMPLEMENTED / ACCEPTED**)
 7. `TC-P25-T007` — event consumption / template orchestration boundary (**IMPLEMENTED / ACCEPTED**)
 8. `TC-P25-T008` — hardening and guardrails (**IMPLEMENTED / ACCEPTED**)
-9. `TC-P25-T009` — evidence pack (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-10. `TC-P25-GATE` — acceptance gate (**NOT EXECUTED**)
+9. `TC-P25-T009` — evidence pack (**IMPLEMENTED / ACCEPTED**)
+10. `TC-P25-GATE` — acceptance gate (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
+
+### TC-P25-GATE — Acceptance gate
+
+- Purpose: final P25 acceptance evidence only; verify PLAN + T001–T009 accepted and P25-R1–R8 RESOLVED.
+- Delivered: `docs/plans/P25-GATE-acceptance-evidence.md` · gate evidence architecture lock test · SoT sync marking **P25 COMPLETE**.
+- Forbidden in this task: new Notification capability · real providers · public API/UI · next phase (P26) execution.
 
 ### TC-P25-T009 — Evidence pack
 

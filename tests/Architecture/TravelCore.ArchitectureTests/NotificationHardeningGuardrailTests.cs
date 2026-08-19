@@ -107,6 +107,31 @@ public sealed class NotificationHardeningGuardrailTests
     }
 
     [Fact]
+    public void P25_Gate_Evidence_Locks_Acceptance_Artifacts()
+    {
+        var evidence = Path.Combine(RepoRoot, "docs", "plans", "P25-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(evidence), evidence);
+        var text = File.ReadAllText(evidence);
+
+        string[] required =
+        [
+            "TC-P25-GATE",
+            "P25 COMPLETE",
+            "P25-R1",
+            "P25-R8",
+            "TC-P25-T009",
+            "No new Notification product capability",
+            "P26",
+            "NOT IMPLEMENTED",
+        ];
+
+        foreach (var item in required)
+        {
+            Assert.Contains(item, text, StringComparison.Ordinal);
+        }
+    }
+
+    [Fact]
     public void P25_Evidence_Pack_Locks_T009_Hardening_Artifacts()
     {
         var evidence = Path.Combine(RepoRoot, "docs", "plans", "P25-T009-hardening-and-evidence-pack.md");

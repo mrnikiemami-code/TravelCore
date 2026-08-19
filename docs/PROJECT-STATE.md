@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P25 — Notification** (**IN_PROGRESS** — `TC-P25-T005` implemented · channel boundary) |
-| Previous Phase | **P23 — Dynamic Package / Flight + Hotel** (**COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md)) |
+| Current Phase | **P25 — Notification** (**COMPLETE** — `TC-P25-GATE` implemented · acceptance evidence) |
+| Previous Phase | **P24 — B2B / Agency Commerce** (**COMPLETE / ACCEPTED**) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P25-T009` — hardening evidence pack (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P25-T009 RESULT`; do **not** continue to `TC-P25-GATE` |
+| Current Active Product Task | `TC-P25-GATE` — P25 acceptance gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P25-GATE RESULT`; do **not** start P26 until architect issues next phase envelope |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -280,7 +280,7 @@
 | P24 T008 | `TC-P24-T008` **COMPLETE / ACCEPTED** (`c24cee4`) — hardening + guardrails (`B2BOwnershipBoundary` hardening flags + `B2BHardeningGuardrailTests`) |
 | P24 T009 | `TC-P24-T009` **COMPLETE / ACCEPTED** (`5267860`) — `docs/plans/P24-T009-hardening-and-evidence-pack.md`; adversarial architecture review complete; `P24 READY_FOR_GATE` |
 | P24 GATE | `TC-P24-GATE` implemented / AWAITING_ARCHITECT_REVIEW — gate artifact `docs/plans/P24-GATE-acceptance-evidence.md`; no new capability; `P24 COMPLETE`; `P25 IN_PROGRESS / PLAN authored` |
-| P25 | **IN_PROGRESS** — module foundation + channel boundary (`TC-P25-T005`) |
+| P25 | **COMPLETE** — `TC-P25-GATE` implemented · **P25-R1–R8 RESOLVED** · AWAITING_ARCHITECT_REVIEW |
 | P25 Plan | `TC-P25-PLAN` COMPLETE / ACCEPTED — expanded through `TC-P25-T004` — [`docs/plans/P25-implementation-plan.md`](plans/P25-implementation-plan.md) |
 | P25 T001 | `TC-P25-T001` **COMPLETE / ACCEPTED** (`39bd2b8`) — P25 architecture implementation plan; no product code |
 | P25 T002 | `TC-P25-T002` **COMPLETE / ACCEPTED** (`90789c5`) — plan-driven SoT alignment; no product code |
@@ -290,7 +290,8 @@
 | P25 T006 | `TC-P25-T006` **COMPLETE / ACCEPTED** (`3b0583f`) — provider abstraction boundary; P25-R3 RESOLVED |
 | P25 T007 | `TC-P25-T007` **COMPLETE / ACCEPTED** (`b53f3b7`) — event/template boundaries; P25-R4/R6 RESOLVED |
 | P25 T008 | `TC-P25-T008` **COMPLETE / ACCEPTED** (`20b02aa`) — hardening guardrails; P25-R5/R7/R8 RESOLVED |
-| P25 T009 | `TC-P25-T009` implemented / AWAITING_ARCHITECT_REVIEW — evidence pack; **READY_FOR_GATE**; `TC-P25-GATE` NOT EXECUTED |
+| P25 T009 | `TC-P25-T009` **COMPLETE / ACCEPTED** (`9fad4d6`) — evidence pack; **READY_FOR_GATE** |
+| P25 GATE | `TC-P25-GATE` implemented / AWAITING_ARCHITECT_REVIEW — gate artifact `docs/plans/P25-GATE-acceptance-evidence.md`; no new capability; **P25 COMPLETE**; **P26 PLANNED / NOT_STARTED** |
 | P25-R2 (channel boundary Email/SMS/In-app) | **RESOLVED** |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |
