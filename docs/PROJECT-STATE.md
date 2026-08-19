@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P28 — Performance & Scale** (**IN_PROGRESS** — `TC-P28-T004` implemented) |
+| Current Phase | **P28 — Performance & Scale** (**IN_PROGRESS** — `TC-P28-T005` implemented) |
 | Previous Phase | **P27 — Analytics + Product Intelligence** (**COMPLETE / ACCEPTED** — `TC-P27-GATE` `fb55c0a`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P28-T004` — runtime boundary and interaction model (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P28-T004 RESULT`; do **not** continue to `TC-P28-T005` |
+| Current Active Product Task | `TC-P28-T005` — data access performance boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P28-T005 RESULT`; do **not** continue to `TC-P28-T006` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -318,7 +318,10 @@
 | P28 Plan | `TC-P28-PLAN` **COMPLETE / ACCEPTED** (`ddbc0ba`) — [`docs/plans/P28-implementation-plan.md`](plans/P28-implementation-plan.md) |
 | P28 T002 | `TC-P28-T002` **COMPLETE / ACCEPTED** (`38d9ca4`) — performance foundation boundary |
 | P28 T003 | `TC-P28-T003` **COMPLETE / ACCEPTED** (`4ac1876`) — measurement/observability boundary · **P28-R1 RESOLVED** |
-| P28 T004 | `TC-P28-T004` implemented / AWAITING_ARCHITECT_REVIEW — runtime boundary and interaction model |
+| P28 T004 | `TC-P28-T004` **COMPLETE / ACCEPTED** (`e2eee8a`) — runtime boundary and interaction model |
+| P28 T005 | `TC-P28-T005` implemented / AWAITING_ARCHITECT_REVIEW — data access and read optimization boundary · **P28-R2/R3 RESOLVED** |
+| P28-R2 (PostgreSQL query/index posture) | **RESOLVED** |
+| P28-R3 (read-model projection / Dapper vs EF) | **RESOLVED** |
 | P28-R1 (measurement/profiling vs Observability) | **RESOLVED** |
 | P27-R5 (consent / attribution interaction boundary) | **RESOLVED** |
 | P27-R7 (public/admin operational boundary) | **RESOLVED** |

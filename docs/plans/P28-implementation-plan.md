@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P28-PLAN` |
 | Phase | P28 — Performance & Scale |
-| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002–T003 ACCEPTED · T004 runtime boundary executed |
+| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002–T004 ACCEPTED · T005 data access boundary executed |
 | Baseline | `ddbc0ba` (`docs: add P28 implementation plan`) |
 | Authoritative sources | `docs/ROADMAP.md` § P28 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/10-ui-constitution.md` §13 · `docs/architecture/15-future-architecture-transition-map.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P15 Search · P27 Analytics · P26 SEO |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document is the architecture plan for the Performance & Scale phase.
 
-> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T003` ACCEPTED · `TC-P28-T004` implemented (runtime boundary) · **do not execute `TC-P28-T005` until architect accepts `T004`**.
+> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002`–`T004` ACCEPTED · `TC-P28-T005` implemented (data access boundary) · **do not execute `TC-P28-T006` until architect accepts `T005`**.
 
 ---
 
@@ -83,8 +83,8 @@ P28 must preserve:
 | ID | Topic | Status |
 |----|-------|--------|
 | `P28-R1` | Measurement / profiling posture vs Observability | **RESOLVED** — profile-before-optimize · Observability owns platform telemetry · Performance measurement foundation (T003) |
-| `P28-R2` | PostgreSQL query/index optimization boundary | **OPEN** — module-owned schemas · index/query posture without cross-module DbContext shortcuts |
-| `P28-R3` | Read-model projection boundary (Dapper vs EF) | **OPEN** — Dapper only for justified read-heavy projections · EF remains write/migration owner |
+| `P28-R2` | PostgreSQL query/index optimization boundary | **RESOLVED** — module-owned schema data access · no cross-schema DbContext shortcuts · measurement before query tuning (T005) |
+| `P28-R3` | Read-model projection boundary (Dapper vs EF) | **RESOLVED** — evidence-based read optimization · Dapper justified by evidence only · EF write/migration owner preserved (T005) |
 | `P28-R4` | Redis cache abstraction boundary | **OPEN** — cache != SoR · invalidation posture · locale-aware cache keys where applicable |
 | `P28-R5` | CDN / static delivery boundary | **OPEN** — CDN for static/media delivery posture · Media app-proxy foundation preserved |
 | `P28-R6` | Frontend rendering / bundle / CWV boundary | **OPEN** — Server Component first · minimal hydration · bundle/third-party control · CWV targets from UI constitution |
@@ -100,8 +100,8 @@ Proposed sequence after plan acceptance:
 1. `TC-P28-PLAN` — P28 architecture implementation plan (**ACCEPTED** · `ddbc0ba`)
 2. `TC-P28-T002` — performance foundation boundary (**ACCEPTED** · `38d9ca4`)
 3. `TC-P28-T003` — measurement/observability interaction boundary (**ACCEPTED** · `4ac1876`)
-4. `TC-P28-T004` — runtime performance boundary and module interaction model (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-5. `TC-P28-T005` — PostgreSQL query/index posture boundary (**NOT EXECUTED**)
+4. `TC-P28-T004` — runtime performance boundary and module interaction model (**ACCEPTED** · `e2eee8a`)
+5. `TC-P28-T005` — data access and read optimization boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 6. `TC-P28-T006` — Redis cache abstraction boundary (**NOT EXECUTED**)
 7. `TC-P28-T007` — frontend performance/CWV + hardening guardrails (**NOT EXECUTED**)
 8. `TC-P28-T008` — hardening guardrails consolidation (**NOT EXECUTED**)
@@ -115,9 +115,9 @@ Proposed sequence after plan acceptance:
 | Decision | Primary task | Notes |
 |----------|--------------|-------|
 | `P28-R1` | `TC-P28-T003` | Measurement/profiling posture; Observability separation |
-| `P28-R2` | `TC-P28-T005` | PostgreSQL query/index boundary per module schema |
-| `P28-R3` | `TC-P28-T006` | Dapper read projection boundary; EF write owner preserved |
-| `P28-R4` | `TC-P28-T007` | Redis cache abstraction; cache != SoR |
+| `P28-R2` | `TC-P28-T005` | Data access / query posture per module schema |
+| `P28-R3` | `TC-P28-T005` | Read optimization / justified Dapper posture |
+| `P28-R4` | `TC-P28-T006` | Redis cache abstraction; cache != SoR |
 | `P28-R5` | `TC-P28-T008` | CDN/static delivery posture (with Media/P06 foundation) |
 | `P28-R6` | `TC-P28-T008` | Frontend rendering/bundle/CWV hardening |
 | `P28-R7` | `TC-P28-T008` | Search read performance boundary hardening |
@@ -153,11 +153,11 @@ Proposed sequence after plan acceptance:
 - Delivered: cache key/locale conventions · invalidation posture contracts · cache abstraction boundary · guardrail tests.
 - Forbidden in this task: Redis cluster operations · cache-as-authority persistence · domain write-path cache takeover · public API/UI.
 
-### TC-P28-T005 — Read-model projection boundary
+### TC-P28-T005 — Data access and read optimization boundary
 
-- Purpose: define justified Dapper read projection posture without EF write/migration ownership transfer.
-- Delivered: read projection boundary contracts · Dapper-vs-EF ownership markers · guardrail tests.
-- Forbidden in this task: Dapper in write paths · cross-module shared read DbContext · Search ranking engine.
+- Purpose: define measurement-gated data access and evidence-based read optimization without Dapper product or ORM replacement.
+- Delivered: `PerformanceDataAccessBoundary` · `PerformanceReadOptimizationBoundary` · guardrail tests · **P28-R2/R3 RESOLVED**.
+- Forbidden in this task: Dapper implementation without evidence · ORM replacement · query tuning product · schema migration · Redis/cache · API/frontend.
 
 ### TC-P28-T004 — Runtime performance boundary and module interaction model
 
