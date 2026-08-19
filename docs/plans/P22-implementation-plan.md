@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P22-PLAN` |
 | Phase | P22 — Flight |
-| Status | PLAN ACCEPTED · **P22-R1 = RESOLVED** · **P22-R2 = RESOLVED** · **P22-R3 = RESOLVED** · **P22-R4 = RESOLVED** · **P22-R5 = RESOLVED** · **P22-R6 = RESOLVED** · **P22-R7 = RESOLVED** · **P22-R8 = RESOLVED** · T001–T007 ACCEPTED · T008 implemented / awaiting review · **TC-P22-T009 NOT EXECUTED** |
+| Status | PLAN ACCEPTED · **P22-R1 = RESOLVED** · **P22-R2 = RESOLVED** · **P22-R3 = RESOLVED** · **P22-R4 = RESOLVED** · **P22-R5 = RESOLVED** · **P22-R6 = RESOLVED** · **P22-R7 = RESOLVED** · **P22-R8 = RESOLVED** · T001–T008 ACCEPTED · T009 implemented / awaiting architect review · **TC-P22-GATE NOT EXECUTED** |
 | Baseline | `d6bd842` (`docs(hotel-booking): add TC-P21-GATE result envelope` · GATE evidence `858b4be` · architect `TC-P21-GATE = ACCEPTED`) |
 | Authoritative sources | `docs/ROADMAP.md` § P22 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Flight / Tour · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` (schema `flight`) · `06-cross-module-communication.md` Example 7 · `15-future-architecture-transition-map.md` § U · P11-R5 (`TourDepartureTransportSegment`) · P12 Pricing · P19 Booking · P20 Payment · P21 HotelBooking · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -358,7 +358,7 @@ Classifications are **planning inventory**, not architect locks.
 | **P22-R5** | Supplier reservation / PNR lifecycle, idempotency, reconciliation | **RESOLVED** — `IFlightReservationSource` is reservation/PNR authority · one `FlightSupplierReservation` per `FlightBooking` · statuses Pending/Confirmed/Expired/Cancelled · attempt Created/Initiated/Confirmed/Failed · timeout ≠ Failed · `ReservationLocator` is opaque PNR fact (no type named PNR) · `ReservationExpiresAt` source-authored · no payment gating · Production Reservation Source = NONE. **P22-R5 = RESOLVED**. |
 | **P22-R6** | Payment ordering / typed Flight target / ticketing / compensation | **RESOLVED** — PNR-first: Accepted offer → Confirmed `FlightSupplierReservation` → Payment → tickets → `FlightBooking` Confirmed · `PaymentTargetKind` is exactly TourBooking, HotelBooking, FlightBooking · one FlightBooking → one Payment · amount from `FlightBookingMonetarySnapshot` · `IFlightTicketingSource` TicketCreate/TicketQuery · per-passenger `FlightTicket` Pending/Issued · timeout leaves ticketing attempt Initiated · Production Ticketing Source = NONE · full Refund compensation when paid booking cannot be ticketed · Partial Refund DEFERRED. **P22-R6 = RESOLVED**. **TC-P22-T006 = ACCEPTED** (`57731ed` / docs `935b668`). |
 | **P22-R7** | Cancellation / void / refund / partial-refund dependency | **RESOLVED** — confirmed Flight cancellation is a separate process · cancellation economics are authoritative and immutable for customer outcome · full-refund and no-refund outcomes are executable · partial customer Refund remains unsupported · partial-refund cancellation is blocked before supplier side effects · ticket void/refund is distinct from Payment Refund · supplier reversal must be authoritative before FlightBooking cancellation · ambiguous supplier reversal does not trigger Payment Refund · partial ticket reversal cannot cancel the whole Booking · Payment owns customer Refund execution · PaymentStatus remains Succeeded after Refund · whole-booking cancellation only · amendments/rebooking/no-show remain DEFERRED · Named Flight Supplier = NONE · Production Flight cancellation source = NONE. **P22-R7 = RESOLVED**. **TC-P22-T007 = ACCEPTED** (`0c39a60` / docs `1b344b9`). |
-| **P22-R8** | Public UX / auth / privacy / operational / provider readiness | **RESOLVED** — public Flight is transactional, not CRUD · Flight-specific anonymous token (`X-TravelCore-Flight-Booking-Access-Token`) · raw token returned once; SHA-256 verifier persisted; never in URL/localStorage · object-level authorization · live source/provider selection is server-controlled · no fake production success · customer cannot author price/Payment/PNR/ticket/cancellation economics · PNR/Payment/ticket/Booking confirmation remain distinct · Flight Payment is FlightBooking-scoped · no card collection · supported confirmed cancellation uses R7 · partial-refund cancellation remains blocked · private transaction pages are noindex · operational read is read-only/internal · no smart routing/failover · production Flight sources/provider remain NONE. **P22-R8 = RESOLVED**. **TC-P22-T009 NOT EXECUTED**. |
+| **P22-R8** | Public UX / auth / privacy / operational / provider readiness | **RESOLVED** — public Flight is transactional, not CRUD · Flight-specific anonymous token (`X-TravelCore-Flight-Booking-Access-Token`) · raw token returned once; SHA-256 verifier persisted; never in URL/localStorage · object-level authorization · live source/provider selection is server-controlled · no fake production success · customer cannot author price/Payment/PNR/ticket/cancellation economics · PNR/Payment/ticket/Booking confirmation remain distinct · Flight Payment is FlightBooking-scoped · no card collection · supported confirmed cancellation uses R7 · partial-refund cancellation remains blocked · private transaction pages are noindex · operational read is read-only/internal · no smart routing/failover · production Flight sources/provider remain NONE. **P22-R8 = RESOLVED**. **TC-P22-T008 = ACCEPTED** (`d7c61d7` / docs `65cf720`). **T009 implemented / awaiting architect review**. **TC-P22-GATE NOT EXECUTED**. |
 
 Inherited locked facts (not new P22 decisions): Tour ≠ live Flight; schema name `flight` is the SoT candidate; Payment kinds currently TourBooking+HotelBooking; Partial Refund DEFERRED; Production Payment Provider NONE; no named Flight supplier.
 
@@ -396,11 +396,11 @@ Inherited locked facts (not new P22 decisions): Tour ≠ live Flight; schema nam
 
 ### TC-P22-T008 — Public UX / authorization / privacy / operational reads
 
-- Depends on **P22-R8**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Public transactional FlightBooking journey (not CRUD) · independent `X-TravelCore-Flight-Booking-Access-Token` · SHA-256 verifier only · private noindex flight-booking pages · FlightBooking-scoped payment/cancel using R7 · read-only operational query · production sources/provider NONE · **TC-P22-T009 NOT EXECUTED**.
+- Depends on **P22-R8**. **COMPLETE / ACCEPTED** (`d7c61d7` / docs `65cf720`). Public transactional FlightBooking journey (not CRUD) · independent `X-TravelCore-Flight-Booking-Access-Token` · SHA-256 verifier only · private noindex flight-booking pages · FlightBooking-scoped payment/cancel using R7 · read-only operational query · production sources/provider NONE.
 
 ### TC-P22-T009 — Hardening + evidence
 
-- Guardrails + evidence pack; **no new capability**. Does **not** execute GATE.
+- Guardrails + evidence pack [`P22-T009-hardening-and-evidence-pack.md`](P22-T009-hardening-and-evidence-pack.md); **no new capability**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Does **not** execute GATE. **TC-P22-GATE NOT EXECUTED**.
 
 ### TC-P22-GATE — Acceptance Gate
 
@@ -478,6 +478,7 @@ This PLAN task is **not** Gate-ready and must not mark P22 READY_FOR_GATE.
 - T005 executed: **YES** (ACCEPTED)
 - T006 executed: **YES** (ACCEPTED `57731ed` / docs `935b668`)
 - T007 executed: **YES** (ACCEPTED `0c39a60` / docs `1b344b9`)
-- T008 executed: **YES** (implemented / awaiting review)
-- **TC-P22-T009 NOT EXECUTED**
+- T008 executed: **YES** (ACCEPTED `d7c61d7` / docs `65cf720`)
+- T009 executed: **YES** (implemented / awaiting architect review)
+- **TC-P22-GATE NOT EXECUTED**
 - P23 started: **NO**

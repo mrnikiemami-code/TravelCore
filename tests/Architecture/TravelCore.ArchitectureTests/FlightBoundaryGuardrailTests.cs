@@ -300,7 +300,8 @@ public sealed class FlightBoundaryGuardrailTests
         Assert.Contains("P22-R5 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P22-R6 = RESOLVED", text, StringComparison.Ordinal);
         Assert.Contains("P22-R7 = RESOLVED", text, StringComparison.Ordinal);
-        Assert.Contains("TC-P22-T009 NOT EXECUTED", text, StringComparison.Ordinal);
+        Assert.Contains("T009 implemented / awaiting architect review", text, StringComparison.Ordinal);
+        Assert.Contains("TC-P22-GATE NOT EXECUTED", text, StringComparison.Ordinal);
     }
 
     private static bool IsGeneratedOrBin(string path)
