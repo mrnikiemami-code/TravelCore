@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P24 — B2B / Agency Commerce** (**COMPLETE** — `TC-P24-GATE` implemented · AWAITING_ARCHITECT_REVIEW) |
-| Phase Status | P00–P23 COMPLETE · P24 T001–T009 ACCEPTED · GATE implemented |
+| Current Phase | **P25 — Notification** (**IN_PROGRESS** — plan authored) |
+| Phase Status | P00–P24 COMPLETE · P25 plan authored |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P24-GATE RESULT`; do **not** start `P25` |
+| Current Next Task | Return `TC-P25-T001 RESULT`; do **not** execute `TC-P25-T001` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -637,7 +637,7 @@ Concernهای B2B را از UX مصرف‌کنندهٔ عمومی جدا نگه 
 
 ## P25 — Notification
 
-**Status:** PLANNED
+**Status:** IN_PROGRESS (plan authored)
 
 Email · SMS · In-app · احتمالاً push/webhook بعداً · Preferences · transactional notifications · «خبرم کن» در صورت نیاز محصول · provider abstraction.
 

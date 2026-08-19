@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P24 — B2B / Agency Commerce** (**COMPLETE** — `TC-P24-GATE` implemented · AWAITING_ARCHITECT_REVIEW) |
+| Current Phase | **P25 — Notification** (**IN_PROGRESS** — plan authored; `TC-P25-T001` NOT EXECUTED) |
 | Previous Phase | **P23 — Dynamic Package / Flight + Hotel** (**COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md)) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P24-GATE` — P24 acceptance gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P24-GATE RESULT`; do **not** start `P25` |
+| Current Active Product Task | `TC-P25-T001` — P25 architecture implementation plan (PLAN authored; product NOT EXECUTED) |
+| Current Next Task | Return `TC-P25-T001 RESULT`; do **not** execute `TC-P25-T001` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -279,7 +279,9 @@
 | P24 T007 | `TC-P24-T007` **COMPLETE / ACCEPTED** (`cd7ee5e`) — AgencyOperationalBoundary/AgencyReportingReference/AgencyOperationalCapabilityReference; no Admin/Public API |
 | P24 T008 | `TC-P24-T008` **COMPLETE / ACCEPTED** (`c24cee4`) — hardening + guardrails (`B2BOwnershipBoundary` hardening flags + `B2BHardeningGuardrailTests`) |
 | P24 T009 | `TC-P24-T009` **COMPLETE / ACCEPTED** (`5267860`) — `docs/plans/P24-T009-hardening-and-evidence-pack.md`; adversarial architecture review complete; `P24 READY_FOR_GATE` |
-| P24 GATE | `TC-P24-GATE` implemented / AWAITING_ARCHITECT_REVIEW — gate artifact `docs/plans/P24-GATE-acceptance-evidence.md`; no new capability; `P24 COMPLETE`; `P25` NOT STARTED |
+| P24 GATE | `TC-P24-GATE` implemented / AWAITING_ARCHITECT_REVIEW — gate artifact `docs/plans/P24-GATE-acceptance-evidence.md`; no new capability; `P24 COMPLETE`; `P25 IN_PROGRESS / PLAN authored` |
+| P25 | **IN_PROGRESS** — plan authored (`docs/plans/P25-implementation-plan.md`); `TC-P25-T001` NOT EXECUTED |
+| P25 Plan | `TC-P25-PLAN` IMPLEMENTED / PLAN authored — [`docs/plans/P25-implementation-plan.md`](plans/P25-implementation-plan.md) |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |
 | P24-R3 (agency membership & Access relationship boundary) | **RESOLVED** |
