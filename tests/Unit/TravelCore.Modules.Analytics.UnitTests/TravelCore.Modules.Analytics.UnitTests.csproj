@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.Analytics.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Analytics.UnitTests</AssemblyName>
+    <Description>Analytics module scaffolding unit tests (TC-P27-T004 / P27-R1).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Contracts\TravelCore.Modules.Analytics.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Domain\TravelCore.Modules.Analytics.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Infrastructure\TravelCore.Modules.Analytics.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Contracts\TravelCore.Modules.Payment.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

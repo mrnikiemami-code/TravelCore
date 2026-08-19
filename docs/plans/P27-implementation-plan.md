@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P27-PLAN` |
 | Phase | P27 — Analytics + Product Intelligence |
-| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T003 decision inventory + task briefs executed |
-| Baseline | `994a94e` (`docs(p27): align T002 plan-driven phase state`) |
+| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T004 analytics module/schema foundation executed |
+| Baseline | `0e998aa` (`docs(p27): expand T003 plan decision inventory and execution sequence`) |
 | Authoritative sources | `docs/ROADMAP.md` § P27 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` · `docs/pages/09-page-state-and-composition-rules.md` §19 · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P25 Notification · P26 SEO |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Analytics + Product Intelligence phase.
 
-> **Envelope note:** `TC-P27-PLAN` ACCEPTED · `TC-P27-T002` ACCEPTED · `TC-P27-T003` implemented (decision inventory + task briefs) · **do not execute `TC-P27-T004` until architect accepts `T003`**.
+> **Envelope note:** `TC-P27-PLAN`–`T003` ACCEPTED · `TC-P27-T004` implemented (module/schema foundation) · **do not execute `TC-P27-T005` until architect accepts `T004`**.
 
 ---
 
@@ -78,7 +78,7 @@ P27 must preserve:
 
 | ID | Topic | Status |
 |----|-------|--------|
-| `P27-R1` | Analytics module ownership / schema posture vs domain modules / Observability | **OPEN** — independent Analytics module candidate · schema `analytics` · **Analytics != Booking** · **Analytics != Payment** · **Analytics != Search ranking SoR** · **Analytics != SEO** · **Analytics != Content editorial** · **Analytics != Notification delivery** · **Analytics != Observability telemetry SoR** · semantic event consumption only · no peer-schema FK |
+| `P27-R1` | Analytics module ownership / schema posture vs domain modules / Observability | **RESOLVED** — independent Analytics module · schema `analytics` · **Analytics != Booking/Payment/Search/SEO/Content/Notification/Observability** · semantic consumption only · no peer-schema FK · T004 foundation only |
 | `P27-R2` | Product event taxonomy boundary | **OPEN** — canonical event names/kinds owned by Analytics contracts · publishers emit semantic facts only · roadmap events: SearchPerformed · SearchResultClicked · SearchNoResults · FilterApplied · TourViewed · HotelViewed · QuoteCreated · BookingStarted · BookingCompleted |
 | `P27-R3` | Provider abstraction / dispatch boundary | **OPEN** — provider-neutral dispatch contracts · no named production analytics vendor in early tasks · zero-provider posture valid until explicit lock |
 | `P27-R4` | Privacy / PII interaction boundary | **OPEN** — analytics must not become PII SoR · opaque resource/session references only · Booking/Party remain identity SoR |
@@ -95,8 +95,8 @@ Proposed sequence after plan acceptance:
 
 1. `TC-P27-PLAN` — P27 architecture implementation plan (**ACCEPTED** · `f1e6f09`)
 2. `TC-P27-T002` — plan-driven SoT alignment (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-3. `TC-P27-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-4. `TC-P27-T004` — analytics module/schema foundation (**NOT EXECUTED**)
+3. `TC-P27-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
+4. `TC-P27-T004` — analytics module/schema foundation (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 5. `TC-P27-T005` — product event taxonomy boundary (**NOT EXECUTED**)
 6. `TC-P27-T006` — provider abstraction / dispatch boundary (**NOT EXECUTED**)
 7. `TC-P27-T007` — event ingestion / publisher interaction boundary (**NOT EXECUTED**)

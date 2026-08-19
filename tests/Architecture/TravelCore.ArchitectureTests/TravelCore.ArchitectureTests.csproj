@@ -71,6 +71,9 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\Notification\TravelCore.Modules.Notification.Contracts\TravelCore.Modules.Notification.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Notification\TravelCore.Modules.Notification.Domain\TravelCore.Modules.Notification.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Notification\TravelCore.Modules.Notification.Infrastructure\TravelCore.Modules.Notification.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Contracts\TravelCore.Modules.Analytics.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Domain\TravelCore.Modules.Analytics.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Infrastructure\TravelCore.Modules.Analytics.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Domain\TravelCore.Modules.Search.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Search\TravelCore.Modules.Search.Infrastructure\TravelCore.Modules.Search.Infrastructure.csproj" />
   </ItemGroup>

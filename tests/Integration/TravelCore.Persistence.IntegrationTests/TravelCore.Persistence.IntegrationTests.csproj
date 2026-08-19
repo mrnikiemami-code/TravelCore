@@ -48,6 +48,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\DynamicPackage\TravelCore.Modules.DynamicPackage.Infrastructure\TravelCore.Modules.DynamicPackage.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\B2B\TravelCore.Modules.B2B.Infrastructure\TravelCore.Modules.B2B.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Notification\TravelCore.Modules.Notification.Infrastructure\TravelCore.Modules.Notification.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Analytics\TravelCore.Modules.Analytics.Infrastructure\TravelCore.Modules.Analytics.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Fixtures\Persistence\TravelCore.PersistenceFixture\TravelCore.PersistenceFixture.csproj" />
   </ItemGroup>
 

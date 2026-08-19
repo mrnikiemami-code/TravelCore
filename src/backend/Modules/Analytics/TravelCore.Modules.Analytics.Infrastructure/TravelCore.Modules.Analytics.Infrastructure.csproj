@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Modules.Analytics.Infrastructure</RootNamespace>
+    <AssemblyName>TravelCore.Modules.Analytics.Infrastructure</AssemblyName>
+    <Description>Analytics infrastructure: schema analytics foundation (TC-P27-T004 / P27-R1). No product tables or endpoints.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TravelCore.Modules.Analytics.Contracts\TravelCore.Modules.Analytics.Contracts.csproj" />
+    <ProjectReference Include="..\TravelCore.Modules.Analytics.Domain\TravelCore.Modules.Analytics.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TravelCore.ArchitectureTests" />
+    <InternalsVisibleTo Include="TravelCore.Modules.Analytics.UnitTests" />
+    <InternalsVisibleTo Include="TravelCore.Persistence.IntegrationTests" />
+    <InternalsVisibleTo Include="TravelCore.Host.IntegrationTests" />
+  </ItemGroup>
+
+</Project>
