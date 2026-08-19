@@ -116,6 +116,6 @@ public sealed class NotificationScaffoldingSmokeTests
         Assert.False(NotificationEventConsumptionBoundary.OutboxConsumerImplemented);
         Assert.NotNull(typeof(INotificationSemanticEventConsumer));
         Assert.NotNull(typeof(INotificationTemplateOrchestrator));
-        Assert.Equal("LeadSubmitted", NotificationTemplateReference.FromKey("lead-submitted").TemplateKey);
+        Assert.Equal("lead-submitted", NotificationTemplateReference.FromKey("lead-submitted").TemplateKey);
     }
 }
