@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P29 — Production Hardening** (**T005 IN PROGRESS** — `TC-P29-T005`) |
+| Current Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE`) |
 | Previous Phase | **P28 — Performance & Scale** (**COMPLETE / ACCEPTED** — `TC-P28-GATE` `fef29ab`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P29-T005` — audit / compliance event boundary (**IN PROGRESS**) |
-| Current Next Task | `TC-P29-T006` — content sanitization / file security boundary (after T005 acceptance) |
+| Current Active Product Task | `TC-P29-GATE` — P29 acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | Await architect for **Post-P29** plan envelope; do **not** start Post-P29 autonomously |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -330,8 +330,18 @@
 | P29 T002 | `TC-P29-T002` **COMPLETE / ACCEPTED** (`8308bb2`) — production hardening foundation boundary |
 | P29 T003 | `TC-P29-T003` **COMPLETE / ACCEPTED** (`ae4ecbf`) — security / authorization review boundary · **P29-R1 RESOLVED** |
 | P29 T004 | `TC-P29-T004` **COMPLETE / ACCEPTED** (`96cd326`) — rate limiting / abuse protection boundary · **P29-R2 RESOLVED** |
-| P29 T005 | `TC-P29-T005` **IN PROGRESS** — audit / compliance event boundary · **P29-R3 RESOLVED** |
-| P29 | **IN PROGRESS** — T005 audit boundary · **P29-R4–R8 OPEN** |
+| P29 T005 | `TC-P29-T005` **COMPLETE / ACCEPTED** (`8d52ace` / fix `11051a9`) — audit / compliance event boundary · **P29-R3 RESOLVED** |
+| P29 T006 | `TC-P29-T006` **COMPLETE / ACCEPTED** — content sanitization / file security boundary · **P29-R4 RESOLVED** |
+| P29 T007 | `TC-P29-T007` **COMPLETE / ACCEPTED** — backup/restore / DR / DB recovery boundary · **P29-R5 RESOLVED** |
+| P29 T008 | `TC-P29-T008` **COMPLETE / ACCEPTED** — operational hardening · **P29-R6/R7/R8 RESOLVED** |
+| P29 T009 | `TC-P29-T009` **COMPLETE / ACCEPTED** — evidence pack · **READY_FOR_GATE** |
+| P29 GATE | `TC-P29-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/P29-GATE-acceptance-evidence.md`](plans/P29-GATE-acceptance-evidence.md) |
+| P29 | **COMPLETE** — `TC-P29-GATE` implemented · **P29-R1–R8 RESOLVED** |
+| P29-R4 (content/file security) | **RESOLVED** |
+| P29-R5 (backup/DR) | **RESOLVED** |
+| P29-R6 (health/observability) | **RESOLVED** |
+| P29-R7 (deployment/secrets) | **RESOLVED** |
+| P29-R8 (production verification/runbooks) | **RESOLVED** |
 | P28-R5 (CDN/static delivery) | **RESOLVED** |
 | P28-R6 (frontend CWV/bundle) | **RESOLVED** |
 | P28-R7 (Search read performance) | **RESOLVED** |
