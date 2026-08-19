@@ -66,7 +66,7 @@ public sealed class DynamicPackageBoundaryGuardrailTests
         Assert.False(DynamicPackageOwnershipBoundary.DynamicPackageBookingAggregateImplemented);
         Assert.True(DynamicPackageOwnershipBoundary.CompositionModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PackageOfferModelImplemented);
-        Assert.False(DynamicPackageOwnershipBoundary.PackageMonetaryModelImplemented);
+        Assert.True(DynamicPackageOwnershipBoundary.PackageMonetaryModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.OrchestrationModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.SagaModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PaymentIntegrationImplemented);
@@ -199,13 +199,13 @@ public sealed class DynamicPackageBoundaryGuardrailTests
     }
 
     [Fact]
-    public void DynamicPackage_T002_MustNotImplement_Deferred_Product_Types()
+    public void DynamicPackage_T004_MustNotImplement_Deferred_Product_Types()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "DynamicPackage");
         Assert.True(Directory.Exists(root), root);
 
         var forbiddenType = new Regex(
-            @"\b(class|record|enum|struct|interface)\s+(DynamicPackageBooking|DynamicPackageBookingId|DynamicPackageBookingStatus|PackageOffer|PackageMonetarySnapshot|PackageSaga|IPackageCompositionSource|IPackageOrchestrationSource|IDynamicPackageSearchSource|BookingBase|Booking<|GenericBookingAggregate)\b",
+            @"\b(class|record|enum|struct|interface)\s+(DynamicPackageBooking|DynamicPackageBookingId|DynamicPackageBookingStatus|PackageOffer|PackageSaga|IPackageCompositionSource|IPackageOrchestrationSource|IDynamicPackageSearchSource|BookingBase|Booking<|GenericBookingAggregate)\b",
             RegexOptions.Compiled);
 
         var hits = new List<string>();
@@ -229,7 +229,7 @@ public sealed class DynamicPackageBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "T002 forbids DynamicPackage deferred product types:\n" + string.Join('\n', hits));
+            "T004 forbids DynamicPackage deferred product types:\n" + string.Join('\n', hits));
     }
 
     [Fact]

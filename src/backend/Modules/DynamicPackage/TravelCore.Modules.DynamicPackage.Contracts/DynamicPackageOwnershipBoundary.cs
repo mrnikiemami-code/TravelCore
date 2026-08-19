@@ -46,7 +46,7 @@ public static class DynamicPackageOwnershipBoundary
     public const bool DynamicPackageBookingStatusImplemented = false;
     public const bool CompositionModelImplemented = true;
     public const bool PackageOfferModelImplemented = false;
-    public const bool PackageMonetaryModelImplemented = false;
+    public const bool PackageMonetaryModelImplemented = true;
     public const bool OrchestrationModelImplemented = false;
     public const bool SagaModelImplemented = false;
     public const bool PaymentIntegrationImplemented = false;

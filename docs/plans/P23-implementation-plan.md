@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P23-PLAN` |
 | Phase | P23 — Dynamic Package / Flight + Hotel |
-| Status | PLAN ACCEPTED · **P23-R1 = RESOLVED** · **P23-R2 = OPEN** · **P23-R3 = OPEN** · **P23-R4 = OPEN** · **P23-R5 = OPEN** · **P23-R6 = OPEN** · **P23-R7 = OPEN** · **P23-R8 = OPEN** · T001 implemented / awaiting architect review · **TC-P23-T002 EXECUTED** · **not COMPLETE** |
+| Status | PLAN ACCEPTED · **P23-R1 = RESOLVED** · **P23-R2 = OPEN** · **P23-R3 = OPEN** · **P23-R4 = OPEN** · **P23-R5 = OPEN** · **P23-R6 = OPEN** · **P23-R7 = OPEN** · **P23-R8 = OPEN** · T001 implemented / awaiting architect review · **TC-P23-T002 EXECUTED** · **TC-P23-T003 EXECUTED** · **TC-P23-T004 EXECUTED** · **not COMPLETE** |
 | Baseline | `2a372ae` (`feat(flight): close P22 with acceptance gate evidence [TC-P22-GATE]`) · GATE docs `ed040f0` · architect `TC-P22-GATE = ACCEPTED` |
 | Authoritative sources | `docs/ROADMAP.md` § P23 · `docs/PROJECT-STATE.md` · `04-module-boundaries.md` § Tour / Booking / Pricing / Payment / HotelBooking / Flight / Search / SEO · `docs/domain/module-ownership-matrix.md` · `07-data-architecture.md` · `06-cross-module-communication.md` Example 7 · `15-future-architecture-transition-map.md` § T/U · P11 Tour transport · P12 Pricing · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · ADR 0003 (Money) · ADR 0004 (NodaTime) |
 | Backend root | `src/backend` |
@@ -659,9 +659,9 @@ Do **not** execute any of these in this PLAN task.
 
 - Depends on **P23-R3**. **TC-P23-T003 EXECUTED.** Transient candidate composed from exactly one FlightComponent reference and exactly one HotelComponent reference; non-persistent and non-transactional; no PackageBooking/payment/reservation/orchestration.
 
-### TC-P23-T004 — Package offer / monetary / currency
+### TC-P23-T004 — Package quote / monetary boundary
 
-- Depends on **P23-R4**. Immutable package snapshot as sum · reject mixed currency · discount DEFERRED · Pricing not generalized.
+- Depends on **P23-R4**. **TC-P23-T004 EXECUTED.** Transient PackageMonetarySnapshot (FlightTotal + HotelTotal = PackageTotal, same-currency enforced per ADR 0003, mixed-currency rejected). TransientPackageQuote combines candidate + monetary. DynamicPackage is NOT price authority. Discount/markup/commission: DEFERRED. No persistence. No Payment change.
 
 ### TC-P23-T005 — Reservation orchestration / saga / reconciliation
 
@@ -796,7 +796,7 @@ This PLAN task is **not** Gate-ready and must not mark P23 COMPLETE or READY_FOR
 
 - Branch `main` · T001 adds DynamicPackage foundation only (schema EnsureSchema; no product tables; no endpoints).
 - **No** DynamicPackageBooking aggregate · **no** fourth Payment target · **no** Flight/Hotel/Payment/Pricing behavior change.
-- Do **not** execute `TC-P23-T004` until T003 revalidation authority boundary validated and P23-R3 locked.
+- Do **not** execute `TC-P23-T005` until T004 monetary boundary validated and P23-R4 locked.
 
 ---
 
