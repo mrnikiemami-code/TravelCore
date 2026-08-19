@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.B2B.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.B2B.UnitTests</AssemblyName>
+    <Description>B2B module scaffolding unit tests (TC-P24-T001 / P24-R1).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\B2B\TravelCore.Modules.B2B.Contracts\TravelCore.Modules.B2B.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\B2B\TravelCore.Modules.B2B.Domain\TravelCore.Modules.B2B.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\B2B\TravelCore.Modules.B2B.Infrastructure\TravelCore.Modules.B2B.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Payment\TravelCore.Modules.Payment.Contracts\TravelCore.Modules.Payment.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

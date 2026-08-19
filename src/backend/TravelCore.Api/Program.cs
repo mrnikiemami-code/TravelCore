@@ -19,6 +19,7 @@ using TravelCore.Modules.Payment.Infrastructure;
 using TravelCore.Modules.HotelBooking.Infrastructure;
 using TravelCore.Modules.Flight.Infrastructure;
 using TravelCore.Modules.DynamicPackage.Infrastructure;
+using TravelCore.Modules.B2B.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.Seo.Infrastructure;
 using TravelCore.Modules.Tour.Infrastructure;
@@ -62,6 +63,7 @@ IReadOnlyList<ITravelCoreModule> modules =
     new HotelBookingModule(),
     new FlightModule(),
     new DynamicPackageModule(),
+    new B2BModule(),
 ];
 builder.Services.AddTravelCoreModules(builder.Configuration, modules);
 

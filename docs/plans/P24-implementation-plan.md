@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P24-PLAN` |
 | Phase | P24 — B2B / Agency Commerce |
-| Status | PLAN AUTHORED · AWAITING_ARCHITECT_REVIEW · **P24 NOT STARTED** |
+| Status | PLAN ACCEPTED · **P24-R1 = RESOLVED** · **P24-R2–R8 OPEN** · T001 implemented · **not COMPLETE** |
 | Baseline | `eea58e2` (`docs(dynamic-package): complete P23 acceptance gate`) |
 | Authoritative sources | `docs/ROADMAP.md` § P24 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/15-future-architecture-transition-map.md` · P13 Agency Marketplace · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · P23 DynamicPackage |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
-This document defines the P24 execution architecture and task decomposition only. No product implementation is allowed in this PLAN task.
+This document defines the P24 execution architecture and task decomposition.
 
-> **Envelope note:** Authored after `TC-P23-GATE = ACCEPTED` from repository SoT. P24 is planning-only in this task. Do **not** execute `TC-P24-T001`.
+> **Envelope note:** Authored after `TC-P23-GATE = ACCEPTED` from repository SoT. `TC-P24-T001` implements schema `b2b` foundation only; **do not execute `TC-P24-T002`** until architect accepts T001.
 
 ---
 
@@ -24,7 +24,7 @@ This document defines the P24 execution architecture and task decomposition only
 | Authoritative next phase | **P24 — B2B / Agency Commerce** |
 | Declared status before this plan | **PLANNED / NOT_STARTED** |
 | PLAN already existed? | **NO** |
-| P24 product started? | **NO** |
+| P24 product started? | **YES** — `TC-P24-T001` foundation (schema `b2b`; no product tables) |
 
 ---
 
@@ -63,7 +63,7 @@ P24 must preserve:
 - P20 Payment remains payment/refund owner.
 - P21 HotelBooking and P22 Flight stay independent transactional owners.
 - P23 DynamicPackage is complete and does not transfer execution ownership from Flight/HotelBooking/Payment.
-- P24 is not yet implemented and must start from explicit architectural decisions.
+- P24 foundation started via `TC-P24-T001` (schema `b2b`; no product tables). Further decisions remain OPEN until architect lock.
 
 ---
 
@@ -71,7 +71,7 @@ P24 must preserve:
 
 | ID | Topic | Status |
 |----|-------|--------|
-| `P24-R1` | Agency identity/auth boundary vs Party/Access | OPEN |
+| `P24-R1` | Agency identity/auth boundary vs Party/Access | **RESOLVED** — independent B2B module · schema `b2b` · **B2B != Identity** · **B2B != Access** · **B2B != Party** · **B2B != Booking** · **B2B != Payment** · **B2B != AgencyMarketplace** · Agency is business concept (not Identity) · agency users are Access subjects · agency organization relationship belongs to Party · Identity/Access/Party ownership unchanged · Payment target kinds unchanged (3 only) |
 | `P24-R2` | Contract ownership model and lifecycle | OPEN |
 | `P24-R3` | Partner pricing authority vs Pricing module | OPEN |
 | `P24-R4` | Partner booking orchestration boundary vs Booking/Flight/HotelBooking/DynamicPackage | OPEN |
@@ -80,15 +80,13 @@ P24 must preserve:
 | `P24-R7` | Reporting/read-model boundaries and operational visibility | OPEN |
 | `P24-R8` | Deferred/out-of-scope posture (providers, settlement, advanced finance) | OPEN |
 
-No `P24-R#` is locked by this PLAN task.
-
 ---
 
-## 5. Execution sequence (planning output only)
+## 5. Execution sequence
 
 Proposed sequence after plan acceptance:
 
-1. `TC-P24-T001` — ownership/module/schema boundaries
+1. `TC-P24-T001` — ownership/module/schema boundaries (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 2. `TC-P24-T002` — contract lifecycle boundary
 3. `TC-P24-T003` — partner pricing boundary
 4. `TC-P24-T004` — partner booking boundary
@@ -99,19 +97,24 @@ Proposed sequence after plan acceptance:
 9. `TC-P24-T009` — evidence pack
 10. `TC-P24-GATE` — acceptance gate
 
+### TC-P24-T001 — B2B module / schema foundation
+
+- Depends on **P24-R1**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Independent `B2B.Contracts` / `B2B.Domain` / `B2B.Infrastructure` · schema `b2b` · host registration after DynamicPackage without endpoints · no Agency/Contract/Commission/CreditLimit/Wallet/Settlement entities · no Booking abstraction · no Payment target · **TC-P24-T002 NOT EXECUTED**.
+
 ---
 
-## 6. IN / OUT for this PLAN task
+## 6. IN / OUT for T001
 
 ### IN
-- Create plan artifacts for P24.
-- Synchronize SoT docs to set current active task and next step.
+- Independent B2B module + schema `b2b` foundation
+- Host registration + guardrail tests
+- P24-R1 recorded RESOLVED
 
 ### OUT
-- Product code changes
-- DB migrations
-- API/frontend implementation
-- Executing `TC-P24-T001`
+- Agency/Contract/Commission/CreditLimit/Wallet/Settlement entities
+- Booking abstraction / Payment target / API / Frontend
+- Identity / Access / Party ownership changes
+- Executing `TC-P24-T002`
 
 ---
 
@@ -119,5 +122,6 @@ Proposed sequence after plan acceptance:
 
 - P24 plan document created.
 - P24 task envelope captured.
-- SoT updated to `TC-P24-PLAN` as active docs task.
-- `TC-P24-T001` remains **NOT EXECUTED**.
+- SoT updated for T001 completion.
+- `TC-P24-T001` **EXECUTED** (foundation only).
+- `TC-P24-T002` remains **NOT EXECUTED**.

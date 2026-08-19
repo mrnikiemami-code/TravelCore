@@ -54,6 +54,7 @@
     <ProjectReference Include="..\..\..\src\backend\Modules\HotelBooking\TravelCore.Modules.HotelBooking.Infrastructure\TravelCore.Modules.HotelBooking.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Flight\TravelCore.Modules.Flight.Infrastructure\TravelCore.Modules.Flight.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\DynamicPackage\TravelCore.Modules.DynamicPackage.Infrastructure\TravelCore.Modules.DynamicPackage.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\B2B\TravelCore.Modules.B2B.Infrastructure\TravelCore.Modules.B2B.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\TripPlanner\TravelCore.Modules.TripPlanner.Contracts\TravelCore.Modules.TripPlanner.Contracts.csproj" />
   </ItemGroup>
 
