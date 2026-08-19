@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TravelCore.Performance</RootNamespace>
+    <AssemblyName>TravelCore.Performance</AssemblyName>
+    <Description>Performance and scale foundation boundaries for TravelCore Platform.</Description>
+  </PropertyGroup>
+
+</Project>

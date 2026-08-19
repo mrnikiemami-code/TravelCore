@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P28-PLAN` |
 | Phase | P28 — Performance & Scale |
-| Status | PLAN AUTHORED · **P28 NOT_STARTED** · awaiting architect review |
-| Baseline | `f20db63` (`docs: mark P27 GATE accepted and phase complete`) |
+| Status | PLAN ACCEPTED · **P28 IN_PROGRESS** · T002 foundation boundary executed |
+| Baseline | `ddbc0ba` (`docs: add P28 implementation plan`) |
 | Authoritative sources | `docs/ROADMAP.md` § P28 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/10-ui-constitution.md` §13 · `docs/architecture/15-future-architecture-transition-map.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P15 Search · P27 Analytics · P26 SEO |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Performance & Scale phase.
 
-> **Envelope note:** `TC-P28-PLAN` authored · **do not execute `TC-P28-T002` until architect accepts PLAN**.
+> **Envelope note:** `TC-P28-PLAN` ACCEPTED · `TC-P28-T002` implemented (performance foundation boundary) · **do not execute `TC-P28-T003` until architect accepts `T002`**.
 
 ---
 
@@ -97,8 +97,8 @@ P28 must preserve:
 
 Proposed sequence after plan acceptance:
 
-1. `TC-P28-PLAN` — P28 architecture implementation plan (**AUTHORED / AWAITING_ARCHITECT_REVIEW**)
-2. `TC-P28-T002` — plan-driven SoT alignment (**NOT EXECUTED**)
+1. `TC-P28-PLAN` — P28 architecture implementation plan (**ACCEPTED** · `ddbc0ba`)
+2. `TC-P28-T002` — performance foundation boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 3. `TC-P28-T003` — plan decision inventory + execution sequence authoring (**NOT EXECUTED**)
 4. `TC-P28-T004` — measurement/profiling foundation boundary (**NOT EXECUTED**)
 5. `TC-P28-T005` — PostgreSQL query/index posture boundary (**NOT EXECUTED**)
@@ -165,17 +165,17 @@ Proposed sequence after plan acceptance:
 - Delivered: measurement boundary contracts · Observability vs tuning separation · guardrail tests.
 - Forbidden in this task: APM vendor lock-in · production tuning automation · Analytics warehouse product.
 
+### TC-P28-T002 — Performance foundation boundary
+
+- Purpose: establish Platform-owned performance/scale foundation markers without Redis/cache/CDN product or premature optimization.
+- Delivered: `TravelCore.Performance` · `PerformanceFoundationBoundary` · `PerformanceOwnershipBoundary` · guardrail tests.
+- Forbidden in this task: Redis client · cache policy · CDN integration · database migration · API/frontend · module ownership changes.
+
 ### TC-P28-T003 — Plan decision inventory + execution sequence
 
 - Purpose: expand the approved P28 plan from T002-aligned baseline into an executable decision inventory, decision-to-task mapping, and per-task briefs without adding product code.
 - Delivered: decision-to-task mapping · task briefs T004–T009 + GATE · execution sequence updated · envelope note updated.
 - Forbidden in this task: module code · schema/migration · API · frontend · cache infrastructure · product tests beyond docs validation.
-
-### TC-P28-T002 — Plan-driven SoT alignment
-
-- Purpose: align PROJECT-STATE, ROADMAP, and transition references to the approved P28 plan without product code.
-- Delivered: SoT sync only · no capability implementation.
-- Forbidden in this task: product code · migrations · API · frontend · package dependencies.
 
 ---
 

@@ -313,6 +313,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modules.Analytic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Modules.Analytics.UnitTests", "tests\Unit\TravelCore.Modules.Analytics.UnitTests\TravelCore.Modules.Analytics.UnitTests.csproj", "{DA4AF999-A84B-4FC2-BB68-7A8FC840B93C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{E54149B9-7F22-367F-9CC5-FD829E3AA07B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCore.Performance", "src\backend\Platform\Performance\TravelCore.Performance\TravelCore.Performance.csproj", "{CBCC34E9-1A7E-4940-9257-29120BF17A18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1667,6 +1671,18 @@ Global
 		{DA4AF999-A84B-4FC2-BB68-7A8FC840B93C}.Release|x64.Build.0 = Release|Any CPU
 		{DA4AF999-A84B-4FC2-BB68-7A8FC840B93C}.Release|x86.ActiveCfg = Release|Any CPU
 		{DA4AF999-A84B-4FC2-BB68-7A8FC840B93C}.Release|x86.Build.0 = Release|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Debug|x64.Build.0 = Debug|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Debug|x86.Build.0 = Debug|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Release|x64.ActiveCfg = Release|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Release|x64.Build.0 = Release|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Release|x86.ActiveCfg = Release|Any CPU
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1823,5 +1839,6 @@ Global
 		{9119D90E-2AC8-46CA-848B-9327FDF3AE53} = {453A01D9-C2FC-8A18-2545-1743FE61BE18}
 		{3C515E8A-CE34-4F32-8841-C8E8A9ECC4ED} = {453A01D9-C2FC-8A18-2545-1743FE61BE18}
 		{DA4AF999-A84B-4FC2-BB68-7A8FC840B93C} = {9D556B49-86D1-93A7-9596-FFAAB74EC556}
+		{CBCC34E9-1A7E-4940-9257-29120BF17A18} = {E54149B9-7F22-367F-9CC5-FD829E3AA07B}
 	EndGlobalSection
 EndGlobal

@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P28 — Performance & Scale** (**PLANNED** — `TC-P28-PLAN` authored · awaiting architect review) |
+| Current Phase | **P28 — Performance & Scale** (**IN_PROGRESS** — `TC-P28-T002` implemented) |
 | Previous Phase | **P27 — Analytics + Product Intelligence** (**COMPLETE / ACCEPTED** — `TC-P27-GATE` `fb55c0a`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P28-PLAN` — P28 architecture implementation plan (AUTHORED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P28-PLAN RESULT`; do **not** execute `TC-P28-T002` until architect accepts PLAN |
+| Current Active Product Task | `TC-P28-T002` — performance foundation boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P28-T002 RESULT`; do **not** continue to `TC-P28-T003` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -315,7 +315,8 @@
 | P27 T008 | `TC-P27-T008` **COMPLETE / ACCEPTED** (`ac4df32`) — hardening guardrails; **P27-R5/R7/R8 RESOLVED** |
 | P27 T009 | `TC-P27-T009` **COMPLETE / ACCEPTED** (`ce61f06`) — evidence pack · **READY_FOR_GATE** |
 | P27 GATE | `TC-P27-GATE` **COMPLETE / ACCEPTED** (`fb55c0a`) — [`docs/plans/P27-GATE-acceptance-evidence.md`](plans/P27-GATE-acceptance-evidence.md) |
-| P28 Plan | `TC-P28-PLAN` **AUTHORED / AWAITING_ARCHITECT_REVIEW** — [`docs/plans/P28-implementation-plan.md`](plans/P28-implementation-plan.md) |
+| P28 Plan | `TC-P28-PLAN` **COMPLETE / ACCEPTED** (`ddbc0ba`) — [`docs/plans/P28-implementation-plan.md`](plans/P28-implementation-plan.md) |
+| P28 T002 | `TC-P28-T002` implemented / AWAITING_ARCHITECT_REVIEW — performance foundation boundary |
 | P27-R5 (consent / attribution interaction boundary) | **RESOLVED** |
 | P27-R7 (public/admin operational boundary) | **RESOLVED** |
 | P27-R8 (deferred/out-of-scope posture) | **RESOLVED** |
