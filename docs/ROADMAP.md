@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P22 — Flight** (**COMPLETE** — `TC-P22-GATE` evidence [`docs/plans/P22-GATE-acceptance-evidence.md`](plans/P22-GATE-acceptance-evidence.md) · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW · P23 NOT STARTED) |
-| Phase Status | P00–P22 COMPLETE · P23 PLANNED / NOT_STARTED · P22-R1–R8 RESOLVED |
+| Current Phase | **P23 — Dynamic Package / Flight + Hotel** (**IN_PROGRESS** — `TC-P23-PLAN` authored [`docs/plans/P23-implementation-plan.md`](plans/P23-implementation-plan.md) · **P23-R1–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · TC-P23-T001 NOT EXECUTED · P23 not COMPLETE) |
+| Phase Status | P00–P22 COMPLETE · P22 GATE ACCEPTED (`2a372ae` / docs `ed040f0`) · P23 IN_PROGRESS / PLAN authored · P23-R1–R8 OPEN |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P22-GATE RESULT`; do **not** start P23 |
+| Current Next Task | Return `TC-P23-PLAN RESULT`; do **not** execute `TC-P23-T001` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -121,8 +121,8 @@
 - **P19** = COMPLETE (`TC-P19-GATE` ACCEPTED `d258933` · **P19-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P19-implementation-plan.md`](plans/P19-implementation-plan.md)
 - **P20** = COMPLETE (`TC-P20-GATE` ACCEPTED · **R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P20-GATE-acceptance-evidence.md`](plans/P20-GATE-acceptance-evidence.md)
 - **P21** = COMPLETE (`TC-P21-GATE` ACCEPTED `858b4be` / docs `d6bd842` · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md)
-- **P22** = COMPLETE (`TC-P22-GATE` evidence [`plans/P22-GATE-acceptance-evidence.md`](plans/P22-GATE-acceptance-evidence.md) · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW)
-- **P23** = PLANNED / NOT_STARTED — Dynamic Package / Flight + Hotel
+- **P22** = COMPLETE (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
+- **P23** = IN_PROGRESS — PLAN authored [`plans/P23-implementation-plan.md`](plans/P23-implementation-plan.md) · **P23-R1–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · T001 NOT EXECUTED · not COMPLETE
 - **P24–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -606,7 +606,7 @@ P21-R7 lock: customer cancellation targets Confirmed HotelBooking; HotelBookingC
 
 ## P22 — Flight
 
-**Status:** COMPLETE (`TC-P22-GATE` evidence [`docs/plans/P22-GATE-acceptance-evidence.md`](plans/P22-GATE-acceptance-evidence.md) · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW) · Partial Refund DEFERRED · MultiCity DEFERRED · ancillaries DEFERRED · PayLater/deposit/partial DEFERRED · amendments/rebooking DEFERRED · Named Flight Supplier NONE · Production Flight Search/Availability/Offer/Reservation/Ticketing/Cancellation Source NONE · Production Payment Provider NONE
+**Status:** COMPLETE (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · evidence [`docs/plans/P22-GATE-acceptance-evidence.md`](plans/P22-GATE-acceptance-evidence.md) · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED) · Partial Refund DEFERRED · MultiCity DEFERRED · ancillaries DEFERRED · PayLater/deposit/partial DEFERRED · amendments/rebooking DEFERRED · Named Flight Supplier NONE · Production Flight Search/Availability/Offer/Reservation/Ticketing/Cancellation Source NONE · Production Payment Provider NONE
 
 provider abstraction · airport/reference · one-way · round-trip · multi-city در صورت تأیید · search · fare · baggage · passenger rules · Quote · booking/order · provider references.
 
@@ -616,11 +616,11 @@ Inventory پرواز نباید سخت به یک provider قفل شود.
 
 ## P23 — Dynamic Package / Flight + Hotel
 
-**Status:** PLANNED
+**Status:** IN_PROGRESS (`TC-P23-PLAN` authored [`docs/plans/P23-implementation-plan.md`](plans/P23-implementation-plan.md) · **P23-R1–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · TC-P23-T001 NOT EXECUTED · P23 not COMPLETE)
 
 پس از پایدار شدن HotelBooking و Flight: خرید ترکیبی مثل Flight + Hotel.
 
-قبل از وجود قابلیت‌های زیرساختی رزرو، پیاده نشود.
+قبل از وجود قابلیت‌های زیرساختی رزرو، پیاده نشود. P21 و P22 reservation infrastructures now exist; product implementation waits for PLAN ACCEPT and P23-R1 lock. Do not treat OPEN recommendations as resolved.
 
 ---
 
@@ -776,8 +776,8 @@ P26 = Advanced SEO.
 | P19 | Tour Booking | **COMPLETE** (`TC-P19-GATE` ACCEPTED `d258933` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P20 | Payment | **COMPLETE** (`TC-P20-GATE` ACCEPTED · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P21 | Hotel Booking | **COMPLETE** (`TC-P21-GATE` ACCEPTED `858b4be` / docs `d6bd842` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
-| P22 | Flight | **COMPLETE** (`TC-P22-GATE` · R1–R8 RESOLVED · T001–T009 ACCEPTED · GATE AWAITING_ARCHITECT_REVIEW) |
-| P23 | Dynamic Package / Flight + Hotel | PLANNED |
+| P22 | Flight | **COMPLETE** (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
+| P23 | Dynamic Package / Flight + Hotel | IN_PROGRESS (PLAN authored · R1–R8 OPEN · T001 NOT EXECUTED) |
 | P24 | B2B / Agency Commerce | PLANNED |
 | P25 | Notification | PLANNED |
 | P26 | Advanced SEO + Content Graph | PLANNED |
