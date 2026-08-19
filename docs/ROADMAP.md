@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P29 — Production Hardening** (**PLANNED / NOT_STARTED** — await architect) |
-| Phase Status | P00–P28 COMPLETE · P29 PLANNED / NOT_STARTED |
+| Current Phase | **P29 — Production Hardening** (**PLAN IN PROGRESS** — `TC-P29-PLAN`) |
+| Phase Status | P00–P28 COMPLETE · P29 PLAN IN PROGRESS |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Await architect **P29** plan envelope; do **not** start P29 autonomously |
+| Current Next Task | `TC-P29-T002` — production hardening foundation boundary (after `TC-P29-PLAN` acceptance) |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -687,9 +687,11 @@ PostgreSQL queries/indexes · Dapper projections در صورت توجیه · Red
 
 ## P29 — Production Hardening
 
-**Status:** PLANNED
+**Status:** PLAN IN PROGRESS (`TC-P29-PLAN`)
 
 security/authorization review · rate limiting · audit · content sanitization · file security · backup/restore · DR · health · observability · metrics · tracing · error monitoring · load tests · DB recovery · deployment · CI/CD · environment config · secret management · production SEO/mobile/a11y verification · operational runbooks.
+
+**Implementation plan:** [`docs/plans/P29-implementation-plan.md`](plans/P29-implementation-plan.md) · **P29-R1–R8 OPEN**
 
 ---
 

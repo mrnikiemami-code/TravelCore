@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P28 — Performance & Scale** (**COMPLETE / ACCEPTED** — `TC-P28-GATE`) |
-| Previous Phase | **P27 — Analytics + Product Intelligence** (**COMPLETE / ACCEPTED** — `TC-P27-GATE` `fb55c0a`) |
+| Current Phase | **P29 — Production Hardening** (**PLAN AUTHORING** — `TC-P29-PLAN`) |
+| Previous Phase | **P28 — Performance & Scale** (**COMPLETE / ACCEPTED** — `TC-P28-GATE` `fef29ab`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P28-GATE` — P28 acceptance gate (**COMPLETE / ACCEPTED**) |
-| Current Next Task | Await architect for **P29** plan envelope; do **not** start P29 autonomously |
+| Current Active Product Task | `TC-P29-PLAN` — P29 architecture implementation plan (**IN PROGRESS**) |
+| Current Next Task | `TC-P29-T002` — production hardening foundation boundary (await architect execution envelope) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -324,8 +324,10 @@
 | P28 T007 | `TC-P28-T007` **COMPLETE / ACCEPTED** (`6edae65` / fix `46bf7ff`) — scaling and infrastructure boundary · **P28-R8 RESOLVED** |
 | P28 T008 | `TC-P28-T008` **COMPLETE / ACCEPTED** (`13a424e`) — operational hardening · **P28-R5/R6/R7 RESOLVED** |
 | P28 T009 | `TC-P28-T009` **COMPLETE / ACCEPTED** (`100da60`) — evidence pack · **READY_FOR_GATE** |
-| P28 GATE | `TC-P28-GATE` **COMPLETE / ACCEPTED** (gate commit pending) — [`docs/plans/P28-GATE-acceptance-evidence.md`](plans/P28-GATE-acceptance-evidence.md) |
+| P28 GATE | `TC-P28-GATE` **COMPLETE / ACCEPTED** (`fef29ab`) — [`docs/plans/P28-GATE-acceptance-evidence.md`](plans/P28-GATE-acceptance-evidence.md) |
 | P28 | **COMPLETE** — `TC-P28-GATE` implemented · **P28-R1–R8 RESOLVED** |
+| P29 Plan | `TC-P29-PLAN` **IN PROGRESS** — [`docs/plans/P29-implementation-plan.md`](plans/P29-implementation-plan.md) |
+| P29 | **PLANNED / IN PROGRESS** — plan authoring · **P29-R1–R8 OPEN** |
 | P28-R5 (CDN/static delivery) | **RESOLVED** |
 | P28-R6 (frontend CWV/bundle) | **RESOLVED** |
 | P28-R7 (Search read performance) | **RESOLVED** |
