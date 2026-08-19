@@ -1,0 +1,258 @@
+# P28 Implementation Plan
+
+| Field | Value |
+|-------|--------|
+| Plan-ID | `TC-P28-PLAN` |
+| Phase | P28 — Performance & Scale |
+| Status | PLAN AUTHORED · **P28 NOT_STARTED** · awaiting architect review |
+| Baseline | `f20db63` (`docs: mark P27 GATE accepted and phase complete`) |
+| Authoritative sources | `docs/ROADMAP.md` § P28 · `docs/PROJECT-STATE.md` · `docs/architecture/02-technology-baseline.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/10-ui-constitution.md` §13 · `docs/architecture/15-future-architecture-transition-map.md` · `docs/architecture/22-observability-logging-and-correlation-foundation.md` · P06 Media · P15 Search · P27 Analytics · P26 SEO |
+| Backend root | `src/backend` |
+| Frontend root | `src/frontend/web` |
+
+This document is the architecture plan for the Performance & Scale phase.
+
+> **Envelope note:** `TC-P28-PLAN` authored · **do not execute `TC-P28-T002` until architect accepts PLAN**.
+
+---
+
+## 0. Next-phase resolve (from SoT)
+
+| Question | Answer |
+|----------|--------|
+| Prior phase status | **P27 COMPLETE / ACCEPTED** (`TC-P27-GATE` `fb55c0a` / SoT `f20db63`) |
+| Authoritative next phase | **P28 — Performance & Scale** |
+| Declared status before this plan | **PLANNED / NOT_STARTED** |
+| Dedicated Performance module in SoT today? | **NO** — performance themes exist in technology baseline and UI constitution only |
+| Redis/cache implemented in product code? | **NO** — baseline declares Redis as non-SoR helper; no cache abstraction productized yet |
+| Observability platform exists? | **YES** — `TravelCore.Observability` · platform telemetry separate from product analytics |
+| Profile-before-optimize locked? | **YES** — ROADMAP P28: measure before optimizing; no unmeasured distributed complexity |
+
+---
+
+## 1. Phase purpose
+
+P28 introduces **measured** performance and scale boundaries **after** meaningful product surfaces and platform foundations exist, without premature microservice extraction or cache-as-SoR anti-patterns.
+
+Business purpose (from SoT):
+
+- Improve perceived and measured performance on real public/admin surfaces
+- Establish query/index, cache, CDN, rendering, and search-read performance posture
+- Preserve modular ownership while enabling future scale work
+
+Architecture objective:
+
+- Introduce **platform-level performance abstractions** (measurement, cache, read projections, delivery posture) without breaking module boundaries
+- Preserve **PostgreSQL as SoR** · **Redis != SoR** · **Cache != Source of Truth**
+- Preserve **Search != ranking engine** · **Observability != Product Analytics**
+- **Profile before optimize** — no Kafka/microservice/cache-everything without measured need
+
+---
+
+## 2. Preserved locked architecture
+
+P28 must preserve:
+
+1. Modular Monolith — schema-per-module; no peer-schema FK; no shared DbContext.
+2. **EF Core for transactional writes/migrations**; **Dapper only for justified read projections**.
+3. **Redis is helper/cache only** — never authoritative state.
+4. **Search read performance != Search ranking engine** — P15 boundary unchanged.
+5. **Observability != Product Analytics** — P27 boundary unchanged.
+6. **SEO/Content/Destination/Booking/Payment ownership** unchanged.
+7. **Public != Indexable** · **Search URL != SEO Landing** preserved.
+8. P21–P27 ownership boundaries remain unchanged.
+9. No distributed complexity (microservices · message bus product · multi-region) without measured operational need.
+
+---
+
+## 3. Current SoT baseline snapshot
+
+- Technology baseline locks PostgreSQL SoR · Redis helper · Dapper for justified reads · Next.js Server Component first.
+- UI constitution §13 declares Core Web Vitals targets (LCP/INP/CLS) as quality goals, not domain invariants.
+- P06 Media delivered app-proxy delivery; WebP/AVIF pipeline **DEFERRED** (P06-R1).
+- P15 Search boundary exists; hybrid read-model posture; ranking engine deferred.
+- P26 SEO graph boundaries complete; sitemap/structured-data frameworks on P05 base.
+- P27 Analytics downstream boundaries complete; no warehouse/streaming product.
+- Observability foundation documented; platform telemetry separate from product analytics.
+- No Redis client, cache abstraction, CDN integration, or load-test harness in product code today.
+
+---
+
+## 4. Decision inventory for P28 (open for architect locks)
+
+| ID | Topic | Status |
+|----|-------|--------|
+| `P28-R1` | Measurement / profiling posture vs Observability | **OPEN** — profile-before-optimize · platform Observability owns telemetry · no ad-hoc production tuning without measurement boundary |
+| `P28-R2` | PostgreSQL query/index optimization boundary | **OPEN** — module-owned schemas · index/query posture without cross-module DbContext shortcuts |
+| `P28-R3` | Read-model projection boundary (Dapper vs EF) | **OPEN** — Dapper only for justified read-heavy projections · EF remains write/migration owner |
+| `P28-R4` | Redis cache abstraction boundary | **OPEN** — cache != SoR · invalidation posture · locale-aware cache keys where applicable |
+| `P28-R5` | CDN / static delivery boundary | **OPEN** — CDN for static/media delivery posture · Media app-proxy foundation preserved |
+| `P28-R6` | Frontend rendering / bundle / CWV boundary | **OPEN** — Server Component first · minimal hydration · bundle/third-party control · CWV targets from UI constitution |
+| `P28-R7` | Search read performance boundary | **OPEN** — Search read latency posture · **Search != ranking engine** · no Search SoR takeover |
+| `P28-R8` | Load testing / deferred distributed scale posture | **OPEN** — load-test boundary only · microservice extraction · Kafka/event bus scale-out · multi-region remain DEFERRED unless explicitly locked |
+
+---
+
+## 5. Execution sequence
+
+Proposed sequence after plan acceptance:
+
+1. `TC-P28-PLAN` — P28 architecture implementation plan (**AUTHORED / AWAITING_ARCHITECT_REVIEW**)
+2. `TC-P28-T002` — plan-driven SoT alignment (**NOT EXECUTED**)
+3. `TC-P28-T003` — plan decision inventory + execution sequence authoring (**NOT EXECUTED**)
+4. `TC-P28-T004` — measurement/profiling foundation boundary (**NOT EXECUTED**)
+5. `TC-P28-T005` — PostgreSQL query/index posture boundary (**NOT EXECUTED**)
+6. `TC-P28-T006` — read-model projection boundary (**NOT EXECUTED**)
+7. `TC-P28-T007` — Redis cache abstraction boundary (**NOT EXECUTED**)
+8. `TC-P28-T008` — frontend performance/CWV + hardening guardrails (**NOT EXECUTED**)
+9. `TC-P28-T009` — evidence pack (**NOT EXECUTED**)
+10. `TC-P28-GATE` — acceptance gate (**NOT EXECUTED**)
+
+> Note: `TC-P28-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25/P26/P27 progression where PLAN equals T001 authoring.
+
+### Decision-to-task mapping (authoritative progression)
+
+| Decision | Primary task | Notes |
+|----------|--------------|-------|
+| `P28-R1` | `TC-P28-T004` | Measurement/profiling posture; Observability separation |
+| `P28-R2` | `TC-P28-T005` | PostgreSQL query/index boundary per module schema |
+| `P28-R3` | `TC-P28-T006` | Dapper read projection boundary; EF write owner preserved |
+| `P28-R4` | `TC-P28-T007` | Redis cache abstraction; cache != SoR |
+| `P28-R5` | `TC-P28-T008` | CDN/static delivery posture (with Media/P06 foundation) |
+| `P28-R6` | `TC-P28-T008` | Frontend rendering/bundle/CWV hardening |
+| `P28-R7` | `TC-P28-T008` | Search read performance boundary hardening |
+| `P28-R8` | `TC-P28-T008` | Load-test posture + deferred distributed scale guardrails |
+
+### TC-P28-GATE — Acceptance gate
+
+- Purpose: final P28 acceptance evidence only; verify PLAN + T002–T009 accepted and P28-R1–R8 RESOLVED.
+- Delivered: `docs/plans/P28-GATE-acceptance-evidence.md` · gate evidence architecture lock test · SoT sync marking **P28 COMPLETE**.
+- Forbidden in this task: new performance product beyond accepted boundaries · microservice extraction · Kafka/bus product · next phase (P29) execution.
+
+### TC-P28-T009 — Evidence pack
+
+- Purpose: adversarial architecture review evidence and gate-readiness documentation without new product capability.
+- Delivered: `docs/plans/P28-T009-hardening-and-evidence-pack.md` · evidence-pack architecture lock test · SoT sync · **READY_FOR_GATE**.
+- Forbidden in this task: production CDN vendor lock-in · Redis cluster product · load-test infrastructure beyond boundary · GATE execution.
+
+### TC-P28-T008 — Frontend/CWV + hardening guardrails
+
+- Purpose: consolidate CDN/static delivery, frontend CWV/bundle posture, Search read performance, and deferred scale guardrails; resolve R5/R6/R7/R8.
+- Delivered: CDN/static delivery boundary · frontend performance boundary · search read performance boundary · deferred scale boundary · hardening guardrail tests.
+- Forbidden in this task: third-party script platform · ranking engine · microservice extraction · evidence pack (T009) · GATE.
+
+### TC-P28-T007 — Redis cache abstraction boundary
+
+- Purpose: define platform cache contracts without Redis-as-SoR or cross-module cache ownership leaks.
+- Delivered: cache key/locale conventions · invalidation posture contracts · cache abstraction boundary · guardrail tests.
+- Forbidden in this task: Redis cluster operations · cache-as-authority persistence · domain write-path cache takeover · public API/UI.
+
+### TC-P28-T006 — Read-model projection boundary
+
+- Purpose: define justified Dapper read projection posture without EF write/migration ownership transfer.
+- Delivered: read projection boundary contracts · Dapper-vs-EF ownership markers · guardrail tests.
+- Forbidden in this task: Dapper in write paths · cross-module shared read DbContext · Search ranking engine.
+
+### TC-P28-T005 — PostgreSQL query/index posture boundary
+
+- Purpose: define module-owned query/index optimization posture without peer-schema FK or shared DbContext shortcuts.
+- Delivered: query/index ownership boundary · module schema index posture contracts · guardrail tests.
+- Forbidden in this task: cross-schema query shortcuts · production query tuning without measurement posture (R1).
+
+### TC-P28-T004 — Measurement/profiling foundation boundary
+
+- Purpose: define profile-before-optimize posture and Observability separation without ad-hoc tuning product.
+- Delivered: measurement boundary contracts · Observability vs tuning separation · guardrail tests.
+- Forbidden in this task: APM vendor lock-in · production tuning automation · Analytics warehouse product.
+
+### TC-P28-T003 — Plan decision inventory + execution sequence
+
+- Purpose: expand the approved P28 plan from T002-aligned baseline into an executable decision inventory, decision-to-task mapping, and per-task briefs without adding product code.
+- Delivered: decision-to-task mapping · task briefs T004–T009 + GATE · execution sequence updated · envelope note updated.
+- Forbidden in this task: module code · schema/migration · API · frontend · cache infrastructure · product tests beyond docs validation.
+
+### TC-P28-T002 — Plan-driven SoT alignment
+
+- Purpose: align PROJECT-STATE, ROADMAP, and transition references to the approved P28 plan without product code.
+- Delivered: SoT sync only · no capability implementation.
+- Forbidden in this task: product code · migrations · API · frontend · package dependencies.
+
+---
+
+## 6. Scope (IN)
+
+1. Authoritative P28 plan + SoT alignment (plan-driven tasks only until architect locks R1–R8).
+2. Measurement/profiling posture before optimization.
+3. Module-owned PostgreSQL query/index boundaries.
+4. Justified Dapper read projection boundaries.
+5. Redis cache abstraction (non-SoR) with invalidation posture.
+6. CDN/static delivery and frontend CWV/bundle boundaries.
+7. Search read performance boundary (not ranking engine).
+8. Load-test posture and deferred distributed-scale guardrails.
+9. Architecture tests proving performance boundaries do not break module ownership.
+10. Evidence pack + GATE.
+
+---
+
+## 7. Out of scope (explicitly NOT in P28 plan-driven early tasks)
+
+- Product code beyond declared boundary scaffolding (until respective task envelopes)
+- Microservice extraction or service mesh
+- Kafka/RabbitMQ/event-bus scale-out product
+- Multi-region active-active deployment product
+- Search ranking engine or ML relevance tuning
+- Analytics warehouse/BI/streaming (P27 deferred scope)
+- WebP/AVIF conversion pipeline (P06-R1 DEFER)
+- Production CDN vendor hard-coding in Domain modules
+- Next phase P29 Production Hardening
+
+---
+
+## 8. Deferred scope
+
+- Microservice extraction
+- Dedicated search engine (Elasticsearch/OpenSearch) unless explicitly locked later
+- Global CDN edge compute / edge functions product
+- Auto-scaling orchestration product beyond boundary contracts
+- Real-time stream processing for performance
+- Cache-as-authority anti-pattern remediation product (must remain forbidden)
+
+---
+
+## 9. Blockers / conflicts
+
+| Item | Status |
+|------|--------|
+| P27 GATE acceptance | **RESOLVED** — `TC-P27-GATE` · baseline `fb55c0a` |
+| Meaningful public/commerce surfaces | **PARTIAL** — sufficient for boundary phase; full load-test scale deferred |
+| Redis in technology baseline | **LOCKED** — helper only; not SoR |
+| Dapper everywhere anti-pattern | **LOCKED** — forbidden by technology baseline |
+| Observability vs Analytics separation | **LOCKED** — must preserve P27 boundary |
+| P06 WebP/AVIF defer | **LOCKED** — image optimization boundary must not reopen P06-R1 defer |
+
+---
+
+## 10. Architecture constraints (locked)
+
+1. **Profile before optimize** — no optimization task without measurement posture.
+2. Performance abstractions live in **Platform** or explicit boundary contracts — not scattered tuning in Domain modules.
+3. **Cache != SoR** · **Redis != authoritative state**.
+4. **EF owns writes/migrations** · **Dapper only for justified reads**.
+5. Module schemas remain isolated — no performance-driven peer-schema FK shortcuts.
+6. **Search read performance != Search ranking** — P15 ownership preserved.
+7. One task → one writer; evidence-based acceptance; GATE adds no new capability.
+
+---
+
+## 11. Validation strategy (phase-level)
+
+- Plan tasks: `git diff --check` + docs coherence only.
+- Product tasks (future): `dotnet build TravelCore.sln` + Performance/Architecture/Integration tests relevant to task scope.
+- GATE: full P28 validation battery + clean working tree.
+
+---
+
+## 12. Done-when (plan-driven tasks T001–T003)
+
+- `TC-P28-T001`–`T003` establish the authoritative P28 execution map with R1–R8 OPEN inventory, decision-to-task mapping, and task briefs through GATE.
+- `P28-GATE` closes the phase after R1–R8 are RESOLVED and T004–T009 are accepted.
