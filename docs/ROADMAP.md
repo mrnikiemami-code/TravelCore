@@ -937,4 +937,4 @@ Public hotel discovery browse after MODOPS — closes DISCLINK-T014 deferral:
 | PROVINT | Provider Integration Readiness Sequence | **COMPLETE / ACCEPTED** (`TC-PROVINT-GATE`) |
 | DISCLINK | Discovery Linking Sequence | **COMPLETE / ACCEPTED** (`TC-DISCLINK-GATE`) |
 | MODOPS | Moderation Operations Sequence | **COMPLETE / ACCEPTED** (`TC-MODOPS-GATE`) |
-| HOTIDX | Hotel Catalog Browse Index Sequence | **IN PROGRESS** (`TC-HOTIDX-PLAN`) |
+| HOTIDX | Hotel Catalog Browse Index Sequence | **COMPLETE / ACCEPTED** (`TC-HOTIDX-GATE`) |
