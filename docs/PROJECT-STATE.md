@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P23-GATE` — Acceptance Gate (P23 READY_FOR_GATE; do **not** execute) |
-| Current Next Task | Return `TC-P23-GATE RESULT`; do **not** execute `TC-P23-GATE` |
+| Current Active Product Task | `TC-P23-GATE` — Acceptance Gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P23-GATE RESULT`; do **not** start `P24` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
