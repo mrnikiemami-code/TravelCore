@@ -61,10 +61,10 @@ public static class AnalyticsOwnershipBoundary
     public const bool ProviderAbstractionImplemented = true;
     public const bool ProviderImplemented = false;
     public const bool IngestionBoundaryImplemented = true;
-    public const bool PreferenceBoundaryImplemented = false;
-    public const bool OperationalBoundaryImplemented = false;
-    public const bool DeferredScopeBoundaryImplemented = false;
-    public const bool HardeningGuardrailsImplemented = false;
+    public const bool PreferenceBoundaryImplemented = true;
+    public const bool OperationalBoundaryImplemented = true;
+    public const bool DeferredScopeBoundaryImplemented = true;
+    public const bool HardeningGuardrailsImplemented = true;
     public const bool EventPersistenceImplemented = false;
     public const bool PublicApiImplemented = false;
     public const bool ProductTablesImplemented = false;

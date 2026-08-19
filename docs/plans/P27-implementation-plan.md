@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P27-PLAN` |
 | Phase | P27 — Analytics + Product Intelligence |
-| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T007 event ingestion boundary executed |
-| Baseline | `ec6207c` (`feat(analytics): define T006 provider abstraction boundary`) |
+| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T008 hardening guardrails executed |
+| Baseline | `b35e3dc` (`feat(analytics): define T007 event ingestion publisher boundary`) |
 | Authoritative sources | `docs/ROADMAP.md` § P27 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` · `docs/pages/09-page-state-and-composition-rules.md` §19 · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P25 Notification · P26 SEO |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Analytics + Product Intelligence phase.
 
-> **Envelope note:** `TC-P27-PLAN`–`T006` ACCEPTED · `TC-P27-T007` implemented (ingestion/publisher boundary) · **do not execute `TC-P27-T008` until architect accepts `T007`**.
+> **Envelope note:** `TC-P27-PLAN`–`T007` ACCEPTED · `TC-P27-T008` implemented (hardening/guardrails) · **do not execute `TC-P27-T009` until architect accepts `T008`**.
 
 ---
 
@@ -82,10 +82,10 @@ P27 must preserve:
 | `P27-R2` | Product event taxonomy boundary | **RESOLVED** — canonical event kinds owned by Analytics contracts · roadmap events covered · publishers emit semantic facts only · no vendor taxonomy · no event persistence in T005 |
 | `P27-R3` | Provider abstraction / dispatch boundary | **RESOLVED** — provider-neutral dispatch contracts · no named production analytics vendor · zero-provider posture valid · T006 port only |
 | `P27-R4` | Privacy / PII interaction boundary | **RESOLVED** — analytics must not become PII SoR · opaque resource/session references only · Booking/Party remain identity SoR · T007 boundary only |
-| `P27-R5` | Consent / attribution interaction boundary | **OPEN** — analytics consent/attribution distinct from TripPlanner consent and Notification preferences · marketing vs product analytics separation preserved |
+| `P27-R5` | Consent / attribution interaction boundary | **RESOLVED** — analytics consent/attribution distinct from TripPlanner consent and Notification preferences · marketing vs product analytics separation preserved · T008 boundary only |
 | `P27-R6` | Event ingestion / idempotency boundary | **RESOLVED** — downstream async ingestion · failed analytics must not fail domain transactions · idempotent dispatch posture · non-blocking · T007 port only |
-| `P27-R7` | Public/admin operational boundary | **OPEN** — internal read/ops posture only until explicit product lock · no public analytics mutation/query API by default |
-| `P27-R8` | Deferred/out-of-scope posture (warehouse, BI dashboards, ML, streaming) | **OPEN** — data warehouse · BI dashboards · ML recommendation · real-time streaming analytics · cross-vendor identity graph remain DEFERRED unless explicitly locked |
+| `P27-R7` | Public/admin operational boundary | **RESOLVED** — internal read/ops posture only until explicit product lock · no public analytics mutation/query API by default · T008 boundary only |
+| `P27-R8` | Deferred/out-of-scope posture (warehouse, BI dashboards, ML, streaming) | **RESOLVED** — data warehouse · BI dashboards · ML recommendation · real-time streaming analytics · cross-vendor identity graph remain DEFERRED unless explicitly locked · T008 boundary only |
 
 ---
 
@@ -99,8 +99,8 @@ Proposed sequence after plan acceptance:
 4. `TC-P27-T004` — analytics module/schema foundation (**IMPLEMENTED / ACCEPTED**)
 5. `TC-P27-T005` — product event taxonomy boundary (**IMPLEMENTED / ACCEPTED**)
 6. `TC-P27-T006` — provider abstraction / dispatch boundary (**IMPLEMENTED / ACCEPTED**)
-7. `TC-P27-T007` — event ingestion / publisher interaction boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-8. `TC-P27-T008` — hardening and guardrails (**NOT EXECUTED**)
+7. `TC-P27-T007` — event ingestion / publisher interaction boundary (**IMPLEMENTED / ACCEPTED**)
+8. `TC-P27-T008` — hardening and guardrails (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 9. `TC-P27-T009` — evidence pack (**NOT EXECUTED**)
 10. `TC-P27-GATE` — acceptance gate (**NOT EXECUTED**)
 
@@ -134,7 +134,7 @@ Proposed sequence after plan acceptance:
 ### TC-P27-T008 — Hardening and guardrails
 
 - Purpose: consolidate accepted Analytics boundaries; resolve R5/R7/R8 posture; forbid deferred/public-ops product types.
-- Delivered: consent/attribution interaction boundary · operational boundary · deferred-scope boundary · hardening guardrail tests.
+- Delivered: `AnalyticsConsentInteractionBoundary` · `AnalyticsAttributionBoundary` · `AnalyticsOperationalBoundary` · `AnalyticsDeferredScopeBoundary` · `HardeningGuardrailsImplemented` flag · `AnalyticsHardeningGuardrailTests`.
 - Forbidden in this task: consent persistence product · public analytics query/mutation API · warehouse connectors · evidence pack (T009) · GATE.
 
 ### TC-P27-T007 — Event ingestion / publisher interaction boundary

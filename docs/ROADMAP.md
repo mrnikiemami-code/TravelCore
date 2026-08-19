@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P27 — Analytics + Product Intelligence** (**IN_PROGRESS** — `TC-P27-T007` implemented) |
-| Phase Status | P00–P26 COMPLETE · P27 IN_PROGRESS · T007 ingestion boundary executed |
+| Current Phase | **P27 — Analytics + Product Intelligence** (**IN_PROGRESS** — `TC-P27-T008` implemented) |
+| Phase Status | P00–P26 COMPLETE · P27 IN_PROGRESS · T008 hardening guardrails executed |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P27-T007 RESULT`; do **not** continue to `TC-P27-T008` |
+| Current Next Task | Return `TC-P27-T008 RESULT`; do **not** continue to `TC-P27-T009` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -659,13 +659,13 @@ Programmatic SEO فقط با inventory/value · unique purpose · content qualit
 
 ## P27 — Analytics + Product Intelligence
 
-**Status:** IN_PROGRESS — `TC-P27-T007` implemented · [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md) · **P27-R1–R4,R6 RESOLVED**
+**Status:** IN_PROGRESS — `TC-P27-T008` implemented · [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md) · **P27-R1–R8 RESOLVED**
 
 رویدادهایی مانند SearchPerformed · SearchResultClicked · SearchNoResults · FilterApplied · TourViewed · HotelViewed · QuoteCreated · BookingStarted · BookingCompleted.
 
 Analytics پشت abstraction معقول؛ فراخوانی provider-specific در Domain پراکنده نشود.
 
-**Implementation plan:** [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md) · **P27-R1–R8 OPEN**
+**Implementation plan:** [`docs/plans/P27-implementation-plan.md`](plans/P27-implementation-plan.md) · **P27-R1–R8 RESOLVED**
 
 ---
 
