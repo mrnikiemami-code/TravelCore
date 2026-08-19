@@ -29,6 +29,8 @@ public sealed class SeoDbContext : DbContext
 
     public DbSet<SeoMetadataOverride> SeoMetadataOverrides => Set<SeoMetadataOverride>();
 
+    public DbSet<SeoContentGraphNode> SeoContentGraphNodes => Set<SeoContentGraphNode>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

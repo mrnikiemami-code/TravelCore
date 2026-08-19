@@ -31,13 +31,14 @@ public sealed class SeoMigrationLifecycleTests
         await using (var inventoryDb = _postgres.CreateDbContext())
         {
             expectedMigrations = inventoryDb.Database.GetMigrations().ToArray();
-            Assert.Equal(6, expectedMigrations.Length);
+            Assert.Equal(7, expectedMigrations.Length);
             Assert.EndsWith("_InitialSeoScaffolding", expectedMigrations[0], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoRoutes", expectedMigrations[1], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoPathHistoryAndReservations", expectedMigrations[2], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoRedirectsAndCanonicalBaseline", expectedMigrations[3], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoIndexPolicies", expectedMigrations[4], StringComparison.Ordinal);
             Assert.EndsWith("_AddSeoMetadataOverrides", expectedMigrations[5], StringComparison.Ordinal);
+            Assert.EndsWith("_AddSeoContentGraphFoundation", expectedMigrations[6], StringComparison.Ordinal);
         }
 
         await using (var db = _postgres.CreateDbContext())
@@ -53,7 +54,7 @@ public sealed class SeoMigrationLifecycleTests
             Assert.Equal(1, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int FROM pg_namespace WHERE nspname = 'seo';
                 """, ct));
-            Assert.Equal(7, await ScalarIntAsync(conn, """
+            Assert.Equal(8, await ScalarIntAsync(conn, """
                 SELECT COUNT(*)::int
                 FROM information_schema.tables
                 WHERE table_schema = 'seo'
@@ -64,6 +65,7 @@ public sealed class SeoMigrationLifecycleTests
                     'seo_redirect_candidates',
                     'seo_redirects',
                     'seo_index_policies',
+                    'seo_content_graph_nodes',
                     '__EFMigrationsHistory');
                 """, ct));
             Assert.Empty(await db.Database.GetPendingMigrationsAsync(ct));

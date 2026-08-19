@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using TravelCore.Modules.Seo.Infrastructure;
 namespace TravelCore.Modules.Seo.Infrastructure.Migrations
 {
     [DbContext(typeof(SeoDbContext))]
-    partial class SeoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260819174531_AddSeoContentGraphFoundation")]
+    partial class AddSeoContentGraphFoundation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

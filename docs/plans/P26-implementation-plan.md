@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P26-PLAN` |
 | Phase | P26 — Advanced SEO + Content Graph |
-| Status | PLAN ACCEPTED · **P26 IN_PROGRESS** · T001–T003 plan-driven progression · **no product execution yet** |
-| Baseline | `a984edb` (`docs(p26): align T002 plan-driven phase state`) |
+| Status | PLAN ACCEPTED · **P26 IN_PROGRESS** · T001–T004 progression · product foundation started |
+| Baseline | `f5ade2e` (`docs(p26): expand T003 plan decision inventory and execution sequence`) |
 | Authoritative sources | `docs/ROADMAP.md` § P26 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/12-seo-constitution.md` · `docs/architecture/15-future-architecture-transition-map.md` § W · `docs/seo/01`–`05` · ADR 0007–0010 · P05 SEO engine · P08 Content · P14 enrichment · P15 Search |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Advanced SEO + Content Graph phase.
 
-> **Envelope note:** `TC-P26-T001`–`T002` ACCEPTED · `TC-P26-T003` implemented (plan decision inventory + execution sequence) · **do not execute `TC-P26-T004` until architect accepts `T003`**.
+> **Envelope note:** `TC-P26-T001`–`T003` ACCEPTED · `TC-P26-T004` implemented (content graph foundation) · **do not execute `TC-P26-T005` until architect accepts `T004`**.
 
 ---
 
@@ -79,7 +79,7 @@ P26 must preserve:
 
 | ID | Topic | Status |
 |----|-------|--------|
-| `P26-R1` | Content graph ownership / schema posture vs Content/Destination/Search | **OPEN** — SEO owns graph mechanics in schema `seo` (or declared SEO-owned graph tables) · **SEO != Content editorial** · **SEO != Destination hierarchy SoR** · **SEO != Search ranking SoR** · semantic references by ResourceType+ResourceId only · no peer-schema FK |
+| `P26-R1` | Content graph ownership / schema posture vs Content/Destination/Search | **RESOLVED** — SEO owns graph mechanics in schema `seo` · graph node foundation table `seo_content_graph_nodes` · **SEO != Content editorial** · **SEO != Destination hierarchy SoR** · **SEO != Search ranking SoR** · semantic references by ResourceType+ResourceId only · no peer-schema FK |
 | `P26-R2` | Hub / cluster taxonomy (Destination hubs · content clusters) | **OPEN** — hub/cluster taxonomy owned by SEO graph semantics · Destination/Content remain fact publishers · no hub content duplication |
 | `P26-R3` | Internal link graph boundary | **OPEN** — directed semantic link edges · editorial links remain Content-owned facts · SEO owns graph orchestration/indexation implications only |
 | `P26-R4` | Programmatic landing factory posture | **OPEN** — controlled landing generation with quality gates · inventory/value/uniqueness required · **thin URL spam forbidden** · factory automation deferred until explicit lock |
@@ -96,8 +96,8 @@ Proposed sequence after plan acceptance:
 
 1. `TC-P26-PLAN` — P26 architecture implementation plan (**IMPLEMENTED / ACCEPTED**)
 2. `TC-P26-T002` — plan-driven SoT alignment (**IMPLEMENTED / ACCEPTED**)
-3. `TC-P26-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-4. `TC-P26-T004` — content graph module/schema foundation (**NOT EXECUTED**)
+3. `TC-P26-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
+4. `TC-P26-T004` — content graph module/schema foundation (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 5. `TC-P26-T005` — hub/cluster boundary (**NOT EXECUTED**)
 6. `TC-P26-T006` — internal link graph boundary (**NOT EXECUTED**)
 7. `TC-P26-T007` — programmatic landing + route quality boundary (**NOT EXECUTED**)
