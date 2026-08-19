@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P24-PLAN` |
 | Phase | P24 — B2B / Agency Commerce |
-| Status | PLAN ACCEPTED · **P24-R1–R8 = RESOLVED** · T001–T008 implemented · **not COMPLETE** |
+| Status | PLAN ACCEPTED · **P24-R1–R8 = RESOLVED** · T001–T009 implemented · **READY_FOR_GATE** |
 | Baseline | `eea58e2` (`docs(dynamic-package): complete P23 acceptance gate`) |
 | Authoritative sources | `docs/ROADMAP.md` § P24 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/15-future-architecture-transition-map.md` · P13 Agency Marketplace · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · P23 DynamicPackage |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document defines the P24 execution architecture and task decomposition.
 
-> **Envelope note:** `TC-P24-T001`–`T007` ACCEPTED · `TC-P24-T008` hardening and guardrails delivered · **do not execute `TC-P24-T009`** until architect accepts T008.
+> **Envelope note:** `TC-P24-T001`–`T008` ACCEPTED · `TC-P24-T009` evidence pack + hardening review delivered · **do not execute `TC-P24-GATE`** until architect accepts T009.
 
 ---
 
@@ -93,18 +93,18 @@ Proposed sequence after plan acceptance:
 5. `TC-P24-T005` — agency distribution boundary (**IMPLEMENTED / ACCEPTED**)
 6. `TC-P24-T006` — agency commerce payment boundary (**IMPLEMENTED / ACCEPTED**)
 7. `TC-P24-T007` — agency commerce operational boundary (**IMPLEMENTED / ACCEPTED**)
-8. `TC-P24-T008` — hardening and guardrails (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-9. `TC-P24-T009` — evidence pack (**NOT EXECUTED**)
+8. `TC-P24-T008` — hardening and guardrails (**IMPLEMENTED / ACCEPTED**)
+9. `TC-P24-T009` — evidence pack (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 10. `TC-P24-GATE` — acceptance gate
 
-### TC-P24-T008 — Hardening and guardrails
+### TC-P24-T009 — Hardening and evidence pack
 
-- Depends on **P24-R8**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Guardrail-only reinforcement · `B2BOwnershipBoundary` hardening flags · `B2BHardeningGuardrailTests` architecture enforcement · no provider execution, no settlement execution, no advanced-finance implementation · **TC-P24-T009 NOT EXECUTED**.
+- Depends on **P24-R1–R8**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Adversarial architecture review completed · evidence pack added (`docs/plans/P24-T009-hardening-and-evidence-pack.md`) · no ownership/dependency/financial execution leakage introduced · phase recorded as **P24 READY_FOR_GATE** · **TC-P24-GATE NOT EXECUTED**.
 
 ---
 
 ## 7. Plan outcome
 
-- `TC-P24-T001`–`T007` **EXECUTED / ACCEPTED**.
-- `TC-P24-T008` **EXECUTED** (hardening + guardrails).
-- `TC-P24-T009` remains **NOT EXECUTED**.
+- `TC-P24-T001`–`T008` **EXECUTED / ACCEPTED**.
+- `TC-P24-T009` **EXECUTED** (hardening evidence pack + review).
+- `P24` is **READY_FOR_GATE**. `TC-P24-GATE` remains **NOT EXECUTED**.
