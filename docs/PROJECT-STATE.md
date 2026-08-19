@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P29 — Production Hardening** (**T003 IN PROGRESS** — `TC-P29-T003`) |
+| Current Phase | **P29 — Production Hardening** (**T004 IN PROGRESS** — `TC-P29-T004`) |
 | Previous Phase | **P28 — Performance & Scale** (**COMPLETE / ACCEPTED** — `TC-P28-GATE` `fef29ab`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P29-T003` — security / authorization review boundary (**IN PROGRESS**) |
-| Current Next Task | `TC-P29-T004` — rate limiting / abuse protection boundary (after T003 acceptance) |
+| Current Active Product Task | `TC-P29-T004` — rate limiting / abuse protection boundary (**IN PROGRESS**) |
+| Current Next Task | `TC-P29-T005` — audit / compliance event boundary (after T004 acceptance) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -328,9 +328,10 @@
 | P28 | **COMPLETE** — `TC-P28-GATE` implemented · **P28-R1–R8 RESOLVED** |
 | P29 Plan | `TC-P29-PLAN` **COMPLETE / ACCEPTED** (`6aab050`) — [`docs/plans/P29-implementation-plan.md`](plans/P29-implementation-plan.md) |
 | P29 T002 | `TC-P29-T002` **COMPLETE / ACCEPTED** (`8308bb2`) — production hardening foundation boundary |
-| P29 T003 | `TC-P29-T003` **IN PROGRESS** — security / authorization review boundary · **P29-R1 RESOLVED** |
-| P29-R1 (security/authorization review) | **RESOLVED** |
-| P29 | **IN PROGRESS** — T003 security boundary · **P29-R2–R8 OPEN** |
+| P29 T003 | `TC-P29-T003` **COMPLETE / ACCEPTED** (`ae4ecbf`) — security / authorization review boundary · **P29-R1 RESOLVED** |
+| P29 T004 | `TC-P29-T004` **IN PROGRESS** — rate limiting / abuse protection boundary · **P29-R2 RESOLVED** |
+| P29-R2 (rate limiting / abuse protection) | **RESOLVED** |
+| P29 | **IN PROGRESS** — T004 rate limit boundary · **P29-R3–R8 OPEN** |
 | P28-R5 (CDN/static delivery) | **RESOLVED** |
 | P28-R6 (frontend CWV/bundle) | **RESOLVED** |
 | P28-R7 (Search read performance) | **RESOLVED** |
