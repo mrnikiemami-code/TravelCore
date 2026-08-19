@@ -120,6 +120,31 @@ public sealed class AnalyticsHardeningGuardrailTests
     }
 
     [Fact]
+    public void P27_Gate_Evidence_Locks_Acceptance_Artifacts()
+    {
+        var evidence = Path.Combine(RepoRoot, "docs", "plans", "P27-GATE-acceptance-evidence.md");
+        Assert.True(File.Exists(evidence), evidence);
+        var text = File.ReadAllText(evidence);
+
+        string[] required =
+        [
+            "TC-P27-GATE",
+            "P27 COMPLETE",
+            "P27-R1",
+            "P27-R8",
+            "TC-P27-T009",
+            "No new Analytics product capability",
+            "P28",
+            "NOT IMPLEMENTED",
+        ];
+
+        foreach (var item in required)
+        {
+            Assert.Contains(item, text, StringComparison.Ordinal);
+        }
+    }
+
+    [Fact]
     public void P27_Evidence_Pack_Locks_T009_Hardening_Artifacts()
     {
         var evidence = Path.Combine(RepoRoot, "docs", "plans", "P27-T009-hardening-and-evidence-pack.md");
