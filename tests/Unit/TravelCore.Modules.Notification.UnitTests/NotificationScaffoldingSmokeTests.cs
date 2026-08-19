@@ -105,4 +105,17 @@ public sealed class NotificationScaffoldingSmokeTests
         Assert.NotNull(typeof(INotificationDeliveryProvider));
         Assert.NotNull(typeof(INotificationProviderResolver));
     }
+
+    [Fact]
+    public void EventTemplateBoundary_Keeps_T007_Ports_Only()
+    {
+        Assert.True(NotificationOwnershipBoundary.TemplateOrchestrationImplemented);
+        Assert.True(NotificationOwnershipBoundary.EventConsumptionBoundaryImplemented);
+        Assert.False(NotificationIdempotencyBoundary.OutboxConsumerImplemented);
+        Assert.False(NotificationTemplateBoundary.TemplatePersistenceImplementedFlag);
+        Assert.False(NotificationEventConsumptionBoundary.OutboxConsumerImplemented);
+        Assert.NotNull(typeof(INotificationSemanticEventConsumer));
+        Assert.NotNull(typeof(INotificationTemplateOrchestrator));
+        Assert.Equal("LeadSubmitted", NotificationTemplateReference.FromKey("lead-submitted").TemplateKey);
+    }
 }
