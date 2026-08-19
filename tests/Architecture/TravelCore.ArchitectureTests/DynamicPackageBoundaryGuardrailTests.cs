@@ -67,7 +67,7 @@ public sealed class DynamicPackageBoundaryGuardrailTests
         Assert.True(DynamicPackageOwnershipBoundary.CompositionModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PackageOfferModelImplemented);
         Assert.True(DynamicPackageOwnershipBoundary.PackageMonetaryModelImplemented);
-        Assert.False(DynamicPackageOwnershipBoundary.OrchestrationModelImplemented);
+        Assert.True(DynamicPackageOwnershipBoundary.OrchestrationModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.SagaModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.CancellationModelImplemented);

@@ -55,7 +55,7 @@ public sealed class DynamicPackageScaffoldingSmokeTests
         Assert.True(DynamicPackageOwnershipBoundary.SeparateDynamicPackageSchemaImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.DynamicPackageBookingAggregateImplemented);
         Assert.True(DynamicPackageOwnershipBoundary.CompositionModelImplemented);
-        Assert.False(DynamicPackageOwnershipBoundary.OrchestrationModelImplemented);
+        Assert.True(DynamicPackageOwnershipBoundary.OrchestrationModelImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.PublicApiImplemented);
         Assert.False(DynamicPackageOwnershipBoundary.FrontendImplemented);
