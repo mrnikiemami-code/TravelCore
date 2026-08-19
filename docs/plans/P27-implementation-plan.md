@@ -102,7 +102,7 @@ Proposed sequence after plan acceptance:
 7. `TC-P27-T007` — event ingestion / publisher interaction boundary (**IMPLEMENTED / ACCEPTED**)
 8. `TC-P27-T008` — hardening and guardrails (**IMPLEMENTED / ACCEPTED**)
 9. `TC-P27-T009` — evidence pack (**IMPLEMENTED / ACCEPTED**)
-10. `TC-P27-GATE` — acceptance gate (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
+10. `TC-P27-GATE` — acceptance gate (**IMPLEMENTED / ACCEPTED**)
 
 > Note: `TC-P27-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25/P26 progression where PLAN equals T001 authoring.
 

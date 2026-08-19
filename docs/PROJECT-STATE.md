@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P27-GATE` — acceptance gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P27-GATE RESULT`; do **not** start P28 |
+| Current Active Product Task | — (P27 COMPLETE; awaiting `TC-P28-PLAN`) |
+| Current Next Task | Await architect `TC-P28-PLAN` envelope; do **not** start P28 without envelope |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -314,7 +314,7 @@
 | P27 T007 | `TC-P27-T007` **COMPLETE / ACCEPTED** (`b35e3dc`) — ingestion/publisher boundary; **P27-R4/R6 RESOLVED** |
 | P27 T008 | `TC-P27-T008` **COMPLETE / ACCEPTED** (`ac4df32`) — hardening guardrails; **P27-R5/R7/R8 RESOLVED** |
 | P27 T009 | `TC-P27-T009` **COMPLETE / ACCEPTED** (`ce61f06`) — evidence pack · **READY_FOR_GATE** |
-| P27 GATE | `TC-P27-GATE` implemented / AWAITING_ARCHITECT_REVIEW — [`docs/plans/P27-GATE-acceptance-evidence.md`](plans/P27-GATE-acceptance-evidence.md) |
+| P27 GATE | `TC-P27-GATE` **COMPLETE / ACCEPTED** (`fb55c0a`) — [`docs/plans/P27-GATE-acceptance-evidence.md`](plans/P27-GATE-acceptance-evidence.md) |
 | P27-R5 (consent / attribution interaction boundary) | **RESOLVED** |
 | P27-R7 (public/admin operational boundary) | **RESOLVED** |
 | P27-R8 (deferred/out-of-scope posture) | **RESOLVED** |
