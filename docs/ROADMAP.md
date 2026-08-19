@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P24 — B2B / Agency Commerce** (**IN_PROGRESS** — `TC-P24-T003` implemented · AWAITING_ARCHITECT_REVIEW · P24-R1–R3 RESOLVED) |
-| Phase Status | P00–P23 COMPLETE · P23 GATE ACCEPTED (`eea58e2`) · **P23-R1–R8 RESOLVED** · P24 T001–T002 ACCEPTED · T003 implemented |
+| Current Phase | **P24 — B2B / Agency Commerce** (**IN_PROGRESS** — `TC-P24-T004` implemented · AWAITING_ARCHITECT_REVIEW · P24-R1–R4 RESOLVED) |
+| Phase Status | P00–P23 COMPLETE · P24 T001–T003 ACCEPTED · T004 implemented |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Return `TC-P24-T003 RESULT`; do **not** execute `TC-P24-T004` |
+| Current Next Task | Return `TC-P24-T004 RESULT`; do **not** execute `TC-P24-T005` |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -123,7 +123,7 @@
 - **P21** = COMPLETE (`TC-P21-GATE` ACCEPTED `858b4be` / docs `d6bd842` · **P21-R1–R8 RESOLVED** · T001–T009 ACCEPTED) [`plans/P21-GATE-acceptance-evidence.md`](plans/P21-GATE-acceptance-evidence.md)
 - **P22** = COMPLETE (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · **P22-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
 - **P23** = COMPLETE (`TC-P23-GATE` re-execution · **P23-R1–R8 RESOLVED** · T001–T009 ACCEPTED)
-- **P24** = IN_PROGRESS (`TC-P24-T003` implemented · P24-R1–R3 RESOLVED)
+- **P24** = IN_PROGRESS (`TC-P24-T004` implemented · P24-R1–R4 RESOLVED)
 - **P25–P29 و Post-P29** = PLANNED / NOT_STARTED
 
 کار آینده را COMPLETE علامت نزنید.
@@ -627,7 +627,7 @@ Inventory پرواز نباید سخت به یک provider قفل شود.
 
 ## P24 — B2B / Agency Commerce
 
-**Status:** IN_PROGRESS (`TC-P24-T003` implemented · **P24-R1–R3 RESOLVED**)
+**Status:** IN_PROGRESS (`TC-P24-T004` implemented · **P24-R1–R4 RESOLVED**)
 
 Agency access · B2B contracts · partner pricing · partner booking · credit/commercial rules در صورت تأیید.
 
@@ -779,7 +779,7 @@ P26 = Advanced SEO.
 | P21 | Hotel Booking | **COMPLETE** (`TC-P21-GATE` ACCEPTED `858b4be` / docs `d6bd842` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P22 | Flight | **COMPLETE** (`TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0` · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
 | P23 | Dynamic Package / Flight + Hotel | **COMPLETE** (GATE re-execution · R1–R8 RESOLVED · T001–T009 ACCEPTED) |
-| P24 | B2B / Agency Commerce | IN_PROGRESS (`TC-P24-T003` implemented · P24-R1–R3 RESOLVED) |
+| P24 | B2B / Agency Commerce | IN_PROGRESS (`TC-P24-T004` implemented · P24-R1–R4 RESOLVED) |
 | P25 | Notification | PLANNED |
 | P26 | Advanced SEO + Content Graph | PLANNED |
 | P27 | Analytics + Product Intelligence | PLANNED |

@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P24 — B2B / Agency Commerce** (**IN_PROGRESS** — `TC-P24-T003` implemented · AWAITING_ARCHITECT_REVIEW · P24-R1–R3 RESOLVED) |
+| Current Phase | **P24 — B2B / Agency Commerce** (**IN_PROGRESS** — `TC-P24-T004` implemented · AWAITING_ARCHITECT_REVIEW · P24-R1–R4 RESOLVED) |
 | Previous Phase | **P23 — Dynamic Package / Flight + Hotel** (**COMPLETE / ACCEPTED** — `TC-P23-GATE` re-execution · evidence [`docs/plans/P23-GATE-acceptance-evidence.md`](plans/P23-GATE-acceptance-evidence.md)) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P24-T003` — Agency membership & Access relationship boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P24-T003 RESULT`; do **not** execute `TC-P24-T004` |
+| Current Active Product Task | `TC-P24-T004` — Agency commercial profile boundary (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P24-T004 RESULT`; do **not** execute `TC-P24-T005` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -272,7 +272,10 @@
 | P24 | **IN_PROGRESS** — `TC-P24-T003` implemented · **P24-R1–R3 RESOLVED** · AWAITING_ARCHITECT_REVIEW |
 | P24 T001 | `TC-P24-T001` **COMPLETE / ACCEPTED** (`cc4adcc`) — B2B module + schema `b2b` foundation |
 | P24 T002 | `TC-P24-T002` **COMPLETE / ACCEPTED** (`e811513`) — AgencyReference/AgencyRelationshipBoundary/AgencyMembershipBoundary |
-| P24 T003 | `TC-P24-T003` implemented / AWAITING_ARCHITECT_REVIEW — AgencyMemberReference/AgencyAccessRelationshipBoundary; no user/role/permission storage; TC-P24-T004 NOT EXECUTED |
+| P24 | **IN_PROGRESS** — `TC-P24-T004` implemented · **P24-R1–R4 RESOLVED** · AWAITING_ARCHITECT_REVIEW |
+| P24 T003 | `TC-P24-T003` **COMPLETE / ACCEPTED** (`2f4788a`) — AgencyMemberReference/AgencyAccessRelationshipBoundary |
+| P24 T004 | `TC-P24-T004` implemented / AWAITING_ARCHITECT_REVIEW — AgencyCommercialProfileBoundary/AgencyBusinessReference/CommercialCapabilityReference; TC-P24-T005 NOT EXECUTED |
+| P24-R4 (agency commercial profile boundary) | **RESOLVED** |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |
 | P24-R3 (agency membership & Access relationship boundary) | **RESOLVED** |

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P24-PLAN` |
 | Phase | P24 — B2B / Agency Commerce |
-| Status | PLAN ACCEPTED · **P24-R1–R3 = RESOLVED** · **P24-R4–R8 OPEN** · T001–T003 implemented · **not COMPLETE** |
+| Status | PLAN ACCEPTED · **P24-R1–R4 = RESOLVED** · **P24-R5–R8 OPEN** · T001–T004 implemented · **not COMPLETE** |
 | Baseline | `eea58e2` (`docs(dynamic-package): complete P23 acceptance gate`) |
 | Authoritative sources | `docs/ROADMAP.md` § P24 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/architecture/15-future-architecture-transition-map.md` · P13 Agency Marketplace · P19 Booking · P20 Payment · P21 HotelBooking · P22 Flight · P23 DynamicPackage |
 | Backend root | `src/backend` |
@@ -12,7 +12,7 @@
 
 This document defines the P24 execution architecture and task decomposition.
 
-> **Envelope note:** P24 foundation progressing. `TC-P24-T001`/`T002` ACCEPTED · `TC-P24-T003` membership/access boundary delivered · **do not execute `TC-P24-T004`** until architect accepts T003.
+> **Envelope note:** P24 foundation progressing. `TC-P24-T001`–`T003` ACCEPTED · `TC-P24-T004` commercial profile boundary delivered · **do not execute `TC-P24-T005`** until architect accepts T004.
 
 ---
 
@@ -74,7 +74,7 @@ P24 must preserve:
 | `P24-R1` | Agency identity/auth boundary vs Party/Access | **RESOLVED** — independent B2B module · schema `b2b` · **B2B != Identity** · **B2B != Access** · **B2B != Party** · **B2B != Booking** · **B2B != Payment** · **B2B != AgencyMarketplace** · Agency is business concept (not Identity) · agency users are Access subjects · agency organization relationship belongs to Party · Identity/Access/Party ownership unchanged · Payment target kinds unchanged (3 only) |
 | `P24-R2` | Agency business identity boundary vs Party/Access/Identity | **RESOLVED** — `AgencyReference` / `AgencyRelationshipBoundary` / `AgencyMembershipBoundary` in B2B.Domain · Agency is business concept (not Identity) · agency users are Access subjects · agency organization relationship belongs to Party · no Agency aggregate · no persistence · no Booking/Payment relations |
 | `P24-R3` | Agency membership & Access relationship boundary | **RESOLVED** — `AgencyMemberReference` / `AgencyAccessRelationshipBoundary` in B2B.Domain · membership intent only · agency users are Access subjects · B2B does not own users/authentication/authorization · no AgencyMember/User/Role/Permission tables · no invitation flow · Identity/Access/Party ownership unchanged |
-| `P24-R4` | Partner booking orchestration boundary vs Booking/Flight/HotelBooking/DynamicPackage | OPEN |
+| `P24-R4` | Agency commercial profile boundary vs Booking/Payment/Pricing | **RESOLVED** — `AgencyCommercialProfileBoundary` / `AgencyBusinessReference` / `CommercialCapabilityReference` in B2B.Domain · commercial profile intent only · B2B does not own financial execution · Payment owns money execution · Booking owns reservation execution · Pricing remains price authority · no Contract/Commission/Credit/Wallet/Settlement/Invoice |
 | `P24-R5` | Credit/commercial ledger ownership vs Payment/Accounting | OPEN |
 | `P24-R6` | Public/Admin/Agency surface boundaries and authorization | OPEN |
 | `P24-R7` | Reporting/read-model boundaries and operational visibility | OPEN |
@@ -88,8 +88,8 @@ Proposed sequence after plan acceptance:
 
 1. `TC-P24-T001` — ownership/module/schema boundaries (**IMPLEMENTED / ACCEPTED**)
 2. `TC-P24-T002` — agency business identity boundary (**IMPLEMENTED / ACCEPTED**)
-3. `TC-P24-T003` — agency membership & Access relationship boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-4. `TC-P24-T004` — partner booking boundary
+3. `TC-P24-T003` — agency membership & Access relationship boundary (**IMPLEMENTED / ACCEPTED**)
+4. `TC-P24-T004` — agency commercial profile boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 5. `TC-P24-T005` — credit/commercial policy boundary
 6. `TC-P24-T006` — API/surface and authorization boundary
 7. `TC-P24-T007` — reporting/operational boundary
@@ -97,32 +97,29 @@ Proposed sequence after plan acceptance:
 9. `TC-P24-T009` — evidence pack
 10. `TC-P24-GATE` — acceptance gate
 
-### TC-P24-T003 — Agency membership & Access relationship boundary
+### TC-P24-T004 — Agency commercial profile boundary
 
-- Depends on **P24-R3**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Domain boundary models only (`AgencyMemberReference`, `AgencyAccessRelationshipBoundary`) · membership intent/reference only · no user/role/permission/invitation persistence · Identity/Access/Party ownership unchanged · **TC-P24-T004 NOT EXECUTED**.
+- Depends on **P24-R4**. **IMPLEMENTED / AWAITING_ARCHITECT_REVIEW.** Domain boundary models only (`AgencyCommercialProfileBoundary`, `AgencyBusinessReference`, `CommercialCapabilityReference`) · no commercial/financial tables · Payment/Booking/Pricing execution unchanged · **TC-P24-T005 NOT EXECUTED**.
 
 ---
 
-## 6. IN / OUT for T003
+## 6. IN / OUT for T004
 
 ### IN
-- B2B.Domain membership/access boundary models (logical references only)
-- Guardrail tests proving B2B does not own users/auth/authz
-- P24-R3 recorded RESOLVED
+- B2B.Domain commercial profile boundary models (logical references only)
+- Guardrail tests proving no financial/booking/pricing execution ownership
+- P24-R4 recorded RESOLVED
 
 ### OUT
-- AgencyMember/User/Role/Permission tables · invitation flow · Access policy changes
-- Authentication/authorization changes · migrations · API/Frontend
-- Executing `TC-P24-T004`
+- Contract · Commission · Credit · Wallet · Settlement · Invoice · commercial tables
+- Payment/Booking changes · migrations · API/Frontend
+- Executing `TC-P24-T005`
 
 ---
 
 ## 7. Plan outcome
 
-- P24 plan document created.
-- P24 task envelope captured.
-- SoT updated for T001–T003 completion.
-- `TC-P24-T001` **EXECUTED / ACCEPTED**.
-- `TC-P24-T002` **EXECUTED / ACCEPTED**.
-- `TC-P24-T003` **EXECUTED** (boundary only).
-- `TC-P24-T004` remains **NOT EXECUTED**.
+- SoT updated for T001–T004 completion.
+- `TC-P24-T001`–`T003` **EXECUTED / ACCEPTED**.
+- `TC-P24-T004` **EXECUTED** (boundary only).
+- `TC-P24-T005` remains **NOT EXECUTED**.
