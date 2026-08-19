@@ -712,7 +712,7 @@ security/authorization review · rate limiting · audit · content sanitization 
 
 ## UI Validation Sequence
 
-**Status:** **IN PROGRESS** (`TC-UIVAL-PLAN` accepted · `TC-UIVAL-T001` next)
+**Status:** **COMPLETE / ACCEPTED** (`TC-UIVAL-GATE`)
 
 **Implementation plan:** [`docs/plans/UIVAL-implementation-plan.md`](plans/UIVAL-implementation-plan.md)
 
@@ -803,4 +803,4 @@ P26 = Advanced SEO.
 | P28 | Performance & Scale | **COMPLETE / ACCEPTED** |
 | P29 | Production Hardening | **COMPLETE / ACCEPTED** |
 | Post-P29 | Continuous Evolution | **COMPLETE / ACCEPTED** |
-| UIVAL | UI Validation Sequence | **IN PROGRESS** (`TC-UIVAL-PLAN` accepted) |
+| UIVAL | UI Validation Sequence | **COMPLETE / ACCEPTED** (`TC-UIVAL-GATE`) |

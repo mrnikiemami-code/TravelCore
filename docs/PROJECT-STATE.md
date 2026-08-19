@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **UI Validation** (**IN PROGRESS** — `TC-UIVAL-PLAN` accepted · `TC-UIVAL-T001` next) |
+| Current Phase | **UI Validation** (**COMPLETE / ACCEPTED** — `TC-UIVAL-GATE`) |
 | Previous Phase | **Post-P29 — Continuous Evolution** (**COMPLETE / ACCEPTED** — `TC-Post-P29-GATE` `f0d897b`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-UIVAL-T010` — Visa validation (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **`TC-UIVAL-T011`** — Booking/Checkout validation |
+| Current Active Product Task | `TC-UIVAL-GATE` — UI Validation acceptance gate (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **SEO Validation Sequence** (ROADMAP § SEO Validation) — await architect prioritization / `TC-SEOVAL-PLAN` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -359,8 +359,14 @@
 | UIVAL T007 | `TC-UIVAL-T007` **COMPLETE / ACCEPTED** (`a1dd434`) — home/discovery |
 | UIVAL T008 | `TC-UIVAL-T008` **COMPLETE / ACCEPTED** — content article |
 | UIVAL T009 | `TC-UIVAL-T009` **COMPLETE / ACCEPTED** — travelogue |
-| UIVAL T010 | `TC-UIVAL-T010` **COMPLETE / ACCEPTED** — visa |
-| UIVAL T011 | `TC-UIVAL-T011` — Booking/Checkout validation (**NEXT**) |
+| UIVAL T010 | `TC-UIVAL-T010` **COMPLETE / ACCEPTED** (`7739f07`) — visa |
+| UIVAL T011 | `TC-UIVAL-T011` **COMPLETE / ACCEPTED** — booking/checkout |
+| UIVAL T012 | `TC-UIVAL-T012` **COMPLETE / ACCEPTED** — flight search |
+| UIVAL T013 | `TC-UIVAL-T013` **COMPLETE / ACCEPTED** — hotel booking search |
+| UIVAL T014 | `TC-UIVAL-T014` **COMPLETE / ACCEPTED** — admin surfaces |
+| UIVAL T015 | `TC-UIVAL-T015` **COMPLETE / ACCEPTED** — agency surfaces |
+| UIVAL GATE | `TC-UIVAL-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/UIVAL-GATE-acceptance-evidence.md`](plans/UIVAL-GATE-acceptance-evidence.md) |
+| UIVAL | **COMPLETE** — ROADMAP UI Validation Sequence exhausted |
 | UIVAL | **IN PROGRESS** — product evolution track after master roadmap |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
