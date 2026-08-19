@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P23 — Dynamic Package / Flight + Hotel** (**IN_PROGRESS** — T001–T006 implemented · **P23-R1 RESOLVED** · **P23-R2–R6 OPEN** · **P23-R7–R8 OPEN** · AWAITING_ARCHITECT_REVIEW · P23 not COMPLETE) |
+| Current Phase | **P23 — Dynamic Package / Flight + Hotel** (**READY_FOR_COMPLETE_GATE** — T001–T009 implemented · **P23-R1–R8 RESOLVED** · P23 not COMPLETE) |
 | Previous Phase | **P22 — Flight** (**COMPLETE / ACCEPTED** — `TC-P22-GATE` ACCEPTED `2a372ae` / docs `ed040f0`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P23-GATE` — Acceptance Gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P23-GATE RESULT`; do **not** start `P24` |
+| Current Active Product Task | `TC-P23-GATE` — Acceptance Gate (READY_FOR_COMPLETE_GATE after GATE-SYNC) |
+| Current Next Task | Re-execute `TC-P23-GATE`; do **not** start `P24` |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -268,17 +268,17 @@
 | P22-T008 | **COMPLETE / ACCEPTED** (`d7c61d7` / docs `65cf720`) — public transactional FlightBooking journey (not CRUD) · independent `X-TravelCore-Flight-Booking-Access-Token` · SHA-256 verifier only · private noindex flight-booking pages · FlightBooking-scoped payment/cancel using R7 · read-only operational query · production sources/provider NONE |
 | P22-T009 | **COMPLETE / ACCEPTED** (`856bb06` / docs `e76b562`) — hardening + evidence pack [`docs/plans/P22-T009-hardening-and-evidence-pack.md`](plans/P22-T009-hardening-and-evidence-pack.md) · no new Flight capability · READY_FOR_GATE |
 | P22-GATE | **COMPLETE / ACCEPTED** (`2a372ae` / docs `ed040f0`) — [`docs/plans/P22-GATE-acceptance-evidence.md`](plans/P22-GATE-acceptance-evidence.md); P22 COMPLETE; P23 PLAN authored separately |
-| P23 | **READY_FOR_GATE** — T001–T008 implemented · **P23-R1 RESOLVED** · **P23-R2–R7 OPEN** · **P23-R8 OPEN** · evidence pack `docs/plans/P23-T009-hardening-and-evidence-pack.md` · P23 not COMPLETE |
+| P23 | **READY_FOR_COMPLETE_GATE** — T001–T009 implemented · **P23-R1–R8 RESOLVED** · evidence pack `docs/plans/P23-T009-hardening-and-evidence-pack.md` · P23 not COMPLETE |
 | P23 Plan | `TC-P23-PLAN` ACCEPTED — [`docs/plans/P23-implementation-plan.md`](plans/P23-implementation-plan.md) |
 | P23 T001 | `TC-P23-T001` implemented / AWAITING_ARCHITECT_REVIEW — DynamicPackage module + schema `dynamic_package` foundation; DynamicPackageBooking ownership assigned; aggregate not implemented; TC-P23-T002 NOT EXECUTED |
 | P23-R1 (ownership / module / schema / transaction boundary) | **RESOLVED** |
-| P23-R2 (component composition / package lifecycle) | **OPEN** |
-| P23-R3 (search / composition / revalidation authority) | **OPEN** |
-| P23-R4 (package quote / monetary / currency / discount) | **OPEN** |
-| P23-R5 (reservation orchestration / idempotency / reconciliation) | **OPEN** |
-| P23-R6 (Payment ordering / target / confirmation / compensation) | **OPEN** |
-| P23-R7 (cancellation / refund / Partial Refund dependency) | **OPEN** |
-| P23-R8 (public UX / auth / privacy / operations / SEO) | **OPEN** |
+| P23-R2 (component composition / package lifecycle) | **RESOLVED** — exactly one FlightBookingId + exactly one HotelBookingId reference; composition boundary only; no package lifecycle aggregate |
+| P23-R3 (search / composition / revalidation authority) | **RESOLVED** — transient candidate from one FlightComponent + one HotelComponent; non-persistent; no reservation/payment/orchestration |
+| P23-R4 (package quote / monetary / currency / discount) | **RESOLVED** — transient PackageMonetarySnapshot; same-currency enforced; DynamicPackage is not price authority; discount/markup DEFERRED |
+| P23-R5 (reservation orchestration / idempotency / reconciliation) | **RESOLVED** — choreography via outbox/inbox; no distributed transactions; no saga; no compensation implemented |
+| P23-R6 (Payment ordering / target / confirmation / compensation) | **RESOLVED** — no new PaymentTargetKind; component payments remain component-owned; transient obligation only |
+| P23-R7 (cancellation / refund / Partial Refund dependency) | **RESOLVED** — transient TransientPackageConfirmation; confirmation meaning + consistency only; no payment execution |
+| P23-R8 (public UX / auth / privacy / operations / SEO) | **RESOLVED** — public journey boundary posture; no token reuse; discovery index allowed; transactional noindex; no operational mutation |
 | P22-R1 (Flight ownership / module / schema and Tour boundary) | **RESOLVED** — independent Flight module · schema `flight` · FlightBooking owned inside Flight (not a separate module/schema) · **Flight != Tour** · **FlightBooking != Tour Booking** · **FlightBooking != HotelBooking** · **Tour Package Flight != live Flight inventory** · `TourDepartureTransportSegment` remains Tour-owned · Named Flight Supplier = NONE · Production Flight Availability/Rate/Reservation/Ticketing Source = NONE · Payment kinds exactly TourBooking, HotelBooking, FlightBooking · no generic Booking abstraction |
 | P22-R2 (Itinerary / segment / airport / airline / passenger) | **RESOLVED** — FlightBooking is Flight-owned aggregate · TripType OneWay/RoundTrip · MultiCity DEFERRED · FlightBooking → Journey → Segment · connecting segments supported · FlightLeg unused · Airport/Airline authority = ReferenceData · Flight stores IATA logical references only · no peer-schema FK · passengers Adult/Child/Infant · at least one Adult · names stored · BirthDate/Gender/Nationality/passport not stored · temporal = NodaTime Instant + IANA timezone |
 | P22-R3 (Search / availability / offer authority) | **RESOLVED** — live Flight search/availability is external source-authoritative · TravelCore does not own seat inventory/allotment · search ≠ live offer truth ≠ live seat availability truth · `IFlightSearchSource` finds candidates · `IFlightOfferAvailabilitySource` revalidates a selected source option · timeout/Unknown does not mean Unavailable · no FlightAvailabilityHold/PNR · source selection is server-controlled · Named Flight Supplier = NONE · Production Flight Search/Availability Source = NONE · no supplier SDK |
