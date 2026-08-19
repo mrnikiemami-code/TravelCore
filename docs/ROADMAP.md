@@ -770,6 +770,26 @@ P26 = Advanced SEO.
 
 ---
 
+## Product Delivery Sequence
+
+**Status:** **COMPLETE / ACCEPTED** (`TC-PRODDEL-GATE`)
+
+**Implementation plan:** [`docs/plans/PRODDEL-implementation-plan.md`](plans/PRODDEL-implementation-plan.md)
+
+پس از UIVAL + SEOVAL، سطوح اعتبارسنجی‌شده به مسیرهای production منتقل می‌شوند:
+
+1. Home / Discovery production
+2. Home SEO metadata
+3. Production link hygiene (no dev-only links on home)
+4. Tour listing · Destination · Tour detail · Place · Content production routes
+5. Transactional noindex guard
+6. Planner / flights / visa entry points
+7. Programmatic landing pages
+8. Public shell consistency · locale root · UIVAL dev routes retained
+9. Production deployment / E2E deferred to operations
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -807,3 +827,4 @@ P26 = Advanced SEO.
 | Post-P29 | Continuous Evolution | **COMPLETE / ACCEPTED** |
 | UIVAL | UI Validation Sequence | **COMPLETE / ACCEPTED** (`TC-UIVAL-GATE`) |
 | SEOVAL | SEO Validation Sequence | **COMPLETE / ACCEPTED** (`TC-SEOVAL-GATE`) |
+| PRODDEL | Product Delivery Sequence | **COMPLETE / ACCEPTED** (`TC-PRODDEL-GATE`) |

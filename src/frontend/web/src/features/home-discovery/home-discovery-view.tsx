@@ -8,42 +8,76 @@ type DiscoveryLink = {
   hint: string;
 };
 
+export type HomeDiscoveryViewProps = {
+  locale: AppLocale;
+  /** UIVAL dev route may include `/dev/*` links; production home must not. */
+  includeDevLinks?: boolean;
+};
+
+function productionLinks(locale: AppLocale): DiscoveryLink[] {
+  if (locale === "fa") {
+    return [
+      { href: `/${locale}/tours`, label: "فهرست تورها", hint: "کشف تور" },
+      { href: `/${locale}/plan`, label: "برنامه‌ریز سفر", hint: "Trip Planner" },
+      { href: `/${locale}/flights`, label: "جستجوی پرواز", hint: "Flight search" },
+      { href: `/${locale}/visas/TR`, label: "ویزا", hint: "Visa information" },
+    ];
+  }
+  if (locale === "ar") {
+    return [
+      { href: `/${locale}/tours`, label: "قائمة الجولات", hint: "Tour discovery" },
+      { href: `/${locale}/plan`, label: "مخطط الرحلة", hint: "Trip planner" },
+      { href: `/${locale}/flights`, label: "البحث عن رحلات", hint: "Flight search" },
+      { href: `/${locale}/visas/TR`, label: "التأشيرة", hint: "Visa information" },
+    ];
+  }
+  return [
+    { href: `/${locale}/tours`, label: "Tour listing", hint: "Tour discovery" },
+    { href: `/${locale}/plan`, label: "Trip planner", hint: "Lead experience" },
+    { href: `/${locale}/flights`, label: "Flight search", hint: "Flight booking search" },
+    { href: `/${locale}/visas/TR`, label: "Visa", hint: "Visa information" },
+  ];
+}
+
+function devValidationLinks(locale: AppLocale): DiscoveryLink[] {
+  return [
+    {
+      href: `/${locale}/destinations/fixture-istanbul`,
+      label: locale === "fa" ? "مقصد نمونه (fixture)" : "Sample destination (fixture)",
+      hint: "Destination landing fixture",
+    },
+    {
+      href: `/${locale}/dev/foundation`,
+      label: locale === "fa" ? "اعتبارسنجی primitives" : "Foundation validation",
+      hint: "dev-only",
+    },
+  ];
+}
+
 /**
- * UIVAL-T007 Home / Discovery entry surface (Server Component).
+ * Home / Discovery entry surface (Server Component).
  * Workflow entry points — not a personalized feed or search engine.
  */
-export function HomeDiscoveryView({ locale }: { locale: AppLocale }) {
+export function HomeDiscoveryView({
+  locale,
+  includeDevLinks = false,
+}: HomeDiscoveryViewProps) {
   const title =
-    locale === "fa" ? "کشف TravelCore" : "Discover TravelCore";
+    locale === "fa"
+      ? "کشف TravelCore"
+      : locale === "ar"
+        ? "اكتشف TravelCore"
+        : "Discover TravelCore";
   const subtitle =
     locale === "fa"
       ? "ورودی‌های عمومی محصول — نه فید شخصی‌سازی‌شده"
-      : "Public product entry points — not a personalized feed";
+      : locale === "ar"
+        ? "نقاط دخول عامة للمنتج — وليس خلاصة مخصصة"
+        : "Public product entry points — not a personalized feed";
 
-  const links: DiscoveryLink[] =
-    locale === "fa"
-      ? [
-          { href: `/${locale}/tours`, label: "فهرست تورها", hint: "کشف تور" },
-          { href: `/${locale}/plan`, label: "برنامه‌ریز سفر", hint: "Trip Planner" },
-          {
-            href: `/${locale}/destinations/fixture-istanbul`,
-            label: "مقصد نمونه",
-            hint: "Destination landing",
-          },
-          { href: `/${locale}/flights`, label: "جستجوی پرواز", hint: "Flight search" },
-          { href: `/${locale}/dev/foundation`, label: "اعتبارسنجی primitives", hint: "dev-only" },
-        ]
-      : [
-          { href: `/${locale}/tours`, label: "Tour listing", hint: "Tour discovery" },
-          { href: `/${locale}/plan`, label: "Trip planner", hint: "Lead experience" },
-          {
-            href: `/${locale}/destinations/fixture-istanbul`,
-            label: "Sample destination",
-            hint: "Destination landing",
-          },
-          { href: `/${locale}/flights`, label: "Flight search", hint: "Flight booking search" },
-          { href: `/${locale}/dev/foundation`, label: "Foundation validation", hint: "dev-only" },
-        ];
+  const links = includeDevLinks
+    ? [...productionLinks(locale), ...devValidationLinks(locale)]
+    : productionLinks(locale);
 
   return (
     <div className="py-8">
@@ -63,7 +97,11 @@ export function HomeDiscoveryView({ locale }: { locale: AppLocale }) {
 
           <Stack gap="md">
             <Text as="h2" role="title">
-              {locale === "fa" ? "مسیرهای کشف" : "Discovery paths"}
+              {locale === "fa"
+                ? "مسیرهای کشف"
+                : locale === "ar"
+                  ? "مسارات الاكتشاف"
+                  : "Discovery paths"}
             </Text>
             <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {links.map((item) => (

@@ -31,7 +31,7 @@ export default async function HomeDiscoveryValidationPage({
         </Text>
       }
     >
-      <HomeDiscoveryView locale={locale} />
+      <HomeDiscoveryView locale={locale} includeDevLinks />
     </PublicShell>
   );
 }
