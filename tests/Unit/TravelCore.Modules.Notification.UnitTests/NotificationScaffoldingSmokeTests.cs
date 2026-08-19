@@ -79,4 +79,15 @@ public sealed class NotificationScaffoldingSmokeTests
         Assert.Contains("FlightBooking", names);
         Assert.DoesNotContain("Notification", names);
     }
+
+    [Fact]
+    public void ChannelBoundary_Keeps_T005_Taxonomy_Only()
+    {
+        Assert.True(NotificationOwnershipBoundary.ChannelBoundaryImplemented);
+        Assert.False(NotificationOwnershipBoundary.ChannelPersistenceImplemented);
+        Assert.Equal("Email · SMS · In-app", NotificationChannelBoundary.ChannelTaxonomy);
+        Assert.Equal(NotificationChannelKind.Email, NotificationChannelReference.Email.Kind);
+        Assert.Equal(NotificationChannelKind.Sms, NotificationChannelReference.Sms.Kind);
+        Assert.Equal(NotificationChannelKind.InApp, NotificationChannelReference.InApp.Kind);
+    }
 }

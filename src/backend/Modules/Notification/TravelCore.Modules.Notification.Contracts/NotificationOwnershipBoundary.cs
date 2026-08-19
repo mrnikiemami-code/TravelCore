@@ -40,6 +40,7 @@ public static class NotificationOwnershipBoundary
     public const bool OwnsB2BCommerce = false;
     public const bool SeparateNotificationModuleImplemented = true;
     public const bool SeparateNotificationSchemaImplemented = true;
+    public const bool ChannelBoundaryImplemented = true;
     public const bool ProviderImplemented = false;
     public const bool ChannelPersistenceImplemented = false;
     public const bool TemplateOrchestrationImplemented = false;

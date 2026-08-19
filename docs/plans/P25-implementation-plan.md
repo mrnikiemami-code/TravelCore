@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P25-PLAN` |
 | Phase | P25 — Notification |
-| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T004 progression · product foundation started |
-| Baseline | `926ef5c` (`docs(p25): expand T003 plan decision inventory and execution sequence`) |
+| Status | PLAN ACCEPTED · **P25 IN_PROGRESS** · T001–T005 progression · channel boundary delivered |
+| Baseline | `b6a090a` (`feat(notification): add T004 module schema foundation`) |
 | Authoritative sources | `docs/ROADMAP.md` § P25 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` § V · P18 TripPlanner notification intent boundaries · P19 Booking · P20 Payment · P24 B2B |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Notification phase.
 
-> **Envelope note:** `TC-P25-T001`–`T003` ACCEPTED · `TC-P25-T004` implemented (module/schema foundation) · **do not execute `TC-P25-T005` until architect accepts `T004`**.
+> **Envelope note:** `TC-P25-T001`–`T004` ACCEPTED · `TC-P25-T005` implemented (channel boundary) · **do not execute `TC-P25-T006` until architect accepts `T005`**.
 
 ---
 
@@ -70,7 +70,7 @@ P25 must preserve:
 | ID | Topic | Status |
 |----|-------|--------|
 | `P25-R1` | Notification module ownership / schema / downstream posture vs Booking/Payment/TripPlanner | **RESOLVED** — independent Notification module · schema `notification` · **Notification != Booking** · **Notification != Payment** · **Notification != Identity** · **Notification != Access** · **Notification != Party** · **Notification != TripPlanner** · **Notification != B2B** · semantic event consumption only · no peer-schema FK · host registers after B2B without endpoints |
-| `P25-R2` | Channel boundary (Email / SMS / In-app) | **OPEN** — channel taxonomy and delivery-state ownership in Notification · publishers do not call providers directly |
+| `P25-R2` | Channel boundary (Email / SMS / In-app) | **RESOLVED** — `NotificationChannelKind` / `NotificationChannelBoundary` / `NotificationChannelReference` in Notification.Domain · channel taxonomy only · Notification owns channel semantics · publishers do not call providers directly · no channel persistence · no provider execution |
 | `P25-R3` | Provider abstraction boundary | **OPEN** — provider-neutral delivery contracts · no named production provider · zero-provider posture valid until explicit lock |
 | `P25-R4` | Template / orchestration boundary | **OPEN** — template/render orchestration owned by Notification · business modules publish semantic intent/facts only |
 | `P25-R5` | Preferences / consent interaction boundary | **OPEN** — delivery preferences distinct from TripPlanner consent snapshots · marketing vs transactional separation preserved |
@@ -87,13 +87,19 @@ Proposed sequence after plan acceptance:
 1. `TC-P25-T001` — P25 architecture implementation plan (**IMPLEMENTED / ACCEPTED**)
 2. `TC-P25-T002` — plan-driven SoT alignment (**IMPLEMENTED / ACCEPTED**)
 3. `TC-P25-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
-4. `TC-P25-T004` — ownership/module/schema foundation (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-5. `TC-P25-T005` — channel boundary (**NOT EXECUTED**)
+4. `TC-P25-T004` — ownership/module/schema foundation (**IMPLEMENTED / ACCEPTED**)
+5. `TC-P25-T005` — channel boundary (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 6. `TC-P25-T006` — provider abstraction boundary (**NOT EXECUTED**)
 7. `TC-P25-T007` — event consumption / template orchestration boundary (**NOT EXECUTED**)
 8. `TC-P25-T008` — hardening and guardrails (**NOT EXECUTED**)
 9. `TC-P25-T009` — evidence pack (**NOT EXECUTED**)
 10. `TC-P25-GATE` — acceptance gate (**NOT EXECUTED**)
+
+### TC-P25-T005 — Channel boundary
+
+- Purpose: define Notification-owned channel taxonomy (Email · SMS · In-app) without provider execution or channel persistence.
+- Delivered: `NotificationChannelKind` · `NotificationChannelBoundary` · `NotificationChannelReference` · `ChannelBoundaryImplemented` flag · guardrail tests.
+- Forbidden in this task: provider SDK · SMTP/SMS/push adapters · channel/delivery persistence · API/frontend · migrations beyond T004 schema foundation.
 
 ### TC-P25-T004 — Ownership/module/schema foundation
 
