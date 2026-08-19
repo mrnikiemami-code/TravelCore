@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P26 — Advanced SEO + Content Graph** (**IN_PROGRESS** — `TC-P26-T004` implemented) |
-| Previous Phase | **P25 — Notification** (**COMPLETE / ACCEPTED** — `TC-P25-GATE` `ed5c95f`) |
+| Current Phase | **P27 — Analytics + Product Intelligence** (**PLANNED** — P26 COMPLETE) |
+| Previous Phase | **P26 — Advanced SEO + Content Graph** (**COMPLETE / ACCEPTED** — `TC-P26-GATE` `c8664f8`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P26-T004` — content graph module/schema foundation (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
-| Current Next Task | Return `TC-P26-T004 RESULT`; do **not** continue to `TC-P26-T005` |
+| Current Active Product Task | `TC-P26-GATE` — P26 acceptance gate (IMPLEMENTED / AWAITING_ARCHITECT_REVIEW) |
+| Current Next Task | Return `TC-P26-GATE RESULT`; do **not** start P27 product tasks until architect accepts GATE |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -292,13 +292,26 @@
 | P25 T008 | `TC-P25-T008` **COMPLETE / ACCEPTED** (`20b02aa`) — hardening guardrails; P25-R5/R7/R8 RESOLVED |
 | P25 T009 | `TC-P25-T009` **COMPLETE / ACCEPTED** (`9fad4d6`) — evidence pack; **READY_FOR_GATE** |
 | P25 GATE | `TC-P25-GATE` **COMPLETE / ACCEPTED** (`ed5c95f`) — **P25 COMPLETE** |
-| P26 | **IN_PROGRESS** — plan authored + product foundation (`TC-P26-T004`) |
-| P26 Plan | `TC-P26-PLAN` COMPLETE / ACCEPTED (`b5467f9`) — expanded through `TC-P26-T004` — [`docs/plans/P26-implementation-plan.md`](plans/P26-implementation-plan.md) |
-| P26 T001 | `TC-P26-T001` **COMPLETE / ACCEPTED** (`b5467f9`) — P26 architecture implementation plan; no product code |
-| P26 T002 | `TC-P26-T002` **COMPLETE / ACCEPTED** (`a984edb`) — plan-driven SoT alignment; no product code |
-| P26 T003 | `TC-P26-T003` **COMPLETE / ACCEPTED** (`f5ade2e`) — plan decision inventory + execution sequence; no product code |
-| P26 T004 | `TC-P26-T004` implemented / AWAITING_ARCHITECT_REVIEW — SEO content graph foundation in schema `seo`; **P26-R1 RESOLVED**; `TC-P26-T005` NOT EXECUTED |
+| P26 | **COMPLETE** — `TC-P26-GATE` implemented · **P26-R1–R8 RESOLVED** |
+| P26 Plan | `TC-P26-PLAN` COMPLETE / ACCEPTED — [`docs/plans/P26-implementation-plan.md`](plans/P26-implementation-plan.md) |
+| P26 T001 | `TC-P26-T001` **COMPLETE / ACCEPTED** (`b5467f9`) — P26 architecture implementation plan |
+| P26 T002 | `TC-P26-T002` **COMPLETE / ACCEPTED** (`a984edb`) — plan-driven SoT alignment |
+| P26 T003 | `TC-P26-T003` **COMPLETE / ACCEPTED** (`f5ade2e`) — plan decision inventory + execution sequence |
+| P26 T004 | `TC-P26-T004` **COMPLETE / ACCEPTED** (`80cd8c1`) — content graph foundation; P26-R1 RESOLVED |
+| P26 T005 | `TC-P26-T005` **COMPLETE / ACCEPTED** (`c8664f8`) — hub/cluster boundary; P26-R2 RESOLVED |
+| P26 T006 | `TC-P26-T006` **COMPLETE / ACCEPTED** (`c8664f8`) — internal link graph boundary; P26-R3 RESOLVED |
+| P26 T007 | `TC-P26-T007` **COMPLETE / ACCEPTED** (`c8664f8`) — programmatic landing + route quality; P26-R4/R5 RESOLVED |
+| P26 T008 | `TC-P26-T008` **COMPLETE / ACCEPTED** (`c8664f8`) — hardening guardrails; P26-R6/R7/R8 RESOLVED |
+| P26 T009 | `TC-P26-T009` **COMPLETE / ACCEPTED** (`c8664f8`) — evidence pack; **READY_FOR_GATE** |
+| P26 GATE | `TC-P26-GATE` implemented / AWAITING_ARCHITECT_REVIEW — [`docs/plans/P26-GATE-acceptance-evidence.md`](plans/P26-GATE-acceptance-evidence.md) |
 | P26-R1 (content graph ownership / schema posture) | **RESOLVED** |
+| P26-R2 (hub/cluster taxonomy) | **RESOLVED** |
+| P26-R3 (internal link graph boundary) | **RESOLVED** |
+| P26-R4 (programmatic landing factory posture) | **RESOLVED** |
+| P26-R5 (route quality / orphan / indexation quality) | **RESOLVED** |
+| P26-R6 (sitemap scaling + structured-data completeness) | **RESOLVED** |
+| P26-R7 (public/admin operational boundary) | **RESOLVED** |
+| P26-R8 (deferred/out-of-scope posture) | **RESOLVED** |
 | P25-R2 (channel boundary Email/SMS/In-app) | **RESOLVED** |
 | P24-R1 (agency identity/auth boundary vs Party/Access) | **RESOLVED** |
 | P24-R2 (agency business identity boundary vs Party/Access/Identity) | **RESOLVED** |

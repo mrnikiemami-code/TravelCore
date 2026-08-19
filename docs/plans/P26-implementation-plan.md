@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P26-PLAN` |
 | Phase | P26 — Advanced SEO + Content Graph |
-| Status | PLAN ACCEPTED · **P26 IN_PROGRESS** · T001–T004 progression · product foundation started |
-| Baseline | `f5ade2e` (`docs(p26): expand T003 plan decision inventory and execution sequence`) |
+| Status | PLAN ACCEPTED · **P26 COMPLETE** · GATE evidence delivered |
+| Baseline | `c8664f8` (`feat(seo): define T005-T008 graph boundaries and hardening`) |
 | Authoritative sources | `docs/ROADMAP.md` § P26 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/12-seo-constitution.md` · `docs/architecture/15-future-architecture-transition-map.md` § W · `docs/seo/01`–`05` · ADR 0007–0010 · P05 SEO engine · P08 Content · P14 enrichment · P15 Search |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Advanced SEO + Content Graph phase.
 
-> **Envelope note:** `TC-P26-T001`–`T003` ACCEPTED · `TC-P26-T004` implemented (content graph foundation) · **do not execute `TC-P26-T005` until architect accepts `T004`**.
+> **Envelope note:** `TC-P26-T001`–`T009` ACCEPTED · `TC-P26-GATE` implemented (acceptance evidence) · **P26 COMPLETE** · **P27 not started**.
 
 ---
 
@@ -80,13 +80,13 @@ P26 must preserve:
 | ID | Topic | Status |
 |----|-------|--------|
 | `P26-R1` | Content graph ownership / schema posture vs Content/Destination/Search | **RESOLVED** — SEO owns graph mechanics in schema `seo` · graph node foundation table `seo_content_graph_nodes` · **SEO != Content editorial** · **SEO != Destination hierarchy SoR** · **SEO != Search ranking SoR** · semantic references by ResourceType+ResourceId only · no peer-schema FK |
-| `P26-R2` | Hub / cluster taxonomy (Destination hubs · content clusters) | **OPEN** — hub/cluster taxonomy owned by SEO graph semantics · Destination/Content remain fact publishers · no hub content duplication |
-| `P26-R3` | Internal link graph boundary | **OPEN** — directed semantic link edges · editorial links remain Content-owned facts · SEO owns graph orchestration/indexation implications only |
-| `P26-R4` | Programmatic landing factory posture | **OPEN** — controlled landing generation with quality gates · inventory/value/uniqueness required · **thin URL spam forbidden** · factory automation deferred until explicit lock |
-| `P26-R5` | Route quality / orphan detection / indexation quality | **OPEN** — observability and quality markers · orphan/unpublished route detection · no fake index success |
-| `P26-R6` | Sitemap scaling + structured-data completeness | **OPEN** — extend existing P05 sitemap/JSON-LD frameworks for graph-aware surfaces · truthful structured data only |
-| `P26-R7` | Public/admin operational boundary for graph tooling | **OPEN** — internal read/ops and admin graph posture only until explicit product lock · no public graph mutation API by default |
-| `P26-R8` | Deferred/out-of-scope posture (external crawl, AI content gen, full factory automation) | **OPEN** — external link crawling · AI landing copy generation · bulk landing factory · search-ranking manipulation remain DEFERRED unless explicitly locked |
+| `P26-R2` | Hub / cluster taxonomy (Destination hubs · content clusters) | **RESOLVED** — hub/cluster taxonomy owned by SEO graph semantics · Destination/Content remain fact publishers · no hub content duplication |
+| `P26-R3` | Internal link graph boundary | **RESOLVED** — directed semantic link edges · editorial links remain Content-owned facts · SEO owns graph orchestration/indexation implications only |
+| `P26-R4` | Programmatic landing factory posture | **RESOLVED** — controlled landing generation with quality gates · inventory/value/uniqueness required · **thin URL spam forbidden** · factory automation deferred until explicit lock |
+| `P26-R5` | Route quality / orphan detection / indexation quality | **RESOLVED** — observability and quality markers · orphan/unpublished route detection · no fake index success |
+| `P26-R6` | Sitemap scaling + structured-data completeness | **RESOLVED** — extend existing P05 sitemap/JSON-LD frameworks for graph-aware surfaces · truthful structured data only |
+| `P26-R7` | Public/admin operational boundary for graph tooling | **RESOLVED** — internal read/ops and admin graph posture only until explicit product lock · no public graph mutation API by default |
+| `P26-R8` | Deferred/out-of-scope posture (external crawl, AI content gen, full factory automation) | **RESOLVED** — external link crawling · AI landing copy generation · bulk landing factory · search-ranking manipulation remain DEFERRED unless explicitly locked |
 
 ---
 
@@ -97,13 +97,13 @@ Proposed sequence after plan acceptance:
 1. `TC-P26-PLAN` — P26 architecture implementation plan (**IMPLEMENTED / ACCEPTED**)
 2. `TC-P26-T002` — plan-driven SoT alignment (**IMPLEMENTED / ACCEPTED**)
 3. `TC-P26-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / ACCEPTED**)
-4. `TC-P26-T004` — content graph module/schema foundation (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-5. `TC-P26-T005` — hub/cluster boundary (**NOT EXECUTED**)
-6. `TC-P26-T006` — internal link graph boundary (**NOT EXECUTED**)
-7. `TC-P26-T007` — programmatic landing + route quality boundary (**NOT EXECUTED**)
-8. `TC-P26-T008` — hardening and guardrails (**NOT EXECUTED**)
-9. `TC-P26-T009` — evidence pack (**NOT EXECUTED**)
-10. `TC-P26-GATE` — acceptance gate (**NOT EXECUTED**)
+4. `TC-P26-T004` — content graph module/schema foundation (**IMPLEMENTED / ACCEPTED**)
+5. `TC-P26-T005` — hub/cluster boundary (**IMPLEMENTED / ACCEPTED**)
+6. `TC-P26-T006` — internal link graph boundary (**IMPLEMENTED / ACCEPTED**)
+7. `TC-P26-T007` — programmatic landing + route quality boundary (**IMPLEMENTED / ACCEPTED**)
+8. `TC-P26-T008` — hardening and guardrails (**IMPLEMENTED / ACCEPTED**)
+9. `TC-P26-T009` — evidence pack (**IMPLEMENTED / ACCEPTED**)
+10. `TC-P26-GATE` — acceptance gate (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 
 > Note: `TC-P26-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25 progression where PLAN equals T001 authoring.
 
