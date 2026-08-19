@@ -72,8 +72,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-UIVAL-T004` — Tour Listing/Search validation (**COMPLETE / ACCEPTED**) |
-| Current Next Task | **`TC-UIVAL-T005`** — Destination Landing validation |
+| Current Active Product Task | `TC-UIVAL-T005` — Destination Landing validation (**COMPLETE / ACCEPTED**) |
+| Current Next Task | **`TC-UIVAL-T006`** — Hotel Detail validation |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -353,8 +353,9 @@
 | UIVAL T001 | `TC-UIVAL-T001` **COMPLETE / ACCEPTED** (`97840cd`) — foundation primitives · [`docs/plans/UIVAL-T001-foundation-primitives-validation-evidence.md`](plans/UIVAL-T001-foundation-primitives-validation-evidence.md) |
 | UIVAL T002 | `TC-UIVAL-T002` **COMPLETE / ACCEPTED** (`b776346`) — foreign tour detail · [`docs/plans/UIVAL-T002-foreign-tour-detail-validation-evidence.md`](plans/UIVAL-T002-foreign-tour-detail-validation-evidence.md) |
 | UIVAL T003 | `TC-UIVAL-T003` **COMPLETE / ACCEPTED** (`2a2b6f2`) — experience tour detail · [`docs/plans/UIVAL-T003-experience-tour-detail-validation-evidence.md`](plans/UIVAL-T003-experience-tour-detail-validation-evidence.md) |
-| UIVAL T004 | `TC-UIVAL-T004` **COMPLETE / ACCEPTED** — tour listing/search · [`docs/plans/UIVAL-T004-tour-listing-search-validation-evidence.md`](plans/UIVAL-T004-tour-listing-search-validation-evidence.md) |
-| UIVAL T005 | `TC-UIVAL-T005` — Destination Landing validation (**NEXT**) |
+| UIVAL T004 | `TC-UIVAL-T004` **COMPLETE / ACCEPTED** (`f037632`) — tour listing · [`docs/plans/UIVAL-T004-tour-listing-search-validation-evidence.md`](plans/UIVAL-T004-tour-listing-search-validation-evidence.md) |
+| UIVAL T005 | `TC-UIVAL-T005` **COMPLETE / ACCEPTED** — destination landing · [`docs/plans/UIVAL-T005-destination-landing-validation-evidence.md`](plans/UIVAL-T005-destination-landing-validation-evidence.md) |
+| UIVAL T006 | `TC-UIVAL-T006` — Hotel Detail validation (**NEXT**) |
 | UIVAL | **IN PROGRESS** — product evolution track after master roadmap |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
