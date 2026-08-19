@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\Seo\TravelCore.Modules.Seo.Contracts\TravelCore.Modules.Seo.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\backend\Modules\Seo\TravelCore.Modules.Seo.Domain\TravelCore.Modules.Seo.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\Seo\TravelCore.Modules.Seo.Infrastructure\TravelCore.Modules.Seo.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

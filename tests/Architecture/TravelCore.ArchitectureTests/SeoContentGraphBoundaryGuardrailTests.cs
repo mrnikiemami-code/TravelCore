@@ -22,8 +22,6 @@ public sealed class SeoContentGraphBoundaryGuardrailTests
         Assert.Equal("seo", SeoContentGraphOwnershipBoundary.SchemaName);
         Assert.Equal("seo", SeoDbContext.SchemaName);
         Assert.True(SeoContentGraphOwnershipBoundary.ContentGraphFoundationImplemented);
-        Assert.False(SeoContentGraphOwnershipBoundary.HubClusterBoundaryImplemented);
-        Assert.False(SeoContentGraphOwnershipBoundary.InternalLinkGraphBoundaryImplemented);
         Assert.False(SeoContentGraphOwnershipBoundary.PublicGraphMutationApiImplemented);
         Assert.False(SeoContentGraphOwnershipBoundary.PeerSchemaForeignKeyImplemented);
         Assert.False(SeoContentGraphOwnershipBoundary.ContentEditorialSoRImplemented);

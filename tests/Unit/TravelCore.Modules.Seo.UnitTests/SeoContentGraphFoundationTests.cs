@@ -41,13 +41,9 @@ public sealed class SeoContentGraphFoundationTests
     }
 
     [Fact]
-    public void OwnershipBoundary_Keeps_T004_Foundation_Only()
+    public void OwnershipBoundary_Keeps_T004_Foundation_At_Minimum()
     {
         Assert.True(SeoContentGraphOwnershipBoundary.ContentGraphFoundationImplemented);
-        Assert.False(SeoContentGraphOwnershipBoundary.HubClusterBoundaryImplemented);
-        Assert.False(SeoContentGraphOwnershipBoundary.InternalLinkGraphBoundaryImplemented);
-        Assert.False(SeoContentGraphOwnershipBoundary.ProgrammaticLandingBoundaryImplemented);
-        Assert.False(SeoContentGraphOwnershipBoundary.PublicGraphMutationApiImplemented);
         Assert.Equal("Seo", SeoContentGraphOwnershipBoundary.OwnerModule);
         Assert.Equal("seo", SeoDbContext.SchemaName);
     }
