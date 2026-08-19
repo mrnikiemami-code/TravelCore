@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P26-PLAN` |
 | Phase | P26 — Advanced SEO + Content Graph |
-| Status | PLAN AUTHORED · **P26 NOT_STARTED** · awaiting architect review |
-| Baseline | `ed5c95f` (`docs(p25): add GATE acceptance evidence and close phase`) |
+| Status | PLAN ACCEPTED · **P26 IN_PROGRESS** · T002 plan-driven progression · **no product execution yet** |
+| Baseline | `b5467f9` (`docs: add P26 implementation plan`) |
 | Authoritative sources | `docs/ROADMAP.md` § P26 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/12-seo-constitution.md` · `docs/architecture/15-future-architecture-transition-map.md` § W · `docs/seo/01`–`05` · ADR 0007–0010 · P05 SEO engine · P08 Content · P14 enrichment · P15 Search |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Advanced SEO + Content Graph phase.
 
-> **Envelope note:** `TC-P26-PLAN` authored only · **do not execute `TC-P26-T001` until architect accepts PLAN**.
+> **Envelope note:** `TC-P26-PLAN` ACCEPTED · `TC-P26-T002` implemented (plan-driven SoT alignment) · **do not execute `TC-P26-T003` until architect accepts `T002`**.
 
 ---
 
@@ -94,8 +94,8 @@ P26 must preserve:
 
 Proposed sequence after plan acceptance:
 
-1. `TC-P26-PLAN` — P26 architecture implementation plan (**THIS TASK / AWAITING_ARCHITECT_REVIEW**)
-2. `TC-P26-T002` — plan-driven SoT alignment (**NOT EXECUTED**)
+1. `TC-P26-PLAN` — P26 architecture implementation plan (**IMPLEMENTED / ACCEPTED**)
+2. `TC-P26-T002` — plan-driven SoT alignment (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 3. `TC-P26-T003` — plan decision inventory + execution sequence authoring (**NOT EXECUTED**)
 4. `TC-P26-T004` — content graph module/schema foundation (**NOT EXECUTED**)
 5. `TC-P26-T005` — hub/cluster boundary (**NOT EXECUTED**)
