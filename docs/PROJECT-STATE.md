@@ -30,8 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
-| Previous Phase | **P28 — Performance & Scale** (**COMPLETE / ACCEPTED** — `TC-P28-GATE` `fef29ab`) |
+| Current Phase | **Post-P29 — Continuous Evolution** (**PLAN IN PROGRESS** — `TC-Post-P29-PLAN`) |
+| Previous Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure Task | TC-P00-CLOSE |

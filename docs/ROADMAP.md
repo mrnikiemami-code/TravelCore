@@ -35,8 +35,8 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **Post-P29 — Continuous Evolution** (**PLANNED / NOT_STARTED** — await architect) |
-| Phase Status | P00–P29 COMPLETE · Post-P29 PLANNED / NOT_STARTED |
+| Current Phase | **Post-P29 — Continuous Evolution** (**PLAN IN PROGRESS** — `TC-Post-P29-PLAN`) |
+| Phase Status | P00–P29 COMPLETE · Post-P29 PLAN IN PROGRESS |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
