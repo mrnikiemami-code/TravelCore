@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P29 — Production Hardening** (**T004 IN PROGRESS** — `TC-P29-T004`) |
+| Current Phase | **P29 — Production Hardening** (**T005 IN PROGRESS** — `TC-P29-T005`) |
 | Previous Phase | **P28 — Performance & Scale** (**COMPLETE / ACCEPTED** — `TC-P28-GATE` `fef29ab`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -71,8 +71,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P29-T004` — rate limiting / abuse protection boundary (**IN PROGRESS**) |
-| Current Next Task | `TC-P29-T005` — audit / compliance event boundary (after T004 acceptance) |
+| Current Active Product Task | `TC-P29-T005` — audit / compliance event boundary (**IN PROGRESS**) |
+| Current Next Task | `TC-P29-T006` — content sanitization / file security boundary (after T005 acceptance) |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |

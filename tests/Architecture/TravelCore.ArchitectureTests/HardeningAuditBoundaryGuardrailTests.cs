@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using TravelCore.ArchitectureTests.Support;
 using TravelCore.Hardening;
 using Xunit;
 
