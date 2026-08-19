@@ -8,7 +8,7 @@ This project declares architecture posture only in early P29 tasks:
 - secrets != business data
 - health != rich diagnostics
 - audit metadata != audit-event product
-- security/authorization review boundary (T003)
+- security/authorization review boundary (T003) · **P29-R1 RESOLVED**
 - rate limiting / abuse protection boundary (T004)
 - audit / compliance event boundary (T005)
 - content sanitization / file security boundary (T006)

@@ -84,7 +84,7 @@ P29 must preserve:
 
 | ID | Topic | Status |
 |----|-------|--------|
-| `P29-R1` | Security foundation / authorization review boundary vs domain modules | **OPEN** |
+| `P29-R1` | Security foundation / authorization review boundary vs domain modules | **RESOLVED** — domain owns authorization facts · Platform cross-cutting posture · T003 boundary only |
 | `P29-R2` | Rate limiting / abuse protection boundary | **OPEN** |
 | `P29-R3` | Audit trail / compliance event boundary vs row metadata | **OPEN** |
 | `P29-R4` | Content sanitization / file security boundary vs P06 Media | **OPEN** |
@@ -100,8 +100,8 @@ P29 must preserve:
 Proposed sequence after plan acceptance:
 
 1. `TC-P29-PLAN` — P29 architecture implementation plan (**ACCEPTED** · `6aab050`)
-2. `TC-P29-T002` — production hardening foundation boundary (**IN PROGRESS**)
-3. `TC-P29-T003` — security / authorization review boundary
+2. `TC-P29-T002` — production hardening foundation boundary (**ACCEPTED** · `8308bb2`)
+3. `TC-P29-T003` — security / authorization review boundary (**IN PROGRESS**)
 4. `TC-P29-T004` — rate limiting / abuse protection boundary
 5. `TC-P29-T005` — audit / compliance event boundary
 6. `TC-P29-T006` — content sanitization / file security boundary
@@ -128,7 +128,7 @@ Proposed sequence after plan acceptance:
 ### TC-P29-T002 — Production hardening foundation boundary
 
 - Purpose: establish Platform-owned production hardening foundation markers without security product or premature tooling.
-- Delivered: `TravelCore.Hardening` · `HardeningFoundationBoundary` · `HardeningOwnershipBoundary` · guardrail tests.
+- Delivered: `TravelCore.Hardening` · `HardeningFoundationBoundary` · `HardeningOwnershipBoundary` · guardrail tests (**ACCEPTED** · `8308bb2`).
 - Forbidden in this task: rate limiter · audit store · secret manager · backup automation · API/frontend · module ownership changes.
 
 ### TC-P29-GATE — Acceptance gate
@@ -170,12 +170,13 @@ Proposed sequence after plan acceptance:
 ### TC-P29-T003 — Security / authorization review boundary
 
 - Purpose: define security foundation and authorization review posture; domain vs platform responsibility without auth product rewrite.
+- Delivered: `HardeningSecurityBoundary` · `HardeningDomainAuthorizationInteractionBoundary` · guardrail tests · **P29-R1 RESOLVED**.
 - Forbidden in this task: identity provider lock-in · OAuth/OIDC product · permission engine rewrite · API/frontend.
 
 ### TC-P29-T002 — Production hardening foundation boundary
 
 - Purpose: establish Platform-owned production hardening foundation markers without security product or premature tooling.
-- Delivered (future): `TravelCore.Hardening` · `HardeningFoundationBoundary` · `HardeningOwnershipBoundary` · guardrail tests.
+- Delivered: `TravelCore.Hardening` · `HardeningFoundationBoundary` · `HardeningOwnershipBoundary` · guardrail tests (**ACCEPTED** · `8308bb2`).
 - Forbidden in this task: rate limiter · audit store · secret manager · backup automation · API/frontend · module ownership changes.
 
 ---

@@ -12,7 +12,7 @@ public static class HardeningFoundationBoundary
     public const string BuildPassIsNotTaskPass = "Build PASS != Task PASS";
 
     public const bool SeparateHardeningFoundationImplemented = true;
-    public const bool SecurityBoundaryImplemented = false;
+    public const bool SecurityBoundaryImplemented = true;
     public const bool RateLimitBoundaryImplemented = false;
     public const bool AuditBoundaryImplemented = false;
     public const bool FileSecurityBoundaryImplemented = false;
