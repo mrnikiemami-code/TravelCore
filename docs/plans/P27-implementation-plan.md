@@ -4,15 +4,15 @@
 |-------|--------|
 | Plan-ID | `TC-P27-PLAN` |
 | Phase | P27 — Analytics + Product Intelligence |
-| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T002 plan-driven SoT alignment executed |
-| Baseline | `f1e6f09` (`docs: add P27 implementation plan`) |
+| Status | PLAN ACCEPTED · **P27 IN_PROGRESS** · T003 decision inventory + task briefs executed |
+| Baseline | `994a94e` (`docs(p27): align T002 plan-driven phase state`) |
 | Authoritative sources | `docs/ROADMAP.md` § P27 · `docs/PROJECT-STATE.md` · `docs/architecture/04-module-boundaries.md` · `docs/architecture/05-dependency-rules.md` · `docs/architecture/06-cross-module-communication.md` · `docs/architecture/07-data-architecture.md` · `docs/domain/module-ownership-matrix.md` · `docs/architecture/15-future-architecture-transition-map.md` · `docs/pages/09-page-state-and-composition-rules.md` §19 · P15 Search · P19 Booking · P20 Payment · P21 HotelBooking · P25 Notification · P26 SEO |
 | Backend root | `src/backend` |
 | Frontend root | `src/frontend/web` |
 
 This document is the architecture plan for the Analytics + Product Intelligence phase.
 
-> **Envelope note:** `TC-P27-PLAN` ACCEPTED · `TC-P27-T002` implemented (plan-driven SoT alignment) · **do not execute `TC-P27-T003` until architect accepts `T002`**.
+> **Envelope note:** `TC-P27-PLAN` ACCEPTED · `TC-P27-T002` ACCEPTED · `TC-P27-T003` implemented (decision inventory + task briefs) · **do not execute `TC-P27-T004` until architect accepts `T003`**.
 
 ---
 
@@ -95,7 +95,7 @@ Proposed sequence after plan acceptance:
 
 1. `TC-P27-PLAN` — P27 architecture implementation plan (**ACCEPTED** · `f1e6f09`)
 2. `TC-P27-T002` — plan-driven SoT alignment (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
-3. `TC-P27-T003` — plan decision inventory + execution sequence authoring (**NOT EXECUTED**)
+3. `TC-P27-T003` — plan decision inventory + execution sequence authoring (**IMPLEMENTED / AWAITING_ARCHITECT_REVIEW**)
 4. `TC-P27-T004` — analytics module/schema foundation (**NOT EXECUTED**)
 5. `TC-P27-T005` — product event taxonomy boundary (**NOT EXECUTED**)
 6. `TC-P27-T006` — provider abstraction / dispatch boundary (**NOT EXECUTED**)
@@ -105,6 +105,67 @@ Proposed sequence after plan acceptance:
 10. `TC-P27-GATE` — acceptance gate (**NOT EXECUTED**)
 
 > Note: `TC-P27-T001` is reserved in roadmap numbering for first product task after PLAN acceptance; this plan uses T002+ following established P25/P26 progression where PLAN equals T001 authoring.
+
+### Decision-to-task mapping (authoritative progression)
+
+| Decision | Primary task | Notes |
+|----------|--------------|-------|
+| `P27-R1` | `TC-P27-T004` | Independent Analytics module + schema `analytics`; Observability separation |
+| `P27-R2` | `TC-P27-T005` | Canonical product event taxonomy boundary |
+| `P27-R3` | `TC-P27-T006` | Provider-neutral dispatch abstraction |
+| `P27-R4` | `TC-P27-T007` | Privacy/PII minimization + publisher reference semantics |
+| `P27-R5` | `TC-P27-T008` | Consent/attribution interaction hardening vs TripPlanner/Notification |
+| `P27-R6` | `TC-P27-T007` | Event ingestion/idempotency + non-blocking dispatch posture |
+| `P27-R7` | `TC-P27-T008` | Public/admin operational boundary hardening |
+| `P27-R8` | `TC-P27-T008` | Deferred/out-of-scope posture (warehouse, BI, ML, streaming) |
+
+### TC-P27-GATE — Acceptance gate
+
+- Purpose: final P27 acceptance evidence only; verify PLAN + T001–T009 accepted and P27-R1–R8 RESOLVED.
+- Delivered: `docs/plans/P27-GATE-acceptance-evidence.md` · gate evidence architecture lock test · SoT sync marking **P27 COMPLETE**.
+- Forbidden in this task: new Analytics capability · named production vendors · public analytics API/UI · warehouse/BI product · next phase (P28) execution.
+
+### TC-P27-T009 — Evidence pack
+
+- Purpose: adversarial architecture review evidence and gate-readiness documentation without new product capability.
+- Delivered: `docs/plans/P27-T009-hardening-and-evidence-pack.md` · evidence-pack architecture lock test · SoT sync · **READY_FOR_GATE**.
+- Forbidden in this task: named production vendors · warehouse/BI dashboards · ML recommendation · public analytics API/UI · Search/Booking/Payment ownership changes · GATE execution.
+
+### TC-P27-T008 — Hardening and guardrails
+
+- Purpose: consolidate accepted Analytics boundaries; resolve R5/R7/R8 posture; forbid deferred/public-ops product types.
+- Delivered: consent/attribution interaction boundary · operational boundary · deferred-scope boundary · hardening guardrail tests.
+- Forbidden in this task: consent persistence product · public analytics query/mutation API · warehouse connectors · evidence pack (T009) · GATE.
+
+### TC-P27-T007 — Event ingestion / publisher interaction boundary
+
+- Purpose: define Analytics-owned ingestion/idempotency posture and publisher interaction contracts without domain transaction coupling or PII SoR takeover.
+- Delivered: semantic publisher boundary · idempotency boundary · non-blocking dispatch posture · opaque reference semantics · guardrail tests.
+- Forbidden in this task: outbox consumer runtime at scale · event persistence tables beyond T004 foundation · provider execution · public API/UI · migrations beyond T004 schema foundation.
+
+### TC-P27-T006 — Provider abstraction / dispatch boundary
+
+- Purpose: define Analytics-owned provider-neutral dispatch contracts without named production adapters or vendor SDK in domain modules.
+- Delivered: provider key/capability types · dispatch request/result contracts · provider resolver boundary · zero-provider posture · guardrail tests.
+- Forbidden in this task: named production adapters (Mixpanel/GA4/Amplitude/Segment) · vendor SDK in Search/Booking modules · event taxonomy (T005) · ingestion runtime (T007) · API/frontend · migrations beyond T004 schema foundation.
+
+### TC-P27-T005 — Product event taxonomy boundary
+
+- Purpose: define Analytics-owned canonical product event kinds aligned with ROADMAP intent without Search ranking or domain workflow SoR takeover.
+- Delivered: event kind taxonomy · semantic event envelope contracts · roadmap event coverage (SearchPerformed · SearchResultClicked · SearchNoResults · FilterApplied · TourViewed · HotelViewed · QuoteCreated · BookingStarted · BookingCompleted) · guardrail tests.
+- Forbidden in this task: provider dispatch execution · event persistence beyond T004 foundation · Search ranking changes · public API/UI · migrations beyond T004 schema foundation.
+
+### TC-P27-T004 — Analytics module/schema foundation
+
+- Purpose: introduce independent Analytics module scaffolding with schema `analytics` only; preserve Observability != Product Analytics separation.
+- Delivered: Contracts/Domain/Infrastructure · `AnalyticsOwnershipBoundary` · `AnalyticsPublisherBoundary` · `AnalyticsDbContext` · host registration · EnsureSchema migration · guardrail tests proving Analytics/Search/Booking/Payment/Observability separation.
+- Forbidden in this task: vendor SDK · event taxonomy tables beyond foundation · provider adapters · public API/UI · peer-schema FK · shared DbContext.
+
+### TC-P27-T003 — Plan decision inventory + execution sequence
+
+- Purpose: expand the approved P27 plan from T002-aligned baseline into an executable decision inventory, decision-to-task mapping, and per-task briefs without adding product code.
+- Delivered: decision-to-task mapping · task briefs T004–T009 + GATE · execution sequence updated · envelope note updated.
+- Forbidden in this task: module code · schema/migration · API · frontend · analytics tables · product tests beyond docs validation.
 
 ---
 
@@ -172,9 +233,7 @@ Proposed sequence after plan acceptance:
 
 ---
 
-## 12. Done-when (PLAN task)
+## 12. Done-when (plan-driven tasks T001–T003)
 
-- `docs/plans/P27-implementation-plan.md` exists with sections 0–12, R1–R8 OPEN inventory, execution sequence, IN/OUT/DEFERRED, blockers.
-- `docs/plans/P27-PLAN-task-envelope.md` captures architect envelope reference.
-- `docs/PROJECT-STATE.md` and `docs/ROADMAP.md` declare P27 PLAN authored / NOT_STARTED product execution.
-- No product code, migration, API, frontend, or package dependency changes in PLAN task.
+- `TC-P27-T001`–`T003` establish the authoritative P27 execution map with R1–R8 OPEN inventory, decision-to-task mapping, and task briefs through GATE.
+- `P27-GATE` closes the phase after R1–R8 are RESOLVED and T004–T009 are accepted.
