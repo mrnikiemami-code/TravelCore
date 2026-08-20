@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P30-PLAN` |
 | Phase | P30 — Product Experience Foundation |
-| Status | **IN PROGRESS** — PLAN ACCEPTED · through `TC-P30-T004` PASS / AWAITING_ARCHITECT_REVIEW |
+| Status | **IN PROGRESS** — PLAN ACCEPTED · through `TC-P30-T005` PASS / AWAITING_ARCHITECT_REVIEW |
 | Baseline | `6b0e4af` (`docs: add DEMOFEED implementation plan`) |
 | Authoritative sources | Architect lock 2026-08-20 · P02 UI constitution · ADR 0005/0006 · HOMFEED/MODOPS/HOTIDX retroactive ledger · Product Experience Constitution |
 | Frontend root | `src/frontend/web` |
@@ -12,7 +12,7 @@
 
 Convert TravelCore from a **backend platform** into a **sellable travel commerce platform** — Experience first, then data, then commercial features.
 
-> Envelope: `TC-P30-PLAN` ACCEPTED · `TC-P30-T004` shells · **do not execute `TC-P30-T005` from T004 result**.
+> Envelope: `TC-P30-PLAN` ACCEPTED · `TC-P30-T005` home · **do not execute `TC-P30-T006` from T005 result**.
 
 **Product Experience SoT:**
 
@@ -23,6 +23,8 @@ Convert TravelCore from a **backend platform** into a **sellable travel commerce
 - Persistent T003 envelope: [`docs/plans/TC-P30-T003-task-envelope.md`](TC-P30-T003-task-envelope.md)
 - Persistent T004 envelope: [`docs/plans/TC-P30-T004-task-envelope.md`](TC-P30-T004-task-envelope.md)
 - T004 evidence: [`docs/product-experience/evidence/P30-T004-shells.md`](../product-experience/evidence/P30-T004-shells.md)
+- Persistent T005 envelope: [`docs/plans/TC-P30-T005-task-envelope.md`](TC-P30-T005-task-envelope.md)
+- T005 evidence: [`docs/product-experience/evidence/P30-T005-home.md`](../product-experience/evidence/P30-T005-home.md)
 
 ---
 
@@ -148,7 +150,7 @@ Reuse P02 primitives; do not fork a second system. **No product pages in T003.**
 
 ### T004 — Application Shell
 
-**Status:** PASS / AWAITING_ARCHITECT_REVIEW (`TC-P30-T004`)
+**Status:** ACCEPTED WITH NOTES (`TC-P30-T004`)
 
 Public / Admin / Agency chrome · token candidates wired · board at `/[locale]/dev/shells`.
 
@@ -156,11 +158,11 @@ Public: header · footer · navigation.
 Admin: sidebar · topbar · breadcrumb.  
 Agency: dashboard shell.
 
-**Not** full Home commerce page (T005).
-
 ### T005 — Public Home
 
-Hero search · popular destinations · featured tours · recommended hotels · travel stories · trust · footer. Curated composition, not personalized ML feed.
+**Status:** PASS / AWAITING_ARCHITECT_REVIEW (`TC-P30-T005`)
+
+Hero · discovery entry · destinations (honest nav) · tours entry · hotels (composition or empty) · trust · stories · conversion CTA · PublicFooter via shell. Curated composition, not personalized ML feed. No fake commerce facts.
 
 ### T006 — Hotel Commerce
 
@@ -209,3 +211,4 @@ Modular Monolith · Place ≠ HotelBooking · Search ≠ discovery UI · UGC ≠
 | 2026-08-20 | `TC-P30-T002` — Constitution · specs · visual protocol · checkpoint map |
 | 2026-08-20 | `TC-P30-T003` — Design System 2.0 foundation docs (lean · commercial · no pages) |
 | 2026-08-20 | `TC-P30-T004` — Application Shells foundation (Public/Admin/Agency · token wiring) |
+| 2026-08-20 | `TC-P30-T005` — Public Home Experience foundation (sellable landing · honest empty) |

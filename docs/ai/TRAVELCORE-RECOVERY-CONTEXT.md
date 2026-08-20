@@ -37,7 +37,9 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-P30-T002` PASS (Constitution)
 - `TC-P30-T003` PASS (Design System 2.0) · architect ACCEPTED in channel
 - `TC-P30-T004-ENVELOPE-CREATE` PASS (`80a5bb6`)
-- `TC-P30-T004` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
+- `TC-P30-T004` **ACCEPTED WITH NOTES** (Application Shells)
+- `TC-P30-T005-ENVELOPE-CREATE` PASS (`2f03718`)
+- `TC-P30-T005` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
 
 ## Current Important Locks
 
@@ -51,8 +53,10 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 | Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
 | Design System 2.0 | `docs/product-experience/DESIGN-SYSTEM-2.0.md` |
 | Shells board | `/[locale]/dev/shells` |
+| Public Home | `/[locale]` (T005 sellable foundation) |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
 | Persistent T004 envelope | `docs/plans/TC-P30-T004-task-envelope.md` |
+| Persistent T005 envelope | `docs/plans/TC-P30-T005-task-envelope.md` |
 
 ## Runtime Roles
 
@@ -65,15 +69,15 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P30-T004`** — Application Shells (AWAITING_ARCHITECT_REVIEW)
+**`TC-P30-T005`** — Public Home Experience (AWAITING_ARCHITECT_REVIEW)
 
 ## Next Planned Work
 
-**`TC-P30-T005`** — Public Home Experience
+**`TC-P30-T006`** — Hotel Commerce Experience
 
 Only with a separate valid authorized envelope.
 
-Do **not** auto-start T005 / DEMOFEED from this document.
+Do **not** auto-start T006 / DEMOFEED from this document.
 
 ## Open Blockers
 
@@ -93,3 +97,4 @@ Do **not** auto-start T005 / DEMOFEED from this document.
 | 2026-08-20 | Initial · Controller Mode |
 | 2026-08-20 | Sync after T002 / T003 |
 | 2026-08-20 | Sync after `TC-P30-T004` Application Shells |
+| 2026-08-20 | Sync after `TC-P30-T005` Public Home Experience |
