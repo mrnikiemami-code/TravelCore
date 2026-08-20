@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PublicShell } from "@/components/shell";
-import { Text } from "@/components/ui";
+import { PublicFooter, PublicHeader, PublicShell } from "@/components/shell";
 import { HotelDiscoveryView } from "@/features/hotel-discovery/hotel-discovery-view";
+import { parseHotelListingCriteria } from "@/features/hotel-discovery/hotel-listing-criteria";
 import { loadHotelDiscoveryList } from "@/features/hotel-discovery/load-hotel-discovery-list";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
 import { loadComposedSeoMetadata } from "@/lib/seo/load-composed-metadata";
@@ -13,10 +13,11 @@ import {
 
 type PageProps = {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 /**
- * Public hotel catalog discovery index (TC-HOTIDX-T005).
+ * Public hotel catalog discovery index (TC-HOTIDX-T005 / TC-P30-T006).
  * P07 Place browse — not Search engine · not HotelBooking availability.
  */
 export async function generateMetadata({
@@ -59,28 +60,30 @@ export async function generateMetadata({
   };
 }
 
-export default async function HotelDiscoveryPage({ params }: PageProps) {
+export default async function HotelDiscoveryPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { locale: localeParam } = await params;
   if (!isAppLocale(localeParam)) {
     notFound();
   }
   const locale: AppLocale = localeParam;
-  const hotels = await loadHotelDiscoveryList(locale);
+  const sp = await searchParams;
+  const criteria = parseHotelListingCriteria(sp);
+  const loaded = await loadHotelDiscoveryList(locale);
 
   return (
     <PublicShell
-      header={
-        <Text as="p" role="label">
-          TravelCore
-        </Text>
-      }
-      context={
-        <Text role="caption">
-          {locale === "fa" ? "کشف هتل" : "Hotel discovery"}
-        </Text>
-      }
+      header={<PublicHeader locale={locale} />}
+      footer={<PublicFooter locale={locale} />}
     >
-      <HotelDiscoveryView locale={locale} hotels={hotels} />
+      <HotelDiscoveryView
+        locale={locale}
+        hotels={loaded.hotels}
+        criteria={criteria}
+        loadError={!loaded.ok}
+      />
     </PublicShell>
   );
 }

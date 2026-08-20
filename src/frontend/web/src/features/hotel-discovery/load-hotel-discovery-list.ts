@@ -31,17 +31,29 @@ function mapItem(item: ApiHotelBrowseItem): HotelBrowseItemView {
   };
 }
 
-/** Active hotels with locale slug for discovery index (TC-HOTIDX-T007). */
+export type HotelDiscoveryLoadResult =
+  | { ok: true; hotels: HotelBrowseItemView[]; error: null }
+  | { ok: false; hotels: []; error: string };
+
+/** Active hotels with locale slug for discovery index (TC-HOTIDX-T007 / P30-T006). */
 export async function loadHotelDiscoveryList(
   locale: AppLocale,
-): Promise<HotelBrowseItemView[]> {
+): Promise<HotelDiscoveryLoadResult> {
   const result = await apiGetJson<ApiHotelBrowseItem[]>(
     `/api/place/public/hotels?localeCode=${encodeURIComponent(locale)}`,
     { cache: "no-store" },
   );
   if (!isApiOk(result)) {
-    return [];
+    return {
+      ok: false,
+      hotels: [],
+      error: "hotel_discovery_load_failed",
+    };
   }
 
-  return (Array.isArray(result.data) ? result.data : []).map(mapItem);
+  return {
+    ok: true,
+    hotels: (Array.isArray(result.data) ? result.data : []).map(mapItem),
+    error: null,
+  };
 }

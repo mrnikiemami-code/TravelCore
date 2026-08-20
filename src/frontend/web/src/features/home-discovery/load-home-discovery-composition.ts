@@ -13,7 +13,7 @@ import { loadTravelogueDiscoveryList } from "@/features/travelogue-detail/load-t
 export async function loadHomeDiscoveryComposition(
   locale: AppLocale,
 ): Promise<HomeDiscoveryComposition> {
-  const [travelogues, hotels] = await Promise.all([
+  const [travelogues, hotelLoad] = await Promise.all([
     loadTravelogueDiscoveryList(locale),
     loadHotelDiscoveryList(locale),
   ]);
@@ -21,6 +21,6 @@ export async function loadHomeDiscoveryComposition(
   return {
     locale,
     travelogues: travelogues.slice(0, HOME_DISCOVERY_PREVIEW_LIMIT),
-    hotels: hotels.slice(0, HOME_DISCOVERY_PREVIEW_LIMIT),
+    hotels: hotelLoad.hotels.slice(0, HOME_DISCOVERY_PREVIEW_LIMIT),
   };
 }

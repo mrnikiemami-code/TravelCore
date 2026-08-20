@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PublicShell } from "@/components/shell";
-import { LtrValue, Text } from "@/components/ui";
+import { PublicFooter, PublicHeader, PublicShell } from "@/components/shell";
+import { HotelDetailView } from "@/features/hotel-detail/hotel-detail-view";
+import { loadHotelDiscoveryList } from "@/features/hotel-discovery/load-hotel-discovery-list";
 import { loadPlaceDetailPage } from "@/features/place-detail/load-place-detail";
-import { PlaceDetailView } from "@/features/place-detail/place-detail-view";
 import { isApiOk } from "@/lib/api/result";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
 import { loadSeoBreadcrumbJsonLd } from "@/lib/seo/load-breadcrumb-jsonld";
@@ -19,8 +19,8 @@ type PageProps = {
 };
 
 /**
- * Public Hotel catalog detail (TC-PRODSURF-T004).
- * P07: Hotel is Place catalog kind — dedicated user-facing hotels route.
+ * Public Hotel catalog detail (TC-PRODSURF-T004 / TC-P30-T006).
+ * Place catalog SoR — not HotelBooking availability engine.
  */
 export async function generateMetadata({
   params,
@@ -85,6 +85,11 @@ export default async function HotelDetailPage({ params }: PageProps) {
   }
 
   const vm = loaded.data;
+  const discovery = await loadHotelDiscoveryList(locale);
+  const similarHotels = discovery.hotels
+    .filter((h) => h.placeId !== vm.placeId && h.slug !== vm.slug)
+    .slice(0, 3);
+
   const crumbs = [
     ...(vm.destination
       ? [
@@ -106,23 +111,8 @@ export default async function HotelDetailPage({ params }: PageProps) {
 
   return (
     <PublicShell
-      header={
-        <Text as="p" role="label">
-          TravelCore
-        </Text>
-      }
-      context={
-        <Text role="caption">
-          {locale === "fa" ? "هتل" : "Hotel"} · <LtrValue>{vm.slug}</LtrValue>
-        </Text>
-      }
-      footer={
-        <Text role="caption">
-          {locale === "fa"
-            ? "P07 — هتل عمومی · SEO metadata"
-            : "P07 — public Hotel · SEO metadata"}
-        </Text>
-      }
+      header={<PublicHeader locale={locale} />}
+      footer={<PublicFooter locale={locale} />}
     >
       {breadcrumbScript ? (
         <script
@@ -130,7 +120,7 @@ export default async function HotelDetailPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: breadcrumbScript }}
         />
       ) : null}
-      <PlaceDetailView vm={vm} />
+      <HotelDetailView vm={vm} similarHotels={similarHotels} />
     </PublicShell>
   );
 }
