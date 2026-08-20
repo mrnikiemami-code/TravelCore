@@ -16,6 +16,8 @@
   --color-border: var(--tc-color-border);
   --color-primary: var(--tc-color-primary);
   --color-primary-foreground: var(--tc-color-primary-foreground);
+  --color-accent: var(--tc-color-accent);
+  --color-accent-foreground: var(--tc-color-accent-foreground);
   --color-danger: var(--tc-color-danger);
   --color-danger-foreground: var(--tc-color-danger-foreground);
   --color-focus: var(--tc-color-focus);

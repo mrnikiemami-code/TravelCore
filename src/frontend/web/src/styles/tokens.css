@@ -1,8 +1,8 @@
 /**
  * TravelCore semantic design tokens — CSS custom properties.
  *
- * Source of truth for visual primitives (T003). Brand palette is intentionally
- * unresolved: values are a minimal neutral baseline, not final product branding.
+ * P30 T004: North Star–aligned candidates (Deep Ocean + Warm Gold).
+ * Exact values remain subject to Visual Checkpoint / architect ACCEPT.
  *
  * Locale ≠ Currency ≠ Calendar ≠ TimeZone — tokens here are visual only.
  * Direction: no RTL/LTR forks; no physical left/right spacing tokens.
@@ -11,17 +11,21 @@
 :root {
   /* —— Color (semantic / purpose-based) —— */
   --tc-color-background: #ffffff;
-  --tc-color-foreground: #171717;
+  --tc-color-foreground: #0f172a;
   --tc-color-surface: #ffffff;
-  --tc-color-surface-muted: #f4f4f5;
-  --tc-color-muted-foreground: #52525b;
-  --tc-color-border: #e4e4e7;
-  --tc-color-primary: #18181b;
-  --tc-color-primary-foreground: #fafafa;
+  --tc-color-surface-muted: #f8fafc;
+  --tc-color-muted-foreground: #475569;
+  --tc-color-border: #e2e8f0;
+  /* brand.primary candidate — Deep Ocean */
+  --tc-color-primary: #0d47a1;
+  --tc-color-primary-foreground: #ffffff;
+  /* brand.accent candidate — Warm Gold */
+  --tc-color-accent: #f9a825;
+  --tc-color-accent-foreground: #0f172a;
   --tc-color-danger: #b91c1c;
   --tc-color-danger-foreground: #fef2f2;
-  --tc-color-focus: #2563eb;
-  --tc-color-ring: #2563eb;
+  --tc-color-focus: #1565c0;
+  --tc-color-ring: #1565c0;
 
   /* —— Typography scale (roles mapped via @theme / conventions) —— */
   --tc-font-size-caption: 0.75rem;
@@ -93,14 +97,17 @@
  */
 @media (prefers-color-scheme: dark) {
   :root {
-    --tc-color-background: #0a0a0a;
-    --tc-color-foreground: #ededed;
-    --tc-color-surface: #0a0a0a;
-    --tc-color-surface-muted: #18181b;
-    --tc-color-muted-foreground: #a1a1aa;
-    --tc-color-border: #27272a;
-    --tc-color-primary: #fafafa;
-    --tc-color-primary-foreground: #18181b;
+    /* Intentional deep navy — not inverted light */
+    --tc-color-background: #0b1220;
+    --tc-color-foreground: #e2e8f0;
+    --tc-color-surface: #0f172a;
+    --tc-color-surface-muted: #1e293b;
+    --tc-color-muted-foreground: #94a3b8;
+    --tc-color-border: #334155;
+    --tc-color-primary: #1e88e5;
+    --tc-color-primary-foreground: #ffffff;
+    --tc-color-accent: #f9a825;
+    --tc-color-accent-foreground: #0f172a;
     --tc-color-danger: #f87171;
     --tc-color-danger-foreground: #450a0a;
     --tc-color-focus: #60a5fa;

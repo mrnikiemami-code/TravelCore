@@ -1,21 +1,24 @@
-# Shell foundations (T008)
+# Shell foundations (P30 T004)
 
-Reusable **layout mechanics** for Public and Admin experiences.
+Reusable **application shells** for Public, Admin, and Agency experiences.
 
 | Component | Role |
 |-----------|------|
-| `PublicShell` | header / context / **main** / footer |
-| `AdminShell` | header / **navigation slot** / actions / **main** |
+| `PublicShell` | sticky header / context / **main** / footer host |
+| `PublicHeader` | brand · primary nav · search entry · mobile menu |
+| `PublicFooter` | trust / discovery footer links |
+| `AdminShell` | topbar · breadcrumb · nav rail · workspace **main** |
+| `AgencyShell` | sales-oriented chrome over AdminShell mechanics |
 
 ## Invariants
 
-- Server Components only — no `"use client"`
-- Direction-neutral (logical CSS; no PublicShellRtl / AdminShellRtl)
-- Mobile-first (Admin nav is a slot, not a permanent desktop sidebar)
+- Server Components by default — no `"use client"` in shell chrome
+- Direction-neutral (logical CSS; no PublicShellRtl)
+- Mobile-first (Admin/Agency nav stacks on narrow viewports)
 - Owns `<main id="main-content">` — do not nest another `<main>`
-- **Admin navigation IA is UNDECIDED** until `TC-P02-T010`
-- No domain→menu mapping; no Identity/Party/Tour menu trees
+- One Design System / Three Experiences — extend, do not fork
+- Honest surfaces — no fake commerce facts
 
-## Cross-domain compatibility
+## Preview
 
-`AdminShell` exposes an empty **navigation slot**. Future workflow-driven IA from T010 can fill that slot without changing shell structure or mirroring backend modules.
+`/[locale]/dev/shells` — visual board for architect review.

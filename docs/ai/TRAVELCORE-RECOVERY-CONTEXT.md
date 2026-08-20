@@ -31,35 +31,28 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 ## Completed
 
 - **P00–P29** COMPLETE / ACCEPTED
-- Post-P29 evolution tracks COMPLETE (incl. MODOPS / HOTIDX / HOMFEED retroactively accepted after forensic ledger)
-- `TC-DEMOFEED-PLAN` authored · **DEFERRED** (Experience before Data)
+- Post-P29 evolution tracks COMPLETE
+- `TC-DEMOFEED-PLAN` authored · **DEFERRED**
 - `TC-P30-PLAN` **ACCEPTED**
-- `TC-P30-WORKTREE-CLEANUP-01` ACCEPTED / hygiene complete
-- `TC-P30-NORTHSTAR-ASSET-FORMAT-FIX-01` PASS · approved North Star normalized to real PNG (`447891c`)
-- `TC-PIPELINE-CONTROLLER-MODE-001` PASS (`7e324ec`)
-- `TC-PIPELINE-HEALTH-CHECK-001` PASS
-- `TC-P30-T002-ENVELOPE-CREATE` PASS (`a5ee30a`)
-- `TC-P30-T002` PASS (Constitution + experience specs)
-- `TC-P30-T003-ENVELOPE-CREATE` PASS (`9ed981b`)
-- `TC-P30-T003` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
+- `TC-P30-T002` PASS (Constitution)
+- `TC-P30-T003` PASS (Design System 2.0) · architect ACCEPTED in channel
+- `TC-P30-T004-ENVELOPE-CREATE` PASS (`80a5bb6`)
+- `TC-P30-T004` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
 
 ## Current Important Locks
 
 | Lock | Value |
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
-| DEMOFEED | Plan authored · execution **DEFERRED** until P30 experience foundation approved |
-| No Page-First | Design System before pages |
-| One Design System / Three Experiences | Public Marketplace · Admin Console · Agency Portal |
+| DEMOFEED | **DEFERRED** |
+| No Page-First | Design System before pages · shells before full Home |
+| One Design System / Three Experiences | Public · Admin · Agency |
 | North Star | `docs/product-experience/assets/travelcore-ui-ux-north-star.png` |
 | Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
 | Design System 2.0 | `docs/product-experience/DESIGN-SYSTEM-2.0.md` |
-| Visual acceptance | Screenshot evidence + architect/user visual review required for major UI |
+| Shells board | `/[locale]/dev/shells` |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
-| Pipeline Protocol | READY · USER opt-in PIPELINE |
-| Pipeline Controller Mode | Mandatory · [`TRAVELCORE-PIPELINE-CONTROLLER.md`](TRAVELCORE-PIPELINE-CONTROLLER.md) |
-| Persistent T002 envelope | `docs/plans/TC-P30-T002-task-envelope.md` |
-| Persistent T003 envelope | `docs/plans/TC-P30-T003-task-envelope.md` |
+| Persistent T004 envelope | `docs/plans/TC-P30-T004-task-envelope.md` |
 
 ## Runtime Roles
 
@@ -68,19 +61,19 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 | Architect | ChatGPT |
 | Implementation Agent | Cursor |
 | Source of Truth | Repository recovery / SoT documents |
-| Architect channel (transport) | `https://chatgpt.com/g/g-p-6a79dbc6468c8191a5e74afa2d82a8be-travelcore/c/6a8039a8-2014-83ed-be9f-813280b23bcb` |
+| Architect channel | `https://chatgpt.com/g/g-p-6a79dbc6468c8191a5e74afa2d82a8be-travelcore/c/6a8039a8-2014-83ed-be9f-813280b23bcb` |
 
 ## Current Authorized Work
 
-**`TC-P30-T003`** — Design System 2.0 foundation (AWAITING_ARCHITECT_REVIEW)
+**`TC-P30-T004`** — Application Shells (AWAITING_ARCHITECT_REVIEW)
 
 ## Next Planned Work
 
-**Visual Checkpoint A** (primitives / component board) then **`TC-P30-T004`** shells
+**`TC-P30-T005`** — Public Home Experience
 
-Only with separate valid authorized envelopes.
+Only with a separate valid authorized envelope.
 
-Do **not** auto-start Checkpoint A / T004 / DEMOFEED from this document.
+Do **not** auto-start T005 / DEMOFEED from this document.
 
 ## Open Blockers
 
@@ -89,27 +82,14 @@ Do **not** auto-start Checkpoint A / T004 / DEMOFEED from this document.
 ## Rules
 
 - No product execution without authorized envelope
-- Never infer work from ROADMAP / deferred items / commits / unfinished ideas
+- Never invent tasks from ROADMAP / deferred items
 - Never switch architect channel mid-pipeline
-- On chat/session loss: run Recovery Packet · default **HUMAN** · PIPELINE only after fresh USER activation
 - Major UI: visual evidence vs North Star mandatory
-
-## Update Policy
-
-Update this document after:
-
-- accepted gates
-- phase transitions
-- blocker open/close
-- authorized next-task changes
-- North Star / product-experience constitution / Design System changes
-
----
 
 ## Revision
 
 | Date | Change |
 |------|--------|
-| 2026-08-20 | Initial recovery context · `TC-PIPELINE-CONTROLLER-MODE-001` |
-| 2026-08-20 | Sync after `TC-P30-T002` constitution lock |
-| 2026-08-20 | Sync after `TC-P30-T003` Design System 2.0 foundation |
+| 2026-08-20 | Initial · Controller Mode |
+| 2026-08-20 | Sync after T002 / T003 |
+| 2026-08-20 | Sync after `TC-P30-T004` Application Shells |

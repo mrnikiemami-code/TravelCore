@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PublicShell } from "@/components/shell";
-import { Text } from "@/components/ui";
+import { PublicFooter, PublicHeader, PublicShell } from "@/components/shell";
 import { HomeDiscoveryView } from "@/features/home-discovery/home-discovery-view";
 import { loadHomeDiscoveryComposition } from "@/features/home-discovery/load-home-discovery-composition";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
@@ -88,20 +87,8 @@ export default async function LocaleHomePage({
 
   return (
     <PublicShell
-      header={
-        <Text as="p" role="label">
-          TravelCore
-        </Text>
-      }
-      footer={
-        <Text role="caption">
-          {locale === "fa"
-            ? "TravelCore — ورود عمومی"
-            : locale === "ar"
-              ? "TravelCore — الدخول العام"
-              : "TravelCore — public entry"}
-        </Text>
-      }
+      header={<PublicHeader locale={locale} />}
+      footer={<PublicFooter locale={locale} />}
     >
       <HomeDiscoveryView locale={locale} composition={composition} />
     </PublicShell>

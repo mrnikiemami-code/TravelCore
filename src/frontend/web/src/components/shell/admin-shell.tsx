@@ -6,12 +6,13 @@ export type AdminShellProps = {
   header?: ReactNode;
   /**
    * Navigation SLOT only — may be empty.
-   * Job-based workflow/navigation model: docs/ui/06-cross-domain-workflow-and-navigation.md (T010).
-   * Concrete Admin menu taxonomy remains undecided — do not pass durable domain-mirrored trees.
+   * Concrete Admin menu taxonomy is page-provided; shell hosts the region.
    */
   navigation?: ReactNode;
   /** Optional contextual actions (filters, primary page actions). */
   actions?: ReactNode;
+  /** Optional breadcrumb strip under topbar. */
+  breadcrumb?: ReactNode;
   /** Primary workspace content. */
   children: ReactNode;
   /**
@@ -23,20 +24,19 @@ export type AdminShellProps = {
 };
 
 /**
- * Generic ADMIN workspace shell — layout mechanics only (T008).
+ * ADMIN console workspace shell — P30 T004.
  *
- * - Provides regions/slots: header · navigation · actions · content
- * - Does NOT freeze concrete Admin menu items; hosts T010 job-based nav when provided
- * - Mobile-first: navigation is a block region, not a permanent desktop-only sidebar
- * - Direction-neutral: uses logical `border-e`, no left/right API
+ * - Regions: topbar · breadcrumb · navigation · actions · content
+ * - Mobile-first: navigation stacks above content; md+ inline-start rail
+ * - Direction-neutral: logical `border-e`
  *
- * Landmark ownership: this shell owns `<main id="main-content">` when used as
- * the page root chrome. Do not nest another `<main>`.
+ * Landmark ownership: owns `<main id="main-content">` when not embedded.
  */
 export function AdminShell({
   header,
   navigation,
   actions,
+  breadcrumb,
   children,
   embedded = false,
   className,
@@ -46,32 +46,38 @@ export function AdminShell({
   return (
     <div
       className={cn(
-        "flex min-h-full flex-1 flex-col bg-background text-foreground",
+        "flex min-h-full flex-1 flex-col bg-surface-muted text-foreground",
         className,
       )}
     >
-      {header ? (
-        <header className="border-b border-border bg-surface">
+      {header || actions ? (
+        <header className="sticky top-0 z-20 border-b border-border bg-surface shadow-sm">
           <div className="flex w-full flex-wrap items-center gap-3 px-4 py-3">
-            <div className="min-w-0 flex-1">{header}</div>
+            <div className="min-w-0 flex-1">
+              {header ? (
+                <div className="text-sm font-semibold text-primary md:text-base">
+                  {header}
+                </div>
+              ) : null}
+            </div>
             {actions ? (
               <div className="flex flex-wrap items-center gap-2">{actions}</div>
             ) : null}
           </div>
+          {breadcrumb ? (
+            <div className="border-t border-border bg-surface-muted px-4 py-2 text-xs text-muted-foreground">
+              {breadcrumb}
+            </div>
+          ) : null}
         </header>
       ) : null}
 
       <div className="flex flex-1 flex-col md:flex-row">
-        {/*
-          Navigation SLOT — structural only.
-          On narrow viewports stacks above content (no permanent desktop sidebar requirement).
-          On md+ sits at inline-start via row + border-e (logical), not "left sidebar".
-        */}
         <aside
           aria-label="Navigation"
-          className="w-full shrink-0 border-b border-border bg-surface md:w-60 md:border-b-0 md:border-e"
+          className="w-full shrink-0 border-b border-border bg-surface md:w-64 md:border-b-0 md:border-e"
         >
-          <div className="px-4 py-3">{navigation ?? null}</div>
+          <div className="px-3 py-3">{navigation ?? null}</div>
         </aside>
 
         <ContentTag
@@ -79,7 +85,7 @@ export function AdminShell({
             ? { role: "region", "aria-label": "Workspace" }
             : { id: "main-content", tabIndex: -1 })}
           className={cn(
-            "flex min-w-0 flex-1 flex-col",
+            "flex min-w-0 flex-1 flex-col bg-background",
             !embedded && "outline-none",
           )}
         >
