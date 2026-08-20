@@ -7,18 +7,18 @@
 | Parent protocol | [`TRAVELCORE-PIPELINE-PROTOCOL.md`](TRAVELCORE-PIPELINE-PROTOCOL.md) |
 | Recovery entry | [`../prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](../prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
 | Fast recovery context | [`TRAVELCORE-RECOVERY-CONTEXT.md`](TRAVELCORE-RECOVERY-CONTEXT.md) |
+| Inbox conventions | [`../pipeline/README.md`](../pipeline/README.md) |
 | Governance | ADR 0013 · ADR 0014 |
 
 This document defines **Cursor execution controller behavior**.
 
 It does **not** replace the Pipeline Protocol. It extends it with a permanent control contract so Cursor:
 
-- operates from the authoritative architect channel
-- preserves execution continuity
-- follows BEGIN / RESULT envelopes
-- executes only authorized tasks
+- uses **file-based** authorized task input (`.task.md` / `.gate.md`)
+- executes only validated authorized files
+- sends RESULT to the authoritative Architect chat
+- after RESULT, runs a **bounded waiting cycle** (not a permanent background daemon)
 - recovers safely when context is lost
-- under PIPELINE, runs as a controlled **worker** with EXECUTION MODE and WAITING MODE (§G)
 
 ---
 
@@ -37,13 +37,57 @@ Chat conversation is **not** the permanent source of truth.
 
 **Repository state is.**
 
-Browser chat is the **architect communication channel** (transport), not durable architecture authority.
+Browser chat is the **architect communication channel** (RESULT delivery + waiting cue), not durable architecture authority.
 
 ---
 
-## B. Authorized Execution Rule
+## B. New Pipeline Model — File-Based Task Input
 
-A task may execute **ONLY** when a valid live envelope exists:
+Pipeline uses **file-based** task input.
+
+### Supported input types
+
+| Type | Purpose | Example |
+|------|---------|---------|
+| `.task.md` | Executable implementation / docs tasks | `TC-P30-T006.task.md` |
+| `.gate.md` | Checkpoints / evidence / decision requests | `TC-P30-HOTEL-VISUAL.gate.md` |
+| `.result.md` | Optional repository artifact only | `TC-P30-T006.result.md` |
+
+`.result.md` in the repository is **optional** and is **not** the primary communication channel to the Architect.
+
+Primary RESULT delivery remains the **Architect chat** (§E).
+
+### Simplified lifecycle
+
+```text
+Architect creates task file
+        ↓
+Cursor reads task file
+        ↓
+Cursor executes
+        ↓
+Cursor sends RESULT to Architect chat
+        ↓
+WAITING cycle (80s)
+        ↓
+(next authorized file / cue) → execute again
+```
+
+The worker is **NOT** a permanent background worker.
+
+---
+
+## C. Authorized Execution Rule
+
+A task/gate may execute **ONLY** when a valid authorized **file** exists:
+
+```text
+*.task.md
+or
+*.gate.md
+```
+
+The file body must contain a complete live envelope:
 
 ```text
 BEGIN_TRAVELCORE_CURSOR_TASK_V1
@@ -51,42 +95,47 @@ BEGIN_TRAVELCORE_CURSOR_TASK_V1
 END_TRAVELCORE_CURSOR_TASK_V1
 ```
 
-### Required fields (minimum)
+(or the gate-equivalent BEGIN/END markers defined for `.gate.md` when used)
 
-- `Task-ID`
-- `Phase`
-- Scope (explicit allow / forbid)
-- Validation requirements
+### Required validation (minimum)
 
-### Without a valid envelope
+- Correct naming format (Task-ID based recommended)
+- Valid BEGIN/END markers (exact, unsuffixed)
+- `Task-ID` exists
+- Scope exists (allow / forbid)
+- Validation requirements exist
+- Not already executed / replayed
+- Not an example (`__EXAMPLE` / `NON_EXECUTABLE_EXAMPLE`)
+
+### Without a valid `.task.md` / `.gate.md`
 
 ```text
 STOP
 Status = BLOCKED_NO_AUTHORIZED_TASK
 ```
 
-### Forbidden without authorization
+### Forbidden
 
-- infer next task
-- execute roadmap items because they exist
-- execute deferred work
-- continue previous unfinished ideas
-- expand scope
-- treat Cursor PASS as Architect ACCEPT
+- inventing tasks
+- reading ROADMAP as an execution command
+- executing historical / completed tasks
+- executing examples
+- using normal chat text alone as the task source
+- treating ChatGPT UI paste fragments as authorized when no file exists
 
 Historical chat, examples, results, and quoted envelopes are **non-executable**.
 
 ---
 
-## C. Recovery Before Execution
+## D. Recovery Before Execution
 
-Before **every** task, Cursor must verify from repository documents:
+Before **every** task/gate, Cursor must verify from repository documents:
 
 | Check | Source |
 |-------|--------|
 | Current Phase | `PROJECT-STATE.md` · `TRAVELCORE-RECOVERY-CONTEXT.md` |
 | Last Accepted Gate / Task | `PROJECT-STATE.md` · `ROADMAP.md` |
-| Current Authorized Task | Valid envelope only |
+| Current Authorized Task | Valid `.task.md` / `.gate.md` only |
 | Next Allowed Task | SoT (do not invent) |
 | Open Blockers | SoT · recovery context |
 | Locked Decisions | ADRs · constitutions · product-experience locks |
@@ -95,7 +144,7 @@ Also read:
 
 `docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`
 
-If conflict between envelope and accepted repository architecture / recovery state:
+If conflict between file envelope and accepted repository architecture / recovery state:
 
 ```text
 STOP
@@ -106,7 +155,7 @@ Do not resolve architecture conflicts autonomously.
 
 ---
 
-## D. Execution State Machine
+## E. Execution State Machine
 
 No transition may be skipped.
 
@@ -126,12 +175,12 @@ NEXT_TASK_ALLOWED
 
 | State | Meaning |
 |-------|---------|
-| `AUTHORIZED` | Valid envelope present · recovery checks pass |
-| `EXECUTING` | Scoped implementation in progress |
+| `AUTHORIZED` | Valid `.task.md` / `.gate.md` · recovery checks pass |
+| `EXECUTING` | Scoped implementation / gate work in progress |
 | `RESULT_READY` | `TRAVELCORE_CURSOR_RESULT_V1` prepared |
-| `ARCHITECT_REVIEW` | Result returned · awaiting architect |
+| `ARCHITECT_REVIEW` | Result returned to Architect chat · awaiting architect |
 | `ACCEPTED` | Architect acceptance recorded / SoT synced when required |
-| `NEXT_TASK_ALLOWED` | Only after acceptance (or explicit authorized next envelope) |
+| `NEXT_TASK_ALLOWED` | Only after acceptance (or explicit next authorized file) |
 
 `Cursor PASS` ≠ `ACCEPTED`.
 
@@ -139,9 +188,9 @@ Only architect acceptance creates acceptance state.
 
 ---
 
-## E. Result Contract
+## F. Result Contract
 
-Every completion **MUST** return:
+After execution, Cursor **MUST** send the result **ONLY** to the authoritative Architect chat.
 
 ```text
 BEGIN_TRAVELCORE_CURSOR_RESULT_V1
@@ -152,14 +201,16 @@ END_TRAVELCORE_CURSOR_RESULT_V1
 ### Required result content (minimum)
 
 - Task-ID
-- Phase
 - Status
+- Summary
+- Changed files
+- Validation
 - Commit (when applicable)
-- Validation evidence
-- Changed scope
-- Recovery / ledger state
+- Evidence when required
+- Next-State
+- HEAD / Working Tree status when applicable
 
-The result MUST be returned to the **same** authoritative architect channel.
+Optional: also write `docs/pipeline/results/<Task-ID>.result.md` as a repository artifact (not a substitute for Architect-chat RESULT).
 
 Never replace the result envelope with:
 
@@ -173,11 +224,11 @@ After a normal result:
 Next-State = AWAITING_ARCHITECT_REVIEW
 ```
 
-Sending RESULT ends **EXECUTION MODE** only. While PIPELINE mode remains active, the worker enters **WAITING MODE** (§G) — it does **not** terminate the worker session.
+Sending RESULT ends **EXECUTION MODE**. Cursor then enters **WAITING MODE** (§I) while PIPELINE remains active.
 
 ---
 
-## F. Browser Chat Continuity
+## G. Browser Chat Continuity
 
 ### Authoritative architect channel (current)
 
@@ -190,8 +241,8 @@ https://chatgpt.com/g/g-p-6a79dbc6468c8191a5e74afa2d82a8be-travelcore/c/6a8039a8
 - Do **not** switch to another ChatGPT conversation as architect command channel
 - Do **not** create parallel architect chats
 - Do **not** continue from another conversation’s memory
-- Do **not** close / abandon / replace the protected architect tab during an active PIPELINE cycle
-- Browser chat is **communication only** — repository SoT remains authoritative
+- Do **not** close / abandon / replace the protected architect tab during an active waiting cycle
+- Browser chat is for **RESULT delivery** and **waiting cues** — repository files remain the executable SoT
 
 ### If the authoritative channel is unavailable
 
@@ -210,146 +261,109 @@ Do not invent a substitute channel.
 
 ---
 
-## G. Pipeline Worker Lifecycle
+## H. Task Acquisition (File-First)
 
-When USER activates **PIPELINE** mode, Cursor behaves as a **controlled worker**.
+When PIPELINE mode is active, Cursor looks for the next authorized **file** task.
 
-### Worker goal
+### Priority
 
-1. Find an authorized task from the Architect channel
-2. Execute **only** that task
-3. Return RESULT to the Architect channel
-4. End EXECUTION MODE
-5. Enter WAITING MODE for the next Architect task
-6. Continue the cycle until PIPELINE is disabled or blocked
+1. Read the provided / next authorized task file (`.task.md` or `.gate.md`)
+2. Validate naming, BEGIN/END, Task-ID, scope, validation, replay
+3. Execute only a valid authorized task/gate
 
-### Operating modes
+Canonical runnable locations (preferred):
 
-| Mode | Meaning |
-|------|---------|
-| **EXECUTION MODE** | One authorized task is being acquired / recovered / implemented / RESULT-delivered |
-| **WAITING MODE** | RESULT already sent · session stays alive · wait/poll for next valid envelope |
+- `docs/pipeline/inbox/<Task-ID>.task.md`
+- `docs/pipeline/inbox/<Gate-ID>.gate.md`
 
-```text
-PIPELINE active
-      ↓
-EXECUTION MODE  (acquire → recover → execute → RESULT)
-      ↓
-WAITING MODE    (wait 80s · read · acquire · refresh · repeat)
-      ↓
-  (new valid task) → EXECUTION MODE
-  (stop condition) → STOP
-```
+Architect may also provide a downloadable task file; Cursor must persist/read it as a file before execution (chat-only fragments are insufficient).
 
----
-
-### G.1 EXECUTION MODE — Task Acquisition
-
-Worker starts with:
+### No execution without
 
 ```text
-STATE = READ_ARCHITECT_CHANNEL
+.task.md
+or
+.gate.md
 ```
 
-#### Procedure
-
-1. Open the authoritative architect channel (§F).
-2. **Scroll to the bottom** of the conversation first (newest state).
-3. Confirm the newest conversation state.
-4. Move **upward** through conversation history.
-5. Search **only** for a complete executable envelope:
-
-```text
-BEGIN_TRAVELCORE_CURSOR_TASK_V1
-...
-END_TRAVELCORE_CURSOR_TASK_V1
-```
-
-#### Executable only when all hold
-
-- BEGIN marker exists (exact, unsuffixed)
-- END marker exists (exact, unsuffixed)
-- Required fields exist (`Task-ID`, `Phase`, scope allow/forbid, validation)
-- `Task-ID` exists
-- `Task-ID` is new (not already executed / PASS-replayed)
-- Task is **not** inside a RESULT envelope
-- Task is **not** a quoted example (`__EXAMPLE` / `NON_EXECUTABLE_EXAMPLE`)
-- Task is **not** historical / already completed
-
-#### Ignore
-
-- incomplete TASK fragments
-- RESULT messages / RESULT envelopes
-- normal explanations
-- examples
-- old completed tasks
-- architectural discussion **without** a complete envelope
-
-#### After valid task detection
+### After valid file detection
 
 ```text
 AUTHORIZED
     ↓
-Recovery Before Execution (§C)
+Recovery Before Execution (§D)
     ↓
-EXECUTE
+EXECUTION MODE
 ```
 
 ---
 
-### G.2 During Execution — monitoring disabled
+## I. Pipeline Modes — EXECUTION and WAITING
 
-While EXECUTION MODE is active for a claimed task, **worker waiting/acquisition is disabled**.
+### Important worker model
 
-The worker **MUST NOT**:
+The worker is **NOT** always running.
 
-- scan architect chat for another task
-- refresh the browser to hunt for work
-- execute parallel tasks
-- start another worker cycle
+| Mode | When active |
+|------|-------------|
+| **EXECUTION MODE** | While implementing / validating the current authorized file |
+| **WAITING MODE** | **Only after** RESULT has been sent to Architect chat |
 
-Only the **current authorized task** is active.
+Worker becomes active for waiting **ONLY after sending RESULT**.
 
 ---
 
-### G.3 After Execution — RESULT then leave EXECUTION MODE
+### I.1 EXECUTION MODE
 
-When implementation finishes, the worker **MUST** create and send to the authoritative architect channel:
+When a task/gate starts, Cursor enters **EXECUTION MODE**.
+
+During execution, worker monitoring is **disabled**.
+
+Cursor **MUST NOT**:
+
+- search for the next task
+- refresh Architect chat to hunt for work
+- run another task
+- execute parallel work
+- continuously poll
+
+Only the **current** authorized file is active.
+
+---
+
+### I.2 After RESULT — enter WAITING MODE
+
+Lifecycle:
 
 ```text
-BEGIN_TRAVELCORE_CURSOR_RESULT_V1
-...
-END_TRAVELCORE_CURSOR_RESULT_V1
+RESULT SENT
+    ↓
+WAIT 80 seconds
+    ↓
+READ ARCHITECT CHAT
 ```
 
-After RESULT delivery:
+If a new task file reference or authorized `.task.md` / `.gate.md` exists:
 
-- EXECUTION MODE ends
-- Worker enters **WAITING MODE**
-- Worker session does **not** terminate solely because RESULT was sent
+```text
+Return to TASK ACQUISITION (§H)
+```
 
----
+If no task exists:
 
-### G.4 WAITING MODE — Continuous Waiting Loop
+```text
+Refresh the same Architect chat page
+    ↓
+WAIT 80 seconds
+    ↓
+Read again
+```
 
-After RESULT delivery (PIPELINE still active):
-
-The worker does **NOT** terminate.
-The worker waits for the next Architect instruction.
-
-#### Procedure
-
-1. **Wait 80 seconds.**
-2. Read the **same** authoritative architect channel.
-3. Run Task Acquisition (§G.1): bottom → upward → newest complete valid unexecuted envelope.
-4. If found → return to **EXECUTION MODE** (Recovery → EXECUTE).
-5. If not found → **Refresh** the same architect channel.
-6. **Wait another 80 seconds.**
-7. Repeat the same acquisition procedure.
+Repeat this cycle.
 
 **Never invent work** during waiting.
 
-Optional status line (may be sent periodically when idle for clarity; not a substitute for RESULT):
+Optional idle cue (not a substitute for RESULT):
 
 ```text
 WAITING_FOR_NEXT_ARCHITECT_TASK
@@ -357,54 +371,75 @@ WAITING_FOR_NEXT_ARCHITECT_TASK
 
 ---
 
-### G.5 Continuous Pipeline Rule
+### I.3 Worker Lifecycle Rule
 
-Sending RESULT does **NOT** mean the worker session is finished.
+The waiting worker exists only for:
 
-The worker session remains active while **PIPELINE mode is active**.
+1. Waiting for the next Architect instruction / file cue
+2. Detecting the next authorized `.task.md` / `.gate.md`
 
-The worker **stops only when**:
+The worker **MUST NOT**:
 
-| Stop condition | Status / action |
-|----------------|-----------------|
-| USER disables PIPELINE mode (`TRAVELCORE_MODE: HUMAN` or equivalent) | STOP |
+- continuously poll as a permanent daemon outside the post-RESULT cycle
+- continuously scan during EXECUTION MODE
+- run waiting loops during execution
+- create tasks
+- decide next product/architecture steps
+
+---
+
+### I.4 Continuous Pipeline (file-based)
+
+```text
+TASK FILE
+    ↓
+CURSOR EXECUTION
+    ↓
+RESULT TO ARCHITECT CHAT
+    ↓
+WAIT 80 seconds
+    ↓
+CHECK ARCHITECT / FILES
+    ↓
+NEW TASK FILE
+    ↓
+EXECUTE AGAIN
+```
+
+The cycle continues until:
+
+| Stop condition | Action |
+|----------------|--------|
+| USER disables PIPELINE mode | STOP |
 | Architect channel unavailable | `BLOCKED_ARCHITECT_CHANNEL_UNAVAILABLE` |
 | Recovery conflict | `RECOVERY_CONFLICT` |
 | Pipeline completed (explicit SoT / USER end) | STOP / COMPLETED |
 
-There is **no** automatic “give up after N waits” stop while PIPELINE remains active and no stop condition above applies.
-
 ---
 
-### G.6 Safety Rules (unchanged, mandatory)
+## J. Gate Support
 
-- **No Envelope = No Execution**
-- **Cursor PASS ≠ Architect ACCEPT**
-- **Repository remains Source of Truth**
-- Never invent the next task
-- Never bypass Architect approval
+Pipeline supports:
 
----
+| File | Role |
+|------|------|
+| `.task.md` | Execute implementation / docs work |
+| `.gate.md` | Collect evidence / perform checkpoint / request decision |
 
-## H. Task Acquisition Loop (summary)
+- **Task** = implementation work under scope
+- **Gate** = checkpoint / evidence / decision support
+
+A Gate does **not** break Pipeline.
+
+After Gate RESULT:
 
 ```text
-STATE = READ_ARCHITECT_CHANNEL
+Return to WAITING MODE cycle (§I.2)
 ```
-
-Normative detail: §G.1.
-
-Summary:
-
-1. Bottom of architect channel first (newest)
-2. Move upward
-3. Newest complete valid unexecuted `TRAVELCORE_CURSOR_TASK_V1` only
-4. If none → WAITING MODE rules (§G.4)
-5. If found → Recovery → execute only that task → RESULT → WAITING MODE
 
 ---
 
-## I. Visual / Product Experience Protection
+## K. Visual / Product Experience Protection
 
 For UI / Product Experience tasks (including P30):
 
@@ -428,29 +463,41 @@ Related constitution (when present):
 
 ---
 
-## J. Failure Modes This Controller Prevents
+## L. Failure Modes This Controller Prevents
 
 | Failure mode | Required response |
 |--------------|-------------------|
 | Inferring work from ROADMAP / deferred items | `BLOCKED_NO_AUTHORIZED_TASK` |
+| Executing from chat text without `.task.md` / `.gate.md` | `BLOCKED_NO_AUTHORIZED_TASK` |
 | Continuing after chat/tab loss without recovery | Recovery Packet · default HUMAN |
 | Switching to another architect chat | `BLOCKED_ARCHITECT_CHANNEL_UNAVAILABLE` / STOP |
 | Treating Cursor PASS as ACCEPT | Keep `AWAITING_ARCHITECT_REVIEW` |
 | Executing product work from governance tasks | Scope violation · STOP |
 | Skipping visual evidence for major UI | Visual acceptance protocol |
-| Terminating worker solely because RESULT was sent | Remain in WAITING MODE while PIPELINE active (§G.5) |
-| Scanning architect chat during EXECUTION MODE | Forbidden (§G.2) |
-| Inventing next task while waiting | Forbidden · wait for Architect envelope |
+| Searching for next task during EXECUTION MODE | Forbidden (§I.1) |
+| Permanent always-on polling daemon | Forbidden (§I.3) |
+| Inventing next task while waiting | Forbidden |
 
 ---
 
-## K. Relationship to Existing Protocol
+## M. Core Rules (mandatory)
+
+- **No Envelope = No Execution** (file envelope required)
+- **Cursor PASS ≠ Architect ACCEPT**
+- **Repository remains Source of Truth**
+- Never invent next task
+- Never bypass Architect approval
+
+---
+
+## N. Relationship to Existing Protocol
 
 | Layer | Role |
 |-------|------|
 | ADR 0013 / 0014 | Accepted governance |
 | `TRAVELCORE-PIPELINE-PROTOCOL.md` | Canonical protocol entry |
-| **This Controller** | Mandatory Cursor execution control contract |
+| **This Controller** | Mandatory Cursor execution control contract (file-task mode) |
+| `docs/pipeline/` | Inbox / results conventions |
 | `TRAVELCORE-RECOVERY-CONTEXT.md` | Fast durable position snapshot |
 | `START-HERE-IF-CHATGPT-IS-LOST.md` | Emergency recovery packet generation |
 
@@ -463,4 +510,5 @@ Pipeline Controller Mode is **mandatory** for Cursor execution under PIPELINE.
 | Date | Change |
 |------|--------|
 | 2026-08-20 | Initial Controller Mode · `TC-PIPELINE-CONTROLLER-MODE-001` |
-| 2026-08-21 | Worker lifecycle · EXECUTION / WAITING modes · continuous 80s wait · acquisition bottom→up · `TC-PIPELINE-CONTROLLER-WORKER-LOOP-REVISION-001` |
+| 2026-08-21 | Worker lifecycle · EXECUTION / WAITING · `TC-PIPELINE-CONTROLLER-WORKER-LOOP-REVISION-001` |
+| 2026-08-21 | File-based task mode · `.task.md` / `.gate.md` · waiting only after RESULT · `TC-PIPELINE-CONTROLLER-FILE-TASK-MODE-REVISION-001` |
