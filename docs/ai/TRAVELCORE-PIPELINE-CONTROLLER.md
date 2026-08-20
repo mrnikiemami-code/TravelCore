@@ -528,7 +528,7 @@ This rule does **not** replace Architect ACCEPT.
 | Treating Cursor PASS as ACCEPT | Keep `AWAITING_ARCHITECT_REVIEW` |
 | Executing product work from governance tasks | Scope violation · STOP |
 | Skipping visual evidence for major UI | Visual acceptance protocol |
-| Claiming \"Screenshot created\" without visual self-check | Forbidden (§K.1) · incomplete RESULT |
+| Claiming "Screenshot created" without visual self-check | Forbidden (§K.1) · incomplete RESULT |
 | Searching for next task during EXECUTION MODE | Forbidden (§I.1) |
 | Permanent always-on polling daemon | Forbidden (§I.3) |
 | Inventing next task while waiting | Forbidden |
