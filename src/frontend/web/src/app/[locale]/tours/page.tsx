@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PublicShell } from "@/components/shell";
-import { Text } from "@/components/ui";
-import { parseListingFilterCriteria } from "@/features/public-experience/filter-presentation";
-import { PublicTourListingView } from "@/features/public-experience/listing-view";
-import { loadRelatedToursByDestination } from "@/features/public-experience/load-related-tours";
-import { apiGetJson } from "@/lib/api/client";
-import { isApiOk } from "@/lib/api/result";
+import { PublicFooter, PublicHeader, PublicShell } from "@/components/shell";
+import { TourDiscoveryView } from "@/features/tour-discovery/tour-discovery-view";
+import { parseTourListingCriteria } from "@/features/tour-discovery/tour-listing-criteria";
+import { loadTourDiscoveryList } from "@/features/tour-discovery/load-tour-discovery-list";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
 import { loadComposedSeoMetadata } from "@/lib/seo/load-composed-metadata";
 import {
@@ -16,13 +13,12 @@ import {
 
 type PageProps = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ destination?: string; sort?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 /**
- * Public tour listing (TC-P14-T003 / P14-R3 · TC-P14-T008 / P14-R8).
- * Discovery + presentation filters only — not Search, not SEO landing owner.
- * Filtered query variants keep the same listing SEO path (`tours`).
+ * Public tour commerce listing (TC-P30-T007).
+ * Destination-scoped related-published discovery — not Search, not a global browse engine.
  */
 export async function generateMetadata({
   params,
@@ -32,7 +28,8 @@ export async function generateMetadata({
     return { title: "TravelCore", robots: { index: false, follow: false } };
   }
 
-  const title = localeParam === "fa" ? "فهرست تورها" : "Tours";
+  const title =
+    localeParam === "fa" ? "تورها" : localeParam === "ar" ? "الجولات" : "Tours";
   const composed = await loadComposedSeoMetadata({
     locale: localeParam,
     path: "tours",
@@ -71,47 +68,21 @@ export default async function PublicTourListingPage({
     notFound();
   }
   const locale: AppLocale = localeParam;
-  const query = await searchParams;
-  const criteria = parseListingFilterCriteria(query);
-
-  let selection: Awaited<ReturnType<typeof loadRelatedToursByDestination>> = [];
-  if (criteria.destinationSlug) {
-    const destination = await apiGetJson<{ destinationId: string }>(
-      `/api/destination/destinations/by-slug/${encodeURIComponent(locale)}/${encodeURIComponent(criteria.destinationSlug)}`,
-      { cache: "no-store" },
-    );
-    if (isApiOk(destination)) {
-      selection = await loadRelatedToursByDestination(
-        destination.data.destinationId,
-        locale,
-      );
-    }
-  }
+  const sp = await searchParams;
+  const criteria = parseTourListingCriteria(sp);
+  const loaded = await loadTourDiscoveryList(locale, criteria.destination);
 
   return (
     <PublicShell
-      header={
-        <Text as="p" role="label">
-          TravelCore
-        </Text>
-      }
-      context={
-        <Text role="caption">
-          {locale === "fa" ? "فهرست عمومی تور" : "Public tour listing"}
-        </Text>
-      }
-      footer={
-        <Text role="caption">
-          {locale === "fa"
-            ? "P14 — کشف · نه جستجو · نه لندینگ سئو"
-            : "P14 — discovery · not search · not SEO landing"}
-        </Text>
-      }
+      header={<PublicHeader locale={locale} />}
+      footer={<PublicFooter locale={locale} />}
     >
-      <PublicTourListingView
+      <TourDiscoveryView
         locale={locale}
+        tours={loaded.tours}
         criteria={criteria}
-        selection={selection}
+        loadError={!loaded.ok}
+        needsDestination={loaded.ok && loaded.mode === "needs-destination"}
       />
     </PublicShell>
   );

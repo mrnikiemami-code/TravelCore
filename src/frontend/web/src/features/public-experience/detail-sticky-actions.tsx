@@ -73,7 +73,7 @@ export function PublicDetailStickyActions({
           {bookHref ? (
             <li className="flex-1">
               <a
-                className="min-h-touch inline-flex w-full items-center justify-center rounded-md border border-border px-3 py-2 text-sm underline-offset-2 hover:underline"
+                className="min-h-touch inline-flex w-full items-center justify-center rounded-md bg-accent px-3 py-2 text-sm font-semibold text-accent-foreground hover:opacity-95"
                 href={bookHref}
               >
                 {copy.prepare}

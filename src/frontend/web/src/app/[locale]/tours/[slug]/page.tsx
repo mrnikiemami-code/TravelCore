@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PublicShell } from "@/components/shell";
-import { LtrValue, Text } from "@/components/ui";
+import { PublicFooter, PublicHeader, PublicShell } from "@/components/shell";
 import { loadTourDetailPage } from "@/features/tour-detail/load-tour-detail";
 import { TourDetailView } from "@/features/tour-detail/tour-detail-view";
 import { isApiOk } from "@/lib/api/result";
@@ -19,13 +18,8 @@ type PageProps = {
 };
 
 /**
- * Public TourProduct catalog detail (TC-P09-T008/T010 · TC-P11-T009).
- * P09-R5: Tour translation owns current slug; SEO owns route binding / history / IndexPolicy.
- * P09-R6: default missing IndexPolicy → noindex, follow (compose / fallback).
- * P11-R8: published executions visible; Published ≠ bookable (no checkout / pay CTA).
- * P12-R8: public price facts (currency / components / occupancy) — display only.
- * Draft/Inactive → notFound (no Admin state leak). Published ≠ Index.
- * Media: Cover/Gallery via media/presentation compose (app-proxy only).
+ * Public Tour commerce detail (TC-P30-T007).
+ * Catalog SoR · Pricing display-only · booking CTA → existing prepare entry.
  */
 export async function generateMetadata({
   params,
@@ -86,7 +80,46 @@ export default async function TourDetailPage({ params }: PageProps) {
 
   const loaded = await loadTourDetailPage(locale, slug);
   if (!isApiOk(loaded)) {
-    notFound();
+    const missing =
+      locale === "fa"
+        ? {
+            title: "تور پیدا نشد",
+            body: "این تور در فهرست منتشرشده نیست یا موقتاً در دسترس نیست. قیمت یا موجودی ساختگی نشان داده نمی‌شود.",
+            back: "بازگشت به فهرست تورها",
+          }
+        : locale === "ar"
+          ? {
+              title: "الجولة غير موجودة",
+              body: "هذه الجولة غير منشورة أو غير متاحة مؤقتاً. لا نعرض أسعاراً أو توفراً وهمياً.",
+              back: "العودة إلى قائمة الجولات",
+            }
+          : {
+              title: "Tour not found",
+              body: "This tour is not in the published list or is temporarily unavailable. We do not invent prices or availability.",
+              back: "Back to tours",
+            };
+
+    return (
+      <PublicShell
+        header={<PublicHeader locale={locale} />}
+        footer={<PublicFooter locale={locale} />}
+      >
+        <div className="py-10 sm:py-14">
+          <div className="mx-auto max-w-xl rounded-xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+              {missing.title}
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">{missing.body}</p>
+            <a
+              href={`/${locale}/tours`}
+              className="mt-6 inline-flex min-h-touch items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-95"
+            >
+              {missing.back}
+            </a>
+          </div>
+        </div>
+      </PublicShell>
+    );
   }
 
   const vm = loaded.data;
@@ -101,23 +134,8 @@ export default async function TourDetailPage({ params }: PageProps) {
 
   return (
     <PublicShell
-      header={
-        <Text as="p" role="label">
-          TravelCore
-        </Text>
-      }
-      context={
-        <Text role="caption">
-          {locale === "fa" ? "تور" : "Tour"} · <LtrValue>{vm.slug}</LtrValue>
-        </Text>
-      }
-      footer={
-        <Text role="caption">
-          {locale === "fa"
-            ? "P09/P11 — تور عمومی · اجراهای منتشرشده · SEO metadata"
-            : "P09/P11 — public Tour · published executions · SEO metadata"}
-        </Text>
-      }
+      header={<PublicHeader locale={locale} />}
+      footer={<PublicFooter locale={locale} />}
     >
       {breadcrumbScript ? (
         <script
