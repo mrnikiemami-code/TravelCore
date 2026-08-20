@@ -216,12 +216,12 @@ When USER activates **PIPELINE** mode, Cursor behaves as a **controlled worker**
 
 ### Worker goal
 
-1. Find an authorized task from the Architect channel  
-2. Execute **only** that task  
-3. Return RESULT to the Architect channel  
-4. End EXECUTION MODE  
-5. Enter WAITING MODE for the next Architect task  
-6. Continue the cycle until PIPELINE is disabled or blocked  
+1. Find an authorized task from the Architect channel
+2. Execute **only** that task
+3. Return RESULT to the Architect channel
+4. End EXECUTION MODE
+5. Enter WAITING MODE for the next Architect task
+6. Continue the cycle until PIPELINE is disabled or blocked
 
 ### Operating modes
 
@@ -253,10 +253,10 @@ STATE = READ_ARCHITECT_CHANNEL
 
 #### Procedure
 
-1. Open the authoritative architect channel (§F).  
-2. **Scroll to the bottom** of the conversation first (newest state).  
-3. Confirm the newest conversation state.  
-4. Move **upward** through conversation history.  
+1. Open the authoritative architect channel (§F).
+2. **Scroll to the bottom** of the conversation first (newest state).
+3. Confirm the newest conversation state.
+4. Move **upward** through conversation history.
 5. Search **only** for a complete executable envelope:
 
 ```text
@@ -267,23 +267,23 @@ END_TRAVELCORE_CURSOR_TASK_V1
 
 #### Executable only when all hold
 
-- BEGIN marker exists (exact, unsuffixed)  
-- END marker exists (exact, unsuffixed)  
-- Required fields exist (`Task-ID`, `Phase`, scope allow/forbid, validation)  
-- `Task-ID` exists  
-- `Task-ID` is new (not already executed / PASS-replayed)  
-- Task is **not** inside a RESULT envelope  
-- Task is **not** a quoted example (`__EXAMPLE` / `NON_EXECUTABLE_EXAMPLE`)  
-- Task is **not** historical / already completed  
+- BEGIN marker exists (exact, unsuffixed)
+- END marker exists (exact, unsuffixed)
+- Required fields exist (`Task-ID`, `Phase`, scope allow/forbid, validation)
+- `Task-ID` exists
+- `Task-ID` is new (not already executed / PASS-replayed)
+- Task is **not** inside a RESULT envelope
+- Task is **not** a quoted example (`__EXAMPLE` / `NON_EXECUTABLE_EXAMPLE`)
+- Task is **not** historical / already completed
 
 #### Ignore
 
-- incomplete TASK fragments  
-- RESULT messages / RESULT envelopes  
-- normal explanations  
-- examples  
-- old completed tasks  
-- architectural discussion **without** a complete envelope  
+- incomplete TASK fragments
+- RESULT messages / RESULT envelopes
+- normal explanations
+- examples
+- old completed tasks
+- architectural discussion **without** a complete envelope
 
 #### After valid task detection
 
@@ -303,10 +303,10 @@ While EXECUTION MODE is active for a claimed task, **worker waiting/acquisition 
 
 The worker **MUST NOT**:
 
-- scan architect chat for another task  
-- refresh the browser to hunt for work  
-- execute parallel tasks  
-- start another worker cycle  
+- scan architect chat for another task
+- refresh the browser to hunt for work
+- execute parallel tasks
+- start another worker cycle
 
 Only the **current authorized task** is active.
 
@@ -324,9 +324,9 @@ END_TRAVELCORE_CURSOR_RESULT_V1
 
 After RESULT delivery:
 
-- EXECUTION MODE ends  
-- Worker enters **WAITING MODE**  
-- Worker session does **not** terminate solely because RESULT was sent  
+- EXECUTION MODE ends
+- Worker enters **WAITING MODE**
+- Worker session does **not** terminate solely because RESULT was sent
 
 ---
 
@@ -334,18 +334,18 @@ After RESULT delivery:
 
 After RESULT delivery (PIPELINE still active):
 
-The worker does **NOT** terminate.  
+The worker does **NOT** terminate.
 The worker waits for the next Architect instruction.
 
 #### Procedure
 
-1. **Wait 80 seconds.**  
-2. Read the **same** authoritative architect channel.  
-3. Run Task Acquisition (§G.1): bottom → upward → newest complete valid unexecuted envelope.  
-4. If found → return to **EXECUTION MODE** (Recovery → EXECUTE).  
-5. If not found → **Refresh** the same architect channel.  
-6. **Wait another 80 seconds.**  
-7. Repeat the same acquisition procedure.  
+1. **Wait 80 seconds.**
+2. Read the **same** authoritative architect channel.
+3. Run Task Acquisition (§G.1): bottom → upward → newest complete valid unexecuted envelope.
+4. If found → return to **EXECUTION MODE** (Recovery → EXECUTE).
+5. If not found → **Refresh** the same architect channel.
+6. **Wait another 80 seconds.**
+7. Repeat the same acquisition procedure.
 
 **Never invent work** during waiting.
 
@@ -378,11 +378,11 @@ There is **no** automatic “give up after N waits” stop while PIPELINE remain
 
 ### G.6 Safety Rules (unchanged, mandatory)
 
-- **No Envelope = No Execution**  
-- **Cursor PASS ≠ Architect ACCEPT**  
-- **Repository remains Source of Truth**  
-- Never invent the next task  
-- Never bypass Architect approval  
+- **No Envelope = No Execution**
+- **Cursor PASS ≠ Architect ACCEPT**
+- **Repository remains Source of Truth**
+- Never invent the next task
+- Never bypass Architect approval
 
 ---
 
@@ -396,11 +396,11 @@ Normative detail: §G.1.
 
 Summary:
 
-1. Bottom of architect channel first (newest)  
-2. Move upward  
-3. Newest complete valid unexecuted `TRAVELCORE_CURSOR_TASK_V1` only  
-4. If none → WAITING MODE rules (§G.4)  
-5. If found → Recovery → execute only that task → RESULT → WAITING MODE  
+1. Bottom of architect channel first (newest)
+2. Move upward
+3. Newest complete valid unexecuted `TRAVELCORE_CURSOR_TASK_V1` only
+4. If none → WAITING MODE rules (§G.4)
+5. If found → Recovery → execute only that task → RESULT → WAITING MODE
 
 ---
 
