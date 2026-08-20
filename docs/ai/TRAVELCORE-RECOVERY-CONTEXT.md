@@ -39,7 +39,9 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-P30-T004-ENVELOPE-CREATE` PASS (`80a5bb6`)
 - `TC-P30-T004` **ACCEPTED WITH NOTES** (Application Shells)
 - `TC-P30-T005-ENVELOPE-CREATE` PASS (`2f03718`)
-- `TC-P30-T005` **PASS / AWAITING_ARCHITECT_REVIEW** (technical) · Visual Gate **PENDING / REWORK_RECOMMENDED** (`TC-P30-T005-VISUAL-CHECKPOINT-C`)
+- `TC-P30-T005` Technical PASS · Visual REWORK_REQUIRED
+- `TC-P30-T005-REWORK-ENVELOPE-CREATE` PASS (`f1155a2`)
+- `TC-P30-T005-REWORK` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
 
 ## Current Important Locks
 
@@ -57,6 +59,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
 | Persistent T004 envelope | `docs/plans/TC-P30-T004-task-envelope.md` |
 | Persistent T005 envelope | `docs/plans/TC-P30-T005-task-envelope.md` |
+| Persistent T005 REWORK envelope | `docs/plans/TC-P30-T005-REWORK-task-envelope.md` |
 
 ## Runtime Roles
 
@@ -69,12 +72,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P30-T005-VISUAL-CHECKPOINT-C`** — Visual Checkpoint C (this update · REWORK_RECOMMENDED)
+**`TC-P30-T005-REWORK`** — Public Home visual rework (AWAITING_ARCHITECT_REVIEW)
 
 ## Next Planned Work
 
-Architect decision on T005 visual rework vs ACCEPT.  
-**`TC-P30-T006`** only with a separate valid authorized envelope.
+Architect visual review of reworked Home.  
+**`TC-P30-T006`** remains **BLOCKED** until Homepage visual quality accepted.
 
 Do **not** auto-start T006 / DEMOFEED from this document.
 
@@ -98,3 +101,4 @@ Do **not** auto-start T006 / DEMOFEED from this document.
 | 2026-08-20 | Sync after `TC-P30-T004` Application Shells |
 | 2026-08-20 | Sync after `TC-P30-T005` Public Home Experience |
 | 2026-08-20 | Sync after `TC-P30-T005-VISUAL-CHECKPOINT-C` (REWORK_RECOMMENDED) |
+| 2026-08-20 | Sync after `TC-P30-T005-REWORK` Public Home visual rework |
