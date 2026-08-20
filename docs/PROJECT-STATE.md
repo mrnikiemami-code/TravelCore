@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P30 — Product Experience Foundation** (**IN PROGRESS** — `TC-P30-PLAN`) |
+| Current Phase | **P30 — Product Experience Foundation** (**IN PROGRESS** — `TC-P30-T002` AWAITING_ARCHITECT_REVIEW) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
 | Previous Phase | **Moderation Operations** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-MODOPS-GATE` `9961699`) |
@@ -74,8 +74,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P30-PLAN` — Product Experience Foundation plan (**IN PROGRESS** · docs only) |
-| Current Next Task | Await architect ACCEPT of `TC-P30-PLAN`; then authorized `TC-P30-T002` only — do not infer |
+| Current Active Product Task | `TC-P30-T002` — Product Experience Constitution / Visual North Star lock (**PASS · AWAITING_ARCHITECT_REVIEW** · docs only) |
+| Current Next Task | Architect review of `TC-P30-T002`; then authorized `TC-P30-T003` only — do not infer |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -406,10 +406,13 @@
 | HOMFEED T001–T015 | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** |
 | HOMFEED GATE | `TC-HOMFEED-GATE` implementation **COMPLETE** (`4094697`) · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/HOMFEED-GATE-acceptance-evidence.md`](plans/HOMFEED-GATE-acceptance-evidence.md) |
 | HOMFEED | implementation **COMPLETE** — closes DISCLINK-T015 · ledger correction as above |
-| DEMOFEED Plan | `TC-DEMOFEED-PLAN` **DEFERRED** (authored; not P30 priority) — [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md) |
+| DEMOFEED Plan | `TC-DEMOFEED-PLAN` **DEFERRED** (authored; Experience before Data) — [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md) |
 | DEMOFEED | Temporary removable demo feeding — **DEFERRED until after P30 Experience** |
-| P30 Plan | `TC-P30-PLAN` **IN PROGRESS** (docs only) — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
-| P30 | Product Experience Foundation — Design System before pages · Feed/backend-redesign OUT |
+| P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
+| P30 T002 | `TC-P30-T002` **PASS / AWAITING_ARCHITECT_REVIEW** — Constitution + specs + visual protocol |
+| P30 North Star | [`docs/product-experience/assets/travelcore-ui-ux-north-star.png`](product-experience/assets/travelcore-ui-ux-north-star.png) |
+| P30 Constitution | [`docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md`](product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md) |
+| P30 | Product Experience Foundation — Design System before pages · Feed/backend-redesign OUT · Visual Gate mandatory |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |

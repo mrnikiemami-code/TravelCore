@@ -474,3 +474,4 @@ END_TRAVELCORE_CURSOR_TASK_V1
 | Date | Change |
 |------|--------|
 | 2026-08-20 | Created by `TC-P30-T002-ENVELOPE-CREATE` · persistent anti-truncation envelope |
+| 2026-08-20 | Executed via `TC-P30-T002-EXECUTE` · constitution artifacts authored · AWAITING_ARCHITECT_REVIEW |

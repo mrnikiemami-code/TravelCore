@@ -33,9 +33,13 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - **P00–P29** COMPLETE / ACCEPTED
 - Post-P29 evolution tracks COMPLETE (incl. MODOPS / HOTIDX / HOMFEED retroactively accepted after forensic ledger)
 - `TC-DEMOFEED-PLAN` authored · **DEFERRED** (Experience before Data)
-- `TC-P30-PLAN` ACCEPTED (plan authored / locked)
+- `TC-P30-PLAN` **ACCEPTED**
 - `TC-P30-WORKTREE-CLEANUP-01` ACCEPTED / hygiene complete
 - `TC-P30-NORTHSTAR-ASSET-FORMAT-FIX-01` PASS · approved North Star normalized to real PNG (`447891c`)
+- `TC-PIPELINE-CONTROLLER-MODE-001` PASS (`7e324ec`)
+- `TC-PIPELINE-HEALTH-CHECK-001` PASS
+- `TC-P30-T002-ENVELOPE-CREATE` PASS (`a5ee30a`)
+- `TC-P30-T002` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
 
 ## Current Important Locks
 
@@ -46,10 +50,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 | No Page-First | Design System before pages |
 | One Design System / Three Experiences | Public Marketplace · Admin Console · Agency Portal |
 | North Star | `docs/product-experience/assets/travelcore-ui-ux-north-star.png` |
+| Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
 | Visual acceptance | Screenshot evidence + architect/user visual review required for major UI |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
 | Pipeline Protocol | READY · USER opt-in PIPELINE |
 | Pipeline Controller Mode | Mandatory · [`TRAVELCORE-PIPELINE-CONTROLLER.md`](TRAVELCORE-PIPELINE-CONTROLLER.md) |
+| Persistent T002 envelope | `docs/plans/TC-P30-T002-task-envelope.md` |
 
 ## Runtime Roles
 
@@ -62,24 +68,19 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-At authoring of this recovery context document:
-
-**`TC-PIPELINE-CONTROLLER-MODE-001`** (this governance task)
+**`TC-P30-T002`** — Product Experience Constitution / Visual protocol (AWAITING_ARCHITECT_REVIEW)
 
 ## Next Planned Work
 
-**`TC-P30-T002`** — Product Experience Constitution + Visual Acceptance Protocol + Recovery Lock
+**`TC-P30-T003`** — Design System 2.0
 
-Only after:
+Only after architect ACCEPT of T002 + a valid authorized envelope.
 
-1. Architect ACCEPT of this controller task (when required)
-2. A valid authorized `BEGIN_TRAVELCORE_CURSOR_TASK_V1` for T002
-
-Do **not** auto-start T002 from this document.
+Do **not** auto-start T003 from this document.
 
 ## Open Blockers
 
-**None** (working tree expected CLEAN after North Star format fix `447891c`)
+**None**
 
 ## Rules
 
@@ -87,6 +88,7 @@ Do **not** auto-start T002 from this document.
 - Never infer work from ROADMAP / deferred items / commits / unfinished ideas
 - Never switch architect channel mid-pipeline
 - On chat/session loss: run Recovery Packet · default **HUMAN** · PIPELINE only after fresh USER activation
+- Major UI: visual evidence vs North Star mandatory
 
 ## Update Policy
 
@@ -105,3 +107,4 @@ Update this document after:
 | Date | Change |
 |------|--------|
 | 2026-08-20 | Initial recovery context · `TC-PIPELINE-CONTROLLER-MODE-001` |
+| 2026-08-20 | Sync after `TC-P30-T002` constitution lock |

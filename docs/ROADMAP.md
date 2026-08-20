@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P30 — Product Experience Foundation** (**IN PROGRESS** — `TC-P30-PLAN`) |
-| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 IN_PROGRESS (PLAN)** |
+| Current Phase | **P30 — Product Experience Foundation** (**IN PROGRESS** — `TC-P30-T002` AWAITING_ARCHITECT_REVIEW) |
+| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 IN_PROGRESS (T002)** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | `TC-P30-PLAN` **IN PROGRESS** — await architect ACCEPT; then `TC-P30-T002` by authorized envelope only |
+| Current Next Task | Architect review of `TC-P30-T002`; then authorized `TC-P30-T003` only — do not infer |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -932,20 +932,28 @@ OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
 ## P30 — Product Experience Foundation
 
-**Status:** **IN PROGRESS** (`TC-P30-PLAN` authored · docs only)
+**Status:** **IN PROGRESS** (`TC-P30-PLAN` ACCEPTED · `TC-P30-T002` PASS / AWAITING_ARCHITECT_REVIEW)
 
 **Implementation plan:** [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md)
 
+**Product Experience SoT:**
+
+- [`docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md`](product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md)
+- [`docs/product-experience/assets/travelcore-ui-ux-north-star.png`](product-experience/assets/travelcore-ui-ux-north-star.png)
+- Visual acceptance: [`docs/product-experience/P30-VISUAL-ACCEPTANCE-CHECKLIST.md`](product-experience/P30-VISUAL-ACCEPTANCE-CHECKLIST.md)
+
 Sellable travel commerce experience — one design system, three surfaces (Public / Admin / Agency):
 
-1. Visual benchmark → Design Constitution (not copy)
-2. Design System 2.0 before any page-first work
-3. Application shells
-4. Public Home · Hotel · Tour experiences
-5. Admin data-grid foundation · Agency dashboard foundation
+1. Visual benchmark → Design Constitution (not copy) — **T002**
+2. Design System 2.0 before any page-first work — **T003** + Checkpoint A
+3. Application shells — **T004** + Checkpoint B
+4. Public Home · Hotel · Tour experiences — **T005–T007** + Checkpoints C–E
+5. Admin data-grid foundation · Agency dashboard foundation — **T008–T009** + Checkpoints F–G
 6. GATE: professional public / operable admin / sales agency feeling
 
 OUT: DEMOFEED execution · new domain features · backend redesign
+
+**Visual rule:** Automated tests alone are insufficient for major UI; screenshot evidence + architect/user visual review required.
 
 ---
 
@@ -995,4 +1003,4 @@ OUT: DEMOFEED execution · new domain features · backend redesign
 | HOTIDX | Hotel Catalog Browse Index Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
 | HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
 | DEMOFEED | Temporary Demo Feeding Sequence | **DEFERRED** (plan authored · after P30 Experience) |
-| P30 | Product Experience Foundation | **IN PROGRESS** (`TC-P30-PLAN` · docs only) |
+| P30 | Product Experience Foundation | **IN PROGRESS** (`TC-P30-T002` · AWAITING_ARCHITECT_REVIEW) |

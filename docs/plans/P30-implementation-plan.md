@@ -4,15 +4,21 @@
 |-------|--------|
 | Plan-ID | `TC-P30-PLAN` |
 | Phase | P30 — Product Experience Foundation |
-| Status | **IN PROGRESS** — PLAN authored · awaiting architect ACCEPT |
+| Status | **IN PROGRESS** — PLAN ACCEPTED · `TC-P30-T002` authored · AWAITING_ARCHITECT_REVIEW |
 | Baseline | `6b0e4af` (`docs: add DEMOFEED implementation plan`) |
-| Authoritative sources | Architect lock 2026-08-20 · P02 UI constitution · ADR 0005/0006 · HOMFEED/MODOPS/HOTIDX retroactive ledger |
+| Authoritative sources | Architect lock 2026-08-20 · P02 UI constitution · ADR 0005/0006 · HOMFEED/MODOPS/HOTIDX retroactive ledger · Product Experience Constitution |
 | Frontend root | `src/frontend/web` |
 | Product code in this PLAN | **NO** |
 
 Convert TravelCore from a **backend platform** into a **sellable travel commerce platform** — Experience first, then data, then commercial features.
 
-> Envelope: `TC-P30-PLAN` docs only · **do not execute `TC-P30-T002` from this result**.
+> Envelope: `TC-P30-PLAN` ACCEPTED · `TC-P30-T002` docs only · **do not execute `TC-P30-T003` from T002 result**.
+
+**Product Experience SoT:**
+
+- [`docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md`](../product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md)
+- [`docs/product-experience/assets/travelcore-ui-ux-north-star.png`](../product-experience/assets/travelcore-ui-ux-north-star.png)
+- Persistent T002 envelope: [`docs/plans/TC-P30-T002-task-envelope.md`](TC-P30-T002-task-envelope.md)
 
 ---
 
@@ -92,20 +98,28 @@ Not three unrelated UIs.
 
 ---
 
-## 3. Ordered task map
+## 3. Ordered task map (refined · checkpoints locked)
 
-| Task | Deliverable |
-|------|-------------|
-| `TC-P30-PLAN` | This plan + SoT lock |
-| `TC-P30-T002` | Visual benchmark & product direction → Product Design Constitution |
+| Task / Checkpoint | Deliverable |
+|-------------------|-------------|
+| `TC-P30-PLAN` | This plan + SoT lock — **ACCEPTED** |
+| `TC-P30-T002` | Product Experience Constitution + North Star lock + Public/Admin/Agency specs + Visual Acceptance Protocol + Recovery lock |
 | `TC-P30-T003` | Design System 2.0 (brand, tokens, public + admin components) |
+| **Visual Checkpoint A** | Design primitives / representative component board |
 | `TC-P30-T004` | Application shells (public / admin / agency foundation) |
-| `TC-P30-T005` | Public Home experience (hero search, destinations, tours, hotels, stories, trust, footer) |
+| **Visual Checkpoint B** | Shell review |
+| `TC-P30-T005` | Public Home experience |
+| **Visual Checkpoint C** | Home review |
 | `TC-P30-T006` | Hotel commerce experience (listing + detail; not HotelBooking availability engine) |
-| `TC-P30-T007` | Tour commerce experience (listing + detail; itinerary/hotel/flight/price as composition, Pricing/Booking SoR unchanged) |
-| `TC-P30-T008` | Admin experience foundation (shell + data-grid standard) |
+| **Visual Checkpoint D** | Hotel review |
+| `TC-P30-T007` | Tour commerce experience (listing + detail; Pricing/Booking SoR unchanged) |
+| **Visual Checkpoint E** | Tour review |
+| `TC-P30-T008` | Admin experience foundation (shell + professional data-grid + workflow patterns) |
+| **Visual Checkpoint F** | Admin review |
 | `TC-P30-T009` | Agency portal foundation only (dashboard overviews — not full B2B rewrite) |
+| **Visual Checkpoint G** | Agency review |
 | `TC-P30-GATE` | Customer-facing acceptance of Public / Admin / Agency feeling |
+| After GATE | DEMOFEED may be reconsidered / authorized |
 
 ---
 
@@ -179,3 +193,4 @@ Modular Monolith · Place ≠ HotelBooking · Search ≠ discovery UI · UGC ≠
 | Date | Change |
 |------|--------|
 | 2026-08-20 | Initial PLAN from architect P30 lock · docs only |
+| 2026-08-20 | `TC-P30-T002` — Constitution · specs · visual protocol · checkpoint map |

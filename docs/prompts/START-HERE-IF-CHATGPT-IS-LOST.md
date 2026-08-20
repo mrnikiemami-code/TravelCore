@@ -80,7 +80,49 @@ Approved directional asset:
 docs/product-experience/assets/travelcore-ui-ux-north-star.png
 ```
 
-Major product-experience / UI work requires visual evidence against this North Star before acceptance.
+Product Experience Constitution:
+
+```text
+docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md
+```
+
+Public / Admin / Agency specs:
+
+```text
+docs/product-experience/P30-PUBLIC-EXPERIENCE-SPEC.md
+docs/product-experience/P30-ADMIN-EXPERIENCE-SPEC.md
+docs/product-experience/P30-AGENCY-EXPERIENCE-SPEC.md
+```
+
+Visual acceptance checklist:
+
+```text
+docs/product-experience/P30-VISUAL-ACCEPTANCE-CHECKLIST.md
+```
+
+### CURRENT PRODUCT PRIORITY
+
+**P30 — Product Experience Foundation**
+
+Current business risk: strong backend/architecture undermined by weak UI/UX.
+
+Order: **Experience → Data → Commercial**
+
+DEMOFEED: plan authored · execution **DEFERRED** until approved P30 experience foundation.
+
+No Page-First Development · One Design System / Three Experiences.
+
+Major product-experience / UI work requires screenshot evidence against the North Star before acceptance.
+
+Automated tests alone are **insufficient** for major P30 visual surfaces.
+
+A recovered architect must first read the P30 Constitution and current SoT — and must **not**:
+
+- restart architecture design
+- invent backend phases
+- execute DEMOFEED automatically
+- infer product tasks from deferrals
+- accept UI solely because tests pass
 
 ---
 
