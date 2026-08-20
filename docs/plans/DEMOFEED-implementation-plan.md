@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-DEMOFEED-PLAN` |
 | Track | Temporary Demo Feeding (Post-P29 Evolution) |
-| Status | **IN PROGRESS** — PLAN authored · awaiting architect ACCEPT |
+| Status | **DEFERRED** after P30 Experience lock — PLAN remains authored · T002 not started |
 | Permanence | **TEMPORARY** — not a TravelCore product module |
 | Removable | **MUST remain removable** |
 | Baseline | `327d18c` (`docs: correct pipeline compliance ledger after forensic review`) |
