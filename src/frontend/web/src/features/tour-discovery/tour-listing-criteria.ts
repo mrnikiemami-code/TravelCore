@@ -85,7 +85,7 @@ export function tourListingCopy(locale: AppLocale) {
     };
   }
   return {
-    destinationLabel: "Destination (slug)",
+    destinationLabel: "Destination",
     destinationPlaceholder: "e.g. istanbul",
     filterLabel: "Search by name",
     filterPlaceholder: "Tour name or code…",
