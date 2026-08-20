@@ -51,7 +51,7 @@ export function HotelListingToolbar({
         </label>
         <button
           type="submit"
-          className="min-h-touch rounded-md border border-border bg-background px-4 py-2 text-sm font-medium underline-offset-2 hover:underline"
+          className="min-h-touch rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-95"
         >
           {copy.apply}
         </button>

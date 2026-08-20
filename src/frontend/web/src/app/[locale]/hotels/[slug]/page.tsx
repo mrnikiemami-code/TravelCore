@@ -81,7 +81,46 @@ export default async function HotelDetailPage({ params }: PageProps) {
 
   const loaded = await loadPlaceDetailPage(locale, slug);
   if (!isApiOk(loaded) || loaded.data.kind !== "Hotel") {
-    notFound();
+    const missing =
+      locale === "fa"
+        ? {
+            title: "هتل پیدا نشد",
+            body: "این هتل در فهرست منتشرشده نیست یا موقتاً در دسترس نیست. قیمت یا موجودی ساختگی نشان داده نمی‌شود.",
+            back: "بازگشت به فهرست هتل‌ها",
+          }
+        : locale === "ar"
+          ? {
+              title: "الفندق غير موجود",
+              body: "هذا الفندق غير منشور أو غير متاح مؤقتاً. لا نعرض أسعاراً أو توفراً وهمياً.",
+              back: "العودة إلى قائمة الفنادق",
+            }
+          : {
+              title: "Hotel not found",
+              body: "This hotel is not in the published list or is temporarily unavailable. We do not invent prices or availability.",
+              back: "Back to hotels",
+            };
+
+    return (
+      <PublicShell
+        header={<PublicHeader locale={locale} />}
+        footer={<PublicFooter locale={locale} />}
+      >
+        <div className="py-10 sm:py-14">
+          <div className="mx-auto max-w-xl rounded-xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+              {missing.title}
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">{missing.body}</p>
+            <a
+              href={`/${locale}/hotels`}
+              className="mt-6 inline-flex min-h-touch items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-95"
+            >
+              {missing.back}
+            </a>
+          </div>
+        </div>
+      </PublicShell>
+    );
   }
 
   const vm = loaded.data;

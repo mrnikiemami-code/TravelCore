@@ -19,33 +19,36 @@ export function HotelCard({
       ? {
           cta: "مشاهده هتل",
           stars: "ستاره",
-          facilities: "امکانات در صفحه جزئیات",
+          facilities: "جزئیات و امکانات در صفحه هتل",
           imageAlt: "تصویر هتل",
+          noStars: "ستاره ثبت‌نشده",
         }
       : locale === "ar"
         ? {
             cta: "عرض الفندق",
             stars: "نجوم",
-            facilities: "المرافق في صفحة التفاصيل",
+            facilities: "التفاصيل والمرافق في صفحة الفندق",
             imageAlt: "صورة الفندق",
+            noStars: "بدون تصنيف نجوم",
           }
         : {
             cta: "View hotel",
             stars: "stars",
-            facilities: "Facilities on detail page",
+            facilities: "Details and facilities on the hotel page",
             imageAlt: "Hotel image",
+            noStars: "Star rating pending",
           };
 
   const href = `/${locale}/hotels/${encodeURIComponent(hotel.slug)}`;
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+    <article className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-shadow hover:shadow-md">
       <div
-        className="aspect-[4/3] w-full bg-gradient-to-br from-muted to-muted-foreground/20"
+        className="aspect-[4/3] w-full bg-gradient-to-br from-primary/80 via-primary/40 to-accent/70"
         aria-hidden
       >
         <div className="flex h-full items-end p-3">
-          <Text role="caption" className="rounded-md bg-background/80 px-2 py-1">
+          <Text role="caption" className="rounded-md bg-background/85 px-2 py-1 text-foreground">
             {copy.imageAlt}
           </Text>
         </div>
@@ -70,13 +73,11 @@ export function HotelCard({
           <Text role="caption">
             {hotel.starRating != null
               ? `${hotel.starRating} ${copy.stars}`
-              : locale === "fa"
-                ? "کاتالوگ Place"
-                : "Place catalog"}
+              : copy.noStars}
           </Text>
           <Link
             href={href}
-            className="min-h-touch inline-flex items-center rounded-md border border-border bg-background px-3 py-2 text-sm underline-offset-2 hover:underline"
+            className="min-h-touch inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:opacity-95"
           >
             {copy.cta}
           </Link>

@@ -29,35 +29,36 @@ export function HotelDiscoveryView({
   const copy =
     locale === "fa"
       ? {
-          blurb:
-            "کشف کاتالوگ Place · تجربه تجاری هتل · نه موتور availability و نه قیمت جعلی",
+          blurb: "هتل‌های منتخب را کشف کنید · بدون قیمت یا موجودی ساختگی",
           emptyTitle: "هتلی برای نمایش نیست",
           emptyBody:
-            "برای این locale هتل فعالی با slug نیست، یا فیلتر نتیجه‌ای ندارد. قیمت/موجودی جعلی نشان نمی‌دهیم.",
-          errorTitle: "بارگذاری کاتالوگ ناموفق بود",
-          errorBody: "لطفاً بعداً دوباره تلاش کنید. رزرو و availability در این لایه اجرا نمی‌شود.",
+            "فعلاً هتلی با این فیلتر پیدا نشد. به‌محض انتشار کاتالوگ، اینجا نمایش داده می‌شود.",
+          errorTitle: "بارگذاری فهرست هتل‌ها ناموفق بود",
+          errorBody:
+            "اتصال موقتاً برقرار نشد. لطفاً کمی بعد دوباره تلاش کنید.",
+          retry: "تلاش دوباره",
           count: (n: number) => `${n} هتل`,
         }
       : locale === "ar"
         ? {
-            blurb:
-              "اكتشاف كتالوج Place · تجربة فنادق تجارية · دون محرك توفر أو أسعار وهمية",
+            blurb: "اكتشف الفنادق المختارة · دون أسعار أو توفر وهمي",
             emptyTitle: "لا فنادق للعرض",
             emptyBody:
-              "لا فنادق نشطة لهذا الإعداد المحلي، أو لا نتائج للتصفية. لا نعرض أسعاراً/توفراً وهمياً.",
-            errorTitle: "تعذر تحميل الكتالوج",
-            errorBody: "حاول لاحقاً. الحجز والتوفر ليسا في هذه الطبقة.",
+              "لا نتائج لهذا التصفية حالياً. ستظهر الفنادق عند توفر الكتالوج.",
+            errorTitle: "تعذر تحميل قائمة الفنادق",
+            errorBody: "الاتصال غير متاح مؤقتاً. حاول مرة أخرى بعد قليل.",
+            retry: "إعادة المحاولة",
             count: (n: number) => `${n} فندق`,
           }
         : {
-            blurb:
-              "Place catalog discovery · hotel commerce experience · not availability search · no invented prices",
+            blurb: "Discover selected hotels · no invented prices or availability",
             emptyTitle: "No hotels to show",
             emptyBody:
-              "No active hotels with slug for this locale, or the filter matched nothing. We do not invent prices or availability.",
-            errorTitle: "Catalog failed to load",
+              "Nothing matched this filter yet. Hotels appear here when the catalog is published.",
+            errorTitle: "Couldn’t load hotels",
             errorBody:
-              "Please try again later. Booking and availability are not handled on this layer.",
+              "The connection failed temporarily. Please try again in a moment.",
+            retry: "Try again",
             count: (n: number) => `${n} hotels`,
           };
 
@@ -77,7 +78,7 @@ export function HotelDiscoveryView({
           {loadError ? (
             <div
               role="alert"
-              className="rounded-xl border border-border bg-surface p-6 shadow-sm"
+              className="rounded-xl border border-border bg-surface p-6 shadow-sm sm:p-8"
             >
               <Text as="h2" role="label">
                 {copy.errorTitle}
@@ -85,6 +86,12 @@ export function HotelDiscoveryView({
               <Text role="muted" className="mt-2">
                 {copy.errorBody}
               </Text>
+              <a
+                href={`/${locale}/hotels`}
+                className="mt-5 inline-flex min-h-touch items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-95"
+              >
+                {copy.retry}
+              </a>
             </div>
           ) : filtered.length === 0 ? (
             <div className="rounded-xl border border-dashed border-border bg-surface/60 p-8 text-center">
@@ -98,7 +105,7 @@ export function HotelDiscoveryView({
                 {[0, 1, 2].map((i) => (
                   <div
                     key={i}
-                    className="aspect-[4/3] rounded-xl border border-border bg-muted/40"
+                    className="aspect-[4/3] rounded-xl bg-gradient-to-br from-primary/25 via-muted to-accent/30"
                     aria-hidden
                   />
                 ))}

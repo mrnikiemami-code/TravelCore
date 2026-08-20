@@ -60,39 +60,39 @@ export function applyHotelListingCriteria(
 export function hotelListingCopy(locale: AppLocale) {
   if (locale === "fa") {
     return {
-      filterLabel: "فیلتر نام",
-      filterPlaceholder: "جستجو در نام یا توضیح…",
+      filterLabel: "جستجوی نام",
+      filterPlaceholder: "نام هتل یا توضیح…",
       sortLabel: "مرتب‌سازی",
       apply: "اعمال",
       sortNameAsc: "نام (الف→ی)",
       sortNameDesc: "نام (ی→الف)",
       sortStarsDesc: "ستاره (بیشتر)",
       sortStarsAsc: "ستاره (کمتر)",
-      patternNote: "الگوی فیلتر/مرتب‌سازی کاتالوگ · نه موتور جستجوی availability",
+      patternNote: "فیلتر و مرتب‌سازی فهرست هتل‌ها",
     };
   }
   if (locale === "ar") {
     return {
-      filterLabel: "تصفية الاسم",
-      filterPlaceholder: "ابحث في الاسم أو الوصف…",
+      filterLabel: "بحث بالاسم",
+      filterPlaceholder: "اسم الفندق أو الوصف…",
       sortLabel: "الترتيب",
       apply: "تطبيق",
       sortNameAsc: "الاسم (أ→ي)",
       sortNameDesc: "الاسم (ي→أ)",
       sortStarsDesc: "النجوم (الأعلى)",
       sortStarsAsc: "النجوم (الأقل)",
-      patternNote: "نمط التصفية/الترتيب للكتالوج · ليس محرك توفر",
+      patternNote: "تصفية وترتيب قائمة الفنادق",
     };
   }
   return {
-    filterLabel: "Name filter",
-    filterPlaceholder: "Search name or description…",
+    filterLabel: "Search by name",
+    filterPlaceholder: "Hotel name or description…",
     sortLabel: "Sort",
     apply: "Apply",
     sortNameAsc: "Name (A→Z)",
     sortNameDesc: "Name (Z→A)",
     sortStarsDesc: "Stars (high)",
     sortStarsAsc: "Stars (low)",
-    patternNote: "Catalog filter/sort pattern · not an availability search engine",
+    patternNote: "Filter and sort the hotel list",
   };
 }

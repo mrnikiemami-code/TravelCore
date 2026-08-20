@@ -34,13 +34,13 @@ export function HotelDetailView({
           destination: "مقصد",
           reviews: "نظرات و داستان‌ها",
           reviewsEmpty:
-            "بخش نظرات آماده است. تا UGC واقعی، امتیاز یا نظر جعلی نشان داده نمی‌شود.",
+            "هنوز نظری ثبت نشده است. امتیاز یا نظر ساختگی نشان داده نمی‌شود.",
           similar: "هتل‌های مشابه",
-          similarEmpty: "هتل مشابه دیگری در کاتالوگ این locale نیست.",
-          cta: "ادامه به رزرو (ورود آینده)",
-          ctaNote: "CTA نمایشی برای مسیر رزرو آینده · نه پرداخت و نه موجودی زنده",
+          similarEmpty: "فعلاً هتل مشابه دیگری در فهرست نیست.",
+          cta: "ادامه به رزرو",
+          ctaNote: "ورود به مسیر رزرو · موجودی و پرداخت در مرحله بعد",
           stars: "ستاره",
-          noGallery: "گالری رسانه هنوز برای این هتل منتشر نشده است.",
+          noGallery: "گالری تصاویر هنوز برای این هتل منتشر نشده است.",
         }
       : locale === "ar"
         ? {
@@ -51,13 +51,13 @@ export function HotelDetailView({
             destination: "الوجهة",
             reviews: "المراجعات والقصص",
             reviewsEmpty:
-              "قسم المراجعات جاهز. لا نعرض تقييمات أو تعليقات وهمية.",
+              "لا مراجعات بعد. لا نعرض تقييمات أو تعليقات وهمية.",
             similar: "فنادق مشابهة",
-            similarEmpty: "لا فنادق مشابهة في هذا الكتالوج.",
-            cta: "متابعة الحجز (دخول مستقبلي)",
-            ctaNote: "زر عرضي لمسار الحجز المستقبلي · ليس دفعاً أو توفراً حياً",
+            similarEmpty: "لا فنادق مشابهة في القائمة حالياً.",
+            cta: "متابعة الحجز",
+            ctaNote: "الدخول إلى مسار الحجز · التوفر والدفع لاحقاً",
             stars: "نجوم",
-            noGallery: "معرض الوسائط غير منشور بعد لهذا الفندق.",
+            noGallery: "معرض الصور غير منشور بعد لهذا الفندق.",
           }
         : {
             summary: "Hotel summary",
@@ -67,14 +67,13 @@ export function HotelDetailView({
             destination: "Destination",
             reviews: "Reviews & stories",
             reviewsEmpty:
-              "Reviews section is ready. We do not invent ratings or fake reviews.",
+              "No reviews yet. We do not invent ratings or fake comments.",
             similar: "Similar hotels",
-            similarEmpty: "No other hotels in this locale catalog yet.",
-            cta: "Continue to booking (future entry)",
-            ctaNote:
-              "Presentation CTA for future booking entry · not payment or live availability",
+            similarEmpty: "No other hotels in this list yet.",
+            cta: "Continue to booking",
+            ctaNote: "Enter the booking path · availability and payment come later",
             stars: "stars",
-            noGallery: "Media gallery is not published for this hotel yet.",
+            noGallery: "Photo gallery is not published for this hotel yet.",
           };
 
   const galleryItems =
@@ -267,7 +266,7 @@ export function HotelDetailView({
           <Text role="caption">{copy.ctaNote}</Text>
           <Link
             href={bookHref}
-            className="mt-2 inline-flex min-h-touch w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium underline-offset-2 hover:underline"
+            className="mt-2 inline-flex min-h-touch w-full items-center justify-center rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground hover:opacity-95"
           >
             {copy.cta}
           </Link>
