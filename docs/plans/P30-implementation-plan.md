@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P30-PLAN` |
 | Phase | P30 — Product Experience Foundation |
-| Status | **IN PROGRESS** — PLAN ACCEPTED · `TC-P30-T002` authored · AWAITING_ARCHITECT_REVIEW |
+| Status | **IN PROGRESS** — PLAN ACCEPTED · `TC-P30-T002` PASS · `TC-P30-T003` PASS / AWAITING_ARCHITECT_REVIEW |
 | Baseline | `6b0e4af` (`docs: add DEMOFEED implementation plan`) |
 | Authoritative sources | Architect lock 2026-08-20 · P02 UI constitution · ADR 0005/0006 · HOMFEED/MODOPS/HOTIDX retroactive ledger · Product Experience Constitution |
 | Frontend root | `src/frontend/web` |
@@ -12,13 +12,15 @@
 
 Convert TravelCore from a **backend platform** into a **sellable travel commerce platform** — Experience first, then data, then commercial features.
 
-> Envelope: `TC-P30-PLAN` ACCEPTED · `TC-P30-T002` docs only · **do not execute `TC-P30-T003` from T002 result**.
+> Envelope: `TC-P30-PLAN` ACCEPTED · `TC-P30-T003` docs only · **do not execute `TC-P30-T004` / Checkpoint A from T003 result**.
 
 **Product Experience SoT:**
 
 - [`docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md`](../product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md)
+- [`docs/product-experience/DESIGN-SYSTEM-2.0.md`](../product-experience/DESIGN-SYSTEM-2.0.md)
 - [`docs/product-experience/assets/travelcore-ui-ux-north-star.png`](../product-experience/assets/travelcore-ui-ux-north-star.png)
 - Persistent T002 envelope: [`docs/plans/TC-P30-T002-task-envelope.md`](TC-P30-T002-task-envelope.md)
+- Persistent T003 envelope: [`docs/plans/TC-P30-T003-task-envelope.md`](TC-P30-T003-task-envelope.md)
 
 ---
 
@@ -131,13 +133,16 @@ Analyze references. Produce `TravelCore Product Design Constitution` (docs + tok
 
 ### T003 — Design System 2.0
 
-Brand · logo usage · colors / semantic colors · typography · container/grid/section · responsive rules.
+**Status:** PASS / AWAITING_ARCHITECT_REVIEW (`TC-P30-T003`)
 
-Public components: Hero · Search box · Product/Hotel/Tour/Destination/Review cards.
+Foundation docs: [`DESIGN-SYSTEM-2.0.md`](../product-experience/DESIGN-SYSTEM-2.0.md) + `design-system/*`.
 
-Admin components: Data grid · Filter bar · Form · Modal · Drawer · Stepper.
+Brand · semantic colors · typography · spacing/radius/elevation · component principles · responsive/a11y.
 
-Reuse P02 primitives; do not fork a second system.
+Public lean set (later code): Hero · Search · Product cards · Trust · Footer.
+Admin lean set (later code): Shell · Data grid · Filter · Form · Modal/Drawer · Stepper.
+
+Reuse P02 primitives; do not fork a second system. **No product pages in T003.**
 
 ### T004 — Application Shell
 
@@ -194,3 +199,4 @@ Modular Monolith · Place ≠ HotelBooking · Search ≠ discovery UI · UGC ≠
 |------|--------|
 | 2026-08-20 | Initial PLAN from architect P30 lock · docs only |
 | 2026-08-20 | `TC-P30-T002` — Constitution · specs · visual protocol · checkpoint map |
+| 2026-08-20 | `TC-P30-T003` — Design System 2.0 foundation docs (lean · commercial · no pages) |

@@ -39,7 +39,9 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-PIPELINE-CONTROLLER-MODE-001` PASS (`7e324ec`)
 - `TC-PIPELINE-HEALTH-CHECK-001` PASS
 - `TC-P30-T002-ENVELOPE-CREATE` PASS (`a5ee30a`)
-- `TC-P30-T002` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
+- `TC-P30-T002` PASS (Constitution + experience specs)
+- `TC-P30-T003-ENVELOPE-CREATE` PASS (`9ed981b`)
+- `TC-P30-T003` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
 
 ## Current Important Locks
 
@@ -51,11 +53,13 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 | One Design System / Three Experiences | Public Marketplace · Admin Console · Agency Portal |
 | North Star | `docs/product-experience/assets/travelcore-ui-ux-north-star.png` |
 | Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
+| Design System 2.0 | `docs/product-experience/DESIGN-SYSTEM-2.0.md` |
 | Visual acceptance | Screenshot evidence + architect/user visual review required for major UI |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
 | Pipeline Protocol | READY · USER opt-in PIPELINE |
 | Pipeline Controller Mode | Mandatory · [`TRAVELCORE-PIPELINE-CONTROLLER.md`](TRAVELCORE-PIPELINE-CONTROLLER.md) |
 | Persistent T002 envelope | `docs/plans/TC-P30-T002-task-envelope.md` |
+| Persistent T003 envelope | `docs/plans/TC-P30-T003-task-envelope.md` |
 
 ## Runtime Roles
 
@@ -68,15 +72,15 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P30-T002`** — Product Experience Constitution / Visual protocol (AWAITING_ARCHITECT_REVIEW)
+**`TC-P30-T003`** — Design System 2.0 foundation (AWAITING_ARCHITECT_REVIEW)
 
 ## Next Planned Work
 
-**`TC-P30-T003`** — Design System 2.0
+**Visual Checkpoint A** (primitives / component board) then **`TC-P30-T004`** shells
 
-Only after architect ACCEPT of T002 + a valid authorized envelope.
+Only with separate valid authorized envelopes.
 
-Do **not** auto-start T003 from this document.
+Do **not** auto-start Checkpoint A / T004 / DEMOFEED from this document.
 
 ## Open Blockers
 
@@ -98,7 +102,7 @@ Update this document after:
 - phase transitions
 - blocker open/close
 - authorized next-task changes
-- North Star / product-experience constitution changes
+- North Star / product-experience constitution / Design System changes
 
 ---
 
@@ -108,3 +112,4 @@ Update this document after:
 |------|--------|
 | 2026-08-20 | Initial recovery context · `TC-PIPELINE-CONTROLLER-MODE-001` |
 | 2026-08-20 | Sync after `TC-P30-T002` constitution lock |
+| 2026-08-20 | Sync after `TC-P30-T003` Design System 2.0 foundation |
