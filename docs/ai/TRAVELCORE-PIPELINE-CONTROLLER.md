@@ -210,6 +210,13 @@ END_TRAVELCORE_CURSOR_RESULT_V1
 - Next-State
 - HEAD / Working Tree status when applicable
 
+For UI / Product Experience tasks (§K.1), RESULT **must also** include:
+
+- evidence paths
+- visual review summary
+- known limitations
+- acceptance risks
+
 Optional: also write `docs/pipeline/results/<Task-ID>.result.md` as a repository artifact (not a substitute for Architect-chat RESULT).
 
 Never replace the result envelope with:
@@ -461,6 +468,53 @@ Related constitution (when present):
 - `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md`
 - `docs/product-experience/P30-VISUAL-ACCEPTANCE-CHECKLIST.md`
 
+### K.1 Visual Evidence Review (mandatory before RESULT)
+
+Applies to:
+
+- Public Experience tasks
+- Admin Experience tasks
+- Agency Experience tasks
+- Any task requiring screenshots or visual checkpoints
+
+**Before** sending `BEGIN_TRAVELCORE_CURSOR_RESULT_V1`, Cursor **MUST**:
+
+1. **Verify evidence files exist** under:
+
+```text
+docs/product-experience/evidence/<Task-ID>/
+```
+
+2. **Open and inspect** the generated screenshots (not merely confirm file creation).
+
+3. **Perform visual self-check** against at least:
+
+| Check | Question |
+|-------|----------|
+| North Star | Does implementation follow North Star direction? |
+| Product feeling | Does it feel like a professional travel commerce product? |
+| Layout defects | Are there visible layout defects? |
+| Responsive | Are mobile and desktop states acceptable? |
+
+4. **Include visual review in RESULT** — required fields:
+
+- evidence paths
+- visual review summary
+- known limitations
+- acceptance risks
+
+**Forbidden RESULT pattern:**
+
+```text
+Screenshot created
+```
+
+alone, without visual assessment.
+
+This rule does **not** replace Architect ACCEPT.
+
+`Cursor PASS` still means **AWAITING_ARCHITECT_REVIEW**.
+
 ---
 
 ## L. Failure Modes This Controller Prevents
@@ -474,6 +528,7 @@ Related constitution (when present):
 | Treating Cursor PASS as ACCEPT | Keep `AWAITING_ARCHITECT_REVIEW` |
 | Executing product work from governance tasks | Scope violation · STOP |
 | Skipping visual evidence for major UI | Visual acceptance protocol |
+| Claiming \"Screenshot created\" without visual self-check | Forbidden (§K.1) · incomplete RESULT |
 | Searching for next task during EXECUTION MODE | Forbidden (§I.1) |
 | Permanent always-on polling daemon | Forbidden (§I.3) |
 | Inventing next task while waiting | Forbidden |
@@ -512,3 +567,4 @@ Pipeline Controller Mode is **mandatory** for Cursor execution under PIPELINE.
 | 2026-08-20 | Initial Controller Mode · `TC-PIPELINE-CONTROLLER-MODE-001` |
 | 2026-08-21 | Worker lifecycle · EXECUTION / WAITING · `TC-PIPELINE-CONTROLLER-WORKER-LOOP-REVISION-001` |
 | 2026-08-21 | File-based task mode · `.task.md` / `.gate.md` · waiting only after RESULT · `TC-PIPELINE-CONTROLLER-FILE-TASK-MODE-REVISION-001` |
+| 2026-08-21 | Visual Evidence Review before RESULT · `TC-PIPELINE-VISUAL-EVIDENCE-REVIEW-RULE-001` |
