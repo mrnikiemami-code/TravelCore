@@ -136,19 +136,19 @@ Do **not** execute.
 
 When a valid task/gate file exists:
 
-1. Read the file  
-2. Validate (§4)  
-3. Run Recovery Before Execution (§9)  
-4. Execute **only** this task/gate  
+1. Read the file
+2. Validate (§4)
+3. Run Recovery Before Execution (§9)
+4. Execute **only** this task/gate
 
 ### During EXECUTION MODE — forbidden
 
-- Looking for the next task  
-- Reading future tasks  
-- Refreshing Architect chat to hunt for work  
-- Parallel execution  
-- Inventing missing requirements  
-- Continuous polling  
+- Looking for the next task
+- Reading future tasks
+- Refreshing Architect chat to hunt for work
+- Parallel execution
+- Inventing missing requirements
+- Continuous polling
 
 Only the **current** authorized file is active.
 
@@ -166,23 +166,23 @@ END_TRAVELCORE_CURSOR_RESULT_V1
 
 ### Required RESULT fields
 
-- Task-ID  
-- Status  
-- Summary  
-- Changed files  
-- Validation  
-- Commit (when applicable)  
-- Evidence (when applicable)  
-- HEAD status  
-- Working Tree status  
-- Next-State  
+- Task-ID
+- Status
+- Summary
+- Changed files
+- Validation
+- Commit (when applicable)
+- Evidence (when applicable)
+- HEAD status
+- Working Tree status
+- Next-State
 
 ### Additional required fields for UI / Product Experience tasks
 
-- Evidence paths  
-- Visual review summary  
-- Known limitations  
-- Acceptance risks  
+- Evidence paths
+- Visual review summary
+- Known limitations
+- Acceptance risks
 
 See §8 Visual Evidence Review.
 
@@ -240,10 +240,10 @@ Check again
 
 ### Waiting rules
 
-- Continue waiting while PIPELINE mode remains active  
-- Do **not** permanently stop only because no task is temporarily available  
-- Do **not** invent work while waiting  
-- Do **not** treat Architect discussion without a file as authorization  
+- Continue waiting while PIPELINE mode remains active
+- Do **not** permanently stop only because no task is temporarily available
+- Do **not** invent work while waiting
+- Do **not** treat Architect discussion without a file as authorization
 
 Optional idle cue (not a substitute for RESULT):
 
