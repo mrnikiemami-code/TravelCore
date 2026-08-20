@@ -39,7 +39,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-P30-T004-ENVELOPE-CREATE` PASS (`80a5bb6`)
 - `TC-P30-T004` **ACCEPTED WITH NOTES** (Application Shells)
 - `TC-P30-T005-ENVELOPE-CREATE` PASS (`2f03718`)
-- `TC-P30-T005` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
+- `TC-P30-T005` **PASS / AWAITING_ARCHITECT_REVIEW** (technical) · Visual Gate **PENDING / REWORK_RECOMMENDED** (`TC-P30-T005-VISUAL-CHECKPOINT-C`)
 
 ## Current Important Locks
 
@@ -69,13 +69,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P30-T005`** — Public Home Experience (AWAITING_ARCHITECT_REVIEW)
+**`TC-P30-T005-VISUAL-CHECKPOINT-C`** — Visual Checkpoint C (this update · REWORK_RECOMMENDED)
 
 ## Next Planned Work
 
-**`TC-P30-T006`** — Hotel Commerce Experience
-
-Only with a separate valid authorized envelope.
+Architect decision on T005 visual rework vs ACCEPT.  
+**`TC-P30-T006`** only with a separate valid authorized envelope.
 
 Do **not** auto-start T006 / DEMOFEED from this document.
 
@@ -98,3 +97,4 @@ Do **not** auto-start T006 / DEMOFEED from this document.
 | 2026-08-20 | Sync after T002 / T003 |
 | 2026-08-20 | Sync after `TC-P30-T004` Application Shells |
 | 2026-08-20 | Sync after `TC-P30-T005` Public Home Experience |
+| 2026-08-20 | Sync after `TC-P30-T005-VISUAL-CHECKPOINT-C` (REWORK_RECOMMENDED) |
