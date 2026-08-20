@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-HOMFEED-PLAN` |
 | Track | Home Discovery Composition (post-HOTIDX · closes DISCLINK-T015 deferral) |
-| Status | **COMPLETE / ACCEPTED** (`TC-HOMFEED-GATE`) |
+| Status | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
 | Baseline | `3b058e2` (`feat(web): complete HOTIDX T001-GATE`) |
 | Authoritative sources | DISCLINK-T015 deferral · HOTIDX · DISCLINK travelogues · home discovery |
 | Frontend root | `src/frontend/web` |

@@ -31,9 +31,9 @@
 | فیلد | مقدار |
 |------|--------|
 | Current Phase | **Post-P29 — Continuous Evolution** (**COMPLETE / ACCEPTED** — `TC-Post-P29-GATE`) |
-| Previous Phase | **Home Discovery Composition** (**COMPLETE / ACCEPTED** — `TC-HOMFEED-GATE`) |
-| Previous Phase | **Hotel Catalog Browse Index** (**COMPLETE / ACCEPTED** — `TC-HOTIDX-GATE` `3b058e2`) |
-| Previous Phase | **Moderation Operations** (**COMPLETE / ACCEPTED** — `TC-MODOPS-GATE` `9961699`) |
+| Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
+| Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
+| Previous Phase | **Moderation Operations** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-MODOPS-GATE` `9961699`) |
 | Prior Architecture Phase | **P29 — Production Hardening** (**COMPLETE / ACCEPTED** — `TC-P29-GATE` `f866cb2`) |
 | P00 | COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
@@ -75,7 +75,8 @@
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
 | Current Active Product Task | **None** — all ROADMAP product tracks complete |
-| Current Next Task | **Roadmap complete** — await architect for next planning decision / product backlog prioritization |
+| Current Next Task | **Roadmap complete** — await architect-issued envelope for next planning decision; Cursor must not infer tracks from deferrals |
+| Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
 | P01 Implementation Started | **YES** |
@@ -393,18 +394,18 @@
 | DISCLINK T001–T015 | **COMPLETE / ACCEPTED** — Discovery Linking Sequence |
 | DISCLINK GATE | `TC-DISCLINK-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/DISCLINK-GATE-acceptance-evidence.md`](plans/DISCLINK-GATE-acceptance-evidence.md) |
 | DISCLINK | **COMPLETE** — ROADMAP Discovery Linking Sequence exhausted |
-| MODOPS Plan | `TC-MODOPS-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/MODOPS-implementation-plan.md`](plans/MODOPS-implementation-plan.md) |
-| MODOPS T001–T015 | **COMPLETE / ACCEPTED** — Moderation Operations Sequence |
-| MODOPS GATE | `TC-MODOPS-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/MODOPS-GATE-acceptance-evidence.md`](plans/MODOPS-GATE-acceptance-evidence.md) |
-| MODOPS | **COMPLETE** — ROADMAP Moderation Operations Sequence exhausted |
-| HOTIDX Plan | `TC-HOTIDX-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/HOTIDX-implementation-plan.md`](plans/HOTIDX-implementation-plan.md) |
-| HOTIDX T001–T015 | **COMPLETE / ACCEPTED** — Hotel Catalog Browse Index Sequence |
-| HOTIDX GATE | `TC-HOTIDX-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/HOTIDX-GATE-acceptance-evidence.md`](plans/HOTIDX-GATE-acceptance-evidence.md) |
-| HOTIDX | **COMPLETE** — ROADMAP Hotel Catalog Browse Index Sequence exhausted · closes DISCLINK-T014 |
-| HOMFEED Plan | `TC-HOMFEED-PLAN` **COMPLETE / ACCEPTED** — [`docs/plans/HOMFEED-implementation-plan.md`](plans/HOMFEED-implementation-plan.md) |
-| HOMFEED T001–T015 | **COMPLETE / ACCEPTED** — Home Discovery Composition Sequence |
-| HOMFEED GATE | `TC-HOMFEED-GATE` **COMPLETE / ACCEPTED** — [`docs/plans/HOMFEED-GATE-acceptance-evidence.md`](plans/HOMFEED-GATE-acceptance-evidence.md) |
-| HOMFEED | **COMPLETE** — ROADMAP Home Discovery Composition Sequence exhausted · closes DISCLINK-T015 |
+| MODOPS Plan | `TC-MODOPS-PLAN` implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/MODOPS-implementation-plan.md`](plans/MODOPS-implementation-plan.md) |
+| MODOPS T001–T015 | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** |
+| MODOPS GATE | `TC-MODOPS-GATE` implementation **COMPLETE** (`9961699`) · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/MODOPS-GATE-acceptance-evidence.md`](plans/MODOPS-GATE-acceptance-evidence.md) |
+| MODOPS | implementation **COMPLETE** — unauthorized range `38604d3..4094697` · ledger [`PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) |
+| HOTIDX Plan | `TC-HOTIDX-PLAN` implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/HOTIDX-implementation-plan.md`](plans/HOTIDX-implementation-plan.md) |
+| HOTIDX T001–T015 | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** |
+| HOTIDX GATE | `TC-HOTIDX-GATE` implementation **COMPLETE** (`ea2ba2a` / `3b058e2`) · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/HOTIDX-GATE-acceptance-evidence.md`](plans/HOTIDX-GATE-acceptance-evidence.md) |
+| HOTIDX | implementation **COMPLETE** — closes DISCLINK-T014 · ledger correction as above |
+| HOMFEED Plan | `TC-HOMFEED-PLAN` implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/HOMFEED-implementation-plan.md`](plans/HOMFEED-implementation-plan.md) |
+| HOMFEED T001–T015 | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** |
+| HOMFEED GATE | `TC-HOMFEED-GATE` implementation **COMPLETE** (`4094697`) · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/HOMFEED-GATE-acceptance-evidence.md`](plans/HOMFEED-GATE-acceptance-evidence.md) |
+| HOMFEED | implementation **COMPLETE** — closes DISCLINK-T015 · ledger correction as above |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |

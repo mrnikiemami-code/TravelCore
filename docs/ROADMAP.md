@@ -43,7 +43,8 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | **Roadmap complete** — await architect for next planning decision / product backlog prioritization |
+| Current Next Task | **Roadmap complete** — await architect-issued envelope; Cursor must not infer tracks from deferrals |
+| Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
 | TC-P00-T004 State | COMPLETE / ACCEPTED |
@@ -864,7 +865,7 @@ P26 = Advanced SEO.
 
 ## Moderation Operations Sequence
 
-**Status:** **COMPLETE / ACCEPTED** (`TC-MODOPS-GATE`)
+**Status:** implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-MODOPS-GATE` `9961699`)
 
 **Implementation plan:** [`docs/plans/MODOPS-implementation-plan.md`](plans/MODOPS-implementation-plan.md)
 
@@ -880,7 +881,7 @@ Live admin UGC moderation workflow after DISCLINK — closes PRODSURF-T015 defer
 
 ## Hotel Catalog Browse Index Sequence
 
-**Status:** **COMPLETE / ACCEPTED** (`TC-HOTIDX-GATE`)
+**Status:** implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE` `3b058e2`)
 
 **Implementation plan:** [`docs/plans/HOTIDX-implementation-plan.md`](plans/HOTIDX-implementation-plan.md)
 
@@ -896,7 +897,7 @@ Public hotel discovery browse after MODOPS — closes DISCLINK-T014 deferral:
 
 ## Home Discovery Composition Sequence
 
-**Status:** **COMPLETE / ACCEPTED** (`TC-HOMFEED-GATE`)
+**Status:** implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE` `4094697`)
 
 **Implementation plan:** [`docs/plans/HOMFEED-implementation-plan.md`](plans/HOMFEED-implementation-plan.md)
 
@@ -951,6 +952,6 @@ Curated home discovery composition after HOTIDX — closes DISCLINK-T015 deferra
 | PRODSURF | Product Surface Completion Sequence | **COMPLETE / ACCEPTED** (`TC-PRODSURF-GATE`) |
 | PROVINT | Provider Integration Readiness Sequence | **COMPLETE / ACCEPTED** (`TC-PROVINT-GATE`) |
 | DISCLINK | Discovery Linking Sequence | **COMPLETE / ACCEPTED** (`TC-DISCLINK-GATE`) |
-| MODOPS | Moderation Operations Sequence | **COMPLETE / ACCEPTED** (`TC-MODOPS-GATE`) |
-| HOTIDX | Hotel Catalog Browse Index Sequence | **COMPLETE / ACCEPTED** (`TC-HOTIDX-GATE`) |
-| HOMFEED | Home Discovery Composition Sequence | **COMPLETE / ACCEPTED** (`TC-HOMFEED-GATE`) |
+| MODOPS | Moderation Operations Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-MODOPS-GATE`) |
+| HOTIDX | Hotel Catalog Browse Index Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
+| HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |

@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-HOTIDX-PLAN` |
 | Track | Hotel Catalog Browse Index (post-MODOPS · closes DISCLINK-T014 deferral) |
-| Status | **COMPLETE / ACCEPTED** (`TC-HOTIDX-GATE`) |
+| Status | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
 | Baseline | `9961699` (`feat(ugc): complete MODOPS T001-GATE`) |
 | Authoritative sources | DISCLINK-T014 deferral · P07 Place catalog · PRODSURF `/hotels/[slug]` |
 | Backend root | `src/backend` |

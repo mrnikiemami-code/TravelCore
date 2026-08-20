@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-MODOPS-PLAN` |
 | Track | Moderation Operations (post-DISCLINK · closes PRODSURF-T015 deferral) |
-| Status | **COMPLETE / ACCEPTED** (`TC-MODOPS-GATE`) |
+| Status | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-MODOPS-GATE`) |
 | Baseline | `38604d3` (`feat(web): complete DISCLINK T001-GATE`) |
 | Authoritative sources | P16 UGC lifecycle · PRODSURF-T015 deferral · Access P03 · admin surface patterns |
 | Backend root | `src/backend` |
