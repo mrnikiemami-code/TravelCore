@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | **Roadmap complete** — await architect-issued envelope; Cursor must not infer tracks from deferrals |
+| Current Next Task | `TC-DEMOFEED-PLAN` **IN PROGRESS** — await architect ACCEPT; then `TC-DEMOFEED-T002` by authorized envelope only |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -910,6 +910,24 @@ Curated home discovery composition after HOTIDX — closes DISCLINK-T015 deferra
 
 ---
 
+## Demo Feeding Sequence (temporary)
+
+**Status:** **IN PROGRESS** (`TC-DEMOFEED-PLAN` authored · docs only)
+
+**Implementation plan:** [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md)
+
+Temporary removable demo population — **not** a permanent module:
+
+1. Isolated feeder boundary (no domain schema / no ownership change)
+2. Destination demo seed
+3. Hotel (Place) + image demo seed
+4. Tour + image demo seed
+5. Gate + deletion strategy (purge data, delete feeder tree)
+
+OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
+
+---
+
 ## Phase Index (Quick)
 
 | Phase | Title | Status |
@@ -955,3 +973,4 @@ Curated home discovery composition after HOTIDX — closes DISCLINK-T015 deferra
 | MODOPS | Moderation Operations Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-MODOPS-GATE`) |
 | HOTIDX | Hotel Catalog Browse Index Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
 | HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
+| DEMOFEED | Temporary Demo Feeding Sequence | **IN PROGRESS** (`TC-DEMOFEED-PLAN` · docs only · removable) |

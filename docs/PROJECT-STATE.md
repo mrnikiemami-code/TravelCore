@@ -74,8 +74,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | **None** — all ROADMAP product tracks complete |
-| Current Next Task | **Roadmap complete** — await architect-issued envelope for next planning decision; Cursor must not infer tracks from deferrals |
+| Current Active Product Task | `TC-DEMOFEED-PLAN` — Temporary Demo Feeding plan (**IN PROGRESS** · docs only) |
+| Current Next Task | Await architect ACCEPT of `TC-DEMOFEED-PLAN`; then authorized `TC-DEMOFEED-T002` only — do not infer |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -406,6 +406,8 @@
 | HOMFEED T001–T015 | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** |
 | HOMFEED GATE | `TC-HOMFEED-GATE` implementation **COMPLETE** (`4094697`) · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/HOMFEED-GATE-acceptance-evidence.md`](plans/HOMFEED-GATE-acceptance-evidence.md) |
 | HOMFEED | implementation **COMPLETE** — closes DISCLINK-T015 · ledger correction as above |
+| DEMOFEED Plan | `TC-DEMOFEED-PLAN` **IN PROGRESS** (docs only) — [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md) |
+| DEMOFEED | Temporary removable demo data feeding — **not** a permanent module · T002–GATE not started |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |
