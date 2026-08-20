@@ -18,6 +18,7 @@ It does **not** replace the Pipeline Protocol. It extends it with a permanent co
 - follows BEGIN / RESULT envelopes
 - executes only authorized tasks
 - recovers safely when context is lost
+- under PIPELINE, runs as a controlled **worker** with EXECUTION MODE and WAITING MODE (§G)
 
 ---
 
@@ -172,7 +173,7 @@ After a normal result:
 Next-State = AWAITING_ARCHITECT_REVIEW
 ```
 
-Then **STOP** (except for the post-result monitoring loop below while PIPELINE is active and USER-authorized).
+Sending RESULT ends **EXECUTION MODE** only. While PIPELINE mode remains active, the worker enters **WAITING MODE** (§G) — it does **not** terminate the worker session.
 
 ---
 
@@ -209,52 +210,197 @@ Do not invent a substitute channel.
 
 ---
 
-## G. Post Result Monitoring Loop
+## G. Pipeline Worker Lifecycle
 
-After sending a RESULT to the authoritative channel (PIPELINE mode active):
+When USER activates **PIPELINE** mode, Cursor behaves as a **controlled worker**.
 
-1. **WAIT 100 seconds**
-2. Read the same architect channel again
-3. If a new valid `BEGIN_TRAVELCORE_CURSOR_TASK_V1` exists → enter `AUTHORIZED` / execute
-4. If no task → **Refresh the same chat page**
-5. **WAIT 100 seconds** (allow complete reload)
-6. Read again
-7. If task exists → execute
-8. If no task → send:
+### Worker goal
+
+1. Find an authorized task from the Architect channel  
+2. Execute **only** that task  
+3. Return RESULT to the Architect channel  
+4. End EXECUTION MODE  
+5. Enter WAITING MODE for the next Architect task  
+6. Continue the cycle until PIPELINE is disabled or blocked  
+
+### Operating modes
+
+| Mode | Meaning |
+|------|---------|
+| **EXECUTION MODE** | One authorized task is being acquired / recovered / implemented / RESULT-delivered |
+| **WAITING MODE** | RESULT already sent · session stays alive · wait/poll for next valid envelope |
+
+```text
+PIPELINE active
+      ↓
+EXECUTION MODE  (acquire → recover → execute → RESULT)
+      ↓
+WAITING MODE    (wait 80s · read · acquire · refresh · repeat)
+      ↓
+  (new valid task) → EXECUTION MODE
+  (stop condition) → STOP
+```
+
+---
+
+### G.1 EXECUTION MODE — Task Acquisition
+
+Worker starts with:
+
+```text
+STATE = READ_ARCHITECT_CHANNEL
+```
+
+#### Procedure
+
+1. Open the authoritative architect channel (§F).  
+2. **Scroll to the bottom** of the conversation first (newest state).  
+3. Confirm the newest conversation state.  
+4. Move **upward** through conversation history.  
+5. Search **only** for a complete executable envelope:
+
+```text
+BEGIN_TRAVELCORE_CURSOR_TASK_V1
+...
+END_TRAVELCORE_CURSOR_TASK_V1
+```
+
+#### Executable only when all hold
+
+- BEGIN marker exists (exact, unsuffixed)  
+- END marker exists (exact, unsuffixed)  
+- Required fields exist (`Task-ID`, `Phase`, scope allow/forbid, validation)  
+- `Task-ID` exists  
+- `Task-ID` is new (not already executed / PASS-replayed)  
+- Task is **not** inside a RESULT envelope  
+- Task is **not** a quoted example (`__EXAMPLE` / `NON_EXECUTABLE_EXAMPLE`)  
+- Task is **not** historical / already completed  
+
+#### Ignore
+
+- incomplete TASK fragments  
+- RESULT messages / RESULT envelopes  
+- normal explanations  
+- examples  
+- old completed tasks  
+- architectural discussion **without** a complete envelope  
+
+#### After valid task detection
+
+```text
+AUTHORIZED
+    ↓
+Recovery Before Execution (§C)
+    ↓
+EXECUTE
+```
+
+---
+
+### G.2 During Execution — monitoring disabled
+
+While EXECUTION MODE is active for a claimed task, **worker waiting/acquisition is disabled**.
+
+The worker **MUST NOT**:
+
+- scan architect chat for another task  
+- refresh the browser to hunt for work  
+- execute parallel tasks  
+- start another worker cycle  
+
+Only the **current authorized task** is active.
+
+---
+
+### G.3 After Execution — RESULT then leave EXECUTION MODE
+
+When implementation finishes, the worker **MUST** create and send to the authoritative architect channel:
+
+```text
+BEGIN_TRAVELCORE_CURSOR_RESULT_V1
+...
+END_TRAVELCORE_CURSOR_RESULT_V1
+```
+
+After RESULT delivery:
+
+- EXECUTION MODE ends  
+- Worker enters **WAITING MODE**  
+- Worker session does **not** terminate solely because RESULT was sent  
+
+---
+
+### G.4 WAITING MODE — Continuous Waiting Loop
+
+After RESULT delivery (PIPELINE still active):
+
+The worker does **NOT** terminate.  
+The worker waits for the next Architect instruction.
+
+#### Procedure
+
+1. **Wait 80 seconds.**  
+2. Read the **same** authoritative architect channel.  
+3. Run Task Acquisition (§G.1): bottom → upward → newest complete valid unexecuted envelope.  
+4. If found → return to **EXECUTION MODE** (Recovery → EXECUTE).  
+5. If not found → **Refresh** the same architect channel.  
+6. **Wait another 80 seconds.**  
+7. Repeat the same acquisition procedure.  
+
+**Never invent work** during waiting.
+
+Optional status line (may be sent periodically when idle for clarity; not a substitute for RESULT):
 
 ```text
 WAITING_FOR_NEXT_ARCHITECT_TASK
 ```
 
-9. **WAIT 70 seconds**
-10. Read again
-11. If task exists → execute
-12. If no task → Refresh the same page
-13. **WAIT 80 seconds**
-14. Read again
-15. If still no task:
+---
 
-```text
-STOP
-Status = WAITING_ARCHITECT_INPUT
-```
+### G.5 Continuous Pipeline Rule
 
-**Never invent work** during waiting.
+Sending RESULT does **NOT** mean the worker session is finished.
+
+The worker session remains active while **PIPELINE mode is active**.
+
+The worker **stops only when**:
+
+| Stop condition | Status / action |
+|----------------|-----------------|
+| USER disables PIPELINE mode (`TRAVELCORE_MODE: HUMAN` or equivalent) | STOP |
+| Architect channel unavailable | `BLOCKED_ARCHITECT_CHANNEL_UNAVAILABLE` |
+| Recovery conflict | `RECOVERY_CONFLICT` |
+| Pipeline completed (explicit SoT / USER end) | STOP / COMPLETED |
+
+There is **no** automatic “give up after N waits” stop while PIPELINE remains active and no stop condition above applies.
 
 ---
 
-## H. Task Acquisition Loop
+### G.6 Safety Rules (unchanged, mandatory)
+
+- **No Envelope = No Execution**  
+- **Cursor PASS ≠ Architect ACCEPT**  
+- **Repository remains Source of Truth**  
+- Never invent the next task  
+- Never bypass Architect approval  
+
+---
+
+## H. Task Acquisition Loop (summary)
 
 ```text
-STATE = READ_ARCHITECT_CHAT
+STATE = READ_ARCHITECT_CHANNEL
 ```
 
-Actions:
+Normative detail: §G.1.
 
-1. Read newest messages from the authoritative architect channel
-2. Find newest valid unexecuted `BEGIN_TRAVELCORE_CURSOR_TASK_V1`
-3. If none → waiting / monitoring rules above
-4. If found → Recovery Before Execution → execute only that task → RESULT → monitoring loop
+Summary:
+
+1. Bottom of architect channel first (newest)  
+2. Move upward  
+3. Newest complete valid unexecuted `TRAVELCORE_CURSOR_TASK_V1` only  
+4. If none → WAITING MODE rules (§G.4)  
+5. If found → Recovery → execute only that task → RESULT → WAITING MODE  
 
 ---
 
@@ -292,6 +438,9 @@ Related constitution (when present):
 | Treating Cursor PASS as ACCEPT | Keep `AWAITING_ARCHITECT_REVIEW` |
 | Executing product work from governance tasks | Scope violation · STOP |
 | Skipping visual evidence for major UI | Visual acceptance protocol |
+| Terminating worker solely because RESULT was sent | Remain in WAITING MODE while PIPELINE active (§G.5) |
+| Scanning architect chat during EXECUTION MODE | Forbidden (§G.2) |
+| Inventing next task while waiting | Forbidden · wait for Architect envelope |
 
 ---
 
@@ -314,3 +463,4 @@ Pipeline Controller Mode is **mandatory** for Cursor execution under PIPELINE.
 | Date | Change |
 |------|--------|
 | 2026-08-20 | Initial Controller Mode · `TC-PIPELINE-CONTROLLER-MODE-001` |
+| 2026-08-21 | Worker lifecycle · EXECUTION / WAITING modes · continuous 80s wait · acquisition bottom→up · `TC-PIPELINE-CONTROLLER-WORKER-LOOP-REVISION-001` |
