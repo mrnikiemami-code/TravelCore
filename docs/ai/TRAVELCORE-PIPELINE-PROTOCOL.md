@@ -54,6 +54,31 @@ It answers immediately:
 | After recovery? | Defaults to **HUMAN**; PIPELINE must be re-activated by USER |
 | Progress visibility? | Cumulative current-phase ledger from repository evidence |
 | Detailed docs? | Linked at the end of this file |
+| Cursor execution control? | **Pipeline Controller Mode is mandatory** — [`TRAVELCORE-PIPELINE-CONTROLLER.md`](TRAVELCORE-PIPELINE-CONTROLLER.md) |
+
+---
+
+## 1A. Pipeline Controller Mode (Mandatory)
+
+**Pipeline Controller Mode is mandatory for Cursor execution.**
+
+Canonical controller contract:
+
+[`TRAVELCORE-PIPELINE-CONTROLLER.md`](TRAVELCORE-PIPELINE-CONTROLLER.md)
+
+Fast durable position snapshot:
+
+[`TRAVELCORE-RECOVERY-CONTEXT.md`](TRAVELCORE-RECOVERY-CONTEXT.md)
+
+Controller rules extend (do not replace) this protocol:
+
+- repository SoT over chat memory
+- valid `BEGIN_TRAVELCORE_CURSOR_TASK_V1` only
+- recovery checks before every task
+- RESULT envelope back to the same authoritative architect channel
+- no inferred roadmap / deferred / product work
+- post-result monitoring wait loop without inventing tasks
+- visual North Star protection for product-experience tasks
 
 ---
 
@@ -492,6 +517,8 @@ Detail: [`02-execution-state-machine.md`](02-execution-state-machine.md)
 
 | Document | Role |
 |----------|------|
+| [`TRAVELCORE-PIPELINE-CONTROLLER.md`](TRAVELCORE-PIPELINE-CONTROLLER.md) | **Mandatory** Cursor Pipeline Controller Mode |
+| [`TRAVELCORE-RECOVERY-CONTEXT.md`](TRAVELCORE-RECOVERY-CONTEXT.md) | Fast durable recovery position snapshot |
 | [`../architecture/16-agent-handoff-and-phase-gates.md`](../architecture/16-agent-handoff-and-phase-gates.md) | Architecture view of handoff + gates |
 | [`../architecture/17-human-and-pipeline-operating-modes.md`](../architecture/17-human-and-pipeline-operating-modes.md) | Architecture view of HUMAN/PIPELINE (proposed) |
 | [`01-chatgpt-cursor-handoff-protocol.md`](01-chatgpt-cursor-handoff-protocol.md) | Task/Result envelopes |

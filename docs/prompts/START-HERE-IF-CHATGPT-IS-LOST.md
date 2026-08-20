@@ -23,6 +23,67 @@ Cursor نباید پروژه را ادامه دهد؛ فقط باید وضعیت
 
 ---
 
+## CURRENT EXECUTION CONTROL — Pipeline Controller Mode
+
+TravelCore uses **Pipeline Controller Mode**.
+
+Canonical controller:
+
+[`docs/ai/TRAVELCORE-PIPELINE-CONTROLLER.md`](../ai/TRAVELCORE-PIPELINE-CONTROLLER.md)
+
+Fast recovery snapshot:
+
+[`docs/ai/TRAVELCORE-RECOVERY-CONTEXT.md`](../ai/TRAVELCORE-RECOVERY-CONTEXT.md)
+
+### Authoritative command channel
+
+The authoritative architect chat is the **command / communication channel** only.
+
+Current channel:
+
+```text
+https://chatgpt.com/g/g-p-6a79dbc6468c8191a5e74afa2d82a8be-travelcore/c/6a8039a8-2014-83ed-be9f-813280b23bcb
+```
+
+Repository recovery documents remain the **permanent source of truth**.
+
+### When a new architect chat starts
+
+1. Read `docs/PROJECT-STATE.md`
+2. Read `docs/ROADMAP.md`
+3. Read `docs/ai/TRAVELCORE-RECOVERY-CONTEXT.md`
+4. Verify last accepted task / gate
+5. Verify next authorized task (envelope only — do not invent)
+
+### Cursor must
+
+- read the active architect chat for valid task envelopes
+- execute only valid `BEGIN_TRAVELCORE_CURSOR_TASK_V1` envelopes
+- return `BEGIN_TRAVELCORE_CURSOR_RESULT_V1` to the same chat
+- never infer tasks
+- never continue from roadmap assumptions / deferred items / commits / unfinished ideas
+- never treat Cursor PASS as Architect ACCEPT
+
+### Cursor must NOT
+
+- restart architecture design from scratch
+- invent backend / product phases
+- execute DEMOFEED automatically
+- switch to / create parallel architect chats
+- accept major UI solely because automated tests pass
+
+### Visual North Star (P30+)
+
+Approved directional asset:
+
+```text
+docs/product-experience/assets/travelcore-ui-ux-north-star.png
+```
+
+Major product-experience / UI work requires visual evidence against this North Star before acceptance.
+
+---
+
 # TC-P00-T001C — Emergency ChatGPT Architect Recovery Prompt
 
 ## Recovery Role
@@ -116,23 +177,26 @@ At execution time, first discover and read what exists:
 1. `AGENTS.md`
 2. `docs/PROJECT-STATE.md`
 3. `docs/ROADMAP.md` (if present)
-4. `docs/architecture/15-future-architecture-transition-map.md` (if present)
-5. `docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md` (canonical Pipeline Protocol entry — if present)
-6. `docs/ai/pipeline-runtime-policy.json` (if present)
-7. `docs/architecture/16-agent-handoff-and-phase-gates.md` (if present)
-8. `docs/architecture/17-human-and-pipeline-operating-modes.md` (if present)
-9. `docs/ai/01-chatgpt-cursor-handoff-protocol.md` · `docs/ai/02-execution-state-machine.md` · `docs/ai/03-human-confirmation-gates.md` · `docs/ai/04-human-and-pipeline-modes.md` (if present)
-10. `docs/architecture/**`
-11. `docs/domain/**`
-12. `docs/adr/**` (including ADR 0013 / ADR 0014 when present)
-13. `docs/prompts/**`
-14. Later architecture-related docs **if directories exist**, for example:
+4. `docs/ai/TRAVELCORE-RECOVERY-CONTEXT.md` (if present — fast position snapshot)
+5. `docs/ai/TRAVELCORE-PIPELINE-CONTROLLER.md` (if present — mandatory controller contract)
+6. `docs/architecture/15-future-architecture-transition-map.md` (if present)
+7. `docs/ai/TRAVELCORE-PIPELINE-PROTOCOL.md` (canonical Pipeline Protocol entry — if present)
+8. `docs/ai/pipeline-runtime-policy.json` (if present)
+9. `docs/architecture/16-agent-handoff-and-phase-gates.md` (if present)
+10. `docs/architecture/17-human-and-pipeline-operating-modes.md` (if present)
+11. `docs/ai/01-chatgpt-cursor-handoff-protocol.md` · `docs/ai/02-execution-state-machine.md` · `docs/ai/03-human-confirmation-gates.md` · `docs/ai/04-human-and-pipeline-modes.md` (if present)
+12. `docs/architecture/**`
+13. `docs/domain/**`
+14. `docs/adr/**` (including ADR 0013 / ADR 0014 when present)
+15. `docs/prompts/**`
+16. Later architecture-related docs **if directories exist**, for example:
    - `docs/ui/**`
    - `docs/i18n/**`
    - `docs/seo/**`
    - `docs/data/**`
    - `docs/security/**`
    - `docs/testing/**`
+   - `docs/product-experience/**`
 
 Do not assume all these directories already exist.
 
