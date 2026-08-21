@@ -11,6 +11,10 @@ import {
 import { loadTourDiscoveryList } from "@/features/tour-discovery/load-tour-discovery-list";
 import type { RelatedTourView } from "@/features/public-experience/load-related-tours";
 import { loadTravelogueDiscoveryList } from "@/features/travelogue-detail/load-travelogue-list";
+import {
+  mediaOriginalContentPath,
+  resolveMediaAppProxySrc,
+} from "@/lib/media/media-presentation";
 
 type DestinationBySlug = { destinationId: string };
 type DestinationDetail = {
@@ -18,6 +22,40 @@ type DestinationDetail = {
   name?: string | null;
   description?: string | null;
 };
+
+type ApiDestinationMedia = {
+  cover?: {
+    mediaAssetId: string;
+    presentation?: {
+      status: string;
+      originalContentUrl?: string | null;
+      variants?: Array<{
+        profile: string;
+        status: string;
+        contentUrl?: string | null;
+      }> | null;
+    } | null;
+  } | null;
+};
+
+function resolveDestinationCoverSrc(media: ApiDestinationMedia): string | null {
+  const cover = media.cover;
+  if (!cover) return null;
+  const p = cover.presentation;
+  if (!p || p.status !== "Ready") return null;
+  const medium = p.variants?.find(
+    (v) => v.profile.toLowerCase() === "medium" && v.status === "Ready",
+  );
+  if (medium?.contentUrl?.trim()) {
+    const url = medium.contentUrl.trim();
+    return resolveMediaAppProxySrc(url.startsWith("/") ? url : `/${url}`);
+  }
+  if (p.originalContentUrl?.trim()) {
+    const url = p.originalContentUrl.trim();
+    return resolveMediaAppProxySrc(url.startsWith("/") ? url : `/${url}`);
+  }
+  return resolveMediaAppProxySrc(mediaOriginalContentPath(cover.mediaAssetId));
+}
 
 async function loadDestinationPreview(
   locale: AppLocale,
@@ -31,10 +69,16 @@ async function loadDestinationPreview(
     return null;
   }
 
-  const detail = await apiGetJson<DestinationDetail>(
-    `/api/destination/destinations/${encodeURIComponent(hit.data.destinationId)}?locale=${encodeURIComponent(locale)}`,
-    { cache: "no-store" },
-  );
+  const [detail, media] = await Promise.all([
+    apiGetJson<DestinationDetail>(
+      `/api/destination/destinations/${encodeURIComponent(hit.data.destinationId)}?locale=${encodeURIComponent(locale)}`,
+      { cache: "no-store" },
+    ),
+    apiGetJson<ApiDestinationMedia>(
+      `/api/destination/destinations/${encodeURIComponent(hit.data.destinationId)}/media/presentation?locale=${encodeURIComponent(locale)}`,
+      { cache: "no-store" },
+    ),
+  ]);
 
   const name =
     (isApiOk(detail) ? detail.data.name : null)?.trim() ||
@@ -45,6 +89,7 @@ async function loadDestinationPreview(
     slug,
     name,
     description: isApiOk(detail) ? (detail.data.description ?? null) : null,
+    coverSrc: isApiOk(media) ? resolveDestinationCoverSrc(media.data) : null,
   };
 }
 

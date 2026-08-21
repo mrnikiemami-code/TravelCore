@@ -427,13 +427,22 @@ export function HomeDiscoveryView({
                   >
                     <div
                       className={cn(
-                        "relative h-40 bg-gradient-to-br",
+                        "relative h-40 overflow-hidden bg-gradient-to-br",
                         index % 2 === 0
                           ? "from-[#0d47a1] via-[#1565c0] to-[#f9a825]"
                           : "from-[#01579b] via-[#0288d1] to-[#81d4fa]",
                       )}
                     >
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.28),transparent_55%)]" />
+                      {item.coverSrc ? (
+                        // eslint-disable-next-line @next/next/no-img-element -- app-proxy Destination Cover
+                        <img
+                          src={item.coverSrc}
+                          alt=""
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.28),transparent_55%)]" />
+                      )}
                       {item.slug.startsWith("demofeed-") ? (
                         <span className="absolute bottom-3 start-3 rounded-md bg-background/85 px-2 py-1 text-[11px] font-medium text-foreground">
                           {copy.demoHint}

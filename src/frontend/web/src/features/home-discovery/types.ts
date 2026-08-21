@@ -19,6 +19,8 @@ export type HomeDestinationPreview = {
   slug: string;
   name: string;
   description: string | null;
+  /** App-proxy cover URL when Destination Cover presentation is Ready; else null (honest gradient). */
+  coverSrc?: string | null;
 };
 
 export type HomeDiscoveryComposition = {
