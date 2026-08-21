@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P33 — Commercial Product Readiness Review** (`TC-P33-T001` Cursor **PASS** · awaiting Architect ACCEPT) |
+| Current Phase | **P33 — Commercial Product Readiness Review** (`TC-P33-T002` Cursor **PASS** · awaiting Architect ACCEPT) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P32 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P33 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
