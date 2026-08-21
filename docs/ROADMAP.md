@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P36-T001` · do not auto-implement T002 |
+| Current Next Task | Architect review of `TC-P36-T002` · do not auto-implement T003 |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -974,19 +974,13 @@ Evidence: [`docs/product-experience/evidence/P34-GATE/GATE-REVIEW.md`](product-e
 
 ## P35 — Production Payment Provider Readiness
 
-**Status:** **ACTIVE** (`TC-P36-T001` Cursor **PASS** · visual audit awaiting Architect)
+**Status:** **ACTIVE** (`TC-P36-T002` Cursor **PASS** · Home redesign awaiting Architect)
 
 ```text
-NOT_SELLABLE_VISUALLY
-P35 provider work paused by Architect priority
+PARTIALLY_SELLABLE_VISUALLY (Home)
 ```
 
-Plans / evidence:
-
-- [`docs/plans/P36-commercial-uiux-final-polish-plan.md`](plans/P36-commercial-uiux-final-polish-plan.md)
-- [`docs/product-experience/evidence/P36-T001/`](../product-experience/evidence/P36-T001/)
-
-P35 designs remain locked (Stripe code ready for test account; Iran no final pick).
+Evidence: [`docs/product-experience/evidence/P36-T002/`](../product-experience/evidence/P36-T002/)
 
 ---
 
@@ -1068,6 +1062,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
-| P36 | Commercial UI/UX Final Polish | **ACTIVE** (`TC-P36-T001` · [`P36 plan`](plans/P36-commercial-uiux-final-polish-plan.md)) |
+| P36 | Commercial UI/UX Final Polish | **ACTIVE** (`TC-P36-T002` · Home PARTIALLY_SELLABLE) |
 | P35 | Production Payment Provider Readiness | **PAUSED** (designs locked; Stripe test-mode code ready; external account facts) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

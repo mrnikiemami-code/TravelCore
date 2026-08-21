@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P36 — Commercial UI/UX Final Polish** (`TC-P36-T001` Cursor **PASS** · **NOT_SELLABLE_VISUALLY**)
+**P36 — Commercial UI/UX Final Polish** (`TC-P36-T002` Cursor **PASS** · Home · **PARTIALLY_SELLABLE_VISUALLY**)
 
 ## Completed (recent)
 
-- P35-T010 ACCEPTED — Zarinpal design lock
-- P36-T001: ruthless visual audit + polish plan + screenshots
+- P36-T001 ACCEPTED — visual audit NOT_SELLABLE
+- P36-T002: Home photographic hero + merchandising polish
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T001 RESULT. Do not auto-implement T002.
+**None** — WAITING for Architect after T002 RESULT. Do not auto-implement T003.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P36-T002 Home commercial redesign |
 | 2026-08-21 | Sync after TC-P36-T001 commercial UI visual audit |
 | 2026-08-21 | Sync after TC-P35-T010 Zarinpal adapter design lock |
-| 2026-08-21 | Sync after TC-P35-T009 Behpardakht Mellat adapter design lock |
 | 2026-08-21 | Sync after TC-P33-GATE review |
