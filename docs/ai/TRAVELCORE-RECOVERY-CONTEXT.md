@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T005` Cursor **PASS** · worksheet awaiting Architect/user answers)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T006` Cursor **PASS** · **BLOCKED_ON_PROVIDER_ACCOUNT_FACTS**)
 
 ## Completed (recent)
 
-- P35-T004 ACCEPTED — Iran/UAE research shortlists
-- P35-T005: Business provider selection worksheet (no vendor selected)
+- P35-T005 ACCEPTED — worksheet; user decisions recorded
+- P35-T006: Provider-specific design briefs (Behpardakht · Zarinpal · Stripe) · no adapters · no Iran final pick · no core redesign
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T005 RESULT + user answers A–G.
+**None** — WAITING for Architect after T006 RESULT. Do not implement adapters.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T006 provider-specific design |
 | 2026-08-21 | Sync after TC-P35-T005 provider selection worksheet |
 | 2026-08-21 | Sync after TC-P35-T004 Iran/UAE provider research |
-| 2026-08-21 | Sync after TC-P35-T003 market provider decision matrix |
 | 2026-08-21 | Sync after TC-P33-GATE review |

@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P35-T005` + user worksheet answers · no provider integration |
+| Current Next Task | Architect review of `TC-P35-T006` · no adapter implementation until authorized |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -974,14 +974,19 @@ Evidence: [`docs/product-experience/evidence/P34-GATE/GATE-REVIEW.md`](product-e
 
 ## P35 — Production Payment Provider Readiness
 
-**Status:** **ACTIVE** (`TC-P35-T005` Cursor **PASS** · worksheet awaiting Architect/user)
+**Status:** **ACTIVE** (`TC-P35-T006` Cursor **PASS** · design awaiting Architect)
+
+```text
+BLOCKED_ON_PROVIDER_ACCOUNT_FACTS
+Iran: Behpardakht + Zarinpal (no final pick)
+UAE: Stripe preferred
+NO CORE PAYMENT REDESIGN REQUIRED
+```
 
 Plans:
 
+- [`docs/plans/P35-provider-specific-design-iran-uae.md`](plans/P35-provider-specific-design-iran-uae.md)
 - [`docs/plans/P35-provider-selection-worksheet.md`](plans/P35-provider-selection-worksheet.md)
-- [`docs/plans/P35-provider-research-iran-uae.md`](plans/P35-provider-research-iran-uae.md)
-
-Await worksheet answers before provider-specific design.
 
 ---
 
@@ -1063,5 +1068,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
-| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T005` · [`P35-provider-selection-worksheet.md`](plans/P35-provider-selection-worksheet.md)) |
+| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T006` · [`P35-provider-specific-design-iran-uae.md`](plans/P35-provider-specific-design-iran-uae.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
