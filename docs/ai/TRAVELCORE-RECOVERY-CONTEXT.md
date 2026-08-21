@@ -1,20 +1,20 @@
 # TravelCore Recovery Context
 
-**P36 — Commercial UI/UX Final Polish** (`TC-P36-T005` Cursor **PASS** · Commerce · **PARTIALLY_SELLABLE_VISUALLY**)
+**P36 GATE** (`TC-P36-GATE` Cursor **PASS WITH KNOWN LIMITATIONS** · overall **PARTIALLY_SELLABLE_VISUALLY**)
 
 ## Completed (recent)
 
-- P36-T004 ACCEPTED — Tours PARTIALLY_SELLABLE
-- P36-T005: Commerce prepare / status / payment boundary visual polish
+- P36-T002…T005 ACCEPTED — Home/Hotel/Tour/Commerce PARTIALLY_SELLABLE
+- P36-GATE review documented — no new feature implementation
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T005 RESULT. Do not auto-execute GATE.
+**None** — WAITING for Architect after GATE RESULT. Do not infer P37.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P36-GATE commercial UI gate review |
 | 2026-08-21 | Sync after TC-P36-T005 Commerce commercial polish |
 | 2026-08-21 | Sync after TC-P36-T004 Tour commercial polish |
-| 2026-08-21 | Sync after TC-P36-T003 Hotel commercial polish |
