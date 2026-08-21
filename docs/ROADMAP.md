@@ -974,19 +974,20 @@ Evidence: [`docs/product-experience/evidence/P34-GATE/GATE-REVIEW.md`](product-e
 
 ## P35 — Production Payment Provider Readiness
 
-**Status:** **ACTIVE** (`TC-P35-T002` Cursor **PASS** · intake locked)
+**Status:** **ACTIVE** (`TC-P35-T003` Cursor **PASS** · matrix awaiting Architect)
 
 ```text
 PRODUCTION PROVIDER SELECTION:
-BLOCKED_ON_EXTERNAL_BUSINESS_INPUT
+BLOCKED_PENDING_PROVIDER_RESEARCH
 ```
 
 Plans:
 
-- [`docs/plans/P35-production-payment-provider-readiness.md`](plans/P35-production-payment-provider-readiness.md) (T001 ACCEPTED)
+- [`docs/plans/P35-production-payment-provider-readiness.md`](plans/P35-production-payment-provider-readiness.md)
 - [`docs/plans/P35-production-payment-external-decision-intake.md`](plans/P35-production-payment-external-decision-intake.md)
+- [`docs/plans/P35-market-provider-decision-matrix.md`](plans/P35-market-provider-decision-matrix.md)
 
-Do not select/integrate a real provider until intake blockers are filled.
+Iran and UAE are separate; multi-provider posture likely; no vendor selected.
 
 ---
 
@@ -1068,5 +1069,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
-| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T002` · **BLOCKED_ON_EXTERNAL_BUSINESS_INPUT** · [`P35-production-payment-external-decision-intake.md`](plans/P35-production-payment-external-decision-intake.md)) |
+| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T003` · **BLOCKED_PENDING_PROVIDER_RESEARCH** · [`P35-market-provider-decision-matrix.md`](plans/P35-market-provider-decision-matrix.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

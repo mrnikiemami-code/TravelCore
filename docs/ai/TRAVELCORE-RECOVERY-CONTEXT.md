@@ -26,23 +26,23 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T002` Cursor **PASS** · **BLOCKED_ON_EXTERNAL_BUSINESS_INPUT**)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T003` Cursor **PASS** · **BLOCKED_PENDING_PROVIDER_RESEARCH**)
 
 ## Completed (recent)
 
-- P34-GATE ACCEPTED WITH KNOWN LIMITATIONS
-- P35-T001 ACCEPTED — provider-agnostic readiness plan
-- P35-T002: External decision intake locked (no fabricated vendor/market values)
+- P35-T001 ACCEPTED — provider-agnostic readiness
+- P35-T002 ACCEPTED — intake; business inputs later supplied
+- P35-T003: Market split matrix (Iran ≠ UAE); Bank Mellat preference not treated as locked PSP
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T002 RESULT. Provider selection blocked on business inputs.
+**None** — WAITING for Architect after T003 RESULT. Do not invent provider.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T003 market provider decision matrix |
 | 2026-08-21 | Sync after TC-P35-T002 external decision intake |
 | 2026-08-21 | Sync after TC-P35-T001 production provider readiness plan |
-| 2026-08-21 | Sync after TC-P34-GATE review |
 | 2026-08-21 | Sync after TC-P33-GATE review |
