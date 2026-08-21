@@ -26,6 +26,7 @@
     <ProjectReference Include="..\TravelCore.Modules.AgencyMarketplace.Domain\TravelCore.Modules.AgencyMarketplace.Domain.csproj" />
     <ProjectReference Include="..\..\..\Platform\Modularity\TravelCore.Modularity\TravelCore.Modularity.csproj" />
     <ProjectReference Include="..\..\..\Platform\Persistence\PostgreSql\TravelCore.Persistence.PostgreSql\TravelCore.Persistence.PostgreSql.csproj" />
+    <ProjectReference Include="..\..\Identity\TravelCore.Modules.Identity.Contracts\TravelCore.Modules.Identity.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
