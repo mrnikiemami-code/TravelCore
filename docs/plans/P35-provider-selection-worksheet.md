@@ -113,6 +113,7 @@ Architecture/design research may continue only via authorized `.task.md`.
 
 **No final Iran selection.** See parity table in Zarinpal design §15.
 
+## Recorded user answers (2026-08-21)
 
 | Q | Answer (normalized) |
 |---|---------------------|
