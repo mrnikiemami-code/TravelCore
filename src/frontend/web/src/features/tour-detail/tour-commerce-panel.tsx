@@ -394,7 +394,7 @@ export function TourCommercePanel({
             {bookHref ? (
               <a
                 href={bookHref}
-                className="min-h-touch inline-flex w-full items-center justify-center rounded-md bg-accent px-4 text-sm font-semibold text-accent-foreground hover:opacity-95 sm:w-auto"
+                className="min-h-touch inline-flex w-full items-center justify-center rounded-lg bg-[#F59E0B] px-4 text-sm font-semibold text-[#0E172A] hover:opacity-95 sm:w-auto"
               >
                 {copy.startBooking}
               </a>
@@ -404,7 +404,7 @@ export function TourCommercePanel({
                 disabled
                 aria-disabled="true"
                 title={gateHint ?? copy.needPrice}
-                className="min-h-touch inline-flex w-full cursor-not-allowed items-center justify-center rounded-md bg-surface-muted px-4 text-sm font-semibold text-muted-foreground sm:w-auto"
+                className="min-h-touch inline-flex w-full cursor-not-allowed items-center justify-center rounded-lg bg-surface-muted px-4 text-sm font-semibold text-muted-foreground sm:w-auto"
               >
                 {copy.startBooking}
               </button>

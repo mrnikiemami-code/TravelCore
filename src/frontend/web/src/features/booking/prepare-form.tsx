@@ -19,6 +19,13 @@ type PassengerDraft = {
   category: "Adult" | "Child" | "Infant";
 };
 
+const fieldClass =
+  "min-h-touch rounded-lg border border-border bg-background px-3 py-2 outline-none ring-[#1D4ED8] focus:ring-2";
+
+/**
+ * Public booking prepare form (TC-P36-T005 commerce polish).
+ * Creates Pending booking only — Quote inside Booking · no Payment · no Confirm.
+ */
 export function PublicBookingPrepareForm({
   locale,
   slug,
@@ -85,7 +92,10 @@ export function PublicBookingPrepareForm({
     return (
       <Stack gap="sm">
         <Text>{copy.missingDeparture}</Text>
-        <a className="underline" href={`/${locale}/tours/${encodeURIComponent(slug)}`}>
+        <a
+          className="inline-flex min-h-touch items-center text-sm font-medium text-[#1D4ED8] underline-offset-2 hover:underline"
+          href={`/${locale}/tours/${encodeURIComponent(slug)}`}
+        >
           {copy.backToTour}
         </a>
       </Stack>
@@ -94,16 +104,16 @@ export function PublicBookingPrepareForm({
 
   return (
     <form
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-5"
       onSubmit={(event) => {
         event.preventDefault();
         submit();
       }}
     >
-      <label className="flex flex-col gap-1">
+      <label className="flex flex-col gap-1.5">
         <Text role="label">{copy.selectDeparture}</Text>
         <select
-          className="min-h-touch rounded-md border border-border bg-background px-3 py-2"
+          className={fieldClass}
           value={tourDepartureId}
           onChange={(event) => setTourDepartureId(event.target.value)}
           required
@@ -117,22 +127,23 @@ export function PublicBookingPrepareForm({
       </label>
 
       <Stack gap="sm">
-        <Text as="h2" role="heading">
+        <Text as="h2" role="heading" className="text-base font-semibold">
           {copy.contactHeading}
         </Text>
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1.5">
           <Text role="label">{copy.displayName}</Text>
           <input
-            className="min-h-touch rounded-md border border-border px-3 py-2"
+            className={fieldClass}
             value={displayName}
             onChange={(event) => setDisplayName(event.target.value)}
+            autoComplete="name"
           />
         </label>
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1.5">
           <Text role="label">{copy.email}</Text>
           <LtrValue>
             <input
-              className="min-h-touch rounded-md border border-border px-3 py-2"
+              className={`${fieldClass} w-full`}
               type="email"
               autoComplete="email"
               inputMode="email"
@@ -142,11 +153,11 @@ export function PublicBookingPrepareForm({
             />
           </LtrValue>
         </label>
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1.5">
           <Text role="label">{copy.phone}</Text>
           <LtrValue>
             <input
-              className="min-h-touch rounded-md border border-border px-3 py-2"
+              className={`${fieldClass} w-full`}
               type="tel"
               autoComplete="tel"
               inputMode="tel"
@@ -158,47 +169,54 @@ export function PublicBookingPrepareForm({
       </Stack>
 
       <Stack gap="sm">
-        <Text as="h2" role="heading">
+        <Text as="h2" role="heading" className="text-base font-semibold">
           {copy.passengersHeading}
         </Text>
         {passengers.map((passenger, index) => (
-          <div key={index} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            <label className="flex flex-col gap-1">
+          <div
+            key={index}
+            className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-background p-3 sm:grid-cols-3"
+          >
+            <label className="flex flex-col gap-1.5">
               <Text role="label">{copy.givenName}</Text>
               <input
-                className="min-h-touch rounded-md border border-border px-3 py-2"
+                className={fieldClass}
                 autoComplete="given-name"
                 value={passenger.givenName}
                 required
                 onChange={(event) =>
                   setPassengers((rows) =>
                     rows.map((row, i) =>
-                      i === index ? { ...row, givenName: event.target.value } : row,
+                      i === index
+                        ? { ...row, givenName: event.target.value }
+                        : row,
                     ),
                   )
                 }
               />
             </label>
-            <label className="flex flex-col gap-1">
+            <label className="flex flex-col gap-1.5">
               <Text role="label">{copy.familyName}</Text>
               <input
-                className="min-h-touch rounded-md border border-border px-3 py-2"
+                className={fieldClass}
                 autoComplete="family-name"
                 value={passenger.familyName}
                 required
                 onChange={(event) =>
                   setPassengers((rows) =>
                     rows.map((row, i) =>
-                      i === index ? { ...row, familyName: event.target.value } : row,
+                      i === index
+                        ? { ...row, familyName: event.target.value }
+                        : row,
                     ),
                   )
                 }
               />
             </label>
-            <label className="flex flex-col gap-1">
+            <label className="flex flex-col gap-1.5">
               <Text role="label">{copy.category}</Text>
               <select
-                className="min-h-touch rounded-md border border-border bg-background px-3 py-2"
+                className={fieldClass}
                 value={passenger.category}
                 onChange={(event) =>
                   setPassengers((rows) =>
@@ -206,7 +224,8 @@ export function PublicBookingPrepareForm({
                       i === index
                         ? {
                             ...row,
-                            category: event.target.value as PassengerDraft["category"],
+                            category: event.target
+                              .value as PassengerDraft["category"],
                           }
                         : row,
                     ),
@@ -222,7 +241,7 @@ export function PublicBookingPrepareForm({
         ))}
         <button
           type="button"
-          className="min-h-touch self-start rounded-md border border-border px-3 py-2 text-sm"
+          className="min-h-touch self-start rounded-lg border border-border px-3 py-2 text-sm font-medium hover:border-[#1D4ED8]/40"
           onClick={() =>
             setPassengers((rows) => [
               ...rows,
@@ -239,9 +258,14 @@ export function PublicBookingPrepareForm({
           {error}
         </FieldMessage>
       ) : null}
+
+      <div className="rounded-xl border border-[#1D4ED8]/15 bg-[#1D4ED8]/[0.04] p-3">
+        <Text role="caption">{copy.prepareNote}</Text>
+      </div>
+
       <button
         type="submit"
-        className="min-h-touch rounded-md border border-border px-4 py-2"
+        className="min-h-touch rounded-lg bg-[#1D4ED8] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1E40AF] disabled:opacity-60"
         disabled={pending}
       >
         {pending ? copy.submitting : copy.submit}

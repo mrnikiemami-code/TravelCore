@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { LtrValue, MoneyText, Stack, Surface, Text } from "@/components/ui";
+import { MoneyText, Stack, Surface, Text } from "@/components/ui";
 import {
   initiatePublicBookingPaymentAction,
   readPublicBookingPaymentAction,
@@ -13,12 +13,44 @@ import {
 } from "@/features/booking/types";
 import type { AppLocale } from "@/lib/i18n";
 
+function bookingStatusLabel(locale: AppLocale, status: string): string {
+  if (locale === "fa") {
+    if (status === "Pending") return "رزرو موقت";
+    if (status === "Confirmed") return "تأییدشده";
+    return status;
+  }
+  if (locale === "ar") {
+    if (status === "Pending") return "حجز مؤقت";
+    if (status === "Confirmed") return "مؤكد";
+    return status;
+  }
+  if (status === "Pending") return "Pending";
+  if (status === "Confirmed") return "Confirmed";
+  return status;
+}
+
+function paymentStatusLabel(locale: AppLocale, status: string): string {
+  if (locale === "fa") {
+    if (status === "None" || status === "Unavailable") return "پرداخت فعال نیست";
+    if (status === "Initiated") return "پرداخت آغاز شده";
+    if (status === "Succeeded") return "پرداخت دریافت شد";
+    return status;
+  }
+  if (locale === "ar") {
+    if (status === "None" || status === "Unavailable") return "الدفع غير مفعّل";
+    if (status === "Initiated") return "بدأ الدفع";
+    if (status === "Succeeded") return "تم استلام الدفع";
+    return status;
+  }
+  if (status === "None" || status === "Unavailable") return "Payment not active";
+  if (status === "Initiated") return "Payment started";
+  if (status === "Succeeded") return "Payment received";
+  return status;
+}
+
 /**
- * Tour public payment surface (TC-P34-T004).
- * Restores read/initiate against real Payment APIs.
- * When initiation is available (sandbox eligible), CTA is labeled NON-PRODUCTION.
+ * Tour public payment surface (TC-P36-T005 commerce polish).
  * Browser return ≠ success; UI shows only server payment/booking truth.
- * When unavailable, keeps I4 Option A honest stop (no misleading pay CTA).
  */
 export function PublicBookingPaymentView({
   locale,
@@ -46,13 +78,15 @@ export function PublicBookingPaymentView({
       typeof sessionStorage === "undefined"
         ? null
         : sessionStorage.getItem(bookingAccessStorageKey(bookingId));
-    void readPublicBookingPaymentAction(bookingId, accessToken).then((result) => {
-      if (!result.ok) {
-        setError(result.message);
-        return;
-      }
-      setData(result.data);
-    });
+    void readPublicBookingPaymentAction(bookingId, accessToken).then(
+      (result) => {
+        if (!result.ok) {
+          setError(result.message);
+          return;
+        }
+        setData(result.data);
+      },
+    );
   }, [bookingId]);
 
   function pay() {
@@ -74,7 +108,10 @@ export function PublicBookingPaymentView({
         });
         if (!result.ok) {
           setError(result.message);
-          const refreshed = await readPublicBookingPaymentAction(bookingId, token());
+          const refreshed = await readPublicBookingPaymentAction(
+            bookingId,
+            token(),
+          );
           if (refreshed.ok) {
             setData(refreshed.data);
           }
@@ -90,21 +127,31 @@ export function PublicBookingPaymentView({
   }
 
   if (error && !data) {
-    return <Text>{copy.unauthorized}</Text>;
+    return (
+      <div className="rounded-2xl border border-border bg-surface p-6">
+        <Text>{copy.unauthorized}</Text>
+      </div>
+    );
   }
 
   if (!data) {
-    return <Text role="muted">{copy.submitting}</Text>;
+    return (
+      <div className="rounded-2xl border border-border bg-surface p-6">
+        <Text role="muted">{copy.submitting}</Text>
+      </div>
+    );
   }
 
-  const canInitiate = data.safeAction === "Initiate" || data.safeAction === "Retry";
+  const canInitiate =
+    data.safeAction === "Initiate" || data.safeAction === "Retry";
 
   const statusMessage =
     data.safeAction === "Wait"
       ? copy.payWaiting
       : data.safeAction === "Succeeded" && data.bookingStatus !== "Confirmed"
         ? copy.payReceivedPendingConfirm
-        : data.safeAction === "CompensationPending" || data.safeAction === "RefundSucceeded"
+        : data.safeAction === "CompensationPending" ||
+            data.safeAction === "RefundSucceeded"
           ? copy.payCompensation
           : canInitiate
             ? copy.paySandboxNote
@@ -112,26 +159,31 @@ export function PublicBookingPaymentView({
               ? copy.payNote
               : copy.payUnavailable;
 
-  // Unavailable → Option A honest stop (no pay CTA theater).
   if (!canInitiate && data.safeAction === "Unavailable") {
     return (
       <Stack gap="md">
-        <Text as="h1" role="heading">
-          {copy.paymentBoundaryTitle}
-        </Text>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#1D4ED8]">
+            {locale === "fa" ? "پرداخت" : locale === "ar" ? "الدفع" : "Payment"}
+          </p>
+          <Text as="h1" role="heading" className="mt-2 text-2xl font-semibold">
+            {copy.paymentBoundaryTitle}
+          </Text>
+        </div>
         {returnedFromProvider ? <Text>{copy.payReturned}</Text> : null}
-        <Surface className="border-primary/15 bg-gradient-to-br from-surface to-primary/5">
+        <Surface className="rounded-2xl border-[#1D4ED8]/15 bg-gradient-to-br from-surface to-[#1D4ED8]/[0.04] p-5">
           <Stack gap="sm">
             <Text>{copy.paymentBoundaryBody}</Text>
             <Text role="caption">{copy.paymentBoundaryNote}</Text>
             <Text role="muted">{copy.payUnavailable}</Text>
-            <Text role="caption">
-              <span className="font-mono text-xs">{bookingId}</span>
-            </Text>
-            <Text role="caption">
-              {copy.notConfirmed} · <LtrValue>{data.bookingStatus}</LtrValue> ·{" "}
-              <LtrValue>{data.paymentStatus}</LtrValue>
-            </Text>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <span className="rounded-full bg-[#1D4ED8]/10 px-3 py-1 text-xs font-semibold text-[#1D4ED8]">
+                {bookingStatusLabel(locale, data.bookingStatus)}
+              </span>
+              <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-foreground">
+                {paymentStatusLabel(locale, data.paymentStatus)}
+              </span>
+            </div>
           </Stack>
         </Surface>
       </Stack>
@@ -140,43 +192,54 @@ export function PublicBookingPaymentView({
 
   return (
     <Stack gap="md">
-      <Text as="h1" role="heading">
-        {copy.payTitle}
-      </Text>
-      {returnedFromProvider ? <Text>{copy.payReturned}</Text> : <Text>{copy.payNote}</Text>}
-      {canInitiate ? <Text role="caption">{copy.paySandboxNote}</Text> : null}
-      <Text role="caption">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#1D4ED8]">
+          {locale === "fa" ? "پرداخت" : locale === "ar" ? "الدفع" : "Payment"}
+        </p>
+        <Text as="h1" role="heading" className="mt-2 text-2xl font-semibold">
+          {copy.payTitle}
+        </Text>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {returnedFromProvider ? copy.payReturned : copy.payNote}
+        </p>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <span className="rounded-full bg-[#1D4ED8]/10 px-3 py-1 text-xs font-semibold text-[#1D4ED8]">
+          {bookingStatusLabel(locale, data.bookingStatus)}
+        </span>
+        <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-foreground">
+          {paymentStatusLabel(locale, data.paymentStatus)}
+        </span>
         {data.bookingStatus !== "Confirmed" ? (
-          <>
-            {copy.notConfirmed} ·{" "}
-          </>
+          <span className="rounded-full bg-[#F59E0B]/15 px-3 py-1 text-xs font-semibold text-[#92400E]">
+            {copy.notConfirmed}
+          </span>
         ) : null}
-        <LtrValue>{data.bookingStatus}</LtrValue> · <LtrValue>{data.paymentStatus}</LtrValue>
-        {data.safeAction ? (
-          <>
-            {" "}
-            · <LtrValue>{data.safeAction}</LtrValue>
-          </>
-        ) : null}
-      </Text>
+      </div>
+
       {data.amount != null && data.currencyCode ? (
-        <Text>
-          {copy.monetaryLabel}:{" "}
+        <Surface className="rounded-2xl p-5">
+          <p className="text-xs font-medium text-muted-foreground">
+            {copy.monetaryLabel}
+          </p>
           <MoneyText
             money={{
               amount: String(data.amount),
               currencyCode: data.currencyCode,
             }}
             locale={locale}
+            className="mt-2 text-2xl font-semibold"
           />
-        </Text>
+        </Surface>
       ) : null}
+
       <Text>{statusMessage}</Text>
       {error ? <Text>{error}</Text> : null}
       {canInitiate ? (
         <button
           type="button"
-          className="min-h-11 rounded-md border border-amber-700/40 bg-amber-50 px-4 py-2 text-amber-950 focus-visible:outline dark:bg-amber-950/30 dark:text-amber-100"
+          className="min-h-touch rounded-lg border border-amber-700/40 bg-[#F59E0B] px-4 py-3 text-sm font-semibold text-[#0E172A] focus-visible:outline"
           disabled={pending}
           onClick={pay}
           aria-label={copy.paySandboxAction}

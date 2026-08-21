@@ -68,8 +68,8 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     submitting: "در حال ثبت…",
     missingDeparture: "اجرای منتشرشده‌ای برای شروع رزرو موقت وجود ندارد.",
     backToTour: "بازگشت به تور",
-    monetaryLabel: "تصویر مالی ثبت‌شده",
-    holdLabel: "نگه‌داشت ظرفیت",
+    monetaryLabel: "مبلغ ثبت‌شده",
+    holdLabel: "ظرفیت نگه داشته‌شده",
     unauthorized: "این رزرو در دسترس نیست.",
     paymentBoundaryTitle: "مرز پرداخت",
     paymentBoundaryBody:
@@ -114,8 +114,8 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     submitting: "Preparing…",
     missingDeparture: "No published departure is available to prepare a booking.",
     backToTour: "Back to tour",
-    monetaryLabel: "Recorded monetary snapshot",
-    holdLabel: "Capacity hold",
+    monetaryLabel: "Recorded total",
+    holdLabel: "Held seats",
     unauthorized: "This booking is not available.",
     paymentBoundaryTitle: "Payment boundary",
     paymentBoundaryBody:
@@ -160,8 +160,8 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     submitting: "جارٍ التسجيل…",
     missingDeparture: "لا توجد رحلة منشورة لإعداد الحجز.",
     backToTour: "العودة إلى الجولة",
-    monetaryLabel: "اللقطة المالية المسجلة",
-    holdLabel: "احتجاز السعة",
+    monetaryLabel: "المبلغ المسجل",
+    holdLabel: "المقاعد المحتجزة",
     unauthorized: "هذا الحجز غير متاح.",
     paymentBoundaryTitle: "حدود الدفع",
     paymentBoundaryBody:
