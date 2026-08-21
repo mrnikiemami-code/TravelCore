@@ -11,7 +11,10 @@ import { isAppLocale, type AppLocale } from "@/lib/i18n";
 
 type PageProps = {
   params: Promise<{ locale: string; slug: string }>;
-  searchParams: Promise<{ departureId?: string | string[] }>;
+  searchParams: Promise<{
+    departureId?: string | string[];
+    agencyOfferId?: string | string[];
+  }>;
 };
 
 /**
@@ -44,6 +47,10 @@ export default async function PublicTourBookPage({
   const initialDepartureId = Array.isArray(departureIdRaw)
     ? departureIdRaw[0]
     : departureIdRaw;
+  const agencyOfferRaw = query.agencyOfferId;
+  const agencyOfferId = Array.isArray(agencyOfferRaw)
+    ? agencyOfferRaw[0]
+    : agencyOfferRaw;
   const copy = getPublicBookingCopy(locale);
   const tour = loaded.data;
   const departures = tour.publishedDepartures.map((departure) => ({
@@ -184,6 +191,7 @@ export default async function PublicTourBookPage({
               slug={slug}
               departures={departures}
               initialDepartureId={initialDepartureId}
+              agencyOfferId={agencyOfferId}
             />
           </div>
         </div>

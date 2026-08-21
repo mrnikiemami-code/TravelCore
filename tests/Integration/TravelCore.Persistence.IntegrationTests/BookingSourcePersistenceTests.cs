@@ -114,7 +114,7 @@ public sealed class BookingSourcePersistenceTests
         var now = Instant.FromUtc(2026, 8, 18, 7, 0);
         var query = new FakeAgencyOriginQuery(
             new AgencyOriginProfileFacts(profileId, "Draft"),
-            new AgencyOriginOfferFacts(offerId, profileId, Guid.CreateVersion7(), departure.LogicalId));
+            EligibleOffer(offerId, profileId, Guid.CreateVersion7(), departure.LogicalId));
 
         BookingId directId;
         BookingId agencyId;
@@ -131,11 +131,11 @@ public sealed class BookingSourcePersistenceTests
 
             var mismatched = new FakeAgencyOriginQuery(
                 new AgencyOriginProfileFacts(profileId, "Draft"),
-                new AgencyOriginOfferFacts(
+                EligibleOffer(
                     offerId,
                     Guid.Parse("0198b3e0-0000-7000-8000-000000000899"),
                     Guid.CreateVersion7(),
-                    null));
+                    referencedDepartureId: null));
             await Assert.ThrowsAsync<InvalidOperationException>(
                 () => new BookingCreationService(db, mismatched)
                     .CreateAgencyAsync(departure, now, profileId, offerId, ct));
@@ -154,6 +154,25 @@ public sealed class BookingSourcePersistenceTests
             Assert.Equal(BookingStatus.Pending, agency.Status);
         }
     }
+
+    private static AgencyOriginOfferFacts EligibleOffer(
+        Guid offerId,
+        Guid profileId,
+        Guid tourProductId,
+        Guid? referencedDepartureId) =>
+        new(
+            offerId,
+            profileId,
+            tourProductId,
+            referencedDepartureId,
+            referencedDepartureId is null ? "All" : "Listed",
+            referencedDepartureId is Guid id ? [id] : Array.Empty<Guid>(),
+            "Published",
+            "Listed",
+            "Active",
+            "Public",
+            "Active",
+            AgencyPublicListingEnabled: true);
 
     private sealed class FakeAgencyOriginQuery : IAgencyOriginContextQuery
     {

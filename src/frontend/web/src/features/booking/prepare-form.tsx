@@ -23,19 +23,22 @@ const fieldClass =
   "min-h-touch rounded-lg border border-border bg-background px-3 py-2 outline-none ring-[#1D4ED8] focus:ring-2";
 
 /**
- * Public booking prepare form (TC-P36-T005 commerce polish).
+ * Public booking prepare form (TC-P36-T005 / P38-T005).
  * Creates Pending booking only — Quote inside Booking · no Payment · no Confirm.
+ * Optional agencyOfferId is passed for server validation; FE never forges Agency SourceKind.
  */
 export function PublicBookingPrepareForm({
   locale,
   slug,
   departures,
   initialDepartureId,
+  agencyOfferId,
 }: {
   locale: AppLocale;
   slug: string;
   departures: DepartureOption[];
   initialDepartureId?: string;
+  agencyOfferId?: string;
 }) {
   const copy = getPublicBookingCopy(locale);
   const router = useRouter();
@@ -72,6 +75,7 @@ export function PublicBookingPrepareForm({
           phone,
           passengers,
           idempotencyKey: ensureIdempotencyKey(),
+          agencyOfferId: agencyOfferId || null,
         });
         if (!result.ok) {
           setError(result.message);

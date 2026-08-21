@@ -68,7 +68,14 @@ public sealed class BookingCreationService
                     "AgencyOfferReference must belong to the stated AgencyProfileReference.");
             }
 
-            if (offerFacts.ReferencedTourDepartureId is { } referencedDeparture
+            if (string.Equals(offerFacts.DepartureScopeMode, "Listed", StringComparison.Ordinal)
+                && (offerFacts.DepartureScopeIds.Count == 0
+                    || !offerFacts.DepartureScopeIds.Contains(tourDeparture.LogicalId)))
+            {
+                throw new InvalidOperationException(
+                    "AgencyOffer listed departure scope must include the Booking TourDeparture target.");
+            }
+            else if (offerFacts.ReferencedTourDepartureId is { } referencedDeparture
                 && referencedDeparture != tourDeparture.LogicalId)
             {
                 throw new InvalidOperationException(

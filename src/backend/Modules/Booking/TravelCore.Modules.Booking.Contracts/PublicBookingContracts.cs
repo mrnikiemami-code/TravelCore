@@ -9,7 +9,8 @@ public sealed record PublicBookingInitiationRequest(
     PublicBookingContactInput Contact,
     IReadOnlyList<PublicBookingPassengerInput> Passengers,
     string? IdempotencyKey,
-    string? SourceKind);
+    string? SourceKind,
+    Guid? AgencyOfferId = null);
 
 public sealed record PublicBookingMoneyRead(decimal Amount, string CurrencyCode);
 

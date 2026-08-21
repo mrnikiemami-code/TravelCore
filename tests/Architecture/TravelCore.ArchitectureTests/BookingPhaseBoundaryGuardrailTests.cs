@@ -132,7 +132,7 @@ public sealed class BookingPhaseBoundaryGuardrailTests
         Assert.True(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicListingImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicCancellationImplemented);
-        Assert.False(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
+        Assert.True(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
         Assert.Equal("Expired Hold != BookingExpired", CapacityConsumptionBoundary.ExpiredHoldIsNotBookingExpired);
         Assert.Equal("Booking PII != Search/SEO data", BookingPeopleBoundary.BookingPiiIsNotSearchSeoData);
         Assert.Equal(

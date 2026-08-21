@@ -5,7 +5,7 @@ using TravelCore.Modules.AgencyMarketplace.Domain;
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Services;
 
 /// <summary>
-/// Trusted AgencyProfile / AgencyOffer identity read (TC-P19-T007).
+/// Trusted AgencyProfile / AgencyOffer identity read (TC-P19-T007 / P38-T005).
 /// Does not mutate marketplace aggregates and does not expose peer Booking types.
 /// </summary>
 public sealed class AgencyOriginContextQuery : IAgencyOriginContextQuery
@@ -43,11 +43,15 @@ public sealed class AgencyOriginContextQuery : IAgencyOriginContextQuery
             throw new ArgumentException("AgencyOfferId cannot be empty.", nameof(agencyOfferId));
         }
 
-        var offer = await _db.AgencyOffers
-            .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Id == AgencyOfferId.From(agencyOfferId), cancellationToken);
+        var row = await (
+                from offer in _db.AgencyOffers.AsNoTracking()
+                join profile in _db.AgencyProfiles.AsNoTracking()
+                    on offer.AgencyProfileId equals profile.Id
+                where offer.Id == AgencyOfferId.From(agencyOfferId)
+                select new { offer, profile })
+            .SingleOrDefaultAsync(cancellationToken);
 
-        return offer is null ? null : Map(offer);
+        return row is null ? null : Map(row.offer, row.profile);
     }
 
     internal static AgencyOriginProfileFacts Map(AgencyProfile profile)
@@ -56,13 +60,22 @@ public sealed class AgencyOriginContextQuery : IAgencyOriginContextQuery
         return new AgencyOriginProfileFacts(profile.Id.Value, profile.Status.ToString());
     }
 
-    internal static AgencyOriginOfferFacts Map(AgencyOffer offer)
+    internal static AgencyOriginOfferFacts Map(AgencyOffer offer, AgencyProfile profile)
     {
         ArgumentNullException.ThrowIfNull(offer);
+        ArgumentNullException.ThrowIfNull(profile);
         return new AgencyOriginOfferFacts(
             offer.Id.Value,
             offer.AgencyProfileId.Value,
             offer.TourProductId,
-            offer.ReferencedTourDepartureId?.Value);
+            offer.ReferencedTourDepartureId?.Value,
+            offer.DepartureScopeMode.ToString(),
+            offer.DepartureScopeIds.ToArray(),
+            offer.PublicationStatus.ToString(),
+            offer.Visibility.ToString(),
+            offer.Status.ToString(),
+            offer.SalesChannel.ToString(),
+            profile.Status.ToString(),
+            profile.Commercial.PublicListingEnabled);
     }
 }

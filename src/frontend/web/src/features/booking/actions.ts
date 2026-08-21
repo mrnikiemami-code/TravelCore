@@ -46,6 +46,7 @@ export async function initiatePublicBookingAction(input: {
   phone: string;
   passengers: PublicBookingPassengerInput[];
   idempotencyKey: string;
+  agencyOfferId?: string | null;
 }): Promise<
   | { ok: true; data: PublicBookingInitiationResult }
   | { ok: false; message: string; status?: number }
@@ -67,7 +68,11 @@ export async function initiatePublicBookingAction(input: {
         },
         passengers: input.passengers,
         idempotencyKey: input.idempotencyKey,
+        // Client may only claim Direct; Agency SourceKind is derived server-side from AgencyOfferId.
         sourceKind: "Direct",
+        ...(input.agencyOfferId
+          ? { agencyOfferId: input.agencyOfferId }
+          : {}),
       },
     },
   );

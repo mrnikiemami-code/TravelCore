@@ -1,7 +1,7 @@
 namespace TravelCore.Modules.AgencyMarketplace.Contracts;
 
 /// <summary>
-/// Trusted AgencyProfile / AgencyOffer identity facts for peer consumption (TC-P19-T007).
+/// Trusted AgencyProfile / AgencyOffer identity facts for peer consumption (TC-P19-T007 / P38-T005).
 /// Read-only — not marketplace mutation, not Pricing, not settlement, not a cloned catalog.
 /// Contracts stay free of NodaTime and peer module types.
 /// </summary>
@@ -13,7 +13,15 @@ public sealed record AgencyOriginOfferFacts(
     Guid AgencyOfferId,
     Guid AgencyProfileId,
     Guid TourProductId,
-    Guid? ReferencedTourDepartureId);
+    Guid? ReferencedTourDepartureId,
+    string DepartureScopeMode,
+    IReadOnlyList<Guid> DepartureScopeIds,
+    string PublicationStatus,
+    string Visibility,
+    string OfferStatus,
+    string SalesChannel,
+    string AgencyProfileStatus,
+    bool AgencyPublicListingEnabled);
 
 public interface IAgencyOriginContextQuery
 {

@@ -56,6 +56,10 @@ public sealed class AgencyOriginContextQueryPersistenceTests
             Assert.Equal(profileId.Value, offer.AgencyProfileId);
             Assert.Equal(tourProductId, offer.TourProductId);
             Assert.Equal(departureId, offer.ReferencedTourDepartureId);
+            Assert.Equal("Listed", offer.DepartureScopeMode);
+            Assert.Equal(new[] { departureId }, offer.DepartureScopeIds);
+            Assert.Equal(nameof(AgencyOfferPublicationStatus.Draft), offer.PublicationStatus);
+            Assert.Equal(nameof(AgencyProfileStatus.Draft), offer.AgencyProfileStatus);
             Assert.Null(await query.GetProfileAsync(Guid.CreateVersion7(), ct));
             Assert.Null(await query.GetOfferAsync(Guid.CreateVersion7(), ct));
         }

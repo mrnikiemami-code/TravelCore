@@ -27,7 +27,7 @@ public sealed class PublicBookingSurfaceTests
         Assert.True(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicListingImplemented);
         Assert.False(PublicBookingCompositionBoundary.PublicCancellationImplemented);
-        Assert.False(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
+        Assert.True(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
         Assert.Equal("PublicExperience != Booking Source of Truth", PublicBookingCompositionBoundary.PublicExperienceIsNotBookingSourceOfTruth);
         Assert.Equal("Public Booking initiation != Booking confirmation", PublicBookingCompositionBoundary.PublicInitiationIsNotConfirmation);
         Assert.Equal("Pending != Confirmed", PublicBookingCompositionBoundary.PendingIsNotConfirmed);

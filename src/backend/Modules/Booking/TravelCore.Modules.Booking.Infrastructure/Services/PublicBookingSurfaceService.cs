@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using TravelCore.Modules.AgencyMarketplace.Contracts;
 using TravelCore.Modules.Booking.Contracts;
 using TravelCore.Modules.Booking.Domain;
 using TravelCore.Modules.Pricing.Contracts;
@@ -9,8 +10,8 @@ using BookingAggregate = TravelCore.Modules.Booking.Domain.Booking;
 namespace TravelCore.Modules.Booking.Infrastructure.Services;
 
 /// <summary>
-/// Public Pending Booking initiation and authorized reads (TC-P19-T008 / P19-R8).
-/// Direct consumer path only. Does not Confirm, pay, cancel, or invent Agency origin.
+/// Public Pending Booking initiation and authorized reads (TC-P19-T008 / P19-R8; P38-T005).
+/// Direct consumer path by default. Optional AgencyOfferId is server-validated — not client-forged SourceKind.
 /// Quote issuance is a separate Pricing transaction; Booking work is one Booking transaction.
 /// </summary>
 public sealed class PublicBookingSurfaceService : IPublicBookingInitiationService, IPublicBookingReadService
@@ -18,21 +19,25 @@ public sealed class PublicBookingSurfaceService : IPublicBookingInitiationServic
     private readonly BookingDbContext _db;
     private readonly ITourDeparturePublicQuery _departures;
     private readonly IAuthoritativeQuoteIssuer _quotes;
+    private readonly IAgencyOriginContextQuery _origin;
     private readonly IClock _clock;
 
     public PublicBookingSurfaceService(
         BookingDbContext db,
         ITourDeparturePublicQuery departures,
         IAuthoritativeQuoteIssuer quotes,
+        IAgencyOriginContextQuery origin,
         IClock clock)
     {
         ArgumentNullException.ThrowIfNull(db);
         ArgumentNullException.ThrowIfNull(departures);
         ArgumentNullException.ThrowIfNull(quotes);
+        ArgumentNullException.ThrowIfNull(origin);
         ArgumentNullException.ThrowIfNull(clock);
         _db = db;
         _departures = departures;
         _quotes = quotes;
+        _origin = origin;
         _clock = clock;
     }
 
@@ -71,6 +76,8 @@ public sealed class PublicBookingSurfaceService : IPublicBookingInitiationServic
             throw new InvalidOperationException("Published TourDeparture has no authoritative MaximumPax.");
         }
 
+        var source = await ResolveSourceAsync(request.AgencyOfferId, departure, cancellationToken);
+
         var now = _clock.GetCurrentInstant();
         var quote = await _quotes.IssueForTourDepartureAsync(
             request.TourDepartureId,
@@ -98,7 +105,7 @@ public sealed class PublicBookingSurfaceService : IPublicBookingInitiationServic
             return raced;
         }
 
-        var booking = BookingAggregate.Create(tourDeparture, now, BookingSourceContext.Direct());
+        var booking = BookingAggregate.Create(tourDeparture, now, source);
         booking.SetContact(contact);
         if (actorId is { } id)
         {
@@ -253,6 +260,68 @@ public sealed class PublicBookingSurfaceService : IPublicBookingInitiationServic
             cancellationToken);
     }
 
+    private async Task<BookingSourceContext> ResolveSourceAsync(
+        Guid? agencyOfferId,
+        PublishedDeparturePublicSummary departure,
+        CancellationToken cancellationToken)
+    {
+        if (agencyOfferId is null || agencyOfferId == Guid.Empty)
+        {
+            return BookingSourceContext.Direct();
+        }
+
+        var offer = await _origin.GetOfferAsync(agencyOfferId.Value, cancellationToken)
+            ?? throw new InvalidOperationException("AgencyOffer was not found.");
+
+        if (!RelatedAgencyOfferPublicEligibility.IsOfferPubliclyEligible(
+                offer.PublicationStatus,
+                offer.Visibility,
+                offer.OfferStatus,
+                offer.SalesChannel)
+            || !RelatedAgencyOfferPublicEligibility.IsAgencyPubliclyEligible(
+                offer.AgencyProfileStatus,
+                offer.AgencyPublicListingEnabled))
+        {
+            throw new InvalidOperationException("AgencyOffer is not publicly eligible for booking selection.");
+        }
+
+        if (offer.TourProductId != departure.TourProductId)
+        {
+            throw new InvalidOperationException("AgencyOffer TourProduct must match the selected TourDeparture product.");
+        }
+
+        EnsureDepartureInOfferScope(offer, departure.Id);
+
+        return BookingSourceContext.ForAgency(
+            new AgencyProfileReference(offer.AgencyProfileId),
+            new AgencyOfferReference(offer.AgencyOfferId));
+    }
+
+    private static void EnsureDepartureInOfferScope(AgencyOriginOfferFacts offer, Guid departureId)
+    {
+        if (string.Equals(offer.DepartureScopeMode, "All", StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        if (string.Equals(offer.DepartureScopeMode, "Listed", StringComparison.Ordinal))
+        {
+            if (offer.DepartureScopeIds.Count == 0 || !offer.DepartureScopeIds.Contains(departureId))
+            {
+                throw new InvalidOperationException(
+                    "AgencyOffer listed departure scope must include the Booking TourDeparture target.");
+            }
+
+            return;
+        }
+
+        if (offer.ReferencedTourDepartureId is Guid scoped && scoped != departureId)
+        {
+            throw new InvalidOperationException(
+                "AgencyOffer referenced TourDeparture must match the Booking TourDeparture target.");
+        }
+    }
+
     private static void RejectForgedAgencySource(string? sourceKind)
     {
         if (string.IsNullOrWhiteSpace(sourceKind))
@@ -263,7 +332,7 @@ public sealed class PublicBookingSurfaceService : IPublicBookingInitiationServic
         if (!string.Equals(sourceKind.Trim(), nameof(BookingSourceKind.Direct), StringComparison.OrdinalIgnoreCase))
         {
             throw new ArgumentException(
-                "Public Booking initiation is Direct only. Agency origin cannot be client-forged.",
+                "Public Booking initiation rejects client-forged Agency SourceKind. Pass AgencyOfferId for server validation.",
                 nameof(sourceKind));
         }
     }

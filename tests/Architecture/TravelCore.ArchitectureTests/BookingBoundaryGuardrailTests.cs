@@ -596,10 +596,25 @@ public sealed class BookingBoundaryGuardrailTests
         Assert.False(PublicBookingCompositionBoundary.PublicListingImplemented);
         Assert.False(PublicBookingCompositionBoundary.ConfirmEndpointImplemented);
         Assert.True(PublicBookingCompositionBoundary.PaymentEndpointImplemented);
-        Assert.False(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
+        Assert.True(PublicBookingCompositionBoundary.AgencyOriginOnPublicInitiationImplemented);
         Assert.True(BookingOwnershipBoundary.PaymentIntegrationImplemented);
         Assert.True(BookingOrchestrationBoundary.PaymentDrivenConfirmationImplemented);
         Assert.Null(typeof(Booking).GetMethod("Confirm"));
+
+        var publicSurface = File.ReadAllText(Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "Booking",
+            "TravelCore.Modules.Booking.Infrastructure",
+            "Services",
+            "PublicBookingSurfaceService.cs"));
+        Assert.Contains("IAgencyOriginContextQuery", publicSurface, StringComparison.Ordinal);
+        Assert.Contains("request.AgencyOfferId", publicSurface, StringComparison.Ordinal);
+        Assert.Contains("RelatedAgencyOfferPublicEligibility", publicSurface, StringComparison.Ordinal);
+        Assert.Contains("BookingSourceContext.ForAgency", publicSurface, StringComparison.Ordinal);
+        Assert.Contains("RejectForgedAgencySource", publicSurface, StringComparison.Ordinal);
 
         var endpoints = File.ReadAllText(Path.Combine(
             RepoRoot,
@@ -647,7 +662,7 @@ public sealed class BookingBoundaryGuardrailTests
         var returnText = File.ReadAllText(returnPage);
         Assert.Contains("robots: { index: false, follow: false }", paymentText, StringComparison.Ordinal);
         Assert.Contains("robots: { index: false, follow: false }", returnText, StringComparison.Ordinal);
-        Assert.Contains("Browser return is a sibling route and also does not mark Payment successful", paymentText, StringComparison.Ordinal);
+        Assert.Contains("Browser return is a sibling route and does not mark Payment successful", paymentText, StringComparison.Ordinal);
         Assert.Contains("BrowserReturn != PaymentSuccess", returnText, StringComparison.Ordinal);
         Assert.DoesNotContain("accessToken", paymentText, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("cardNumber", paymentText + returnText, StringComparison.OrdinalIgnoreCase);
