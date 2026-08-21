@@ -1,20 +1,22 @@
 # TravelCore Recovery Context
 
-**P36 GATE** (`TC-P36-GATE` Cursor **PASS WITH KNOWN LIMITATIONS** · overall **PARTIALLY_SELLABLE_VISUALLY**)
+**P37 — Experience Platform Foundation** (`TC-P37-T001` Cursor **PASS** · architecture review)
 
 ## Completed (recent)
 
-- P36-T002…T005 ACCEPTED — Home/Hotel/Tour/Commerce PARTIALLY_SELLABLE
-- P36-GATE review documented — no new feature implementation
+- P36-GATE ACCEPTED WITH KNOWN LIMITATIONS · PARTIALLY_SELLABLE_VISUALLY
+- P37-T001: Experience Architecture Review — Public / Customer / Agency / Admin surfaces locked in plan
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after GATE RESULT. Do not infer P37.
+**None** — WAITING for Architect after T001 RESULT. Do not auto-implement Customer Dashboard (T002+).
+
+Plan: [`docs/plans/P37-experience-architecture-review.md`](../plans/P37-experience-architecture-review.md)
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P37-T001 experience architecture review |
 | 2026-08-21 | Sync after TC-P36-GATE commercial UI gate review |
 | 2026-08-21 | Sync after TC-P36-T005 Commerce commercial polish |
-| 2026-08-21 | Sync after TC-P36-T004 Tour commercial polish |
