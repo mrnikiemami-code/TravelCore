@@ -427,7 +427,8 @@
 | P32 GATE | `TC-P32-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — evidence [`docs/product-experience/evidence/P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md) |
 | P33 Commercial Readiness | `TC-P33-T001` Cursor **PASS** — [`docs/plans/P33-commercial-readiness-plan.md`](plans/P33-commercial-readiness-plan.md) |
 | P33 Tour-First Slice | `TC-P33-T002` **ACCEPTED** — [`docs/plans/P33-tour-first-commerce-slice.md`](plans/P33-tour-first-commerce-slice.md) |
-| P33 Tour Commerce Data Contracts | `TC-P33-T003` Cursor **PASS** — [`docs/plans/P33-tour-commerce-data-contracts.md`](plans/P33-tour-commerce-data-contracts.md) |
+| P33 Tour Commerce Data Contracts | `TC-P33-T003` **ACCEPTED** — [`docs/plans/P33-tour-commerce-data-contracts.md`](plans/P33-tour-commerce-data-contracts.md) |
+| P33 Tour Commerce Implementation Roadmap | `TC-P33-T004` Cursor **PASS** — [`docs/plans/P33-tour-commerce-implementation-roadmap.md`](plans/P33-tour-commerce-implementation-roadmap.md) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |
