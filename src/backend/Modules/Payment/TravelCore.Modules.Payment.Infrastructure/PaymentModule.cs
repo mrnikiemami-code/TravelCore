@@ -21,6 +21,8 @@ namespace TravelCore.Modules.Payment.Infrastructure;
 /// Host composition entry for Payment (TC-P20-T003 / P20-R3).
 /// Registers provider-neutral ports. Does not register a production fake provider.
 /// Sandbox adapter may register only under non-production + Payment:Sandbox:Enabled (TC-P34-T003).
+/// Stripe TEST-MODE adapter may register only under non-production + Payment:Stripe:Enabled + sk_test_ (TC-P35-T008).
+/// NamedProductionAdapterImplemented remains false.
 /// </summary>
 public sealed class PaymentModule : ITravelCoreModule
 {
@@ -81,6 +83,7 @@ public sealed class PaymentModule : ITravelCoreModule
         services.AddScoped<IPaymentOperationalQuery, PaymentOperationalQueryService>();
 
         TryRegisterSandbox(services, configuration);
+        TryRegisterStripe(services, configuration);
 
         services.AddDbContext<PaymentDbContext>((_, options) =>
         {
@@ -127,6 +130,26 @@ public sealed class PaymentModule : ITravelCoreModule
             ServiceDescriptor.Singleton<IPaymentProviderGateway, SandboxPaymentProviderGateway>());
         services.AddHttpClient("TravelCore.PaymentSandbox");
         _sandboxRegistered = true;
+    }
+
+    private void TryRegisterStripe(IServiceCollection services, IConfiguration configuration)
+    {
+        var environmentName = ResolveHostEnvironmentName(services)
+            ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+            ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
+        var enabled = configuration.GetValue($"{PaymentStripeOptions.SectionName}:Enabled", false);
+        var secretKey = configuration[$"{PaymentStripeOptions.SectionName}:SecretKey"];
+        if (!PaymentStripeGate.IsAllowed(environmentName, enabled, secretKey))
+        {
+            return;
+        }
+
+        services.AddOptions<PaymentStripeOptions>()
+            .Bind(configuration.GetSection(PaymentStripeOptions.SectionName));
+        services.AddSingleton<IStripeCheckoutClient, StripeNetCheckoutClient>();
+        services.TryAddEnumerable(
+            ServiceDescriptor.Singleton<IPaymentProviderGateway, StripePaymentProviderGateway>());
     }
 
     private static string? ResolveHostEnvironmentName(IServiceCollection services)

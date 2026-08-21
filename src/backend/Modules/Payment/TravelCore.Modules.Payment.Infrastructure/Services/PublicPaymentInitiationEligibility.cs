@@ -27,9 +27,10 @@ internal static class PublicPaymentInitiationEligibility
             return false;
         }
 
-        if (Providers.PaymentSandboxGate.IsSandboxProviderKey(key.Value))
+        if (Providers.PaymentSandboxGate.IsSandboxProviderKey(key.Value)
+            || Providers.PaymentStripeGate.IsStripeProviderKey(key.Value))
         {
-            // Sandbox path: availability = DI registration (fail-closed in Production).
+            // Non-production labeled adapters: availability = DI registration (fail-closed in Production).
             return resolver.Check(key, PaymentProviderCapability.RedirectInitiation)
                 == ProviderCapabilityStatus.Available;
         }

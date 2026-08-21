@@ -24,4 +24,8 @@ public static class PaymentProviderTrustBoundary
     /// Sandbox ProviderKey is never a production provider (TC-P34-T003).
     /// </summary>
     public const string SandboxIsNotProductionProvider = "sandbox != production provider";
+    /// <summary>
+    /// Stripe TEST-MODE adapter presence does not mean production activation (TC-P35-T008).
+    /// </summary>
+    public const string StripeTestModeIsNotProductionActivation = "stripe test mode != production activation";
 }

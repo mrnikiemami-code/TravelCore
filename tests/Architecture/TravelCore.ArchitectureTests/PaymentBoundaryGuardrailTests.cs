@@ -186,7 +186,8 @@ public sealed class PaymentBoundaryGuardrailTests
         foreach (var path in Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories))
         {
             if (IsGeneratedOrBin(path)
-                || path.EndsWith("Boundary.cs", StringComparison.OrdinalIgnoreCase))
+                || path.EndsWith("Boundary.cs", StringComparison.OrdinalIgnoreCase)
+                || IsAuthorizedStripeAdapterPath(path))
             {
                 continue;
             }
@@ -203,14 +204,29 @@ public sealed class PaymentBoundaryGuardrailTests
 
         Assert.True(
             hits.Count == 0,
-            "Payment T003 must not introduce named providers, public Payment API/UI, or callback-as-webhook tokens:\n" + string.Join('\n', hits));
+            "Payment must not introduce named providers outside authorized Stripe adapter files, public Payment API/UI, or callback-as-webhook tokens:\n" + string.Join('\n', hits));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "checkout")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "app", "[locale]", "pay")));
         Assert.False(Directory.Exists(Path.Combine(RepoRoot, "src", "frontend", "web", "src", "features", "payment")));
     }
 
+    private static bool IsAuthorizedStripeAdapterPath(string path)
+    {
+        var name = Path.GetFileName(path);
+        if (name.Contains("Stripe", StringComparison.OrdinalIgnoreCase)
+            || name.Contains("PaymentStripe", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        // Composition / eligibility references for TC-P35-T008 registration only.
+        return name is "PaymentModule.cs"
+            or "PaymentProviderResolver.cs"
+            or "PublicPaymentInitiationEligibility.cs";
+    }
+
     [Fact]
-    public void Payment_Csproj_MustNotReference_Provider_Sdks()
+    public void Payment_Csproj_MustNotReference_Provider_Sdks_Outside_Authorized_Infrastructure()
     {
         var root = Path.Combine(RepoRoot, "src", "backend", "Modules", "Payment");
         var forbiddenPackages = new[]
@@ -227,16 +243,33 @@ public sealed class PaymentBoundaryGuardrailTests
         foreach (var path in Directory.EnumerateFiles(root, "*.csproj", SearchOption.AllDirectories))
         {
             var text = File.ReadAllText(path);
+            var isInfra = path.EndsWith(
+                "TravelCore.Modules.Payment.Infrastructure.csproj",
+                StringComparison.OrdinalIgnoreCase);
             foreach (var token in forbiddenPackages)
             {
-                if (text.Contains(token, StringComparison.OrdinalIgnoreCase))
+                if (!text.Contains(token, StringComparison.OrdinalIgnoreCase))
                 {
-                    hits.Add($"{Path.GetRelativePath(RepoRoot, path)}:{token}");
+                    continue;
                 }
+
+                // TC-P35-T008 authorizes Stripe.net only in Payment.Infrastructure.
+                if (isInfra && token.Equals("Stripe", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                hits.Add($"{Path.GetRelativePath(RepoRoot, path)}:{token}");
             }
         }
 
-        Assert.True(hits.Count == 0, "Payment must not package-reference provider SDKs:\n" + string.Join('\n', hits));
+        Assert.True(hits.Count == 0, "Payment must not package-reference unauthorized provider SDKs:\n" + string.Join('\n', hits));
+
+        var infraCsproj = File.ReadAllText(Path.Combine(
+            root,
+            "TravelCore.Modules.Payment.Infrastructure",
+            "TravelCore.Modules.Payment.Infrastructure.csproj"));
+        Assert.Contains("Stripe.net", infraCsproj, StringComparison.Ordinal);
     }
 
     [Fact]

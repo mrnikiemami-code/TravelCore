@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T007` Cursor **PASS** · Stripe UAE design lock awaiting Architect)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T008` Cursor **PASS** · Stripe test-mode · **CODE_READY_FOR_STRIPE_TEST_ACCOUNT**)
 
 ## Completed (recent)
 
-- P35-T006 ACCEPTED — three-track design; no core redesign
-- P35-T007: Stripe UAE adapter design lock (Checkout Session primary; webhook authenticity; test-mode vs prod split)
+- P35-T007 ACCEPTED — Stripe UAE design lock
+- P35-T008: StripePaymentProviderGateway (test mode), Stripe.net in Infrastructure, fail-closed gate, unit+arch guardrails
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T007 RESULT. Do not implement Stripe.
+**None** — WAITING for Architect after T008 RESULT. No production activation. No Iran adapter.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T008 Stripe test-mode adapter |
 | 2026-08-21 | Sync after TC-P35-T007 Stripe UAE adapter design lock |
 | 2026-08-21 | Sync after TC-P35-T006 provider-specific design |
-| 2026-08-21 | Sync after TC-P35-T005 provider selection worksheet |
 | 2026-08-21 | Sync after TC-P33-GATE review |
