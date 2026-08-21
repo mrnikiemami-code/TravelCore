@@ -73,32 +73,8 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Next Planned Work
 
-Architect decision on GATE.  
+Architect decision on GATE.
 Then **only** a new authorized `.task.md` / `.gate.md` — do not invent experience re-review / purge / next phase.
-| One Design System / Three Experiences | Public · Admin · Agency |
-| North Star | `docs/product-experience/assets/travelcore-ui-ux-north-star.png` |
-| Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
-| Design System 2.0 | `docs/product-experience/DESIGN-SYSTEM-2.0.md` |
-| Cursor PASS ≠ Architect ACCEPT | Mandatory |
-| Pipeline Controller | File-Based Task Pipeline V3 |
-
-## Runtime Roles
-
-| Role | Actor |
-|------|--------|
-| Architect | ChatGPT |
-| Implementation Agent | Cursor |
-| Source of Truth | Repository recovery / SoT documents |
-| Architect channel | `https://chatgpt.com/g/g-p-6a79dbc6468c8191a5e74afa2d82a8be-travelcore/c/6a8039a8-2014-83ed-be9f-813280b23bcb` |
-
-## Current Authorized Work
-
-**`TC-DEMOFEED-T005`** Tour + Media demo seed (awaiting Architect review of RESULT).
-
-## Next Planned Work
-
-Architect-authorized **`TC-DEMOFEED-GATE`** only.
-Do **not** auto-start GATE / invent tasks from this document.
 
 ## Open Blockers
 
@@ -126,3 +102,4 @@ Do **not** auto-start GATE / invent tasks from this document.
 | 2026-08-21 | Sync after DEMOFEED T003 Destination demo seed |
 | 2026-08-21 | Sync after DEMOFEED T004 Place (Hotel) + Media cover seed |
 | 2026-08-21 | Sync after DEMOFEED T005 Tour + Media cover seed |
+| 2026-08-21 | Sync after DEMOFEED GATE Cursor review evidence |
