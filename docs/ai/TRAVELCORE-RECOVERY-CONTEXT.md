@@ -1,15 +1,15 @@
 # TravelCore Recovery Context
 
-**P38 — Multi-Agency Commerce** (`TC-P38-T002` Cursor **PASS** · AgencyOffer contracts)
+**P38 — Multi-Agency Commerce** (`TC-P38-T003` Cursor **PASS** · AgencyOffer persistence)
 
 ## Completed (recent)
 
-- P38-T001 ACCEPTED — commerce foundation model
-- P38-T002: AgencyOffer contracts + ownership + risks documented
+- P38-T001/T002 ACCEPTED — model + contracts
+- P38-T003: AgencyMarketplace AgencyOffer persistence evolved (channel, departure scope, audit, Suspend/Retire)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T002 RESULT. Do not auto-implement P38-T003+ (persistence).
+**None** — WAITING for Architect after T003 RESULT. Do not auto-implement Public Offer Selection (T004+).
 
 ## Critical direction (locked)
 
@@ -21,6 +21,6 @@ Tour Product + Multiple Agencies + Agency Offers + Customer Selection
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P38-T003 AgencyOffer persistence |
 | 2026-08-21 | Sync after TC-P38-T002 AgencyOffer contracts |
 | 2026-08-21 | Sync after TC-P38-T001 multi-agency commerce foundation plan |
-| 2026-08-21 | Sync after TC-P37-GATE review / ACCEPT |
