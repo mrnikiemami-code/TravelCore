@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P35 — Production Payment Provider Readiness** (`TC-P35-T001` Cursor **PASS** · awaiting Architect ACCEPT) |
+| Current Phase | **P35 — Production Payment Provider Readiness** (`TC-P35-T002` Cursor **PASS** · **BLOCKED_ON_EXTERNAL_BUSINESS_INPUT**) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
