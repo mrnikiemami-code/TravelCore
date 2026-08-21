@@ -2,18 +2,52 @@ import Link from "next/link";
 import type { AppLocale } from "@/lib/i18n";
 
 const links = (locale: AppLocale) => [
-  { href: `/${locale}/admin/operations`, labelFa: "عملیات", labelEn: "Operations", labelAr: "العمليات" },
-  { href: `/${locale}/admin/catalog`, labelFa: "کاتالوگ", labelEn: "Catalog", labelAr: "الكتالوج" },
-  { href: `/${locale}/admin/catalog/places`, labelFa: "مکان‌ها", labelEn: "Places", labelAr: "الأماكن" },
-  { href: `/${locale}/admin/catalog/tours`, labelFa: "تورها", labelEn: "Tours", labelAr: "الجولات" },
-  { href: `/${locale}/admin/catalog/departures`, labelFa: "حرکت‌ها", labelEn: "Departures", labelAr: "المغادرات" },
-  { href: `/${locale}/admin/media`, labelFa: "رسانه", labelEn: "Media", labelAr: "الوسائط" },
-  { href: `/${locale}/admin/accounts`, labelFa: "حساب‌ها", labelEn: "Accounts", labelAr: "الحسابات" },
-  { href: `/${locale}/admin/ugc/moderation`, labelFa: "نظارت UGC", labelEn: "UGC moderation", labelAr: "مراجعة UGC" },
+  {
+    href: `/${locale}/admin`,
+    labelFa: "داشبورد عملیات",
+    labelEn: "Operations dashboard",
+    labelAr: "لوحة العمليات",
+  },
+  {
+    href: `/${locale}/admin/catalog-ops`,
+    labelFa: "عملیات کاتالوگ",
+    labelEn: "Catalog operations",
+    labelAr: "عمليات الكتالوج",
+  },
+  {
+    href: `/${locale}/admin/content`,
+    labelFa: "محتوا و رسانه",
+    labelEn: "Content & media",
+    labelAr: "المحتوى والوسائط",
+  },
+  {
+    href: `/${locale}/admin/agencies`,
+    labelFa: "مدیریت آژانس",
+    labelEn: "Agency management",
+    labelAr: "إدارة الوكالات",
+  },
+  {
+    href: `/${locale}/admin/access`,
+    labelFa: "کاربر و دسترسی",
+    labelEn: "Users & access",
+    labelAr: "المستخدم والوصول",
+  },
+  {
+    href: `/${locale}/admin/reporting`,
+    labelFa: "گزارش‌ها",
+    labelEn: "Reporting",
+    labelAr: "التقارير",
+  },
+  {
+    href: `/${locale}/admin/audit`,
+    labelFa: "ممیزی و گردش‌کار",
+    labelEn: "Audit & workflow",
+    labelAr: "التدقيق وسير العمل",
+  },
 ];
 
 /**
- * Shared Admin navigation — T008 operational console.
+ * Shared Admin navigation — P37-T004 operational IA (workflow-oriented).
  */
 export function AdminNav({
   locale,
@@ -25,6 +59,7 @@ export function AdminNav({
   const items = links(locale);
   const aria =
     locale === "fa" ? "ناوبری ادمین" : locale === "ar" ? "تنقل الإدارة" : "Admin navigation";
+  const base = `/${locale}/admin`;
 
   return (
     <nav aria-label={aria}>
@@ -36,7 +71,13 @@ export function AdminNav({
               : locale === "ar"
                 ? item.labelAr
                 : item.labelEn;
-          const active = currentPath != null && currentPath.startsWith(item.href);
+          const active =
+            item.href === base
+              ? currentPath === base ||
+                currentPath?.endsWith("/admin") ||
+                currentPath?.includes("/admin/operations")
+              : currentPath != null &&
+                (currentPath === item.href || currentPath.startsWith(`${item.href}/`));
           return (
             <li key={item.href}>
               <Link

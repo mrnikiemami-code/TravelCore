@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AdminShell } from "@/components/shell";
-import { AdminNav } from "@/features/admin-experience/admin-nav";
+import { OpsConsoleShell } from "@/components/shell";
 import { AdminOperationsBoard } from "@/features/admin-experience/admin-operations-board";
 import { isAppLocale, type AppLocale } from "@/lib/i18n";
 
@@ -11,8 +10,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * Representative Admin Experience board (TC-P30-T008).
- * Shell + data-grid + workflow patterns — no invented operational KPIs.
+ * Data-pattern board (TC-P30-T008) hosted under P37 Ops Console shell.
+ * No invented operational KPIs.
  */
 export default async function AdminOperationsPage({
   params,
@@ -26,34 +25,20 @@ export default async function AdminOperationsPage({
   const locale: AppLocale = localeParam;
 
   const title =
-    locale === "fa" ? "کنسول عملیات" : locale === "ar" ? "وحدة العمليات" : "Operations console";
-  const context =
-    locale === "fa"
-      ? "پایه تجربه ادمین · بدون KPI جعلی"
-      : locale === "ar"
-        ? "أساس تجربة الإدارة · بدون مؤشرات وهمية"
-        : "Admin experience foundation · no fake KPIs";
+    locale === "fa" ? "برد الگوهای داده" : locale === "ar" ? "لوحة أنماط البيانات" : "Data-pattern board";
 
   return (
-    <AdminShell
-      header={title}
-      context={context}
+    <OpsConsoleShell
+      locale={locale}
+      title={title}
       breadcrumb={
         <span>
-          Admin / {locale === "fa" ? "عملیات" : "Operations"}
+          Admin / {locale === "fa" ? "الگوها" : "Patterns"}
         </span>
       }
-      navigation={<AdminNav locale={locale} currentPath={`/${locale}/admin/operations`} />}
-      actions={
-        <a
-          href={`/${locale}/admin/catalog`}
-          className="min-h-touch inline-flex items-center rounded-md border border-border bg-surface px-3 text-xs font-medium hover:bg-surface-muted"
-        >
-          {locale === "fa" ? "کاتالوگ" : "Catalog"}
-        </a>
-      }
+      currentPath={`/${locale}/admin/operations`}
     >
       <AdminOperationsBoard locale={locale} />
-    </AdminShell>
+    </OpsConsoleShell>
   );
 }

@@ -111,7 +111,7 @@ export function PublicHeader({ locale, className }: PublicHeaderProps) {
             {c.myTrips}
           </Link>
           <Link
-            href={`/${locale}/admin/catalog`}
+            href={`/${locale}/admin`}
             className="min-h-touch inline-flex items-center rounded-md bg-accent px-3 text-sm font-medium text-accent-foreground hover:opacity-90"
           >
             {c.account}

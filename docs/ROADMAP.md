@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P37 — Experience Platform Foundation** (`TC-P37-T003` Cursor **PASS** · Agency Portal) |
+| Current Phase | **P37 — Experience Platform Foundation** (`TC-P37-T004` Cursor **PASS** · Admin Console) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P37-T003` · do not auto-implement T004 |
+| Current Next Task | Architect review of `TC-P37-T004` · do not auto-implement T005 |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -994,13 +994,13 @@ Evidence: [`docs/product-experience/evidence/P36-GATE/`](product-experience/evid
 
 ## P37 — Experience Platform Foundation
 
-**Status:** **ACTIVE** (`TC-P37-T003` Cursor **PASS** · Agency Portal · **READY_FOUNDATION**)
+**Status:** **ACTIVE** (`TC-P37-T004` Cursor **PASS** · Admin Console · **READY_FOUNDATION**)
 
 Plan: [`docs/plans/P37-experience-architecture-review.md`](plans/P37-experience-architecture-review.md)
 
-Customer: `/[locale]/me` · Agency: `/[locale]/agency` · evidence T002/T003
+Customer: `/[locale]/me` · Agency: `/[locale]/agency` · Admin: `/[locale]/admin` · evidence T002/T003/T004
 
-Recommended next: Admin Console Foundation (await Architect `.task.md`)
+Recommended next: await Architect `.task.md` (do not auto-run T005+)
 
 ---
 
@@ -1083,6 +1083,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
 | P36 | Commercial UI/UX Final Polish | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** · PARTIALLY_SELLABLE |
-| P37 | Experience Platform Foundation | **ACTIVE** (`TC-P37-T003` · Agency Portal READY_FOUNDATION) |
+| P37 | Experience Platform Foundation | **ACTIVE** (`TC-P37-T004` · Admin Console READY_FOUNDATION) |
 | P35 | Production Payment Provider Readiness | **PAUSED** (designs locked; Stripe test-mode code ready; external account facts) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
