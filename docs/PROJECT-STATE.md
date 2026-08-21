@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P36-T002` Cursor **PASS** — awaiting Architect ACCEPT |
-| Current Next Task | Architect review of `TC-P36-T002` · next likely Hotel polish `TC-P36-T003` |
+| Current Active Product Task | `TC-P36-T003` Cursor **PASS** — awaiting Architect ACCEPT |
+| Current Next Task | Architect review of `TC-P36-T003` · next likely Tour polish `TC-P36-T004` |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
