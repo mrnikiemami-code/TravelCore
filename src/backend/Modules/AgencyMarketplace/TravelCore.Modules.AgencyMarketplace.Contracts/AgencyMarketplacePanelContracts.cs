@@ -107,4 +107,12 @@ public interface IAgencyMarketplacePanelService
     Task SuspendOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
 
     Task RetireOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Throws UnauthorizedAccessException when the offer is not owned by the acting agency profile (P38-T007).
+    /// </summary>
+    Task EnsureOfferOwnedByAgencyAsync(
+        Guid offerId,
+        Guid agencyProfileId,
+        CancellationToken cancellationToken = default);
 }

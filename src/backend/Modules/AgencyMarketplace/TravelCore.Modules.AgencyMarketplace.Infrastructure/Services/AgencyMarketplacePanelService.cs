@@ -199,6 +199,22 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
         await _db.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task EnsureOfferOwnedByAgencyAsync(
+        Guid offerId,
+        Guid agencyProfileId,
+        CancellationToken cancellationToken = default)
+    {
+        var offer = await _db.AgencyOffers.AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id == AgencyOfferId.From(offerId), cancellationToken)
+            ?? throw new KeyNotFoundException("AgencyOffer was not found.");
+
+        if (offer.AgencyProfileId != AgencyProfileId.From(agencyProfileId))
+        {
+            throw new UnauthorizedAccessException(
+                "AgencyOffer does not belong to the acting AgencyProfile.");
+        }
+    }
+
     private async Task<AgencyOffer> LoadOfferAsync(Guid offerId, CancellationToken cancellationToken)
     {
         return await _db.AgencyOffers

@@ -34,6 +34,10 @@ public sealed class AgencyMarketplacePanelAccessGuardrailTests
         Assert.Contains("/submit", text, StringComparison.Ordinal);
         Assert.Contains("/approve", text, StringComparison.Ordinal);
         Assert.Contains("/publish", text, StringComparison.Ordinal);
+        Assert.Contains("/suspend", text, StringComparison.Ordinal);
+        Assert.Contains("/retire", text, StringComparison.Ordinal);
+        Assert.Contains("EnsureOfferOwnedByAgencyAsync", text, StringComparison.Ordinal);
+        Assert.Contains("IAccountAssociationQuery", text, StringComparison.Ordinal);
         Assert.Contains("/api/agency-marketplace/profiles", text, StringComparison.Ordinal);
         Assert.Contains("/api/agency-marketplace/offers", text, StringComparison.Ordinal);
         Assert.DoesNotContain("commission", text, StringComparison.OrdinalIgnoreCase);
