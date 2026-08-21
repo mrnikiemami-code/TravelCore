@@ -26,21 +26,23 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P33 — Commercial Product Readiness Review** (`TC-P33-T007` Cursor **PASS** · I3 Public Booking Initiation UX · awaiting Architect ACCEPT)
+**P33 — Commercial Product Readiness Review** (`TC-P33-T008` Cursor **PASS** · I4 Payment Boundary Option A · awaiting Architect ACCEPT)
 
 ## Completed (recent)
 
 - P33-T005 I1 ACCEPTED (`enrich-commerce`)
 - P33-T006 I2 ACCEPTED — Public Tour Commerce Composition
-- P33-T007 I3: Tour Detail CTA → `/tours/{slug}/book` → `POST /api/booking/public/initiations` → Pending + access token (no Payment)
+- P33-T007 I3 ACCEPTED — Booking initiation → Pending
+- P33-T008 I4: Option A honest payment boundary (no fake success / no Confirm)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T007 RESULT. Do not invent Payment / I4+.
+**None** — WAITING for Architect after T008 RESULT. Do not invent GATE / I5+.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P33-T008 Payment Boundary Option A |
 | 2026-08-21 | Sync after TC-P33-T007 Public Booking Initiation UX |
 | 2026-08-21 | Sync after TC-P33-T006 Public Tour Commerce Composition |
