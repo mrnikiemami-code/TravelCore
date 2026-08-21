@@ -415,7 +415,7 @@
 | P31 T004 | `TC-P31-T004` **ACCEPTED WITH KNOWN LIMITATIONS** — Hotel commerce polish |
 | P31 T005 | `TC-P31-T005` **ACCEPTED WITH KNOWN LIMITATIONS** — Tour commerce polish |
 | P31 GATE | `TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — evidence [`docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`](product-experience/evidence/P31-GATE/GATE-REVIEW.md) |
-| P32 Media Strategy | `TC-P32-T001` **PROPOSED** — [`docs/plans/P32-commercial-demo-media-strategy.md`](plans/P32-commercial-demo-media-strategy.md) · pack [`docs/product-experience/assets/demo-media/`](product-experience/assets/demo-media/) |
+| P32 Media Strategy | `TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** — [`docs/plans/P32-commercial-demo-media-strategy.md`](plans/P32-commercial-demo-media-strategy.md) · pack [`docs/product-experience/assets/demo-media/`](product-experience/assets/demo-media/) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |
