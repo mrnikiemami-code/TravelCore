@@ -51,7 +51,7 @@ Sandbox reference: `SandboxPaymentProviderGateway` · `NamedProductionAdapterImp
 
 ### Readiness
 
-**`READY_FOR_ADAPTER_DESIGN_ONLY`** · live code **`BLOCKED_ON_PROVIDER_ACCOUNT_FACTS`** (no merchant terminal yet)
+**`READY_FOR_ADAPTER_DESIGN_ONLY`** (T006) · refined by T009 [`P35-behpardakht-mellat-adapter-design.md`](P35-behpardakht-mellat-adapter-design.md): **`READY_FOR_ADAPTER_IMPLEMENTATION_WITH_TEST_FIXTURES`** (code still needs Architect task) · production **`BLOCKED_ON_PROVIDER_ACCOUNT_FACTS`** · **no final pick vs Zarinpal**
 
 ---
 

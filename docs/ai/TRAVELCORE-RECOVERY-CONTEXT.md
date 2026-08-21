@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T008` Cursor **PASS** · Stripe test-mode · **CODE_READY_FOR_STRIPE_TEST_ACCOUNT**)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T009` Cursor **PASS** · Behpardakht design lock awaiting Architect)
 
 ## Completed (recent)
 
-- P35-T007 ACCEPTED — Stripe UAE design lock
-- P35-T008: StripePaymentProviderGateway (test mode), Stripe.net in Infrastructure, fail-closed gate, unit+arch guardrails
+- P35-T008 ACCEPTED WITH KNOWN LIMITATIONS — Stripe test-mode adapter code
+- P35-T009: Behpardakht Mellat adapter design lock (no code; no final Iran pick)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T008 RESULT. No production activation. No Iran adapter.
+**None** — WAITING for Architect after T009 RESULT.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T009 Behpardakht Mellat adapter design lock |
 | 2026-08-21 | Sync after TC-P35-T008 Stripe test-mode adapter |
 | 2026-08-21 | Sync after TC-P35-T007 Stripe UAE adapter design lock |
-| 2026-08-21 | Sync after TC-P35-T006 provider-specific design |
 | 2026-08-21 | Sync after TC-P33-GATE review |
