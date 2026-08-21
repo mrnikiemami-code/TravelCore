@@ -26,23 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T003` Cursor **PASS** · **BLOCKED_PENDING_PROVIDER_RESEARCH**)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T004` Cursor **PASS** · research awaiting Architect · **STILL_BLOCKED_ON_PROVIDER_FACTS**)
 
 ## Completed (recent)
 
-- P35-T001 ACCEPTED — provider-agnostic readiness
-- P35-T002 ACCEPTED — intake; business inputs later supplied
-- P35-T003: Market split matrix (Iran ≠ UAE); Bank Mellat preference not treated as locked PSP
+- P35-T001…T003 ACCEPTED
+- P35-T004: Iran+UAE provider research shortlists (no selection); Mellat → Behpardakht path PARTIALLY_VERIFIED; no dual-market single provider verified
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T003 RESULT. Do not invent provider.
+**None** — WAITING for Architect after T004 RESULT.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T004 Iran/UAE provider research |
 | 2026-08-21 | Sync after TC-P35-T003 market provider decision matrix |
 | 2026-08-21 | Sync after TC-P35-T002 external decision intake |
-| 2026-08-21 | Sync after TC-P35-T001 production provider readiness plan |
 | 2026-08-21 | Sync after TC-P33-GATE review |
