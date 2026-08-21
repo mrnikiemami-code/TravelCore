@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-DEMOFEED-PLAN` |
 | Track | Temporary Demo Feeding (Post-P29 Evolution) |
-| Status | **ACTIVE** after P30 FOUNDATION ACCEPTED — `T002`/`T003`/`T004`/`T005` done · next `TC-DEMOFEED-GATE` |
+| Status | **GATE REVIEWED (Cursor PASS)** — T002–T005 done · awaiting Architect ACCEPT of `TC-DEMOFEED-GATE` |
 | Permanence | **TEMPORARY** — not a TravelCore product module |
 | Removable | **MUST remain removable** |
 | Baseline | `327d18c` (`docs: correct pipeline compliance ledger after forensic review`) |
@@ -93,9 +93,9 @@ If a demo marker column would require a domain migration, **defer that approach*
 | `TC-DEMOFEED-T003` | Destination demo seed (owner write path · identifiable · no ownership leak) | **DONE** |
 | `TC-DEMOFEED-T004` | Hotel (Place) + image demo seed (Place + Media attach · not HotelBooking) | **DONE** |
 | `TC-DEMOFEED-T005` | Tour + image demo seed (Tour + Media attach · not Booking/Pricing mutation) | **DONE** |
-| `TC-DEMOFEED-GATE` | Track acceptance: data present · boundaries held · deletion strategy evidenced | PENDING (awaits Architect file) |
+| `TC-DEMOFEED-GATE` | Track acceptance: data present · boundaries held · deletion strategy evidenced | **CURSOR PASS** (evidence: `docs/plans/DEMOFEED-GATE-acceptance-evidence.md`) · AWAITING_ARCHITECT_REVIEW |
 
-Do **not** invent extra tasks. Do **not** auto-execute GATE without a new authorized Architect gate/task file.
+Do **not** invent extra tasks. Do **not** auto-execute post-GATE work without a new authorized Architect file.
 
 ---
 
@@ -131,3 +131,4 @@ Do **not** invent extra tasks. Do **not** auto-execute GATE without a new author
 | 2026-08-21 | `TC-DEMOFEED-T003` Destination demo seed via owner application service |
 | 2026-08-21 | `TC-DEMOFEED-T004` Place (Hotel) + Media cover seed via owner paths |
 | 2026-08-21 | `TC-DEMOFEED-T005` TourProduct Package + Media cover seed via owner paths |
+| 2026-08-21 | `TC-DEMOFEED-GATE` Cursor review evidence (`DEMOFEED-GATE-acceptance-evidence.md`) |

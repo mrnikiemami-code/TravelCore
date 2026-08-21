@@ -40,6 +40,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-DEMOFEED-T003` **DONE** — Destination demo seed (`demofeed-*` via DestinationApplicationService)
 - `TC-DEMOFEED-T004` **DONE** — Place (Hotel) + Media cover seed (`demofeed-hotel-*` via IPlaceService + IMediaUploadService)
 - `TC-DEMOFEED-T005` **DONE** — TourProduct Package + Media cover seed (`demofeed-tour-*` via ITourProductService + Media)
+- `TC-DEMOFEED-GATE` **Cursor PASS** — evidence `docs/plans/DEMOFEED-GATE-acceptance-evidence.md` (AWAITING_ARCHITECT_REVIEW)
 
 ## Current Important Locks
 
@@ -47,9 +48,33 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
 | P30 | **FOUNDATION ACCEPTED** |
-| DEMOFEED | **ACTIVE** (`T002`/`T003`/`T004`/`T005` done · GATE awaits Architect file) |
+| DEMOFEED | **GATE Cursor PASS** (`T002`–`T005` · Architect ACCEPT pending) |
 | Feeder path | `tools/demofeed` — not an `ITravelCoreModule` · not in Api composition |
 | Demo identity | code/slug prefix `demofeed-` |
+| One Design System / Three Experiences | Public · Admin · Agency |
+| North Star | `docs/product-experience/assets/travelcore-ui-ux-north-star.png` |
+| Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
+| Design System 2.0 | `docs/product-experience/DESIGN-SYSTEM-2.0.md` |
+| Cursor PASS ≠ Architect ACCEPT | Mandatory |
+| Pipeline Controller | File-Based Task Pipeline V3 |
+
+## Runtime Roles
+
+| Role | Actor |
+|------|--------|
+| Architect | ChatGPT |
+| Implementation Agent | Cursor |
+| Source of Truth | Repository recovery / SoT documents |
+| Architect channel | `https://chatgpt.com/g/g-p-6a79dbc6468c8191a5e74afa2d82a8be-travelcore/c/6a8039a8-2014-83ed-be9f-813280b23bcb` |
+
+## Current Authorized Work
+
+**`TC-DEMOFEED-GATE`** Cursor review complete (awaiting Architect ACCEPT/REWORK).
+
+## Next Planned Work
+
+Architect decision on GATE.  
+Then **only** a new authorized `.task.md` / `.gate.md` — do not invent experience re-review / purge / next phase.
 | One Design System / Three Experiences | Public · Admin · Agency |
 | North Star | `docs/product-experience/assets/travelcore-ui-ux-north-star.png` |
 | Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
