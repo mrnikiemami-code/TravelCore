@@ -11,12 +11,16 @@ using TravelCore.Modules.Media.Contracts;
 using TravelCore.Modules.Media.Infrastructure;
 using TravelCore.Modules.Media.Infrastructure.Services;
 using TravelCore.Modules.Media.Infrastructure.Storage;
+using TravelCore.Modules.Party.Contracts;
 using TravelCore.Modules.Place.Contracts;
 using TravelCore.Modules.Place.Infrastructure;
 using TravelCore.Modules.Place.Infrastructure.Services;
 using TravelCore.Modules.ReferenceData.Contracts;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure.Services;
+using TravelCore.Modules.Tour.Contracts;
+using TravelCore.Modules.Tour.Infrastructure;
+using TravelCore.Modules.Tour.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
 namespace TravelCore.Tools.DemoFeed;
@@ -93,6 +97,13 @@ internal static class DemoFeedHost
                 migrationsHistorySchema: MediaDbContext.SchemaName);
         });
 
+        services.AddDbContext<TourDbContext>((_, options) =>
+        {
+            options.UseTravelCorePostgreSql(
+                connectionString,
+                migrationsHistorySchema: TourDbContext.SchemaName);
+        });
+
         services.AddOptions<MediaObjectStorageOptions>()
             .Bind(configuration.GetSection(MediaObjectStorageOptions.SectionName));
         services.AddOptions<MediaUploadOptions>()
@@ -108,6 +119,12 @@ internal static class DemoFeedHost
         services.AddScoped<IMediaAssetTranslationService, MediaAssetTranslationApplicationService>();
         services.AddScoped<IMediaPresentationService, MediaPresentationApplicationService>();
         services.AddScoped<IMediaUploadService, MediaUploadApplicationService>();
+
+        // Tour owner paths only — Party stub satisfies DI for semantic-link ctor; Agency never set by DEMOFEED.
+        services.AddScoped<IPartyReadQuery, DemoFeedPartyReadQueryStub>();
+        services.AddScoped<ITourProductService, TourProductService>();
+        services.AddScoped<ITourProductSemanticLinkService, TourProductSemanticLinkService>();
+        services.AddScoped<ITourProductMediaService, TourProductMediaService>();
 
         return services.BuildServiceProvider(new ServiceProviderOptions
         {
@@ -149,5 +166,14 @@ internal static class DemoFeedHost
         public string ContentRootPath { get; set; } = AppContext.BaseDirectory;
         public IFileProvider ContentRootFileProvider { get; set; } =
             new PhysicalFileProvider(AppContext.BaseDirectory);
+    }
+
+    /// <summary>
+    /// DEMOFEED never seeds Agency links; stub keeps Tour semantic-link DI closed without Party schema.
+    /// </summary>
+    private sealed class DemoFeedPartyReadQueryStub : IPartyReadQuery
+    {
+        public Task<PartyReadInfo?> GetAsync(Guid partyId, CancellationToken cancellationToken = default)
+            => Task.FromResult<PartyReadInfo?>(null);
     }
 }

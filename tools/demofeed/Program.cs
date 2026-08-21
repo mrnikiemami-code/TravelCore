@@ -7,6 +7,7 @@ internal static class Program
     private const string BoundaryTaskId = "TC-DEMOFEED-T002";
     private const string DestinationSeedTaskId = "TC-DEMOFEED-T003";
     private const string PlaceSeedTaskId = "TC-DEMOFEED-T004";
+    private const string TourSeedTaskId = "TC-DEMOFEED-T005";
 
     private static async Task<int> Main(string[] args)
     {
@@ -38,9 +39,10 @@ internal static class Program
         Console.WriteLine($"Boundary task: {BoundaryTaskId}");
         Console.WriteLine($"Destination seed task: {DestinationSeedTaskId}");
         Console.WriteLine($"Place (Hotel) seed task: {PlaceSeedTaskId}");
+        Console.WriteLine($"Tour seed task: {TourSeedTaskId}");
         Console.WriteLine("Kind: temporary removable feeder host/boundary");
         Console.WriteLine("Production module registration: NO");
-        Console.WriteLine("Domain migrations owned by: ReferenceDataMigrator / DestinationMigrator / PlaceMigrator / MediaMigrator");
+        Console.WriteLine("Domain migrations owned by: ReferenceDataMigrator / DestinationMigrator / PlaceMigrator / TourMigrator / MediaMigrator");
         Console.WriteLine($"Demo identity prefix: {DemoFeedHost.DemoCodePrefix}*");
         Console.WriteLine($"Assembly version: {version}");
         return 0;
@@ -55,7 +57,8 @@ internal static class Program
         Console.WriteLine("- No demofeed PostgreSQL schema / demofeed migrations");
         Console.WriteLine("- Destination writes only via DestinationApplicationService");
         Console.WriteLine("- Place writes only via PlaceApplicationService (IPlaceService)");
-        Console.WriteLine("- Media upload/attach via IMediaUploadService + Place SetCover");
+        Console.WriteLine("- Tour writes only via ITourProductService / ITourProductSemanticLinkService / ITourProductMediaService");
+        Console.WriteLine("- Media upload/attach via IMediaUploadService + Place/Tour SetCover");
         Console.WriteLine("- Schema apply only via owner migrators when --ensure-schema");
         Console.WriteLine("- Forbidden: Booking · Payment · Pricing · HotelBooking · scraping · competitor copy");
         return 0;
@@ -66,7 +69,7 @@ internal static class Program
         var rest = args.Skip(1).ToArray();
         if (rest.Length == 0)
         {
-            Console.Error.WriteLine("Usage: seed destinations|places [--ensure-schema] [--connection <cs>]");
+            Console.Error.WriteLine("Usage: seed destinations|places|tours [--ensure-schema] [--connection <cs>]");
             return 2;
         }
 
@@ -82,6 +85,7 @@ internal static class Program
             {
                 "destinations" => await DestinationDemoSeed.SeedAsync(services, ensureSchema, CancellationToken.None),
                 "places" => await PlaceDemoSeed.SeedAsync(services, ensureSchema, CancellationToken.None),
+                "tours" => await TourDemoSeed.SeedAsync(services, ensureSchema, CancellationToken.None),
                 _ => SeedUnknown(target),
             };
         }
@@ -95,8 +99,7 @@ internal static class Program
     private static int SeedUnknown(string target)
     {
         Console.Error.WriteLine($"Unknown seed target: {target}");
-        Console.Error.WriteLine("Usage: seed destinations|places [--ensure-schema] [--connection <cs>]");
-        Console.Error.WriteLine("Tour seed is TC-DEMOFEED-T005 (not authorized here).");
+        Console.Error.WriteLine("Usage: seed destinations|places|tours [--ensure-schema] [--connection <cs>]");
         return 2;
     }
 
@@ -114,6 +117,7 @@ internal static class Program
             {
                 "destinations" => await DestinationDemoSeed.ListAsync(services, CancellationToken.None),
                 "places" => await PlaceDemoSeed.ListAsync(services, CancellationToken.None),
+                "tours" => await TourDemoSeed.ListAsync(services, CancellationToken.None),
                 _ => ListUnknown(target),
             };
         }
@@ -127,7 +131,7 @@ internal static class Program
     private static int ListUnknown(string target)
     {
         Console.Error.WriteLine($"Unknown list target: {target}");
-        Console.Error.WriteLine("Usage: list [destinations|places] [--connection <cs>]");
+        Console.Error.WriteLine("Usage: list [destinations|places|tours] [--connection <cs>]");
         return 2;
     }
 
@@ -137,8 +141,8 @@ internal static class Program
         {
             var configuration = DemoFeedHost.BuildConfiguration(args);
             await using var services = DemoFeedHost.BuildServices(configuration);
-            // Superset: ReferenceData · Destination · Place · Media owner migrators.
-            return await PlaceDemoSeed.EnsureSchemaAsync(services, CancellationToken.None);
+            // Superset: ReferenceData · Destination · Place · Tour · Media owner migrators.
+            return await TourDemoSeed.EnsureSchemaAsync(services, CancellationToken.None);
         }
         catch (Exception ex)
         {
@@ -171,10 +175,12 @@ internal static class Program
         Console.WriteLine("  dotnet run --project tools/demofeed -- ensure-schema --connection \"...\"");
         Console.WriteLine("  dotnet run --project tools/demofeed -- seed destinations --ensure-schema --connection \"...\"");
         Console.WriteLine("  dotnet run --project tools/demofeed -- seed places --ensure-schema --connection \"...\"");
+        Console.WriteLine("  dotnet run --project tools/demofeed -- seed tours --ensure-schema --connection \"...\"");
         Console.WriteLine("  dotnet run --project tools/demofeed -- list destinations --connection \"...\"");
         Console.WriteLine("  dotnet run --project tools/demofeed -- list places --connection \"...\"");
+        Console.WriteLine("  dotnet run --project tools/demofeed -- list tours --connection \"...\"");
         Console.WriteLine();
         Console.WriteLine("Connection: ConnectionStrings__TravelCore env var or --connection");
-        Console.WriteLine("Fail-closed: purge (GATE) · seed tours (T005)");
+        Console.WriteLine("Fail-closed: purge (GATE)");
     }
 }

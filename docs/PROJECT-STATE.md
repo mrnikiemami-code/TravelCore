@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **Post-P30 — DEMOFEED Data Enablement** (`TC-DEMOFEED-T004` done · next `TC-DEMOFEED-T005` awaits Architect file) |
+| Current Phase | **Post-P30 — DEMOFEED Data Enablement** (`TC-DEMOFEED-T005` done · next `TC-DEMOFEED-GATE` awaits Architect file) |
 | Previous Phase | **P30 — Product Experience Foundation** (**FOUNDATION ACCEPTED** — `TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-DEMOFEED-T004` — Place (Hotel) + Media demo seed (`tools/demofeed` · prefix `demofeed-`) |
-| Current Next Task | Architect-authorized `TC-DEMOFEED-T005` only — do not infer / do not auto-seed tours |
+| Current Active Product Task | `TC-DEMOFEED-T005` — Tour + Media demo seed (`tools/demofeed` · prefix `demofeed-`) |
+| Current Next Task | Architect-authorized `TC-DEMOFEED-GATE` only — do not invent / do not auto-execute GATE |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -408,7 +408,7 @@
 | HOMFEED GATE | `TC-HOMFEED-GATE` implementation **COMPLETE** (`4094697`) · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/HOMFEED-GATE-acceptance-evidence.md`](plans/HOMFEED-GATE-acceptance-evidence.md) |
 | HOMFEED | implementation **COMPLETE** — closes DISCLINK-T015 · ledger correction as above |
 | DEMOFEED Plan | `TC-DEMOFEED-PLAN` **ACTIVE** — [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md) |
-| DEMOFEED | Temporary removable demo feeding — **ACTIVE** (`T002`/`T003`/`T004` done · Tour seed pending Architect file) |
+| DEMOFEED | Temporary removable demo feeding — **ACTIVE** (`T002`/`T003`/`T004`/`T005` done · GATE awaits Architect file) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |

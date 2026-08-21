@@ -7,18 +7,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Tools.DemoFeed</RootNamespace>
     <AssemblyName>TravelCore.Tools.DemoFeed</AssemblyName>
-    <Description>Temporary removable DEMOFEED feeder host/boundary (TC-DEMOFEED-T002/T003/T004).</Description>
+    <Description>Temporary removable DEMOFEED feeder host/boundary (TC-DEMOFEED-T002/T003/T004/T005).</Description>
   </PropertyGroup>
 
   <!--
     Owner-path references only. Never register this tool as ITravelCoreModule in TravelCore.Api.
-    T003 Destination · T004 Place (+ Media attach) via owner Infrastructure.
+    T003 Destination · T004 Place (+ Media) · T005 Tour (+ Media) via owner Infrastructure.
   -->
   <ItemGroup>
     <ProjectReference Include="..\..\src\backend\Modules\Destination\TravelCore.Modules.Destination.Infrastructure\TravelCore.Modules.Destination.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\backend\Modules\Media\TravelCore.Modules.Media.Infrastructure\TravelCore.Modules.Media.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\backend\Modules\Place\TravelCore.Modules.Place.Infrastructure\TravelCore.Modules.Place.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\backend\Modules\ReferenceData\TravelCore.Modules.ReferenceData.Infrastructure\TravelCore.Modules.ReferenceData.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\backend\Modules\Tour\TravelCore.Modules.Tour.Infrastructure\TravelCore.Modules.Tour.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **Post-P30 — DEMOFEED Data Enablement** (`TC-DEMOFEED-T004` done · next `TC-DEMOFEED-T005` awaits Architect file) |
-| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED ACTIVE (T004)** |
+| Current Phase | **Post-P30 — DEMOFEED Data Enablement** (`TC-DEMOFEED-T005` done · next `TC-DEMOFEED-GATE` awaits Architect file) |
+| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED ACTIVE (T005)** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect-authorized `TC-DEMOFEED-T005` only — do not infer / do not auto-seed tours |
+| Current Next Task | Architect-authorized `TC-DEMOFEED-GATE` only — do not invent / do not auto-execute GATE |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -912,7 +912,7 @@ Curated home discovery composition after HOTIDX — closes DISCLINK-T015 deferra
 
 ## Demo Feeding Sequence (temporary)
 
-**Status:** **ACTIVE** (`TC-DEMOFEED-T004` Place/Hotel + Media seed done · T005+ await Architect `.task.md`)
+**Status:** **ACTIVE** (`TC-DEMOFEED-T005` Tour + Media seed done · GATE awaits Architect `.gate.md` / `.task.md`)
 
 **Implementation plan:** [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md)
 
@@ -921,8 +921,8 @@ Temporary removable demo population — **not** a permanent module:
 1. Isolated feeder boundary (no domain schema / no ownership change) — **`tools/demofeed` DONE**
 2. Destination demo seed — **DONE** (`demofeed-*` via owner application service)
 3. Hotel (Place) + image demo seed — **DONE** (`TC-DEMOFEED-T004`)
-4. Tour + image demo seed — next (`TC-DEMOFEED-T005`)
-5. Gate + deletion strategy (purge data, delete feeder tree)
+4. Tour + image demo seed — **DONE** (`TC-DEMOFEED-T005`)
+5. Gate + deletion strategy (purge data, delete feeder tree) — next (`TC-DEMOFEED-GATE`)
 
 OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
@@ -1003,5 +1003,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | MODOPS | Moderation Operations Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-MODOPS-GATE`) |
 | HOTIDX | Hotel Catalog Browse Index Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
 | HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
-| DEMOFEED | Temporary Demo Feeding Sequence | **ACTIVE** (`T002`/`T003`/`T004` done · T005+ await Architect file) |
+| DEMOFEED | Temporary Demo Feeding Sequence | **ACTIVE** (`T002`/`T003`/`T004`/`T005` done · GATE awaits Architect file) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

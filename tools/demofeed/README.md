@@ -4,7 +4,7 @@
 |-------|--------|
 | Tool | `TravelCore.Tools.DemoFeed` |
 | Path | `tools/demofeed` |
-| Tasks | `TC-DEMOFEED-T002` (boundary) · `TC-DEMOFEED-T003` (Destination) · `TC-DEMOFEED-T004` (Place Hotel + Media) |
+| Tasks | `TC-DEMOFEED-T002` (boundary) · `TC-DEMOFEED-T003` (Destination) · `TC-DEMOFEED-T004` (Place Hotel + Media) · `TC-DEMOFEED-T005` (Tour + Media) |
 | Permanence | **TEMPORARY / REMOVABLE** |
 | Product module | **NO** |
 
@@ -25,13 +25,15 @@ dotnet run --project tools/demofeed -- boundaries
 dotnet run --project tools/demofeed -- ensure-schema --connection "Host=...;Database=TravelCore;Username=...;Password=..."
 dotnet run --project tools/demofeed -- seed destinations --ensure-schema --connection "..."
 dotnet run --project tools/demofeed -- seed places --ensure-schema --connection "..."
+dotnet run --project tools/demofeed -- seed tours --ensure-schema --connection "..."
 dotnet run --project tools/demofeed -- list destinations --connection "..."
 dotnet run --project tools/demofeed -- list places --connection "..."
+dotnet run --project tools/demofeed -- list tours --connection "..."
 ```
 
 Connection may also be supplied as env `ConnectionStrings__TravelCore`.
 
-`purge` remains **fail-closed** until GATE. Tour seed is **T005**.
+`purge` remains **fail-closed** until GATE.
 
 ## Destination demo identity (T003)
 
@@ -56,9 +58,22 @@ Hotel Places linked to existing demofeed city Destinations. Writes via `IPlaceSe
 
 Names/descriptions explicitly say DEMOFEED / non-production. CatalogStatus set to Active for browse demos.
 
-Media blobs land under tool-local filesystem (`.local/demofeed-media` under the tool output dir) via Media’s local filesystem adapter — not production object storage.
+Requires destinations seeded first (`seed destinations`).
+
+## Tour demo identity (T005)
+
+TourProduct Packages linked to existing demofeed city Destinations. Writes via `ITourProductService` + `ITourProductSemanticLinkService` + `ITourProductMediaService`. Cover via Media upload + Tour `SetCover` (synthetic 1×1 PNG — not scraped). **No** Booking / Pricing / TourDeparture rows.
+
+| Code | Kind | Destination | Slugs |
+|------|------|-------------|--------|
+| `demofeed-tour-teh-1` | Package | `demofeed-ir-teh` | `demofeed-tour-tehran-1` |
+| `demofeed-tour-ist-1` | Package | `demofeed-tr-ist` | `demofeed-tour-istanbul-1` |
+
+CatalogStatus set to Published for catalog browse demos (Published ≠ bookable ≠ priced). Titles/descriptions labeled DEMOFEED / non-production.
 
 Requires destinations seeded first (`seed destinations`).
+
+Media blobs land under tool-local filesystem (`.local/demofeed-media` under the tool output dir) via Media’s local filesystem adapter — not production object storage.
 
 ## Architecture rules
 
@@ -69,9 +84,8 @@ Requires destinations seeded first (`seed destinations`).
 5. Forbidden: Booking · Payment · Pricing · HotelBooking · scraping · competitor content copy
 6. Deletion: purge identifiable demo rows, then delete this tree (see `docs/plans/DEMOFEED-implementation-plan.md`)
 
-## Next tasks (repository SoT)
+## Next (repository SoT)
 
 | Task | Deliverable |
 |------|-------------|
-| `TC-DEMOFEED-T005` | Tour + Media demo seed |
-| `TC-DEMOFEED-GATE` | Acceptance + deletion evidence |
+| `TC-DEMOFEED-GATE` | Acceptance + deletion evidence (awaits Architect `.gate.md` / `.task.md`) |
