@@ -26,7 +26,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P31 — Commercial Demo Experience** (`TC-P31-GATE` · AWAITING_ARCHITECT_REVIEW)
+**P31 — Commercial Demo Experience** (`TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**)
 
 ## Completed
 
@@ -37,7 +37,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-P31-T001` **ACCEPTED** — plan
 - `TC-P31-T002` **ACCEPTED** — content strategy
 - `TC-P31-T003`…`T005` **ACCEPTED WITH KNOWN LIMITATIONS** — Home / Hotel / Tour commercial polish
-- `TC-P31-GATE` **Cursor PASS WITH KNOWN LIMITATIONS** — `docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`
+- `TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — `docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`
 
 ## Current Important Locks
 
@@ -46,7 +46,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 | Product order | **Experience → Data → Commercial** |
 | P30 | **FOUNDATION ACCEPTED** |
 | DEMOFEED | **GATE ACCEPTED** |
-| P31 | **GATE REVIEW** (Cursor PASS WITH KNOWN LIMITATIONS) |
+| P31 | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
 | Feeder path | `tools/demofeed` — not an `ITravelCoreModule` |
 | Demo identity | `demofeed-*` |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
@@ -54,12 +54,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P31-GATE`** Cursor review complete (awaiting Architect ACCEPT/REWORK).
+**None** — waiting for next Architect `.task.md` / `.gate.md`.
 
 ## Next Planned Work
 
-Architect decision on GATE.
-Then **only** a new authorized `.task.md` / `.gate.md` — do not invent next phase.
+Architect discussed **P32 — Commercial Demo Data & Media Enrichment** but has **not** attached an authorized file yet.
+Do **not** invent / auto-start `TC-P32-T001`.
 
 ## Open Blockers
 
@@ -79,3 +79,4 @@ Then **only** a new authorized `.task.md` / `.gate.md` — do not invent next ph
 |------|--------|
 | 2026-08-21 | Sync after P31-T005 Tour commerce polish |
 | 2026-08-21 | Sync after P31-GATE Cursor review evidence |
+| 2026-08-21 | Sync after Architect ACCEPT of TC-P31-GATE |

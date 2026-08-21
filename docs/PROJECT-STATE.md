@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-GATE` Cursor PASS WITH KNOWN LIMITATIONS · AWAITING_ARCHITECT_REVIEW) |
+| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** · AWAITING next Architect file) |
 | Previous Phase | **P30 — Product Experience Foundation** (**FOUNDATION ACCEPTED** — `TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P31-GATE` — Commercial Demo Experience gate review (Cursor PASS WITH KNOWN LIMITATIONS) |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-GATE`; then next authorized `.task.md` / `.gate.md` only — do not invent next phase |
+| Current Active Product Task | None — `TC-P31-GATE` Architect **ACCEPTED WITH KNOWN LIMITATIONS** |
+| Current Next Task | Wait for next authorized `.task.md` / `.gate.md` only (Architect proposed P32 — do not invent / do not auto-start) |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -414,7 +414,7 @@
 | P31 T003 | `TC-P31-T003` **ACCEPTED WITH KNOWN LIMITATIONS** — Home commercial upgrade |
 | P31 T004 | `TC-P31-T004` **ACCEPTED WITH KNOWN LIMITATIONS** — Hotel commerce polish |
 | P31 T005 | `TC-P31-T005` **ACCEPTED WITH KNOWN LIMITATIONS** — Tour commerce polish |
-| P31 GATE | `TC-P31-GATE` **Cursor PASS WITH KNOWN LIMITATIONS** — evidence [`docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`](product-experience/evidence/P31-GATE/GATE-REVIEW.md) · AWAITING_ARCHITECT_REVIEW |
+| P31 GATE | `TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — evidence [`docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`](product-experience/evidence/P31-GATE/GATE-REVIEW.md) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |

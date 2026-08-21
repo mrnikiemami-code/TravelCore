@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-GATE` Cursor PASS WITH KNOWN LIMITATIONS · AWAITING_ARCHITECT_REVIEW) |
-| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 T001–T005 ACCEPTED · GATE REVIEW** |
+| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**) |
+| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 GATE ACCEPTED WITH KNOWN LIMITATIONS** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-GATE`; then next authorized `.task.md` / `.gate.md` only — do not invent next phase |
+| Current Next Task | Wait for next authorized `.task.md` / `.gate.md` only (Architect proposed P32 — do not invent / do not auto-start) |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -932,7 +932,7 @@ OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
 ## P31 — Commercial Demo Experience
 
-**Status:** **GATE Cursor PASS WITH KNOWN LIMITATIONS** (`T001`–`T005` ACCEPTED · AWAITING_ARCHITECT_REVIEW of `TC-P31-GATE`)
+**Status:** **GATE ACCEPTED WITH KNOWN LIMITATIONS** (`T001`–`T005` · `TC-P31-GATE`)
 
 **Evidence:** [`docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`](../product-experience/evidence/P31-GATE/GATE-REVIEW.md)
 
@@ -1018,5 +1018,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | HOTIDX | Hotel Catalog Browse Index Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
 | HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
 | DEMOFEED | Temporary Demo Feeding Sequence | **GATE ACCEPTED** (`T002`–`T005`) |
-| P31 | Commercial Demo Experience | **GATE REVIEW** (`T001`–`T005` ACCEPTED · Cursor GATE PASS WITH KNOWN LIMITATIONS) |
+| P31 | Commercial Demo Experience | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
