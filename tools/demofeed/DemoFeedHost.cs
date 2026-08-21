@@ -18,6 +18,9 @@ using TravelCore.Modules.Place.Infrastructure.Services;
 using TravelCore.Modules.ReferenceData.Contracts;
 using TravelCore.Modules.ReferenceData.Infrastructure;
 using TravelCore.Modules.ReferenceData.Infrastructure.Services;
+using TravelCore.Modules.Pricing.Contracts;
+using TravelCore.Modules.Pricing.Infrastructure;
+using TravelCore.Modules.Pricing.Infrastructure.Services;
 using TravelCore.Modules.Tour.Contracts;
 using TravelCore.Modules.Tour.Infrastructure;
 using TravelCore.Modules.Tour.Infrastructure.Services;
@@ -106,6 +109,13 @@ internal static class DemoFeedHost
                 migrationsHistorySchema: TourDbContext.SchemaName);
         });
 
+        services.AddDbContext<PricingDbContext>((_, options) =>
+        {
+            options.UseTravelCorePostgreSql(
+                connectionString,
+                migrationsHistorySchema: PricingDbContext.SchemaName);
+        });
+
         services.AddOptions<MediaObjectStorageOptions>()
             .Bind(configuration.GetSection(MediaObjectStorageOptions.SectionName));
         services.AddOptions<MediaUploadOptions>()
@@ -128,6 +138,12 @@ internal static class DemoFeedHost
         services.AddScoped<ITourProductService, TourProductService>();
         services.AddScoped<ITourProductSemanticLinkService, TourProductSemanticLinkService>();
         services.AddScoped<ITourProductMediaService, TourProductMediaService>();
+        services.AddScoped<ITourDepartureAdminService, TourDepartureAdminService>();
+        services.AddScoped<ITourDeparturePublicQuery, TourDeparturePublicQuery>();
+
+        // Pricing owner paths (TC-P33-T005 I1 only) — Price on TourDeparture; no Booking/Payment.
+        services.AddScoped<IPriceAdminService, PriceAdminService>();
+        services.AddScoped<IPublicPricingQuery, PublicPricingQuery>();
 
         return services.BuildServiceProvider(new ServiceProviderOptions
         {

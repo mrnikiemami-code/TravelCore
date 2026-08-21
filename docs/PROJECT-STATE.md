@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P33 — Commercial Product Readiness Review** (`TC-P33-T004` Cursor **PASS** · awaiting Architect ACCEPT) |
+| Current Phase | **P33 — Commercial Product Readiness Review** (`TC-P33-T005` Cursor **PASS** · I1 data · awaiting Architect ACCEPT) |
 | Previous Phase | **P30 — Product Experience Foundation** (**FOUNDATION ACCEPTED** — `TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P33-T004` Cursor **PASS** — awaiting Architect ACCEPT |
-| Current Next Task | Architect review of `TC-P33-T004` only — do not invent I1+ |
+| Current Active Product Task | `TC-P33-T005` Cursor **PASS** — awaiting Architect ACCEPT |
+| Current Next Task | Architect review of `TC-P33-T005` only — do not invent I2+ |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -428,7 +428,8 @@
 | P33 Commercial Readiness | `TC-P33-T001` Cursor **PASS** — [`docs/plans/P33-commercial-readiness-plan.md`](plans/P33-commercial-readiness-plan.md) |
 | P33 Tour-First Slice | `TC-P33-T002` **ACCEPTED** — [`docs/plans/P33-tour-first-commerce-slice.md`](plans/P33-tour-first-commerce-slice.md) |
 | P33 Tour Commerce Data Contracts | `TC-P33-T003` **ACCEPTED** — [`docs/plans/P33-tour-commerce-data-contracts.md`](plans/P33-tour-commerce-data-contracts.md) |
-| P33 Tour Commerce Implementation Roadmap | `TC-P33-T004` Cursor **PASS** — [`docs/plans/P33-tour-commerce-implementation-roadmap.md`](plans/P33-tour-commerce-implementation-roadmap.md) |
+| P33 Tour Commerce Implementation Roadmap | `TC-P33-T004` **ACCEPTED** — [`docs/plans/P33-tour-commerce-implementation-roadmap.md`](plans/P33-tour-commerce-implementation-roadmap.md) |
+| P33 I1 Commercial Data | `TC-P33-T005` Cursor **PASS** — `enrich-commerce` · evidence [`docs/product-experience/evidence/P33-T005/API-NOTES.md`](product-experience/evidence/P33-T005/API-NOTES.md) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |
