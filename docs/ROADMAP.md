@@ -1050,5 +1050,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | DEMOFEED | Temporary Demo Feeding Sequence | **GATE ACCEPTED** (`T002`–`T005`) |
 | P31 | Commercial Demo Experience | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
-| P33 | Commercial Product Readiness Review | **ACTIVE** (`TC-P33-T001` · [`P33-commercial-readiness-plan.md`](plans/P33-commercial-readiness-plan.md)) |
+| P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
+| P34 | Payment & Confirmation Readiness | **ACTIVE** (`TC-P34-T001` · [`P34-payment-confirmation-readiness-plan.md`](plans/P34-payment-confirmation-readiness-plan.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
