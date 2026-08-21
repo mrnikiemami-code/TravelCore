@@ -3,199 +3,153 @@ import { Surface, Text } from "@/components/ui";
 import type { AppLocale } from "@/lib/i18n";
 
 /**
- * Agency Portal dashboard foundation (TC-P30-T009).
- * Sales-tool feeling · honest empty states · no invented metrics.
+ * Agency Portal dashboard foundation (TC-P37-T003).
+ * B2B sales tool · honest empties · no fake commissions/revenue/KPIs.
  */
 export function AgencyDashboardFoundation({ locale }: { locale: AppLocale }) {
+  const base = `/${locale}/agency`;
   const copy =
     locale === "fa"
       ? {
-          feeling: "این ابزار فروش است.",
+          feeling: "این ابزار فروش B2B است — نه سایت عمومی با نقش اضافه.",
           intro:
-            "فضای کاری آژانس برای پیگیری فروش، رزرو، مشتری و درخواست‌ها — بدون عدد جعلی.",
-          sales: "نمای فروش",
-          salesEmpty: "هنوز خلاصه فروش متصل به داده زنده نیست.",
-          bookings: "نمای رزرو",
-          bookingsEmpty: "رزروهای آژانس وقتی قرارداد آماده باشد اینجا نمایش داده می‌شود.",
-          customers: "نمای مشتری",
-          customersEmpty: "فهرست مشتری زنده در این لایه موجود نیست.",
-          requests: "اقدام لازم",
-          requestsEmpty: "درخواست معلقی برای نمایش نیست.",
-          offers: "آگهی‌های فروش",
-          offersHint: "مدیریت Offer از مسیر Marketplace موجود",
-          openOffers: "رفتن به کاتالوگ عمومی هتل/تور",
-          shortcuts: "میان‌برهای عملیاتی",
-          shortcutProfile: "پروفایل تجاری",
-          shortcutPublish: "بازبینی انتشار",
-          shortcutPublic: "بازار عمومی",
-          status: "وضعیت عملیاتی",
-          statusBody:
-            "وضعیت‌های تجاری فقط وقتی دادهٔ معتبر ماژول موجود باشد نشان داده می‌شوند. کمیسیون/درآمد جعلی نمایش داده نمی‌شود.",
-          emptyBadge: "خالی · صادقانه",
+            "کاتالوگ قابل فروش، رزرو آژانس، مشتری و جهت کمیسیون/تسویه — بدون عدد جعلی.",
+          catalog: "کاتالوگ فروش",
+          catalogBody: "تورهای قابل فروش برای آژانس — نه همان کارت‌های مصرف‌کننده.",
+          openCatalog: "باز کردن کاتالوگ",
+          bookings: "رزروهای آژانس",
+          bookingsBody: "وقتی قرارداد دسترسی آماده باشد، رزروهای آژانس اینجا می‌آید.",
+          customers: "مشتریان آژانس",
+          customersBody: "فهرست مشتری زنده در این لایه هنوز متصل نیست.",
+          commission: "کمیسیون",
+          commissionBody: "درصد/مبلغ کمیسیون جعلی نشان داده نمی‌شود.",
+          settlement: "تسویه",
+          settlementBody: "جهت تسویه آینده — بدون موجودی جعلی.",
+          users: "کاربران و دسترسی",
+          usersBody: "مالک/کارمند آژانس از Access می‌آید — نقش هاردکد نمی‌شود.",
+          honest: "خالی · صادقانه",
+          open: "باز کردن",
         }
       : locale === "ar"
         ? {
-            feeling: "هذه أداة مبيعات.",
+            feeling: "هذه أداة مبيعات B2B — وليست موقعاً عاماً بدور إضافي.",
             intro:
-              "مساحة عمل الوكالة لمتابعة المبيعات والحجوزات والعملاء والطلبات — دون أرقام وهمية.",
-            sales: "نظرة المبيعات",
-            salesEmpty: "ملخص المبيعات غير متصل ببيانات حية بعد.",
-            bookings: "نظرة الحجوزات",
-            bookingsEmpty: "ستظهر حجوزات الوكالة عند جاهزية العقد.",
-            customers: "نظرة العملاء",
-            customersEmpty: "لا قائمة عملاء حية في هذه الطبقة.",
-            requests: "إجراء مطلوب",
-            requestsEmpty: "لا طلبات معلّقة للعرض.",
-            offers: "عروض المبيعات",
-            offersHint: "إدارة العروض عبر مسار Marketplace الحالي",
-            openOffers: "إلى السوق العام للفنادق/الجولات",
-            shortcuts: "اختصارات تشغيلية",
-            shortcutProfile: "الملف التجاري",
-            shortcutPublish: "مراجعة النشر",
-            shortcutPublic: "السوق العام",
-            status: "الحالة التشغيلية",
-            statusBody:
-              "تُعرض الحالات التجارية فقط عند توفر بيانات وحدة موثوقة. لا عمولات/إيرادات وهمية.",
-            emptyBadge: "فارغ · بصدق",
+              "كتالوج قابل للبيع وحجوزات الوكالة والعملاء واتجاه العمولة/التسوية — دون أرقام وهمية.",
+            catalog: "كتالوج البيع",
+            catalogBody: "جولات قابلة للبيع للوكالة — وليست بطاقات المستهلك.",
+            openCatalog: "فتح الكتالوج",
+            bookings: "حجوزات الوكالة",
+            bookingsBody: "ستظهر حجوزات الوكالة عند جاهزية عقد الوصول.",
+            customers: "عملاء الوكالة",
+            customersBody: "لا قائمة عملاء حية في هذه الطبقة بعد.",
+            commission: "العمولة",
+            commissionBody: "لا نعرض نسب/مبالغ عمولة وهمية.",
+            settlement: "التسوية",
+            settlementBody: "اتجاه تسوية مستقبلي — بلا أرصدة وهمية.",
+            users: "المستخدمون والصلاحيات",
+            usersBody: "مالك/موظف الوكالة من Access — بلا أدوار ثابتة.",
+            honest: "فارغ · بصدق",
+            open: "فتح",
           }
         : {
-            feeling: "This is a sales tool.",
+            feeling: "This is a B2B sales tool — not the public site with an extra role.",
             intro:
-              "Agency workspace for sales, bookings, customers, and requests — no invented numbers.",
-            sales: "Sales overview",
-            salesEmpty: "Live sales summary is not wired yet.",
-            bookings: "Booking overview",
-            bookingsEmpty: "Agency bookings appear here when the contract is ready.",
-            customers: "Customer overview",
-            customersEmpty: "No live customer list on this layer yet.",
-            requests: "Action required",
-            requestsEmpty: "No pending requests to show.",
-            offers: "Sales offers",
-            offersHint: "Offer management via existing Marketplace paths",
-            openOffers: "Open public hotel/tour marketplace",
-            shortcuts: "Action shortcuts",
-            shortcutProfile: "Commercial profile",
-            shortcutPublish: "Publication review",
-            shortcutPublic: "Public marketplace",
-            status: "Operational status",
-            statusBody:
-              "Commercial statuses appear only when authoritative module data exists. No fake commissions or revenue.",
-            emptyBadge: "Empty · honest",
+              "Sellable catalog, agency bookings, customers, and commission/settlement direction — no invented numbers.",
+            catalog: "Sellable catalog",
+            catalogBody: "Agency sell path for tours — not consumer marketplace cards.",
+            openCatalog: "Open catalog",
+            bookings: "Agency bookings",
+            bookingsBody: "Agency bookings appear when access contracts are ready.",
+            customers: "Agency customers",
+            customersBody: "No live customer list on this layer yet.",
+            commission: "Commission",
+            commissionBody: "We do not invent commission rates or amounts.",
+            settlement: "Settlement",
+            settlementBody: "Future settlement direction — no fake balances.",
+            users: "Users & access",
+            usersBody: "Agency owner/staff come from Access — roles are not hardcoded.",
+            honest: "Empty · honest",
+            open: "Open",
           };
 
-  const overview = [
-    { id: "sales", title: copy.sales, empty: copy.salesEmpty },
-    { id: "bookings", title: copy.bookings, empty: copy.bookingsEmpty },
-    { id: "customers", title: copy.customers, empty: copy.customersEmpty },
-    { id: "requests", title: copy.requests, empty: copy.requestsEmpty },
-  ] as const;
+  const cards = [
+    {
+      title: copy.catalog,
+      body: copy.catalogBody,
+      href: `${base}/catalog`,
+      cta: copy.openCatalog,
+    },
+    {
+      title: copy.bookings,
+      body: copy.bookingsBody,
+      href: `${base}/bookings`,
+      cta: copy.open,
+    },
+    {
+      title: copy.customers,
+      body: copy.customersBody,
+      href: `${base}/customers`,
+      cta: copy.open,
+    },
+    {
+      title: copy.commission,
+      body: copy.commissionBody,
+      href: `${base}/commission`,
+      cta: copy.open,
+    },
+    {
+      title: copy.settlement,
+      body: copy.settlementBody,
+      href: `${base}/settlement`,
+      cta: copy.open,
+    },
+    {
+      title: copy.users,
+      body: copy.usersBody,
+      href: `${base}/users`,
+      cta: copy.open,
+    },
+  ];
 
   return (
-    <div className="flex flex-col gap-4 p-3 sm:gap-5 sm:p-4">
-      <Surface className="border-accent/30 bg-gradient-to-br from-accent/15 via-surface to-surface p-4 sm:p-5">
-        <p className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-          {copy.feeling}
+    <div className="flex flex-col gap-5">
+      <Surface className="rounded-2xl border-accent/30 bg-gradient-to-br from-accent/15 via-surface to-surface p-5 sm:p-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+          B2B
         </p>
-        <Text role="muted" className="mt-1 text-sm">
+        <h1 className="mt-2 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+          {copy.feeling}
+        </h1>
+        <Text role="muted" className="mt-2 max-w-3xl text-sm">
           {copy.intro}
         </Text>
       </Surface>
 
-      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {overview.map((item) => (
-          <li key={item.id} id={item.id}>
-            <Surface className="flex h-full flex-col gap-2 p-4">
-              <div className="flex items-center justify-between gap-2">
-                <Text as="h2" role="label">
-                  {item.title}
-                </Text>
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {cards.map((card) => (
+          <li key={card.href}>
+            <Surface className="flex h-full flex-col rounded-2xl p-5">
+              <div className="flex items-start justify-between gap-2">
+                <h2 className="text-base font-semibold text-foreground">
+                  {card.title}
+                </h2>
                 <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[10px] text-muted-foreground">
-                  {copy.emptyBadge}
+                  {copy.honest}
                 </span>
               </div>
-              <Text role="muted" className="text-sm">
-                {item.empty}
+              <Text role="muted" className="mt-2 flex-1 text-sm">
+                {card.body}
               </Text>
-              <div
-                className="mt-auto h-16 rounded-md border border-dashed border-border bg-surface-muted/40"
-                aria-hidden
-              />
+              <Link
+                href={card.href}
+                className="mt-4 inline-flex min-h-touch items-center justify-center rounded-lg bg-accent px-3 text-sm font-semibold text-accent-foreground hover:opacity-95"
+              >
+                {card.cta}
+              </Link>
             </Surface>
           </li>
         ))}
       </ul>
-
-      <section id="offers" className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        <Surface className="p-4 lg:col-span-2">
-          <Text as="h2" role="heading">
-            {copy.offers}
-          </Text>
-          <Text role="muted" className="mt-1 text-sm">
-            {copy.offersHint}
-          </Text>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link
-              href={`/${locale}/tours`}
-              className="min-h-touch inline-flex items-center rounded-md bg-accent px-3 text-sm font-semibold text-accent-foreground hover:opacity-95"
-            >
-              {copy.openOffers}
-            </Link>
-            <Link
-              href={`/${locale}/hotels`}
-              className="min-h-touch inline-flex items-center rounded-md border border-border bg-surface px-3 text-sm hover:bg-surface-muted"
-            >
-              Hotels
-            </Link>
-          </div>
-        </Surface>
-
-        <Surface className="p-4">
-          <Text as="h2" role="heading">
-            {copy.shortcuts}
-          </Text>
-          <ul className="mt-3 flex flex-col gap-2 text-sm">
-            <li>
-              <span className="font-medium">{copy.shortcutProfile}</span>
-              <Text role="caption" className="block text-muted-foreground">
-                Agency Marketplace profile · when authorized
-              </Text>
-            </li>
-            <li>
-              <span className="font-medium">{copy.shortcutPublish}</span>
-              <Text role="caption" className="block text-muted-foreground">
-                Offer publish cycle · existing module ownership
-              </Text>
-            </li>
-            <li>
-              <Link
-                href={`/${locale}`}
-                className="font-medium text-primary underline-offset-2 hover:underline"
-              >
-                {copy.shortcutPublic}
-              </Link>
-            </li>
-          </ul>
-        </Surface>
-      </section>
-
-      <Surface className="p-4">
-        <Text as="h2" role="heading">
-          {copy.status}
-        </Text>
-        <Text role="muted" className="mt-2 text-sm">
-          {copy.statusBody}
-        </Text>
-        <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
-          {["Queue", "Follow-up", "Blocked"].map((label) => (
-            <li
-              key={label}
-              className="rounded-md border border-dashed border-border bg-surface-muted/50 px-3 py-3 text-center text-xs text-muted-foreground"
-            >
-              {label} · {copy.emptyBadge}
-            </li>
-          ))}
-        </ul>
-      </Surface>
     </div>
   );
 }

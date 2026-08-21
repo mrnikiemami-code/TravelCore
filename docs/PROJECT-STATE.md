@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P37 — Experience Platform Foundation** (`TC-P37-T002` Cursor **PASS** · Customer Dashboard · **READY_FOUNDATION**) |
+| Current Phase | **P37 — Experience Platform Foundation** (`TC-P37-T003` Cursor **PASS** · Agency Portal · **READY_FOUNDATION**) |
 | Previous Phase | **P30 — Product Experience Foundation** (**FOUNDATION ACCEPTED** — `TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |

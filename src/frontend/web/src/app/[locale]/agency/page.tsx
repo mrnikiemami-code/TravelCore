@@ -46,10 +46,10 @@ export default async function AgencyPanelPage({
       currentPath={`/${locale}/agency`}
       actions={
         <a
-          href={`/${locale}/tours`}
+          href={`/${locale}/agency/catalog`}
           className="min-h-touch inline-flex items-center rounded-md bg-accent px-3 text-xs font-semibold text-accent-foreground hover:opacity-95"
         >
-          {locale === "fa" ? "شروع فروش" : locale === "ar" ? "بدء البيع" : "Start selling"}
+          {locale === "fa" ? "کاتالوگ فروش" : locale === "ar" ? "كتالوج البيع" : "Sellable catalog"}
         </a>
       }
     >

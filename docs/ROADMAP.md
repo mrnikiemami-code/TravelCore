@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P37 — Experience Platform Foundation** (`TC-P37-T002` Cursor **PASS** · Customer Dashboard) |
+| Current Phase | **P37 — Experience Platform Foundation** (`TC-P37-T003` Cursor **PASS** · Agency Portal) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |

@@ -7,10 +7,8 @@ import { AdminShell, type AdminShellProps } from "./admin-shell";
 export type AgencyShellProps = {
   locale: AppLocale;
   title?: ReactNode;
-  /** Sales-context subtitle under brand. */
   context?: ReactNode;
   breadcrumb?: ReactNode;
-  /** Highlight active nav path (e.g. /fa/agency). */
   currentPath?: string;
   children: ReactNode;
   className?: string;
@@ -23,12 +21,15 @@ function copy(locale: AppLocale) {
       tagline: "فضای فروش B2B",
       nav: "ناوبری آژانس",
       dashboard: "داشبورد فروش",
-      sales: "فروش",
-      bookings: "رزروها",
+      catalog: "کاتالوگ فروش",
+      bookings: "رزروهای آژانس",
       customers: "مشتریان",
-      requests: "درخواست‌ها",
-      offers: "آگهی‌ها",
+      commission: "کمیسیون",
+      settlement: "تسویه",
+      users: "کاربران آژانس",
+      profile: "پروفایل تجاری",
       public: "بازار عمومی",
+      traveler: "فضای مسافر",
     };
   }
   if (locale === "ar") {
@@ -37,12 +38,15 @@ function copy(locale: AppLocale) {
       tagline: "مساحة مبيعات B2B",
       nav: "تنقل الوكالة",
       dashboard: "لوحة المبيعات",
-      sales: "المبيعات",
-      bookings: "الحجوزات",
+      catalog: "كتالوج البيع",
+      bookings: "حجوزات الوكالة",
       customers: "العملاء",
-      requests: "الطلبات",
-      offers: "العروض",
+      commission: "العمولة",
+      settlement: "التسوية",
+      users: "مستخدمو الوكالة",
+      profile: "الملف التجاري",
       public: "السوق العام",
+      traveler: "مساحة المسافر",
     };
   }
   return {
@@ -50,18 +54,21 @@ function copy(locale: AppLocale) {
     tagline: "B2B sales workspace",
     nav: "Agency navigation",
     dashboard: "Sales dashboard",
-    sales: "Sales",
-    bookings: "Bookings",
+    catalog: "Sellable catalog",
+    bookings: "Agency bookings",
     customers: "Customers",
-    requests: "Requests",
-    offers: "Offers",
+    commission: "Commission",
+    settlement: "Settlement",
+    users: "Agency users",
+    profile: "Commercial profile",
     public: "Public marketplace",
+    traveler: "Traveler space",
   };
 }
 
 /**
- * Agency portal shell — sales workspace chrome (P30 T004 · refined T009).
- * Distinct from Admin ops density and Public marketplace; same design system.
+ * Agency portal shell (TC-P37-T003).
+ * B2B sales chrome — distinct from Customer Dashboard and Admin ops.
  */
 export function AgencyShell({
   locale,
@@ -79,19 +86,21 @@ export function AgencyShell({
   const active = currentPath ?? base;
 
   const items = [
-    { href: base, label: c.dashboard, match: base },
-    { href: `${base}#sales`, label: c.sales, match: "#sales" },
-    { href: `${base}#bookings`, label: c.bookings, match: "#bookings" },
-    { href: `${base}#customers`, label: c.customers, match: "#customers" },
-    { href: `${base}#requests`, label: c.requests, match: "#requests" },
-    { href: `${base}#offers`, label: c.offers, match: "#offers" },
+    { href: base, label: c.dashboard, key: "dashboard" },
+    { href: `${base}/catalog`, label: c.catalog, key: "catalog" },
+    { href: `${base}/bookings`, label: c.bookings, key: "bookings" },
+    { href: `${base}/customers`, label: c.customers, key: "customers" },
+    { href: `${base}/commission`, label: c.commission, key: "commission" },
+    { href: `${base}/settlement`, label: c.settlement, key: "settlement" },
+    { href: `${base}/users`, label: c.users, key: "users" },
+    { href: `${base}/profile`, label: c.profile, key: "profile" },
   ];
 
   return (
     <AdminShell
       embedded={embedded}
       className={cn(
-        "bg-[linear-gradient(180deg,color-mix(in_oklab,var(--tc-color-accent)_8%,transparent),transparent_180px)] bg-surface-muted",
+        "bg-[linear-gradient(180deg,color-mix(in_oklab,var(--tc-color-accent)_10%,transparent),transparent_180px)] bg-surface-muted",
         className,
       )}
       header={
@@ -106,24 +115,34 @@ export function AgencyShell({
       }
       context={context ?? c.tagline}
       breadcrumb={breadcrumb}
-      actions={actions}
+      actions={
+        actions ?? (
+          <Link
+            href={`/${locale}/tours`}
+            className="min-h-touch inline-flex items-center rounded-lg bg-accent px-3 text-xs font-semibold text-accent-foreground hover:opacity-95"
+          >
+            {c.catalog}
+          </Link>
+        )
+      }
       navigation={
         <nav aria-label={c.nav}>
           <ul className="flex flex-col gap-0.5 text-sm">
             {items.map((item) => {
               const isActive =
-                item.match === base
+                item.key === "dashboard"
                   ? active === base || active.endsWith("/agency")
-                  : false;
+                  : active === item.href || active.startsWith(`${item.href}/`);
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={
+                    className={cn(
+                      "flex min-h-touch items-center rounded-md px-3 font-medium",
                       isActive
-                        ? "flex min-h-touch items-center rounded-md bg-accent/20 px-3 font-medium text-foreground"
-                        : "flex min-h-touch items-center rounded-md px-3 text-foreground hover:bg-surface"
-                    }
+                        ? "bg-accent/20 text-foreground"
+                        : "text-foreground hover:bg-surface",
+                    )}
                     aria-current={isActive ? "page" : undefined}
                   >
                     {item.label}
@@ -137,6 +156,14 @@ export function AgencyShell({
                 className="flex min-h-touch items-center rounded-md px-3 text-muted-foreground hover:bg-surface hover:text-foreground"
               >
                 {c.public}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={`/${locale}/me`}
+                className="flex min-h-touch items-center rounded-md px-3 text-muted-foreground hover:bg-surface hover:text-foreground"
+              >
+                {c.traveler}
               </Link>
             </li>
           </ul>
