@@ -26,23 +26,21 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P33 — Commercial Product Readiness Review** (`TC-P33-T008` Cursor **PASS** · I4 Payment Boundary Option A · awaiting Architect ACCEPT)
+**P34 — Payment & Confirmation Readiness** (`TC-P34-T001` Cursor **PASS** · plan awaiting Architect ACCEPT)
 
 ## Completed (recent)
 
-- P33-T005 I1 ACCEPTED (`enrich-commerce`)
-- P33-T006 I2 ACCEPTED — Public Tour Commerce Composition
-- P33-T007 I3 ACCEPTED — Booking initiation → Pending
-- P33-T008 I4: Option A honest payment boundary (no fake success / no Confirm)
+- P33-GATE ACCEPTED WITH KNOWN LIMITATIONS — Tour-first E2E through Pending + Option A
+- P34-T001: Payment & Confirmation readiness plan authored (docs only)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T008 RESULT. Do not invent GATE / I5+.
+**None** — WAITING for Architect after T001 RESULT. Do not invent provider / Confirm product code.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P34-T001 readiness plan |
+| 2026-08-21 | Sync after TC-P33-GATE review |
 | 2026-08-21 | Sync after TC-P33-T008 Payment Boundary Option A |
-| 2026-08-21 | Sync after TC-P33-T007 Public Booking Initiation UX |
-| 2026-08-21 | Sync after TC-P33-T006 Public Tour Commerce Composition |

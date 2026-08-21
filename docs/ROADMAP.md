@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P33 — Commercial Product Readiness Review** (`TC-P33-GATE` Cursor **PASS WITH KNOWN LIMITATIONS** · awaiting Architect ACCEPT) |
-| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P32 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P33 ACTIVE** |
+| Current Phase | **P34 — Payment & Confirmation Readiness** (`TC-P34-T001` Cursor **PASS** · awaiting Architect ACCEPT) |
+| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P32 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P33 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P34 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P33-T008` only — do not invent / do not auto-start GATE |
+| Current Next Task | Architect review of `TC-P34-T001` only — do not invent / do not auto-start provider |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -954,17 +954,23 @@ Commercial demo data + media path closed. Next phase is Architect-authorized P33
 
 ## P33 — Commercial Product Readiness Review
 
-**Status:** **ACTIVE** (`TC-P33-T008` Cursor **PASS** · I4 Payment Boundary Option A awaiting Architect)
+**Status:** **GATE ACCEPTED WITH KNOWN LIMITATIONS** (`TC-P33-GATE` · `52116f7`)
 
-Plans + evidence:
+Tour-first commercial E2E closed through Pending + Option A payment boundary.
 
-- [`docs/plans/P33-tour-commerce-implementation-roadmap.md`](plans/P33-tour-commerce-implementation-roadmap.md)
-- [`docs/product-experience/evidence/P33-T005/API-NOTES.md`](product-experience/evidence/P33-T005/API-NOTES.md)
-- [`docs/product-experience/evidence/P33-T006/`](product-experience/evidence/P33-T006/)
-- [`docs/product-experience/evidence/P33-T007/`](product-experience/evidence/P33-T007/)
-- [`docs/product-experience/evidence/P33-T008/`](product-experience/evidence/P33-T008/)
+Evidence: [`docs/product-experience/evidence/P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)
 
-Do not auto-execute GATE / I5+.
+---
+
+## P34 — Payment & Confirmation Readiness
+
+**Status:** **ACTIVE** (`TC-P34-T001` Cursor **PASS** · plan awaiting Architect)
+
+Plan:
+
+- [`docs/plans/P34-payment-confirmation-readiness-plan.md`](plans/P34-payment-confirmation-readiness-plan.md)
+
+Do not auto-execute provider implementation.
 
 ---
 
