@@ -26,6 +26,9 @@ export type PublicBookingCopy = {
   monetaryLabel: string;
   holdLabel: string;
   unauthorized: string;
+  paymentBoundaryTitle: string;
+  paymentBoundaryBody: string;
+  paymentBoundaryNote: string;
   payTitle: string;
   payNote: string;
   payAction: string;
@@ -65,6 +68,11 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     monetaryLabel: "تصویر مالی ثبت‌شده",
     holdLabel: "نگه‌داشت ظرفیت",
     unauthorized: "این رزرو در دسترس نیست.",
+    paymentBoundaryTitle: "مرز پرداخت",
+    paymentBoundaryBody:
+      "رزرو در وضعیت Pending است. پرداخت آنلاین برای این مسیر فروش هنوز فعال نیست — نه تراکنش جعلی، نه رسید جعلی، نه Confirm.",
+    paymentBoundaryNote:
+      "Booking ≠ Payment · Payment initiation ≠ موفقیت پرداخت · Payment success ≠ Confirm خودکار",
     payTitle: "پرداخت رزرو",
     payNote: "مبلغ از رزرو ثبت‌شده خوانده می‌شود. کارت بانکی در TravelCore وارد نمی‌شود.",
     payAction: "ادامه به درگاه پرداخت",
@@ -102,6 +110,11 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     monetaryLabel: "Recorded monetary snapshot",
     holdLabel: "Capacity hold",
     unauthorized: "This booking is not available.",
+    paymentBoundaryTitle: "Payment boundary",
+    paymentBoundaryBody:
+      "This booking stays Pending. Online payment is not activated for this sell path — no fake transaction, receipt, or Confirm.",
+    paymentBoundaryNote:
+      "Booking ≠ Payment · Payment initiation ≠ payment success · Payment success ≠ automatic Confirm",
     payTitle: "Booking payment",
     payNote: "The amount comes from the recorded booking. TravelCore does not collect card details.",
     payAction: "Continue to payment provider",
@@ -139,6 +152,11 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     monetaryLabel: "اللقطة المالية المسجلة",
     holdLabel: "احتجاز السعة",
     unauthorized: "هذا الحجز غير متاح.",
+    paymentBoundaryTitle: "حدود الدفع",
+    paymentBoundaryBody:
+      "الحجز يبقى Pending. الدفع عبر الإنترنت غير مفعّل لهذا المسار — بلا معاملة وهمية وبلا إيصال وبلا تأكيد.",
+    paymentBoundaryNote:
+      "Booking ≠ Payment · بدء الدفع ≠ نجاح الدفع · نجاح الدفع ≠ تأكيد تلقائي",
     payTitle: "دفع الحجز",
     payNote: "المبلغ مأخوذ من الحجز المسجل. لا تجمع TravelCore بيانات البطاقة.",
     payAction: "المتابعة إلى مزود الدفع",

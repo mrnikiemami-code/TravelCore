@@ -37,7 +37,7 @@ export default async function PublicBookingPaymentPage({ params }: PageProps) {
           TravelCore
         </Text>
       }
-      context={<Text role="caption">{copy.payTitle}</Text>}
+      context={<Text role="caption">{copy.paymentBoundaryTitle}</Text>}
       footer={<Text role="caption">{copy.notConfirmed}</Text>}
     >
       <div className="py-6 sm:py-8">

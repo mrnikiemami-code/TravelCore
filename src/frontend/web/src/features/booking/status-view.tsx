@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BidiText, LtrValue, MoneyText, Stack, Text } from "@/components/ui";
+import { BidiText, LtrValue, MoneyText, Stack, Surface, Text } from "@/components/ui";
 import { readPublicBookingAction } from "@/features/booking/actions";
 import { getPublicBookingCopy } from "@/features/booking/copy";
 import {
@@ -10,6 +10,10 @@ import {
 } from "@/features/booking/types";
 import type { AppLocale } from "@/lib/i18n";
 
+/**
+ * Public Pending booking status + I4 Option A payment boundary (TC-P33-T008).
+ * Preserves Pending. Does not imply a live payment provider is ready.
+ */
 export function PublicBookingStatusView({
   locale,
   bookingId,
@@ -70,9 +74,6 @@ export function PublicBookingStatusView({
           <LtrValue>{data.hold.status}</LtrValue>
         </Text>
       ) : null}
-      <a className="underline" href={`/${locale}/bookings/${encodeURIComponent(bookingId)}/payment`}>
-        {copy.payTitle}
-      </a>
       <ul className="list-inside list-disc">
         {data.passengers.map((passenger) => (
           <li key={passenger.passengerId}>
@@ -83,6 +84,16 @@ export function PublicBookingStatusView({
           </li>
         ))}
       </ul>
+      <Surface className="border-primary/15 bg-gradient-to-br from-surface to-primary/5">
+        <Stack gap="sm">
+          <Text as="h2" role="heading" className="text-primary">
+            {copy.paymentBoundaryTitle}
+          </Text>
+          <Text>{copy.paymentBoundaryBody}</Text>
+          <Text role="caption">{copy.paymentBoundaryNote}</Text>
+          <Text role="muted">{copy.payUnavailable}</Text>
+        </Stack>
+      </Surface>
     </Stack>
   );
 }
