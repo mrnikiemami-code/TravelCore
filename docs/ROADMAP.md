@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P34 — Payment & Confirmation Readiness** (`TC-P34-T005` Cursor **PASS** · awaiting Architect ACCEPT) |
+| Current Phase | **P34 — Payment & Confirmation Readiness** (`TC-P34-GATE` Cursor **PASS WITH KNOWN LIMITATIONS** · awaiting Architect ACCEPT) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P32 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P33 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P34 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
