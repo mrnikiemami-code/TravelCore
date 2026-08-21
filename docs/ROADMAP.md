@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P34 — Payment & Confirmation Readiness** (`TC-P34-T002` Cursor **PASS** · awaiting Architect ACCEPT) |
+| Current Phase | **P34 — Payment & Confirmation Readiness** (`TC-P34-T003` Cursor **PASS** · awaiting Architect ACCEPT) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P32 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P33 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P34 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P34-T002` only — do not invent / do not auto-start sandbox adapter |
+| Current Next Task | Architect review of `TC-P34-T003` only — do not invent / do not auto-start next P34 units |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -964,14 +964,16 @@ Evidence: [`docs/product-experience/evidence/P33-GATE/GATE-REVIEW.md`](product-e
 
 ## P34 — Payment & Confirmation Readiness
 
-**Status:** **ACTIVE** (`TC-P34-T002` Cursor **PASS** · sandbox design awaiting Architect)
+**Status:** **ACTIVE** (`TC-P34-T003` Cursor **PASS** · sandbox adapter awaiting Architect)
 
 Plans:
 
 - [`docs/plans/P34-payment-confirmation-readiness-plan.md`](plans/P34-payment-confirmation-readiness-plan.md) (T001 ACCEPTED)
-- [`docs/plans/P34-payment-sandbox-provider-design.md`](plans/P34-payment-sandbox-provider-design.md)
+- [`docs/plans/P34-payment-sandbox-provider-design.md`](plans/P34-payment-sandbox-provider-design.md) (T002 design)
 
-Do not auto-implement sandbox adapter.
+Evidence: [`docs/product-experience/evidence/P34-T003/`](product-experience/evidence/P34-T003/)
+
+Await Architect ACCEPT of T003 before T004+.
 
 ---
 
@@ -1052,5 +1054,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P31 | Commercial Demo Experience | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
-| P34 | Payment & Confirmation Readiness | **ACTIVE** (`TC-P34-T002` · [`P34-payment-sandbox-provider-design.md`](plans/P34-payment-sandbox-provider-design.md)) |
+| P34 | Payment & Confirmation Readiness | **ACTIVE** (`TC-P34-T003` · sandbox adapter PASS awaiting Architect) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using NodaTime;
 using TravelCore.Modularity;
 using TravelCore.Modules.Payment.Contracts;
@@ -17,9 +20,12 @@ namespace TravelCore.Modules.Payment.Infrastructure;
 /// <summary>
 /// Host composition entry for Payment (TC-P20-T003 / P20-R3).
 /// Registers provider-neutral ports. Does not register a production fake provider.
+/// Sandbox adapter may register only under non-production + Payment:Sandbox:Enabled (TC-P34-T003).
 /// </summary>
 public sealed class PaymentModule : ITravelCoreModule
 {
+    private bool _sandboxRegistered;
+
     public void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(services);
@@ -74,6 +80,8 @@ public sealed class PaymentModule : ITravelCoreModule
         services.AddScoped<IPublicFlightBookingPaymentService, PublicFlightBookingPaymentService>();
         services.AddScoped<IPaymentOperationalQuery, PaymentOperationalQueryService>();
 
+        TryRegisterSandbox(services, configuration);
+
         services.AddDbContext<PaymentDbContext>((_, options) =>
         {
             var connectionString = configuration.GetConnectionString(TravelCoreConnectionStrings.TravelCore)
@@ -90,5 +98,54 @@ public sealed class PaymentModule : ITravelCoreModule
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         endpoints.MapPaymentProviderCallbackEndpoints();
+        if (_sandboxRegistered)
+        {
+            endpoints.MapSandboxPaymentOutcomeEndpoints();
+        }
+    }
+
+    private void TryRegisterSandbox(IServiceCollection services, IConfiguration configuration)
+    {
+        var environmentName = ResolveHostEnvironmentName(services)
+            ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+            ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
+        // Fail closed when environment cannot be determined — never register sandbox by accident.
+        var enabled = configuration.GetValue($"{PaymentSandboxOptions.SectionName}:Enabled", false);
+        if (!PaymentSandboxGate.IsAllowed(environmentName, enabled))
+        {
+            _sandboxRegistered = false;
+            return;
+        }
+
+        services.AddOptions<PaymentSandboxOptions>()
+            .Bind(configuration.GetSection(PaymentSandboxOptions.SectionName));
+        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddSingleton<SandboxPaymentSessionStore>();
+        // TryAddEnumerable keeps architecture guard against unconditional gateway singleton registration.
+        services.TryAddEnumerable(
+            ServiceDescriptor.Singleton<IPaymentProviderGateway, SandboxPaymentProviderGateway>());
+        services.AddHttpClient("TravelCore.PaymentSandbox");
+        _sandboxRegistered = true;
+    }
+
+    private static string? ResolveHostEnvironmentName(IServiceCollection services)
+    {
+        foreach (var descriptor in services)
+        {
+            if (descriptor.ServiceType == typeof(IHostEnvironment)
+                && descriptor.ImplementationInstance is IHostEnvironment hostEnvironment)
+            {
+                return hostEnvironment.EnvironmentName;
+            }
+
+            if (descriptor.ServiceType == typeof(IWebHostEnvironment)
+                && descriptor.ImplementationInstance is IWebHostEnvironment webHostEnvironment)
+            {
+                return webHostEnvironment.EnvironmentName;
+            }
+        }
+
+        return null;
     }
 }

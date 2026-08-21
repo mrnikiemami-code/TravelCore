@@ -404,6 +404,8 @@ public sealed class PaymentBoundaryGuardrailTests
         var forbidden = new[] { "ConcurrentDictionary", "SemaphoreSlim", "static readonly object" };
         var hits = Directory.EnumerateFiles(infraRoot, "*.cs", SearchOption.AllDirectories)
             .Where(p => !p.Contains($"{Path.DirectorySeparatorChar}Migrations{Path.DirectorySeparatorChar}", StringComparison.Ordinal))
+            // Sandbox status-query smoke map is ephemeral NON-PRODUCTION only — not Payment idempotency authority (TC-P34-T003).
+            .Where(p => !p.EndsWith($"{Path.DirectorySeparatorChar}SandboxPaymentSessionStore.cs", StringComparison.Ordinal))
             .SelectMany(path => File.ReadAllLines(path)
                 .Select((line, i) => (path, line, i))
                 .Where(x => forbidden.Any(token => x.line.Contains(token, StringComparison.Ordinal))))

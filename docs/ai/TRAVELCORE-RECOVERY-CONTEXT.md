@@ -26,22 +26,24 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P34 — Payment & Confirmation Readiness** (`TC-P34-T002` Cursor **PASS** · sandbox design awaiting Architect ACCEPT)
+**P34 — Payment & Confirmation Readiness** (`TC-P34-T003` Cursor **PASS** · sandbox adapter awaiting Architect ACCEPT)
 
 ## Completed (recent)
 
 - P33-GATE ACCEPTED WITH KNOWN LIMITATIONS
 - P34-T001 ACCEPTED — readiness plan; Option B Architect-locked for next money-movement slice
 - P34-T002: Sandbox provider design (docs only) — reuse `IPaymentProviderGateway`; keep `NamedProductionAdapterImplemented=false`
+- P34-T003: Sandbox adapter + DI/eligibility gates implemented — `NamedProductionAdapterImplemented` still **false**
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T002 RESULT. Do not implement sandbox adapter yet.
+**None** — WAITING for Architect after T003 RESULT. Do not invent T004+ until authorized.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P34-T003 sandbox adapter implementation |
 | 2026-08-21 | Sync after TC-P34-T002 sandbox design |
 | 2026-08-21 | Sync after TC-P34-T001 readiness plan |
 | 2026-08-21 | Sync after TC-P33-GATE review |

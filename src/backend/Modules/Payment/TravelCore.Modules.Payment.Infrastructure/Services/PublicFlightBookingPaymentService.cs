@@ -18,19 +18,22 @@ internal sealed class PublicFlightBookingPaymentService : IPublicFlightBookingPa
     private readonly PaymentPreparationService _preparation;
     private readonly PaymentInitiationService _initiation;
     private readonly IOptions<PaymentProviderOptions> _options;
+    private readonly IPaymentProviderResolver _resolver;
 
     public PublicFlightBookingPaymentService(
         PaymentDbContext db,
         PaymentGetOrCreateService getOrCreate,
         PaymentPreparationService preparation,
         PaymentInitiationService initiation,
-        IOptions<PaymentProviderOptions> options)
+        IOptions<PaymentProviderOptions> options,
+        IPaymentProviderResolver resolver)
     {
         _db = db;
         _getOrCreate = getOrCreate;
         _preparation = preparation;
         _initiation = initiation;
         _options = options;
+        _resolver = resolver;
     }
 
     public async Task<PublicPaymentRead> GetByFlightBookingIdAsync(
@@ -75,7 +78,7 @@ internal sealed class PublicFlightBookingPaymentService : IPublicFlightBookingPa
                 PublicPaymentCommandStatus.Completed);
         }
 
-        if (!IsProductionProviderConfigured())
+        if (!IsInitiationProviderConfigured())
         {
             return new PublicPaymentCommandResult(
                 await MapAsync(payment.Id, redirectUri: null, cancellationToken),
@@ -128,17 +131,17 @@ internal sealed class PublicFlightBookingPaymentService : IPublicFlightBookingPa
         var latest = payment.Attempts
             .OrderByDescending(x => x.CreatedAt)
             .FirstOrDefault();
-        var production = IsProductionProviderConfigured();
+        var initiationAvailable = IsInitiationProviderConfigured();
         return new PublicPaymentRead(
             payment.Id.Value,
             payment.Status.ToString(),
             payment.ExecutionSnapshot?.Amount.Amount,
             payment.ExecutionSnapshot?.Amount.Currency.Value,
-            production && payment.Status == PaymentStatus.Pending,
+            initiationAvailable && payment.Status == PaymentStatus.Pending,
             latest?.Status.ToString(),
             refund?.Status.ToString(),
-            ResolveSafeAction(payment, latest, refund, production),
-            production ? redirectUri : null);
+            ResolveSafeAction(payment, latest, refund, initiationAvailable),
+            initiationAvailable ? redirectUri : null);
     }
 
     private async Task<PaymentAggregate> LoadAsync(PaymentId paymentId, CancellationToken cancellationToken)
@@ -149,26 +152,14 @@ internal sealed class PublicFlightBookingPaymentService : IPublicFlightBookingPa
             .SingleAsync(x => x.Id == paymentId, cancellationToken);
     }
 
-    private bool IsProductionProviderConfigured()
-    {
-        if (!PaymentProviderTrustBoundary.NamedProductionAdapterImplemented)
-        {
-            return false;
-        }
-
-        if (!ProviderKey.TryParse(_options.Value.DefaultProviderKey, out var key))
-        {
-            return false;
-        }
-
-        return !string.Equals(key.Value, "test", StringComparison.Ordinal);
-    }
+    private bool IsInitiationProviderConfigured() =>
+        PublicPaymentInitiationEligibility.IsAvailable(_options, _resolver);
 
     private static string ResolveSafeAction(
         PaymentAggregate payment,
         PaymentAttempt? latest,
         Refund? refund,
-        bool production)
+        bool initiationAvailable)
     {
         if (refund is { Status: RefundStatus.Succeeded })
         {
@@ -190,12 +181,12 @@ internal sealed class PublicFlightBookingPaymentService : IPublicFlightBookingPa
             return "Wait";
         }
 
-        if (latest is { Status: PaymentAttemptStatus.Failed } && production)
+        if (latest is { Status: PaymentAttemptStatus.Failed } && initiationAvailable)
         {
             return "Retry";
         }
 
-        if (production)
+        if (initiationAvailable)
         {
             return "Initiate";
         }

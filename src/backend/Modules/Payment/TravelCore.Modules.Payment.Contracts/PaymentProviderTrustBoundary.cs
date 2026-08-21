@@ -20,4 +20,8 @@ public static class PaymentProviderTrustBoundary
     public const bool AmountMismatchEnforcementImplemented = true;
     public const string ProviderInfrastructurePosture = "READY FOR ADAPTERS";
     public const string ProductionProviderPosture = "NOT CONFIGURED / NONE";
+    /// <summary>
+    /// Sandbox ProviderKey is never a production provider (TC-P34-T003).
+    /// </summary>
+    public const string SandboxIsNotProductionProvider = "sandbox != production provider";
 }

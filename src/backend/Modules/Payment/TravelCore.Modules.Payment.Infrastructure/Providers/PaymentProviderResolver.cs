@@ -60,13 +60,16 @@ internal sealed class PaymentProviderResolver : IPaymentProviderResolver
         }
 
         var enabled = !_disabled.Contains(providerKey.Value);
+        var isSandbox = PaymentSandboxGate.IsSandboxProviderKey(providerKey.Value);
         var publicInitiation = enabled
-            && PaymentProviderTrustBoundary.NamedProductionAdapterImplemented
             && gateway.Capabilities.HasFlag(PaymentProviderCapability.RedirectInitiation)
-            && !string.Equals(providerKey.Value, "test", StringComparison.Ordinal);
+            && (
+                isSandbox
+                || (PaymentProviderTrustBoundary.NamedProductionAdapterImplemented
+                    && !string.Equals(providerKey.Value, "test", StringComparison.Ordinal)));
         return new PaymentProviderDescriptor(
             providerKey.Value,
-            providerKey.Value,
+            isSandbox ? PaymentSandboxGate.DisplayName : providerKey.Value,
             gateway.Capabilities,
             enabled,
             publicInitiation);
