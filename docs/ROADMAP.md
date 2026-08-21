@@ -1006,6 +1006,18 @@ Surfaces: Public · Customer `/me` · Agency `/agency` · Admin `/admin`
 
 ---
 
+## P38 — Multi-Agency Commerce
+
+**Status:** **ACTIVE** (`TC-P38-T001` Cursor **PASS** · foundation plan)
+
+Plan: [`docs/plans/P38-multi-agency-commerce-foundation.md`](plans/P38-multi-agency-commerce-foundation.md)
+
+Direction: Tour Product + Multiple Agencies + Agency Offers + Customer Selection
+
+Recommended next: Architect-authorized Offer contracts / implementation tasks (do not auto-run)
+
+---
+
 ## P30 — Product Experience Foundation
 
 **Status:** **FOUNDATION ACCEPTED** (`TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`)
