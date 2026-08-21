@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T003`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-implement T004+ |
+| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T004`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-implement T005+ |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -932,13 +932,9 @@ OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
 ## P31 — Commercial Demo Experience
 
-**Status:** **ACTIVE** (`T001`/`T002` ACCEPTED · `TC-P31-T003` Home commercial upgrade · AWAITING_ARCHITECT_REVIEW)
+**Status:** **ACTIVE** (`T001`–`T003` ACCEPTED · `TC-P31-T004` Hotel polish · AWAITING_ARCHITECT_REVIEW)
 
-**Plan:** [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md)
-
-**Content strategy:** [`docs/plans/P31-demo-content-strategy.md`](plans/P31-demo-content-strategy.md)
-
-**Evidence:** [`docs/product-experience/evidence/P31-T003/`](../product-experience/evidence/P31-T003/)
+**Evidence:** [`docs/product-experience/evidence/P31-T004/`](../product-experience/evidence/P31-T004/)
 
 Goal: sellable Public marketplace demo for tourism businesses (Home · Hotel · Tour) without breaking ownership boundaries.
 

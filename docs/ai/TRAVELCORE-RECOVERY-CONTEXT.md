@@ -26,7 +26,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P31 — Commercial Demo Experience** (`TC-P31-T003` · AWAITING_ARCHITECT_REVIEW)
+**P31 — Commercial Demo Experience** (`TC-P31-T004` · AWAITING_ARCHITECT_REVIEW)
 
 ## Completed
 
@@ -36,7 +36,8 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-DEMOFEED-T002`…`T005` **DONE** · `TC-DEMOFEED-GATE` **ACCEPTED**
 - `TC-P31-T001` **ACCEPTED** — plan `docs/plans/P31-commercial-demo-experience-plan.md`
 - `TC-P31-T002` **ACCEPTED** — strategy `docs/plans/P31-demo-content-strategy.md`
-- `TC-P31-T003` **Cursor PASS** — Home commercial upgrade + evidence `docs/product-experience/evidence/P31-T003/` (AWAITING_ARCHITECT_REVIEW)
+- `TC-P31-T003` **ACCEPTED WITH KNOWN LIMITATIONS** — Home commercial upgrade
+- `TC-P31-T004` **Cursor PASS** — Hotel commerce polish + evidence `docs/product-experience/evidence/P31-T004/` (AWAITING_ARCHITECT_REVIEW)
 
 ## Current Important Locks
 
@@ -45,7 +46,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 | Product order | **Experience → Data → Commercial** |
 | P30 | **FOUNDATION ACCEPTED** |
 | DEMOFEED | **GATE ACCEPTED** |
-| P31 | **ACTIVE** (`T001`/`T002` ACCEPTED · `T003` review) |
+| P31 | **ACTIVE** (`T001`–`T003` ACCEPTED · `T004` review) |
 | Feeder path | `tools/demofeed` — not an `ITravelCoreModule` |
 | Demo identity | `demofeed-*` |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
@@ -53,12 +54,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P31-T003`** Home upgrade complete (awaiting Architect ACCEPT/REWORK).
+**`TC-P31-T004`** Hotel polish complete (awaiting Architect ACCEPT/REWORK).
 
 ## Next Planned Work
 
-Architect decision on T003.
-Then **only** a new authorized `.task.md` / `.gate.md` — do not auto-implement T004+.
+Architect decision on T004.
+Then **only** a new authorized `.task.md` / `.gate.md` — do not auto-implement T005+.
 
 ## Open Blockers
 
@@ -90,3 +91,4 @@ Then **only** a new authorized `.task.md` / `.gate.md` — do not auto-implement
 | 2026-08-21 | Sync after P31-T001 commercial demo experience plan |
 | 2026-08-21 | Sync after P31-T002 professional demo content strategy |
 | 2026-08-21 | Sync after P31-T003 Home commercial upgrade |
+| 2026-08-21 | Sync after P31-T004 Hotel commerce polish |
