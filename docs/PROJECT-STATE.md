@@ -30,7 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P30 — Product Experience Foundation** (**IN PROGRESS** — `TC-P30-T005` AWAITING_ARCHITECT_REVIEW) |
+| Current Phase | **Post-P30 — DEMOFEED Data Enablement** (`TC-DEMOFEED-T002` done · next `TC-DEMOFEED-T003` awaits Architect file) |
+| Previous Phase | **P30 — Product Experience Foundation** (**FOUNDATION ACCEPTED** — `TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
 | Previous Phase | **Moderation Operations** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-MODOPS-GATE` `9961699`) |
@@ -74,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P30-T005` — Public Home Experience foundation (**PASS · AWAITING_ARCHITECT_REVIEW**) |
-| Current Next Task | Architect review of `TC-P30-T005`; then authorized `TC-P30-T006` only — do not infer |
+| Current Active Product Task | `TC-DEMOFEED-ACTIVATE-001` / `TC-DEMOFEED-T002` — removable feeder host/boundary (`tools/demofeed`) |
+| Current Next Task | Architect-authorized `TC-DEMOFEED-T003` only — do not infer / do not auto-seed |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -406,21 +407,20 @@
 | HOMFEED T001–T015 | implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** |
 | HOMFEED GATE | `TC-HOMFEED-GATE` implementation **COMPLETE** (`4094697`) · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — [`docs/plans/HOMFEED-GATE-acceptance-evidence.md`](plans/HOMFEED-GATE-acceptance-evidence.md) |
 | HOMFEED | implementation **COMPLETE** — closes DISCLINK-T015 · ledger correction as above |
-| DEMOFEED Plan | `TC-DEMOFEED-PLAN` **DEFERRED** (authored; Experience before Data) — [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md) |
-| DEMOFEED | Temporary removable demo feeding — **DEFERRED until after P30 Experience** |
+| DEMOFEED Plan | `TC-DEMOFEED-PLAN` **ACTIVE** — [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md) |
+| DEMOFEED | Temporary removable demo feeding — **ACTIVE** (`TC-DEMOFEED-T002` host/boundary · seed tasks pending Architect files) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
+| P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |
 | P30 T003 | `TC-P30-T003` **PASS** — Design System 2.0 foundation docs |
 | P30 T004 | `TC-P30-T004` **ACCEPTED WITH NOTES** — Application Shells (Public/Admin/Agency) |
 | P30 T004 envelope | [`docs/plans/TC-P30-T004-task-envelope.md`](plans/TC-P30-T004-task-envelope.md) |
 | P30 T004 evidence | [`docs/product-experience/evidence/P30-T004-shells.md`](product-experience/evidence/P30-T004-shells.md) |
-| P30 T005 | `TC-P30-T005` **PASS / AWAITING_ARCHITECT_REVIEW** — Public Home Experience foundation |
-| P30 T005 envelope | [`docs/plans/TC-P30-T005-task-envelope.md`](plans/TC-P30-T005-task-envelope.md) |
-| P30 T005 evidence | [`docs/product-experience/evidence/P30-T005-home.md`](product-experience/evidence/P30-T005-home.md) |
+| P30 T005–T009 | Public Home · Hotel · Tour · Admin · Agency foundations — Architect **ACCEPTED** (with known limitations where noted) |
 | P30 North Star | [`docs/product-experience/assets/travelcore-ui-ux-north-star.png`](product-experience/assets/travelcore-ui-ux-north-star.png) |
 | P30 Constitution | [`docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md`](product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md) |
 | P30 Design System 2.0 | [`docs/product-experience/DESIGN-SYSTEM-2.0.md`](product-experience/DESIGN-SYSTEM-2.0.md) |
-| P30 | Product Experience Foundation — Design System before pages · Feed/backend-redesign OUT · Visual Gate mandatory |
+| P30 | Product Experience Foundation — **FOUNDATION ACCEPTED** · Feed/backend-redesign still OUT of P30 · Visual Gate mandatory |
 | P29-R4 (content/file security) | **RESOLVED** |
 | P29-R5 (backup/DR) | **RESOLVED** |
 | P29-R6 (health/observability) | **RESOLVED** |

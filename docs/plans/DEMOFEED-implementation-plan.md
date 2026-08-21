@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-DEMOFEED-PLAN` |
 | Track | Temporary Demo Feeding (Post-P29 Evolution) |
-| Status | **DEFERRED** after P30 Experience lock — PLAN remains authored · T002 not started |
+| Status | **ACTIVE** after P30 FOUNDATION ACCEPTED — `TC-DEMOFEED-ACTIVATE-001` · `TC-DEMOFEED-T002` host/boundary landed |
 | Permanence | **TEMPORARY** — not a TravelCore product module |
 | Removable | **MUST remain removable** |
 | Baseline | `327d18c` (`docs: correct pipeline compliance ledger after forensic review`) |
@@ -85,17 +85,17 @@ If a demo marker column would require a domain migration, **defer that approach*
 
 ## 5. Execution sequence
 
-`TC-DEMOFEED-PLAN` is this document. Implementation starts only after architect ACCEPT **and** an authorized `TC-DEMOFEED-T002` envelope.
+`TC-DEMOFEED-PLAN` is this document. Implementation was deferred until after P30 Experience; activation authorized by `TC-DEMOFEED-ACTIVATE-001` (Architect file).
 
-| Task | Deliverable |
-|------|-------------|
-| `TC-DEMOFEED-T002` | Removable feeder host/boundary (isolated tool, no module registration, no migrations) |
-| `TC-DEMOFEED-T003` | Destination demo seed (owner write path · identifiable · no ownership leak) |
-| `TC-DEMOFEED-T004` | Hotel (Place) + image demo seed (Place + Media attach · not HotelBooking) |
-| `TC-DEMOFEED-T005` | Tour + image demo seed (Tour + Media attach · not Booking/Pricing mutation) |
-| `TC-DEMOFEED-GATE` | Track acceptance: data present · boundaries held · deletion strategy evidenced |
+| Task | Deliverable | Status |
+|------|-------------|--------|
+| `TC-DEMOFEED-T002` | Removable feeder host/boundary (`tools/demofeed`, no module registration, no migrations) | **DONE** (this activation cycle) |
+| `TC-DEMOFEED-T003` | Destination demo seed (owner write path · identifiable · no ownership leak) | NEXT (requires new Architect `.task.md`) |
+| `TC-DEMOFEED-T004` | Hotel (Place) + image demo seed (Place + Media attach · not HotelBooking) | PENDING |
+| `TC-DEMOFEED-T005` | Tour + image demo seed (Tour + Media attach · not Booking/Pricing mutation) | PENDING |
+| `TC-DEMOFEED-GATE` | Track acceptance: data present · boundaries held · deletion strategy evidenced | PENDING |
 
-Do **not** invent extra tasks. Do **not** start T002 from this PLAN result.
+Do **not** invent extra tasks. Do **not** auto-execute T003+ without a new authorized Architect task file.
 
 ---
 
@@ -127,3 +127,4 @@ Do **not** invent extra tasks. Do **not** start T002 from this PLAN result.
 | Date | Change |
 |------|--------|
 | 2026-08-20 | Initial PLAN from `TC-DEMOFEED-PLAN` envelope · docs only |
+| 2026-08-21 | Activated after P30 FOUNDATION ACCEPTED · `TC-DEMOFEED-T002` `tools/demofeed` boundary |

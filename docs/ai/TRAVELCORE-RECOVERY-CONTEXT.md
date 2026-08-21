@@ -26,40 +26,32 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P30 — Product Experience Foundation**
+**Post-P30 — DEMOFEED Data Enablement** (P30 FOUNDATION ACCEPTED)
 
 ## Completed
 
 - **P00–P29** COMPLETE / ACCEPTED
 - Post-P29 evolution tracks COMPLETE
-- `TC-DEMOFEED-PLAN` authored · **DEFERRED**
 - `TC-P30-PLAN` **ACCEPTED**
-- `TC-P30-T002` PASS (Constitution)
-- `TC-P30-T003` PASS (Design System 2.0) · architect ACCEPTED in channel
-- `TC-P30-T004-ENVELOPE-CREATE` PASS (`80a5bb6`)
-- `TC-P30-T004` **ACCEPTED WITH NOTES** (Application Shells)
-- `TC-P30-T005-ENVELOPE-CREATE` PASS (`2f03718`)
-- `TC-P30-T005` Technical PASS · Visual REWORK_REQUIRED
-- `TC-P30-T005-REWORK-ENVELOPE-CREATE` PASS (`f1155a2`)
-- `TC-P30-T005-REWORK` **PASS / AWAITING_ARCHITECT_REVIEW** (this recovery update)
+- `TC-P30-T002`…`T009` Architect **ACCEPTED** (known limitations where noted)
+- `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — P30 FOUNDATION ACCEPTED (`7b34e33`)
+- `TC-DEMOFEED-PLAN` authored · activated by `TC-DEMOFEED-ACTIVATE-001`
+- `TC-DEMOFEED-T002` **DONE** — removable feeder host/boundary at `tools/demofeed`
 
 ## Current Important Locks
 
 | Lock | Value |
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
-| DEMOFEED | **DEFERRED** |
-| No Page-First | Design System before pages · shells before full Home |
+| P30 | **FOUNDATION ACCEPTED** |
+| DEMOFEED | **ACTIVE** (`T002` done · `T003+` need Architect `.task.md`) |
+| Feeder path | `tools/demofeed` — not an `ITravelCoreModule` · not in Api composition |
 | One Design System / Three Experiences | Public · Admin · Agency |
 | North Star | `docs/product-experience/assets/travelcore-ui-ux-north-star.png` |
 | Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
 | Design System 2.0 | `docs/product-experience/DESIGN-SYSTEM-2.0.md` |
-| Shells board | `/[locale]/dev/shells` |
-| Public Home | `/[locale]` (T005 sellable foundation) |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
-| Persistent T004 envelope | `docs/plans/TC-P30-T004-task-envelope.md` |
-| Persistent T005 envelope | `docs/plans/TC-P30-T005-task-envelope.md` |
-| Persistent T005 REWORK envelope | `docs/plans/TC-P30-T005-REWORK-task-envelope.md` |
+| Pipeline Controller | File-Based Task Pipeline V3 |
 
 ## Runtime Roles
 
@@ -72,14 +64,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P30-T005-REWORK`** — Public Home visual rework (AWAITING_ARCHITECT_REVIEW)
+**`TC-DEMOFEED-ACTIVATE-001`** executed first unit **`TC-DEMOFEED-T002`** (awaiting Architect review of RESULT).
 
 ## Next Planned Work
 
-Architect visual review of reworked Home.  
-**`TC-P30-T006`** remains **BLOCKED** until Homepage visual quality accepted.
-
-Do **not** auto-start T006 / DEMOFEED from this document.
+Architect-authorized **`TC-DEMOFEED-T003`** (Destination demo seed) only.
+Do **not** auto-start T003+ / invent seeds from this document.
 
 ## Open Blockers
 
@@ -87,9 +77,10 @@ Do **not** auto-start T006 / DEMOFEED from this document.
 
 ## Rules
 
-- No product execution without authorized envelope
+- No product execution without authorized `.task.md` / `.gate.md`
 - Never invent tasks from ROADMAP / deferred items
 - Never switch architect channel mid-pipeline
+- Never exit PIPELINE mode while USER keeps it active — RESULT → WAITING MODE
 - Major UI: visual evidence vs North Star mandatory
 
 ## Revision
@@ -102,3 +93,4 @@ Do **not** auto-start T006 / DEMOFEED from this document.
 | 2026-08-20 | Sync after `TC-P30-T005` Public Home Experience |
 | 2026-08-20 | Sync after `TC-P30-T005-VISUAL-CHECKPOINT-C` (REWORK_RECOMMENDED) |
 | 2026-08-20 | Sync after `TC-P30-T005-REWORK` Public Home visual rework |
+| 2026-08-21 | Sync after P30 GATE ACCEPT + DEMOFEED T002 activation |

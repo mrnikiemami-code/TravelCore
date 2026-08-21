@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P30 — Product Experience Foundation** (**IN PROGRESS** — `TC-P30-T005` AWAITING_ARCHITECT_REVIEW) |
-| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 IN_PROGRESS (T005)** |
+| Current Phase | **Post-P30 — DEMOFEED Data Enablement** (`TC-DEMOFEED-T002` done · next `TC-DEMOFEED-T003` awaits Architect file) |
+| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED ACTIVE (T002)** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P30-T005`; then authorized `TC-P30-T006` only — do not infer |
+| Current Next Task | Architect-authorized `TC-DEMOFEED-T003` only — do not infer / do not auto-seed |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -912,27 +912,27 @@ Curated home discovery composition after HOTIDX — closes DISCLINK-T015 deferra
 
 ## Demo Feeding Sequence (temporary)
 
-**Status:** **DEFERRED** (plan authored · architect: Experience before data)
+**Status:** **ACTIVE** (`TC-DEMOFEED-T002` host/boundary done · seed tasks await Architect `.task.md`)
 
 **Implementation plan:** [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md)
 
 Temporary removable demo population — **not** a permanent module:
 
-1. Isolated feeder boundary (no domain schema / no ownership change)
-2. Destination demo seed
+1. Isolated feeder boundary (no domain schema / no ownership change) — **`tools/demofeed` DONE**
+2. Destination demo seed — next (`TC-DEMOFEED-T003`)
 3. Hotel (Place) + image demo seed
 4. Tour + image demo seed
 5. Gate + deletion strategy (purge data, delete feeder tree)
 
 OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
-**Architect 2026-08-20:** DEMOFEED **DEFERRED** until after P30 Experience.
+**Architect 2026-08-21:** DEMOFEED activated after P30 FOUNDATION ACCEPTED (`TC-DEMOFEED-ACTIVATE-001`).
 
 ---
 
 ## P30 — Product Experience Foundation
 
-**Status:** **IN PROGRESS** (`TC-P30-PLAN` ACCEPTED · `TC-P30-T002`/`T003` PASS · `TC-P30-T004` ACCEPTED WITH NOTES · `TC-P30-T005` PASS / AWAITING_ARCHITECT_REVIEW)
+**Status:** **FOUNDATION ACCEPTED** (`TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`)
 
 **Implementation plan:** [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md)
 
@@ -945,14 +945,14 @@ OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
 Sellable travel commerce experience — one design system, three surfaces (Public / Admin / Agency):
 
-1. Visual benchmark → Design Constitution (not copy) — **T002**
-2. Design System 2.0 before any page-first work — **T003** + Checkpoint A
-3. Application shells — **T004** + Checkpoint B
-4. Public Home · Hotel · Tour experiences — **T005–T007** + Checkpoints C–E
-5. Admin data-grid foundation · Agency dashboard foundation — **T008–T009** + Checkpoints F–G
-6. GATE: professional public / operable admin / sales agency feeling
+1. Visual benchmark → Design Constitution (not copy) — **T002** ✅
+2. Design System 2.0 before any page-first work — **T003** + Checkpoint A ✅
+3. Application shells — **T004** + Checkpoint B ✅
+4. Public Home · Hotel · Tour experiences — **T005–T007** + Checkpoints C–E ✅
+5. Admin data-grid foundation · Agency dashboard foundation — **T008–T009** + Checkpoints F–G ✅
+6. GATE: professional public / operable admin / sales agency feeling — ✅ (known limitations)
 
-OUT: DEMOFEED execution · new domain features · backend redesign
+OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOFEED moved to Post-P30 activation)
 
 **Visual rule:** Automated tests alone are insufficient for major UI; screenshot evidence + architect/user visual review required.
 
@@ -1003,5 +1003,5 @@ OUT: DEMOFEED execution · new domain features · backend redesign
 | MODOPS | Moderation Operations Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-MODOPS-GATE`) |
 | HOTIDX | Hotel Catalog Browse Index Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
 | HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
-| DEMOFEED | Temporary Demo Feeding Sequence | **DEFERRED** (plan authored · after P30 Experience) |
-| P30 | Product Experience Foundation | **IN PROGRESS** (`TC-P30-T005` · AWAITING_ARCHITECT_REVIEW) |
+| DEMOFEED | Temporary Demo Feeding Sequence | **ACTIVE** (`TC-DEMOFEED-T002` done · T003+ await Architect file) |
+| P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
