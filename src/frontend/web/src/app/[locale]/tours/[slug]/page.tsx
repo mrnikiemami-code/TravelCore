@@ -18,8 +18,9 @@ type PageProps = {
 };
 
 /**
- * Public Tour commerce detail (TC-P30-T007 · TC-P31-T005 polish).
- * Catalog SoR · Pricing display-only · booking CTA → existing prepare entry.
+ * Public Tour commerce detail (TC-P30-T007 · TC-P31-T005 · TC-P33-T006 I2).
+ * Catalog SoR · Published Departure selection · Pricing display-only · booking-boundary CTA.
+ * Booking initiation deferred to I3.
  */
 export async function generateMetadata({
   params,

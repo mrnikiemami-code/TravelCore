@@ -15,6 +15,7 @@ import type { RelatedTourView } from "@/features/public-experience/load-related-
 import { loadRelatedToursByProduct } from "@/features/public-experience/load-related-tours";
 import type { UgcCompositionView } from "@/features/public-experience/load-ugc-composition";
 import { loadUgcComposition } from "@/features/public-experience/load-ugc-composition";
+import { loadPublicPriceSummary } from "./load-public-departure-price";
 
 export type TourMediaItemView = {
   mediaAssetId: string;
@@ -278,24 +279,6 @@ type ApiExperiencePresentation = {
   }> | null;
 };
 
-type ApiPublicMoney = {
-  amount: number;
-  currencyCode: string;
-};
-
-type ApiPublicPriceSummary = {
-  priceId: string;
-  targetType: string;
-  targetId: string;
-  currency: string;
-  components?: Array<{ kind: string; money: ApiPublicMoney }> | null;
-  occupancyPrices?: Array<{
-    passengerCategory: string;
-    occupancyCategory: string;
-    money: ApiPublicMoney;
-  }> | null;
-};
-
 function mapMediaItem(item: ApiMediaPresentation): TourMediaItemView {
   const p = item.presentation;
   const ready = p?.status === "Ready";
@@ -498,46 +481,6 @@ export async function loadTourDetailPage(
       agencyOffers,
       ugcComposition,
     }),
-  };
-}
-
-function mapPublicMoney(money: ApiPublicMoney): PublicMoneyView {
-  return {
-    amount: money.amount,
-    currencyCode: money.currencyCode,
-  };
-}
-
-/**
- * Optional public price facts (P12-R8). 404 / transport errors omit the summary
- * so the catalog page still renders.
- */
-async function loadPublicPriceSummary(
-  tourDepartureId: string,
-): Promise<PublicPriceSummaryView | null> {
-  const result = await apiGetJson<ApiPublicPriceSummary>(
-    `/api/pricing/public/tour-departures/${tourDepartureId}`,
-    { cache: "no-store" },
-  );
-  if (!isApiOk(result)) {
-    return null;
-  }
-
-  const data = result.data;
-  return {
-    priceId: data.priceId,
-    targetType: data.targetType,
-    targetId: data.targetId,
-    currency: data.currency,
-    components: (data.components ?? []).map((c) => ({
-      kind: c.kind,
-      money: mapPublicMoney(c.money),
-    })),
-    occupancyPrices: (data.occupancyPrices ?? []).map((row) => ({
-      passengerCategory: row.passengerCategory,
-      occupancyCategory: row.occupancyCategory,
-      money: mapPublicMoney(row.money),
-    })),
   };
 }
 

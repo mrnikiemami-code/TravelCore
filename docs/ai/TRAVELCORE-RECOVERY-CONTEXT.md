@@ -26,20 +26,19 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P33 — Commercial Product Readiness Review** (`TC-P33-T005` Cursor **PASS** · I1 data · awaiting Architect ACCEPT)
+**P33 — Commercial Product Readiness Review** (`TC-P33-T006` Cursor **PASS** · I2 Public composition · awaiting Architect ACCEPT)
 
 ## Completed (recent)
 
-- P32 GATE ACCEPTED WITH KNOWN LIMITATIONS
-- P33-T001…T004 planning ACCEPTED
-- P33-T005 I1: `tools/demofeed enrich-commerce` → Published Departure + Price for `demofeed-tour-teh-1`
+- P33-T005 I1 ACCEPTED (`enrich-commerce`)
+- P33-T006 I2: Tour Detail shows Published Departure + Pricing summary + disabled booking-boundary CTA
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T005 RESULT. Do not invent I2+.
+**None** — WAITING for Architect after T006 RESULT. Do not invent I3+.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
-| 2026-08-21 | Sync after TC-P33-T005 I1 commercial data foundation |
+| 2026-08-21 | Sync after TC-P33-T006 Public Tour Commerce Composition |

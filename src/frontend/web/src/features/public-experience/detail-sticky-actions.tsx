@@ -2,9 +2,10 @@ import { Text } from "@/components/ui";
 import type { AppLocale } from "@/lib/i18n";
 
 /**
- * P14-R2: Sticky presentation actions on public Detail. Not Booking.
+ * P14-R2 / P33-T006: Sticky presentation actions on public Detail.
  * Allowed: View Departure · View Price Summary · Contact / Request Information.
- * Forbidden: sales CTA, payment, seat hold, commerce funnel.
+ * Forbidden: Booking create, payment, seat hold, fake commerce funnel.
+ * Optional bookHref reserved for later I3 — omit on I2 composition surfaces.
  */
 export function PublicDetailStickyActions({
   locale,
@@ -20,7 +21,7 @@ export function PublicDetailStickyActions({
           viewPrice: "مشاهده قیمت",
           contact: "درخواست اطلاعات",
           prepare: "شروع رزرو موقت",
-          note: "اقدام نمایشی + شروع رزرو موقت · نه پرداخت",
+          note: "اقدام نمایشی · انتخاب حرکت + خلاصه قیمت · نه ایجاد رزرو · نه پرداخت",
         }
       : locale === "ar"
         ? {
@@ -28,14 +29,14 @@ export function PublicDetailStickyActions({
             viewPrice: "عرض السعر",
             contact: "طلب معلومات",
             prepare: "إعداد حجز مؤقت",
-            note: "إجراءات العرض + إعداد حجز مؤقت · ليست عملية دفع",
+            note: "إجراءات العرض · اختيار المغادرة + ملخص السعر · بلا إنشاء حجز · بلا دفع",
           }
         : {
             viewOptions: "View departures",
             viewPrice: "View price",
             contact: "Request information",
             prepare: "Prepare booking",
-            note: "Presentation actions + prepare pending booking",
+            note: "Presentation · departure + price summary · no booking create · no payment",
           };
 
   return (
