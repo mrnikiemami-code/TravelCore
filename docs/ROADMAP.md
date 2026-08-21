@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-T004` Hotel polish · AWAITING_ARCHITECT_REVIEW) |
-| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 T001–T002 ACCEPTED · T003 REVIEW** |
+| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-T005` Tour polish · AWAITING_ARCHITECT_REVIEW) |
+| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 T001–T003 ACCEPTED · T005 REVIEW** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T004`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-implement T005+ |
+| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T005`; then next authorized `.task.md` / `.gate.md` only — do not invent GATE / T006 |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -932,9 +932,9 @@ OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
 ## P31 — Commercial Demo Experience
 
-**Status:** **ACTIVE** (`T001`–`T003` ACCEPTED · `TC-P31-T004` Hotel polish · AWAITING_ARCHITECT_REVIEW)
+**Status:** **ACTIVE** (`T001`–`T003` ACCEPTED · `TC-P31-T005` Tour polish · AWAITING_ARCHITECT_REVIEW)
 
-**Evidence:** [`docs/product-experience/evidence/P31-T004/`](../product-experience/evidence/P31-T004/)
+**Evidence:** [`docs/product-experience/evidence/P31-T005/`](../product-experience/evidence/P31-T005/)
 
 Goal: sellable Public marketplace demo for tourism businesses (Home · Hotel · Tour) without breaking ownership boundaries.
 

@@ -7,6 +7,8 @@ export type RelatedTourView = {
   code: string;
   name: string;
   slug: string;
+  /** Optional cover from Tour media presentation (frontend enrichment · not related DTO). */
+  coverSrc?: string | null;
 };
 
 type ApiRelatedTour = {

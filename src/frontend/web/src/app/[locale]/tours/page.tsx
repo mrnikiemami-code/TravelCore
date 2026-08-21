@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PublicFooter, PublicHeader, PublicShell } from "@/components/shell";
+import { enrichToursWithCoverMedia } from "@/features/tour-discovery/enrich-tour-covers";
 import { TourDiscoveryView } from "@/features/tour-discovery/tour-discovery-view";
 import { parseTourListingCriteria } from "@/features/tour-discovery/tour-listing-criteria";
 import { loadTourDiscoveryList } from "@/features/tour-discovery/load-tour-discovery-list";
@@ -17,7 +18,7 @@ type PageProps = {
 };
 
 /**
- * Public tour commerce listing (TC-P30-T007).
+ * Public tour commerce listing (TC-P30-T007 · TC-P31-T005 polish).
  * Destination-scoped related-published discovery — not Search, not a global browse engine.
  */
 export async function generateMetadata({
@@ -71,6 +72,10 @@ export default async function PublicTourListingPage({
   const sp = await searchParams;
   const criteria = parseTourListingCriteria(sp);
   const loaded = await loadTourDiscoveryList(locale, criteria.destination);
+  const tours =
+    loaded.ok && loaded.mode === "ready"
+      ? await enrichToursWithCoverMedia(locale, loaded.tours)
+      : loaded.tours;
 
   return (
     <PublicShell
@@ -79,7 +84,7 @@ export default async function PublicTourListingPage({
     >
       <TourDiscoveryView
         locale={locale}
-        tours={loaded.tours}
+        tours={tours}
         criteria={criteria}
         loadError={!loaded.ok}
         needsDestination={loaded.ok && loaded.mode === "needs-destination"}

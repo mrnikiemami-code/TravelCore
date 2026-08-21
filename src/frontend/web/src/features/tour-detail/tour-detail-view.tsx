@@ -19,16 +19,19 @@ import type {
 } from "./load-tour-detail";
 
 /**
- * Public Tour commerce detail (TC-P30-T007).
+ * Public Tour commerce detail (TC-P30-T007 · TC-P31-T005 polish).
  * Catalog + Pricing display · not Booking engine · no invented facts.
  */
 export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
   const locale = vm.locale;
   const bookHref = `/${locale}/tours/${encodeURIComponent(vm.slug)}/book`;
+  const isDemo =
+    vm.slug.startsWith("demofeed-") || vm.code.startsWith("demofeed-");
 
   const copy =
     locale === "fa"
       ? {
+          eyebrow: "Tour commerce",
           gallery: "گالری",
           noGallery: "گالری تصاویر هنوز برای این تور منتشر نشده است.",
           summary: "خلاصه تور",
@@ -36,6 +39,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
           noDestinations: "مقصدی ثبت نشده است.",
           destinationCount: (n: number) => `${n} مقصد ثبت‌شده`,
           origin: "مبدأ ثبت‌شده",
+          included: "خدمات و الزامات",
           departures: "تاریخ‌های حرکت",
           departuresNote: "اطلاعات منتشرشده · انتشار ≠ رزرو قطعی",
           noDepartures: "فعلاً تاریخ حرکت منتشرشده‌ای نیست.",
@@ -56,12 +60,15 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
           noPolicies: "قانونی ثبت نشده است.",
           trust: "اعتماد و رزرو",
           trustBody:
-            "انتشار کاتالوگ به معنای موجودی لحظه‌ای یا پرداخت قطعی نیست. مسیر رزرو از دکمه زیر آغاز می‌شود.",
+            "این صفحه کاتالوگ تور است — موجودی لحظه‌ای، کمیابی یا پرداخت قطعی اینجا ادعا نمی‌شود. مسیر رزرو از اقدامات پایین آغاز می‌شود.",
           request: "درخواست اطلاعات",
           requestBody: "برای پرسش درباره این تور · نه پرداخت.",
+          demoHint: "نمونه DEMOFEED",
+          ctaNote: "اقدام نمایشی + شروع رزرو موقت · نه پرداخت",
         }
       : locale === "ar"
         ? {
+            eyebrow: "Tour commerce",
             gallery: "المعرض",
             noGallery: "معرض الصور غير منشور بعد لهذه الجولة.",
             summary: "ملخص الجولة",
@@ -69,6 +76,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             noDestinations: "لا وجهات مسجلة.",
             destinationCount: (n: number) => `${n} وجهة مسجلة`,
             origin: "منشأ مسجل",
+            included: "الخدمات والمتطلبات",
             departures: "تواريخ المغادرة",
             departuresNote: "معلومات منشورة · النشر ≠ حجز مؤكد",
             noDepartures: "لا تواريخ مغادرة منشورة حالياً.",
@@ -89,11 +97,14 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             noPolicies: "لا سياسات منشورة.",
             trust: "الثقة والحجز",
             trustBody:
-              "نشر الكتالوج لا يعني توفراً لحظياً أو دفعاً مؤكداً. يبدأ مسار الحجز من الزر أدناه.",
+              "هذه صفحة كتالوج الجولة — لا ندّعي توفراً لحظياً أو ندرة أو دفعاً مؤكداً هنا. يبدأ مسار الحجز من الإجراءات أدناه.",
             request: "طلب معلومات",
             requestBody: "للاستفسار عن هذه الجولة · ليس دفعاً.",
+            demoHint: "عينة DEMOFEED",
+            ctaNote: "إجراءات العرض + إعداد حجز مؤقت · ليست عملية دفع",
           }
         : {
+            eyebrow: "Tour commerce",
             gallery: "Gallery",
             noGallery: "Photo gallery is not published for this tour yet.",
             summary: "Tour summary",
@@ -101,6 +112,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             noDestinations: "No destinations published.",
             destinationCount: (n: number) => `${n} destination(s) recorded`,
             origin: "Origin recorded",
+            included: "Services & requirements",
             departures: "Departures",
             departuresNote: "Published facts · published ≠ confirmed booking",
             noDepartures: "No published departures yet.",
@@ -121,17 +133,17 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             noPolicies: "No policies published.",
             trust: "Trust & booking",
             trustBody:
-              "Catalog publication is not live availability or confirmed payment. Start booking from the action below.",
+              "This is a tour catalog surface — we do not claim live availability, scarcity, or confirmed payment here. Start booking from the actions below.",
             request: "Request information",
             requestBody: "Ask about this tour · not payment.",
+            demoHint: "DEMOFEED sample",
+            ctaNote: "Presentation actions + prepare pending booking · not payment",
           };
 
   const galleryItems =
-    vm.gallery.length > 0
-      ? vm.gallery
-      : vm.cover
-        ? [vm.cover]
-        : [];
+    vm.gallery.length > 0 ? vm.gallery : vm.cover ? [vm.cover] : [];
+  const hero = galleryItems[0] ?? null;
+  const thumbs = galleryItems.slice(1, 5);
 
   const priceRows = vm.publishedDepartures.flatMap((d) => {
     const money = d.priceSummary ? startingMoney(d.priceSummary) : null;
@@ -148,8 +160,32 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
   });
 
   return (
-    <div className="pb-28 pt-6 sm:pt-8 lg:pb-8">
-      <Container width="content">
+    <div className="pb-28">
+      <section className="border-b border-border bg-gradient-to-br from-primary/95 via-primary to-primary/80 text-primary-foreground">
+        <Container width="wide" className="py-6 sm:py-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+            {copy.eyebrow}
+          </p>
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-4xl">
+            {vm.name}
+          </h1>
+          <p className="mt-2 text-sm text-primary-foreground/90">
+            {copy.summary}
+            {" · "}
+            {vm.kind}
+            {" · "}
+            <LtrValue>{vm.code}</LtrValue>
+            {isDemo ? (
+              <>
+                {" · "}
+                {copy.demoHint}
+              </>
+            ) : null}
+          </p>
+        </Container>
+      </section>
+
+      <Container width="wide" className="pt-6 sm:pt-8">
         <Stack gap="lg">
           <section aria-labelledby="tour-gallery-title">
             <h2
@@ -158,61 +194,130 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             >
               {copy.gallery}
             </h2>
-            {galleryItems.length > 0 ? (
-              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {galleryItems.map((item) =>
-                  item.src ? (
-                    <li key={item.mediaAssetId}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={item.src}
-                        alt={item.alt || vm.name}
-                        width={item.width ?? 960}
-                        height={item.height ?? 540}
-                        className="aspect-video w-full rounded-xl object-cover"
-                      />
-                    </li>
-                  ) : null,
-                )}
-              </ul>
+            {hero?.src ? (
+              <div className="grid gap-3 lg:grid-cols-[1.6fr_0.8fr]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={hero.src}
+                  alt={hero.alt || vm.name}
+                  width={hero.width ?? 1200}
+                  height={hero.height ?? 675}
+                  className="aspect-[16/10] w-full rounded-2xl object-cover shadow-sm"
+                />
+                <ul className="grid grid-cols-2 gap-3">
+                  {thumbs.length > 0
+                    ? thumbs.map((item) =>
+                        item.src ? (
+                          <li key={item.mediaAssetId}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={item.src}
+                              alt={item.alt || vm.name}
+                              width={item.width ?? 640}
+                              height={item.height ?? 360}
+                              className="aspect-video w-full rounded-xl object-cover"
+                            />
+                          </li>
+                        ) : null,
+                      )
+                    : [0, 1, 2, 3].map((i) => (
+                        <li
+                          key={i}
+                          aria-hidden
+                          className="aspect-video rounded-xl bg-gradient-to-br from-surface-muted to-primary/20"
+                        />
+                      ))}
+                </ul>
+              </div>
             ) : (
-              <div className="flex aspect-video items-center justify-center rounded-xl border border-dashed border-border bg-gradient-to-br from-primary/20 via-muted to-accent/30 p-6">
+              <div className="flex aspect-[16/9] items-center justify-center rounded-2xl border border-dashed border-border bg-muted/30 p-6">
                 <Text role="muted">{copy.noGallery}</Text>
               </div>
             )}
           </section>
 
-          <Stack gap="sm">
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              {vm.name}
-            </h1>
-            <Text role="muted">
-              {copy.summary} · {vm.kind} · <LtrValue>{vm.code}</LtrValue>
-            </Text>
-            {vm.description ? <Text as="p">{vm.description}</Text> : null}
-          </Stack>
-
-          <Surface>
+          <section aria-labelledby="tour-summary-title">
             <Stack gap="sm">
-              <Text as="h2" role="heading">
-                {copy.destinations}
-              </Text>
-              {vm.destinationIds.length === 0 && !vm.originDestinationId ? (
-                <Text role="muted">{copy.noDestinations}</Text>
-              ) : (
-                <>
-                  {vm.originDestinationId ? (
-                    <Text role="caption">
-                      {copy.origin}: <LtrValue>{vm.originDestinationId}</LtrValue>
-                    </Text>
-                  ) : null}
-                  {vm.destinationIds.length > 0 ? (
-                    <Text>{copy.destinationCount(vm.destinationIds.length)}</Text>
-                  ) : null}
-                </>
-              )}
+              <h2
+                id="tour-summary-title"
+                className="text-xl font-semibold tracking-tight text-foreground"
+              >
+                {copy.summary}
+              </h2>
+              {vm.description ? <Text as="p">{vm.description}</Text> : null}
             </Stack>
-          </Surface>
+          </section>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Surface>
+              <Stack gap="sm">
+                <Text as="h2" role="heading">
+                  {copy.destinations}
+                </Text>
+                {vm.destinationIds.length === 0 && !vm.originDestinationId ? (
+                  <Text role="muted">{copy.noDestinations}</Text>
+                ) : (
+                  <>
+                    {vm.originDestinationId ? (
+                      <Text role="caption">
+                        {copy.origin}:{" "}
+                        <LtrValue>{vm.originDestinationId}</LtrValue>
+                      </Text>
+                    ) : null}
+                    {vm.destinationIds.length > 0 ? (
+                      <Text>
+                        {copy.destinationCount(vm.destinationIds.length)}
+                      </Text>
+                    ) : null}
+                    {vm.destinationIds.length > 0 ? (
+                      <ul className="flex flex-wrap gap-2 text-sm">
+                        {vm.destinationIds.map((id) => (
+                          <li
+                            key={id}
+                            className="rounded-full border border-border bg-background px-3 py-1"
+                          >
+                            <LtrValue>{id}</LtrValue>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </>
+                )}
+              </Stack>
+            </Surface>
+
+            <Surface>
+              <Stack gap="sm">
+                <Text as="h2" role="heading">
+                  {copy.included}
+                </Text>
+                {vm.policies.length === 0 && vm.requirements.length === 0 ? (
+                  <Text role="muted">{copy.noPolicies}</Text>
+                ) : (
+                  <ul className="flex flex-wrap gap-2 text-sm">
+                    {vm.policies.map((item) => (
+                      <li
+                        key={`p-${item.code}`}
+                        className="rounded-full border border-border bg-background px-3 py-1"
+                      >
+                        {item.code}
+                        {item.detail ? ` · ${item.detail}` : ""}
+                      </li>
+                    ))}
+                    {vm.requirements.map((item) => (
+                      <li
+                        key={`r-${item.code}`}
+                        className="rounded-full border border-border bg-background px-3 py-1"
+                      >
+                        {item.code}
+                        {item.detail ? ` · ${item.detail}` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Stack>
+            </Surface>
+          </div>
 
           {vm.kind === "Experience" ? (
             <ExperienceTourDetailSections
@@ -228,7 +333,9 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
               </Text>
               <Text role="caption">{copy.departuresNote}</Text>
               {vm.publishedDepartures.length === 0 ? (
-                <Text role="muted">{copy.noDepartures}</Text>
+                <Surface>
+                  <Text role="muted">{copy.noDepartures}</Text>
+                </Surface>
               ) : (
                 <ul className="flex flex-col gap-3">
                   {vm.publishedDepartures.map((d) => (
@@ -310,7 +417,10 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
                 ) : (
                   <ul className="flex flex-col gap-2">
                     {priceRows.map((row) => (
-                      <li key={row.id} className="flex flex-wrap items-baseline gap-2">
+                      <li
+                        key={row.id}
+                        className="flex flex-wrap items-baseline gap-2"
+                      >
                         <Text>{copy.from}</Text>
                         <MoneyText
                           locale={locale}
@@ -333,39 +443,16 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             </Surface>
           </div>
 
-          <Surface>
-            <Stack gap="sm">
-              <Text as="h2" role="heading">
-                {copy.policies}
-              </Text>
-              {vm.policies.length === 0 && vm.requirements.length === 0 ? (
-                <Text role="muted">{copy.noPolicies}</Text>
-              ) : (
-                <ul className="list-inside list-disc text-sm">
-                  {vm.policies.map((item) => (
-                    <li key={`p-${item.code}`}>
-                      {item.code}
-                      {item.detail ? ` · ${item.detail}` : ""}
-                    </li>
-                  ))}
-                  {vm.requirements.map((item) => (
-                    <li key={`r-${item.code}`}>
-                      {item.code}
-                      {item.detail ? ` · ${item.detail}` : ""}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Stack>
-          </Surface>
-
-          <Surface tone="muted">
-            <Stack gap="sm">
-              <Text as="h2" role="heading">
-                {copy.trust}
-              </Text>
-              <Text>{copy.trustBody}</Text>
-            </Stack>
+          <Surface className="border-primary/15 bg-gradient-to-br from-surface to-primary/5">
+            <Text as="h2" role="heading" className="text-primary">
+              {copy.trust}
+            </Text>
+            <Text role="muted" className="mt-2">
+              {copy.trustBody}
+            </Text>
+            <Text role="caption" className="mt-3">
+              {copy.ctaNote}
+            </Text>
           </Surface>
 
           <AgencyOffersList locale={locale} items={vm.agencyOffers} />

@@ -59,7 +59,7 @@ export function tourListingCopy(locale: AppLocale) {
   if (locale === "fa") {
     return {
       destinationLabel: "مقصد",
-      destinationPlaceholder: "مثلاً istanbul",
+      destinationPlaceholder: "مثلاً demofeed-tehran",
       filterLabel: "جستجوی نام",
       filterPlaceholder: "نام تور یا کد…",
       sortLabel: "مرتب‌سازی",
@@ -73,7 +73,7 @@ export function tourListingCopy(locale: AppLocale) {
   if (locale === "ar") {
     return {
       destinationLabel: "الوجهة",
-      destinationPlaceholder: "مثلاً istanbul",
+      destinationPlaceholder: "مثلاً demofeed-tehran",
       filterLabel: "بحث بالاسم",
       filterPlaceholder: "اسم الجولة أو الرمز…",
       sortLabel: "الترتيب",
@@ -86,7 +86,7 @@ export function tourListingCopy(locale: AppLocale) {
   }
   return {
     destinationLabel: "Destination",
-    destinationPlaceholder: "e.g. istanbul",
+    destinationPlaceholder: "e.g. demofeed-tehran",
     filterLabel: "Search by name",
     filterPlaceholder: "Tour name or code…",
     sortLabel: "Sort",
