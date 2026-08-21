@@ -26,7 +26,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` · AWAITING_ARCHITECT_REVIEW)
+**P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** · awaiting T002 file)
 
 ## Completed
 
@@ -34,7 +34,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
 - `TC-DEMOFEED-GATE` **ACCEPTED**
 - `TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
-- `TC-P32-T001` **Cursor PASS** — media strategy + demo asset pack foundation
+- `TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** — media strategy + demo asset pack foundation
 
 ## Current Important Locks
 
@@ -42,7 +42,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
 | P31 | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
-| P32 | **ACTIVE** (`T001` review) |
+| P32 | **ACTIVE** (`T001` ACCEPTED · T002 awaits file) |
 | Demo media pack | `docs/product-experience/assets/demo-media/` |
 | Feeder | `tools/demofeed` · prefix `demofeed-*` |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
@@ -50,12 +50,11 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P32-T001`** complete (awaiting Architect ACCEPT/REWORK).
+**None** — waiting for Architect `.task.md` / `.gate.md` (`TC-P32-T002` expected).
 
 ## Next Planned Work
 
-Architect decision on T001.
-Then **only** authorized `.task.md` / `.gate.md` — recommended next: `TC-P32-T002` DEMOFEED Media Enrichment (do not auto-start).
+Architect-authorized **`TC-P32-T002` DEMOFEED Media Enrichment** only — do not invent / do not auto-start.
 
 ## Open Blockers
 
