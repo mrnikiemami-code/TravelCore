@@ -89,3 +89,4 @@ Then **only** a new authorized `.task.md` / `.gate.md` — do not auto-implement
 | 2026-08-21 | Sync after DEMOFEED GATE Cursor review evidence |
 | 2026-08-21 | Sync after P31-T001 commercial demo experience plan |
 | 2026-08-21 | Sync after P31-T002 professional demo content strategy |
+| 2026-08-21 | Sync after P31-T003 Home commercial upgrade |

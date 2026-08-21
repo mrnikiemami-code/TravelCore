@@ -932,15 +932,17 @@ OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
 ## P31 — Commercial Demo Experience
 
-**Status:** **ACTIVE** (`TC-P31-T001` ACCEPTED · `TC-P31-T002` content strategy · AWAITING_ARCHITECT_REVIEW)
+**Status:** **ACTIVE** (`T001`/`T002` ACCEPTED · `TC-P31-T003` Home commercial upgrade · AWAITING_ARCHITECT_REVIEW)
 
 **Plan:** [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md)
 
 **Content strategy:** [`docs/plans/P31-demo-content-strategy.md`](plans/P31-demo-content-strategy.md)
 
+**Evidence:** [`docs/product-experience/evidence/P31-T003/`](../product-experience/evidence/P31-T003/)
+
 Goal: sellable Public marketplace demo for tourism businesses (Home · Hotel · Tour) without breaking ownership boundaries.
 
-Proposed sequence (not auto-executable): T002 content strategy → T003 Home → T004 Hotel polish → T005 Tour polish → GATE.
+Sequence: T002 ✅ → T003 (Home) → T004 Hotel polish → T005 Tour polish → GATE.
 
 OUT: backend redesign · fake rates/availability · scraping · DemoFeed as permanent module.
 
