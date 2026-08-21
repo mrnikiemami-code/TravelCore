@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T001`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-implement T002+ |
+| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T002`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-implement T003+ |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -932,9 +932,11 @@ OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
 ## P31 — Commercial Demo Experience
 
-**Status:** **PLANNING** (`TC-P31-T001` · AWAITING_ARCHITECT_REVIEW)
+**Status:** **ACTIVE** (`TC-P31-T001` ACCEPTED · `TC-P31-T002` content strategy · AWAITING_ARCHITECT_REVIEW)
 
 **Plan:** [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md)
+
+**Content strategy:** [`docs/plans/P31-demo-content-strategy.md`](plans/P31-demo-content-strategy.md)
 
 Goal: sellable Public marketplace demo for tourism businesses (Home · Hotel · Tour) without breaking ownership boundaries.
 
@@ -1018,5 +1020,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | HOTIDX | Hotel Catalog Browse Index Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
 | HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
 | DEMOFEED | Temporary Demo Feeding Sequence | **GATE ACCEPTED** (`T002`–`T005`) |
-| P31 | Commercial Demo Experience | **PLANNING** (`TC-P31-T001` · [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md)) |
+| P31 | Commercial Demo Experience | **ACTIVE** (`T001` ACCEPTED · `T002` strategy review · [`P31-demo-content-strategy.md`](plans/P31-demo-content-strategy.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

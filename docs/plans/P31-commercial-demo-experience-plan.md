@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-P31-PLAN` (proposed by `TC-P31-T001`) |
 | Track | Commercial Demo Experience (Post-DEMOFEED) |
-| Status | **PROPOSED** — awaiting Architect ACCEPT of T001 / authorized implementation tasks |
+| Status | **ACCEPTED** (`TC-P31-T001`) — next authorized unit via Architect file |
 | Authority | Derived from P30 Constitution · Public Spec · P30-GATE · DEMOFEED-GATE |
 | Product code in this task | **NO** (`TC-P31-T001` = planning / gap analysis only) |
 

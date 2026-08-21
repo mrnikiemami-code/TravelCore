@@ -409,7 +409,8 @@
 | HOMFEED | implementation **COMPLETE** — closes DISCLINK-T015 · ledger correction as above |
 | DEMOFEED Plan | `TC-DEMOFEED-PLAN` **ACTIVE** — [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md) |
 | DEMOFEED | Temporary removable demo feeding — **GATE ACCEPTED** (`T002`–`T005`) |
-| P31 Plan | `TC-P31-T001` **PROPOSED** — [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md) |
+| P31 Plan | `TC-P31-T001` **ACCEPTED** — [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md) |
+| P31 Content Strategy | `TC-P31-T002` **PROPOSED** — [`docs/plans/P31-demo-content-strategy.md`](plans/P31-demo-content-strategy.md) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |
