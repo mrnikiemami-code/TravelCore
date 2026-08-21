@@ -26,27 +26,24 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-GATE` Cursor **PASS WITH KNOWN LIMITATIONS** · awaiting Architect ACCEPT)
+**P33 — Commercial Product Readiness Review** (`TC-P33-T001` Cursor **PASS** · awaiting Architect ACCEPT)
 
-## Completed (Cursor)
+## Completed (recent)
 
-- `TC-P32-T001` … `TC-P32-T009` (T006 = BLOCKED finding; T007–T009 Destination Cover path)
-- `TC-P32-GATE` review artifact: `docs/product-experience/evidence/P32-GATE/GATE-REVIEW.md`
+- `TC-P32-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
+- `TC-P33-T001` plan: `docs/plans/P33-commercial-readiness-plan.md`
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after GATE RESULT. Do not invent next phase.
+**None** — WAITING for Architect after T001 RESULT. Do not invent T002+.
 
-## Open Limitations (accepted in GATE review)
+## Open Focus (planning)
 
-- Destination Gallery deferred (Option A Cover only)
-- Hotel gallery pack density < UI slots
-- DemoFeed → Api media blob sync is runtime env
-- Pricing/Booking engines intentionally absent
+Demo Product → Sellable Product gaps: Public conversion wiring, Pricing/Departure offers, Booking/Payment E2E, providers/suppliers, discovery/ops.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
-| 2026-08-21 | Sync after TC-P32-GATE Cursor PASS WITH KNOWN LIMITATIONS |
-| 2026-08-21 | Sync after TC-P32-T005 hotel presentation completeness |
+| 2026-08-21 | Sync after TC-P33-T001 commercial readiness plan |
+| 2026-08-21 | Sync after TC-P32-GATE Architect ACCEPT WITH KNOWN LIMITATIONS |
