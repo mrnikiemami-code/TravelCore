@@ -156,9 +156,18 @@ public sealed class PlaceApplicationService : IPlaceService
             ?? throw new ArgumentException("Slug is required.", nameof(slug));
 
         var hit = await _db.Places.AsNoTracking()
-            .SelectMany(p => p.Translations.Select(t => new { Place = p, Translation = t }))
+            .SelectMany(p => p.Translations.Select(t => new
+            {
+                PlaceId = p.Id.Value,
+                Kind = p.Kind,
+                Code = p.Code,
+                EnglishName = p.EnglishName,
+                CatalogStatus = p.CatalogStatus,
+                LocaleCode = t.LocaleCode,
+                TranslationSlug = t.Slug,
+            }))
             .FirstOrDefaultAsync(
-                x => x.Translation.LocaleCode == normalizedLocale && x.Translation.Slug == normalizedSlug,
+                x => x.LocaleCode == normalizedLocale && x.TranslationSlug == normalizedSlug,
                 cancellationToken);
 
         if (hit is null)
@@ -166,20 +175,20 @@ public sealed class PlaceApplicationService : IPlaceService
             return null;
         }
 
-        if (publicOnly && hit.Place.CatalogStatus != PlaceCatalogStatus.Active)
+        if (publicOnly && hit.CatalogStatus != PlaceCatalogStatus.Active)
         {
             // Draft/Inactive are not publicly renderable — do not leak Admin catalog state.
             return null;
         }
 
         return new PlaceSlugLookupResponse(
-            hit.Place.Id.Value,
-            hit.Translation.LocaleCode,
-            hit.Translation.Slug!,
-            hit.Place.Kind.ToString(),
-            hit.Place.Code,
-            hit.Place.EnglishName,
-            hit.Place.CatalogStatus.ToString());
+            hit.PlaceId,
+            hit.LocaleCode,
+            hit.TranslationSlug!,
+            hit.Kind.ToString(),
+            hit.Code,
+            hit.EnglishName,
+            hit.CatalogStatus.ToString());
     }
 
     public async Task<PlaceTranslationResponse> UpsertTranslationAsync(

@@ -26,7 +26,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T003` Cursor **PASS WITH KNOWN LIMITATIONS** · awaiting Architect review)
+**P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T004` Cursor **PASS** · awaiting Architect review)
 
 ## Completed
 
@@ -34,35 +34,33 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
 - `TC-DEMOFEED-GATE` **ACCEPTED**
 - `TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
-- `TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** — media strategy + demo asset pack foundation
-- `TC-P32-T002` Cursor **PASS** — DEMOFEED Hotel/Tour media enrichment via Media ownership
-- `TC-P32-T003` Cursor **PASS WITH KNOWN LIMITATIONS** — live scenario validation evidence
+- `TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS**
+- `TC-P32-T002` Cursor **PASS** — Hotel/Tour media enrichment
+- `TC-P32-T003` Cursor **PASS WITH KNOWN LIMITATIONS** — live scenario validation
+- `TC-P32-T004` Cursor **PASS** — Hotel public browse EF fix
 
 ## Current Important Locks
 
 | Lock | Value |
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
-| P31 | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
-| P32 | **ACTIVE** (`T003` Cursor PASS WITH KNOWN LIMITATIONS · Architect review) |
-| Demo media pack | `docs/product-experience/assets/demo-media/` |
-| Evidence | `docs/product-experience/evidence/P32-T003/` |
-| Feeder | `tools/demofeed` · `enrich-media` · prefix `demofeed-*` |
+| P32 | **ACTIVE** (`T004` Cursor PASS · Architect review) |
+| Evidence | `docs/product-experience/evidence/P32-T003/` · `P32-T004/` |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
 | Pipeline Controller | File-Based Task Pipeline V3 |
 
 ## Current Authorized Work
 
-**None** — RESULT posted; WAITING for Architect `.task.md` / `.gate.md` after T003 review.
+**None** — RESULT posted; WAITING for Architect `.task.md` / `.gate.md`.
 
 ## Next Planned Work
 
-Architect review / ACCEPT of **`TC-P32-T003`** only — then authorized next unit (do not invent GATE/T004).
+Architect review of **`TC-P32-T004`** only — then authorized next unit (do not invent GATE).
 
 ## Open Blockers
 
-1. **Destination media attach** — no Destination↔Media owner API.
-2. **Place public hotel browse** — EF LINQ translation 500 on `/api/place/public/hotels` (blocks Hotel listing/detail success UI).
+1. Destination media attach — no Destination↔Media owner API.
+2. Public hotel list `StarRating` omitted (owned Hotel join avoided).
 
 ## Rules
 
@@ -75,7 +73,5 @@ Architect review / ACCEPT of **`TC-P32-T003`** only — then authorized next uni
 
 | Date | Change |
 |------|--------|
-| 2026-08-21 | Sync after Architect ACCEPT of TC-P31-GATE |
-| 2026-08-21 | Sync after TC-P32-T001 media strategy + asset pack |
-| 2026-08-21 | Sync after TC-P32-T002 enrich-media (Hotel/Tour) |
 | 2026-08-21 | Sync after TC-P32-T003 live scenario validation |
+| 2026-08-21 | Sync after TC-P32-T004 hotel public browse fix |

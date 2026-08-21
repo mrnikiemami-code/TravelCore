@@ -35,28 +35,37 @@ internal sealed class PlacePublicQuery : IPlacePublicHotelBrowseQuery
         }
 
         var locale = PlaceTranslation.NormalizeLocaleCode(localeCode);
+        // Avoid PlaceId.Value / owned Hotel inside SelectMany+OrderBy (EF translation failure — TC-P32-T004).
+        // Star ratings omitted from this browse projection to keep the query translatable;
+        // listing cards do not require Hotel owned-type join here.
         var rows = await _db.Places
             .AsNoTracking()
             .Where(x =>
                 x.Kind == PlaceKind.Hotel
                 && x.CatalogStatus == PlaceCatalogStatus.Active)
-            .SelectMany(p => p.Translations.Select(t => new { Place = p, Translation = t }))
-            .Where(x =>
-                x.Translation.LocaleCode == locale
-                && x.Translation.Slug != null)
-            .OrderBy(x => x.Translation.Name)
-            .ThenBy(x => x.Place.Id.Value)
+            .SelectMany(p => p.Translations
+                .Where(t => t.LocaleCode == locale && t.Slug != null)
+                .Select(t => new
+                {
+                    PlaceId = p.Id,
+                    LocaleCode = t.LocaleCode,
+                    Slug = t.Slug,
+                    Name = t.Name,
+                    Description = t.Description,
+                }))
+            .OrderBy(x => x.Name)
+            .ThenBy(x => x.PlaceId)
             .Take(take)
             .ToListAsync(cancellationToken);
 
         return rows
             .Select(x => new PublicHotelBrowseItem(
-                x.Place.Id.Value,
-                x.Translation.LocaleCode,
-                x.Translation.Slug!,
-                x.Translation.Name,
-                x.Translation.Description,
-                x.Place.Hotel?.StarRating))
+                x.PlaceId.Value,
+                x.LocaleCode,
+                x.Slug!,
+                x.Name,
+                x.Description,
+                StarRating: null))
             .ToList();
     }
 }
