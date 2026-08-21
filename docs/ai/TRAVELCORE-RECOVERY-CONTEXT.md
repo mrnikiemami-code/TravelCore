@@ -26,22 +26,23 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T001` Cursor **PASS** · plan awaiting Architect ACCEPT)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T002` Cursor **PASS** · **BLOCKED_ON_EXTERNAL_BUSINESS_INPUT**)
 
 ## Completed (recent)
 
-- P34-GATE ACCEPTED WITH KNOWN LIMITATIONS — sandbox non-prod payment → ConfirmIfEligible
-- P35-T001: Production provider readiness plan (provider-agnostic; docs only)
+- P34-GATE ACCEPTED WITH KNOWN LIMITATIONS
+- P35-T001 ACCEPTED — provider-agnostic readiness plan
+- P35-T002: External decision intake locked (no fabricated vendor/market values)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T001 RESULT. Do not select/integrate a real provider.
+**None** — WAITING for Architect after T002 RESULT. Provider selection blocked on business inputs.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T002 external decision intake |
 | 2026-08-21 | Sync after TC-P35-T001 production provider readiness plan |
 | 2026-08-21 | Sync after TC-P34-GATE review |
-| 2026-08-21 | Sync after TC-P34-T005 public confirmed honesty |
 | 2026-08-21 | Sync after TC-P33-GATE review |

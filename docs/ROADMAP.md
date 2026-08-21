@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P35-T001` only — do not invent / do not select real provider |
+| Current Next Task | Architect review of `TC-P35-T002` · do not select/design production provider until intake filled |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -974,13 +974,19 @@ Evidence: [`docs/product-experience/evidence/P34-GATE/GATE-REVIEW.md`](product-e
 
 ## P35 — Production Payment Provider Readiness
 
-**Status:** **ACTIVE** (`TC-P35-T001` Cursor **PASS** · plan awaiting Architect)
+**Status:** **ACTIVE** (`TC-P35-T002` Cursor **PASS** · intake locked)
 
-Plan:
+```text
+PRODUCTION PROVIDER SELECTION:
+BLOCKED_ON_EXTERNAL_BUSINESS_INPUT
+```
 
-- [`docs/plans/P35-production-payment-provider-readiness.md`](plans/P35-production-payment-provider-readiness.md)
+Plans:
 
-Do not select/integrate a real provider without Architect + business inputs.
+- [`docs/plans/P35-production-payment-provider-readiness.md`](plans/P35-production-payment-provider-readiness.md) (T001 ACCEPTED)
+- [`docs/plans/P35-production-payment-external-decision-intake.md`](plans/P35-production-payment-external-decision-intake.md)
+
+Do not select/integrate a real provider until intake blockers are filled.
 
 ---
 
@@ -1062,5 +1068,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
-| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T001` · [`P35-production-payment-provider-readiness.md`](plans/P35-production-payment-provider-readiness.md)) |
+| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T002` · **BLOCKED_ON_EXTERNAL_BUSINESS_INPUT** · [`P35-production-payment-external-decision-intake.md`](plans/P35-production-payment-external-decision-intake.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
