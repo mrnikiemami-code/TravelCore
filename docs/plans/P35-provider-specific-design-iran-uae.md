@@ -102,7 +102,7 @@ Sandbox reference: `SandboxPaymentProviderGateway` · `NamedProductionAdapterImp
 
 ### Readiness
 
-**`READY_FOR_ADAPTER_DESIGN_ONLY`** · live production **`BLOCKED_ON_PROVIDER_ACCOUNT_FACTS`** (UAE Stripe account + entity)
+**`READY_FOR_ADAPTER_DESIGN_ONLY`** (T006) · refined by T007 [`P35-stripe-uae-adapter-design.md`](P35-stripe-uae-adapter-design.md): **`READY_FOR_ADAPTER_IMPLEMENTATION_WITH_TEST_MODE`** (code still needs Architect task) · production **`BLOCKED_ON_PROVIDER_ACCOUNT_FACTS`**
 
 ---
 
