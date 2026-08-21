@@ -31,6 +31,9 @@ public sealed record AgencyOfferPanelResponse(
     Guid AgencyProfileId,
     Guid TourProductId,
     Guid? ReferencedTourDepartureId,
+    string DepartureScopeMode,
+    IReadOnlyList<Guid> DepartureScopeIds,
+    string SalesChannel,
     string? TitleOverride,
     string? Highlight,
     string? CommercialNotes,
@@ -39,7 +42,9 @@ public sealed record AgencyOfferPanelResponse(
     bool SalesOpen,
     string Status,
     string Visibility,
-    string PublicationStatus);
+    string PublicationStatus,
+    string CreatedAt,
+    string UpdatedAt);
 
 public sealed record CreateAgencyOfferRequest(
     Guid AgencyProfileId,
@@ -48,7 +53,10 @@ public sealed record CreateAgencyOfferRequest(
     string? Highlight = null,
     string? CommercialNotes = null,
     bool RequiresManualConfirmation = false,
-    bool ExclusiveListing = false);
+    bool ExclusiveListing = false,
+    string SalesChannel = "Public",
+    string DepartureScopeMode = "All",
+    IReadOnlyList<Guid>? DepartureScopeIds = null);
 
 public interface IAgencyMarketplacePanelService
 {
@@ -68,6 +76,10 @@ public interface IAgencyMarketplacePanelService
 
     Task<AgencyOfferPanelResponse> CreateOfferAsync(
         CreateAgencyOfferRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<AgencyOfferPanelResponse?> GetOfferAsync(
+        Guid offerId,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<AgencyOfferPanelResponse>> ListOffersAsync(
@@ -91,4 +103,8 @@ public interface IAgencyMarketplacePanelService
     Task PublishOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
 
     Task UnpublishOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
+
+    Task SuspendOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
+
+    Task RetireOfferAsync(Guid offerId, CancellationToken cancellationToken = default);
 }

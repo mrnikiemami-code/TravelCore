@@ -134,4 +134,37 @@ public sealed class AgencyOfferTests
     {
         Assert.Throws<ArgumentException>(() => AgencyOffer.Create(Profile(), Guid.Empty));
     }
+
+    [Fact]
+    public void P38_Channel_Scope_Suspend_Retire()
+    {
+        var offer = AgencyOffer.Create(
+            Profile(),
+            Tour(),
+            salesChannel: AgencyOfferSalesChannel.AgencyPortal);
+        Assert.Equal(AgencyOfferSalesChannel.AgencyPortal, offer.SalesChannel);
+        Assert.Equal(AgencyOfferDepartureScopeMode.All, offer.DepartureScopeMode);
+        Assert.Empty(offer.DepartureScopeIds);
+
+        var d1 = Guid.Parse("0198b3e0-0000-7000-8000-0000000000f1");
+        var d2 = Guid.Parse("0198b3e0-0000-7000-8000-0000000000f2");
+        offer.SetDepartureScopeListed([d1, d2]);
+        Assert.Equal(AgencyOfferDepartureScopeMode.Listed, offer.DepartureScopeMode);
+        Assert.Equal(2, offer.DepartureScopeIds.Count);
+
+        offer.Submit();
+        offer.Approve();
+        offer.Publish();
+        offer.Suspend();
+        Assert.Equal(AgencyOfferPublicationStatus.Suspended, offer.PublicationStatus);
+        Assert.Equal(AgencyOfferVisibility.Unlisted, offer.Visibility);
+
+        offer.Publish();
+        Assert.Equal(AgencyOfferPublicationStatus.Published, offer.PublicationStatus);
+
+        offer.Retire();
+        Assert.Equal(AgencyOfferPublicationStatus.Retired, offer.PublicationStatus);
+        Assert.Equal(AgencyOfferStatus.Archived, offer.Status);
+        Assert.Throws<InvalidOperationException>(offer.Activate);
+    }
 }

@@ -33,6 +33,19 @@ namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("agency_profile_id");
 
+                    b.Property<NodaTime.Instant>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<System.Collections.Generic.List<System.Guid>>("_departureScopeIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]")
+                        .HasColumnName("departure_scope_ids");
+
+                    b.Property<short>("DepartureScopeMode")
+                        .HasColumnType("smallint")
+                        .HasColumnName("departure_scope_mode");
+
                     b.Property<short>("PublicationStatus")
                         .HasColumnType("smallint")
                         .HasColumnName("publication_status");
@@ -41,6 +54,10 @@ namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("referenced_tour_departure_id");
 
+                    b.Property<short>("SalesChannel")
+                        .HasColumnType("smallint")
+                        .HasColumnName("sales_channel");
+
                     b.Property<short>("Status")
                         .HasColumnType("smallint")
                         .HasColumnName("status");
@@ -48,6 +65,10 @@ namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Migrations
                     b.Property<Guid>("TourProductId")
                         .HasColumnType("uuid")
                         .HasColumnName("tour_product_id");
+
+                    b.Property<NodaTime.Instant>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<short>("Visibility")
                         .HasColumnType("smallint")

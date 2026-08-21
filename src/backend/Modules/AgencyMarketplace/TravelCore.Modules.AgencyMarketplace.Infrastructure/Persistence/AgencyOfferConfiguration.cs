@@ -40,6 +40,29 @@ internal sealed class AgencyOfferConfiguration : IEntityTypeConfiguration<Agency
             .HasConversion<short>()
             .IsRequired();
 
+        builder.Property(x => x.SalesChannel)
+            .HasColumnName("sales_channel")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.DepartureScopeMode)
+            .HasColumnName("departure_scope_mode")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property<List<Guid>>("_departureScopeIds")
+            .HasColumnName("departure_scope_ids")
+            .HasColumnType("uuid[]")
+            .IsRequired();
+
+        builder.Property(x => x.CreatedAt)
+            .HasColumnName("created_at")
+            .IsRequired();
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at")
+            .IsRequired();
+
         builder.HasIndex(x => new { x.AgencyProfileId, x.TourProductId })
             .IsUnique()
             .HasDatabaseName("ux_agency_offers_profile_tour_product");

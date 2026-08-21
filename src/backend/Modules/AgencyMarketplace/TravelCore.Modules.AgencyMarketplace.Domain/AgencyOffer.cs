@@ -1,12 +1,17 @@
+using NodaTime;
+
 namespace TravelCore.Modules.AgencyMarketplace.Domain;
 
 /// <summary>
-/// Marketplace relationship between an AgencyProfile and a TourProduct (TC-P13-T003 / P13-R3).
+/// Marketplace relationship between an AgencyProfile and a TourProduct (TC-P13-T003 / P13-R3; P38-T003).
 /// Commercial terms are non-price metadata only (TC-P13-T004 / P13-R4).
 /// Sales availability is not capacity (TC-P13-T005 / P13-R5).
+/// AgencyOffer ≠ TourDeparture ≠ Price ≠ Booking.
 /// </summary>
 public sealed class AgencyOffer
 {
+    private readonly List<Guid> _departureScopeIds = [];
+
     private AgencyOffer()
     {
         Display = null!;
@@ -19,7 +24,9 @@ public sealed class AgencyOffer
         AgencyProfileId agencyProfileId,
         Guid tourProductId,
         AgencyOfferDisplaySettings display,
-        AgencyOfferCommercialTerms commercialTerms)
+        AgencyOfferCommercialTerms commercialTerms,
+        AgencyOfferSalesChannel salesChannel,
+        Instant createdAt)
     {
         if (id.Value == Guid.Empty)
         {
@@ -45,6 +52,10 @@ public sealed class AgencyOffer
         PublicationStatus = AgencyOfferPublicationStatus.Draft;
         Status = AgencyOfferStatus.Draft;
         Visibility = AgencyOfferVisibility.Unlisted;
+        SalesChannel = salesChannel;
+        DepartureScopeMode = AgencyOfferDepartureScopeMode.All;
+        CreatedAt = createdAt;
+        UpdatedAt = createdAt;
     }
 
     public AgencyOfferId Id { get; private set; }
@@ -63,106 +74,182 @@ public sealed class AgencyOffer
     /// <summary>Marketplace publication lifecycle. Not SEO IndexPolicy and not TourProduct catalog status.</summary>
     public AgencyOfferPublicationStatus PublicationStatus { get; private set; }
 
-    /// <summary>Optional logical TourDeparture identity. No Tour schema FK and no capacity ownership.</summary>
+    /// <summary>Optional logical TourDeparture identity (compat). Prefer DepartureScope*.</summary>
     public MarketplaceTourDepartureId? ReferencedTourDepartureId { get; private set; }
+
+    public AgencyOfferDepartureScopeMode DepartureScopeMode { get; private set; }
+
+    /// <summary>Logical TourDeparture ids when mode is Listed. Empty when All.</summary>
+    public IReadOnlyList<Guid> DepartureScopeIds => _departureScopeIds;
+
+    public AgencyOfferSalesChannel SalesChannel { get; private set; }
 
     public AgencyOfferStatus Status { get; private set; }
 
     public AgencyOfferVisibility Visibility { get; private set; }
 
+    public Instant CreatedAt { get; private set; }
+
+    public Instant UpdatedAt { get; private set; }
+
     public static AgencyOffer Create(
         AgencyProfileId agencyProfileId,
         Guid tourProductId,
         AgencyOfferDisplaySettings? display = null,
-        AgencyOfferCommercialTerms? commercialTerms = null)
+        AgencyOfferCommercialTerms? commercialTerms = null,
+        AgencyOfferSalesChannel salesChannel = AgencyOfferSalesChannel.Public,
+        Instant? createdAt = null)
     {
         return new AgencyOffer(
             AgencyOfferId.New(),
             agencyProfileId,
             tourProductId,
             display ?? AgencyOfferDisplaySettings.Empty(),
-            commercialTerms ?? AgencyOfferCommercialTerms.Empty());
+            commercialTerms ?? AgencyOfferCommercialTerms.Empty(),
+            salesChannel,
+            createdAt ?? SystemClock.Instance.GetCurrentInstant());
     }
 
     public void UpdateDisplay(AgencyOfferDisplaySettings display)
     {
         ArgumentNullException.ThrowIfNull(display);
-        EnsureNotArchived();
+        EnsureMutable();
         Display = display;
+        Touch();
     }
 
     public void UpdateCommercialTerms(AgencyOfferCommercialTerms commercialTerms)
     {
         ArgumentNullException.ThrowIfNull(commercialTerms);
-        EnsureNotArchived();
+        EnsureMutable();
         CommercialTerms = commercialTerms;
+        Touch();
+    }
+
+    public void SetSalesChannel(AgencyOfferSalesChannel salesChannel)
+    {
+        EnsureMutable();
+        SalesChannel = salesChannel;
+        Touch();
+    }
+
+    public void SetDepartureScopeAll()
+    {
+        EnsureMutable();
+        DepartureScopeMode = AgencyOfferDepartureScopeMode.All;
+        _departureScopeIds.Clear();
+        ReferencedTourDepartureId = null;
+        Touch();
+    }
+
+    public void SetDepartureScopeListed(IEnumerable<Guid> departureIds)
+    {
+        ArgumentNullException.ThrowIfNull(departureIds);
+        EnsureMutable();
+        var list = departureIds.Distinct().ToList();
+        if (list.Count == 0)
+        {
+            throw new ArgumentException("Listed departure scope requires at least one departure id.", nameof(departureIds));
+        }
+
+        if (list.Any(id => id == Guid.Empty))
+        {
+            throw new ArgumentException("Departure scope ids cannot be empty Guids.", nameof(departureIds));
+        }
+
+        DepartureScopeMode = AgencyOfferDepartureScopeMode.Listed;
+        _departureScopeIds.Clear();
+        _departureScopeIds.AddRange(list);
+        ReferencedTourDepartureId = list.Count == 1
+            ? MarketplaceTourDepartureId.From(list[0])
+            : null;
+        Touch();
     }
 
     public void Activate()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         Status = AgencyOfferStatus.Active;
+        Touch();
     }
 
     public void List()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         if (Status != AgencyOfferStatus.Active)
         {
             throw new InvalidOperationException("Only an Active AgencyOffer can be Listed.");
         }
 
         Visibility = AgencyOfferVisibility.Listed;
+        Touch();
     }
 
     public void OpenSales()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         if (Status != AgencyOfferStatus.Active)
         {
             throw new InvalidOperationException("Only an Active AgencyOffer can open sales.");
         }
 
         SalesAvailability = AgencyOfferSalesAvailability.Open();
+        Touch();
     }
 
     public void CloseSales()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         SalesAvailability = AgencyOfferSalesAvailability.Closed();
+        Touch();
     }
 
     public void SetReferencedTourDeparture(MarketplaceTourDepartureId? tourDepartureId)
     {
-        EnsureNotArchived();
+        EnsureMutable();
         ReferencedTourDepartureId = tourDepartureId;
+        if (tourDepartureId is null)
+        {
+            DepartureScopeMode = AgencyOfferDepartureScopeMode.All;
+            _departureScopeIds.Clear();
+        }
+        else
+        {
+            DepartureScopeMode = AgencyOfferDepartureScopeMode.Listed;
+            _departureScopeIds.Clear();
+            _departureScopeIds.Add(tourDepartureId.Value.Value);
+        }
+
+        Touch();
     }
 
     public void Submit()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         if (PublicationStatus is not (AgencyOfferPublicationStatus.Draft or AgencyOfferPublicationStatus.Rejected))
         {
             throw new InvalidOperationException("Only Draft or Rejected AgencyOffer can be Submitted.");
         }
 
         PublicationStatus = AgencyOfferPublicationStatus.Submitted;
+        Touch();
     }
 
     public void Approve()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         if (PublicationStatus != AgencyOfferPublicationStatus.Submitted)
         {
             throw new InvalidOperationException("Only a Submitted AgencyOffer can be Approved.");
         }
 
         PublicationStatus = AgencyOfferPublicationStatus.Approved;
+        Touch();
     }
 
     public void Reject()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         if (PublicationStatus != AgencyOfferPublicationStatus.Submitted)
         {
             throw new InvalidOperationException("Only a Submitted AgencyOffer can be Rejected.");
@@ -171,23 +258,25 @@ public sealed class AgencyOffer
         PublicationStatus = AgencyOfferPublicationStatus.Rejected;
         Visibility = AgencyOfferVisibility.Unlisted;
         SalesAvailability = AgencyOfferSalesAvailability.Closed();
+        Touch();
     }
 
     public void Publish()
     {
-        EnsureNotArchived();
-        if (PublicationStatus != AgencyOfferPublicationStatus.Approved)
+        EnsureMutable();
+        if (PublicationStatus is not (AgencyOfferPublicationStatus.Approved or AgencyOfferPublicationStatus.Suspended))
         {
-            throw new InvalidOperationException("Only an Approved AgencyOffer can be Published.");
+            throw new InvalidOperationException("Only an Approved or Suspended AgencyOffer can be Published.");
         }
 
         PublicationStatus = AgencyOfferPublicationStatus.Published;
         Visibility = AgencyOfferVisibility.Listed;
+        Touch();
     }
 
     public void Unpublish()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         if (PublicationStatus != AgencyOfferPublicationStatus.Published)
         {
             throw new InvalidOperationException("Only a Published AgencyOffer can be Unpublished.");
@@ -196,28 +285,56 @@ public sealed class AgencyOffer
         PublicationStatus = AgencyOfferPublicationStatus.Approved;
         Visibility = AgencyOfferVisibility.Unlisted;
         SalesAvailability = AgencyOfferSalesAvailability.Closed();
+        Touch();
+    }
+
+    /// <summary>P38 Suspend — published offer temporarily off the public channel.</summary>
+    public void Suspend()
+    {
+        EnsureMutable();
+        if (PublicationStatus != AgencyOfferPublicationStatus.Published)
+        {
+            throw new InvalidOperationException("Only a Published AgencyOffer can be Suspended.");
+        }
+
+        PublicationStatus = AgencyOfferPublicationStatus.Suspended;
+        Visibility = AgencyOfferVisibility.Unlisted;
+        SalesAvailability = AgencyOfferSalesAvailability.Closed();
+        Touch();
+    }
+
+    /// <summary>P38 Retire — terminal commercial retirement (distinct from Archived legacy path).</summary>
+    public void Retire()
+    {
+        SalesAvailability = AgencyOfferSalesAvailability.Closed();
+        Visibility = AgencyOfferVisibility.Unlisted;
+        PublicationStatus = AgencyOfferPublicationStatus.Retired;
+        Status = AgencyOfferStatus.Archived;
+        Touch();
     }
 
     public void Unlist()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         Visibility = AgencyOfferVisibility.Unlisted;
+        Touch();
     }
 
     /// <summary>
-    /// Return an Active listing to Draft and unlist. Archived offers cannot be reopened here.
+    /// Return an Active listing to Draft and unlist. Archived/Retired offers cannot be reopened here.
     /// </summary>
     public void Deactivate()
     {
-        EnsureNotArchived();
+        EnsureMutable();
         SalesAvailability = AgencyOfferSalesAvailability.Closed();
         Visibility = AgencyOfferVisibility.Unlisted;
-        if (PublicationStatus == AgencyOfferPublicationStatus.Published)
+        if (PublicationStatus is AgencyOfferPublicationStatus.Published or AgencyOfferPublicationStatus.Suspended)
         {
             PublicationStatus = AgencyOfferPublicationStatus.Approved;
         }
 
         Status = AgencyOfferStatus.Draft;
+        Touch();
     }
 
     public void Archive()
@@ -226,13 +343,20 @@ public sealed class AgencyOffer
         Visibility = AgencyOfferVisibility.Unlisted;
         PublicationStatus = AgencyOfferPublicationStatus.Archived;
         Status = AgencyOfferStatus.Archived;
+        Touch();
     }
 
-    private void EnsureNotArchived()
+    private void EnsureMutable()
     {
-        if (Status == AgencyOfferStatus.Archived)
+        if (Status == AgencyOfferStatus.Archived
+            || PublicationStatus is AgencyOfferPublicationStatus.Archived or AgencyOfferPublicationStatus.Retired)
         {
-            throw new InvalidOperationException("Archived AgencyOffer cannot be changed.");
+            throw new InvalidOperationException("Archived or Retired AgencyOffer cannot be changed.");
         }
+    }
+
+    private void Touch()
+    {
+        UpdatedAt = SystemClock.Instance.GetCurrentInstant();
     }
 }

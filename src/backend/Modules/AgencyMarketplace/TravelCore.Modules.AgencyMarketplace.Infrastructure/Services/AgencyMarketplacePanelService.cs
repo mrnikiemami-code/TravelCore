@@ -89,10 +89,25 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
             ? AgencyOfferDisplaySettings.Empty()
             : new AgencyOfferDisplaySettings(request.TitleOverride, request.Highlight);
 
-        var offer = AgencyOffer.Create(profileId, request.TourProductId, display, terms);
+        var offer = AgencyOffer.Create(
+            profileId,
+            request.TourProductId,
+            display,
+            terms,
+            ParseChannel(request.SalesChannel));
+        ApplyDepartureScope(offer, request.DepartureScopeMode, request.DepartureScopeIds);
         _db.AgencyOffers.Add(offer);
         await _db.SaveChangesAsync(cancellationToken);
         return Map(offer);
+    }
+
+    public async Task<AgencyOfferPanelResponse?> GetOfferAsync(
+        Guid offerId,
+        CancellationToken cancellationToken = default)
+    {
+        var offer = await _db.AgencyOffers.AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id == AgencyOfferId.From(offerId), cancellationToken);
+        return offer is null ? null : Map(offer);
     }
 
     public async Task<IReadOnlyList<AgencyOfferPanelResponse>> ListOffersAsync(
@@ -170,12 +185,45 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
         await _db.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task SuspendOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
+    {
+        var offer = await LoadOfferAsync(offerId, cancellationToken);
+        offer.Suspend();
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task RetireOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
+    {
+        var offer = await LoadOfferAsync(offerId, cancellationToken);
+        offer.Retire();
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
     private async Task<AgencyOffer> LoadOfferAsync(Guid offerId, CancellationToken cancellationToken)
     {
         return await _db.AgencyOffers
                 .SingleOrDefaultAsync(x => x.Id == AgencyOfferId.From(offerId), cancellationToken)
             ?? throw new KeyNotFoundException("AgencyOffer was not found.");
     }
+
+    private static void ApplyDepartureScope(
+        AgencyOffer offer,
+        string? mode,
+        IReadOnlyList<Guid>? departureIds)
+    {
+        if (string.Equals(mode, "Listed", StringComparison.OrdinalIgnoreCase))
+        {
+            offer.SetDepartureScopeListed(departureIds ?? Array.Empty<Guid>());
+            return;
+        }
+
+        offer.SetDepartureScopeAll();
+    }
+
+    private static AgencyOfferSalesChannel ParseChannel(string? channel) =>
+        Enum.TryParse<AgencyOfferSalesChannel>(channel, ignoreCase: true, out var parsed)
+            ? parsed
+            : AgencyOfferSalesChannel.Public;
 
     private static AgencyProfilePanelResponse Map(AgencyProfile profile) =>
         new(
@@ -196,6 +244,9 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
             offer.AgencyProfileId.Value,
             offer.TourProductId,
             offer.ReferencedTourDepartureId?.Value,
+            offer.DepartureScopeMode.ToString(),
+            offer.DepartureScopeIds.ToList(),
+            offer.SalesChannel.ToString(),
             offer.Display.TitleOverride,
             offer.Display.Highlight,
             offer.CommercialTerms.Notes,
@@ -204,5 +255,7 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
             offer.SalesAvailability.SalesOpen,
             offer.Status.ToString(),
             offer.Visibility.ToString(),
-            offer.PublicationStatus.ToString());
+            offer.PublicationStatus.ToString(),
+            offer.CreatedAt.ToString(),
+            offer.UpdatedAt.ToString());
 }
