@@ -4,7 +4,7 @@
 |-------|--------|
 | Document | `docs/plans/P35-provider-selection-worksheet.md` |
 | Task-ID | `TC-P35-T005` |
-| Status | **PROPOSED / Cursor PASS** — awaiting Architect ACCEPT + **user answers** |
+| Status | **ACCEPTED path** — user answers recorded 2026-08-21 · see T006 design |
 | Nature | Decision support only — **no vendor selected by Cursor** |
 | Sources | Facts only from `P35-provider-research-iran-uae.md` (T004) |
 
@@ -104,14 +104,16 @@ Architecture/design research may continue only via authorized `.task.md`.
 
 ---
 
-## Example answer block (for user)
+## Recorded user answers (2026-08-21)
 
-```text
-A: 1
-B: Yes
-C: Yes
-D: 1
-E: Yes
-F: Yes
-G: UAE
-```
+| Q | Answer (normalized) |
+|---|---------------------|
+| A Iran path | **Both** Behpardakht Mellat **and** Zarinpal (evaluate; no final pick) |
+| B Iran prerequisites | **Yes** (willing) |
+| C Settlement | Multi-currency OK; do not assume AED on Iranian rails |
+| D UAE path | **Stripe** |
+| E UAE company if needed | **Yes** |
+| F AED mandatory UAE | **No** |
+| G Launch | **Both parallel** |
+
+See `P35-provider-specific-design-iran-uae.md` (TC-P35-T006).

@@ -5,8 +5,8 @@
 | Document | `docs/plans/P35-production-payment-external-decision-intake.md` |
 | Task-ID | `TC-P35-T002` · updated by `TC-P35-T003` |
 | Phase | P35 — Production Payment Provider Readiness |
-| Status | **INTAKE PARTIALLY FILLED** — markets split; vendor still unresolved |
-| Production provider selection | **`BLOCKED_PENDING_PROVIDER_RESEARCH`** (merchant account + exact PSP still open) |
+| Status | **DECISIONS RECORDED** — dual Iran tracks + Stripe UAE; accounts still open |
+| Production provider selection | **`BLOCKED_ON_PROVIDER_ACCOUNT_FACTS`** (design ready; no live adapters) |
 | Nature | Documentation / governance only |
 
 See also: [`P35-market-provider-decision-matrix.md`](P35-market-provider-decision-matrix.md)
@@ -76,12 +76,15 @@ Provider-agnostic docs/tests only if Architect authorizes — see decision matri
 
 ```text
 PRODUCTION PROVIDER SELECTION:
-BLOCKED_PENDING_PROVIDER_RESEARCH
+BLOCKED_ON_PROVIDER_ACCOUNT_FACTS
 
-MARKETS:
-Iran = separate
-UAE  = separate
+IRAN TRACKS (no final pick):
+Behpardakht Mellat · Zarinpal
+
+UAE TRACK:
+Stripe (preferred)
 
 STRATEGY_POSTURE:
-MULTI_PROVIDER_LIKELY / MARKET_SPECIFIC_PROVIDER_REQUIRED
+MARKET_SPECIFIC_PROVIDER_ADAPTERS
+LAUNCH: parallel (One Writer for code)
 ```

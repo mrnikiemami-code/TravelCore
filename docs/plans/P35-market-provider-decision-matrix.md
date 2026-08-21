@@ -5,7 +5,7 @@
 | Document | `docs/plans/P35-market-provider-decision-matrix.md` |
 | Task-ID | `TC-P35-T003` |
 | Phase | P35 — Production Payment Provider Readiness |
-| Status | **PROPOSED / Cursor PASS** — awaiting Architect ACCEPT |
+| Status | **SUPERSEDED for readiness detail by T006** — see `P35-provider-specific-design-iran-uae.md` |
 | Nature | Architecture / business-input normalization only |
 | Baseline | `1d8b1a2` · business inputs supplied after T002 ACCEPT |
 
