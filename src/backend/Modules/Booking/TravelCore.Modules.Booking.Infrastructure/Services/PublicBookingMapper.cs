@@ -18,7 +18,7 @@ internal static class PublicBookingMapper
             booking.TourDeparture.LogicalId,
             rawAccessToken,
             AccessTokenIssued: rawAccessToken is not null,
-            Confirmed: false,
+            Confirmed: booking.Status == BookingStatus.Confirmed,
             MapMonetary(booking.MonetarySnapshot),
             MapHold(hold),
             booking.Passengers.OrderBy(x => x.Sequence).Select(MapPassenger).ToList());
@@ -31,7 +31,7 @@ internal static class PublicBookingMapper
             booking.Status.ToString(),
             booking.Source.Kind.ToString(),
             booking.TourDeparture.LogicalId,
-            Confirmed: false,
+            Confirmed: booking.Status == BookingStatus.Confirmed,
             booking.Contact is null
                 ? null
                 : new PublicBookingContactRead(

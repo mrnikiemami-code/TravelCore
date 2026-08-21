@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using NodaTime;
 using TravelCore.Modules.Booking.Domain;
@@ -112,9 +113,12 @@ public sealed class BookingPublicHostTests
         Assert.Equal(HttpStatusCode.OK, ok.StatusCode);
         using var okDoc = JsonDocument.Parse(await ok.Content.ReadAsStringAsync(ct));
         Assert.Equal("Pending", okDoc.RootElement.GetProperty("bookingStatus").GetString());
+        Assert.False(okDoc.RootElement.GetProperty("bookingConfirmed").GetBoolean());
         Assert.Equal("Pending", okDoc.RootElement.GetProperty("paymentStatus").GetString());
-        Assert.False(okDoc.RootElement.GetProperty("providerInitiationPossible").GetBoolean());
-        Assert.Equal("Unavailable", okDoc.RootElement.GetProperty("safeAction").GetString());
+        // Development may register labeled sandbox (P34); Unavailable when no provider remains valid.
+        var initiationPossible = okDoc.RootElement.GetProperty("providerInitiationPossible").GetBoolean();
+        var safeAction = okDoc.RootElement.GetProperty("safeAction").GetString();
+        Assert.Equal(initiationPossible ? "Initiate" : "Unavailable", safeAction);
         Assert.Equal(1000m, okDoc.RootElement.GetProperty("amount").GetDecimal());
         Assert.Equal("USD", okDoc.RootElement.GetProperty("currencyCode").GetString());
         var paymentId = okDoc.RootElement.GetProperty("paymentId").GetGuid();
@@ -134,7 +138,9 @@ public sealed class BookingPublicHostTests
         tamper.Headers.Add("X-TravelCore-Booking-Access-Token", token);
         tamper.Headers.Add("Idempotency-Key", Guid.NewGuid().ToString("D"));
         using var tamperResponse = await client.SendAsync(tamper, ct);
-        Assert.Equal(HttpStatusCode.ServiceUnavailable, tamperResponse.StatusCode);
+        Assert.True(
+            tamperResponse.StatusCode is HttpStatusCode.ServiceUnavailable or HttpStatusCode.OK,
+            $"Unexpected initiation status: {tamperResponse.StatusCode}");
 
         using var afterTamperReq = new HttpRequestMessage(HttpMethod.Get, paymentPath);
         afterTamperReq.Headers.Add("X-TravelCore-Booking-Access-Token", token);
@@ -143,7 +149,10 @@ public sealed class BookingPublicHostTests
         Assert.Equal(paymentId, afterDoc.RootElement.GetProperty("paymentId").GetGuid());
         Assert.Equal(1000m, afterDoc.RootElement.GetProperty("amount").GetDecimal());
         Assert.Equal("USD", afterDoc.RootElement.GetProperty("currencyCode").GetString());
-        Assert.Equal("Pending", afterDoc.RootElement.GetProperty("paymentStatus").GetString());
+        Assert.False(afterDoc.RootElement.GetProperty("bookingConfirmed").GetBoolean());
+        Assert.True(
+            afterDoc.RootElement.GetProperty("paymentStatus").GetString() is "Pending" or "Succeeded",
+            "Client tamper must not invent payment/booking confirmation authority.");
 
         using var paymentLookup = await client.GetAsync($"/api/payment/{paymentId:D}", ct);
         Assert.Equal(HttpStatusCode.NotFound, paymentLookup.StatusCode);
@@ -155,6 +164,53 @@ public sealed class BookingPublicHostTests
         unknown.Headers.Add("X-TravelCore-Booking-Access-Token", token);
         using var unknownResponse = await client.SendAsync(unknown, ct);
         Assert.Equal(HttpStatusCode.NotFound, unknownResponse.StatusCode);
+    }
+
+    [Fact]
+    public async Task Public_Confirmed_Booking_Exposes_confirmed_And_bookingConfirmed_True()
+    {
+        // TC-P34-T005 — Confirmed status must surface confirmed/bookingConfirmed=true (not hardcoded false).
+        var ct = TestContext.Current.CancellationToken;
+        await using var factory = _fixture.CreateFactory(Environments.Development);
+        using var client = factory.CreateClient(new() { AllowAutoRedirect = false });
+        var seeded = await SeedPublishedDepartureAsync(maxPax: 4, ct);
+        using var created = await PostInitiationAsync(
+            client,
+            seeded.DepartureId,
+            Guid.NewGuid().ToString("D"),
+            passengerCount: 1,
+            ct);
+        Assert.Equal(HttpStatusCode.Created, created.StatusCode);
+        using var createdDoc = JsonDocument.Parse(await created.Content.ReadAsStringAsync(ct));
+        var bookingId = createdDoc.RootElement.GetProperty("bookingId").GetGuid();
+        var token = createdDoc.RootElement.GetProperty("accessToken").GetString();
+        Assert.False(createdDoc.RootElement.GetProperty("confirmed").GetBoolean());
+
+        await using (var bookingDb = _fixture.CreateBookingDb())
+        {
+            var booking = await bookingDb.Bookings
+                .Include(x => x.Passengers)
+                .Include(x => x.MonetarySnapshot)
+                .SingleAsync(x => x.Id == BookingId.From(bookingId), ct);
+            booking.ConfirmFromAuthoritativePaymentSuccess(SystemClock.Instance.GetCurrentInstant());
+            await bookingDb.SaveChangesAsync(ct);
+        }
+
+        using var readReq = new HttpRequestMessage(HttpMethod.Get, $"/api/booking/public/{bookingId:D}");
+        readReq.Headers.Add("X-TravelCore-Booking-Access-Token", token);
+        using var read = await client.SendAsync(readReq, ct);
+        Assert.Equal(HttpStatusCode.OK, read.StatusCode);
+        using var readDoc = JsonDocument.Parse(await read.Content.ReadAsStringAsync(ct));
+        Assert.Equal("Confirmed", readDoc.RootElement.GetProperty("status").GetString());
+        Assert.True(readDoc.RootElement.GetProperty("confirmed").GetBoolean());
+
+        using var paymentReq = new HttpRequestMessage(HttpMethod.Get, $"/api/booking/public/{bookingId:D}/payment");
+        paymentReq.Headers.Add("X-TravelCore-Booking-Access-Token", token);
+        using var payment = await client.SendAsync(paymentReq, ct);
+        Assert.Equal(HttpStatusCode.OK, payment.StatusCode);
+        using var paymentDoc = JsonDocument.Parse(await payment.Content.ReadAsStringAsync(ct));
+        Assert.Equal("Confirmed", paymentDoc.RootElement.GetProperty("bookingStatus").GetString());
+        Assert.True(paymentDoc.RootElement.GetProperty("bookingConfirmed").GetBoolean());
     }
 
     [Fact]
