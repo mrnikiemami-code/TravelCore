@@ -25,13 +25,13 @@
 
 ## Commercial assessment
 
-**Q1 — Show to a potential customer as professional travel commerce?**  
+**Q1 — Show to a potential customer as professional travel commerce?**
 Yes, with caveats: credible demo path exists; not yet premium sell-ready.
 
-**Q2 — Marketplace product vs engineering demo?**  
+**Q2 — Marketplace product vs engineering demo?**
 Mostly marketplace presentation; DEMOFEED naming and sparse catalog keep a demo scent.
 
-**Q3 — Remaining gaps foundation vs blockers?**  
+**Q3 — Remaining gaps foundation vs blockers?**
 Foundation/product-scope gaps (Customer Dashboard, Agency Portal, Admin Console, DS maturity, catalog naming). Not architectural honesty blockers for this gate.
 
 ## Architecture honesty assessment
@@ -50,10 +50,10 @@ Confirmed from evidence + implementation scope of P36:
 
 ## Known limitations / acceptance risks
 
-1. DEMOFEED product naming still visible in titles  
-2. Design System 2.0 maturity incomplete  
-3. Customer Dashboard / Agency Portal / Admin Console not in P36 scope  
-4. Catalog sparsity (few live rows) limits “marketplace fullness” feel  
+1. DEMOFEED product naming still visible in titles
+2. Design System 2.0 maturity incomplete
+3. Customer Dashboard / Agency Portal / Admin Console not in P36 scope
+4. Catalog sparsity (few live rows) limits “marketplace fullness” feel
 5. North Star gap remains — PARTIAL, not SELLABLE_VISUALLY
 
 ## Final verdict
