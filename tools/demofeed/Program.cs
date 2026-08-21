@@ -9,6 +9,8 @@ internal static class Program
     private const string PlaceSeedTaskId = "TC-DEMOFEED-T004";
     private const string TourSeedTaskId = "TC-DEMOFEED-T005";
 
+    private const string MediaEnrichTaskId = "TC-P32-T002";
+
     private static async Task<int> Main(string[] args)
     {
         if (args.Length == 0 || IsHelp(args[0]))
@@ -24,6 +26,7 @@ internal static class Program
             "seed" => await SeedAsync(args),
             "list" => await ListAsync(args),
             "ensure-schema" => await EnsureSchemaAsync(args),
+            "enrich-media" => await EnrichMediaAsync(args),
             "purge" => FailClosed("purge", "TC-DEMOFEED-GATE deletion strategy / authorized purge"),
             _ => Unknown(args[0]),
         };
@@ -40,6 +43,7 @@ internal static class Program
         Console.WriteLine($"Destination seed task: {DestinationSeedTaskId}");
         Console.WriteLine($"Place (Hotel) seed task: {PlaceSeedTaskId}");
         Console.WriteLine($"Tour seed task: {TourSeedTaskId}");
+        Console.WriteLine($"Media enrich task: {MediaEnrichTaskId}");
         Console.WriteLine("Kind: temporary removable feeder host/boundary");
         Console.WriteLine("Production module registration: NO");
         Console.WriteLine("Domain migrations owned by: ReferenceDataMigrator / DestinationMigrator / PlaceMigrator / TourMigrator / MediaMigrator");
@@ -58,7 +62,8 @@ internal static class Program
         Console.WriteLine("- Destination writes only via DestinationApplicationService");
         Console.WriteLine("- Place writes only via PlaceApplicationService (IPlaceService)");
         Console.WriteLine("- Tour writes only via ITourProductService / ITourProductSemanticLinkService / ITourProductMediaService");
-        Console.WriteLine("- Media upload/attach via IMediaUploadService + Place/Tour SetCover");
+        Console.WriteLine("- Media upload/attach via IMediaUploadService + Place/Tour SetCover/Gallery");
+        Console.WriteLine("- Demo pack enrich via enrich-media (TC-P32-T002) — Destination attach still blocked (no owner API)");
         Console.WriteLine("- Schema apply only via owner migrators when --ensure-schema");
         Console.WriteLine("- Forbidden: Booking · Payment · Pricing · HotelBooking · scraping · competitor copy");
         return 0;
@@ -135,6 +140,21 @@ internal static class Program
         return 2;
     }
 
+    private static async Task<int> EnrichMediaAsync(string[] args)
+    {
+        try
+        {
+            var configuration = DemoFeedHost.BuildConfiguration(args);
+            await using var services = DemoFeedHost.BuildServices(configuration);
+            return await DemoMediaPackEnricher.EnrichAsync(services, args, CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"DEMOFEED enrich-media failed: {ex.Message}");
+            return 3;
+        }
+    }
+
     private static async Task<int> EnsureSchemaAsync(string[] args)
     {
         try
@@ -179,8 +199,10 @@ internal static class Program
         Console.WriteLine("  dotnet run --project tools/demofeed -- list destinations --connection \"...\"");
         Console.WriteLine("  dotnet run --project tools/demofeed -- list places --connection \"...\"");
         Console.WriteLine("  dotnet run --project tools/demofeed -- list tours --connection \"...\"");
+        Console.WriteLine("  dotnet run --project tools/demofeed -- enrich-media --connection \"...\" [--pack-root <path>]");
         Console.WriteLine();
         Console.WriteLine("Connection: ConnectionStrings__TravelCore env var or --connection");
         Console.WriteLine("Fail-closed: purge (GATE)");
+        Console.WriteLine("Media pack default: docs/product-experience/assets/demo-media/");
     }
 }

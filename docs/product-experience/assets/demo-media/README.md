@@ -3,10 +3,10 @@
 | Field | Value |
 |-------|--------|
 | Path | `docs/product-experience/assets/demo-media/` |
-| Task | `TC-P32-T001` |
+| Task | `TC-P32-T001` (pack) · `TC-P32-T002` (Media enrich via DEMOFEED) |
 | Purpose | Repository-safe sales-demo imagery for existing DEMOFEED entities |
 | Permanence | **Temporary / replaceable** — not production partner photography |
-| Upload to Media | Deferred to authorized `TC-P32-T002` |
+| Upload to Media | **Done for Hotel/Tour** via `tools/demofeed enrich-media` · Destination attach blocked (no owner API) |
 
 ## Rules
 
@@ -39,6 +39,18 @@ demo-media/
 | Tour Tehran 1 | cover |
 | Tour Istanbul 1 | cover |
 
-## Next step
+## Integration status (T002)
 
-Authorized **`TC-P32-T002`**: enrich DEMOFEED via Media owner upload/attach paths so Public Home/Hotel/Tour success states show these covers.
+| Entity | Status |
+|--------|--------|
+| Hotels (`demofeed-hotel-*`) | **Enriched** — Cover + Gallery via Place Media ownership |
+| Tours (`demofeed-tour-*`) | **Enriched** — Cover via Tour Media ownership |
+| Destinations (`demofeed-ir*`, `demofeed-tr*`) | **Not attached** — no Destination↔Media owner API (Architectural Concern) |
+
+Command:
+
+```bash
+dotnet run --project tools/demofeed -- enrich-media --connection "..."
+```
+
+Pack PNGs were re-encoded once so Media P06-R6 SVG sniff (first 512 bytes) does not false-positive on binary coincidence.

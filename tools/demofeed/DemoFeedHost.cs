@@ -32,11 +32,13 @@ internal static class DemoFeedHost
 {
     public const string DemoCodePrefix = "demofeed-";
 
+    public static string ResolveMediaRoot() =>
+        Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, ".local", "demofeed-media"));
+
     public static IConfiguration BuildConfiguration(string[] args)
     {
         var connectionFromArgs = ExtractConnectionArg(args);
-        var mediaRoot = Path.GetFullPath(
-            Path.Combine(AppContext.BaseDirectory, ".local", "demofeed-media"));
+        var mediaRoot = ResolveMediaRoot();
 
         var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)

@@ -29,11 +29,23 @@ dotnet run --project tools/demofeed -- seed tours --ensure-schema --connection "
 dotnet run --project tools/demofeed -- list destinations --connection "..."
 dotnet run --project tools/demofeed -- list places --connection "..."
 dotnet run --project tools/demofeed -- list tours --connection "..."
+dotnet run --project tools/demofeed -- enrich-media --connection "..." [--pack-root docs/product-experience/assets/demo-media]
 ```
 
 Connection may also be supplied as env `ConnectionStrings__TravelCore`.
 
 `purge` remains **fail-closed** until GATE.
+
+## Media pack enrichment (TC-P32-T002)
+
+Command: `enrich-media`
+
+- Reads `docs/product-experience/assets/demo-media/manifest.json`
+- Uploads via `IMediaUploadService` (local FS under `.local/demofeed-media`)
+- Attaches via owner paths: Place `SetCover` / `AddGalleryItem`, Tour `SetCover`
+- Idempotent via feeder-local ledger (`.local/demofeed-media/enrichment-ledger.json`)
+- **Destination covers skipped** — no Destination↔Media owner attach API (Architectural Concern / known limitation)
+- Does **not** change frontend pages in this task
 
 ## Destination demo identity (T003)
 

@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** · awaiting T002 file) |
+| Current Phase | **P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T002` Cursor **PASS** · awaiting Architect review) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P32 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect-authorized `TC-P32-T002` only — do not invent / do not auto-start |
+| Current Next Task | Architect review of `TC-P32-T002` only — do not invent / do not auto-start T003+ |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -946,15 +946,17 @@ OUT: backend redesign · fake rates/availability · scraping · DemoFeed as perm
 
 ## P32 — Commercial Demo Data & Media Enrichment
 
-**Status:** **ACTIVE** (`TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** · next `TC-P32-T002` awaits Architect file)
+**Status:** **ACTIVE** (`TC-P32-T002` Cursor **PASS** · Hotel/Tour enriched · Destination attach known limitation)
 
 **Strategy:** [`docs/plans/P32-commercial-demo-media-strategy.md`](plans/P32-commercial-demo-media-strategy.md)
 
 **Asset pack:** [`docs/product-experience/assets/demo-media/`](../product-experience/assets/demo-media/)
 
+**Feeder command:** `dotnet run --project tools/demofeed -- enrich-media`
+
 Goal: replace weak/synthetic visuals with a replaceable, legally safe demo media pack so sales demos feel like a serious travel product.
 
-Proposed sequence (not auto-executable): T001 pack foundation → T002 DEMOFEED Media Enrichment → T003 Live Demo Scenario Validation.
+Proposed sequence (not auto-executable): T001 pack foundation ✅ → T002 DEMOFEED Media Enrichment (Cursor PASS) → T003 Live Demo Scenario Validation (Architect-authorized only).
 
 OUT: architecture redesign · Pricing/Booking · scraping · competitor copy.
 

@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** · awaiting `TC-P32-T002` file) |
+| Current Phase | **P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T002` Cursor **PASS** · awaiting Architect review) |
 | Previous Phase | **P30 — Product Experience Foundation** (**FOUNDATION ACCEPTED** — `TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | None — `TC-P32-T001` Architect **ACCEPTED WITH KNOWN LIMITATIONS** |
-| Current Next Task | Architect-authorized `TC-P32-T002` only — do not invent / do not auto-start |
+| Current Active Product Task | `TC-P32-T002` Cursor **PASS** — awaiting Architect ACCEPT |
+| Current Next Task | Architect review of `TC-P32-T002` only — do not invent / do not auto-start T003+ |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -416,6 +416,7 @@
 | P31 T005 | `TC-P31-T005` **ACCEPTED WITH KNOWN LIMITATIONS** — Tour commerce polish |
 | P31 GATE | `TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — evidence [`docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`](product-experience/evidence/P31-GATE/GATE-REVIEW.md) |
 | P32 Media Strategy | `TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** — [`docs/plans/P32-commercial-demo-media-strategy.md`](plans/P32-commercial-demo-media-strategy.md) · pack [`docs/product-experience/assets/demo-media/`](product-experience/assets/demo-media/) |
+| P32 Media Enrichment | `TC-P32-T002` Cursor **PASS** — `tools/demofeed enrich-media` · Hotel/Tour via Media ownership · Destination attach blocked (no owner API) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |
