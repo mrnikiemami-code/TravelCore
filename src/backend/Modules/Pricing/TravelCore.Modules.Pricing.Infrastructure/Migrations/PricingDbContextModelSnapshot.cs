@@ -148,6 +148,10 @@ namespace TravelCore.Modules.Pricing.Infrastructure.Migrations
                         .HasColumnType("character varying(12)")
                         .HasColumnName("requested_display_currency");
 
+                    b.Property<Guid?>("CommercialContextAgencyOfferId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("commercial_context_agency_offer_id");
+
                     b.Property<Guid?>("SnapshotTargetId")
                         .HasColumnType("uuid")
                         .HasColumnName("snapshot_target_id");

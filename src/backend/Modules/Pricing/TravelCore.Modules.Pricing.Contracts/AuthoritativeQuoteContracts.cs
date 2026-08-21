@@ -21,7 +21,8 @@ public sealed record AuthoritativeQuote(
     DateTimeOffset ExpiresAt,
     string Currency,
     decimal TotalAmount,
-    IReadOnlyList<AuthoritativeQuoteComponent> Components);
+    IReadOnlyList<AuthoritativeQuoteComponent> Components,
+    Guid? CommercialContextAgencyOfferId = null);
 
 public interface IAuthoritativeQuoteQuery
 {
@@ -29,8 +30,9 @@ public interface IAuthoritativeQuoteQuery
 }
 
 /// <summary>
-/// Pricing-owned Quote issuance for trusted Booking consumption (TC-P19-T008 / P19-R8).
+/// Pricing-owned Quote issuance for trusted Booking consumption (TC-P19-T008 / P19-R8; P38-T008).
 /// Issues a new Quote from the live Price — not a Booking amount, not Payment, not a public mutate API.
+/// Optional AgencyOffer id is commercial-context metadata only — AgencyOffer ≠ Price; amounts unchanged.
 /// Time-to-live is Pricing-owned; Booking copies ExpiresAt onto CapacityHold rather than inventing a timeout.
 /// </summary>
 public static class AuthoritativeQuoteIssuePolicy
@@ -43,5 +45,6 @@ public interface IAuthoritativeQuoteIssuer
     Task<AuthoritativeQuote?> IssueForTourDepartureAsync(
         Guid tourDepartureId,
         DateTimeOffset nowUtc,
+        Guid? commercialContextAgencyOfferId = null,
         CancellationToken cancellationToken = default);
 }

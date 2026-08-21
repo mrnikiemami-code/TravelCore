@@ -160,11 +160,40 @@ public sealed class QuoteAggregateTests
     }
 
     [Fact]
+    public void CreateFromPrice_Stores_CommercialContextAgencyOfferId_As_Metadata_Only()
+    {
+        var offerId = Guid.Parse("0198b3e0-0000-7000-8000-000000000901");
+        var quote = Quote.CreateFromPrice(
+            SamplePrice(),
+            CreatedAt,
+            ExpiresAt,
+            commercialContextAgencyOfferId: offerId);
+
+        Assert.Equal(offerId, quote.CommercialContextAgencyOfferId);
+        Assert.Equal("USD", quote.Currency.Value);
+        Assert.Equal(1140m, quote.Total.Amount);
+    }
+
+    [Fact]
+    public void CreateFromPrice_Rejects_Empty_CommercialContextAgencyOfferId()
+    {
+        var ex = Assert.Throws<ArgumentException>(() =>
+            Quote.CreateFromPrice(
+                SamplePrice(),
+                CreatedAt,
+                ExpiresAt,
+                commercialContextAgencyOfferId: Guid.Empty));
+
+        Assert.Equal("commercialContextAgencyOfferId", ex.ParamName);
+    }
+
+    [Fact]
     public void CreateFromPrice_Without_RequestedDisplayCurrency_Leaves_Metadata_Null()
     {
         var quote = Quote.CreateFromPrice(SamplePrice(), CreatedAt, ExpiresAt);
 
         Assert.Null(quote.RequestedDisplayCurrency);
+        Assert.Null(quote.CommercialContextAgencyOfferId);
         Assert.Equal("USD", quote.Currency.Value);
         Assert.Equal(1140m, quote.Total.Amount);
     }

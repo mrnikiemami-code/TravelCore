@@ -50,6 +50,10 @@ internal sealed class QuoteConfiguration : IEntityTypeConfiguration<Quote>
                 code => code == null ? null : code.Value,
                 value => string.IsNullOrWhiteSpace(value) ? null : PricingCurrency.ParseRequired(value));
 
+        // Logical AgencyOffer provenance only — no FK to AgencyMarketplace (P38-T008).
+        builder.Property(x => x.CommercialContextAgencyOfferId)
+            .HasColumnName("commercial_context_agency_offer_id");
+
         builder.Ignore(x => x.Currency);
         builder.Ignore(x => x.Total);
         builder.Ignore(x => x.SnapshotComponentsOrdered);

@@ -49,6 +49,13 @@ public sealed class QuotePersistenceModelTests
         Assert.Null(quoteType.FindProperty("DisplayAmount"));
         Assert.Null(quoteType.FindProperty("ExchangeRate"));
 
+        var offerContext = quoteType.FindProperty(nameof(Quote.CommercialContextAgencyOfferId));
+        Assert.NotNull(offerContext);
+        Assert.True(offerContext.IsNullable);
+        Assert.Equal("commercial_context_agency_offer_id", offerContext.GetColumnName());
+        Assert.Null(quoteType.FindProperty("AgencyOfferAmount"));
+        Assert.Null(quoteType.FindProperty("CommissionAmount"));
+
         // SourcePriceId is logical provenance — must not FK to prices (snapshot independence).
         Assert.DoesNotContain(
             quoteType.GetForeignKeys(),

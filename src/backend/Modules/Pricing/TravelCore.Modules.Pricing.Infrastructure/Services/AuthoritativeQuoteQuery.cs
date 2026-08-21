@@ -56,6 +56,7 @@ public sealed class AuthoritativeQuoteQuery : IAuthoritativeQuoteQuery
             quote.ExpiresAt.ToDateTimeOffset(),
             quote.Currency.Value,
             quote.Total.Amount,
-            components);
+            components,
+            quote.CommercialContextAgencyOfferId);
     }
 }

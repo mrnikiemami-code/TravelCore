@@ -10,6 +10,8 @@ namespace TravelCore.Modules.Pricing.Domain;
 /// not the live <see cref="Price"/>, not a Booking amount, and not Payment.
 /// Ownership: Pricing → Quote → PriceSnapshot + Expiration.
 /// Optional <see cref="RequestedDisplayCurrency"/> is metadata only — Pricing does not convert.
+/// Optional <see cref="CommercialContextAgencyOfferId"/> is logical provenance metadata only (P38-T008) —
+/// it does not change snapshot amounts and is not a Price target.
 /// Must not carry Customer / Passenger / Payment / Reservation / Booking fields.
 /// </summary>
 public sealed class Quote
@@ -28,7 +30,8 @@ public sealed class Quote
         Guid? snapshotTargetId,
         Instant createdAt,
         Instant expiresAt,
-        CurrencyCode? requestedDisplayCurrency)
+        CurrencyCode? requestedDisplayCurrency,
+        Guid? commercialContextAgencyOfferId)
     {
         if (id.Value == Guid.Empty)
         {
@@ -69,6 +72,13 @@ public sealed class Quote
             }
         }
 
+        if (commercialContextAgencyOfferId == Guid.Empty)
+        {
+            throw new ArgumentException(
+                "CommercialContextAgencyOfferId cannot be empty Guid.",
+                nameof(commercialContextAgencyOfferId));
+        }
+
         Id = id;
         SourcePriceId = sourcePriceId;
         SnapshotTargetType = snapshotTargetType;
@@ -76,6 +86,7 @@ public sealed class Quote
         CreatedAt = createdAt;
         ExpiresAt = expiresAt;
         RequestedDisplayCurrency = requestedDisplayCurrency;
+        CommercialContextAgencyOfferId = commercialContextAgencyOfferId;
     }
 
     public QuoteId Id { get; private set; }
@@ -107,6 +118,12 @@ public sealed class Quote
     /// remains <see cref="Currency"/> / <see cref="Total"/> (price currency). Same-code requests are allowed.
     /// </summary>
     public CurrencyCode? RequestedDisplayCurrency { get; private set; }
+
+    /// <summary>
+    /// Optional AgencyOffer logical id at issuance (P38-T008). Metadata only —
+    /// AgencyOffer ≠ Price; amounts still come from TourDeparture Price snapshot.
+    /// </summary>
+    public Guid? CommercialContextAgencyOfferId { get; private set; }
 
     /// <summary>Immutable PriceSnapshot lines (kind + money) captured at quote time.</summary>
     public IReadOnlyCollection<QuoteSnapshotComponent> SnapshotComponents => _snapshotComponents;
@@ -152,7 +169,8 @@ public sealed class Quote
         Price price,
         Instant createdAt,
         Instant expiresAt,
-        string? requestedDisplayCurrency = null)
+        string? requestedDisplayCurrency = null,
+        Guid? commercialContextAgencyOfferId = null)
     {
         ArgumentNullException.ThrowIfNull(price);
 
@@ -167,7 +185,8 @@ public sealed class Quote
             expiresAt,
             price.TargetType,
             price.TargetId,
-            requestedDisplayCurrency);
+            requestedDisplayCurrency,
+            commercialContextAgencyOfferId);
     }
 
     /// <summary>
@@ -181,7 +200,8 @@ public sealed class Quote
         Instant expiresAt,
         PriceTargetType? snapshotTargetType = null,
         Guid? snapshotTargetId = null,
-        string? requestedDisplayCurrency = null)
+        string? requestedDisplayCurrency = null,
+        Guid? commercialContextAgencyOfferId = null)
     {
         ArgumentNullException.ThrowIfNull(snapshotComponents);
 
@@ -201,7 +221,8 @@ public sealed class Quote
             snapshotTargetId,
             createdAt,
             expiresAt,
-            ParseOptionalRequestedDisplayCurrency(requestedDisplayCurrency));
+            ParseOptionalRequestedDisplayCurrency(requestedDisplayCurrency),
+            commercialContextAgencyOfferId);
 
         foreach (var definition in snapshotComponents)
         {

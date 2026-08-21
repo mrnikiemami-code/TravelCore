@@ -82,6 +82,9 @@ public sealed class PublicBookingSurfaceService : IPublicBookingInitiationServic
         var quote = await _quotes.IssueForTourDepartureAsync(
             request.TourDepartureId,
             now.ToDateTimeOffset(),
+            commercialContextAgencyOfferId: request.AgencyOfferId is Guid offerId && offerId != Guid.Empty
+                ? offerId
+                : null,
             cancellationToken)
             ?? throw new InvalidOperationException("Authoritative Quote could not be issued because no Price exists.");
 

@@ -22,11 +22,19 @@ public sealed class AuthoritativeQuoteIssuer : IAuthoritativeQuoteIssuer
     public async Task<AuthoritativeQuote?> IssueForTourDepartureAsync(
         Guid tourDepartureId,
         DateTimeOffset nowUtc,
+        Guid? commercialContextAgencyOfferId = null,
         CancellationToken cancellationToken = default)
     {
         if (tourDepartureId == Guid.Empty)
         {
             throw new ArgumentException("TourDepartureId cannot be empty.", nameof(tourDepartureId));
+        }
+
+        if (commercialContextAgencyOfferId == Guid.Empty)
+        {
+            throw new ArgumentException(
+                "CommercialContextAgencyOfferId cannot be empty Guid.",
+                nameof(commercialContextAgencyOfferId));
         }
 
         var now = Instant.FromDateTimeOffset(nowUtc);
@@ -41,7 +49,11 @@ public sealed class AuthoritativeQuoteIssuer : IAuthoritativeQuoteIssuer
         }
 
         var expiresAt = now.Plus(Duration.FromTimeSpan(AuthoritativeQuoteIssuePolicy.TimeToLive));
-        var quote = Quote.CreateFromPrice(price, now, expiresAt);
+        var quote = Quote.CreateFromPrice(
+            price,
+            now,
+            expiresAt,
+            commercialContextAgencyOfferId: commercialContextAgencyOfferId);
         _db.Quotes.Add(quote);
         await _db.SaveChangesAsync(cancellationToken);
         return AuthoritativeQuoteQuery.Map(quote);
