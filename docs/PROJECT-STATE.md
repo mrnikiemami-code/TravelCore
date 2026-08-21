@@ -30,7 +30,7 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` · AWAITING_ARCHITECT_REVIEW) |
+| Current Phase | **P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** · awaiting `TC-P32-T002` file) |
 | Previous Phase | **P30 — Product Experience Foundation** (**FOUNDATION ACCEPTED** — `TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P32-T001` — Commercial Demo Media Strategy & Asset Pack foundation |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-P32-T001`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-execute T002+ |
+| Current Active Product Task | None — `TC-P32-T001` Architect **ACCEPTED WITH KNOWN LIMITATIONS** |
+| Current Next Task | Architect-authorized `TC-P32-T002` only — do not invent / do not auto-start |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |

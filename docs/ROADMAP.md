@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` · AWAITING_ARCHITECT_REVIEW) |
+| Current Phase | **P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` **ACCEPTED WITH KNOWN LIMITATIONS** · awaiting T002 file) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P32 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
