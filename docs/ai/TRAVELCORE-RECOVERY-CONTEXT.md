@@ -26,22 +26,27 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T005` Cursor **PASS** · awaiting Architect review)
+**P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-GATE` Cursor **PASS WITH KNOWN LIMITATIONS** · awaiting Architect ACCEPT)
 
-## Completed
+## Completed (Cursor)
 
-- `TC-P32-T001` … `TC-P32-T005` Cursor **PASS** (T001 Architect ACCEPTED WITH KNOWN LIMITATIONS earlier)
+- `TC-P32-T001` … `TC-P32-T009` (T006 = BLOCKED finding; T007–T009 Destination Cover path)
+- `TC-P32-GATE` review artifact: `docs/product-experience/evidence/P32-GATE/GATE-REVIEW.md`
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T005 RESULT.
+**None** — WAITING for Architect after GATE RESULT. Do not invent next phase.
 
-## Open Blockers
+## Open Limitations (accepted in GATE review)
 
-Destination media attach — no Destination↔Media owner API.
+- Destination Gallery deferred (Option A Cover only)
+- Hotel gallery pack density < UI slots
+- DemoFeed → Api media blob sync is runtime env
+- Pricing/Booking engines intentionally absent
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P32-GATE Cursor PASS WITH KNOWN LIMITATIONS |
 | 2026-08-21 | Sync after TC-P32-T005 hotel presentation completeness |
