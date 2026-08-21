@@ -7,14 +7,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TravelCore.Tools.DemoFeed</RootNamespace>
     <AssemblyName>TravelCore.Tools.DemoFeed</AssemblyName>
-    <!-- Temporary DEMOFEED tool — not a product module. Removable after GATE purge. -->
-    <Description>Temporary removable DEMOFEED feeder host/boundary (TC-DEMOFEED-T002).</Description>
+    <Description>Temporary removable DEMOFEED feeder host/boundary (TC-DEMOFEED-T002/T003).</Description>
   </PropertyGroup>
 
   <!--
-    T002 intentionally has ZERO project references to Modules/* or TravelCore.Api.
-    Later seed tasks (T003+) may add Contracts-only / controlled host wiring —
-    never ITravelCoreModule registration into production Program.cs.
+    Owner-path references only. Never register this tool as ITravelCoreModule in TravelCore.Api.
+    T003 wires Destination + ReferenceData Infrastructure for in-process seed.
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\backend\Modules\Destination\TravelCore.Modules.Destination.Infrastructure\TravelCore.Modules.Destination.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\backend\Modules\ReferenceData\TravelCore.Modules.ReferenceData.Infrastructure\TravelCore.Modules.ReferenceData.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
+  </ItemGroup>
 
 </Project>

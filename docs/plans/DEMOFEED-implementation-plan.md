@@ -89,13 +89,13 @@ If a demo marker column would require a domain migration, **defer that approach*
 
 | Task | Deliverable | Status |
 |------|-------------|--------|
-| `TC-DEMOFEED-T002` | Removable feeder host/boundary (`tools/demofeed`, no module registration, no migrations) | **DONE** (this activation cycle) |
-| `TC-DEMOFEED-T003` | Destination demo seed (owner write path · identifiable · no ownership leak) | NEXT (requires new Architect `.task.md`) |
-| `TC-DEMOFEED-T004` | Hotel (Place) + image demo seed (Place + Media attach · not HotelBooking) | PENDING |
+| `TC-DEMOFEED-T002` | Removable feeder host/boundary (`tools/demofeed`, no module registration, no demofeed schema) | **DONE** |
+| `TC-DEMOFEED-T003` | Destination demo seed (owner write path · identifiable · no ownership leak) | **DONE** |
+| `TC-DEMOFEED-T004` | Hotel (Place) + image demo seed (Place + Media attach · not HotelBooking) | NEXT (requires new Architect `.task.md`) |
 | `TC-DEMOFEED-T005` | Tour + image demo seed (Tour + Media attach · not Booking/Pricing mutation) | PENDING |
 | `TC-DEMOFEED-GATE` | Track acceptance: data present · boundaries held · deletion strategy evidenced | PENDING |
 
-Do **not** invent extra tasks. Do **not** auto-execute T003+ without a new authorized Architect task file.
+Do **not** invent extra tasks. Do **not** auto-execute T004+ without a new authorized Architect task file.
 
 ---
 
@@ -128,3 +128,4 @@ Do **not** invent extra tasks. Do **not** auto-execute T003+ without a new autho
 |------|--------|
 | 2026-08-20 | Initial PLAN from `TC-DEMOFEED-PLAN` envelope · docs only |
 | 2026-08-21 | Activated after P30 FOUNDATION ACCEPTED · `TC-DEMOFEED-T002` `tools/demofeed` boundary |
+| 2026-08-21 | `TC-DEMOFEED-T003` Destination demo seed via owner application service |
