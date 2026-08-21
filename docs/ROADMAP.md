@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **Post-P30 — DEMOFEED Data Enablement** (`TC-DEMOFEED-GATE` Cursor PASS · AWAITING_ARCHITECT_REVIEW) |
-| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE (Cursor PASS)** |
+| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-T001` plan · AWAITING_ARCHITECT_REVIEW) |
+| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 PLANNING** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-DEMOFEED-GATE`; then next authorized `.task.md` / `.gate.md` only — do not invent |
+| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T001`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-implement T002+ |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -912,7 +912,7 @@ Curated home discovery composition after HOTIDX — closes DISCLINK-T015 deferra
 
 ## Demo Feeding Sequence (temporary)
 
-**Status:** **GATE Cursor PASS** (`T002`–`T005` done · evidence `docs/plans/DEMOFEED-GATE-acceptance-evidence.md` · AWAITING_ARCHITECT_REVIEW)
+**Status:** **GATE ACCEPTED** (`T002`–`T005` · evidence `docs/plans/DEMOFEED-GATE-acceptance-evidence.md`)
 
 **Implementation plan:** [`docs/plans/DEMOFEED-implementation-plan.md`](plans/DEMOFEED-implementation-plan.md)
 
@@ -922,11 +922,25 @@ Temporary removable demo population — **not** a permanent module:
 2. Destination demo seed — **DONE**
 3. Hotel (Place) + image demo seed — **DONE**
 4. Tour + image demo seed — **DONE**
-5. Gate + deletion strategy — **Cursor GATE PASS** (purge still fail-closed until authorized cleanup)
+5. Gate + deletion strategy — **ACCEPTED** (purge still fail-closed until authorized cleanup)
 
 OUT: Booking · Payment · Pricing · core redesign · scraping in PLAN
 
-**Architect 2026-08-21:** DEMOFEED activated after P30 FOUNDATION ACCEPTED (`TC-DEMOFEED-ACTIVATE-001`).
+**Architect 2026-08-21:** DEMOFEED activated after P30 FOUNDATION ACCEPTED (`TC-DEMOFEED-ACTIVATE-001`). GATE **ACCEPTED**.
+
+---
+
+## P31 — Commercial Demo Experience
+
+**Status:** **PLANNING** (`TC-P31-T001` · AWAITING_ARCHITECT_REVIEW)
+
+**Plan:** [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md)
+
+Goal: sellable Public marketplace demo for tourism businesses (Home · Hotel · Tour) without breaking ownership boundaries.
+
+Proposed sequence (not auto-executable): T002 content strategy → T003 Home → T004 Hotel polish → T005 Tour polish → GATE.
+
+OUT: backend redesign · fake rates/availability · scraping · DemoFeed as permanent module.
 
 ---
 
@@ -1003,5 +1017,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | MODOPS | Moderation Operations Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-MODOPS-GATE`) |
 | HOTIDX | Hotel Catalog Browse Index Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOTIDX-GATE`) |
 | HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
-| DEMOFEED | Temporary Demo Feeding Sequence | **GATE Cursor PASS** (`T002`–`T005` · AWAITING_ARCHITECT_REVIEW) |
+| DEMOFEED | Temporary Demo Feeding Sequence | **GATE ACCEPTED** (`T002`–`T005`) |
+| P31 | Commercial Demo Experience | **PLANNING** (`TC-P31-T001` · [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

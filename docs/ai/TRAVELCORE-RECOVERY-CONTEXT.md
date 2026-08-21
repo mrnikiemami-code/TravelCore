@@ -26,7 +26,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**Post-P30 — DEMOFEED Data Enablement** (P30 FOUNDATION ACCEPTED)
+**P31 — Commercial Demo Experience** (planning; P30 + DEMOFEED foundations accepted)
 
 ## Completed
 
@@ -36,11 +36,8 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-P30-T002`…`T009` Architect **ACCEPTED** (known limitations where noted)
 - `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — P30 FOUNDATION ACCEPTED (`7b34e33`)
 - `TC-DEMOFEED-PLAN` authored · activated by `TC-DEMOFEED-ACTIVATE-001`
-- `TC-DEMOFEED-T002` **DONE** — removable feeder host/boundary at `tools/demofeed`
-- `TC-DEMOFEED-T003` **DONE** — Destination demo seed (`demofeed-*` via DestinationApplicationService)
-- `TC-DEMOFEED-T004` **DONE** — Place (Hotel) + Media cover seed (`demofeed-hotel-*` via IPlaceService + IMediaUploadService)
-- `TC-DEMOFEED-T005` **DONE** — TourProduct Package + Media cover seed (`demofeed-tour-*` via ITourProductService + Media)
-- `TC-DEMOFEED-GATE` **Cursor PASS** — evidence `docs/plans/DEMOFEED-GATE-acceptance-evidence.md` (AWAITING_ARCHITECT_REVIEW)
+- `TC-DEMOFEED-T002`…`T005` **DONE** · `TC-DEMOFEED-GATE` **ACCEPTED**
+- `TC-P31-T001` **Cursor PASS** — plan `docs/plans/P31-commercial-demo-experience-plan.md` (AWAITING_ARCHITECT_REVIEW)
 
 ## Current Important Locks
 
@@ -48,7 +45,8 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
 | P30 | **FOUNDATION ACCEPTED** |
-| DEMOFEED | **GATE Cursor PASS** (`T002`–`T005` · Architect ACCEPT pending) |
+| DEMOFEED | **GATE ACCEPTED** (`T002`–`T005`) |
+| P31 | **PLANNING** (`TC-P31-T001`) |
 | Feeder path | `tools/demofeed` — not an `ITravelCoreModule` · not in Api composition |
 | Demo identity | code/slug prefix `demofeed-` |
 | One Design System / Three Experiences | Public · Admin · Agency |
@@ -69,12 +67,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-DEMOFEED-GATE`** Cursor review complete (awaiting Architect ACCEPT/REWORK).
+**`TC-P31-T001`** plan complete (awaiting Architect ACCEPT/REWORK).
 
 ## Next Planned Work
 
-Architect decision on GATE.
-Then **only** a new authorized `.task.md` / `.gate.md` — do not invent experience re-review / purge / next phase.
+Architect decision on T001.
+Then **only** a new authorized `.task.md` / `.gate.md` — do not auto-implement T002+.
 
 ## Open Blockers
 
@@ -103,3 +101,4 @@ Then **only** a new authorized `.task.md` / `.gate.md` — do not invent experie
 | 2026-08-21 | Sync after DEMOFEED T004 Place (Hotel) + Media cover seed |
 | 2026-08-21 | Sync after DEMOFEED T005 Tour + Media cover seed |
 | 2026-08-21 | Sync after DEMOFEED GATE Cursor review evidence |
+| 2026-08-21 | Sync after P31-T001 commercial demo experience plan |
