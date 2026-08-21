@@ -45,6 +45,7 @@ function copy(locale: AppLocale) {
       tagline: "کشف · اعتماد · رزرو",
       search: "جستجو",
       account: "میز کار",
+      myTrips: "سفرهای من",
       menu: "منو",
       navLabel: "ناوبری اصلی",
     };
@@ -55,6 +56,7 @@ function copy(locale: AppLocale) {
       tagline: "اكتشف · ثق · احجز",
       search: "بحث",
       account: "مساحة العمل",
+      myTrips: "رحلاتي",
       menu: "القائمة",
       navLabel: "التنقل الرئيسي",
     };
@@ -64,6 +66,7 @@ function copy(locale: AppLocale) {
     tagline: "Discover · Trust · Book",
     search: "Search",
     account: "Workspace",
+    myTrips: "My trips",
     menu: "Menu",
     navLabel: "Primary",
   };
@@ -100,6 +103,12 @@ export function PublicHeader({ locale, className }: PublicHeaderProps) {
             className="hidden min-h-touch items-center rounded-md border border-border bg-surface px-3 text-sm text-foreground hover:bg-surface-muted sm:inline-flex"
           >
             {c.search}
+          </Link>
+          <Link
+            href={`/${locale}/me`}
+            className="min-h-touch inline-flex items-center rounded-md border border-border bg-surface px-3 text-sm font-medium text-foreground hover:bg-surface-muted"
+          >
+            {c.myTrips}
           </Link>
           <Link
             href={`/${locale}/admin/catalog`}
