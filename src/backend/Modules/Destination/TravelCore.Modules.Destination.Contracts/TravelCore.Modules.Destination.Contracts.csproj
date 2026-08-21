@@ -9,4 +9,8 @@
     <Description>Destination module API contracts (not EF entities, not page view models).</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Media\TravelCore.Modules.Media.Contracts\TravelCore.Modules.Media.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

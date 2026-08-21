@@ -1,6 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
+using TravelCore.Modules.Destination.Contracts;
+using TravelCore.Modules.Destination.Infrastructure.Services;
 using TravelCore.Modules.Media.Contracts;
 using TravelCore.Modules.Place.Contracts;
 using TravelCore.Modules.Tour.Contracts;
@@ -8,12 +10,11 @@ using TravelCore.Modules.Tour.Contracts;
 namespace TravelCore.Tools.DemoFeed;
 
 /// <summary>
-/// TC-P32-T002 — enrich DEMOFEED Place/Tour media from the P32 demo asset pack via Media ownership.
-/// Destination covers are skipped (no Destination↔Media owner attach API yet).
+/// TC-P32-T002 / T008 — enrich DEMOFEED Place/Tour/Destination media from the P32 demo asset pack via owner APIs.
 /// </summary>
 internal static class DemoMediaPackEnricher
 {
-    private const string EnrichmentTaskId = "TC-P32-T002";
+    private const string EnrichmentTaskId = "TC-P32-T008";
 
     public static async Task<int> EnrichAsync(IServiceProvider root, string[] args, CancellationToken ct)
     {
@@ -43,6 +44,8 @@ internal static class DemoMediaPackEnricher
 
         await using var scope = root.CreateAsyncScope();
         var sp = scope.ServiceProvider;
+        var destinationApp = sp.GetRequiredService<DestinationApplicationService>();
+        var destinationMedia = sp.GetRequiredService<IDestinationMediaService>();
         var placeApp = sp.GetRequiredService<IPlaceService>();
         var tourProducts = sp.GetRequiredService<ITourProductService>();
         var tourMedia = sp.GetRequiredService<ITourProductMediaService>();
@@ -64,9 +67,16 @@ internal static class DemoMediaPackEnricher
             switch (asset.EntityType.ToLowerInvariant())
             {
                 case "destination":
-                    Console.WriteLine(
-                        $"SKIP destination media attach ({asset.EntityCode}/{asset.File}): no Destination↔Media owner API (Architectural Concern).");
-                    stats.DestinationSkipped++;
+                    await EnrichDestinationAsync(
+                        destinationApp,
+                        destinationMedia,
+                        mediaUpload,
+                        translations,
+                        ledger,
+                        asset,
+                        filePath,
+                        stats,
+                        ct);
                     break;
 
                 case "hotel":
@@ -105,8 +115,66 @@ internal static class DemoMediaPackEnricher
 
         Console.WriteLine();
         Console.WriteLine(
-            $"Enrich complete. applied={stats.Applied} skipped={stats.Skipped} destinationSkipped={stats.DestinationSkipped} failed={stats.Failed}");
+            $"Enrich complete. applied={stats.Applied} skipped={stats.Skipped} failed={stats.Failed}");
         return stats.Failed > 0 ? 3 : 0;
+    }
+
+    private static async Task EnrichDestinationAsync(
+        DestinationApplicationService destinationApp,
+        IDestinationMediaService destinationMedia,
+        IMediaUploadService mediaUpload,
+        IMediaAssetTranslationService translations,
+        Dictionary<string, Guid> ledger,
+        DemoMediaAsset asset,
+        string filePath,
+        EnrichStats stats,
+        CancellationToken ct)
+    {
+        var destination = await destinationApp.GetByCodeAsync(asset.EntityCode, locale: null, cancellationToken: ct);
+        if (destination is null)
+        {
+            Console.Error.WriteLine($"Destination not found: {asset.EntityCode}");
+            stats.Failed++;
+            return;
+        }
+
+        if (asset.Role.Equals("gallery", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine(
+                $"SKIP destination gallery ({asset.EntityCode}/{asset.File}): Gallery deferred (Option A Cover-only).");
+            stats.Skipped++;
+            return;
+        }
+
+        var key = LedgerKey(asset);
+        const string role = "Cover";
+
+        if (ledger.TryGetValue(key, out var existingAssetId))
+        {
+            var links = await destinationMedia.ListMediaLinksAsync(destination.Id, ct);
+            if (links.Any(l =>
+                    l.MediaAssetId == existingAssetId &&
+                    string.Equals(l.Role, role, StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine($"SKIP destination {role} already linked: {asset.EntityCode} ← {asset.File}");
+                stats.Skipped++;
+                return;
+            }
+        }
+
+        var uploaded = await UploadWithAltAsync(mediaUpload, translations, asset, filePath, ct);
+
+        var existingLinks = await destinationMedia.ListMediaLinksAsync(destination.Id, ct);
+        if (existingLinks.Any(l => string.Equals(l.Role, "Cover", StringComparison.OrdinalIgnoreCase)))
+        {
+            await destinationMedia.RemoveCoverAsync(destination.Id, ct);
+        }
+
+        await destinationMedia.SetCoverAsync(destination.Id, new SetDestinationCoverRequest(uploaded.Id), ct);
+        Console.WriteLine($"SET destination cover: {asset.EntityCode} ← {asset.File} ({uploaded.Id})");
+
+        ledger[key] = uploaded.Id;
+        stats.Applied++;
     }
 
     private static async Task EnrichHotelAsync(
@@ -334,7 +402,6 @@ internal static class DemoMediaPackEnricher
     {
         public int Applied { get; set; }
         public int Skipped { get; set; }
-        public int DestinationSkipped { get; set; }
         public int Failed { get; set; }
     }
 

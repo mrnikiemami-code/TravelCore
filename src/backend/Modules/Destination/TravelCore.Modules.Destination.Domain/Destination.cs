@@ -4,6 +4,7 @@ namespace TravelCore.Modules.Destination.Domain;
 
 /// <summary>
 /// Destination hierarchy node. Owns travel discovery geography — not Place/Tour/Content.
+/// Destination↔Media Cover link is Destination-owned (T008) — logical MediaAssetId only.
 /// </summary>
 public sealed class Destination
 {
@@ -11,6 +12,7 @@ public sealed class Destination
     public const int NameMaxLength = 200;
 
     private readonly List<DestinationTranslation> _translations = [];
+    private readonly List<DestinationMediaLink> _mediaLinks = [];
 
     private Destination()
     {
@@ -66,6 +68,11 @@ public sealed class Destination
     public Instant UpdatedAt { get; private set; }
 
     public IReadOnlyCollection<DestinationTranslation> Translations => _translations;
+
+    public IReadOnlyCollection<DestinationMediaLink> MediaLinks => _mediaLinks;
+
+    public DestinationMediaLink? Cover =>
+        _mediaLinks.FirstOrDefault(x => x.Role == DestinationMediaRole.Cover);
 
     public static Destination Create(
         DestinationKind kind,
@@ -178,6 +185,54 @@ public sealed class Destination
         var normalizedLocale = DestinationTranslation.NormalizeLocaleCode(localeCode);
         return _translations.FirstOrDefault(x =>
             string.Equals(x.LocaleCode, normalizedLocale, StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    /// Sets Cover with replacement semantics (0..1). SortOrder fixed at 0 (no Cover reorder).
+    /// Gallery is out of scope for Option A (TC-P32-T008).
+    /// </summary>
+    public DestinationMediaLink SetCover(Guid mediaAssetId, Instant now)
+    {
+        if (mediaAssetId == Guid.Empty)
+        {
+            throw new ArgumentException("MediaAssetId cannot be empty.", nameof(mediaAssetId));
+        }
+
+        var existingSameAsset = _mediaLinks.FirstOrDefault(x => x.MediaAssetId == mediaAssetId);
+        if (existingSameAsset is not null)
+        {
+            if (existingSameAsset.Role == DestinationMediaRole.Cover)
+            {
+                UpdatedAt = now;
+                return existingSameAsset;
+            }
+
+            throw new InvalidOperationException(
+                "MediaAssetId is already linked for this Destination under a non-Cover role.");
+        }
+
+        var existingCover = _mediaLinks.FirstOrDefault(x => x.Role == DestinationMediaRole.Cover);
+        if (existingCover is not null)
+        {
+            _mediaLinks.Remove(existingCover);
+        }
+
+        var cover = DestinationMediaLink.CreateCover(Id, mediaAssetId);
+        _mediaLinks.Add(cover);
+        UpdatedAt = now;
+        return cover;
+    }
+
+    public void RemoveCover(Instant now)
+    {
+        var cover = _mediaLinks.FirstOrDefault(x => x.Role == DestinationMediaRole.Cover);
+        if (cover is null)
+        {
+            return;
+        }
+
+        _mediaLinks.Remove(cover);
+        UpdatedAt = now;
     }
 
     public static void ValidateHierarchy(

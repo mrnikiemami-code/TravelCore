@@ -1,3 +1,5 @@
+using TravelCore.Modules.Media.Contracts;
+
 namespace TravelCore.Modules.Destination.Contracts;
 
 public sealed record DestinationResponse(
@@ -64,6 +66,51 @@ public sealed record DestinationDescendantsResponse(
     Guid DestinationId,
     int MaxDepth,
     IReadOnlyList<DestinationPathNode> Nodes);
+
+public sealed record DestinationMediaLinkResponse(
+    Guid DestinationId,
+    Guid MediaAssetId,
+    string Role,
+    int SortOrder);
+
+public sealed record SetDestinationCoverRequest(Guid MediaAssetId);
+
+public sealed record DestinationMediaItemPresentation(
+    Guid MediaAssetId,
+    string Role,
+    int SortOrder,
+    MediaAssetPresentationResponse? Presentation);
+
+/// <summary>
+/// Destination Cover presentation compose (Option A — no Gallery).
+/// </summary>
+public sealed record DestinationMediaPresentationResponse(
+    Guid DestinationId,
+    DestinationMediaItemPresentation? Cover);
+
+/// <summary>
+/// Destination↔Media Cover ownership (TC-P32-T008 Option A). Media owns bytes; Destination owns Cover link.
+/// </summary>
+public interface IDestinationMediaService
+{
+    Task<DestinationMediaLinkResponse> SetCoverAsync(
+        Guid destinationId,
+        SetDestinationCoverRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task RemoveCoverAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<DestinationMediaLinkResponse>> ListMediaLinksAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken = default);
+
+    Task<DestinationMediaPresentationResponse?> GetMediaPresentationAsync(
+        Guid destinationId,
+        string? locale = null,
+        CancellationToken cancellationToken = default);
+}
 
 public interface IDestinationReadQuery
 {

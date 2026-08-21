@@ -2,28 +2,35 @@ using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using TravelCore.Modules.Destination.Contracts;
 using TravelCore.Modules.Destination.Domain;
+using TravelCore.Modules.Media.Contracts;
 using TravelCore.Modules.ReferenceData.Contracts;
 using DestinationAggregate = TravelCore.Modules.Destination.Domain.Destination;
 
 namespace TravelCore.Modules.Destination.Infrastructure.Services;
 
 /// <summary>
-/// Destination application service for create/get/children/translations/geo.
+/// Destination application service for create/get/children/translations/geo + Cover media (T008).
 /// </summary>
-public sealed class DestinationApplicationService
+public sealed class DestinationApplicationService : IDestinationMediaService
 {
     private readonly DestinationDbContext _db;
     private readonly IClock _clock;
     private readonly IReferenceDataCatalogQuery _referenceData;
+    private readonly IMediaAssetReadinessQuery _mediaReadiness;
+    private readonly IMediaPresentationService _mediaPresentation;
 
     public DestinationApplicationService(
         DestinationDbContext db,
         IClock clock,
-        IReferenceDataCatalogQuery referenceData)
+        IReferenceDataCatalogQuery referenceData,
+        IMediaAssetReadinessQuery mediaReadiness,
+        IMediaPresentationService mediaPresentation)
     {
         _db = db;
         _clock = clock;
         _referenceData = referenceData;
+        _mediaReadiness = mediaReadiness;
+        _mediaPresentation = mediaPresentation;
     }
 
     public async Task<DestinationResponse> CreateAsync(
@@ -87,6 +94,18 @@ public sealed class DestinationApplicationService
         var destinationId = DestinationId.From(id);
         var destination = await _db.Destinations.AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == destinationId, cancellationToken);
+        return destination is null ? null : Map(destination, locale);
+    }
+
+    public async Task<DestinationResponse?> GetByCodeAsync(
+        string code,
+        string? locale = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(code);
+        var normalized = code.Trim();
+        var destination = await _db.Destinations.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Code == normalized, cancellationToken);
         return destination is null ? null : Map(destination, locale);
     }
 
@@ -241,6 +260,111 @@ public sealed class DestinationApplicationService
         destination.SetGeographicIdentity(request.Latitude, request.Longitude, now);
         await _db.SaveChangesAsync(cancellationToken);
         return Map(destination);
+    }
+
+    public async Task<DestinationMediaLinkResponse> SetCoverAsync(
+        Guid destinationId,
+        SetDestinationCoverRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        await EnsureMediaReadyAsync(request.MediaAssetId, cancellationToken);
+
+        var destination = await LoadTrackedAsync(destinationId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        var link = destination.SetCover(request.MediaAssetId, now);
+        await _db.SaveChangesAsync(cancellationToken);
+        return MapMediaLink(link);
+    }
+
+    public async Task RemoveCoverAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken = default)
+    {
+        var destination = await LoadTrackedAsync(destinationId, cancellationToken);
+        var now = _clock.GetCurrentInstant();
+        destination.RemoveCover(now);
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<DestinationMediaLinkResponse>> ListMediaLinksAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken = default)
+    {
+        var id = DestinationId.From(destinationId);
+        var destination = await _db.Destinations.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (destination is null)
+        {
+            return [];
+        }
+
+        return destination.MediaLinks
+            .OrderBy(x => x.Role)
+            .ThenBy(x => x.SortOrder)
+            .ThenBy(x => x.MediaAssetId)
+            .Select(MapMediaLink)
+            .ToList();
+    }
+
+    public async Task<DestinationMediaPresentationResponse?> GetMediaPresentationAsync(
+        Guid destinationId,
+        string? locale = null,
+        CancellationToken cancellationToken = default)
+    {
+        var id = DestinationId.From(destinationId);
+        var destination = await _db.Destinations.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (destination is null)
+        {
+            return null;
+        }
+
+        DestinationMediaItemPresentation? cover = null;
+        if (destination.Cover is not null)
+        {
+            cover = new DestinationMediaItemPresentation(
+                destination.Cover.MediaAssetId,
+                destination.Cover.Role.ToString(),
+                destination.Cover.SortOrder,
+                await _mediaPresentation.GetPresentationAsync(
+                    destination.Cover.MediaAssetId,
+                    locale,
+                    cancellationToken));
+        }
+
+        return new DestinationMediaPresentationResponse(destination.Id.Value, cover);
+    }
+
+    private async Task EnsureMediaReadyAsync(Guid mediaAssetId, CancellationToken cancellationToken)
+    {
+        if (mediaAssetId == Guid.Empty)
+        {
+            throw new ArgumentException("MediaAssetId cannot be empty.", nameof(mediaAssetId));
+        }
+
+        if (!await _mediaReadiness.IsReadyAsync(mediaAssetId, cancellationToken))
+        {
+            throw new InvalidOperationException(
+                "MediaAsset must exist and be Ready to attach to a Destination.");
+        }
+    }
+
+    private static DestinationMediaLinkResponse MapMediaLink(DestinationMediaLink link) =>
+        new(link.DestinationId.Value, link.MediaAssetId, link.Role.ToString(), link.SortOrder);
+
+    private async Task<DestinationAggregate> LoadTrackedAsync(
+        Guid destinationId,
+        CancellationToken cancellationToken)
+    {
+        var id = DestinationId.From(destinationId);
+        var destination = await _db.Destinations.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (destination is null)
+        {
+            throw new ArgumentException("Destination was not found.", nameof(destinationId));
+        }
+
+        return destination;
     }
 
     private static DestinationKind ParseKind(string kind)

@@ -81,10 +81,59 @@ internal sealed class DestinationConfiguration : IEntityTypeConfiguration<Destin
             .HasForeignKey(x => x.DestinationId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Ignore(x => x.Cover);
+
         builder.Navigation(x => x.Translations)
             .HasField("_translations")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
+
+        builder.Navigation(x => x.MediaLinks)
+            .HasField("_mediaLinks")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
+    }
+}
+
+internal sealed class DestinationMediaLinkConfiguration : IEntityTypeConfiguration<DestinationMediaLink>
+{
+    public void Configure(EntityTypeBuilder<DestinationMediaLink> builder)
+    {
+        builder.ToTable("destination_media_links");
+        builder.HasKey(x => new { x.DestinationId, x.MediaAssetId });
+
+        builder.Property(x => x.DestinationId)
+            .HasColumnName("destination_id")
+            .HasConversion(id => id.Value, value => DestinationId.From(value));
+
+        // Logical MediaAssetId only — deliberately no FK / navigation to Media.
+        builder.Property(x => x.MediaAssetId)
+            .HasColumnName("media_asset_id")
+            .IsRequired();
+
+        builder.Property(x => x.Role)
+            .HasColumnName("role")
+            .HasConversion<short>()
+            .IsRequired();
+
+        builder.Property(x => x.SortOrder)
+            .HasColumnName("sort_order")
+            .IsRequired();
+
+        builder.HasOne<DestinationAggregate>()
+            .WithMany(x => x.MediaLinks)
+            .HasForeignKey(x => x.DestinationId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+
+        builder.HasIndex(x => x.MediaAssetId)
+            .HasDatabaseName("ix_destination_media_links_media_asset_id");
+
+        // At most one Cover per Destination.
+        builder.HasIndex(x => x.DestinationId)
+            .IsUnique()
+            .HasFilter("role = 0")
+            .HasDatabaseName("ux_destination_media_links_cover");
     }
 }
 

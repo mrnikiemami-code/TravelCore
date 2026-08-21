@@ -116,6 +116,7 @@ internal static class DemoFeedHost
         services.AddScoped<IReferenceDataCatalogQuery, ReferenceDataCatalogQuery>();
         services.AddScoped<IDestinationExistenceQuery, DestinationExistenceQuery>();
         services.AddScoped<DestinationApplicationService>();
+        services.AddScoped<IDestinationMediaService>(sp => sp.GetRequiredService<DestinationApplicationService>());
         services.AddScoped<IPlaceService, PlaceApplicationService>();
         services.AddScoped<IMediaAssetReadinessQuery, MediaAssetReadinessQuery>();
         services.AddScoped<IMediaAssetTranslationService, MediaAssetTranslationApplicationService>();

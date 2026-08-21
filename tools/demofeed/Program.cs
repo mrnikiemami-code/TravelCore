@@ -9,7 +9,7 @@ internal static class Program
     private const string PlaceSeedTaskId = "TC-DEMOFEED-T004";
     private const string TourSeedTaskId = "TC-DEMOFEED-T005";
 
-    private const string MediaEnrichTaskId = "TC-P32-T002";
+    private const string MediaEnrichTaskId = "TC-P32-T008";
 
     private static async Task<int> Main(string[] args)
     {
@@ -62,8 +62,8 @@ internal static class Program
         Console.WriteLine("- Destination writes only via DestinationApplicationService");
         Console.WriteLine("- Place writes only via PlaceApplicationService (IPlaceService)");
         Console.WriteLine("- Tour writes only via ITourProductService / ITourProductSemanticLinkService / ITourProductMediaService");
-        Console.WriteLine("- Media upload/attach via IMediaUploadService + Place/Tour SetCover/Gallery");
-        Console.WriteLine("- Demo pack enrich via enrich-media (TC-P32-T002) — Destination attach still blocked (no owner API)");
+        Console.WriteLine("- Media upload/attach via IMediaUploadService + Destination/Place/Tour SetCover (+ Place/Tour Gallery)");
+        Console.WriteLine("- Demo pack enrich via enrich-media (TC-P32-T008) — Destination Cover via IDestinationMediaService");
         Console.WriteLine("- Schema apply only via owner migrators when --ensure-schema");
         Console.WriteLine("- Forbidden: Booking · Payment · Pricing · HotelBooking · scraping · competitor copy");
         return 0;

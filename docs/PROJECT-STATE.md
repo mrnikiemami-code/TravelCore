@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P32-T006` Cursor **BLOCKED** — Destination Media ownership gap documented |
-| Current Next Task | Architect decision / next authorized file only — do not invent Destination Media schema |
+| Current Active Product Task | `TC-P32-T007` Cursor **PASS** — awaiting Architect ACCEPT of ownership plan |
+| Current Next Task | Architect review of `TC-P32-T007` / ADR — do not implement Destination Media without file |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |

@@ -36,6 +36,7 @@ public sealed class DestinationModule : ITravelCoreModule
         });
 
         services.AddScoped<DestinationApplicationService>();
+        services.AddScoped<IDestinationMediaService>(sp => sp.GetRequiredService<DestinationApplicationService>());
         services.AddScoped<IDestinationReadQuery, DestinationReadQuery>();
         services.AddScoped<IDestinationExistenceQuery, DestinationExistenceQuery>();
     }

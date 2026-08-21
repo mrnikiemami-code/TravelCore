@@ -130,6 +130,72 @@ internal static class DestinationEndpoints
             }
         }).RequireAuthorization("Access.Destination.Destinations.Write");
 
+        group.MapPut("/{id:guid}/media/cover", async Task<IResult> (
+            Guid id,
+            SetDestinationCoverRequest request,
+            IDestinationMediaService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var link = await service.SetCoverAsync(id, request, cancellationToken);
+                return Results.Ok(link);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        }).RequireAuthorization("Access.Destination.Destinations.Write");
+
+        group.MapDelete("/{id:guid}/media/cover", async Task<IResult> (
+            Guid id,
+            IDestinationMediaService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                await service.RemoveCoverAsync(id, cancellationToken);
+                return Results.NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        }).RequireAuthorization("Access.Destination.Destinations.Write");
+
+        group.MapGet("/{id:guid}/media", async Task<IResult> (
+            Guid id,
+            IDestinationMediaService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var links = await service.ListMediaLinksAsync(id, cancellationToken);
+                return Results.Ok(links);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
+        group.MapGet("/{id:guid}/media/presentation", async Task<IResult> (
+            Guid id,
+            string? locale,
+            IDestinationMediaService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var presentation = await service.GetMediaPresentationAsync(id, locale, cancellationToken);
+                return presentation is null ? Results.NotFound() : Results.Ok(presentation);
+            }
+            catch (ArgumentException ex)
+            {
+                return Validation(ex);
+            }
+        });
+
         group.MapGet("/{id:guid}/ancestors", async Task<IResult> (
             Guid id,
             IDestinationReadQuery query,
