@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P34-GATE` only — do not invent / do not auto-start next phase |
+| Current Next Task | Architect review of `TC-P35-T001` only — do not invent / do not select real provider |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -964,16 +964,23 @@ Evidence: [`docs/product-experience/evidence/P33-GATE/GATE-REVIEW.md`](product-e
 
 ## P34 — Payment & Confirmation Readiness
 
-**Status:** **ACTIVE** (`TC-P34-GATE` Cursor **PASS WITH KNOWN LIMITATIONS** · awaiting Architect ACCEPT)
+**Status:** **GATE ACCEPTED WITH KNOWN LIMITATIONS** (`TC-P34-GATE` · `ee6684b`)
 
-Plans + evidence:
+Non-production sandbox payment lifecycle through ConfirmIfEligible is closed.
 
-- [`docs/plans/P34-payment-confirmation-readiness-plan.md`](plans/P34-payment-confirmation-readiness-plan.md) (T001 ACCEPTED)
-- [`docs/plans/P34-payment-sandbox-provider-design.md`](plans/P34-payment-sandbox-provider-design.md) (T002 ACCEPTED)
-- [`docs/product-experience/evidence/P34-T003/`](product-experience/evidence/P34-T003/) … [`P34-T005/`](product-experience/evidence/P34-T005/)
-- [`docs/product-experience/evidence/P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)
+Evidence: [`docs/product-experience/evidence/P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)
 
-Do not auto-execute next phase.
+---
+
+## P35 — Production Payment Provider Readiness
+
+**Status:** **ACTIVE** (`TC-P35-T001` Cursor **PASS** · plan awaiting Architect)
+
+Plan:
+
+- [`docs/plans/P35-production-payment-provider-readiness.md`](plans/P35-production-payment-provider-readiness.md)
+
+Do not select/integrate a real provider without Architect + business inputs.
 
 ---
 
@@ -1054,5 +1061,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P31 | Commercial Demo Experience | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
-| P34 | Payment & Confirmation Readiness | **ACTIVE** (`TC-P34-GATE` · [`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
+| P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
+| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T001` · [`P35-production-payment-provider-readiness.md`](plans/P35-production-payment-provider-readiness.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

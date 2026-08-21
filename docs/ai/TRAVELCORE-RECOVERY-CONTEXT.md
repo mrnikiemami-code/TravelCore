@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P34 — Payment & Confirmation Readiness** (`TC-P34-GATE` Cursor **PASS WITH KNOWN LIMITATIONS** · awaiting Architect ACCEPT)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T001` Cursor **PASS** · plan awaiting Architect ACCEPT)
 
 ## Completed (recent)
 
-- P34-T001…T005 ACCEPTED (plan → sandbox → UX E2E → mapper honesty)
-- P34-GATE Cursor PASS WITH KNOWN LIMITATIONS — non-prod sandbox payment lifecycle honest
+- P34-GATE ACCEPTED WITH KNOWN LIMITATIONS — sandbox non-prod payment → ConfirmIfEligible
+- P35-T001: Production provider readiness plan (provider-agnostic; docs only)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after GATE RESULT. Do not invent next phase.
+**None** — WAITING for Architect after T001 RESULT. Do not select/integrate a real provider.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T001 production provider readiness plan |
 | 2026-08-21 | Sync after TC-P34-GATE review |
 | 2026-08-21 | Sync after TC-P34-T005 public confirmed honesty |
-| 2026-08-21 | Sync after TC-P34-T004 Tour sandbox UX |
 | 2026-08-21 | Sync after TC-P33-GATE review |
