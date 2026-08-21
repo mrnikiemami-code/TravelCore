@@ -1037,5 +1037,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | HOMFEED | Home Discovery Composition Sequence | implementation **COMPLETE** · **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** (`TC-HOMFEED-GATE`) |
 | DEMOFEED | Temporary Demo Feeding Sequence | **GATE ACCEPTED** (`T002`–`T005`) |
 | P31 | Commercial Demo Experience | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
-| P32 | Commercial Demo Data & Media Enrichment | **ACTIVE** (`TC-P32-T001` · [`P32-commercial-demo-media-strategy.md`](plans/P32-commercial-demo-media-strategy.md)) |
+| P32 | Commercial Demo Data & Media Enrichment | **ACTIVE** (`TC-P32-T002` Cursor PASS · [`P32-commercial-demo-media-strategy.md`](plans/P32-commercial-demo-media-strategy.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
