@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T006` Cursor **PASS** · **BLOCKED_ON_PROVIDER_ACCOUNT_FACTS**)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T007` Cursor **PASS** · Stripe UAE design lock awaiting Architect)
 
 ## Completed (recent)
 
-- P35-T005 ACCEPTED — worksheet; user decisions recorded
-- P35-T006: Provider-specific design briefs (Behpardakht · Zarinpal · Stripe) · no adapters · no Iran final pick · no core redesign
+- P35-T006 ACCEPTED — three-track design; no core redesign
+- P35-T007: Stripe UAE adapter design lock (Checkout Session primary; webhook authenticity; test-mode vs prod split)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T006 RESULT. Do not implement adapters.
+**None** — WAITING for Architect after T007 RESULT. Do not implement Stripe.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T007 Stripe UAE adapter design lock |
 | 2026-08-21 | Sync after TC-P35-T006 provider-specific design |
 | 2026-08-21 | Sync after TC-P35-T005 provider selection worksheet |
-| 2026-08-21 | Sync after TC-P35-T004 Iran/UAE provider research |
 | 2026-08-21 | Sync after TC-P33-GATE review |

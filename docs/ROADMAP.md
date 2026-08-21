@@ -974,19 +974,18 @@ Evidence: [`docs/product-experience/evidence/P34-GATE/GATE-REVIEW.md`](product-e
 
 ## P35 — Production Payment Provider Readiness
 
-**Status:** **ACTIVE** (`TC-P35-T006` Cursor **PASS** · design awaiting Architect)
+**Status:** **ACTIVE** (`TC-P35-T007` Cursor **PASS** · Stripe design awaiting Architect)
 
 ```text
-BLOCKED_ON_PROVIDER_ACCOUNT_FACTS
-Iran: Behpardakht + Zarinpal (no final pick)
-UAE: Stripe preferred
-NO CORE PAYMENT REDESIGN REQUIRED
+Stripe UAE design: LOCKED (docs)
+Code: READY_FOR_ADAPTER_IMPLEMENTATION_WITH_TEST_MODE (not authorized yet)
+Production: BLOCKED_ON_PROVIDER_ACCOUNT_FACTS
 ```
 
 Plans:
 
+- [`docs/plans/P35-stripe-uae-adapter-design.md`](plans/P35-stripe-uae-adapter-design.md)
 - [`docs/plans/P35-provider-specific-design-iran-uae.md`](plans/P35-provider-specific-design-iran-uae.md)
-- [`docs/plans/P35-provider-selection-worksheet.md`](plans/P35-provider-selection-worksheet.md)
 
 ---
 
@@ -1068,5 +1067,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
-| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T006` · [`P35-provider-specific-design-iran-uae.md`](plans/P35-provider-specific-design-iran-uae.md)) |
+| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T007` · [`P35-stripe-uae-adapter-design.md`](plans/P35-stripe-uae-adapter-design.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
