@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Container, Stack, Surface, Text } from "@/components/ui";
 import { AgencyOffersList } from "@/features/public-experience/agency-offers-list";
 import { PublicDetailStickyActions } from "@/features/public-experience/detail-sticky-actions";
@@ -284,21 +285,26 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             />
           ) : null}
 
-          <TourCommercePanel
-            locale={locale}
-            slug={vm.slug}
-            departures={vm.publishedDepartures}
-          />
+          {vm.agencyOffers.length > 0 ? (
+            <Suspense fallback={null}>
+              <AgencyOffersList locale={locale} items={vm.agencyOffers} />
+            </Suspense>
+          ) : null}
+
+          <Suspense fallback={null}>
+            <TourCommercePanel
+              locale={locale}
+              slug={vm.slug}
+              departures={vm.publishedDepartures}
+              publishedOfferCount={vm.agencyOffers.length}
+            />
+          </Suspense>
 
           <Surface className="rounded-2xl border-[#1D4ED8]/15 bg-gradient-to-br from-surface to-[#1D4ED8]/[0.04] p-5">
             <p className="text-sm font-semibold text-[#1D4ED8]">{copy.trust}</p>
             <p className="mt-2 text-sm text-muted-foreground">{copy.trustBody}</p>
             <p className="mt-3 text-xs text-muted-foreground">{copy.ctaNote}</p>
           </Surface>
-
-          {vm.agencyOffers.length > 0 ? (
-            <AgencyOffersList locale={locale} items={vm.agencyOffers} />
-          ) : null}
 
           {hasUgc ? (
             <UgcCompositionList

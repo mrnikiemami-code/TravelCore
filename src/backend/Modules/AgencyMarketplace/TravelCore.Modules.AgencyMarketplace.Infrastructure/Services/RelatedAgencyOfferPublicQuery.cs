@@ -38,7 +38,8 @@ public sealed class RelatedAgencyOfferPublicQuery : IRelatedAgencyOfferPublicQue
                 RelatedAgencyOfferPublicEligibility.IsOfferPubliclyEligible(
                     x.offer.PublicationStatus.ToString(),
                     x.offer.Visibility.ToString(),
-                    x.offer.Status.ToString())
+                    x.offer.Status.ToString(),
+                    x.offer.SalesChannel.ToString())
                 && RelatedAgencyOfferPublicEligibility.IsAgencyPubliclyEligible(
                     x.profile.Status.ToString(),
                     x.profile.Commercial.PublicListingEnabled))
@@ -47,7 +48,6 @@ public sealed class RelatedAgencyOfferPublicQuery : IRelatedAgencyOfferPublicQue
             .Take(RelatedAgencyOfferPublicEligibility.MaxItems)
             .Select(x => new RelatedPublishedAgencyOffer(
                 x.offer.Id.Value,
-                x.profile.Id.Value,
                 x.offer.TourProductId,
                 x.profile.Display.DisplayName,
                 x.profile.Display.Description,

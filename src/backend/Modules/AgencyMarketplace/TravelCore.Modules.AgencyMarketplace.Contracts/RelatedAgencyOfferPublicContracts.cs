@@ -11,11 +11,13 @@ public static class RelatedAgencyOfferPublicEligibility
     public static bool IsOfferPubliclyEligible(
         string publicationStatus,
         string visibility,
-        string offerStatus)
+        string offerStatus,
+        string salesChannel)
     {
         return string.Equals(publicationStatus, "Published", StringComparison.Ordinal)
             && string.Equals(visibility, "Listed", StringComparison.Ordinal)
-            && !string.Equals(offerStatus, "Archived", StringComparison.Ordinal);
+            && string.Equals(offerStatus, "Active", StringComparison.Ordinal)
+            && string.Equals(salesChannel, "Public", StringComparison.Ordinal);
     }
 
     public static bool IsAgencyPubliclyEligible(string profileStatus, bool publicListingEnabled)
@@ -26,11 +28,10 @@ public static class RelatedAgencyOfferPublicEligibility
 }
 
 /// <summary>
-/// Compact inquiry-oriented public read model. No money, commission, ranking, or IndexPolicy.
+/// Compact inquiry/selection public read model. No money, commission, ranking, or internal Party ids.
 /// </summary>
 public sealed record RelatedPublishedAgencyOffer(
     Guid AgencyOfferId,
-    Guid AgencyProfileId,
     Guid TourProductId,
     string AgencyDisplayName,
     string? AgencyDescription,

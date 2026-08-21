@@ -3,7 +3,6 @@ import { isApiOk } from "@/lib/api/result";
 
 export type AgencyOfferView = {
   agencyOfferId: string;
-  agencyProfileId: string;
   tourProductId: string;
   agencyDisplayName: string;
   agencyDescription: string | null;
@@ -17,7 +16,6 @@ export type AgencyOfferView = {
 
 type ApiAgencyOffer = {
   agencyOfferId: string;
-  agencyProfileId: string;
   tourProductId: string;
   agencyDisplayName: string;
   agencyDescription?: string | null;
@@ -32,7 +30,6 @@ type ApiAgencyOffer = {
 function mapOffer(item: ApiAgencyOffer): AgencyOfferView {
   return {
     agencyOfferId: item.agencyOfferId,
-    agencyProfileId: item.agencyProfileId,
     tourProductId: item.tourProductId,
     agencyDisplayName: item.agencyDisplayName,
     agencyDescription: item.agencyDescription?.trim() || null,
@@ -46,7 +43,7 @@ function mapOffer(item: ApiAgencyOffer): AgencyOfferView {
 }
 
 /**
- * P14-R7: Published AgencyOffer facts for a TourProduct. Fail soft — empty on error.
+ * P38-T004 / P14-R7: Published Public-channel AgencyOffer facts. Fail soft — empty on error.
  */
 export async function loadAgencyOffersByTourProduct(
   tourProductId: string,

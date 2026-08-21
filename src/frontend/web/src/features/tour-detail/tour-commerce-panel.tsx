@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   LtrValue,
   MoneyText,
@@ -9,6 +10,7 @@ import {
   Text,
 } from "@/components/ui";
 import type { AppLocale } from "@/lib/i18n";
+import { AGENCY_OFFER_QUERY_KEY } from "@/features/public-experience/agency-offers-list";
 import { loadPublicDeparturePriceAction } from "./load-public-departure-price";
 import type {
   PublicPriceSummaryView,
@@ -41,6 +43,7 @@ type CommerceCopy = {
   needDeparture: string;
   needPrice: string;
   loadingGate: string;
+  needOffer: string;
 };
 
 function commerceCopy(locale: AppLocale): CommerceCopy {
@@ -73,6 +76,7 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
       needDeparture: "ابتدا یک تاریخ حرکت منتشرشده را انتخاب کنید.",
       needPrice: "بدون خلاصه قیمت معتبر از Pricing، شروع رزرو ممکن نیست.",
       loadingGate: "پس از دریافت خلاصه قیمت، شروع رزرو فعال می‌شود.",
+      needOffer: "وقتی چند پیشنهاد آژانس هست، ابتدا یکی را انتخاب کنید.",
     };
   }
 
@@ -105,6 +109,7 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
       needDeparture: "اختر أولاً تاريخ مغادرة منشور.",
       needPrice: "بدون ملخص سعر صالح من Pricing لا يمكن بدء الحجز.",
       loadingGate: "بعد جلب ملخص السعر يُفعّل بدء الحجز.",
+      needOffer: "عند وجود عدة عروض، اختر عرض وكالة أولاً.",
     };
   }
 
@@ -136,6 +141,7 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
     needDeparture: "Select a published departure first.",
     needPrice: "Without a valid Pricing summary, booking cannot start.",
     loadingGate: "Booking start enables after the price summary loads.",
+    needOffer: "When multiple agency offers exist, select one first.",
   };
 }
 
@@ -197,13 +203,20 @@ export function TourCommercePanel({
   locale,
   slug,
   departures,
+  publishedOfferCount = 0,
 }: {
   locale: AppLocale;
   slug: string;
   departures: PublishedDepartureView[];
+  /** When ≥2 published offers, selection is required before booking start. */
+  publishedOfferCount?: number;
 }) {
   const copy = commerceCopy(locale);
   const groupName = useId();
+  const searchParams = useSearchParams();
+  const selectedOfferId = searchParams.get(AGENCY_OFFER_QUERY_KEY);
+  const offerRequired = publishedOfferCount >= 2;
+  const offerReady = !offerRequired || (selectedOfferId != null && selectedOfferId.length > 0);
   const [selectedId, setSelectedId] = useState<string | null>(
     departures[0]?.id ?? null,
   );
@@ -254,9 +267,14 @@ export function TourCommercePanel({
   const selected = departures.find((d) => d.id === selectedId) ?? null;
   const selectedPrice =
     selectedId != null ? priceByDeparture[selectedId] : undefined;
-  const canStartBooking = selectedId != null && selectedPrice != null;
+  const canStartBooking =
+    selectedId != null && selectedPrice != null && offerReady;
   const bookHref = canStartBooking
-    ? `/${locale}/tours/${encodeURIComponent(slug)}/book?departureId=${encodeURIComponent(selectedId)}`
+    ? `/${locale}/tours/${encodeURIComponent(slug)}/book?departureId=${encodeURIComponent(selectedId)}${
+        selectedOfferId
+          ? `&agencyOfferId=${encodeURIComponent(selectedOfferId)}`
+          : ""
+      }`
     : null;
   const gateHint = !selectedId
     ? copy.needDeparture
@@ -264,7 +282,9 @@ export function TourCommercePanel({
       ? copy.loadingGate
       : selectedPrice == null
         ? copy.needPrice
-        : null;
+        : !offerReady
+          ? copy.needOffer
+          : null;
 
   return (
     <div id="published-departures" className="scroll-mt-24">

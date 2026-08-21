@@ -6,28 +6,38 @@ namespace TravelCore.Modules.AgencyMarketplace.UnitTests;
 public sealed class RelatedAgencyOfferPublicEligibilityTests
 {
     [Fact]
-    public void Offer_Gate_Requires_Published_Listed_And_Not_Archived()
+    public void Offer_Gate_Requires_Published_Listed_Active_Public_Channel()
     {
         Assert.True(
             RelatedAgencyOfferPublicEligibility.IsOfferPubliclyEligible(
                 "Published",
                 "Listed",
-                "Active"));
+                "Active",
+                "Public"));
         Assert.False(
             RelatedAgencyOfferPublicEligibility.IsOfferPubliclyEligible(
                 "Approved",
                 "Listed",
-                "Active"));
+                "Active",
+                "Public"));
         Assert.False(
             RelatedAgencyOfferPublicEligibility.IsOfferPubliclyEligible(
                 "Published",
                 "Unlisted",
-                "Active"));
+                "Active",
+                "Public"));
         Assert.False(
             RelatedAgencyOfferPublicEligibility.IsOfferPubliclyEligible(
                 "Published",
                 "Listed",
-                "Archived"));
+                "Draft",
+                "Public"));
+        Assert.False(
+            RelatedAgencyOfferPublicEligibility.IsOfferPubliclyEligible(
+                "Published",
+                "Listed",
+                "Active",
+                "AgencyPortal"));
         Assert.Equal(6, RelatedAgencyOfferPublicEligibility.MaxItems);
     }
 
