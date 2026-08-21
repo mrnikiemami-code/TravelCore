@@ -92,8 +92,10 @@ export function TourDiscoveryView({
             errorBody:
               "The connection failed or the destination was not found. We do not invent prices or availability instead.",
             retry: "Try again",
-            count: (n: number, dest: string) =>
-              dest ? `${n} tours for ${dest}` : `${n} tours in list`,
+            count: (n: number, dest: string) => {
+              const noun = n === 1 ? "tour" : "tours";
+              return dest ? `${n} ${noun} for ${dest}` : `${n} ${noun} in list`;
+            },
             marketplaceHint: "Tour marketplace · published destination",
             quickPick: "Ready destinations",
           };
