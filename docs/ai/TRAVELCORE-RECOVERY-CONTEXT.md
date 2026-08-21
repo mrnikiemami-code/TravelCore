@@ -26,24 +26,21 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P33 — Commercial Product Readiness Review** (`TC-P33-T001` Cursor **PASS** · awaiting Architect ACCEPT)
+**P33 — Commercial Product Readiness Review** (`TC-P33-T002` Cursor **PASS** · awaiting Architect ACCEPT)
 
 ## Completed (recent)
 
 - `TC-P32-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
-- `TC-P33-T001` plan: `docs/plans/P33-commercial-readiness-plan.md`
+- `TC-P33-T001` readiness plan
+- `TC-P33-T002` Tour-first commerce slice: `docs/plans/P33-tour-first-commerce-slice.md`
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T001 RESULT. Do not invent T002+.
-
-## Open Focus (planning)
-
-Demo Product → Sellable Product gaps: Public conversion wiring, Pricing/Departure offers, Booking/Payment E2E, providers/suppliers, discovery/ops.
+**None** — WAITING for Architect after T002 RESULT. Do not invent T003+.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P33-T002 Tour-first commerce slice plan |
 | 2026-08-21 | Sync after TC-P33-T001 commercial readiness plan |
-| 2026-08-21 | Sync after TC-P32-GATE Architect ACCEPT WITH KNOWN LIMITATIONS |

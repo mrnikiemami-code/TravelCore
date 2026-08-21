@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P33-T001` only — do not invent / do not auto-start next |
+| Current Next Task | Architect review of `TC-P33-T002` only — do not invent / do not auto-start next |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -954,11 +954,14 @@ Commercial demo data + media path closed. Next phase is Architect-authorized P33
 
 ## P33 — Commercial Product Readiness Review
 
-**Status:** **ACTIVE** (`TC-P33-T001` Cursor **PASS** · plan awaiting Architect)
+**Status:** **ACTIVE** (`TC-P33-T002` Cursor **PASS** · Tour-first slice plan awaiting Architect)
 
-Plan: [`docs/plans/P33-commercial-readiness-plan.md`](plans/P33-commercial-readiness-plan.md)
+Plans:
 
-Do not auto-execute T002+.
+- [`docs/plans/P33-commercial-readiness-plan.md`](plans/P33-commercial-readiness-plan.md)
+- [`docs/plans/P33-tour-first-commerce-slice.md`](plans/P33-tour-first-commerce-slice.md)
+
+Do not auto-execute T003+.
 
 ---
 

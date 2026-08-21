@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P33-T001` Cursor **PASS** — awaiting Architect ACCEPT |
-| Current Next Task | Architect review of `TC-P33-T001` only — do not invent T002+ |
+| Current Active Product Task | `TC-P33-T002` Cursor **PASS** — awaiting Architect ACCEPT |
+| Current Next Task | Architect review of `TC-P33-T002` only — do not invent T003+ |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -426,6 +426,7 @@
 | P32 Home Destination Cover | `TC-P32-T009` Cursor **PASS** — Home cards consume Cover · evidence `docs/product-experience/evidence/P32-T009/` |
 | P32 GATE | `TC-P32-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — evidence [`docs/product-experience/evidence/P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md) |
 | P33 Commercial Readiness | `TC-P33-T001` Cursor **PASS** — [`docs/plans/P33-commercial-readiness-plan.md`](plans/P33-commercial-readiness-plan.md) |
+| P33 Tour-First Slice | `TC-P33-T002` Cursor **PASS** — [`docs/plans/P33-tour-first-commerce-slice.md`](plans/P33-tour-first-commerce-slice.md) |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |
