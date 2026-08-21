@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P35 — Production Payment Provider Readiness** (`TC-P35-T009` Cursor **PASS** · Behpardakht design locked) |
+| Current Phase | **P35 — Production Payment Provider Readiness** (`TC-P35-T010` Cursor **PASS** · Zarinpal design locked) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P35-T008` · production Stripe still blocked |
+| Current Next Task | Architect review of `TC-P35-T009` · no Behpardakht implementation · no Iran final pick |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -974,15 +974,14 @@ Evidence: [`docs/product-experience/evidence/P34-GATE/GATE-REVIEW.md`](product-e
 
 ## P35 — Production Payment Provider Readiness
 
-**Status:** **ACTIVE** (`TC-P35-T008` Cursor **PASS** · Stripe test-mode adapter awaiting Architect)
+**Status:** **ACTIVE** (`TC-P35-T009` Cursor **PASS** · Behpardakht design awaiting Architect)
 
-```text
-CODE_READY_FOR_STRIPE_TEST_ACCOUNT
-NamedProductionAdapterImplemented = false
-Production = BLOCKED_ON_PROVIDER_ACCOUNT_FACTS
-```
+Plans:
 
-Evidence: [`docs/product-experience/evidence/P35-T008/`](../product-experience/evidence/P35-T008/)
+- [`docs/plans/P35-behpardakht-mellat-adapter-design.md`](plans/P35-behpardakht-mellat-adapter-design.md)
+- [`docs/plans/P35-stripe-uae-adapter-design.md`](plans/P35-stripe-uae-adapter-design.md)
+
+Stripe: CODE_READY_FOR_STRIPE_TEST_ACCOUNT · Iran Behpardakht: design locked · Zarinpal design still pending · no final Iran pick.
 
 ---
 
@@ -1064,5 +1063,5 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P32 | Commercial Demo Data & Media Enrichment | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P32-GATE/GATE-REVIEW.md`](product-experience/evidence/P32-GATE/GATE-REVIEW.md)) |
 | P33 | Commercial Product Readiness Review | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P33-GATE/GATE-REVIEW.md`](product-experience/evidence/P33-GATE/GATE-REVIEW.md)) |
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
-| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T008` · Stripe test-mode adapter · [`P35-T008 evidence`](../product-experience/evidence/P35-T008/)) |
+| P35 | Production Payment Provider Readiness | **ACTIVE** (`TC-P35-T009` · [`P35-behpardakht-mellat-adapter-design.md`](plans/P35-behpardakht-mellat-adapter-design.md)) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

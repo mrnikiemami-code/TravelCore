@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T009` Cursor **PASS** · Behpardakht design lock awaiting Architect)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T010` Cursor **PASS** · Zarinpal design lock awaiting Architect)
 
 ## Completed (recent)
 
-- P35-T008 ACCEPTED WITH KNOWN LIMITATIONS — Stripe test-mode adapter code
-- P35-T009: Behpardakht Mellat adapter design lock (no code; no final Iran pick)
+- P35-T009 ACCEPTED — Behpardakht design lock
+- P35-T010: Zarinpal adapter design lock · refund CBI temporary disable · inbox audit (48 tracked)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T009 RESULT.
+**None** — WAITING for Architect after T010 RESULT. No Iran final pick. No Zarinpal code.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T010 Zarinpal adapter design lock |
 | 2026-08-21 | Sync after TC-P35-T009 Behpardakht Mellat adapter design lock |
 | 2026-08-21 | Sync after TC-P35-T008 Stripe test-mode adapter |
-| 2026-08-21 | Sync after TC-P35-T007 Stripe UAE adapter design lock |
 | 2026-08-21 | Sync after TC-P33-GATE review |

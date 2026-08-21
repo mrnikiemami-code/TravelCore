@@ -75,7 +75,7 @@ Sandbox reference: `SandboxPaymentProviderGateway` · `NamedProductionAdapterImp
 
 ### Readiness
 
-**`READY_FOR_ADAPTER_DESIGN_ONLY`** · implementation **`BLOCKED_ON_PROVIDER_ACCOUNT_FACTS`** (account + **refund live status**)
+**`READY_FOR_ADAPTER_DESIGN_ONLY`** (T006) · refined by T010 [`P35-zarinpal-adapter-design.md`](P35-zarinpal-adapter-design.md): **`READY_FOR_ADAPTER_IMPLEMENTATION_WITH_TEST_FIXTURES`** (payment path) · refund production **`BLOCKED_ON_REFUND_AVAILABILITY`** (CBI temporary disable) · account **`BLOCKED_ON_PROVIDER_ACCOUNT_FACTS`** · **no final pick vs Behpardakht**
 
 ---
 

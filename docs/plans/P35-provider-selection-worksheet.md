@@ -4,7 +4,7 @@
 |-------|--------|
 | Document | `docs/plans/P35-provider-selection-worksheet.md` |
 | Task-ID | `TC-P35-T005` |
-| Status | **ACCEPTED path** — user answers recorded 2026-08-21 · see T006 design |
+| Status | **DESIGNS LOCKED for Iran shortlist** — Behpardakht T009 · Zarinpal T010 · **no final pick** |
 | Nature | Decision support only — **no vendor selected by Cursor** |
 | Sources | Facts only from `P35-provider-research-iran-uae.md` (T004) |
 
@@ -104,7 +104,15 @@ Architecture/design research may continue only via authorized `.task.md`.
 
 ---
 
-## Recorded user answers (2026-08-21)
+## Iran track design lock status (2026-08-21)
+
+| Track | Doc | Payment path | Refund |
+|-------|-----|--------------|--------|
+| Behpardakht Mellat | `P35-behpardakht-mellat-adapter-design.md` | READY_FOR_ADAPTER_IMPLEMENTATION_WITH_TEST_FIXTURES | Entitlement UNKNOWN |
+| Zarinpal | `P35-zarinpal-adapter-design.md` | READY_FOR_ADAPTER_IMPLEMENTATION_WITH_TEST_FIXTURES | **BLOCKED_ON_REFUND_AVAILABILITY** (CBI temporary disable) |
+
+**No final Iran selection.** See parity table in Zarinpal design §15.
+
 
 | Q | Answer (normalized) |
 |---|---------------------|
