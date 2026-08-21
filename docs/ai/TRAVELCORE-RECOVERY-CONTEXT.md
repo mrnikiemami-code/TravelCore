@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T004` Cursor **PASS** · research awaiting Architect · **STILL_BLOCKED_ON_PROVIDER_FACTS**)
+**P35 — Production Payment Provider Readiness** (`TC-P35-T005` Cursor **PASS** · worksheet awaiting Architect/user answers)
 
 ## Completed (recent)
 
-- P35-T001…T003 ACCEPTED
-- P35-T004: Iran+UAE provider research shortlists (no selection); Mellat → Behpardakht path PARTIALLY_VERIFIED; no dual-market single provider verified
+- P35-T004 ACCEPTED — Iran/UAE research shortlists
+- P35-T005: Business provider selection worksheet (no vendor selected)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T004 RESULT.
+**None** — WAITING for Architect after T005 RESULT + user answers A–G.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P35-T005 provider selection worksheet |
 | 2026-08-21 | Sync after TC-P35-T004 Iran/UAE provider research |
 | 2026-08-21 | Sync after TC-P35-T003 market provider decision matrix |
-| 2026-08-21 | Sync after TC-P35-T002 external decision intake |
 | 2026-08-21 | Sync after TC-P33-GATE review |
