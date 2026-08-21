@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P38 — Multi-Agency Commerce** (`TC-P38-T001` Cursor **PASS**) |
-| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 ACTIVE** |
+| Current Phase | **P38 — Multi-Agency Commerce** (`TC-P38-T002` Cursor **PASS** · AgencyOffer contracts) |
+| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P38 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P38-T001` · do not auto-implement T002 |
+| Current Next Task | Architect review of `TC-P38-T002` · do not auto-implement T003 |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -1008,13 +1008,15 @@ Surfaces: Public · Customer `/me` · Agency `/agency` · Admin `/admin`
 
 ## P38 — Multi-Agency Commerce
 
-**Status:** **ACTIVE** (`TC-P38-T001` Cursor **PASS** · foundation plan)
+**Status:** **ACTIVE** (`TC-P38-T002` Cursor **PASS** · AgencyOffer contracts)
 
 Plan: [`docs/plans/P38-multi-agency-commerce-foundation.md`](plans/P38-multi-agency-commerce-foundation.md)
 
+Contracts: [`docs/plans/P38-agency-offer-contracts.md`](plans/P38-agency-offer-contracts.md)
+
 Direction: Tour Product + Multiple Agencies + Agency Offers + Customer Selection
 
-Recommended next: Architect-authorized Offer contracts / implementation tasks (do not auto-run)
+Recommended next: Architect-authorized persistence / selection tasks (do not auto-run T003+)
 
 ---
 
@@ -1098,6 +1100,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
 | P36 | Commercial UI/UX Final Polish | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** · PARTIALLY_SELLABLE |
 | P37 | Experience Platform Foundation | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** |
-| P38 | Multi-Agency Commerce | **ACTIVE** (`TC-P38-T001` · foundation plan PASS) |
+| P38 | Multi-Agency Commerce | **ACTIVE** (`TC-P38-T002` · AgencyOffer contracts PASS) |
 | P35 | Production Payment Provider Readiness | **PAUSED** (designs locked; Stripe test-mode code ready; external account facts) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
