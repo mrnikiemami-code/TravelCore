@@ -21,6 +21,14 @@
 Published departures for product: 1
 Departure in list: True
 Public price summary: USD components=1
+Idempotent re-run: applied=0 skipped=2
+```
+
+## Validation (HTTP · Api :5275)
+
+```text
+GET /api/tour/products/{id}/departures/published → 200 · 1 Published · capacity 1..20
+GET /api/pricing/public/tour-departures/{id} → 200 · USD · Base 1290 · Adult/DoubleRoom
 ```
 
 ## Boundaries
@@ -34,3 +42,4 @@ TourProduct ≠ TourDeparture · Price ≠ Quote · Quote ≠ Booking · DemoFee
 - No Booking initiation (I3)
 - No Payment (I4 Option A deferred)
 - Amount is real Pricing row labeled DEMOFEED sample — not a production rate claim
+- Local calendar display of schedule dates may follow Asia/Tehran calendar rules in JSON — facts still Published + priced
