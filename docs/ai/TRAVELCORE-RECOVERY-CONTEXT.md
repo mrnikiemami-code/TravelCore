@@ -26,7 +26,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P31 — Commercial Demo Experience** (`TC-P31-T005` · AWAITING_ARCHITECT_REVIEW)
+**P31 — Commercial Demo Experience** (`TC-P31-GATE` · AWAITING_ARCHITECT_REVIEW)
 
 ## Completed
 
@@ -34,11 +34,10 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - Post-P29 evolution tracks COMPLETE
 - `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — P30 FOUNDATION ACCEPTED
 - `TC-DEMOFEED-T002`…`T005` **DONE** · `TC-DEMOFEED-GATE` **ACCEPTED**
-- `TC-P31-T001` **ACCEPTED** — plan `docs/plans/P31-commercial-demo-experience-plan.md`
-- `TC-P31-T002` **ACCEPTED** — strategy `docs/plans/P31-demo-content-strategy.md`
-- `TC-P31-T003` **ACCEPTED WITH KNOWN LIMITATIONS** — Home commercial upgrade
-- `TC-P31-T004` **Cursor PASS** — Hotel commerce polish + evidence `docs/product-experience/evidence/P31-T004/` (Architect review pending or follow-on)
-- `TC-P31-T005` **Cursor PASS** — Tour commerce polish + evidence `docs/product-experience/evidence/P31-T005/` (AWAITING_ARCHITECT_REVIEW)
+- `TC-P31-T001` **ACCEPTED** — plan
+- `TC-P31-T002` **ACCEPTED** — content strategy
+- `TC-P31-T003`…`T005` **ACCEPTED WITH KNOWN LIMITATIONS** — Home / Hotel / Tour commercial polish
+- `TC-P31-GATE` **Cursor PASS WITH KNOWN LIMITATIONS** — `docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`
 
 ## Current Important Locks
 
@@ -47,7 +46,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 | Product order | **Experience → Data → Commercial** |
 | P30 | **FOUNDATION ACCEPTED** |
 | DEMOFEED | **GATE ACCEPTED** |
-| P31 | **ACTIVE** (`T001`–`T003` ACCEPTED · `T005` review) |
+| P31 | **GATE REVIEW** (Cursor PASS WITH KNOWN LIMITATIONS) |
 | Feeder path | `tools/demofeed` — not an `ITravelCoreModule` |
 | Demo identity | `demofeed-*` |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
@@ -55,12 +54,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-P31-T005`** Tour polish complete (awaiting Architect ACCEPT/REWORK).
+**`TC-P31-GATE`** Cursor review complete (awaiting Architect ACCEPT/REWORK).
 
 ## Next Planned Work
 
-Architect decision on T005.
-Then **only** a new authorized `.task.md` / `.gate.md` — do not invent GATE / T006.
+Architect decision on GATE.
+Then **only** a new authorized `.task.md` / `.gate.md` — do not invent next phase.
 
 ## Open Blockers
 
@@ -78,19 +77,5 @@ Then **only** a new authorized `.task.md` / `.gate.md` — do not invent GATE / 
 
 | Date | Change |
 |------|--------|
-| 2026-08-20 | Initial · Controller Mode |
-| 2026-08-20 | Sync after T002 / T003 |
-| 2026-08-20 | Sync after `TC-P30-T004` Application Shells |
-| 2026-08-20 | Sync after `TC-P30-T005` Public Home Experience |
-| 2026-08-20 | Sync after `TC-P30-T005-VISUAL-CHECKPOINT-C` (REWORK_RECOMMENDED) |
-| 2026-08-20 | Sync after `TC-P30-T005-REWORK` Public Home visual rework |
-| 2026-08-21 | Sync after P30 GATE ACCEPT + DEMOFEED T002 activation |
-| 2026-08-21 | Sync after DEMOFEED T003 Destination demo seed |
-| 2026-08-21 | Sync after DEMOFEED T004 Place (Hotel) + Media cover seed |
-| 2026-08-21 | Sync after DEMOFEED T005 Tour + Media cover seed |
-| 2026-08-21 | Sync after DEMOFEED GATE Cursor review evidence |
-| 2026-08-21 | Sync after P31-T001 commercial demo experience plan |
-| 2026-08-21 | Sync after P31-T002 professional demo content strategy |
-| 2026-08-21 | Sync after P31-T003 Home commercial upgrade |
-| 2026-08-21 | Sync after P31-T004 Hotel commerce polish |
 | 2026-08-21 | Sync after P31-T005 Tour commerce polish |
+| 2026-08-21 | Sync after P31-GATE Cursor review evidence |
