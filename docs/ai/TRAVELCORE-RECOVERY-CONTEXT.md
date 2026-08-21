@@ -26,57 +26,51 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P31 — Commercial Demo Experience** (`TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**)
+**P32 — Commercial Demo Data & Media Enrichment** (`TC-P32-T001` · AWAITING_ARCHITECT_REVIEW)
 
 ## Completed
 
 - **P00–P29** COMPLETE / ACCEPTED
-- Post-P29 evolution tracks COMPLETE
-- `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — P30 FOUNDATION ACCEPTED
-- `TC-DEMOFEED-T002`…`T005` **DONE** · `TC-DEMOFEED-GATE` **ACCEPTED**
-- `TC-P31-T001` **ACCEPTED** — plan
-- `TC-P31-T002` **ACCEPTED** — content strategy
-- `TC-P31-T003`…`T005` **ACCEPTED WITH KNOWN LIMITATIONS** — Home / Hotel / Tour commercial polish
-- `TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — `docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`
+- `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
+- `TC-DEMOFEED-GATE` **ACCEPTED**
+- `TC-P31-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
+- `TC-P32-T001` **Cursor PASS** — media strategy + demo asset pack foundation
 
 ## Current Important Locks
 
 | Lock | Value |
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
-| P30 | **FOUNDATION ACCEPTED** |
-| DEMOFEED | **GATE ACCEPTED** |
 | P31 | **GATE ACCEPTED WITH KNOWN LIMITATIONS** |
-| Feeder path | `tools/demofeed` — not an `ITravelCoreModule` |
-| Demo identity | `demofeed-*` |
+| P32 | **ACTIVE** (`T001` review) |
+| Demo media pack | `docs/product-experience/assets/demo-media/` |
+| Feeder | `tools/demofeed` · prefix `demofeed-*` |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
 | Pipeline Controller | File-Based Task Pipeline V3 |
 
 ## Current Authorized Work
 
-**None** — waiting for next Architect `.task.md` / `.gate.md`.
+**`TC-P32-T001`** complete (awaiting Architect ACCEPT/REWORK).
 
 ## Next Planned Work
 
-Architect discussed **P32 — Commercial Demo Data & Media Enrichment** but has **not** attached an authorized file yet.
-Do **not** invent / auto-start `TC-P32-T001`.
+Architect decision on T001.
+Then **only** authorized `.task.md` / `.gate.md` — recommended next: `TC-P32-T002` DEMOFEED Media Enrichment (do not auto-start).
 
 ## Open Blockers
 
-**None**
+**None** for T001 pack foundation. Media upload into owners awaits T002.
 
 ## Rules
 
 - No product execution without authorized `.task.md` / `.gate.md`
 - Never invent tasks from ROADMAP / deferred items
-- Never switch architect channel mid-pipeline
 - Never exit PIPELINE mode while USER keeps it active — RESULT → WAITING MODE
-- Major UI: visual evidence vs North Star mandatory
+- No scraping / competitor copy
 
 ## Revision
 
 | Date | Change |
 |------|--------|
-| 2026-08-21 | Sync after P31-T005 Tour commerce polish |
-| 2026-08-21 | Sync after P31-GATE Cursor review evidence |
 | 2026-08-21 | Sync after Architect ACCEPT of TC-P31-GATE |
+| 2026-08-21 | Sync after TC-P32-T001 media strategy + asset pack |

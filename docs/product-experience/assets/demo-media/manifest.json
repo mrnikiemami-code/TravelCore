@@ -1,0 +1,110 @@
+{
+  "packId": "TC-P32-T001-DEMO-MEDIA",
+  "version": 1,
+  "created": "2026-08-21",
+  "status": "foundation",
+  "license": "TravelCore repository-owned demo assets — non-production — replaceable",
+  "provenance": "Cursor-generated imagery for TravelCore commercial demos; not scraped; not competitor copies",
+  "forbidden": [
+    "scraping",
+    "competitor trade dress",
+    "fake production partner claims"
+  ],
+  "integration": {
+    "mediaOwner": "Media module",
+    "uploadTask": "TC-P32-T002",
+    "feeder": "tools/demofeed"
+  },
+  "assets": [
+    {
+      "file": "demofeed-iran-cover.png",
+      "entityType": "destination",
+      "entityCode": "demofeed-ir",
+      "slugHints": ["demofeed-iran"],
+      "role": "cover",
+      "aspect": "16:9",
+      "alt": { "fa": "پوشش مقصد نمونه ایران", "en": "DEMOFEED Iran destination cover" }
+    },
+    {
+      "file": "demofeed-turkey-cover.png",
+      "entityType": "destination",
+      "entityCode": "demofeed-tr",
+      "slugHints": ["demofeed-turkey"],
+      "role": "cover",
+      "aspect": "16:9",
+      "alt": { "fa": "پوشش مقصد نمونه ترکیه", "en": "DEMOFEED Turkey destination cover" }
+    },
+    {
+      "file": "demofeed-tehran-cover.png",
+      "entityType": "destination",
+      "entityCode": "demofeed-ir-teh",
+      "slugHints": ["demofeed-tehran", "demofeed-tehran-region"],
+      "role": "cover",
+      "aspect": "16:9",
+      "alt": { "fa": "پوشش مقصد نمونه تهران", "en": "DEMOFEED Tehran destination cover" }
+    },
+    {
+      "file": "demofeed-istanbul-cover.png",
+      "entityType": "destination",
+      "entityCode": "demofeed-tr-ist",
+      "slugHints": ["demofeed-istanbul"],
+      "role": "cover",
+      "aspect": "16:9",
+      "alt": { "fa": "پوشش مقصد نمونه استانبول", "en": "DEMOFEED Istanbul destination cover" }
+    },
+    {
+      "file": "demofeed-hotel-tehran-1-cover.png",
+      "entityType": "hotel",
+      "entityCode": "demofeed-hotel-teh-1",
+      "slugHints": ["demofeed-hotel-tehran-1"],
+      "role": "cover",
+      "aspect": "4:3",
+      "alt": { "fa": "پوشش هتل نمونه تهران ۱", "en": "DEMOFEED Tehran hotel 1 cover" }
+    },
+    {
+      "file": "demofeed-hotel-tehran-1-gallery-01.png",
+      "entityType": "hotel",
+      "entityCode": "demofeed-hotel-teh-1",
+      "slugHints": ["demofeed-hotel-tehran-1"],
+      "role": "gallery",
+      "aspect": "4:3",
+      "alt": { "fa": "گالری هتل نمونه تهران ۱", "en": "DEMOFEED Tehran hotel 1 gallery" }
+    },
+    {
+      "file": "demofeed-hotel-istanbul-1-cover.png",
+      "entityType": "hotel",
+      "entityCode": "demofeed-hotel-ist-1",
+      "slugHints": ["demofeed-hotel-istanbul-1"],
+      "role": "cover",
+      "aspect": "4:3",
+      "alt": { "fa": "پوشش هتل نمونه استانبول ۱", "en": "DEMOFEED Istanbul hotel 1 cover" }
+    },
+    {
+      "file": "demofeed-hotel-istanbul-1-gallery-01.png",
+      "entityType": "hotel",
+      "entityCode": "demofeed-hotel-ist-1",
+      "slugHints": ["demofeed-hotel-istanbul-1"],
+      "role": "gallery",
+      "aspect": "4:3",
+      "alt": { "fa": "گالری هتل نمونه استانبول ۱", "en": "DEMOFEED Istanbul hotel 1 gallery" }
+    },
+    {
+      "file": "demofeed-tour-tehran-1-cover.png",
+      "entityType": "tour",
+      "entityCode": "demofeed-tour-teh-1",
+      "slugHints": ["demofeed-tour-tehran-1"],
+      "role": "cover",
+      "aspect": "16:9",
+      "alt": { "fa": "پوشش تور نمونه تهران ۱", "en": "DEMOFEED Tehran tour 1 cover" }
+    },
+    {
+      "file": "demofeed-tour-istanbul-1-cover.png",
+      "entityType": "tour",
+      "entityCode": "demofeed-tour-ist-1",
+      "slugHints": ["demofeed-tour-istanbul-1"],
+      "role": "cover",
+      "aspect": "16:9",
+      "alt": { "fa": "پوشش تور نمونه استانبول ۱", "en": "DEMOFEED Istanbul tour 1 cover" }
+    }
+  ]
+}
