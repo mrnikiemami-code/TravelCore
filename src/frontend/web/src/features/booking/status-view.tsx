@@ -2,17 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { BidiText, LtrValue, MoneyText, Stack, Surface, Text } from "@/components/ui";
-import { readPublicBookingAction } from "@/features/booking/actions";
+import {
+  readPublicBookingAction,
+  readPublicBookingPaymentAction,
+} from "@/features/booking/actions";
 import { getPublicBookingCopy } from "@/features/booking/copy";
 import {
   bookingAccessStorageKey,
+  type PublicBookingPaymentReadResult,
   type PublicBookingReadResult,
 } from "@/features/booking/types";
 import type { AppLocale } from "@/lib/i18n";
 
 /**
- * Public Pending booking status + I4 Option A payment boundary (TC-P33-T008).
- * Preserves Pending. Does not imply a live payment provider is ready.
+ * Public Pending booking status (TC-P34-T004).
+ * Links to payment only when public payment read says initiation is available
+ * (safeAction Initiate/Retry). Otherwise keeps I4 Option A honest stop.
  */
 export function PublicBookingStatusView({
   locale,
@@ -23,6 +28,8 @@ export function PublicBookingStatusView({
 }) {
   const copy = getPublicBookingCopy(locale);
   const [data, setData] = useState<PublicBookingReadResult | null>(null);
+  const [payment, setPayment] = useState<PublicBookingPaymentReadResult | null>(null);
+  const [paymentChecked, setPaymentChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,6 +44,12 @@ export function PublicBookingStatusView({
       }
       setData(result.data);
     });
+    void readPublicBookingPaymentAction(bookingId, token).then((result) => {
+      setPaymentChecked(true);
+      if (result.ok) {
+        setPayment(result.data);
+      }
+    });
   }, [bookingId]);
 
   if (error) {
@@ -47,6 +60,10 @@ export function PublicBookingStatusView({
     return <Text role="muted">{copy.submitting}</Text>;
   }
 
+  const sandboxAvailable =
+    payment != null &&
+    (payment.safeAction === "Initiate" || payment.safeAction === "Retry");
+
   return (
     <Stack gap="md">
       <Text as="h1" role="heading">
@@ -54,7 +71,24 @@ export function PublicBookingStatusView({
       </Text>
       <Text>{copy.pendingNote}</Text>
       <Text role="caption">
-        {copy.notConfirmed} · <LtrValue>{data.status}</LtrValue>
+        {data.status !== "Confirmed" ? (
+          <>
+            {copy.notConfirmed} ·{" "}
+          </>
+        ) : null}
+        <LtrValue>{data.status}</LtrValue>
+        {payment ? (
+          <>
+            {" "}
+            · <LtrValue>{payment.paymentStatus}</LtrValue>
+            {payment.safeAction ? (
+              <>
+                {" "}
+                · <LtrValue>{payment.safeAction}</LtrValue>
+              </>
+            ) : null}
+          </>
+        ) : null}
       </Text>
       {data.monetary ? (
         <Text>
@@ -84,16 +118,30 @@ export function PublicBookingStatusView({
           </li>
         ))}
       </ul>
-      <Surface className="border-primary/15 bg-gradient-to-br from-surface to-primary/5">
+      {sandboxAvailable ? (
         <Stack gap="sm">
-          <Text as="h2" role="heading" className="text-primary">
-            {copy.paymentBoundaryTitle}
-          </Text>
-          <Text>{copy.paymentBoundaryBody}</Text>
-          <Text role="caption">{copy.paymentBoundaryNote}</Text>
-          <Text role="muted">{copy.payUnavailable}</Text>
+          <Text role="caption">{copy.paySandboxNote}</Text>
+          <a
+            className="inline-flex min-h-11 items-center rounded-md border border-amber-700/40 bg-amber-50 px-4 py-2 text-amber-950 underline-offset-2 hover:underline focus-visible:outline dark:bg-amber-950/30 dark:text-amber-100"
+            href={`/${locale}/bookings/${encodeURIComponent(bookingId)}/payment`}
+          >
+            {copy.payGoToSandbox}
+          </a>
         </Stack>
-      </Surface>
+      ) : paymentChecked ? (
+        <Surface className="border-primary/15 bg-gradient-to-br from-surface to-primary/5">
+          <Stack gap="sm">
+            <Text as="h2" role="heading" className="text-primary">
+              {copy.paymentBoundaryTitle}
+            </Text>
+            <Text>{copy.paymentBoundaryBody}</Text>
+            <Text role="caption">{copy.paymentBoundaryNote}</Text>
+            <Text role="muted">{copy.payUnavailable}</Text>
+          </Stack>
+        </Surface>
+      ) : (
+        <Text role="muted">{copy.submitting}</Text>
+      )}
     </Stack>
   );
 }

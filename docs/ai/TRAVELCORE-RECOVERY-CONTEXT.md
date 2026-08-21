@@ -26,7 +26,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P34 — Payment & Confirmation Readiness** (`TC-P34-T003` Cursor **PASS** · sandbox adapter awaiting Architect ACCEPT)
+**P34 — Payment & Confirmation Readiness** (`TC-P34-T004` Cursor **PASS** · Tour sandbox UX awaiting Architect ACCEPT)
 
 ## Completed (recent)
 
@@ -34,15 +34,17 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - P34-T001 ACCEPTED — readiness plan; Option B Architect-locked for next money-movement slice
 - P34-T002: Sandbox provider design (docs only) — reuse `IPaymentProviderGateway`; keep `NamedProductionAdapterImplemented=false`
 - P34-T003: Sandbox adapter + DI/eligibility gates implemented — `NamedProductionAdapterImplemented` still **false**
+- P34-T004: Tour public booking/payment UX wired to sandbox; Option A when unavailable; ConfirmIfEligible observed after success outbox
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T003 RESULT. Do not invent T004+ until authorized.
+**None** — WAITING for Architect after T004 RESULT. Do not invent further P34 tasks until authorized.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P34-T004 Tour sandbox UX |
 | 2026-08-21 | Sync after TC-P34-T003 sandbox adapter implementation |
 | 2026-08-21 | Sync after TC-P34-T002 sandbox design |
 | 2026-08-21 | Sync after TC-P34-T001 readiness plan |

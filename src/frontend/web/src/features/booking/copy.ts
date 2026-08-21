@@ -32,12 +32,15 @@ export type PublicBookingCopy = {
   payTitle: string;
   payNote: string;
   payAction: string;
+  paySandboxAction: string;
+  paySandboxNote: string;
   payUnavailable: string;
   payWaiting: string;
   payReceivedPendingConfirm: string;
   payCompensation: string;
   payReturned: string;
   payRetry: string;
+  payGoToSandbox: string;
 };
 
 const COPY: Record<AppLocale, PublicBookingCopy> = {
@@ -76,12 +79,16 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     payTitle: "پرداخت رزرو",
     payNote: "مبلغ از رزرو ثبت‌شده خوانده می‌شود. کارت بانکی در TravelCore وارد نمی‌شود.",
     payAction: "ادامه به درگاه پرداخت",
+    paySandboxAction: "پرداخت سندباکس — غیرا تولیدی",
+    paySandboxNote:
+      "این مسیر فقط Sandbox غیرتولیدی است. بازگشت مرورگر به‌تنهایی موفقیت پرداخت نیست؛ فقط وضعیت سرور نمایش داده می‌شود.",
     payUnavailable: "پرداخت آنلاین فعلاً در دسترس نیست.",
     payWaiting: "وضعیت پرداخت در حال بررسی است.",
     payReceivedPendingConfirm: "پرداخت دریافت شد؛ تأیید رزرو در حال پردازش است.",
     payCompensation: "بازگشت وجه در حال انجام است. رزرو قطعی نیست.",
     payReturned: "بازگشت از درگاه. این صفحه پرداخت را موفق اعلام نمی‌کند.",
     payRetry: "تلاش دوباره برای پرداخت",
+    payGoToSandbox: "رفتن به پرداخت سندباکس — غیرا تولیدی",
   },
   en: {
     prepareTitle: "Prepare booking",
@@ -118,12 +125,16 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     payTitle: "Booking payment",
     payNote: "The amount comes from the recorded booking. TravelCore does not collect card details.",
     payAction: "Continue to payment provider",
+    paySandboxAction: "Sandbox payment — non-production",
+    paySandboxNote:
+      "This path uses the labeled non-production Sandbox only. Browser return alone is not payment success; only server status is shown.",
     payUnavailable: "Online payment is not currently available.",
     payWaiting: "Payment status is being checked.",
     payReceivedPendingConfirm: "Payment received; booking confirmation is being processed.",
     payCompensation: "A money return is in progress. This booking is not confirmed.",
     payReturned: "Returned from the provider. This page does not mark payment successful.",
     payRetry: "Try payment again",
+    payGoToSandbox: "Go to sandbox payment — non-production",
   },
   ar: {
     prepareTitle: "إعداد حجز مؤقت",
@@ -160,12 +171,16 @@ const COPY: Record<AppLocale, PublicBookingCopy> = {
     payTitle: "دفع الحجز",
     payNote: "المبلغ مأخوذ من الحجز المسجل. لا تجمع TravelCore بيانات البطاقة.",
     payAction: "المتابعة إلى مزود الدفع",
+    paySandboxAction: "دفع Sandbox — غير إنتاجي",
+    paySandboxNote:
+      "هذا المسار Sandbox غير إنتاجي فقط. عودة المتصفح وحدها ليست نجاح دفع؛ تُعرض حالة الخادم فقط.",
     payUnavailable: "الدفع عبر الإنترنت غير متاح حالياً.",
     payWaiting: "جارٍ التحقق من حالة الدفع.",
     payReceivedPendingConfirm: "تم استلام الدفع؛ تأكيد الحجز قيد المعالجة.",
     payCompensation: "جاري إرجاع المبلغ. الحجز غير مؤكد.",
     payReturned: "عودة من المزود. هذه الصفحة لا تعتبر الدفع ناجحاً.",
     payRetry: "إعادة محاولة الدفع",
+    payGoToSandbox: "الانتقال إلى دفع Sandbox — غير إنتاجي",
   },
 };
 

@@ -38,7 +38,7 @@ export default async function PublicBookingPaymentReturnPage({ params }: PagePro
         </Text>
       }
       context={<Text role="caption">{copy.payTitle}</Text>}
-      footer={<Text role="caption">{copy.notConfirmed}</Text>}
+      footer={<Text role="caption">{copy.payReturned}</Text>}
     >
       <div className="py-6 sm:py-8">
         <div className="mx-auto w-full max-w-xl px-4">

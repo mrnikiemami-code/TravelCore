@@ -964,16 +964,19 @@ Evidence: [`docs/product-experience/evidence/P33-GATE/GATE-REVIEW.md`](product-e
 
 ## P34 — Payment & Confirmation Readiness
 
-**Status:** **ACTIVE** (`TC-P34-T003` Cursor **PASS** · sandbox adapter awaiting Architect)
+**Status:** **ACTIVE** (`TC-P34-T004` Cursor **PASS** · Tour sandbox UX awaiting Architect)
 
 Plans:
 
 - [`docs/plans/P34-payment-confirmation-readiness-plan.md`](plans/P34-payment-confirmation-readiness-plan.md) (T001 ACCEPTED)
 - [`docs/plans/P34-payment-sandbox-provider-design.md`](plans/P34-payment-sandbox-provider-design.md) (T002 design)
 
-Evidence: [`docs/product-experience/evidence/P34-T003/`](product-experience/evidence/P34-T003/)
+Evidence:
 
-Await Architect ACCEPT of T003 before T004+.
+- [`docs/product-experience/evidence/P34-T003/`](product-experience/evidence/P34-T003/) (sandbox adapter)
+- [`docs/product-experience/evidence/P34-T004/`](product-experience/evidence/P34-T004/) (Tour UX ↔ sandbox)
+
+Await Architect ACCEPT of T004 before inventing further P34 units.
 
 ---
 
