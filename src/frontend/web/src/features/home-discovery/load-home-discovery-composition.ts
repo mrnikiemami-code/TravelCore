@@ -8,6 +8,8 @@ import {
   type HomeDestinationPreview,
   type HomeDiscoveryComposition,
 } from "@/features/home-discovery/types";
+import { enrichHotelsWithCoverMedia } from "@/features/hotel-discovery/enrich-hotel-covers";
+import { enrichToursWithCoverMedia } from "@/features/tour-discovery/enrich-tour-covers";
 import { loadTourDiscoveryList } from "@/features/tour-discovery/load-tour-discovery-list";
 import type { RelatedTourView } from "@/features/public-experience/load-related-tours";
 import { loadTravelogueDiscoveryList } from "@/features/travelogue-detail/load-travelogue-list";
@@ -131,11 +133,22 @@ export async function loadHomeDiscoveryComposition(
     }
   }
 
+  const hotelsPreview = hotelLoad.hotels.slice(0, HOME_DISCOVERY_PREVIEW_LIMIT);
+  const toursPreview = [...tourMap.values()].slice(
+    0,
+    HOME_DISCOVERY_PREVIEW_LIMIT,
+  );
+
+  const [hotels, tours] = await Promise.all([
+    enrichHotelsWithCoverMedia(locale, hotelsPreview, HOME_DISCOVERY_PREVIEW_LIMIT),
+    enrichToursWithCoverMedia(locale, toursPreview, HOME_DISCOVERY_PREVIEW_LIMIT),
+  ]);
+
   return {
     locale,
     travelogues: travelogues.slice(0, HOME_DISCOVERY_PREVIEW_LIMIT),
-    hotels: hotelLoad.hotels.slice(0, HOME_DISCOVERY_PREVIEW_LIMIT),
+    hotels,
     destinations: destinations.slice(0, HOME_DISCOVERY_PREVIEW_LIMIT),
-    tours: [...tourMap.values()].slice(0, HOME_DISCOVERY_PREVIEW_LIMIT),
+    tours,
   };
 }

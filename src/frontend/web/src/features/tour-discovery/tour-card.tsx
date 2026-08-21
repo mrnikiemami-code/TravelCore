@@ -21,7 +21,7 @@ export function TourCard({
           imageAlt: "تصویر تور",
           kind: "نوع",
           details: "جزئیات و برنامه در صفحه تور",
-          demoHint: "نمونه DEMOFEED",
+          demoHint: "نمونه کاتالوگ",
         }
       : locale === "ar"
         ? {
@@ -29,14 +29,14 @@ export function TourCard({
             imageAlt: "صورة الجولة",
             kind: "النوع",
             details: "التفاصيل والبرنامج في صفحة الجولة",
-            demoHint: "عينة DEMOFEED",
+            demoHint: "عينة الكتالوج",
           }
         : {
             cta: "View tour",
             imageAlt: "Tour image",
             kind: "Kind",
             details: "Details and itinerary on the tour page",
-            demoHint: "DEMOFEED sample",
+            demoHint: "Sample catalog",
           };
 
   const href = `/${locale}/tours/${encodeURIComponent(tour.slug)}`;
@@ -66,7 +66,7 @@ export function TourCard({
           </div>
         )}
         {isDemo ? (
-          <span className="absolute bottom-3 start-3 rounded-md bg-background/90 px-2 py-1 text-[11px] font-medium text-foreground">
+          <span className="absolute end-2 top-2 rounded-full bg-black/45 px-2 py-0.5 text-[10px] font-medium tracking-wide text-white/90 backdrop-blur-sm">
             {copy.demoHint}
           </span>
         ) : null}

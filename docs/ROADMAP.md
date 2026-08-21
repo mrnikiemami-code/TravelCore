@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P36 — Commercial UI/UX Final Polish** (`TC-P36-T001` Cursor **PASS** · **NOT_SELLABLE_VISUALLY**) |
+| Current Phase | **P36 — Commercial UI/UX Final Polish** (`TC-P36-T002` Cursor **PASS** · Home · **PARTIALLY_SELLABLE_VISUALLY**) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
