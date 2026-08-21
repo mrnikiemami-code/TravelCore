@@ -13,7 +13,13 @@ export function parseHotelListingCriteria(
 ): HotelListingCriteria {
   const rawQ = searchParams?.q;
   const rawSort = searchParams?.sort;
-  const q = (Array.isArray(rawQ) ? rawQ[0] : rawQ)?.trim() ?? "";
+  const raw = (Array.isArray(rawQ) ? rawQ[0] : rawQ)?.trim() ?? "";
+  const q =
+    raw === "" ||
+    raw.toLowerCase() === "undefined" ||
+    raw.toLowerCase() === "null"
+      ? ""
+      : raw;
   const sortRaw = (Array.isArray(rawSort) ? rawSort[0] : rawSort) ?? "name-asc";
   const sort: HotelListingSort =
     sortRaw === "name-desc" ||

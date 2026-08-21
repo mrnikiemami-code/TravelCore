@@ -44,10 +44,17 @@ export function HotelCard({
 
   const href = `/${locale}/hotels/${encodeURIComponent(hotel.slug)}`;
   const isDemo = hotel.slug.startsWith("demofeed-");
+  const description =
+    hotel.description &&
+    !/demofeed sample data|non-production|^undefined$|^null$/i.test(
+      hotel.description.trim(),
+    )
+      ? hotel.description
+      : null;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/35 hover:shadow-md">
-      <Link href={href} className="relative block aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/80 via-primary/40 to-accent/70">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm transition hover:-translate-y-0.5 hover:border-[#1D4ED8]/35 hover:shadow-lg">
+      <Link href={href} className="relative block aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#1D4ED8]/80 via-[#1D4ED8]/40 to-[#F59E0B]/70">
         {hotel.coverSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -75,14 +82,14 @@ export function HotelCard({
         <Text as="h2" role="label" className="text-base font-semibold">
           <Link
             href={href}
-            className="min-h-touch inline-flex text-foreground underline-offset-2 hover:text-primary hover:underline"
+            className="min-h-touch inline-flex text-foreground underline-offset-2 hover:text-[#1D4ED8] hover:underline"
           >
             {hotel.name}
           </Link>
         </Text>
-        {hotel.description ? (
+        {description ? (
           <Text role="muted" className="line-clamp-2 text-sm">
-            {hotel.description}
+            {description}
           </Text>
         ) : (
           <Text role="caption">{copy.facilities}</Text>
@@ -95,7 +102,7 @@ export function HotelCard({
           </Text>
           <Link
             href={href}
-            className="min-h-touch inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:opacity-95"
+            className="min-h-touch inline-flex items-center rounded-lg bg-[#1D4ED8] px-3 py-2 text-sm font-semibold text-white hover:bg-[#1E40AF]"
           >
             {copy.cta}
           </Link>
