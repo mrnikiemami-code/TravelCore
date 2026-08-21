@@ -26,21 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P33 — Commercial Product Readiness Review** (`TC-P33-T002` Cursor **PASS** · awaiting Architect ACCEPT)
+**P33 — Commercial Product Readiness Review** (`TC-P33-T003` Cursor **PASS** · awaiting Architect ACCEPT)
 
 ## Completed (recent)
 
 - `TC-P32-GATE` **ACCEPTED WITH KNOWN LIMITATIONS**
 - `TC-P33-T001` readiness plan
-- `TC-P33-T002` Tour-first commerce slice: `docs/plans/P33-tour-first-commerce-slice.md`
+- `TC-P33-T002` Tour-first slice **ACCEPTED**
+- `TC-P33-T003` data contracts: `docs/plans/P33-tour-commerce-data-contracts.md`
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T002 RESULT. Do not invent T003+.
+**None** — WAITING for Architect after T003 RESULT. Do not invent T004+.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
-| 2026-08-21 | Sync after TC-P33-T002 Tour-first commerce slice plan |
-| 2026-08-21 | Sync after TC-P33-T001 commercial readiness plan |
+| 2026-08-21 | Sync after TC-P33-T003 tour commerce data contracts |
+| 2026-08-21 | Sync after TC-P33-T002 ACCEPTED |
