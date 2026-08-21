@@ -1,15 +1,18 @@
+import Link from "next/link";
 import { Container, Stack, Text } from "@/components/ui";
 import { TourCard } from "@/features/tour-discovery/tour-card";
 import {
   applyTourListingCriteria,
+  humanDestinationLabel,
   type TourListingCriteria,
 } from "@/features/tour-discovery/tour-listing-criteria";
 import { TourListingToolbar } from "@/features/tour-discovery/tour-listing-toolbar";
+import { tourDestinationOptions } from "@/features/tour-discovery/tour-destination-options";
 import type { RelatedTourView } from "@/features/public-experience/load-related-tours";
 import type { AppLocale } from "@/lib/i18n";
 
 /**
- * Tour commerce listing experience (TC-P30-T007 · TC-P31-T005 polish).
+ * Tour commerce listing experience (TC-P36-T004 polish).
  * Destination-scoped related-published discovery · no invented catalog.
  */
 export function TourDiscoveryView({
@@ -27,17 +30,22 @@ export function TourDiscoveryView({
 }) {
   const title = locale === "fa" ? "تورها" : locale === "ar" ? "الجولات" : "Tours";
   const filtered = applyTourListingCriteria(tours, criteria);
-  const destinationLabel = criteria.destination.trim();
+  const destinationLabel = humanDestinationLabel(
+    locale,
+    criteria.destination.trim(),
+  );
+  const heroCover = filtered.find((t) => t.coverSrc)?.coverSrc ?? null;
+  const quickDestinations = tourDestinationOptions(locale);
 
   const copy =
     locale === "fa"
       ? {
-          eyebrow: "Tour commerce",
+          eyebrow: "پکیج‌های سفر",
           blurb:
-            "کاتالوگ تور حرفه‌ای برای دمو تجاری — بدون قیمت، موجودی یا ادعای فروش ساختگی.",
-          needsTitle: "مقصد را انتخاب کنید",
+            "تورهای منتشرشده بر اساس مقصد — بدون قیمت، موجودی یا ادعای فروش ساختگی.",
+          needsTitle: "یک مقصد را انتخاب کنید",
           needsBody:
-            "برای نمایش تورهای منتشرشده، slug مقصد را وارد کنید (مثلاً demofeed-tehran). فهرست سراسری در این لایه موجود نیست.",
+            "تورهای منتشرشده بر اساس مقصد نمایش داده می‌شوند. از فهرست زیر یک مقصد انتخاب کنید — نیازی به دانستن شناسه فنی نیست.",
           emptyTitle: "توری برای نمایش نیست",
           emptyBody:
             "برای این مقصد یا فیلتر، تور منتشرشده‌ای پیدا نشد. داده جعلی نشان نمی‌دهیم.",
@@ -47,16 +55,17 @@ export function TourDiscoveryView({
           retry: "تلاش دوباره",
           count: (n: number, dest: string) =>
             dest ? `${n} تور برای ${dest}` : `${n} تور در فهرست`,
-          marketplaceHint: "بازار تور · بر اساس مقصد منتشرشده",
+          marketplaceHint: "بازار تور · مقصد منتشرشده",
+          quickPick: "مقصدهای آماده",
         }
       : locale === "ar"
         ? {
-            eyebrow: "Tour commerce",
+            eyebrow: "باقات السفر",
             blurb:
-              "كتالوج جولات احترافي للعرض التجاري — دون أسعار أو توفر أو ادعاءات بيع وهمية.",
+              "جولات منشورة حسب الوجهة — دون أسعار أو توفر أو ادعاءات بيع وهمية.",
             needsTitle: "اختر وجهة",
             needsBody:
-              "أدخل slug وجهة منشورة لعرض الجولات (مثل demofeed-tehran). لا توجد قائمة عامة كاملة في هذه الطبقة.",
+              "تُعرض الجولات المنشورة حسب الوجهة. اختر من القائمة أدناه — لا حاجة لمعرفات تقنية.",
             emptyTitle: "لا جولات للعرض",
             emptyBody:
               "لا جولات منشورة لهذه الوجهة أو التصفية. لا نعرض بيانات وهمية.",
@@ -66,15 +75,16 @@ export function TourDiscoveryView({
             retry: "إعادة المحاولة",
             count: (n: number, dest: string) =>
               dest ? `${n} جولة لـ ${dest}` : `${n} جولة في القائمة`,
-            marketplaceHint: "سوق الجولات · حسب الوجهة المنشورة",
+            marketplaceHint: "سوق الجولات · وجهة منشورة",
+            quickPick: "وجهات جاهزة",
           }
         : {
-            eyebrow: "Tour commerce",
+            eyebrow: "Travel packages",
             blurb:
-              "Professional tour catalog for commercial demos — no invented prices, availability, or sales claims.",
+              "Published tours by destination — no invented prices, availability, or sales claims.",
             needsTitle: "Choose a destination",
             needsBody:
-              "Enter a published destination slug to list tours (e.g. demofeed-tehran). A global browse catalog is not available on this layer.",
+              "Published tours are listed by destination. Pick from the friendly list below — you do not need an internal slug.",
             emptyTitle: "No tours to show",
             emptyBody:
               "No published tours matched this destination or filter. We do not invent catalog rows.",
@@ -84,30 +94,51 @@ export function TourDiscoveryView({
             retry: "Try again",
             count: (n: number, dest: string) =>
               dest ? `${n} tours for ${dest}` : `${n} tours in list`,
-            marketplaceHint: "Tour marketplace · published destination scope",
+            marketplaceHint: "Tour marketplace · published destination",
+            quickPick: "Ready destinations",
           };
 
   const showNeeds = !loadError && needsDestination;
   const showEmpty = !loadError && !needsDestination && filtered.length === 0;
 
   return (
-    <div className="pb-10">
-      <section className="border-b border-border bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground">
-        <Container width="wide" className="py-8 sm:py-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+    <div className="pb-14">
+      <section className="relative isolate overflow-hidden border-b border-border">
+        <div className="absolute inset-0 bg-[#0E172A]" aria-hidden />
+        {heroCover ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={heroCover}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-55"
+          />
+        ) : (
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-[linear-gradient(135deg,#0E172A_0%,#1D4ED8_55%,#0E172A_100%)]"
+          />
+        )}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-r from-[#0E172A]/92 via-[#0E172A]/75 to-[#0E172A]/45"
+        />
+        <Container width="wide" className="relative py-10 sm:py-12">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#FBBF24]">
             {copy.eyebrow}
           </p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             {title}
           </h1>
-          <p className="mt-2 max-w-2xl text-sm text-primary-foreground/90 sm:text-base">
+          <p className="mt-2 max-w-2xl text-sm text-white/90 sm:text-base">
             {copy.blurb}
           </p>
           {destinationLabel ? (
-            <p className="mt-3 text-sm text-primary-foreground/80">
+            <p className="mt-3 text-sm text-white/80">
               {copy.marketplaceHint}
               {" · "}
-              <span className="font-medium text-accent">{destinationLabel}</span>
+              <span className="font-medium text-[#FBBF24]">
+                {destinationLabel}
+              </span>
             </p>
           ) : null}
         </Container>
@@ -117,10 +148,30 @@ export function TourDiscoveryView({
         <Stack gap="lg">
           <TourListingToolbar locale={locale} criteria={criteria} />
 
+          {showNeeds ? (
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-foreground">
+                {copy.quickPick}
+              </p>
+              <ul className="flex flex-wrap gap-2">
+                {quickDestinations.map((d) => (
+                  <li key={d.slug}>
+                    <Link
+                      href={`/${locale}/tours?destination=${encodeURIComponent(d.slug)}`}
+                      className="inline-flex min-h-touch items-center rounded-full border border-border bg-surface px-4 text-sm font-medium text-foreground hover:border-[#1D4ED8]/40 hover:text-[#1D4ED8]"
+                    >
+                      {d.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
           {loadError ? (
             <div
               role="alert"
-              className="rounded-xl border border-border bg-surface p-6 shadow-sm sm:p-8"
+              className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8"
             >
               <Text as="h2" role="label">
                 {copy.errorTitle}
@@ -130,36 +181,27 @@ export function TourDiscoveryView({
               </Text>
               <a
                 href={`/${locale}/tours`}
-                className="mt-5 inline-flex min-h-touch items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-95"
+                className="mt-5 inline-flex min-h-touch items-center justify-center rounded-lg bg-[#1D4ED8] px-4 text-sm font-semibold text-white hover:bg-[#1E40AF]"
               >
                 {copy.retry}
               </a>
             </div>
           ) : showNeeds ? (
-            <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
-              <div className="grid gap-0 md:grid-cols-[1fr_1.2fr]">
-                <div className="min-h-40 bg-gradient-to-br from-primary via-primary/70 to-accent" />
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+              <div className="grid gap-0 md:grid-cols-[0.9fr_1.3fr]">
+                <div className="min-h-40 bg-[linear-gradient(145deg,#1D4ED8,#0E172A_55%,#F59E0B)]" />
                 <div className="space-y-3 p-6 sm:p-8">
                   <Text as="h2" role="label">
                     {copy.needsTitle}
                   </Text>
                   <Text role="muted">{copy.needsBody}</Text>
-                  <div className="mt-4 grid grid-cols-3 gap-2">
-                    {[0, 1, 2].map((i) => (
-                      <div
-                        key={i}
-                        className="aspect-[4/3] rounded-lg bg-gradient-to-br from-primary/20 via-muted to-accent/25"
-                        aria-hidden
-                      />
-                    ))}
-                  </div>
                 </div>
               </div>
             </div>
           ) : showEmpty ? (
-            <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
-              <div className="grid gap-0 md:grid-cols-[1fr_1.2fr]">
-                <div className="min-h-40 bg-gradient-to-br from-primary/80 via-primary/50 to-accent/60" />
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+              <div className="grid gap-0 md:grid-cols-[0.9fr_1.3fr]">
+                <div className="min-h-40 bg-[linear-gradient(145deg,#1D4ED8_10%,#F59E0B_90%)] opacity-90" />
                 <div className="space-y-3 p-6 sm:p-8">
                   <Text as="h2" role="label">
                     {copy.emptyTitle}
@@ -170,10 +212,10 @@ export function TourDiscoveryView({
             </div>
           ) : (
             <Stack gap="md">
-              <Text role="caption">
+              <p className="text-sm text-muted-foreground">
                 {copy.count(filtered.length, destinationLabel)}
-              </Text>
-              <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              </p>
+              <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {filtered.map((item) => (
                   <li key={item.tourProductId}>
                     <TourCard locale={locale} tour={item} />

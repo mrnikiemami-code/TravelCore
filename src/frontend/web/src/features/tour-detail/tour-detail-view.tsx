@@ -1,10 +1,5 @@
-import {
-  Container,
-  LtrValue,
-  Stack,
-  Surface,
-  Text,
-} from "@/components/ui";
+import Link from "next/link";
+import { Container, Stack, Surface, Text } from "@/components/ui";
 import { AgencyOffersList } from "@/features/public-experience/agency-offers-list";
 import { PublicDetailStickyActions } from "@/features/public-experience/detail-sticky-actions";
 import { ExperienceTourDetailSections } from "@/features/public-experience/experience-detail-sections";
@@ -14,10 +9,22 @@ import { UgcCompositionList } from "@/features/public-experience/ugc-composition
 import { TourCommercePanel } from "./tour-commerce-panel";
 import type { TourDetailPageViewModel } from "./load-tour-detail";
 
+function isNoiseDescription(value: string | null | undefined): boolean {
+  if (!value) return true;
+  const v = value.trim().toLowerCase();
+  return (
+    v.length === 0 ||
+    v.includes("demofeed sample data") ||
+    v === "non-production" ||
+    v.includes("undefined") ||
+    v.includes("null")
+  );
+}
+
 /**
- * Public Tour commerce detail (TC-P30-T007 · TC-P31-T005 · TC-P33-T006 I2 · TC-P33-T007 I3).
+ * Public Tour commerce detail (TC-P36-T004 polish).
  * Catalog + Published Departure + Pricing summary → book prepare (Pending initiation).
- * No Payment · no Confirmed theater · no invented money.
+ * No Payment · no Confirmed theater · no invented money · no UUID leakage.
  */
 export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
   const locale = vm.locale;
@@ -27,103 +34,129 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
   const copy =
     locale === "fa"
       ? {
-          eyebrow: "Tour commerce",
+          eyebrow: "پکیج تور",
           gallery: "گالری",
           noGallery: "گالری تصاویر هنوز برای این تور منتشر نشده است.",
-          summary: "خلاصه تور",
+          summary: "درباره این تور",
           destinations: "مقصدها",
           noDestinations: "مقصدی ثبت نشده است.",
-          destinationCount: (n: number) => `${n} مقصد ثبت‌شده`,
-          origin: "مبدأ ثبت‌شده",
+          destinationCount: (n: number) =>
+            n === 1 ? "۱ مقصد در این پکیج" : `${n} مقصد در این پکیج`,
           included: "خدمات و الزامات",
-          policies: "قوانین و الزامات",
-          noPolicies: "قانونی ثبت نشده است.",
-          trust: "اعتماد و شفافیت",
+          noPolicies: "قانون یا الزامی منتشر نشده است.",
+          trust: "مسیر فروش صادقانه",
           trustBody:
-            "این صفحه کاتالوگ تور است — موجودی لحظه‌ای، کمیابی یا پرداخت قطعی اینجا ادعا نمی‌شود. حرکت و قیمت از APIهای منتشرشده می‌آیند.",
+            "این صفحه کاتالوگ تور است — موجودی لحظه‌ای یا پرداخت قطعی اینجا ادعا نمی‌شود. حرکت و قیمت از APIهای منتشرشده می‌آیند.",
           request: "درخواست اطلاعات",
           requestBody: "برای پرسش درباره این تور · نه پرداخت · نه ایجاد رزرو.",
-          demoHint: "نمونه DEMOFEED",
+          demoHint: "نمونه کاتالوگ",
+          back: "بازگشت به تورها",
           ctaNote:
-            "مسیر فروش: انتخاب حرکت → خلاصه قیمت → شروع رزرو موقت (Pending) · بدون پرداخت و بدون Confirmed",
+            "انتخاب حرکت → خلاصه قیمت → شروع رزرو موقت · بدون پرداخت و بدون Confirmed",
         }
       : locale === "ar"
         ? {
-            eyebrow: "Tour commerce",
+            eyebrow: "باقة جولة",
             gallery: "المعرض",
             noGallery: "معرض الصور غير منشور بعد لهذه الجولة.",
-            summary: "ملخص الجولة",
+            summary: "عن هذه الجولة",
             destinations: "الوجهات",
             noDestinations: "لا وجهات مسجلة.",
-            destinationCount: (n: number) => `${n} وجهة مسجلة`,
-            origin: "منشأ مسجل",
+            destinationCount: (n: number) =>
+              n === 1 ? "وجهة واحدة في هذه الباقة" : `${n} وجهات في هذه الباقة`,
             included: "الخدمات والمتطلبات",
-            policies: "السياسات والمتطلبات",
-            noPolicies: "لا سياسات منشورة.",
-            trust: "الثقة والشفافية",
+            noPolicies: "لا سياسات أو متطلبات منشورة.",
+            trust: "مسار بيع صادق",
             trustBody:
-              "هذه صفحة كتالوج الجولة — لا ندّعي توفراً لحظياً أو ندرة أو دفعاً مؤكداً هنا. المغادرة والسعر من واجهات منشورة.",
+              "هذه صفحة كتالوج الجولة — لا ندّعي توفراً لحظياً أو دفعاً مؤكداً هنا. المغادرة والسعر من واجهات منشورة.",
             request: "طلب معلومات",
             requestBody: "للاستفسار عن هذه الجولة · ليس دفعاً · بلا إنشاء حجز.",
-            demoHint: "عينة DEMOFEED",
+            demoHint: "عينة الكتالوج",
+            back: "العودة إلى الجولات",
             ctaNote:
-              "مسار البيع: اختيار المغادرة → ملخص السعر → بدء حجز Pending · بلا دفع وبلا تأكيد",
+              "اختر المغادرة → ملخص السعر → ابدأ حجزاً معلقاً · بلا دفع وبلا تأكيد",
           }
         : {
-            eyebrow: "Tour commerce",
+            eyebrow: "Tour package",
             gallery: "Gallery",
             noGallery: "Photo gallery is not published for this tour yet.",
-            summary: "Tour summary",
+            summary: "About this tour",
             destinations: "Destinations",
             noDestinations: "No destinations published.",
-            destinationCount: (n: number) => `${n} destination(s) recorded`,
-            origin: "Origin recorded",
+            destinationCount: (n: number) =>
+              n === 1
+                ? "1 destination in this package"
+                : `${n} destinations in this package`,
             included: "Services & requirements",
-            policies: "Policies & requirements",
-            noPolicies: "No policies published.",
-            trust: "Trust & transparency",
+            noPolicies: "No policies or requirements published.",
+            trust: "Honest sell path",
             trustBody:
-              "This is a tour catalog surface — we do not claim live availability, scarcity, or confirmed payment here. Departures and prices come from published APIs.",
+              "This is a tour catalog surface — we do not claim live availability or confirmed payment here. Departures and prices come from published APIs.",
             request: "Request information",
             requestBody: "Ask about this tour · not payment · not booking create.",
-            demoHint: "DEMOFEED sample",
+            demoHint: "Sample catalog",
+            back: "Back to tours",
             ctaNote:
-              "Sell path: select departure → price summary → start Pending booking · no payment · not Confirmed",
+              "Select departure → price summary → start Pending booking · no payment · not Confirmed",
           };
 
   const galleryItems =
     vm.gallery.length > 0 ? vm.gallery : vm.cover ? [vm.cover] : [];
   const hero = galleryItems[0] ?? null;
   const thumbs = galleryItems.slice(1, 5);
+  const showDescription = !isNoiseDescription(vm.description);
+  const destinationCount = vm.destinationIds.length;
+  const hasPolicies =
+    vm.policies.length > 0 || vm.requirements.length > 0;
+  const hasUgc =
+    vm.ugcComposition.reviews.length > 0 ||
+    vm.ugcComposition.travelogues.length > 0 ||
+    vm.ugcComposition.userPhotos.length > 0;
 
   return (
     <div className="pb-28">
-      <section className="border-b border-border bg-gradient-to-br from-primary/95 via-primary to-primary/80 text-primary-foreground">
-        <Container width="wide" className="py-6 sm:py-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-            {copy.eyebrow}
-          </p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-4xl">
+      <section className="relative isolate overflow-hidden border-b border-border">
+        <div className="absolute inset-0 bg-[#0E172A]" aria-hidden />
+        {hero?.src ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={hero.src}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-50"
+          />
+        ) : null}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-r from-[#0E172A]/95 via-[#0E172A]/78 to-[#0E172A]/45"
+        />
+        <Container width="wide" className="relative py-8 sm:py-10">
+          <Link
+            href={`/${locale}/tours`}
+            className="text-xs font-medium text-white/75 underline-offset-2 hover:text-white hover:underline"
+          >
+            {copy.back}
+          </Link>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {vm.kind ? (
+              <span className="rounded-full bg-white/15 px-2.5 py-1 text-xs font-medium text-white">
+                {vm.kind}
+              </span>
+            ) : null}
+            {isDemo ? (
+              <span className="rounded-full bg-black/35 px-2.5 py-1 text-[10px] font-medium tracking-wide text-white/90">
+                {copy.demoHint}
+              </span>
+            ) : null}
+          </div>
+          <h1 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             {vm.name}
           </h1>
-          <p className="mt-2 text-sm text-primary-foreground/90">
-            {copy.summary}
-            {" · "}
-            {vm.kind}
-            {" · "}
-            <LtrValue>{vm.code}</LtrValue>
-            {isDemo ? (
-              <>
-                {" · "}
-                {copy.demoHint}
-              </>
-            ) : null}
-          </p>
+          <p className="mt-2 text-sm text-white/85">{copy.eyebrow}</p>
         </Container>
       </section>
 
       <Container width="wide" className="pt-6 sm:pt-8">
-        <Stack gap="lg">
+        <Stack gap="xl">
           <section aria-labelledby="tour-gallery-title">
             <h2
               id="tour-gallery-title"
@@ -132,7 +165,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
               {copy.gallery}
             </h2>
             {hero?.src ? (
-              <div className="grid gap-3 lg:grid-cols-[1.6fr_0.8fr]">
+              <div className="grid gap-3 lg:grid-cols-[1.7fr_0.8fr]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={hero.src}
@@ -141,30 +174,30 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
                   height={hero.height ?? 675}
                   className="aspect-[16/10] w-full rounded-2xl object-cover shadow-sm"
                 />
-                <ul className="grid grid-cols-2 gap-3">
-                  {thumbs.length > 0
-                    ? thumbs.map((item) =>
-                        item.src ? (
-                          <li key={item.mediaAssetId}>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={item.src}
-                              alt={item.alt || vm.name}
-                              width={item.width ?? 640}
-                              height={item.height ?? 360}
-                              className="aspect-video w-full rounded-xl object-cover"
-                            />
-                          </li>
-                        ) : null,
-                      )
-                    : [0, 1, 2, 3].map((i) => (
-                        <li
-                          key={i}
-                          aria-hidden
-                          className="aspect-video rounded-xl bg-gradient-to-br from-surface-muted to-primary/20"
-                        />
-                      ))}
-                </ul>
+                {thumbs.length > 0 ? (
+                  <ul className="grid grid-cols-2 gap-3 content-start">
+                    {thumbs.map((item) =>
+                      item.src ? (
+                        <li key={item.mediaAssetId}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={item.src}
+                            alt={item.alt || vm.name}
+                            width={item.width ?? 640}
+                            height={item.height ?? 360}
+                            className="aspect-video w-full rounded-xl object-cover"
+                          />
+                        </li>
+                      ) : null,
+                    )}
+                  </ul>
+                ) : (
+                  <Surface className="flex min-h-40 items-center justify-center rounded-2xl border-dashed p-4">
+                    <Text role="muted" className="text-center text-sm">
+                      {copy.trustBody}
+                    </Text>
+                  </Surface>
+                )}
               </div>
             ) : (
               <div className="flex aspect-[16/9] items-center justify-center rounded-2xl border border-dashed border-border bg-muted/30 p-6">
@@ -173,65 +206,53 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             )}
           </section>
 
-          <section aria-labelledby="tour-summary-title">
-            <Stack gap="sm">
+          <div className="grid gap-5 lg:grid-cols-[1.4fr_0.8fr]">
+            <section aria-labelledby="tour-summary-title" className="space-y-3">
               <h2
                 id="tour-summary-title"
                 className="text-xl font-semibold tracking-tight text-foreground"
               >
                 {copy.summary}
               </h2>
-              {vm.description ? <Text as="p">{vm.description}</Text> : null}
-            </Stack>
-          </section>
+              {showDescription ? (
+                <p className="text-sm leading-relaxed text-foreground/90 sm:text-base">
+                  {vm.description}
+                </p>
+              ) : (
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {copy.trustBody}
+                </p>
+              )}
+            </section>
 
-          <div className="grid gap-4 lg:grid-cols-2">
-            <Surface>
-              <Stack gap="sm">
-                <Text as="h2" role="heading">
-                  {copy.destinations}
-                </Text>
-                {vm.destinationIds.length === 0 && !vm.originDestinationId ? (
-                  <Text role="muted">{copy.noDestinations}</Text>
-                ) : (
-                  <>
-                    {vm.originDestinationId ? (
-                      <Text role="caption">
-                        {copy.origin}:{" "}
-                        <LtrValue>{vm.originDestinationId}</LtrValue>
-                      </Text>
-                    ) : null}
-                    {vm.destinationIds.length > 0 ? (
-                      <Text>
-                        {copy.destinationCount(vm.destinationIds.length)}
-                      </Text>
-                    ) : null}
-                    {vm.destinationIds.length > 0 ? (
-                      <ul className="flex flex-wrap gap-2 text-sm">
-                        {vm.destinationIds.map((id) => (
-                          <li
-                            key={id}
-                            className="rounded-full border border-border bg-background px-3 py-1"
-                          >
-                            <LtrValue>{id}</LtrValue>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </>
-                )}
-              </Stack>
-            </Surface>
+            <div className="space-y-4">
+              {destinationCount > 0 ? (
+                <Surface className="rounded-2xl p-5">
+                  <h2 className="text-sm font-semibold text-[#1D4ED8]">
+                    {copy.destinations}
+                  </h2>
+                  <p className="mt-2 text-sm text-foreground">
+                    {copy.destinationCount(destinationCount)}
+                  </p>
+                  <Link
+                    href={`/${locale}`}
+                    className="mt-3 inline-flex text-sm font-medium text-[#1D4ED8] underline-offset-2 hover:underline"
+                  >
+                    {locale === "fa"
+                      ? "بازگشت به صفحه اصلی"
+                      : locale === "ar"
+                        ? "العودة إلى الرئيسية"
+                        : "Back to home"}
+                  </Link>
+                </Surface>
+              ) : null}
 
-            <Surface>
-              <Stack gap="sm">
-                <Text as="h2" role="heading">
-                  {copy.included}
-                </Text>
-                {vm.policies.length === 0 && vm.requirements.length === 0 ? (
-                  <Text role="muted">{copy.noPolicies}</Text>
-                ) : (
-                  <ul className="flex flex-wrap gap-2 text-sm">
+              {hasPolicies ? (
+                <Surface className="rounded-2xl p-5">
+                  <h2 className="text-sm font-semibold text-[#1D4ED8]">
+                    {copy.included}
+                  </h2>
+                  <ul className="mt-3 flex flex-wrap gap-2 text-sm">
                     {vm.policies.map((item) => (
                       <li
                         key={`p-${item.code}`}
@@ -251,9 +272,9 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
                       </li>
                     ))}
                   </ul>
-                )}
-              </Stack>
-            </Surface>
+                </Surface>
+              ) : null}
+            </div>
           </div>
 
           {vm.kind === "Experience" ? (
@@ -269,23 +290,25 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             departures={vm.publishedDepartures}
           />
 
-          <Surface className="border-primary/15 bg-gradient-to-br from-surface to-primary/5">
-            <Text as="h2" role="heading" className="text-primary">
-              {copy.trust}
-            </Text>
-            <Text role="muted" className="mt-2">
-              {copy.trustBody}
-            </Text>
-            <Text role="caption" className="mt-3">
-              {copy.ctaNote}
-            </Text>
+          <Surface className="rounded-2xl border-[#1D4ED8]/15 bg-gradient-to-br from-surface to-[#1D4ED8]/[0.04] p-5">
+            <p className="text-sm font-semibold text-[#1D4ED8]">{copy.trust}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{copy.trustBody}</p>
+            <p className="mt-3 text-xs text-muted-foreground">{copy.ctaNote}</p>
           </Surface>
 
-          <AgencyOffersList locale={locale} items={vm.agencyOffers} />
-          <UgcCompositionList locale={locale} composition={vm.ugcComposition} />
+          {vm.agencyOffers.length > 0 ? (
+            <AgencyOffersList locale={locale} items={vm.agencyOffers} />
+          ) : null}
+
+          {hasUgc ? (
+            <UgcCompositionList
+              locale={locale}
+              composition={vm.ugcComposition}
+            />
+          ) : null}
 
           <div id="request-information">
-            <Surface>
+            <Surface className="rounded-2xl p-5">
               <Stack gap="sm">
                 <Text as="h2" role="heading">
                   {copy.request}
@@ -295,8 +318,12 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             </Surface>
           </div>
 
-          <RelatedContentList locale={locale} items={vm.relatedContent} />
-          <RelatedToursList locale={locale} items={vm.relatedTours} />
+          {vm.relatedContent.length > 0 ? (
+            <RelatedContentList locale={locale} items={vm.relatedContent} />
+          ) : null}
+          {vm.relatedTours.length > 0 ? (
+            <RelatedToursList locale={locale} items={vm.relatedTours} />
+          ) : null}
         </Stack>
       </Container>
       <PublicDetailStickyActions

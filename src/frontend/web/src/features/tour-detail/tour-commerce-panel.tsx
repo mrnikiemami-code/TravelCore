@@ -48,7 +48,7 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
     return {
       departures: "تاریخ‌های حرکت",
       departuresNote:
-        "انتخاب TourDeparture منتشرشده · انتشار ≠ رزرو قطعی · قیمت فقط از Pricing",
+        "یک تاریخ حرکت منتشرشده را انتخاب کنید · انتشار به‌معنای رزرو قطعی نیست · قیمت فقط از Pricing",
       noDepartures: "فعلاً تاریخ حرکت منتشرشده‌ای نیست.",
       selectDeparture: "یک تاریخ حرکت را انتخاب کنید",
       schedule: "برنامه",
@@ -80,7 +80,7 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
     return {
       departures: "تواريخ المغادرة",
       departuresNote:
-        "اختر TourDeparture منشور · النشر ≠ حجز مؤكد · السعر من Pricing فقط",
+        "اختر تاريخ مغادرة منشور · النشر لا يعني حجزاً مؤكداً · السعر من Pricing فقط",
       noDepartures: "لا تواريخ مغادرة منشورة حالياً.",
       selectDeparture: "اختر تاريخ مغادرة",
       schedule: "الجدول",
@@ -111,7 +111,7 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
   return {
     departures: "Departures",
     departuresNote:
-      "Select a published TourDeparture · published ≠ confirmed booking · money from Pricing only",
+      "Select a published departure date · published ≠ confirmed booking · money from Pricing only",
     noDepartures: "No published departures yet.",
     selectDeparture: "Select a departure",
     schedule: "Schedule",
@@ -289,10 +289,10 @@ export function TourCommercePanel({
                 return (
                   <li key={d.id}>
                     <label
-                      className={`block cursor-pointer rounded-xl border p-4 transition-colors ${
+                      className={`block cursor-pointer rounded-2xl border p-4 transition-colors ${
                         checked
-                          ? "border-primary bg-primary/5 shadow-sm"
-                          : "border-border bg-surface hover:border-primary/40"
+                          ? "border-[#1D4ED8] bg-[#1D4ED8]/5 shadow-sm"
+                          : "border-border bg-surface hover:border-[#1D4ED8]/40"
                       }`}
                     >
                       <div className="flex items-start gap-3">

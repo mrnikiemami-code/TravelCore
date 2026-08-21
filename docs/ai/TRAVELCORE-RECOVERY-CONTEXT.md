@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P36 — Commercial UI/UX Final Polish** (`TC-P36-T003` Cursor **PASS** · Hotels · **PARTIALLY_SELLABLE_VISUALLY**)
+**P36 — Commercial UI/UX Final Polish** (`TC-P36-T004` Cursor **PASS** · Tours · **PARTIALLY_SELLABLE_VISUALLY**)
 
 ## Completed (recent)
 
-- P36-T002 ACCEPTED — Home PARTIALLY_SELLABLE
-- P36-T003: Hotel listing/detail polish · undefined fix · sparse empty states
+- P36-T003 ACCEPTED — Hotels PARTIALLY_SELLABLE
+- P36-T004: Tour listing/detail polish · friendly destination select · UUID leakage removed
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T003 RESULT. Do not auto-implement T004.
+**None** — WAITING for Architect after T004 RESULT. Do not auto-implement T005.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P36-T004 Tour commercial polish |
 | 2026-08-21 | Sync after TC-P36-T003 Hotel commercial polish |
 | 2026-08-21 | Sync after TC-P36-T002 Home commercial redesign |
-| 2026-08-21 | Sync after TC-P36-T001 commercial UI visual audit |
 | 2026-08-21 | Sync after TC-P33-GATE review |
