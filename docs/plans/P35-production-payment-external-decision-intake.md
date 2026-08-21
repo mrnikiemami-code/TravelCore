@@ -3,89 +3,72 @@
 | Field | Value |
 |-------|--------|
 | Document | `docs/plans/P35-production-payment-external-decision-intake.md` |
-| Task-ID | `TC-P35-T002` |
+| Task-ID | `TC-P35-T002` · updated by `TC-P35-T003` |
 | Phase | P35 — Production Payment Provider Readiness |
-| Status | **INTAKE LOCKED / Cursor PASS** — values not fabricated |
-| Production provider selection | **`BLOCKED_ON_EXTERNAL_BUSINESS_INPUT`** |
+| Status | **INTAKE PARTIALLY FILLED** — markets split; vendor still unresolved |
+| Production provider selection | **`BLOCKED_PENDING_PROVIDER_RESEARCH`** (merchant account + exact PSP still open) |
 | Nature | Documentation / governance only |
 
-This is an **accepted blocker**, not an architecture failure. P34 sandbox path remains valid for non-production demos.
+See also: [`P35-market-provider-decision-matrix.md`](P35-market-provider-decision-matrix.md)
 
 ---
 
-## A. Required business inputs (no fabricated values)
+## A. Required business inputs
 
 | # | Input | Current value | Classification |
 |---|-------|---------------|----------------|
-| 1 | Target country/market for first production launch | **UNKNOWN** | REQUIRED-BLOCKER |
-| 2 | Legal/merchant entity contracting with provider | **UNKNOWN** | REQUIRED-BLOCKER |
-| 3 | Merchant account status (exists / pending / none) | **UNKNOWN** | REQUIRED-BLOCKER |
-| 4 | Settlement currency/currencies | **UNKNOWN** | REQUIRED-BLOCKER |
-| 5 | Traveler charge currency/currencies | **UNKNOWN** | REQUIRED-BLOCKER |
-| 6 | Bank/settlement constraints | **UNKNOWN** | REQUIRED-BEFORE-PRODUCTION |
-| 7 | Preferred or already-contracted provider | **UNKNOWN** (none in SoT) | REQUIRED-BLOCKER |
-| 8 | Refund expectations (full / none / delayed) | **UNKNOWN** | REQUIRED-BEFORE-PRODUCTION |
-| 9 | Partial refund requirement | **UNKNOWN** (architecture still treats partial as deferred) | OPTIONAL-PREFERENCE until business requires |
-| 10 | Payment expiry/timeout expectations | **UNKNOWN** | REQUIRED-BEFORE-PRODUCTION |
-| 11 | 3DS / authentication requirements | **UNKNOWN** | REQUIRED-BEFORE-PRODUCTION |
-| 12 | Invoice/receipt expectations | **UNKNOWN** | OPTIONAL-PREFERENCE |
-| 13 | Production callback/domain availability | **UNKNOWN** | REQUIRED-BEFORE-PRODUCTION |
-| 14 | Regulatory/compliance constraints known by business | **UNKNOWN** | REQUIRED-BLOCKER |
-| 15 | Expected transaction volume (if relevant) | **UNKNOWN** | OPTIONAL-PREFERENCE |
-
-**Do not invent defaults.** Fill only when Architect/business supplies facts.
+| 1 | Target country/market for first production launch | **Iran** · **UAE** (both supplied; treated as **separate** markets) | REQUIRED-BLOCKER *(vendor per market still open)* |
+| 2 | Legal/merchant entity contracting with provider | **Individual / natural person** | REQUIRED-BLOCKER *(eligibility unverified)* |
+| 3 | Merchant account status | **Not yet obtained** | REQUIRED-BLOCKER |
+| 4 | Settlement currency/currencies | **AED** (preference) | REQUIRED-BEFORE-PRODUCTION *(capability per PSP unverified)* |
+| 5 | Traveler charge currency/currencies | **IRR** · **AED** · **USD** | REQUIRED-BEFORE-PRODUCTION |
+| 6 | Bank/settlement constraints | **Iran:** Iranian rails · Bank Mellat preference/context · **UAE:** none additionally stated | REQUIRED-BEFORE-PRODUCTION |
+| 7 | Preferred or already-contracted provider | **Iran:** Bank Mellat mentioned (not a locked PSP identity) · **UAE:** none · **Contract:** none | REQUIRED-BLOCKER |
+| 8 | Refund expectations | **Full refund required** | REQUIRED-BEFORE-PRODUCTION |
+| 9 | Partial refund requirement | **Not stated** — remain deferred unless business requires | OPTIONAL-PREFERENCE |
+| 10 | Payment expiry/timeout expectations | **10 minutes** | REQUIRED-BEFORE-PRODUCTION |
+| 11 | 3DS / authentication requirements | **Follow selected provider** | REQUIRED-BEFORE-PRODUCTION |
+| 12 | Invoice/receipt expectations | **Not stated** | OPTIONAL-PREFERENCE |
+| 13 | Production callback/domain availability | **Yes at real deployment** | REQUIRED-BEFORE-PRODUCTION |
+| 14 | Regulatory/compliance constraints known by business | **None currently known** (≠ proof none exist) | REQUIRED-BLOCKER *(per-provider KYC still open)* |
+| 15 | Expected transaction volume | **Not stated** | OPTIONAL-PREFERENCE |
 
 ---
 
 ## B. Decision status summary
 
-| Class | Meaning | Count (current) |
-|-------|---------|-----------------|
-| REQUIRED-BLOCKER | Blocks authorizing provider-specific adapter design (T003+) | Multiple UNKNOWN |
-| REQUIRED-BEFORE-PRODUCTION | Can design after vendor chosen, but blocks Stage E activation | Multiple UNKNOWN |
-| OPTIONAL-PREFERENCE | Influences choice; not a hard stop alone | Multiple UNKNOWN |
+| Class | Status |
+|-------|--------|
+| REQUIRED-BLOCKER | Merchant account · exact Iran PSP identity · UAE shortlist · individual eligibility · KYC per provider |
+| REQUIRED-BEFORE-PRODUCTION | Currencies/settlement capability · refunds · expiry · 3DS · callback domain ops |
+| OPTIONAL-PREFERENCE | Receipt · volume · partial refund |
 
 ---
 
-## C. Provider selection gate (minimum before T003)
+## C. Provider selection gate (before T00x adapter design)
 
-`TC-P35-T003` (provider-specific adapter design) may be authorized **only when** at least these are filled with real business values:
+Still required before **Iran-specific** or **UAE-specific** adapter design:
 
-1. Target market/country
-2. Merchant/legal entity
-3. Merchant account status
-4. Traveler charge currency(ies)
-5. Settlement currency(ies)
-6. Preferred/contracted provider **or** explicit shortlist with selection owner
-7. Known regulatory constraints (even if “none beyond PCI hosted”)
-
-Until then: **selection remains blocked**.
+1. Exact PSP/vendor identity (Iran: clarify Mellat preference)  
+2. UAE shortlist or contracted vendor  
+3. Individual merchant onboarding eligibility per market  
+4. Merchant account obtained or clear path  
+5. Settlement matrix verified (esp. AED preference vs Iranian rails)
 
 ---
 
-## D. Safe work while blocked (not auto-authorized)
+## D. Safe work while blocked
 
-May be proposed later via Architect `.task.md` without choosing a vendor:
-
-- Provider-agnostic gateway contract tests / checklist hardening
-- Ops/runbook templates for reconciliation & incidents
-- Reconciliation interface review (docs)
-- Security checklist freeze (docs)
-- Production deploy readiness checks (infra docs)
-
-**None of the above is auto-started by this RESULT.**
+Provider-agnostic docs/tests only if Architect authorizes — see decision matrix §8.
 
 ---
 
 ## E. Forbidden until provider decision
 
-- Selecting a vendor by guess
-- Committing provider credentials/secrets
-- Flipping `NamedProductionAdapterImplemented=true`
-- Treating TravelCore sandbox as production
-- Provider-specific SDK/package installation
-- Traveler UI claiming real production payment readiness
-- Fake Confirm / MarkPaid / ForceSuccess
+- Selecting vendor by guess (including assuming Behpardakht from “Bank Mellat”)
+- Credentials / SDK / `NamedProductionAdapterImplemented=true`
+- Treating sandbox as production
+- Single-provider claim for Iran+UAE without evidence
 
 ---
 
@@ -93,14 +76,12 @@ May be proposed later via Architect `.task.md` without choosing a vendor:
 
 ```text
 PRODUCTION PROVIDER SELECTION:
-BLOCKED_ON_EXTERNAL_BUSINESS_INPUT
+BLOCKED_PENDING_PROVIDER_RESEARCH
+
+MARKETS:
+Iran = separate
+UAE  = separate
+
+STRATEGY_POSTURE:
+MULTI_PROVIDER_LIKELY / MARKET_SPECIFIC_PROVIDER_REQUIRED
 ```
-
-Architecture readiness (ports/orchestration/ConfirmIfEligible) = **READY**.  
-Vendor selection = **BLOCKED** on external inputs above.
-
----
-
-## Exact inputs still required from Architect / user
-
-Please supply (or mark N/A with owner signature) items **1–8, 10–11, 13–14** in section A. Prefer a short filled table reply or an authorized follow-up `.task.md` that embeds the answers.
