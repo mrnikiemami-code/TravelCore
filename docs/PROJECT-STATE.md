@@ -75,8 +75,8 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P31-T005` — Tour Commerce Polish |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T005`; then next authorized `.task.md` / `.gate.md` only — do not invent GATE / T006 |
+| Current Active Product Task | `TC-P31-GATE` — Commercial Demo Experience gate review (Cursor PASS WITH KNOWN LIMITATIONS) |
+| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-GATE`; then next authorized `.task.md` / `.gate.md` only — do not invent next phase |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |
@@ -412,8 +412,9 @@
 | P31 Plan | `TC-P31-T001` **ACCEPTED** — [`docs/plans/P31-commercial-demo-experience-plan.md`](plans/P31-commercial-demo-experience-plan.md) |
 | P31 Content Strategy | `TC-P31-T002` **ACCEPTED** — [`docs/plans/P31-demo-content-strategy.md`](plans/P31-demo-content-strategy.md) |
 | P31 T003 | `TC-P31-T003` **ACCEPTED WITH KNOWN LIMITATIONS** — Home commercial upgrade |
-| P31 T004 | `TC-P31-T004` **Cursor PASS** — Hotel commerce polish · evidence [`docs/product-experience/evidence/P31-T004/`](product-experience/evidence/P31-T004/) (AWAITING_ARCHITECT_REVIEW or subsequent) |
-| P31 T005 | `TC-P31-T005` **Cursor PASS** — Tour commerce polish · evidence [`docs/product-experience/evidence/P31-T005/`](product-experience/evidence/P31-T005/) · **AWAITING_ARCHITECT_REVIEW** |
+| P31 T004 | `TC-P31-T004` **ACCEPTED WITH KNOWN LIMITATIONS** — Hotel commerce polish |
+| P31 T005 | `TC-P31-T005` **ACCEPTED WITH KNOWN LIMITATIONS** — Tour commerce polish |
+| P31 GATE | `TC-P31-GATE` **Cursor PASS WITH KNOWN LIMITATIONS** — evidence [`docs/product-experience/evidence/P31-GATE/GATE-REVIEW.md`](product-experience/evidence/P31-GATE/GATE-REVIEW.md) · AWAITING_ARCHITECT_REVIEW |
 | P30 Plan | `TC-P30-PLAN` **ACCEPTED** — [`docs/plans/P30-implementation-plan.md`](plans/P30-implementation-plan.md) |
 | P30 GATE | `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — Foundation accepted (`7b34e33`) |
 | P30 T002 | `TC-P30-T002` **PASS** — Constitution + specs + visual protocol |
