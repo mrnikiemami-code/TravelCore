@@ -26,16 +26,16 @@ export async function generateMetadata({
 
   const title =
     localeParam === "fa"
-      ? "TravelCore — کشف، برنامه‌ریزی و شروع سفر"
+      ? "TravelCore — بازار گردشگری حرفه‌ای"
       : localeParam === "ar"
-        ? "TravelCore — اكتشف وخطط وابدأ رحلتك"
-        : "TravelCore — Discover, plan, and start your trip";
+        ? "TravelCore — سوق سفر احترافي"
+        : "TravelCore — Professional travel marketplace";
   const description =
     localeParam === "fa"
-      ? "صفحه اصلی عمومی TravelCore برای کشف تور، هتل، مقصد و داستان‌های سفر — بدون ادعای رزرو زنده."
+      ? "صفحه اصلی تجاری TravelCore برای کشف مقصد، هتل و تور — کاتالوگ واقعی بدون قیمت یا موجودی جعلی."
       : localeParam === "ar"
-        ? "الصفحة العامة الرئيسية لـ TravelCore لاكتشاف الجولات والفنادق والوجهات وقصص السفر — دون ادعاءات حجز مباشرة."
-        : "TravelCore public home for discovering tours, hotels, destinations, and travel stories — no live booking claims.";
+        ? "الصفحة التجارية الرئيسية لـ TravelCore لاكتشاف الوجهات والفنادق والجولات — كتالوج حقيقي دون أسعار أو توفر وهمي."
+        : "TravelCore commercial home for destinations, hotels, and tours — real catalog without fake prices or availability.";
 
   const composed = await loadComposedSeoMetadata({
     locale: localeParam,

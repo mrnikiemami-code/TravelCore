@@ -35,15 +35,15 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-T002` strategy · AWAITING_ARCHITECT_REVIEW) |
-| Phase Status | P00–P29 COMPLETE · Post-P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 T001 ACCEPTED · T002 REVIEW** |
+| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-T003` Home upgrade · AWAITING_ARCHITECT_REVIEW) |
+| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 T001–T002 ACCEPTED · T003 REVIEW** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T002`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-implement T003+ |
+| Current Next Task | Architect ACCEPT/REWORK of `TC-P31-T003`; then next authorized `.task.md` / `.gate.md` only — do not invent / do not auto-implement T004+ |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |

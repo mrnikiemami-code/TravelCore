@@ -15,169 +15,227 @@ export type HomeDiscoveryViewProps = {
 function copyFor(locale: AppLocale) {
   if (locale === "fa") {
     return {
-      brandLine: "کشف · اعتماد · رزرو",
-      heroEyebrow: "Travel commerce",
-      heroTitle: "کجا می‌خواهید سفر کنید؟",
+      brandLine: "کشف · اعتماد · اقدام",
+      heroEyebrow: "Travel marketplace",
+      heroTitle: "سفر را حرفه‌ای شروع کنید",
       heroSubtitle:
-        "تور، هتل و الهام سفر — تجربهٔ گردشگری مدرن با مسیر شفاف خرید.",
+        "مقصد، هتل و تور در یک تجربهٔ تجاری شفاف — کاتالوگ واقعی، بدون قیمت یا موجودی جعلی.",
       searchDest: "مقصد",
       searchDestPh: "مثلاً استانبول",
       searchDate: "تاریخ",
       searchGuests: "مسافر",
       searchGuestsPh: "۲ بزرگسال",
       searchCta: "جستجوی سفر",
-      heroSecondary: "مشاهده هتل‌ها",
-      discoverTitle: "شروع کشف",
+      heroHotels: "مشاهده هتل‌ها",
+      heroTours: "مشاهده تورها",
       destinationsTitle: "مقاصد الهام‌بخش",
-      destinationsBlurb: "کارت‌های بصری برای ورود به کشف — بدون موجودی جعلی.",
+      destinationsBlurb:
+        "مقاصد واقعی از کاتالوگ — وقتی داده عمومی نباشد، مسیر کشف صادقانه می‌ماند.",
       toursTitle: "تورهای منتخب",
-      toursBlurb: "نمایش محصول‌محور کاتالوگ تور — قیمت فقط اگر داده واقعی باشد.",
+      toursBlurb:
+        "محصولات تور منتشرشده از کاتالوگ — قیمت فقط وقتی مالک Pricing داده واقعی بدهد.",
       toursCta: "همه تورها",
-      hotelsTitle: "هتل‌های محبوب",
-      hotelsBlurb: "کاتالوگ هتل فعال؛ خالی بودن صادقانه ولی با UI آماده.",
+      hotelsTitle: "هتل‌های شاخص",
+      hotelsBlurb: "کاتالوگ Place فعال؛ بدون امتیاز یا نرخ ساختگی.",
       seeAllHotels: "همه هتل‌ها",
       noHotelsTitle: "هتل‌ها به‌زودی در پیش‌نمایش عمومی",
-      noHotelsBody: "ساختار کارت آماده است. تا دادهٔ عمومی واقعی، قیمت یا امتیاز جعلی نشان نمی‌دهیم.",
-      trustTitle: "اعتماد در مسیر سفر",
+      noHotelsBody:
+        "ساختار کارت آماده است. تا دادهٔ عمومی واقعی، قیمت یا امتیاز جعلی نشان نمی‌دهیم.",
+      noToursTitle: "تورهای منتشرشده به‌زودی",
+      noToursBody:
+        "وقتی تور Published با مقصد مشخص باشد، اینجا کارت محصول نمایش داده می‌شود.",
+      noDestinationsTitle: "مقاصد کاتالوگ به‌زودی",
+      trustTitle: "اعتماد در مسیر خرید سفر",
       storiesTitle: "سفرنامه‌ها",
       seeAllStories: "همه سفرنامه‌ها",
       noStoriesTitle: "الهام سفر به‌زودی",
-      noStoriesBody: "وقتی سفرنامهٔ منتشرشده باشد، اینجا کارت‌های الهام نمایش داده می‌شود.",
-      ctaTitle: "آماده‌اید برنامه سفر بسازید؟",
-      ctaBody: "از کشف تا اعتماد تا اقدام — مسیر محصول واضح است.",
+      noStoriesBody:
+        "وقتی سفرنامهٔ منتشرشده باشد، اینجا کارت‌های الهام نمایش داده می‌شود.",
+      ctaTitle: "می‌خواهید این پلتفرم را برای آژانس ببینید؟",
+      ctaBody:
+        "از کشف مقصد تا هتل و تور — مسیر تجربهٔ تجاری آماده دمو است.",
       ctaButton: "شروع برنامه‌ریزی",
       stars: "ستاره",
-      viewTour: "مشاهده تور",
+      openTour: "مشاهده تور",
+      openHotel: "مشاهده هتل",
+      openDestination: "ورود به مقصد",
       openCatalog: "ورود به کاتالوگ",
-      sampleNote: "نمونه مسیر کشف",
+      sampleNote: "جستجو به مسیرهای موجود هدایت می‌شود — موتور رزرو جعلی نیست.",
+      packageLabel: "پکیج",
+      demoHint: "نمونه DEMOFEED",
     };
   }
   if (locale === "ar") {
     return {
-      brandLine: "اكتشف · ثق · احجز",
-      heroEyebrow: "Travel commerce",
-      heroTitle: "إلى أين تريد أن تسافر؟",
-      heroSubtitle: "جولات وفنادق وإلهام سفر — تجربة حديثة بمسار شراء واضح.",
+      brandLine: "اكتشف · ثق · ابدأ",
+      heroEyebrow: "Travel marketplace",
+      heroTitle: "ابدأ رحلتك باحتراف",
+      heroSubtitle:
+        "وجهات وفنادق وجولات في تجربة تجارية شفافة — كتالوج حقيقي دون أسعار أو توفر وهمي.",
       searchDest: "الوجهة",
       searchDestPh: "مثل إسطنبول",
       searchDate: "التاريخ",
       searchGuests: "المسافرون",
       searchGuestsPh: "بالغان",
       searchCta: "ابحث عن رحلة",
-      heroSecondary: "عرض الفنادق",
-      discoverTitle: "ابدأ الاكتشاف",
+      heroHotels: "عرض الفنادق",
+      heroTours: "عرض الجولات",
       destinationsTitle: "وجهات ملهمة",
-      destinationsBlurb: "بطاقات بصرية لاكتشاف صادق — دون مخزون وهمي.",
+      destinationsBlurb:
+        "وجهات حقيقية من الكتالوج — ومسارات اكتشاف صادقة عند غياب البيانات.",
       toursTitle: "جولات مختارة",
-      toursBlurb: "عرض منتجي للكتالوج — السعر فقط عند توفر بيانات حقيقية.",
+      toursBlurb: "منتجات جولات منشورة — السعر فقط عند توفر بيانات التسعير الحقيقية.",
       toursCta: "كل الجولات",
-      hotelsTitle: "فنادق شائعة",
-      hotelsBlurb: "كتالوج الفنادق النشطة؛ فراغ صادق مع واجهة جاهزة.",
+      hotelsTitle: "فنادق مميزة",
+      hotelsBlurb: "كتالوج Place نشط؛ دون تقييمات أو أسعار مصطنعة.",
       seeAllHotels: "كل الفنادق",
       noHotelsTitle: "الفنادق قريباً في المعاينة العامة",
       noHotelsBody: "هيكل البطاقة جاهز. لا أسعار أو تقييمات وهمية.",
-      trustTitle: "الثقة في مسار السفر",
+      noToursTitle: "الجولات المنشورة قريباً",
+      noToursBody: "عند توفر جولات منشورة مرتبطة بوجهة ستظهر هنا.",
+      noDestinationsTitle: "وجهات الكتالوج قريباً",
+      trustTitle: "الثقة في مسار شراء السفر",
       storiesTitle: "قصص السفر",
       seeAllStories: "كل القصص",
       noStoriesTitle: "إلهام السفر قريباً",
       noStoriesBody: "عند توفر القصص المنشورة ستظهر هنا بطاقات الإلهام.",
-      ctaTitle: "جاهز لتخطيط رحلتك؟",
-      ctaBody: "اكتشف · ثق · ابدأ.",
+      ctaTitle: "هل تريد عرض المنصة لوكالة سفر؟",
+      ctaBody: "من الوجهة إلى الفندق والجولة — مسار تجربة تجارية جاهز للعرض.",
       ctaButton: "ابدأ التخطيط",
       stars: "نجوم",
-      viewTour: "عرض الجولة",
+      openTour: "عرض الجولة",
+      openHotel: "عرض الفندق",
+      openDestination: "افتح الوجهة",
       openCatalog: "افتح الكتالوج",
-      sampleNote: "مسار اكتشاف نموذجي",
+      sampleNote: "البحث يوجّه إلى مسارات موجودة — ليس محرك حجز وهمي.",
+      packageLabel: "باقة",
+      demoHint: "عينة DEMOFEED",
     };
   }
   return {
-    brandLine: "Discover · Trust · Book",
-    heroEyebrow: "Travel commerce",
-    heroTitle: "Where do you want to travel?",
+    brandLine: "Discover · Trust · Act",
+    heroEyebrow: "Travel marketplace",
+    heroTitle: "Start travel the professional way",
     heroSubtitle:
-      "Tours, hotels, and travel inspiration — a modern commerce path with honest empty states.",
+      "Destinations, hotels, and tours in one transparent commerce experience — real catalog, no fake prices or availability.",
     searchDest: "Destination",
     searchDestPh: "e.g. Istanbul",
     searchDate: "Date",
     searchGuests: "Travelers",
     searchGuestsPh: "2 adults",
     searchCta: "Search trips",
-    heroSecondary: "Browse hotels",
-    discoverTitle: "Start discovering",
+    heroHotels: "Browse hotels",
+    heroTours: "Browse tours",
     destinationsTitle: "Inspiring destinations",
-    destinationsBlurb: "Visual entry cards for discovery — no fake inventory.",
+    destinationsBlurb:
+      "Live catalog destinations when available — honest discovery paths otherwise.",
     toursTitle: "Featured tours",
-    toursBlurb: "Product-like tour presentation — price only when real.",
+    toursBlurb:
+      "Published tour products from the catalog — price only when Pricing owns real data.",
     toursCta: "All tours",
-    hotelsTitle: "Popular hotels",
-    hotelsBlurb: "Active hotel catalog; honest empty with ready UI.",
+    hotelsTitle: "Featured hotels",
+    hotelsBlurb: "Active Place catalog — no invented rates or review scores.",
     seeAllHotels: "All hotels",
     noHotelsTitle: "Hotels coming to public preview",
     noHotelsBody:
       "Card structure is ready. No invented prices or ratings until public data exists.",
-    trustTitle: "Trust on the journey",
+    noToursTitle: "Published tours coming soon",
+    noToursBody:
+      "When Published tours are linked to a destination, product cards appear here.",
+    noDestinationsTitle: "Catalog destinations coming soon",
+    trustTitle: "Trust on the travel purchase path",
     storiesTitle: "Travel stories",
     seeAllStories: "All stories",
     noStoriesTitle: "Inspiration coming soon",
     noStoriesBody: "Published travelogues will appear here as inspiration cards.",
-    ctaTitle: "Ready to plan your trip?",
-    ctaBody: "Discover · Trust · Act — a clear product path.",
+    ctaTitle: "Ready to show this platform to an agency?",
+    ctaBody:
+      "From destination discovery to hotels and tours — a commercial demo path.",
     ctaButton: "Start planning",
     stars: "stars",
-    viewTour: "View tour",
+    openTour: "View tour",
+    openHotel: "View hotel",
+    openDestination: "Open destination",
     openCatalog: "Open catalog",
-    sampleNote: "Sample discovery path",
+    sampleNote: "Search routes to existing surfaces — not a fake booking engine.",
+    packageLabel: "Package",
+    demoHint: "DEMOFEED sample",
   };
 }
 
 function trustItems(locale: AppLocale) {
   if (locale === "fa") {
     return [
-      { title: "پشتیبانی مسیر سفر", body: "همراهی در کشف و برنامه‌ریزی." },
-      { title: "پرداخت امن", body: "مسیر رزرو/پرداخت وقتی فعال شود — بدون ادعای جعلی." },
-      { title: "کشف curated", body: "ترکیب صادقانه، نه فید گمراه‌کننده." },
-      { title: "تجربه شفاف", body: "بدون قیمت و امتیاز ساختگی." },
+      {
+        title: "کاتالوگ واقعی",
+        body: "مقصد، هتل و تور از مالک دامنه — نه موجودی ساختگی.",
+      },
+      {
+        title: "مرز تجاری شفاف",
+        body: "قیمت و موجودی فقط وقتی Pricing/Booking فعال باشد.",
+      },
+      {
+        title: "آماده دمو آژانس",
+        body: "تجربهٔ عمومی برای نمایش محصول قابل فروش.",
+      },
+      {
+        title: "بدون ادعای دروغ",
+        body: "امتیاز، تخفیف و موجودی جعلی نمایش داده نمی‌شود.",
+      },
     ];
   }
   if (locale === "ar") {
     return [
-      { title: "دعم مسار السفر", body: "مرافقة في الاكتشاف والتخطيط." },
-      { title: "دفع آمن", body: "مسار الحجز/الدفع عند التفعيل — دون ادعاءات وهمية." },
-      { title: "اكتشاف منظم", body: "تكوين صادق وليس خلاصة مضللة." },
-      { title: "تجربة شفافة", body: "بدون أسعار أو تقييمات مصطنعة." },
+      {
+        title: "كتالوج حقيقي",
+        body: "وجهات وفنادق وجولات من مالك المجال — دون مخزون وهمي.",
+      },
+      {
+        title: "حدود تجارية واضحة",
+        body: "السعر والتوفر فقط عند تفعيل التسعير/الحجز.",
+      },
+      {
+        title: "جاهز لعرض الوكالة",
+        body: "تجربة عامة لعرض منتج قابل للبيع.",
+      },
+      {
+        title: "بدون ادعاءات كاذبة",
+        body: "لا تقييمات أو خصومات أو توفر وهمي.",
+      },
     ];
   }
   return [
-    { title: "Travel support", body: "Guidance through discovery and planning." },
-    { title: "Secure payment posture", body: "Booking/payment path when live — no fake claims." },
-    { title: "Curated discovery", body: "Honest composition, not a misleading feed." },
-    { title: "Transparent experience", body: "No invented prices or ratings." },
+    {
+      title: "Real catalog",
+      body: "Destinations, hotels, and tours from domain owners — not invented stock.",
+    },
+    {
+      title: "Honest commerce boundaries",
+      body: "Price and availability only when Pricing/Booking are live.",
+    },
+    {
+      title: "Agency-demo ready",
+      body: "Public experience shaped for a sellable product walkthrough.",
+    },
+    {
+      title: "No fake claims",
+      body: "No invented ratings, discounts, or inventory counts.",
+    },
   ];
 }
 
-function destinationCards(locale: AppLocale) {
-  const base = [
-    {
-      href: `/${locale}/destinations/fixture-istanbul`,
-      title: locale === "fa" ? "استانبول" : locale === "ar" ? "إسطنبول" : "Istanbul",
-      blurb:
-        locale === "fa"
-          ? "نمونه مقصد الهام‌بخش"
-          : locale === "ar"
-            ? "وجهة نموذجية ملهمة"
-            : "Sample inspiring destination",
-      tone: "from-[#0d47a1] via-[#1565c0] to-[#f9a825]",
-    },
+function fallbackDestinationCards(locale: AppLocale) {
+  return [
     {
       href: `/${locale}/tours`,
       title: locale === "fa" ? "تورهای مقصد" : locale === "ar" ? "جولات الوجهات" : "Destination tours",
       blurb:
         locale === "fa"
-          ? "ورود بصری به کاتالوگ تور"
+          ? "ورود به کاتالوگ تور"
           : locale === "ar"
-            ? "دخول بصري إلى كتالوج الجولات"
-            : "Visual entry to the tour catalog",
-      tone: "from-[#01579b] via-[#0277bd] to-[#4fc3f7]",
+            ? "ادخل كتالوج الجولات"
+            : "Enter the tour catalog",
+      tone: "from-[#0d47a1] via-[#1565c0] to-[#42a5f5]",
     },
     {
       href: `/${locale}/hotels`,
@@ -186,74 +244,31 @@ function destinationCards(locale: AppLocale) {
         locale === "fa"
           ? "کشف هتل‌های عمومی"
           : locale === "ar"
-            ? "اكتشاف الفنادق العامة"
+            ? "اكتشف الفنادق العامة"
             : "Browse public hotels",
       tone: "from-[#1b5e20] via-[#2e7d32] to-[#c0ca33]",
     },
     {
       href: `/${locale}/plan`,
-      title: locale === "fa" ? "برنامه سفر من" : locale === "ar" ? "خطة رحلتي" : "My trip plan",
+      title: locale === "fa" ? "برنامه سفر" : locale === "ar" ? "خطة الرحلة" : "Trip plan",
       blurb:
         locale === "fa"
           ? "شروع طراحی برنامه"
           : locale === "ar"
-            ? "ابدأ تصميم الخطة"
-            : "Start designing your plan",
+            ? "ابدأ التخطيط"
+            : "Start planning",
       tone: "from-[#4a148c] via-[#6a1b9a] to-[#f9a825]",
     },
-  ];
-  return base;
-}
-
-function tourCatalogCards(locale: AppLocale) {
-  return [
     {
-      href: `/${locale}/tours`,
-      title:
+      href: `/${locale}/travelogues`,
+      title: locale === "fa" ? "الهام سفر" : locale === "ar" ? "إلهام السفر" : "Travel inspiration",
+      blurb:
         locale === "fa"
-          ? "تورهای شهری"
+          ? "سفرنامه‌ها و داستان‌ها"
           : locale === "ar"
-            ? "جولات المدن"
-            : "City tours",
-      meta:
-        locale === "fa"
-          ? "کاتالوگ عمومی"
-          : locale === "ar"
-            ? "كتالوج عام"
-            : "Public catalog",
-      tone: "from-[#0d47a1] to-[#42a5f5]",
-    },
-    {
-      href: `/${locale}/tours`,
-      title:
-        locale === "fa"
-          ? "تورهای طبیعت"
-          : locale === "ar"
-            ? "جولات الطبيعة"
-            : "Nature tours",
-      meta:
-        locale === "fa"
-          ? "کشف مسیرهای تجربه"
-          : locale === "ar"
-            ? "اكتشاف مسارات التجربة"
-            : "Explore experience paths",
-      tone: "from-[#1b5e20] to-[#66bb6a]",
-    },
-    {
-      href: `/${locale}/tours`,
-      title:
-        locale === "fa"
-          ? "تورهای ترکیبی"
-          : locale === "ar"
-            ? "جولات مجمّعة"
-            : "Combined tours",
-      meta:
-        locale === "fa"
-          ? "ورود به فهرست کامل"
-          : locale === "ar"
-            ? "افتح القائمة الكاملة"
-            : "Open full listing",
-      tone: "from-[#e65100] to-[#f9a825]",
+            ? "قصص السفر"
+            : "Stories and travelogues",
+      tone: "from-[#e65100] via-[#fb8c00] to-[#f9a825]",
     },
   ];
 }
@@ -281,7 +296,7 @@ function SectionHeading({
 }
 
 /**
- * Public Home / Discovery — TC-P30-T005-REWORK travel commerce surface.
+ * Public Home / Discovery — TC-P31-T003 commercial demonstration surface.
  * Server Component. Honesty: no invented prices/availability/ratings.
  */
 export function HomeDiscoveryView({
@@ -291,42 +306,38 @@ export function HomeDiscoveryView({
 }: HomeDiscoveryViewProps) {
   const copy = copyFor(locale);
   const trust = trustItems(locale);
-  const destinations = destinationCards(locale);
-  const tourCards = tourCatalogCards(locale);
+  const liveDestinations = composition?.destinations ?? [];
+  const liveTours = composition?.tours ?? [];
   const hotels = composition?.hotels ?? [];
   const travelogues = composition?.travelogues ?? [];
+  const fallbackDestinations = fallbackDestinationCards(locale);
   const toursAction = `/${locale}/tours`;
 
   return (
     <div className="pb-14">
-      {/* —— Hero: travel visual + search intent + conversion —— */}
       <section
         aria-labelledby="home-hero-title"
         className="relative overflow-hidden border-b border-border"
       >
         <div
           aria-hidden
-          className="absolute inset-0 bg-[linear-gradient(135deg,#0a2f6b_0%,#0d47a1_42%,#1565c0_70%,#f9a825_140%)]"
+          className="absolute inset-0 bg-[linear-gradient(135deg,#071a3a_0%,#0d47a1_38%,#1565c0_68%,#f9a825_125%)]"
         />
         <div
           aria-hidden
-          className="absolute inset-0 opacity-40"
+          className="absolute inset-0 opacity-50"
           style={{
             backgroundImage:
-              "radial-gradient(ellipse at 15% 20%, rgba(255,255,255,0.25) 0%, transparent 45%), radial-gradient(ellipse at 85% 10%, rgba(249,168,37,0.55) 0%, transparent 40%), radial-gradient(ellipse at 70% 80%, rgba(30,136,229,0.35) 0%, transparent 50%)",
+              "radial-gradient(ellipse at 12% 18%, rgba(255,255,255,0.28) 0%, transparent 42%), radial-gradient(ellipse at 88% 8%, rgba(249,168,37,0.6) 0%, transparent 38%), radial-gradient(ellipse at 72% 85%, rgba(30,136,229,0.35) 0%, transparent 48%)",
           }}
         />
         <div
           aria-hidden
-          className="absolute -end-10 top-8 h-56 w-56 rounded-full bg-accent/30 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="absolute -start-16 bottom-0 h-64 w-64 rounded-full bg-sky-300/20 blur-3xl"
+          className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/25 to-transparent"
         />
 
         <Container width="wide" className="relative py-12 sm:py-16 lg:py-20">
-          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
             <div className="max-w-2xl space-y-5 text-primary-foreground">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
                 {copy.heroEyebrow} · {copy.brandLine}
@@ -343,18 +354,23 @@ export function HomeDiscoveryView({
               <div className="flex flex-wrap gap-3 pt-1">
                 <Link
                   href={`/${locale}/hotels`}
-                  className="min-h-touch inline-flex items-center rounded-md border border-primary-foreground/30 bg-primary-foreground/10 px-5 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/20"
+                  className="min-h-touch inline-flex items-center rounded-md bg-accent px-5 text-sm font-semibold text-accent-foreground hover:opacity-95"
                 >
-                  {copy.heroSecondary}
+                  {copy.heroHotels}
+                </Link>
+                <Link
+                  href={`/${locale}/tours`}
+                  className="min-h-touch inline-flex items-center rounded-md border border-primary-foreground/35 bg-primary-foreground/10 px-5 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/20"
+                >
+                  {copy.heroTours}
                 </Link>
               </div>
             </div>
 
-            {/* Search experience — routes to existing honest surfaces */}
             <form
               action={toursAction}
               method="get"
-              className="rounded-2xl border border-white/20 bg-white/95 p-4 text-foreground shadow-xl backdrop-blur sm:p-5"
+              className="rounded-2xl border border-white/25 bg-white/95 p-4 text-foreground shadow-xl backdrop-blur sm:p-5"
             >
               <p className="mb-3 text-sm font-semibold text-primary">{copy.searchCta}</p>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -385,7 +401,7 @@ export function HomeDiscoveryView({
               </div>
               <button
                 type="submit"
-                className="mt-4 min-h-touch inline-flex w-full items-center justify-center rounded-md bg-accent px-4 text-sm font-semibold text-accent-foreground hover:opacity-95"
+                className="mt-4 min-h-touch inline-flex w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:opacity-95"
               >
                 {copy.searchCta}
               </button>
@@ -396,37 +412,76 @@ export function HomeDiscoveryView({
       </section>
 
       <Container width="wide" className="space-y-14 pt-10 sm:pt-14">
-        {/* —— Destinations cards —— */}
         <section aria-labelledby="home-destinations-title">
-          <SectionHeading title={copy.destinationsTitle} blurb={copy.destinationsBlurb} />
-          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {destinations.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/40 hover:shadow-md"
-                >
-                  <div
-                    className={cn(
-                      "relative h-36 bg-gradient-to-br",
-                      item.tone,
-                    )}
+          <SectionHeading
+            title={copy.destinationsTitle}
+            blurb={copy.destinationsBlurb}
+          />
+          {liveDestinations.length > 0 ? (
+            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {liveDestinations.map((item, index) => (
+                <li key={item.destinationId}>
+                  <Link
+                    href={`/${locale}/destinations/${encodeURIComponent(item.slug)}`}
+                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/40 hover:shadow-md"
                   >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.28),transparent_55%)]" />
-                  </div>
-                  <div className="flex flex-1 flex-col gap-1 p-4">
-                    <span className="text-base font-semibold text-foreground group-hover:text-primary">
-                      {item.title}
-                    </span>
-                    <span className="text-sm text-muted-foreground">{item.blurb}</span>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                    <div
+                      className={cn(
+                        "relative h-40 bg-gradient-to-br",
+                        index % 2 === 0
+                          ? "from-[#0d47a1] via-[#1565c0] to-[#f9a825]"
+                          : "from-[#01579b] via-[#0288d1] to-[#81d4fa]",
+                      )}
+                    >
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.28),transparent_55%)]" />
+                      {item.slug.startsWith("demofeed-") ? (
+                        <span className="absolute bottom-3 start-3 rounded-md bg-background/85 px-2 py-1 text-[11px] font-medium text-foreground">
+                          {copy.demoHint}
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1 p-4">
+                      <span className="text-base font-semibold text-foreground group-hover:text-primary">
+                        {item.name}
+                      </span>
+                      {item.description ? (
+                        <span className="line-clamp-2 text-sm text-muted-foreground">
+                          {item.description}
+                        </span>
+                      ) : (
+                        <span className="text-sm text-muted-foreground">
+                          {copy.openDestination}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {fallbackDestinations.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/40 hover:shadow-md"
+                  >
+                    <div className={cn("relative h-36 bg-gradient-to-br", item.tone)}>
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.28),transparent_55%)]" />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1 p-4">
+                      <span className="text-base font-semibold text-foreground group-hover:text-primary">
+                        {item.title}
+                      </span>
+                      <span className="text-sm text-muted-foreground">{item.blurb}</span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
-        {/* —— Tours product cards —— */}
         <section aria-labelledby="home-tours-title">
           <SectionHeading
             title={copy.toursTitle}
@@ -440,30 +495,67 @@ export function HomeDiscoveryView({
               </Link>
             }
           />
-          <ul className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {tourCards.map((item) => (
-              <li key={item.title}>
-                <Link
-                  href={item.href}
-                  className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/40 hover:shadow-md"
-                >
-                  <div className={cn("h-32 bg-gradient-to-br", item.tone)} />
-                  <div className="flex flex-1 flex-col gap-2 p-4">
-                    <span className="text-base font-semibold text-foreground group-hover:text-primary">
-                      {item.title}
-                    </span>
-                    <span className="text-sm text-muted-foreground">{item.meta}</span>
-                    <span className="mt-auto pt-2 text-sm font-medium text-primary">
-                      {copy.openCatalog} →
-                    </span>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {liveTours.length === 0 ? (
+            <Surface className="overflow-hidden p-0">
+              <div className="grid gap-0 md:grid-cols-[1fr_1.4fr]">
+                <div className="min-h-36 bg-gradient-to-br from-primary via-primary/80 to-accent" />
+                <div className="space-y-3 p-5">
+                  <p className="text-sm font-semibold text-foreground">{copy.noToursTitle}</p>
+                  <Text role="muted">{copy.noToursBody}</Text>
+                  <Link
+                    href={`/${locale}/tours`}
+                    className="inline-flex text-sm font-medium text-primary underline-offset-2 hover:underline"
+                  >
+                    {copy.openCatalog} →
+                  </Link>
+                </div>
+              </div>
+            </Surface>
+          ) : (
+            <ul className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {liveTours.map((item, index) => (
+                <li key={item.tourProductId}>
+                  <Link
+                    href={`/${locale}/tours/${encodeURIComponent(item.slug)}`}
+                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/40 hover:shadow-md"
+                  >
+                    <div
+                      className={cn(
+                        "relative h-36 bg-gradient-to-br",
+                        index % 3 === 0
+                          ? "from-[#0d47a1] to-[#42a5f5]"
+                          : index % 3 === 1
+                            ? "from-[#1b5e20] to-[#66bb6a]"
+                            : "from-[#e65100] to-[#f9a825]",
+                      )}
+                    >
+                      {item.code.startsWith("demofeed-") ? (
+                        <span className="absolute bottom-3 start-3 rounded-md bg-background/85 px-2 py-1 text-[11px] font-medium text-foreground">
+                          {copy.demoHint}
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="flex flex-1 flex-col gap-2 p-4">
+                      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        {item.kind || copy.packageLabel}
+                      </span>
+                      <span className="text-base font-semibold text-foreground group-hover:text-primary">
+                        {item.name}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        <LtrValue>{item.code}</LtrValue>
+                      </span>
+                      <span className="mt-auto pt-2 text-sm font-medium text-primary">
+                        {copy.openTour} →
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
-        {/* —— Hotels —— */}
         <section aria-labelledby="home-hotels-title">
           <SectionHeading
             title={copy.hotelsTitle}
@@ -481,7 +573,7 @@ export function HomeDiscoveryView({
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {[0, 1, 2].map((i) => (
                 <Surface key={i} className="overflow-hidden p-0">
-                  <div className="h-28 bg-gradient-to-br from-surface-muted to-primary/20" />
+                  <div className="h-32 bg-gradient-to-br from-surface-muted to-primary/20" />
                   <div className="space-y-2 p-4">
                     {i === 0 ? (
                       <>
@@ -515,7 +607,13 @@ export function HomeDiscoveryView({
                     href={`/${locale}/hotels/${encodeURIComponent(item.slug)}`}
                     className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/40 hover:shadow-md"
                   >
-                    <div className="h-28 bg-gradient-to-br from-surface-muted to-primary/20" />
+                    <div className="relative h-36 bg-gradient-to-br from-surface-muted via-primary/25 to-accent/50">
+                      {item.slug.startsWith("demofeed-") ? (
+                        <span className="absolute bottom-3 start-3 rounded-md bg-background/85 px-2 py-1 text-[11px] font-medium text-foreground">
+                          {copy.demoHint}
+                        </span>
+                      ) : null}
+                    </div>
                     <div className="flex flex-1 flex-col gap-2 p-4">
                       <span className="text-base font-semibold text-foreground group-hover:text-primary">
                         {item.name}
@@ -530,8 +628,8 @@ export function HomeDiscoveryView({
                           {item.starRating} {copy.stars}
                         </span>
                       ) : null}
-                      <span className="mt-auto text-xs text-muted-foreground">
-                        <LtrValue>{item.slug}</LtrValue>
+                      <span className="mt-auto pt-1 text-sm font-medium text-primary">
+                        {copy.openHotel} →
                       </span>
                     </div>
                   </Link>
@@ -541,7 +639,6 @@ export function HomeDiscoveryView({
           )}
         </section>
 
-        {/* —— Trust strip —— */}
         <section aria-labelledby="home-trust-title">
           <SectionHeading title={copy.trustTitle} />
           <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -556,7 +653,6 @@ export function HomeDiscoveryView({
           </ul>
         </section>
 
-        {/* —— Stories —— */}
         <section aria-labelledby="home-stories-title">
           <SectionHeading
             title={copy.storiesTitle}
@@ -589,7 +685,7 @@ export function HomeDiscoveryView({
                     href={`/${locale}/travelogues/${encodeURIComponent(item.travelogueId)}`}
                     className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/40 hover:shadow-md"
                   >
-                    <div className="h-24 bg-gradient-to-br from-primary/70 to-accent/60" />
+                    <div className="h-28 bg-gradient-to-br from-primary/70 to-accent/60" />
                     <div className="flex flex-1 flex-col gap-2 p-4">
                       <span className="text-base font-semibold text-foreground group-hover:text-primary">
                         {item.title}
@@ -605,9 +701,8 @@ export function HomeDiscoveryView({
           )}
         </section>
 
-        {/* —— Conversion CTA —— */}
         <section aria-labelledby="home-cta-title">
-          <div className="rounded-2xl bg-gradient-to-r from-primary via-primary to-primary/80 px-6 py-10 text-primary-foreground shadow-md sm:px-10">
+          <div className="rounded-2xl bg-gradient-to-r from-primary via-primary to-accent/80 px-6 py-10 text-primary-foreground shadow-md sm:px-10">
             <Stack gap="md">
               <h2 id="home-cta-title" className="text-2xl font-semibold tracking-tight">
                 {copy.ctaTitle}
@@ -615,12 +710,18 @@ export function HomeDiscoveryView({
               <p className="max-w-2xl text-sm text-primary-foreground/90 sm:text-base">
                 {copy.ctaBody}
               </p>
-              <div>
+              <div className="flex flex-wrap gap-3">
                 <Link
                   href={`/${locale}/plan`}
                   className="min-h-touch inline-flex items-center rounded-md bg-accent px-5 text-sm font-semibold text-accent-foreground hover:opacity-95"
                 >
                   {copy.ctaButton}
+                </Link>
+                <Link
+                  href={`/${locale}/hotels`}
+                  className="min-h-touch inline-flex items-center rounded-md border border-primary-foreground/40 px-5 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/10"
+                >
+                  {copy.heroHotels}
                 </Link>
               </div>
             </Stack>

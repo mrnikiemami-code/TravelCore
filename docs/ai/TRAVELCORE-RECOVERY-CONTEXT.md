@@ -26,19 +26,17 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P31 — Commercial Demo Experience** (`TC-P31-T002` strategy · AWAITING_ARCHITECT_REVIEW)
+**P31 — Commercial Demo Experience** (`TC-P31-T003` · AWAITING_ARCHITECT_REVIEW)
 
 ## Completed
 
 - **P00–P29** COMPLETE / ACCEPTED
 - Post-P29 evolution tracks COMPLETE
-- `TC-P30-PLAN` **ACCEPTED**
-- `TC-P30-T002`…`T009` Architect **ACCEPTED** (known limitations where noted)
-- `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — P30 FOUNDATION ACCEPTED (`7b34e33`)
-- `TC-DEMOFEED-PLAN` authored · activated by `TC-DEMOFEED-ACTIVATE-001`
+- `TC-P30-GATE` **ACCEPTED WITH KNOWN LIMITATIONS** — P30 FOUNDATION ACCEPTED
 - `TC-DEMOFEED-T002`…`T005` **DONE** · `TC-DEMOFEED-GATE` **ACCEPTED**
 - `TC-P31-T001` **ACCEPTED** — plan `docs/plans/P31-commercial-demo-experience-plan.md`
-- `TC-P31-T002` **Cursor PASS** — strategy `docs/plans/P31-demo-content-strategy.md` (AWAITING_ARCHITECT_REVIEW)
+- `TC-P31-T002` **ACCEPTED** — strategy `docs/plans/P31-demo-content-strategy.md`
+- `TC-P31-T003` **Cursor PASS** — Home commercial upgrade + evidence `docs/product-experience/evidence/P31-T003/` (AWAITING_ARCHITECT_REVIEW)
 
 ## Current Important Locks
 
@@ -46,34 +44,21 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
 | P30 | **FOUNDATION ACCEPTED** |
-| DEMOFEED | **GATE ACCEPTED** (`T002`–`T005`) |
-| P31 | **ACTIVE** (`T001` ACCEPTED · `T002` review) |
-| Feeder path | `tools/demofeed` — not an `ITravelCoreModule` · not in Api composition |
-| Demo identity | code/slug prefix `demofeed-` |
-| One Design System / Three Experiences | Public · Admin · Agency |
-| North Star | `docs/product-experience/assets/travelcore-ui-ux-north-star.png` |
-| Constitution | `docs/product-experience/TRAVELCORE-PRODUCT-EXPERIENCE-CONSTITUTION.md` |
-| Design System 2.0 | `docs/product-experience/DESIGN-SYSTEM-2.0.md` |
+| DEMOFEED | **GATE ACCEPTED** |
+| P31 | **ACTIVE** (`T001`/`T002` ACCEPTED · `T003` review) |
+| Feeder path | `tools/demofeed` — not an `ITravelCoreModule` |
+| Demo identity | `demofeed-*` |
 | Cursor PASS ≠ Architect ACCEPT | Mandatory |
 | Pipeline Controller | File-Based Task Pipeline V3 |
 
-## Runtime Roles
-
-| Role | Actor |
-|------|--------|
-| Architect | ChatGPT |
-| Implementation Agent | Cursor |
-| Source of Truth | Repository recovery / SoT documents |
-| Architect channel | `https://chatgpt.com/g/g-p-6a79dbc6468c8191a5e74afa2d82a8be-travelcore/c/6a8039a8-2014-83ed-be9f-813280b23bcb` |
-
 ## Current Authorized Work
 
-**`TC-P31-T002`** strategy complete (awaiting Architect ACCEPT/REWORK).
+**`TC-P31-T003`** Home upgrade complete (awaiting Architect ACCEPT/REWORK).
 
 ## Next Planned Work
 
-Architect decision on T002.
-Then **only** a new authorized `.task.md` / `.gate.md` — do not auto-implement T003+.
+Architect decision on T003.
+Then **only** a new authorized `.task.md` / `.gate.md` — do not auto-implement T004+.
 
 ## Open Blockers
 
