@@ -26,22 +26,22 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Phase
 
-**P35 — Production Payment Provider Readiness** (`TC-P35-T010` Cursor **PASS** · Zarinpal design lock awaiting Architect)
+**P36 — Commercial UI/UX Final Polish** (`TC-P36-T001` Cursor **PASS** · **NOT_SELLABLE_VISUALLY**)
 
 ## Completed (recent)
 
-- P35-T009 ACCEPTED — Behpardakht design lock
-- P35-T010: Zarinpal adapter design lock · refund CBI temporary disable · inbox audit (48 tracked)
+- P35-T010 ACCEPTED — Zarinpal design lock
+- P36-T001: ruthless visual audit + polish plan + screenshots
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T010 RESULT. No Iran final pick. No Zarinpal code.
+**None** — WAITING for Architect after T001 RESULT. Do not auto-implement T002.
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-21 | Sync after TC-P36-T001 commercial UI visual audit |
 | 2026-08-21 | Sync after TC-P35-T010 Zarinpal adapter design lock |
 | 2026-08-21 | Sync after TC-P35-T009 Behpardakht Mellat adapter design lock |
-| 2026-08-21 | Sync after TC-P35-T008 Stripe test-mode adapter |
 | 2026-08-21 | Sync after TC-P33-GATE review |
