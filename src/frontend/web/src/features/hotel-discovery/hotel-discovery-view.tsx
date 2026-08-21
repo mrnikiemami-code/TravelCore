@@ -9,7 +9,7 @@ import type { HotelBrowseItemView } from "@/features/hotel-discovery/load-hotel-
 import type { AppLocale } from "@/lib/i18n";
 
 /**
- * Hotel commerce listing experience (TC-P30-T006).
+ * Hotel commerce listing experience (TC-P30-T006 · TC-P31-T004 polish).
  * Place catalog discovery · not Search · not HotelBooking availability.
  */
 export function HotelDiscoveryView({
@@ -29,50 +29,64 @@ export function HotelDiscoveryView({
   const copy =
     locale === "fa"
       ? {
-          blurb: "هتل‌های منتخب را کشف کنید · بدون قیمت یا موجودی ساختگی",
+          eyebrow: "Hotel commerce",
+          blurb:
+            "کاتالوگ Place حرفه‌ای برای دمو تجاری — بدون قیمت، موجودی یا امتیاز ساختگی.",
           emptyTitle: "هتلی برای نمایش نیست",
           emptyBody:
-            "فعلاً هتلی با این فیلتر پیدا نشد. به‌محض انتشار کاتالوگ، اینجا نمایش داده می‌شود.",
+            "فعلاً هتلی با این فیلتر پیدا نشد. به‌محض انتشار کاتالوگ، کارت‌های فروش اینجا می‌آید.",
           errorTitle: "بارگذاری فهرست هتل‌ها ناموفق بود",
           errorBody:
-            "اتصال موقتاً برقرار نشد. لطفاً کمی بعد دوباره تلاش کنید.",
+            "اتصال موقتاً برقرار نشد. قیمت یا موجودی جعلی به‌جای خطا نشان داده نمی‌شود.",
           retry: "تلاش دوباره",
-          count: (n: number) => `${n} هتل`,
+          count: (n: number) => `${n} هتل در کاتالوگ`,
         }
       : locale === "ar"
         ? {
-            blurb: "اكتشف الفنادق المختارة · دون أسعار أو توفر وهمي",
+            eyebrow: "Hotel commerce",
+            blurb:
+              "كتالوج Place احترافي للعرض التجاري — دون أسعار أو توفر أو تقييمات وهمية.",
             emptyTitle: "لا فنادق للعرض",
             emptyBody:
-              "لا نتائج لهذا التصفية حالياً. ستظهر الفنادق عند توفر الكتالوج.",
+              "لا نتائج لهذا التصفية حالياً. ستظهر بطاقات البيع عند توفر الكتالوج.",
             errorTitle: "تعذر تحميل قائمة الفنادق",
-            errorBody: "الاتصال غير متاح مؤقتاً. حاول مرة أخرى بعد قليل.",
+            errorBody:
+              "الاتصال غير متاح مؤقتاً. لا نعرض أسعاراً أو توفراً وهمياً بدل الخطأ.",
             retry: "إعادة المحاولة",
-            count: (n: number) => `${n} فندق`,
+            count: (n: number) => `${n} فندق في الكتالوج`,
           }
         : {
-            blurb: "Discover selected hotels · no invented prices or availability",
+            eyebrow: "Hotel commerce",
+            blurb:
+              "Professional Place catalog for commercial demos — no invented prices, availability, or ratings.",
             emptyTitle: "No hotels to show",
             emptyBody:
-              "Nothing matched this filter yet. Hotels appear here when the catalog is published.",
+              "Nothing matched this filter yet. Sales-ready cards appear when the catalog is published.",
             errorTitle: "Couldn’t load hotels",
             errorBody:
-              "The connection failed temporarily. Please try again in a moment.",
+              "The connection failed temporarily. We do not invent prices or availability instead.",
             retry: "Try again",
-            count: (n: number) => `${n} hotels`,
+            count: (n: number) => `${n} hotels in catalog`,
           };
 
   return (
-    <div className="py-6 sm:py-8">
-      <Container width="content">
-        <Stack gap="lg">
-          <Stack gap="sm">
-            <Text as="h1" role="heading">
-              {title}
-            </Text>
-            <Text role="caption">{copy.blurb}</Text>
-          </Stack>
+    <div className="pb-10">
+      <section className="border-b border-border bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground">
+        <Container width="wide" className="py-8 sm:py-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+            {copy.eyebrow}
+          </p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            {title}
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm text-primary-foreground/90 sm:text-base">
+            {copy.blurb}
+          </p>
+        </Container>
+      </section>
 
+      <Container width="wide" className="pt-6 sm:pt-8">
+        <Stack gap="lg">
           <HotelListingToolbar locale={locale} criteria={criteria} />
 
           {loadError ? (
@@ -94,21 +108,15 @@ export function HotelDiscoveryView({
               </a>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-surface/60 p-8 text-center">
-              <Text as="h2" role="label">
-                {copy.emptyTitle}
-              </Text>
-              <Text role="muted" className="mt-2">
-                {copy.emptyBody}
-              </Text>
-              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className="aspect-[4/3] rounded-xl bg-gradient-to-br from-primary/25 via-muted to-accent/30"
-                    aria-hidden
-                  />
-                ))}
+            <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+              <div className="grid gap-0 md:grid-cols-[1fr_1.2fr]">
+                <div className="min-h-40 bg-gradient-to-br from-primary via-primary/70 to-accent" />
+                <div className="space-y-3 p-6 sm:p-8">
+                  <Text as="h2" role="label">
+                    {copy.emptyTitle}
+                  </Text>
+                  <Text role="muted">{copy.emptyBody}</Text>
+                </div>
               </div>
             </div>
           ) : (

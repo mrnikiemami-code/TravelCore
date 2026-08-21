@@ -4,7 +4,7 @@ import type { AppLocale } from "@/lib/i18n";
 import type { HotelBrowseItemView } from "@/features/hotel-discovery/load-hotel-discovery-list";
 
 /**
- * Hotel discovery card — experience only.
+ * Hotel discovery card — commercial experience polish (TC-P31-T004).
  * No invented prices, availability, or ratings beyond catalog starRating when present.
  */
 export function HotelCard({
@@ -22,6 +22,7 @@ export function HotelCard({
           facilities: "جزئیات و امکانات در صفحه هتل",
           imageAlt: "تصویر هتل",
           noStars: "ستاره ثبت‌نشده",
+          demoHint: "نمونه DEMOFEED",
         }
       : locale === "ar"
         ? {
@@ -30,6 +31,7 @@ export function HotelCard({
             facilities: "التفاصيل والمرافق في صفحة الفندق",
             imageAlt: "صورة الفندق",
             noStars: "بدون تصنيف نجوم",
+            demoHint: "عينة DEMOFEED",
           }
         : {
             cta: "View hotel",
@@ -37,27 +39,43 @@ export function HotelCard({
             facilities: "Details and facilities on the hotel page",
             imageAlt: "Hotel image",
             noStars: "Star rating pending",
+            demoHint: "DEMOFEED sample",
           };
 
   const href = `/${locale}/hotels/${encodeURIComponent(hotel.slug)}`;
+  const isDemo = hotel.slug.startsWith("demofeed-");
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-shadow hover:shadow-md">
-      <div
-        className="aspect-[4/3] w-full bg-gradient-to-br from-primary/80 via-primary/40 to-accent/70"
-        aria-hidden
-      >
-        <div className="flex h-full items-end p-3">
-          <Text role="caption" className="rounded-md bg-background/85 px-2 py-1 text-foreground">
-            {copy.imageAlt}
-          </Text>
-        </div>
-      </div>
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition hover:border-primary/35 hover:shadow-md">
+      <Link href={href} className="relative block aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/80 via-primary/40 to-accent/70">
+        {hotel.coverSrc ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={hotel.coverSrc}
+            alt={copy.imageAlt}
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <div className="flex h-full items-end p-3" aria-hidden>
+            <Text
+              role="caption"
+              className="rounded-md bg-background/85 px-2 py-1 text-foreground"
+            >
+              {copy.imageAlt}
+            </Text>
+          </div>
+        )}
+        {isDemo ? (
+          <span className="absolute bottom-3 start-3 rounded-md bg-background/90 px-2 py-1 text-[11px] font-medium text-foreground">
+            {copy.demoHint}
+          </span>
+        ) : null}
+      </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <Text as="h2" role="label">
+        <Text as="h2" role="label" className="text-base font-semibold">
           <Link
             href={href}
-            className="min-h-touch inline-flex underline-offset-2 hover:underline"
+            className="min-h-touch inline-flex text-foreground underline-offset-2 hover:text-primary hover:underline"
           >
             {hotel.name}
           </Link>

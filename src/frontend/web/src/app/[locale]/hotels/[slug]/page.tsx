@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PublicFooter, PublicHeader, PublicShell } from "@/components/shell";
 import { HotelDetailView } from "@/features/hotel-detail/hotel-detail-view";
+import { enrichHotelsWithCoverMedia } from "@/features/hotel-discovery/enrich-hotel-covers";
 import { loadHotelDiscoveryList } from "@/features/hotel-discovery/load-hotel-discovery-list";
 import { loadPlaceDetailPage } from "@/features/place-detail/load-place-detail";
 import { isApiOk } from "@/lib/api/result";
@@ -125,9 +126,14 @@ export default async function HotelDetailPage({ params }: PageProps) {
 
   const vm = loaded.data;
   const discovery = await loadHotelDiscoveryList(locale);
-  const similarHotels = discovery.hotels
+  const similarBase = discovery.hotels
     .filter((h) => h.placeId !== vm.placeId && h.slug !== vm.slug)
     .slice(0, 3);
+  const similarHotels = await enrichHotelsWithCoverMedia(
+    locale,
+    similarBase,
+    3,
+  );
 
   const crumbs = [
     ...(vm.destination

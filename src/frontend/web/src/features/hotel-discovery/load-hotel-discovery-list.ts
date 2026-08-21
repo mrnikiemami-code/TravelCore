@@ -9,6 +9,8 @@ export type HotelBrowseItemView = {
   name: string;
   description: string | null;
   starRating: number | null;
+  /** Optional cover from Place media presentation (frontend enrichment · not browse DTO). */
+  coverSrc?: string | null;
 };
 
 type ApiHotelBrowseItem = {

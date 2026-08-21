@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-T003` Home upgrade · AWAITING_ARCHITECT_REVIEW) |
+| Current Phase | **P31 — Commercial Demo Experience** (`TC-P31-T004` Hotel polish · AWAITING_ARCHITECT_REVIEW) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **DEMOFEED GATE ACCEPTED** · **P31 T001–T002 ACCEPTED · T003 REVIEW** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |

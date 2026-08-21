@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PublicFooter, PublicHeader, PublicShell } from "@/components/shell";
+import { enrichHotelsWithCoverMedia } from "@/features/hotel-discovery/enrich-hotel-covers";
 import { HotelDiscoveryView } from "@/features/hotel-discovery/hotel-discovery-view";
 import { parseHotelListingCriteria } from "@/features/hotel-discovery/hotel-listing-criteria";
 import { loadHotelDiscoveryList } from "@/features/hotel-discovery/load-hotel-discovery-list";
@@ -72,6 +73,9 @@ export default async function HotelDiscoveryPage({
   const sp = await searchParams;
   const criteria = parseHotelListingCriteria(sp);
   const loaded = await loadHotelDiscoveryList(locale);
+  const hotels = loaded.ok
+    ? await enrichHotelsWithCoverMedia(locale, loaded.hotels)
+    : [];
 
   return (
     <PublicShell
@@ -80,7 +84,7 @@ export default async function HotelDiscoveryPage({
     >
       <HotelDiscoveryView
         locale={locale}
-        hotels={loaded.hotels}
+        hotels={hotels}
         criteria={criteria}
         loadError={!loaded.ok}
       />
