@@ -38,6 +38,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 - `TC-DEMOFEED-PLAN` authored · activated by `TC-DEMOFEED-ACTIVATE-001`
 - `TC-DEMOFEED-T002` **DONE** — removable feeder host/boundary at `tools/demofeed`
 - `TC-DEMOFEED-T003` **DONE** — Destination demo seed (`demofeed-*` via DestinationApplicationService)
+- `TC-DEMOFEED-T004` **DONE** — Place (Hotel) + Media cover seed (`demofeed-hotel-*` via IPlaceService + IMediaUploadService)
 
 ## Current Important Locks
 
@@ -45,7 +46,7 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 |------|--------|
 | Product order | **Experience → Data → Commercial** |
 | P30 | **FOUNDATION ACCEPTED** |
-| DEMOFEED | **ACTIVE** (`T002`/`T003` done · `T004+` need Architect `.task.md`) |
+| DEMOFEED | **ACTIVE** (`T002`/`T003`/`T004` done · `T005+` need Architect `.task.md`) |
 | Feeder path | `tools/demofeed` — not an `ITravelCoreModule` · not in Api composition |
 | Demo identity | code/slug prefix `demofeed-` |
 | One Design System / Three Experiences | Public · Admin · Agency |
@@ -66,12 +67,12 @@ This file is a **fast recovery aid**. If it conflicts with `PROJECT-STATE.md` / 
 
 ## Current Authorized Work
 
-**`TC-DEMOFEED-T003`** Destination demo seed (awaiting Architect review of RESULT).
+**`TC-DEMOFEED-T004`** Place (Hotel) + Media demo seed (awaiting Architect review of RESULT).
 
 ## Next Planned Work
 
-Architect-authorized **`TC-DEMOFEED-T004`** (Hotel/Place + Media demo seed) only.
-Do **not** auto-start T004+ / invent seeds from this document.
+Architect-authorized **`TC-DEMOFEED-T005`** (Tour + Media demo seed) only.
+Do **not** auto-start T005+ / invent seeds from this document.
 
 ## Open Blockers
 
@@ -97,3 +98,4 @@ Do **not** auto-start T004+ / invent seeds from this document.
 | 2026-08-20 | Sync after `TC-P30-T005-REWORK` Public Home visual rework |
 | 2026-08-21 | Sync after P30 GATE ACCEPT + DEMOFEED T002 activation |
 | 2026-08-21 | Sync after DEMOFEED T003 Destination demo seed |
+| 2026-08-21 | Sync after DEMOFEED T004 Place (Hotel) + Media cover seed |
