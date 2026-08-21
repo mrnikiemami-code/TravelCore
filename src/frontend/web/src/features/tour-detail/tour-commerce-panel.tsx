@@ -37,8 +37,10 @@ type CommerceCopy = {
   components: string;
   bookingBoundary: string;
   bookingBoundaryBody: string;
-  continueLater: string;
-  continueDisabledHint: string;
+  startBooking: string;
+  needDeparture: string;
+  needPrice: string;
+  loadingGate: string;
 };
 
 function commerceCopy(locale: AppLocale): CommerceCopy {
@@ -64,12 +66,13 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
       loadingPrice: "در حال دریافت خلاصه قیمت…",
       occupancy: "نرخ اشغال",
       components: "اجزای قیمت",
-      bookingBoundary: "مرز رزرو",
+      bookingBoundary: "شروع رزرو موقت",
       bookingBoundaryBody:
-        "این صفحه ترکیب کاتالوگ + قیمت است. ایجاد رزرو، صدور Quote، یا پرداخت اینجا انجام نمی‌شود.",
-      continueLater: "ادامه به‌سوی رزرو · بعداً",
-      continueDisabledHint:
-        "شروع رزرو در مرحله بعد · این دکمه عمداً غیرفعال است و API رزرو را صدا نمی‌زند",
+        "با حرکت و قیمت معتبر می‌توانید رزرو Pending بسازید. Quote داخل Booking صادر می‌شود · پرداخت اینجا نیست · Confirmed ساخته نمی‌شود.",
+      startBooking: "شروع رزرو موقت",
+      needDeparture: "ابتدا یک تاریخ حرکت منتشرشده را انتخاب کنید.",
+      needPrice: "بدون خلاصه قیمت معتبر از Pricing، شروع رزرو ممکن نیست.",
+      loadingGate: "پس از دریافت خلاصه قیمت، شروع رزرو فعال می‌شود.",
     };
   }
 
@@ -95,12 +98,13 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
       loadingPrice: "جاري جلب ملخص السعر…",
       occupancy: "أسعار الإشغال",
       components: "مكونات السعر",
-      bookingBoundary: "حدود الحجز",
+      bookingBoundary: "بدء حجز مؤقت",
       bookingBoundaryBody:
-        "هذه صفحة تركيب الكتالوج والسعر. لا إنشاء حجز ولا Quote ولا دفع هنا.",
-      continueLater: "المتابعة نحو الحجز · لاحقاً",
-      continueDisabledHint:
-        "بدء الحجز في مرحلة لاحقة · هذا الزر معطّل عمداً ولا يستدعي واجهات الحجز",
+        "مع مغادرة وسعر صالح يمكنك إنشاء حجز Pending. يُصدر Quote داخل Booking · بلا دفع هنا · بلا تأكيد.",
+      startBooking: "بدء الحجز المؤقت",
+      needDeparture: "اختر أولاً تاريخ مغادرة منشور.",
+      needPrice: "بدون ملخص سعر صالح من Pricing لا يمكن بدء الحجز.",
+      loadingGate: "بعد جلب ملخص السعر يُفعّل بدء الحجز.",
     };
   }
 
@@ -125,12 +129,13 @@ function commerceCopy(locale: AppLocale): CommerceCopy {
     loadingPrice: "Loading price summary…",
     occupancy: "Occupancy prices",
     components: "Price components",
-    bookingBoundary: "Booking boundary",
+    bookingBoundary: "Start pending booking",
     bookingBoundaryBody:
-      "This surface composes catalog + Pricing. It does not create a booking, issue a Quote, or take payment.",
-    continueLater: "Continue toward booking · later",
-    continueDisabledHint:
-      "Booking initiation is a later step · this control is intentionally disabled and does not call booking APIs",
+      "With a valid departure and price you can create a Pending booking. Quote is issued inside Booking · no payment here · not Confirmed.",
+    startBooking: "Start pending booking",
+    needDeparture: "Select a published departure first.",
+    needPrice: "Without a valid Pricing summary, booking cannot start.",
+    loadingGate: "Booking start enables after the price summary loads.",
   };
 }
 
@@ -183,15 +188,18 @@ function startingMoney(summary: PublicPriceSummaryView): {
 }
 
 /**
- * I2 public Tour commerce composition (TC-P33-T006).
- * TourProduct → Published TourDeparture selection → Pricing summary → booking-boundary CTA.
- * No Booking create · no Payment · no hardcoded departure IDs · no invented money.
+ * I2 composition + I3 booking-start gate (TC-P33-T006 / TC-P33-T007).
+ * TourProduct → Published TourDeparture → Pricing summary → book prepare page.
+ * Initiate POST happens on /tours/{slug}/book via Booking ownership — not here.
+ * No Payment · no Confirmed · no hardcoded departure IDs · no invented money.
  */
 export function TourCommercePanel({
   locale,
+  slug,
   departures,
 }: {
   locale: AppLocale;
+  slug: string;
   departures: PublishedDepartureView[];
 }) {
   const copy = commerceCopy(locale);
@@ -246,6 +254,17 @@ export function TourCommercePanel({
   const selected = departures.find((d) => d.id === selectedId) ?? null;
   const selectedPrice =
     selectedId != null ? priceByDeparture[selectedId] : undefined;
+  const canStartBooking = selectedId != null && selectedPrice != null;
+  const bookHref = canStartBooking
+    ? `/${locale}/tours/${encodeURIComponent(slug)}/book?departureId=${encodeURIComponent(selectedId)}`
+    : null;
+  const gateHint = !selectedId
+    ? copy.needDeparture
+    : selectedPrice === undefined
+      ? copy.loadingGate
+      : selectedPrice == null
+        ? copy.needPrice
+        : null;
 
   return (
     <div id="published-departures" className="scroll-mt-24">
@@ -372,16 +391,25 @@ export function TourCommercePanel({
               {copy.bookingBoundary}
             </Text>
             <Text role="muted">{copy.bookingBoundaryBody}</Text>
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              title={copy.continueDisabledHint}
-              className="min-h-touch inline-flex w-full cursor-not-allowed items-center justify-center rounded-md bg-surface-muted px-4 text-sm font-semibold text-muted-foreground sm:w-auto"
-            >
-              {copy.continueLater}
-            </button>
-            <Text role="caption">{copy.continueDisabledHint}</Text>
+            {bookHref ? (
+              <a
+                href={bookHref}
+                className="min-h-touch inline-flex w-full items-center justify-center rounded-md bg-accent px-4 text-sm font-semibold text-accent-foreground hover:opacity-95 sm:w-auto"
+              >
+                {copy.startBooking}
+              </a>
+            ) : (
+              <button
+                type="button"
+                disabled
+                aria-disabled="true"
+                title={gateHint ?? copy.needPrice}
+                className="min-h-touch inline-flex w-full cursor-not-allowed items-center justify-center rounded-md bg-surface-muted px-4 text-sm font-semibold text-muted-foreground sm:w-auto"
+              >
+                {copy.startBooking}
+              </button>
+            )}
+            {gateHint ? <Text role="caption">{gateHint}</Text> : null}
           </Stack>
         </Surface>
       </Stack>

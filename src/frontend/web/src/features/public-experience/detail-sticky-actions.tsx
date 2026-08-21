@@ -2,10 +2,9 @@ import { Text } from "@/components/ui";
 import type { AppLocale } from "@/lib/i18n";
 
 /**
- * P14-R2 / P33-T006: Sticky presentation actions on public Detail.
- * Allowed: View Departure · View Price Summary · Contact / Request Information.
- * Forbidden: Booking create, payment, seat hold, fake commerce funnel.
- * Optional bookHref reserved for later I3 — omit on I2 composition surfaces.
+ * P14-R2 / P33-T006 / P33-T007: Sticky actions on public Tour Detail.
+ * Allowed: View Departure · View Price · Contact · optional Prepare booking (I3).
+ * Forbidden: Payment · fake Confirmed · inventing money.
  */
 export function PublicDetailStickyActions({
   locale,
@@ -21,7 +20,9 @@ export function PublicDetailStickyActions({
           viewPrice: "مشاهده قیمت",
           contact: "درخواست اطلاعات",
           prepare: "شروع رزرو موقت",
-          note: "اقدام نمایشی · انتخاب حرکت + خلاصه قیمت · نه ایجاد رزرو · نه پرداخت",
+          note: bookHref
+            ? "انتخاب حرکت + قیمت · سپس رزرو Pending · نه پرداخت · نه Confirmed"
+            : "اقدام نمایشی · انتخاب حرکت + خلاصه قیمت · نه ایجاد رزرو · نه پرداخت",
         }
       : locale === "ar"
         ? {
@@ -29,14 +30,18 @@ export function PublicDetailStickyActions({
             viewPrice: "عرض السعر",
             contact: "طلب معلومات",
             prepare: "إعداد حجز مؤقت",
-            note: "إجراءات العرض · اختيار المغادرة + ملخص السعر · بلا إنشاء حجز · بلا دفع",
+            note: bookHref
+              ? "اختيار المغادرة + السعر · ثم حجز Pending · بلا دفع · بلا تأكيد"
+              : "إجراءات العرض · اختيار المغادرة + ملخص السعر · بلا إنشاء حجز · بلا دفع",
           }
         : {
             viewOptions: "View departures",
             viewPrice: "View price",
             contact: "Request information",
             prepare: "Prepare booking",
-            note: "Presentation · departure + price summary · no booking create · no payment",
+            note: bookHref
+              ? "Departure + price · then Pending booking · no payment · not Confirmed"
+              : "Presentation · departure + price summary · no booking create · no payment",
           };
 
   return (

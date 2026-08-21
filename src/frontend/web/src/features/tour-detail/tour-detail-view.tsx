@@ -15,9 +15,9 @@ import { TourCommercePanel } from "./tour-commerce-panel";
 import type { TourDetailPageViewModel } from "./load-tour-detail";
 
 /**
- * Public Tour commerce detail (TC-P30-T007 · TC-P31-T005 · TC-P33-T006 I2).
- * Catalog + Published Departure selection + Pricing summary · booking-boundary CTA.
- * No Booking create · no Payment · no invented money.
+ * Public Tour commerce detail (TC-P30-T007 · TC-P31-T005 · TC-P33-T006 I2 · TC-P33-T007 I3).
+ * Catalog + Published Departure + Pricing summary → book prepare (Pending initiation).
+ * No Payment · no Confirmed theater · no invented money.
  */
 export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
   const locale = vm.locale;
@@ -45,7 +45,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
           requestBody: "برای پرسش درباره این تور · نه پرداخت · نه ایجاد رزرو.",
           demoHint: "نمونه DEMOFEED",
           ctaNote:
-            "ترکیب عمومی: انتخاب حرکت → خلاصه قیمت · مرز رزرو بدون ایجاد Booking",
+            "مسیر فروش: انتخاب حرکت → خلاصه قیمت → شروع رزرو موقت (Pending) · بدون پرداخت و بدون Confirmed",
         }
       : locale === "ar"
         ? {
@@ -67,7 +67,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             requestBody: "للاستفسار عن هذه الجولة · ليس دفعاً · بلا إنشاء حجز.",
             demoHint: "عينة DEMOFEED",
             ctaNote:
-              "تركيب عام: اختيار المغادرة → ملخص السعر · حدود الحجز دون إنشاء Booking",
+              "مسار البيع: اختيار المغادرة → ملخص السعر → بدء حجز Pending · بلا دفع وبلا تأكيد",
           }
         : {
             eyebrow: "Tour commerce",
@@ -88,7 +88,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
             requestBody: "Ask about this tour · not payment · not booking create.",
             demoHint: "DEMOFEED sample",
             ctaNote:
-              "Public composition: select departure → price summary · booking boundary without Booking create",
+              "Sell path: select departure → price summary → start Pending booking · no payment · not Confirmed",
           };
 
   const galleryItems =
@@ -265,6 +265,7 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
 
           <TourCommercePanel
             locale={locale}
+            slug={vm.slug}
             departures={vm.publishedDepartures}
           />
 
@@ -298,8 +299,14 @@ export function TourDetailView({ vm }: { vm: TourDetailPageViewModel }) {
           <RelatedToursList locale={locale} items={vm.relatedTours} />
         </Stack>
       </Container>
-      {/* I2: no bookHref — sticky stays presentation-only (I3 owns booking initiate). */}
-      <PublicDetailStickyActions locale={locale} />
+      <PublicDetailStickyActions
+        locale={locale}
+        bookHref={
+          vm.publishedDepartures.length > 0
+            ? `/${locale}/tours/${encodeURIComponent(vm.slug)}/book`
+            : undefined
+        }
+      />
     </div>
   );
 }
