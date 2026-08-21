@@ -994,12 +994,13 @@ Evidence: [`docs/product-experience/evidence/P36-GATE/`](product-experience/evid
 
 ## P37 — Experience Platform Foundation
 
-**Status:** **ACTIVE** (`TC-P37-T001` Cursor **PASS** · architecture review)
+**Status:** **ACTIVE** (`TC-P37-T002` Cursor **PASS** · Customer Dashboard · **READY_FOUNDATION**)
 
 Plan: [`docs/plans/P37-experience-architecture-review.md`](plans/P37-experience-architecture-review.md)
 
-Surfaces: Public Marketplace · Customer Dashboard · Agency Portal · Admin Console  
-Recommended next: Customer Dashboard Foundation (await Architect `.task.md`)
+Customer surface: `/[locale]/me` · evidence [`docs/product-experience/evidence/P37-T002/`](../product-experience/evidence/P37-T002/)
+
+Recommended next: Agency Portal Foundation (await Architect `.task.md`)
 
 ---
 
