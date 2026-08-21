@@ -4,7 +4,7 @@
 |-------|--------|
 | Plan-ID | `TC-DEMOFEED-PLAN` |
 | Track | Temporary Demo Feeding (Post-P29 Evolution) |
-| Status | **GATE REVIEWED (Cursor PASS)** — T002–T005 done · awaiting Architect ACCEPT of `TC-DEMOFEED-GATE` |
+| Status | **GATE ACCEPTED** — T002–T005 done · Architect ACCEPTED `TC-DEMOFEED-GATE` |
 | Permanence | **TEMPORARY** — not a TravelCore product module |
 | Removable | **MUST remain removable** |
 | Baseline | `327d18c` (`docs: correct pipeline compliance ledger after forensic review`) |
@@ -93,7 +93,7 @@ If a demo marker column would require a domain migration, **defer that approach*
 | `TC-DEMOFEED-T003` | Destination demo seed (owner write path · identifiable · no ownership leak) | **DONE** |
 | `TC-DEMOFEED-T004` | Hotel (Place) + image demo seed (Place + Media attach · not HotelBooking) | **DONE** |
 | `TC-DEMOFEED-T005` | Tour + image demo seed (Tour + Media attach · not Booking/Pricing mutation) | **DONE** |
-| `TC-DEMOFEED-GATE` | Track acceptance: data present · boundaries held · deletion strategy evidenced | **CURSOR PASS** (evidence: `docs/plans/DEMOFEED-GATE-acceptance-evidence.md`) · AWAITING_ARCHITECT_REVIEW |
+| `TC-DEMOFEED-GATE` | Track acceptance: data present · boundaries held · deletion strategy evidenced | **ACCEPTED** (Architect) |
 
 Do **not** invent extra tasks. Do **not** auto-execute post-GATE work without a new authorized Architect file.
 
