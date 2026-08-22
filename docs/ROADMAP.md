@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P38 — Multi-Agency Commerce** (`TC-P38-T009` Cursor **PASS** · Multi-Agency Commerce Gate) |
+| Current Phase | **P38 — Multi-Agency Commerce** (`TC-P38-T010` Cursor **PASS** · Admin AgencyOffer Governance) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P38 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P38-T009` · recommend Commerce Depth |
+| Current Next Task | Architect review of `TC-P38-T010` · Commerce Depth · Commission deferred |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -1008,15 +1008,15 @@ Surfaces: Public · Customer `/me` · Agency `/agency` · Admin `/admin`
 
 ## P38 — Multi-Agency Commerce
 
-**Status:** **ACTIVE** (`TC-P38-T009` Cursor **PASS** · Multi-Agency Commerce Gate · recommend Commerce Depth)
+**Status:** **ACTIVE** (`TC-P38-T010` Cursor **PASS** · Admin AgencyOffer Governance)
 
 Plan: [`docs/plans/P38-multi-agency-commerce-foundation.md`](plans/P38-multi-agency-commerce-foundation.md)
 
 Contracts: [`docs/plans/P38-agency-offer-contracts.md`](plans/P38-agency-offer-contracts.md)
 
-Evidence: Gate [`docs/product-experience/evidence/P38-T009/GATE-REVIEW.md`](../product-experience/evidence/P38-T009/GATE-REVIEW.md)
+Evidence: Governance [`docs/product-experience/evidence/P38-T010/GOVERNANCE-NOTES.md`](../product-experience/evidence/P38-T010/GOVERNANCE-NOTES.md) · Gate [`docs/product-experience/evidence/P38-T009/GATE-REVIEW.md`](../product-experience/evidence/P38-T009/GATE-REVIEW.md)
 
-Recommended next: **Commerce Depth** (Admin approval · Access · policy inputs) — Commission/Settlement deferred — await Architect `.task.md`
+Commerce Depth in progress: Admin approval · Access · policy stubs — Commission/Settlement still deferred — await Architect `.task.md`
 
 ---
 
@@ -1100,6 +1100,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
 | P36 | Commercial UI/UX Final Polish | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** · PARTIALLY_SELLABLE |
 | P37 | Experience Platform Foundation | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** |
-| P38 | Multi-Agency Commerce | **ACTIVE** (`TC-P38-T009` · Commerce Gate PASS · recommend Commerce Depth) |
+| P38 | Multi-Agency Commerce | **ACTIVE** (`TC-P38-T010` · Admin Offer Governance PASS · Commerce Depth) |
 | P35 | Production Payment Provider Readiness | **PAUSED** (designs locked; Stripe test-mode code ready; external account facts) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
