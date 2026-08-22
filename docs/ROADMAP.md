@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P38 — Multi-Agency Commerce** (`TC-P38-T015` Cursor **PASS WITH KNOWN LIMITATIONS** · Final Commerce Gate) |
+| Current Phase | **P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-T001` Cursor **PASS** · Boundary plan) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P38 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P38-T015` · recommend Option A Commission/Settlement · wait for envelope |
+| Current Next Task | Architect review of `TC-P39-T001` · boundary-only · no finance engines |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -1008,7 +1008,7 @@ Surfaces: Public · Customer `/me` · Agency `/agency` · Admin `/admin`
 
 ## P38 — Multi-Agency Commerce
 
-**Status:** **ACTIVE** (`TC-P38-T015` Cursor **PASS WITH KNOWN LIMITATIONS** · Final Commerce Gate)
+**Status:** **GATE ACCEPTED WITH KNOWN LIMITATIONS** (`TC-P38-T015`) · next phase **P39** active
 
 Plan: [`docs/plans/P38-multi-agency-commerce-foundation.md`](plans/P38-multi-agency-commerce-foundation.md)
 
@@ -1016,7 +1016,17 @@ Contracts: [`docs/plans/P38-agency-offer-contracts.md`](plans/P38-agency-offer-c
 
 Evidence: Final Gate [`docs/product-experience/evidence/P38-GATE/GATE-REVIEW.md`](../product-experience/evidence/P38-GATE/GATE-REVIEW.md) · Ops [`docs/product-experience/evidence/P38-T014/GOVERNANCE-OPS.md`](../product-experience/evidence/P38-T014/GOVERNANCE-OPS.md)
 
-Commerce vertical + governance complete for review — Cursor recommends **Option A Commission/Settlement Foundation** — await Architect decision envelope
+---
+
+## P39 — Multi-Agency Commercial Finance Foundation
+
+**Status:** **ACTIVE** (`TC-P39-T001` Cursor **PASS** · Commission/Settlement/Payout boundary plan)
+
+Plan: [`docs/plans/P39-commission-settlement-foundation-plan.md`](plans/P39-commission-settlement-foundation-plan.md)
+
+Prior gate: [`docs/product-experience/evidence/P38-GATE/GATE-REVIEW.md`](../product-experience/evidence/P38-GATE/GATE-REVIEW.md)
+
+Boundary-only: Commission ≠ Pricing · Settlement ≠ Payment · Payout ≠ Booking · Audit ≠ Ledger — **no formulas / jobs / payout APIs yet**
 
 ---
 

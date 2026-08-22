@@ -1,32 +1,30 @@
 # TravelCore Recovery Context
 
-**P38 — Multi-Agency Commerce** (`TC-P38-T015` Cursor **PASS WITH KNOWN LIMITATIONS** · Final Commerce Gate)
+**P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-T001` Cursor **PASS** · Boundary plan)
 
 ## Completed (recent)
 
-- P38-T001–T014 ACCEPTED — marketplace vertical · Admin governance · policy · audit · ops search
-- P38-T015: Final gate review · recommend Option A Commission/Settlement Foundation
+- P38-T015 Final Gate **ACCEPTED** — READY_COMMERCE_VERTICAL_WITH_GOVERNANCE
+- P39-T001: Commission / Settlement / Payout boundary foundation plan (docs only)
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T015 RESULT (do not start Commission without envelope).
+**None** — WAITING for Architect after T001 RESULT. No finance engines without envelope.
 
 ## Critical direction (locked)
 
 ```text
-TourProduct + AgencyOffer + Governance + Policy + Audit
-+ Selection + Quote Context + Booking
-READY_COMMERCE_VERTICAL_WITH_GOVERNANCE
-Policy ≠ Commission · Audit ≠ Financial Ledger
+Commission ≠ Pricing
+Settlement ≠ Payment
+Payout ≠ Booking
+Audit ≠ Financial Ledger
+Policy ≠ Commission
 ```
 
 ## Revision
 
 | Date | Change |
 |------|--------|
+| 2026-08-22 | Sync after TC-P39-T001 Commission/Settlement/Payout boundary plan |
 | 2026-08-22 | Sync after TC-P38-T015 Final Commerce Gate |
 | 2026-08-22 | Sync after TC-P38-T014 Governance Operations Refinement |
-| 2026-08-22 | Sync after TC-P38-T013 Governance Audit Visibility |
-| 2026-08-22 | Sync after TC-P38-T012 AgencyOffer Policy Operations |
-| 2026-08-22 | Sync after TC-P38-T011 AgencyOffer Policy Foundation |
-| 2026-08-22 | Sync after TC-P38-T010 Admin AgencyOffer Governance |
