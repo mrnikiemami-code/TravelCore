@@ -32,7 +32,7 @@ public static class AccessPermissionCatalog
         ("agency.marketplace.profile.write", "Create/update Agency Marketplace profiles"),
         ("agency.marketplace.offers.read", "Read Agency Marketplace offers"),
         ("agency.marketplace.offers.write", "Create/update Agency Marketplace offers"),
-        ("agency.marketplace.offers.moderate", "Approve or reject Agency Marketplace offer publication"),
+        ("agency.marketplace.offers.moderate", "Review, approve, reject, or suspend Agency Marketplace offer publication"),
         ("ugc.moderation.read", "Read UGC moderation queues"),
         ("ugc.moderation.moderate", "Approve, reject, or publish UGC content in moderation workflow")
     ];

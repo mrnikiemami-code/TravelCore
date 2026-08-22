@@ -295,22 +295,77 @@ internal static class AgencyMarketplacePanelEndpoints
             await MutateOwnedOffer(id, httpContext, associations, service, service.RetireOfferAsync, cancellationToken))
             .RequireAuthorization(OffersWritePolicy);
 
-        // Platform moderation — not bound to acting agency ownership.
+        // Platform moderation — Moderate policy + self-moderation denial (P38-T010).
+        // Prefer /api/agency-marketplace/moderation/offers for Admin review queue + suspend.
         offers.MapPost("/{id:guid}/approve", async Task<IResult> (
             Guid id,
-            IAgencyMarketplacePanelService service,
+            HttpContext httpContext,
+            IAccountAssociationQuery associations,
+            IAgencyMarketplacePanelService panel,
+            IAgencyOfferGovernanceService governance,
             CancellationToken cancellationToken) =>
-            await MutateOffer(id, service.ApproveOfferAsync, cancellationToken))
+            await MutateModeration(
+                id,
+                httpContext,
+                associations,
+                panel,
+                governance.ApproveOfferAsync,
+                cancellationToken))
             .RequireAuthorization(OffersModeratePolicy);
 
         offers.MapPost("/{id:guid}/reject", async Task<IResult> (
             Guid id,
-            IAgencyMarketplacePanelService service,
+            HttpContext httpContext,
+            IAccountAssociationQuery associations,
+            IAgencyMarketplacePanelService panel,
+            IAgencyOfferGovernanceService governance,
             CancellationToken cancellationToken) =>
-            await MutateOffer(id, service.RejectOfferAsync, cancellationToken))
+            await MutateModeration(
+                id,
+                httpContext,
+                associations,
+                panel,
+                governance.RejectOfferAsync,
+                cancellationToken))
             .RequireAuthorization(OffersModeratePolicy);
 
         return endpoints;
+    }
+
+    private static async Task<IResult> MutateModeration(
+        Guid id,
+        HttpContext httpContext,
+        IAccountAssociationQuery associations,
+        IAgencyMarketplacePanelService panel,
+        Func<Guid, Guid?, CancellationToken, Task<AgencyOfferModerationQueueItem>> action,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var actingProfileId = await AgencyMarketplaceAdminEndpoints.TryResolveActingAgencyProfileIdAsync(
+                httpContext,
+                associations,
+                panel,
+                cancellationToken);
+            await action(id, actingProfileId, cancellationToken);
+            return Results.NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return Results.NotFound();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Results.Forbid();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.Conflict(new { title = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return Validation(ex);
+        }
     }
 
     private static async Task<IResult> MutateOwnedOffer(
@@ -340,30 +395,6 @@ internal static class AgencyMarketplacePanelEndpoints
         catch (UnauthorizedAccessException)
         {
             return Results.Forbid();
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Results.Conflict(new { title = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return Validation(ex);
-        }
-    }
-
-    private static async Task<IResult> MutateOffer(
-        Guid id,
-        Func<Guid, CancellationToken, Task> action,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            await action(id, cancellationToken);
-            return Results.NoContent();
-        }
-        catch (KeyNotFoundException)
-        {
-            return Results.NotFound();
         }
         catch (InvalidOperationException ex)
         {

@@ -48,6 +48,33 @@ public sealed class AgencyMarketplacePanelAccessGuardrailTests
     }
 
     [Fact]
+    public void AgencyMarketplaceAdminEndpoints_Require_Moderate_And_Self_Guard()
+    {
+        var endpointsPath = Path.Combine(
+            RepoRoot,
+            "src",
+            "backend",
+            "Modules",
+            "AgencyMarketplace",
+            "TravelCore.Modules.AgencyMarketplace.Infrastructure",
+            "Endpoints",
+            "AgencyMarketplaceAdminEndpoints.cs");
+        Assert.True(File.Exists(endpointsPath), endpointsPath);
+
+        var text = File.ReadAllText(endpointsPath);
+        Assert.Contains("/api/agency-marketplace/moderation/offers", text, StringComparison.Ordinal);
+        Assert.Contains("/pending", text, StringComparison.Ordinal);
+        Assert.Contains("/approve", text, StringComparison.Ordinal);
+        Assert.Contains("/reject", text, StringComparison.Ordinal);
+        Assert.Contains("/suspend", text, StringComparison.Ordinal);
+        Assert.Contains("Access.AgencyMarketplace.Offers.Moderate", text, StringComparison.Ordinal);
+        Assert.Contains("IAgencyOfferGovernanceService", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("Booking", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("Payment", text, StringComparison.Ordinal);
+        Assert.DoesNotContain("/api/tour", text, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void AccessCatalog_Includes_AgencyMarketplace_Panel_Permissions()
     {
         var catalogPath = Path.Combine(

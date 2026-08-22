@@ -146,9 +146,15 @@ function sectionCopy(locale: AppLocale, section: AdminSectionId) {
       emptyBody:
         "Agency management foundation is ready as direction. Live agency rows appear when Access/Party contracts are wired — we do not invent agencies.",
       boundary: "Agency Portal ≠ Admin Console",
-      primaryCta: "Open accounts island",
-      primaryHref: `/${locale}/admin/accounts`,
+      primaryCta: "Offer governance queue",
+      primaryHref: `/${locale}/admin/agencies/offers`,
       workflows: [
+        {
+          title: "Agency offer governance",
+          steps: ["Agency submits", "Admin reviews", "Approve / Reject", "Published / Suspend"],
+          href: `/${locale}/admin/agencies/offers`,
+          cta: "Open offer queue",
+        },
         {
           title: "Agency relationship",
           steps: ["Agency", "Users", "Access", "Commercial relationship"],

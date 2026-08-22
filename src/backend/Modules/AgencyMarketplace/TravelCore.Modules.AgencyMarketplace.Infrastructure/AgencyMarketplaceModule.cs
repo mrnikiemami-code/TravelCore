@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TravelCore.Modularity;
 using TravelCore.Modules.AgencyMarketplace.Contracts;
 using TravelCore.Modules.AgencyMarketplace.Infrastructure.Endpoints;
+using TravelCore.Modules.AgencyMarketplace.Infrastructure.Policies;
 using TravelCore.Modules.AgencyMarketplace.Infrastructure.Services;
 using TravelCore.Persistence.PostgreSql;
 
@@ -35,12 +36,17 @@ public sealed class AgencyMarketplaceModule : ITravelCoreModule
         services.AddScoped<IAgencyMarketplacePanelService, AgencyMarketplacePanelService>();
         services.AddScoped<IRelatedAgencyOfferPublicQuery, RelatedAgencyOfferPublicQuery>();
         services.AddScoped<IAgencyOriginContextQuery, AgencyOriginContextQuery>();
+        services.AddScoped<IAgencyOfferGovernanceService, AgencyOfferGovernanceService>();
+        services.AddScoped<IAgencyOfferCommercialPolicy, AllowAgencyOfferCommercialPolicy>();
+        services.AddScoped<IAgencyOfferContentPolicy, AllowAgencyOfferContentPolicy>();
+        services.AddScoped<IAgencyOfferChannelPolicy, AllowAgencyOfferChannelPolicy>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         endpoints.MapAgencyMarketplacePanelEndpoints();
+        endpoints.MapAgencyMarketplaceAdminEndpoints();
         endpoints.MapAgencyMarketplacePublicEndpoints();
     }
 }
