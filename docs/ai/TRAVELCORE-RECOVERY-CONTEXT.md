@@ -1,37 +1,29 @@
 # TravelCore Recovery Context
 
-**P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-T006` Cursor **PASS** · Contracts + persistence skeleton)
+**P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-GATE` Cursor **PASS** · Foundation gate review)
 
 ## Completed (recent)
 
-- P39-T001 ACCEPTED — Commission/Settlement/Payout boundary plan
-- P39-T002 ACCEPTED — Commercial Finance domain vocabulary
-- P39-T003 ACCEPTED — Commercial Obligation lifecycle + evidence boundaries
-- P39-T004 ACCEPTED — Business decision intake (Q1–Q38)
-- P39-T005 ACCEPTED — Locked finance policy decisions + readiness matrix
-- P39-T006: Commercial Finance module skeleton — schema `commercial_finance`, entities, lifecycle guards, Access permissions, admin read endpoints
+- P39-T001–T006 ACCEPTED — boundary · domain · lifecycle · intake · decisions lock · skeleton
+- P39-GATE: **READY_FOUNDATION** · PASS WITH KNOWN LIMITATIONS · recommend **P40 Marketplace Merchandising**
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T006 RESULT. Next expected: business-rule resolution or engine envelopes when authorized.
+**None** — WAITING for Architect ACCEPT on P39-GATE. No P40 / finance engines without envelope.
 
-## Locked business policy (summary)
+## Critical direction (locked)
 
 ```text
-Commission: AGENCY_SPECIFIC_WITH_OFFER_OVERRIDE · base PAID_AMOUNT · trigger PAYMENT_SUCCEEDED
-Refund: PRE_SETTLEMENT_CANCEL · PROPORTIONAL_PARTIAL_REFUND · POST_SETTLEMENT_REVERSAL
-Settlement: AGENCY_CONFIGURABLE_CADENCE · ADMIN_APPROVAL · OFFSET_FUTURE_PAYABLES
-Currency: SOURCE_OBLIGATION + SETTLEMENT_CONVERSION · CONFIGURABLE_FX
-Tax/Invoice: MARKET_CONFIGURABLE (Iran/UAE rules still UNKNOWN)
-Payout: SEMI_AUTOMATED_ADMIN_APPROVED
-Market: SHARED_CORE_WITH_MARKET_SPECIFIC_POLICIES
+P39 foundation complete — engines deferred
+Commission ≠ Pricing · Settlement ≠ Payment · Payout ≠ Booking
+Commercial Obligation ≠ Invoice · Audit ≠ Financial Ledger
+Next recommended: P40 Marketplace Merchandising & Experience Depth (not authorized yet)
 ```
 
 ## Revision
 
 | Date | Change |
 |------|--------|
-| 2026-08-22 | Sync after TC-P39-T006 Commercial Finance contracts + persistence skeleton |
-| 2026-08-22 | Sync after TC-P39-T005 Commercial Finance decisions locked |
-| 2026-08-22 | Sync after TC-P39-T004 Commercial Finance business decision intake |
-| 2026-08-22 | Sync after TC-P39-T003 Commercial Obligation lifecycle foundation |
+| 2026-08-22 | Sync after TC-P39-GATE Commercial Finance foundation gate |
+| 2026-08-22 | Sync after TC-P39-T006 Commercial Finance skeleton |
+| 2026-08-22 | Sync after TC-P39-T005 decisions locked |
