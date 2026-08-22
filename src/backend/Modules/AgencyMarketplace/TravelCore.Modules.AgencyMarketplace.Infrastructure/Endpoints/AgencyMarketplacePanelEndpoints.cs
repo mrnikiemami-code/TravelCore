@@ -309,7 +309,7 @@ internal static class AgencyMarketplacePanelEndpoints
                 httpContext,
                 associations,
                 panel,
-                governance.ApproveOfferAsync,
+                (offerId, acting, actor, ct) => governance.ApproveOfferAsync(offerId, acting, actor, ct),
                 cancellationToken))
             .RequireAuthorization(OffersModeratePolicy);
 
@@ -325,7 +325,7 @@ internal static class AgencyMarketplacePanelEndpoints
                 httpContext,
                 associations,
                 panel,
-                governance.RejectOfferAsync,
+                (offerId, acting, actor, ct) => governance.RejectOfferAsync(offerId, acting, actor, ct),
                 cancellationToken))
             .RequireAuthorization(OffersModeratePolicy);
 
@@ -337,7 +337,7 @@ internal static class AgencyMarketplacePanelEndpoints
         HttpContext httpContext,
         IAccountAssociationQuery associations,
         IAgencyMarketplacePanelService panel,
-        Func<Guid, Guid?, CancellationToken, Task<AgencyOfferModerationQueueItem>> action,
+        Func<Guid, Guid?, Guid?, CancellationToken, Task<AgencyOfferModerationQueueItem>> action,
         CancellationToken cancellationToken)
     {
         try
@@ -347,7 +347,8 @@ internal static class AgencyMarketplacePanelEndpoints
                 associations,
                 panel,
                 cancellationToken);
-            await action(id, actingProfileId, cancellationToken);
+            var actorAccountId = AgencyMarketplaceAdminEndpoints.TryResolveAccountId(httpContext);
+            await action(id, actingProfileId, actorAccountId, cancellationToken);
             return Results.NoContent();
         }
         catch (KeyNotFoundException)

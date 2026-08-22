@@ -153,7 +153,9 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
     public async Task SubmitOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
     {
         var offer = await LoadOfferAsync(offerId, cancellationToken);
+        var from = offer.PublicationStatus.ToString();
         offer.Submit();
+        RecordAgencyEvent(offer, AgencyOfferGovernanceEventKind.Submitted, from);
         await _db.SaveChangesAsync(cancellationToken);
     }
 
@@ -174,29 +176,51 @@ public sealed class AgencyMarketplacePanelService : IAgencyMarketplacePanelServi
     public async Task PublishOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
     {
         var offer = await LoadOfferAsync(offerId, cancellationToken);
+        var from = offer.PublicationStatus.ToString();
         offer.Publish();
+        RecordAgencyEvent(offer, AgencyOfferGovernanceEventKind.Published, from);
         await _db.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UnpublishOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
     {
         var offer = await LoadOfferAsync(offerId, cancellationToken);
+        var from = offer.PublicationStatus.ToString();
         offer.Unpublish();
+        RecordAgencyEvent(offer, AgencyOfferGovernanceEventKind.Unpublished, from);
         await _db.SaveChangesAsync(cancellationToken);
     }
 
     public async Task SuspendOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
     {
         var offer = await LoadOfferAsync(offerId, cancellationToken);
+        var from = offer.PublicationStatus.ToString();
         offer.Suspend();
+        RecordAgencyEvent(offer, AgencyOfferGovernanceEventKind.Suspended, from);
         await _db.SaveChangesAsync(cancellationToken);
     }
 
     public async Task RetireOfferAsync(Guid offerId, CancellationToken cancellationToken = default)
     {
         var offer = await LoadOfferAsync(offerId, cancellationToken);
+        var from = offer.PublicationStatus.ToString();
         offer.Retire();
+        RecordAgencyEvent(offer, AgencyOfferGovernanceEventKind.Retired, from);
         await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    private void RecordAgencyEvent(
+        AgencyOffer offer,
+        AgencyOfferGovernanceEventKind kind,
+        string fromPublicationStatus)
+    {
+        _db.AgencyOfferGovernanceEvents.Add(AgencyOfferGovernanceEvent.Create(
+            offer.Id,
+            offer.AgencyProfileId,
+            kind,
+            actorKind: "Agency",
+            fromPublicationStatus: fromPublicationStatus,
+            toPublicationStatus: offer.PublicationStatus.ToString()));
     }
 
     public async Task EnsureOfferOwnedByAgencyAsync(

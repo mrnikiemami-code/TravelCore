@@ -6,9 +6,9 @@ using TravelCore.Modules.AgencyMarketplace.Infrastructure.Policies;
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Services;
 
 /// <summary>
-/// Admin AgencyOffer governance (TC-P38-T010).
+/// Admin AgencyOffer governance (TC-P38-T010 / T013).
 /// Agency creates/submits; Admin approves/governs; Public consumes Published only.
-/// Agency cannot moderate its own offer. Financial engines are out of scope.
+/// Records operational governance history — not a financial ledger.
 /// </summary>
 internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceService
 {
@@ -53,20 +53,41 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
     public Task<AgencyOfferModerationQueueItem> ApproveOfferAsync(
         Guid offerId,
         Guid? actingAgencyProfileId,
+        Guid? actorAccountId = null,
         CancellationToken cancellationToken = default) =>
-        MutateAsync(offerId, actingAgencyProfileId, offer => offer.Approve(), cancellationToken);
+        MutateAsync(
+            offerId,
+            actingAgencyProfileId,
+            actorAccountId,
+            AgencyOfferGovernanceEventKind.Approved,
+            offer => offer.Approve(),
+            cancellationToken);
 
     public Task<AgencyOfferModerationQueueItem> RejectOfferAsync(
         Guid offerId,
         Guid? actingAgencyProfileId,
+        Guid? actorAccountId = null,
         CancellationToken cancellationToken = default) =>
-        MutateAsync(offerId, actingAgencyProfileId, offer => offer.Reject(), cancellationToken);
+        MutateAsync(
+            offerId,
+            actingAgencyProfileId,
+            actorAccountId,
+            AgencyOfferGovernanceEventKind.Rejected,
+            offer => offer.Reject(),
+            cancellationToken);
 
     public Task<AgencyOfferModerationQueueItem> SuspendOfferAsync(
         Guid offerId,
         Guid? actingAgencyProfileId,
+        Guid? actorAccountId = null,
         CancellationToken cancellationToken = default) =>
-        MutateAsync(offerId, actingAgencyProfileId, offer => offer.Suspend(), cancellationToken);
+        MutateAsync(
+            offerId,
+            actingAgencyProfileId,
+            actorAccountId,
+            AgencyOfferGovernanceEventKind.Suspended,
+            offer => offer.Suspend(),
+            cancellationToken);
 
     public async Task<AgencyOfferPolicyEvaluationReport> EvaluateOfferPoliciesAsync(
         Guid offerId,
@@ -87,6 +108,8 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
     private async Task<AgencyOfferModerationQueueItem> MutateAsync(
         Guid offerId,
         Guid? actingAgencyProfileId,
+        Guid? actorAccountId,
+        AgencyOfferGovernanceEventKind eventKind,
         Action<AgencyOffer> mutate,
         CancellationToken cancellationToken)
     {
@@ -101,14 +124,35 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
 
         EnsureNotSelfModeration(offer, actingAgencyProfileId);
 
+        var fromStatus = offer.PublicationStatus.ToString();
         var policyContext = ToPolicyContext(offer);
         var decision = await _policyEvaluator.EvaluateAsync(policyContext, cancellationToken);
         if (!decision.IsAllowed)
         {
+            _db.AgencyOfferGovernanceEvents.Add(AgencyOfferGovernanceEvent.Create(
+                offer.Id,
+                offer.AgencyProfileId,
+                AgencyOfferGovernanceEventKind.PolicyDenied,
+                actorKind: "Admin",
+                actorAccountId: actorAccountId,
+                fromPublicationStatus: fromStatus,
+                toPublicationStatus: fromStatus,
+                policyCode: decision.Code,
+                policyName: decision.PolicyName,
+                reason: decision.Reason));
+            await _db.SaveChangesAsync(cancellationToken);
             throw new AgencyOfferPolicyDeniedException(decision);
         }
 
         mutate(offer);
+        _db.AgencyOfferGovernanceEvents.Add(AgencyOfferGovernanceEvent.Create(
+            offer.Id,
+            offer.AgencyProfileId,
+            eventKind,
+            actorKind: "Admin",
+            actorAccountId: actorAccountId,
+            fromPublicationStatus: fromStatus,
+            toPublicationStatus: offer.PublicationStatus.ToString()));
         await _db.SaveChangesAsync(cancellationToken);
         return MapItem(offer);
     }

@@ -37,6 +37,7 @@ public sealed class AgencyMarketplaceModule : ITravelCoreModule
         services.AddScoped<IRelatedAgencyOfferPublicQuery, RelatedAgencyOfferPublicQuery>();
         services.AddScoped<IAgencyOriginContextQuery, AgencyOriginContextQuery>();
         services.AddScoped<IAgencyOfferGovernanceService, AgencyOfferGovernanceService>();
+        services.AddScoped<IAgencyOfferGovernanceAuditQuery, AgencyOfferGovernanceAuditQuery>();
         services.AddScoped<IAgencyOfferCommercialPolicy, AllowAgencyOfferCommercialPolicy>();
         services.AddScoped<IAgencyOfferContentPolicy, AllowAgencyOfferContentPolicy>();
         services.AddScoped<IAgencyOfferChannelPolicy, AllowAgencyOfferChannelPolicy>();

@@ -64,6 +64,30 @@ internal static class AgencyMarketplaceAdminEndpoints
             }
         }).RequireAuthorization(OffersReadPolicy);
 
+        group.MapGet("/{offerId:guid}/governance-history", async Task<IResult> (
+            Guid offerId,
+            int? take,
+            IAgencyOfferGovernanceAuditQuery audit,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var items = await audit.ListByOfferAsync(offerId, take ?? 50, cancellationToken);
+                return Results.Ok(items);
+            }
+            catch (KeyNotFoundException)
+            {
+                return Results.NotFound();
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "value"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization(OffersModeratePolicy);
+
         group.MapPost("/{offerId:guid}/approve", async Task<IResult> (
             Guid offerId,
             HttpContext httpContext,
@@ -76,7 +100,7 @@ internal static class AgencyMarketplaceAdminEndpoints
                 httpContext,
                 associations,
                 panel,
-                service.ApproveOfferAsync,
+                (id, acting, actor, ct) => service.ApproveOfferAsync(id, acting, actor, ct),
                 cancellationToken))
             .RequireAuthorization(OffersModeratePolicy);
 
@@ -92,7 +116,7 @@ internal static class AgencyMarketplaceAdminEndpoints
                 httpContext,
                 associations,
                 panel,
-                service.RejectOfferAsync,
+                (id, acting, actor, ct) => service.RejectOfferAsync(id, acting, actor, ct),
                 cancellationToken))
             .RequireAuthorization(OffersModeratePolicy);
 
@@ -108,7 +132,7 @@ internal static class AgencyMarketplaceAdminEndpoints
                 httpContext,
                 associations,
                 panel,
-                service.SuspendOfferAsync,
+                (id, acting, actor, ct) => service.SuspendOfferAsync(id, acting, actor, ct),
                 cancellationToken))
             .RequireAuthorization(OffersModeratePolicy);
 
@@ -120,7 +144,7 @@ internal static class AgencyMarketplaceAdminEndpoints
         HttpContext httpContext,
         IAccountAssociationQuery associations,
         IAgencyMarketplacePanelService panel,
-        Func<Guid, Guid?, CancellationToken, Task<AgencyOfferModerationQueueItem>> action,
+        Func<Guid, Guid?, Guid?, CancellationToken, Task<AgencyOfferModerationQueueItem>> action,
         CancellationToken cancellationToken)
     {
         try
@@ -130,7 +154,8 @@ internal static class AgencyMarketplaceAdminEndpoints
                 associations,
                 panel,
                 cancellationToken);
-            var item = await action(offerId, actingProfileId, cancellationToken);
+            var actorAccountId = TryResolveAccountId(httpContext);
+            var item = await action(offerId, actingProfileId, actorAccountId, cancellationToken);
             return Results.Ok(item);
         }
         catch (KeyNotFoundException)
@@ -169,6 +194,14 @@ internal static class AgencyMarketplaceAdminEndpoints
                 statusCode: StatusCodes.Status409Conflict,
                 title: "AgencyOffer governance lifecycle conflict");
         }
+    }
+
+    internal static Guid? TryResolveAccountId(HttpContext httpContext)
+    {
+        var idValue = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return Guid.TryParse(idValue, out var accountId) && accountId != Guid.Empty
+            ? accountId
+            : null;
     }
 
     /// <summary>

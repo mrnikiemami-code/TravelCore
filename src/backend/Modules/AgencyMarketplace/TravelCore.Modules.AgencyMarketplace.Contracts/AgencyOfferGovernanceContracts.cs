@@ -69,16 +69,19 @@ public interface IAgencyOfferGovernanceService
     Task<AgencyOfferModerationQueueItem> ApproveOfferAsync(
         Guid offerId,
         Guid? actingAgencyProfileId,
+        Guid? actorAccountId = null,
         CancellationToken cancellationToken = default);
 
     Task<AgencyOfferModerationQueueItem> RejectOfferAsync(
         Guid offerId,
         Guid? actingAgencyProfileId,
+        Guid? actorAccountId = null,
         CancellationToken cancellationToken = default);
 
     Task<AgencyOfferModerationQueueItem> SuspendOfferAsync(
         Guid offerId,
         Guid? actingAgencyProfileId,
+        Guid? actorAccountId = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -86,5 +89,30 @@ public interface IAgencyOfferGovernanceService
     /// </summary>
     Task<AgencyOfferPolicyEvaluationReport> EvaluateOfferPoliciesAsync(
         Guid offerId,
+        CancellationToken cancellationToken = default);
+}
+
+/// <summary>
+/// Operational governance history (TC-P38-T013). Not a financial ledger.
+/// </summary>
+public sealed record AgencyOfferGovernanceHistoryItem(
+    Guid EventId,
+    Guid OfferId,
+    Guid AgencyProfileId,
+    string Kind,
+    string ActorKind,
+    Guid? ActorAccountId,
+    string? FromPublicationStatus,
+    string? ToPublicationStatus,
+    string? PolicyCode,
+    string? PolicyName,
+    string? Reason,
+    string OccurredAt);
+
+public interface IAgencyOfferGovernanceAuditQuery
+{
+    Task<IReadOnlyList<AgencyOfferGovernanceHistoryItem>> ListByOfferAsync(
+        Guid offerId,
+        int take,
         CancellationToken cancellationToken = default);
 }

@@ -177,6 +177,31 @@ public sealed class AgencyOfferGovernanceAccessTests
         using var suspendDoc = JsonDocument.Parse(await suspend.Content.ReadAsStringAsync(ct));
         Assert.Equal("Suspended", suspendDoc.RootElement.GetProperty("publicationStatus").GetString());
         Assert.Equal("Unlisted", suspendDoc.RootElement.GetProperty("visibility").GetString());
+
+        var history = await adminClient.GetAsync(
+            $"/api/agency-marketplace/moderation/offers/{offerId:D}/governance-history?take=20",
+            ct);
+        Assert.Equal(HttpStatusCode.OK, history.StatusCode);
+        using var historyDoc = JsonDocument.Parse(await history.Content.ReadAsStringAsync(ct));
+        var kinds = historyDoc.RootElement.EnumerateArray()
+            .Select(x => x.GetProperty("kind").GetString())
+            .ToList();
+        Assert.Contains("Submitted", kinds);
+        Assert.Contains("Approved", kinds);
+        Assert.Contains("Published", kinds);
+        Assert.Contains("Suspended", kinds);
+        Assert.All(
+            historyDoc.RootElement.EnumerateArray(),
+            x =>
+            {
+                Assert.False(x.TryGetProperty("commission", out _));
+                Assert.False(x.TryGetProperty("settlement", out _));
+            });
+
+        var agencyHistory = await agencyClient.GetAsync(
+            $"/api/agency-marketplace/moderation/offers/{offerId:D}/governance-history",
+            ct);
+        Assert.Equal(HttpStatusCode.Forbidden, agencyHistory.StatusCode);
     }
 
     [Fact]

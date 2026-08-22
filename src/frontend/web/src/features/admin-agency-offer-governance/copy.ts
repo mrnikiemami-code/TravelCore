@@ -20,6 +20,9 @@ export type AdminAgencyOfferGovernanceCopy = {
   rejectAction: string;
   suspendAction: string;
   evaluatePolicyAction: string;
+  loadHistoryAction: string;
+  historyStep: string;
+  noHistory: string;
   policyStep: string;
   policyAggregateLabel: string;
   policyHooksLabel: string;
@@ -52,6 +55,9 @@ const FA: AdminAgencyOfferGovernanceCopy = {
   rejectAction: "رد",
   suspendAction: "تعلیق Published",
   evaluatePolicyAction: "ارزیابی Policy",
+  loadHistoryAction: "سابقه Governance",
+  historyStep: "سابقه عملیاتی Offer",
+  noHistory: "سابقه‌ای ثبت نشده است.",
   policyStep: "نتیجهٔ Policy (عملیاتی)",
   policyAggregateLabel: "نتیجهٔ تجمعی",
   policyHooksLabel: "Hookها",
@@ -85,6 +91,9 @@ const EN: AdminAgencyOfferGovernanceCopy = {
   rejectAction: "Reject",
   suspendAction: "Suspend published",
   evaluatePolicyAction: "Evaluate policies",
+  loadHistoryAction: "Governance history",
+  historyStep: "Operational offer history",
+  noHistory: "No governance history yet.",
   policyStep: "Policy evaluation (operational)",
   policyAggregateLabel: "Aggregate decision",
   policyHooksLabel: "Hooks",

@@ -167,3 +167,53 @@ export async function evaluateAgencyOfferPoliciesAction(offerId: string): Promis
     },
   };
 }
+
+type ApiGovernanceHistoryItem = {
+  eventId: string;
+  offerId: string;
+  agencyProfileId: string;
+  kind: string;
+  actorKind: string;
+  actorAccountId: string | null;
+  fromPublicationStatus: string | null;
+  toPublicationStatus: string | null;
+  policyCode: string | null;
+  policyName: string | null;
+  reason: string | null;
+  occurredAt: string;
+};
+
+export type AgencyOfferGovernanceHistoryView = {
+  eventId: string;
+  kind: string;
+  actorKind: string;
+  fromPublicationStatus: string | null;
+  toPublicationStatus: string | null;
+  policyCode: string | null;
+  reason: string | null;
+  occurredAt: string;
+};
+
+export async function listAgencyOfferGovernanceHistoryAction(offerId: string): Promise<
+  | { ok: true; items: AgencyOfferGovernanceHistoryView[] }
+  | { ok: false; message: string; status?: number }
+> {
+  const result = await apiGetJson<ApiGovernanceHistoryItem[]>(
+    `/api/agency-marketplace/moderation/offers/${encodeURIComponent(offerId)}/governance-history?take=50`,
+    { headers: await authHeaders(), cache: "no-store" },
+  );
+  if (!result.ok) return failMessage(result);
+  return {
+    ok: true,
+    items: (result.data ?? []).map((x) => ({
+      eventId: x.eventId,
+      kind: x.kind,
+      actorKind: x.actorKind,
+      fromPublicationStatus: x.fromPublicationStatus,
+      toPublicationStatus: x.toPublicationStatus,
+      policyCode: x.policyCode,
+      reason: x.reason,
+      occurredAt: x.occurredAt,
+    })),
+  };
+}

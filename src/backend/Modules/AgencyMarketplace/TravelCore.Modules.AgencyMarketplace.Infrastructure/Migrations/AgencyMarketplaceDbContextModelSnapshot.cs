@@ -109,6 +109,74 @@ namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Migrations
                     b.ToTable("agency_profiles", "agency_marketplace");
                 });
 
+            modelBuilder.Entity("TravelCore.Modules.AgencyMarketplace.Domain.AgencyOfferGovernanceEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid?>("ActorAccountId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("actor_account_id");
+
+                    b.Property<string>("ActorKind")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("actor_kind");
+
+                    b.Property<Guid>("AgencyProfileId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("agency_profile_id");
+
+                    b.Property<string>("FromPublicationStatus")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("from_publication_status");
+
+                    b.Property<short>("Kind")
+                        .HasColumnType("smallint")
+                        .HasColumnName("kind");
+
+                    b.Property<NodaTime.Instant>("OccurredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occurred_at");
+
+                    b.Property<Guid>("OfferId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("offer_id");
+
+                    b.Property<string>("PolicyCode")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("policy_code");
+
+                    b.Property<string>("PolicyName")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("policy_name");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
+                        .HasColumnName("reason");
+
+                    b.Property<string>("ToPublicationStatus")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("to_publication_status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgencyProfileId")
+                        .HasDatabaseName("ix_agency_offer_governance_events_agency_profile");
+
+                    b.HasIndex("OfferId", "OccurredAt")
+                        .HasDatabaseName("ix_agency_offer_governance_events_offer_occurred");
+
+                    b.ToTable("agency_offer_governance_events", "agency_marketplace");
+                });
+
             modelBuilder.Entity("TravelCore.Modules.AgencyMarketplace.Domain.AgencyOffer", b =>
                 {
                     b.HasOne("TravelCore.Modules.AgencyMarketplace.Domain.AgencyProfile", null)

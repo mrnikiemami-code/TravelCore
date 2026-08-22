@@ -20,6 +20,8 @@ public sealed class AgencyMarketplaceDbContext : DbContext
 
     public DbSet<AgencyOffer> AgencyOffers => Set<AgencyOffer>();
 
+    public DbSet<AgencyOfferGovernanceEvent> AgencyOfferGovernanceEvents => Set<AgencyOfferGovernanceEvent>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);

@@ -6,9 +6,11 @@ import { LtrValue, Stack, Surface, Text } from "@/components/ui";
 import {
   approveAgencyOfferAction,
   evaluateAgencyOfferPoliciesAction,
+  listAgencyOfferGovernanceHistoryAction,
   listPendingAgencyOffersAction,
   rejectAgencyOfferAction,
   suspendAgencyOfferAction,
+  type AgencyOfferGovernanceHistoryView,
   type AgencyOfferPolicyEvaluationView,
 } from "@/features/admin-agency-offer-governance/actions";
 import { getAdminAgencyOfferGovernanceCopy } from "@/features/admin-agency-offer-governance/copy";
@@ -31,6 +33,7 @@ export function AgencyOfferGovernanceWorkflowIsland({
   const [items, setItems] = useState<AgencyOfferModerationQueueView[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [policyReport, setPolicyReport] = useState<AgencyOfferPolicyEvaluationView | null>(null);
+  const [history, setHistory] = useState<AgencyOfferGovernanceHistoryView[]>([]);
 
   const selected = items.find((x) => x.offerId === selectedId) ?? null;
 
@@ -132,6 +135,7 @@ export function AgencyOfferGovernanceWorkflowIsland({
                   onClick={() => {
                     setSelectedId(item.offerId);
                     setPolicyReport(null);
+                    setHistory([]);
                   }}
                 >
                   <LtrValue>{item.titleOverride ?? item.offerId}</LtrValue>
@@ -244,7 +248,53 @@ export function AgencyOfferGovernanceWorkflowIsland({
               >
                 {copy.evaluatePolicyAction}
               </button>
+              <button
+                className="min-h-touch rounded-md border border-border px-4 disabled:opacity-50"
+                type="button"
+                disabled={!apiConfigured || pending}
+                onClick={() =>
+                  run(async () => {
+                    const result = await listAgencyOfferGovernanceHistoryAction(selected.offerId);
+                    if (!result.ok) {
+                      throw new Error(mapAuthError(result.status) ?? result.message);
+                    }
+                    setHistory(result.items);
+                  })
+                }
+              >
+                {copy.loadHistoryAction}
+              </button>
             </div>
+            <Surface className="flex flex-col gap-2 p-3">
+              <Text as="h3" role="heading">
+                {copy.historyStep}
+              </Text>
+              {history.length === 0 ? (
+                <Text role="muted">{copy.noHistory}</Text>
+              ) : (
+                <ul className="flex flex-col gap-2">
+                  {history.map((item) => (
+                    <li key={item.eventId}>
+                      <Text role="caption">
+                        {item.kind} · {item.actorKind}
+                        {item.fromPublicationStatus || item.toPublicationStatus
+                          ? ` · ${item.fromPublicationStatus ?? "?"} → ${item.toPublicationStatus ?? "?"}`
+                          : ""}
+                      </Text>
+                      {item.policyCode ? (
+                        <Text role="muted">
+                          <LtrValue>{item.policyCode}</LtrValue>
+                          {item.reason ? ` — ${item.reason}` : ""}
+                        </Text>
+                      ) : null}
+                      <Text role="muted">
+                        <LtrValue>{item.occurredAt}</LtrValue>
+                      </Text>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Surface>
             <Surface className="flex flex-col gap-2 p-3">
               <Text as="h3" role="heading">
                 {copy.policyStep}
