@@ -35,7 +35,7 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-T004` Cursor **PASS** · Business decision intake) |
+| Current Phase | **P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-T005` Cursor **PASS** · Decisions locked) |
 | Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P38 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P39 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P39-T004` · business decision questionnaire · await User/Architect answers before engines |
+| Current Next Task | Architect review of `TC-P39-T005` · locked finance policy · next skeleton envelope expected |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -1020,7 +1020,7 @@ Evidence: Final Gate [`docs/product-experience/evidence/P38-GATE/GATE-REVIEW.md`
 
 ## P39 — Multi-Agency Commercial Finance Foundation
 
-**Status:** **ACTIVE** (`TC-P39-T004` Cursor **PASS** · Commercial Finance business decision intake)
+**Status:** **ACTIVE** (`TC-P39-T005` Cursor **PASS** · Commercial Finance decisions locked)
 
 Plan: [`docs/plans/P39-commission-settlement-foundation-plan.md`](plans/P39-commission-settlement-foundation-plan.md)
 
@@ -1030,9 +1030,11 @@ Lifecycle: [`docs/plans/P39-commercial-obligation-lifecycle.md`](plans/P39-comme
 
 Decision intake: [`docs/plans/P39-commercial-finance-business-decision-intake.md`](plans/P39-commercial-finance-business-decision-intake.md)
 
+Decisions locked: [`docs/plans/P39-commercial-finance-decisions-locked.md`](plans/P39-commercial-finance-decisions-locked.md)
+
 Prior gate: [`docs/product-experience/evidence/P38-GATE/GATE-REVIEW.md`](../product-experience/evidence/P38-GATE/GATE-REVIEW.md)
 
-Boundary + vocabulary + lifecycle + **business questionnaire** — **no formulas / jobs / payout APIs / bank integrations yet**
+Policy locked · **skeleton/contracts next (T006 expected)** · no formulas / jobs / payout APIs yet
 
 ---
 
@@ -1117,6 +1119,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P36 | Commercial UI/UX Final Polish | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** · PARTIALLY_SELLABLE |
 | P37 | Experience Platform Foundation | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** |
 | P38 | Multi-Agency Commerce | **GATE ACCEPTED WITH KNOWN LIMITATIONS** (`TC-P38-T015`) |
-| P39 | Commercial Finance Foundation | **ACTIVE** (`TC-P39-T004` · Business decision intake PASS) |
+| P39 | Commercial Finance Foundation | **ACTIVE** (`TC-P39-T005` · Decisions locked PASS) |
 | P35 | Production Payment Provider Readiness | **PAUSED** (designs locked; Stripe test-mode code ready; external account facts) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

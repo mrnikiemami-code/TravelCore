@@ -8,7 +8,7 @@
 | Type | Business decision intake (**docs only**) |
 | Depends on | `TC-P39-T001`–`T003` ACCEPTED |
 | HEAD baseline | `7cc7151` |
-| Status | **AWAITING_BUSINESS_ANSWERS** — no monetary values invented |
+| Status | **DECISIONS_LOCKED** (`TC-P39-T005`) — see [`P39-commercial-finance-decisions-locked.md`](P39-commercial-finance-decisions-locked.md) |
 
 ---
 
@@ -70,7 +70,25 @@ Convert accepted Commercial Finance boundaries and Commercial Obligation lifecyc
 
 ---
 
-## 5. Exact numbered questionnaire
+**This document asked questions in T004. Answers are locked in T005.**
+
+---
+
+## 5b. Q1–Q38 classification (post T005)
+
+See full table: [`P39-commercial-finance-decisions-locked.md` §3](P39-commercial-finance-decisions-locked.md)
+
+| Status | Count |
+|--------|-------|
+| LOCKED | 14 |
+| DERIVED_FROM_LOCKED | 11 |
+| STILL_UNKNOWN | 11 |
+| MARKET_SPECIFIC_UNKNOWN | 5 |
+| DEFERRED_NON_BLOCKING | 1 |
+
+---
+
+## 5. Exact numbered questionnaire (archive)
 
 Answer in one Architect/User message. Use option letters where provided; add notes where needed.
 
@@ -359,13 +377,9 @@ These may be implemented **before** business answers if Architect authorizes ske
 
 ---
 
-## 9. Recommended next authorized task (not executed here)
+## 9. Recommended next authorized task
 
-After Architect/User answers Q1–Q38:
-
-1. **`TC-P39-T005`** (expected) — Record Business Decisions + resolve BLOCKED vs DEFERRED classification
-2. Then skeleton/contracts under explicit envelope — still no formulas until decisions locked
-3. Commission engine / settlement jobs — only after decision record + Architect authorization
+**`TC-P39-T006`** — Commercial Finance Contracts + Persistence Skeleton (expected; not executed here)
 
 ---
 
