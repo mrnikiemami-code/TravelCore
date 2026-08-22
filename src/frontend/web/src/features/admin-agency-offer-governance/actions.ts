@@ -105,3 +105,65 @@ export async function rejectAgencyOfferAction(offerId: string) {
 export async function suspendAgencyOfferAction(offerId: string) {
   return mutateOfferAction(offerId, "suspend");
 }
+
+type ApiPolicyDecision = {
+  kind: string;
+  code: string;
+  reason: string;
+  policyName: string;
+};
+
+type ApiPolicyEvaluationReport = {
+  offerId: string;
+  agencyProfileId: string;
+  tourProductId: string;
+  publicationStatus: string;
+  salesChannel: string;
+  aggregate: ApiPolicyDecision;
+  hookDecisions: ApiPolicyDecision[];
+};
+
+export type AgencyOfferPolicyEvaluationView = {
+  offerId: string;
+  publicationStatus: string;
+  salesChannel: string;
+  aggregateKind: string;
+  aggregateCode: string;
+  aggregateReason: string;
+  hooks: Array<{
+    policyName: string;
+    kind: string;
+    code: string;
+    reason: string;
+  }>;
+};
+
+export async function evaluateAgencyOfferPoliciesAction(offerId: string): Promise<
+  | { ok: true; report: AgencyOfferPolicyEvaluationView }
+  | { ok: false; message: string; status?: number }
+> {
+  const result = await apiGetJson<ApiPolicyEvaluationReport>(
+    `/api/agency-marketplace/moderation/offers/${encodeURIComponent(offerId)}/policy-evaluation`,
+    { headers: await authHeaders(), cache: "no-store" },
+  );
+  if (!result.ok) return failMessage(result);
+  if (!result.data) return { ok: false, message: "Empty response." };
+  const data = result.data;
+  return {
+    ok: true,
+    report: {
+      offerId: data.offerId,
+      publicationStatus: data.publicationStatus,
+      salesChannel: data.salesChannel,
+      aggregateKind: data.aggregate.kind,
+      aggregateCode: data.aggregate.code,
+      aggregateReason: data.aggregate.reason,
+      hooks: (data.hookDecisions ?? []).map((h) => ({
+        policyName: h.policyName,
+        kind: h.kind,
+        code: h.code,
+        reason: h.reason,
+      })),
+    },
+  };
+}

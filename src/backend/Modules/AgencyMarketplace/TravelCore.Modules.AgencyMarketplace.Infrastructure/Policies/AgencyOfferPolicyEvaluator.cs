@@ -3,7 +3,7 @@ using TravelCore.Modules.AgencyMarketplace.Contracts;
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Policies;
 
 /// <summary>
-/// Composite AgencyOffer policy evaluator (TC-P38-T011).
+/// Composite AgencyOffer policy evaluator (TC-P38-T011 / T012).
 /// Owned by AgencyMarketplace governance — not Pricing, not Booking.
 /// Runs commercial → content → channel → publication; first Deny wins.
 /// </summary>
@@ -30,20 +30,31 @@ internal sealed class AgencyOfferPolicyEvaluator : IAgencyOfferPolicyEvaluator
         AgencyOfferPolicyContext context,
         CancellationToken cancellationToken = default)
     {
+        var report = await EvaluateDetailedAsync(context, cancellationToken);
+        return report.Aggregate;
+    }
+
+    public async Task<AgencyOfferPolicyEvaluationReport> EvaluateDetailedAsync(
+        AgencyOfferPolicyContext context,
+        CancellationToken cancellationToken = default)
+    {
         ArgumentNullException.ThrowIfNull(context);
 
-        foreach (var decision in await CollectAsync(context, cancellationToken))
-        {
-            if (!decision.IsAllowed)
-            {
-                return decision;
-            }
-        }
+        var hooks = await CollectAsync(context, cancellationToken);
+        var aggregate = hooks.FirstOrDefault(x => !x.IsAllowed)
+            ?? AgencyOfferPolicyDecision.Allow(
+                policyName: nameof(AgencyOfferPolicyEvaluator),
+                code: "COMPOSITE_ALLOW",
+                reason: "All AgencyOffer policy hooks allowed.");
 
-        return AgencyOfferPolicyDecision.Allow(
-            policyName: nameof(AgencyOfferPolicyEvaluator),
-            code: "COMPOSITE_ALLOW",
-            reason: "All AgencyOffer policy hooks allowed.");
+        return new AgencyOfferPolicyEvaluationReport(
+            context.OfferId,
+            context.AgencyProfileId,
+            context.TourProductId,
+            context.PublicationStatus,
+            context.SalesChannel,
+            aggregate,
+            hooks);
     }
 
     private async Task<IReadOnlyList<AgencyOfferPolicyDecision>> CollectAsync(

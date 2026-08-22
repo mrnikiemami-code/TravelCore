@@ -5,9 +5,11 @@ import type { AppLocale } from "@/lib/i18n";
 import { LtrValue, Stack, Surface, Text } from "@/components/ui";
 import {
   approveAgencyOfferAction,
+  evaluateAgencyOfferPoliciesAction,
   listPendingAgencyOffersAction,
   rejectAgencyOfferAction,
   suspendAgencyOfferAction,
+  type AgencyOfferPolicyEvaluationView,
 } from "@/features/admin-agency-offer-governance/actions";
 import { getAdminAgencyOfferGovernanceCopy } from "@/features/admin-agency-offer-governance/copy";
 import type { AgencyOfferModerationQueueView } from "@/features/admin-agency-offer-governance/types";
@@ -28,6 +30,7 @@ export function AgencyOfferGovernanceWorkflowIsland({
   const [take, setTake] = useState(50);
   const [items, setItems] = useState<AgencyOfferModerationQueueView[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [policyReport, setPolicyReport] = useState<AgencyOfferPolicyEvaluationView | null>(null);
 
   const selected = items.find((x) => x.offerId === selectedId) ?? null;
 
@@ -126,7 +129,10 @@ export function AgencyOfferGovernanceWorkflowIsland({
                     selectedId === item.offerId ? "border-foreground" : "border-border"
                   }`}
                   type="button"
-                  onClick={() => setSelectedId(item.offerId)}
+                  onClick={() => {
+                    setSelectedId(item.offerId);
+                    setPolicyReport(null);
+                  }}
                 >
                   <LtrValue>{item.titleOverride ?? item.offerId}</LtrValue>
                   <Text role="caption">
@@ -222,7 +228,50 @@ export function AgencyOfferGovernanceWorkflowIsland({
               >
                 {copy.suspendAction}
               </button>
+              <button
+                className="min-h-touch rounded-md border border-border px-4 disabled:opacity-50"
+                type="button"
+                disabled={!apiConfigured || pending}
+                onClick={() =>
+                  run(async () => {
+                    const result = await evaluateAgencyOfferPoliciesAction(selected.offerId);
+                    if (!result.ok) {
+                      throw new Error(mapAuthError(result.status) ?? result.message);
+                    }
+                    setPolicyReport(result.report);
+                  })
+                }
+              >
+                {copy.evaluatePolicyAction}
+              </button>
             </div>
+            <Surface className="flex flex-col gap-2 p-3">
+              <Text as="h3" role="heading">
+                {copy.policyStep}
+              </Text>
+              {!policyReport || policyReport.offerId !== selected.offerId ? (
+                <Text role="muted">{copy.noPolicyReport}</Text>
+              ) : (
+                <>
+                  <Text role="caption">
+                    {copy.policyAggregateLabel}: {policyReport.aggregateKind} ·{" "}
+                    <LtrValue>{policyReport.aggregateCode}</LtrValue>
+                  </Text>
+                  <Text role="muted">{policyReport.aggregateReason}</Text>
+                  <Text role="caption">{copy.policyHooksLabel}</Text>
+                  <ul className="flex flex-col gap-1">
+                    {policyReport.hooks.map((hook) => (
+                      <li key={`${hook.policyName}-${hook.code}`}>
+                        <Text role="caption">
+                          {hook.policyName}: {hook.kind} · <LtrValue>{hook.code}</LtrValue>
+                        </Text>
+                        <Text role="muted">{hook.reason}</Text>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </Surface>
           </>
         )}
       </Surface>

@@ -68,6 +68,22 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
         CancellationToken cancellationToken = default) =>
         MutateAsync(offerId, actingAgencyProfileId, offer => offer.Suspend(), cancellationToken);
 
+    public async Task<AgencyOfferPolicyEvaluationReport> EvaluateOfferPoliciesAsync(
+        Guid offerId,
+        CancellationToken cancellationToken = default)
+    {
+        if (offerId == Guid.Empty)
+        {
+            throw new ArgumentException("OfferId cannot be empty.", nameof(offerId));
+        }
+
+        var offer = await _db.AgencyOffers.AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id == AgencyOfferId.From(offerId), cancellationToken)
+            ?? throw new KeyNotFoundException("AgencyOffer was not found.");
+
+        return await _policyEvaluator.EvaluateDetailedAsync(ToPolicyContext(offer), cancellationToken);
+    }
+
     private async Task<AgencyOfferModerationQueueItem> MutateAsync(
         Guid offerId,
         Guid? actingAgencyProfileId,

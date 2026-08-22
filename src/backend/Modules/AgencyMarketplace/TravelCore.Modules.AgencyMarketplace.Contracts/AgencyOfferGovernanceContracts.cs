@@ -80,4 +80,11 @@ public interface IAgencyOfferGovernanceService
         Guid offerId,
         Guid? actingAgencyProfileId,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Operational policy visibility for an offer (P38-T012). Does not mutate.
+    /// </summary>
+    Task<AgencyOfferPolicyEvaluationReport> EvaluateOfferPoliciesAsync(
+        Guid offerId,
+        CancellationToken cancellationToken = default);
 }

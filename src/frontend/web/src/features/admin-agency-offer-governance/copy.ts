@@ -19,6 +19,11 @@ export type AdminAgencyOfferGovernanceCopy = {
   approveAction: string;
   rejectAction: string;
   suspendAction: string;
+  evaluatePolicyAction: string;
+  policyStep: string;
+  policyAggregateLabel: string;
+  policyHooksLabel: string;
+  noPolicyReport: string;
   boundaryNote: string;
   apiMissing: string;
   errorPrefix: string;
@@ -46,6 +51,11 @@ const FA: AdminAgencyOfferGovernanceCopy = {
   approveAction: "تأیید",
   rejectAction: "رد",
   suspendAction: "تعلیق Published",
+  evaluatePolicyAction: "ارزیابی Policy",
+  policyStep: "نتیجهٔ Policy (عملیاتی)",
+  policyAggregateLabel: "نتیجهٔ تجمعی",
+  policyHooksLabel: "Hookها",
+  noPolicyReport: "هنوز ارزیابی Policy انجام نشده است.",
   boundaryNote:
     "AgencyOffer ≠ Price · Admin Approval ≠ Agency Ownership · Commission/Settlement خارج از این سطح.",
   apiMissing: "API پیکربندی نشده است.",
@@ -74,6 +84,11 @@ const EN: AdminAgencyOfferGovernanceCopy = {
   approveAction: "Approve",
   rejectAction: "Reject",
   suspendAction: "Suspend published",
+  evaluatePolicyAction: "Evaluate policies",
+  policyStep: "Policy evaluation (operational)",
+  policyAggregateLabel: "Aggregate decision",
+  policyHooksLabel: "Hooks",
+  noPolicyReport: "No policy evaluation loaded yet.",
   boundaryNote:
     "AgencyOffer ≠ Price · Admin Approval ≠ Agency Ownership · Commission/Settlement out of scope.",
   apiMissing: "API is not configured.",

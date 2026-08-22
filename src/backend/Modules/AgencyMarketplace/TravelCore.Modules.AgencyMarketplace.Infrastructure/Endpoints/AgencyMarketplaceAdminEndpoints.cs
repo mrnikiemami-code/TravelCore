@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TravelCore.Modules.AgencyMarketplace.Contracts;
+using TravelCore.Modules.AgencyMarketplace.Infrastructure.Policies;
 using TravelCore.Modules.Identity.Contracts;
 
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Endpoints;
@@ -36,6 +37,29 @@ internal static class AgencyMarketplaceAdminEndpoints
                 return Results.ValidationProblem(new Dictionary<string, string[]>
                 {
                     [ex.ParamName ?? "take"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization(OffersReadPolicy);
+
+        group.MapGet("/{offerId:guid}/policy-evaluation", async Task<IResult> (
+            Guid offerId,
+            IAgencyOfferGovernanceService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var report = await service.EvaluateOfferPoliciesAsync(offerId, cancellationToken);
+                return Results.Ok(report);
+            }
+            catch (KeyNotFoundException)
+            {
+                return Results.NotFound();
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "value"] = [ex.Message]
                 });
             }
         }).RequireAuthorization(OffersReadPolicy);
@@ -123,6 +147,20 @@ internal static class AgencyMarketplaceAdminEndpoints
             {
                 [ex.ParamName ?? "value"] = [ex.Message]
             });
+        }
+        catch (AgencyOfferPolicyDeniedException ex)
+        {
+            return Results.Problem(
+                detail: ex.Message,
+                statusCode: StatusCodes.Status409Conflict,
+                title: "AgencyOffer policy denial",
+                extensions: new Dictionary<string, object?>
+                {
+                    ["policyCode"] = ex.Decision.Code,
+                    ["policyName"] = ex.Decision.PolicyName,
+                    ["policyReason"] = ex.Decision.Reason,
+                    ["policyKind"] = ex.Decision.Kind.ToString()
+                });
         }
         catch (InvalidOperationException ex)
         {

@@ -38,6 +38,23 @@ public sealed class AgencyOfferPolicyFoundationTests
     }
 
     [Fact]
+    public async Task Detailed_evaluation_lists_all_hooks()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var evaluator = new AgencyOfferPolicyEvaluator(
+            new AllowAgencyOfferCommercialPolicy(),
+            new AllowAgencyOfferContentPolicy(),
+            new AllowAgencyOfferChannelPolicy(),
+            new AllowAgencyOfferPublicationPolicy());
+
+        var report = await evaluator.EvaluateDetailedAsync(SampleContext(), ct);
+        Assert.True(report.Aggregate.IsAllowed);
+        Assert.Equal(4, report.HookDecisions.Count);
+        Assert.All(report.HookDecisions, x => Assert.True(x.IsAllowed));
+        Assert.DoesNotContain(report.HookDecisions, x => x.Code.Contains("commission", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
     public async Task Composite_evaluator_returns_first_deny()
     {
         var ct = TestContext.Current.CancellationToken;

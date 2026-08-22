@@ -67,6 +67,7 @@ public sealed class AgencyMarketplacePanelAccessGuardrailTests
         Assert.Contains("/approve", text, StringComparison.Ordinal);
         Assert.Contains("/reject", text, StringComparison.Ordinal);
         Assert.Contains("/suspend", text, StringComparison.Ordinal);
+        Assert.Contains("/policy-evaluation", text, StringComparison.Ordinal);
         Assert.Contains("Access.AgencyMarketplace.Offers.Moderate", text, StringComparison.Ordinal);
         Assert.Contains("IAgencyOfferGovernanceService", text, StringComparison.Ordinal);
         Assert.DoesNotContain("Booking", text, StringComparison.Ordinal);
