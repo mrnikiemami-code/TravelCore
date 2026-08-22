@@ -43,7 +43,7 @@
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P38-T014` · Commerce Depth · Commission deferred |
+| Current Next Task | Architect review of `TC-P38-T015` · recommend Option A Commission/Settlement · wait for envelope |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -1008,15 +1008,15 @@ Surfaces: Public · Customer `/me` · Agency `/agency` · Admin `/admin`
 
 ## P38 — Multi-Agency Commerce
 
-**Status:** **ACTIVE** (`TC-P38-T014` Cursor **PASS** · AgencyOffer Governance Operations Refinement)
+**Status:** **ACTIVE** (`TC-P38-T015` Cursor **PASS WITH KNOWN LIMITATIONS** · Final Commerce Gate)
 
 Plan: [`docs/plans/P38-multi-agency-commerce-foundation.md`](plans/P38-multi-agency-commerce-foundation.md)
 
 Contracts: [`docs/plans/P38-agency-offer-contracts.md`](plans/P38-agency-offer-contracts.md)
 
-Evidence: Ops [`docs/product-experience/evidence/P38-T014/GOVERNANCE-OPS.md`](../product-experience/evidence/P38-T014/GOVERNANCE-OPS.md) · Audit [`docs/product-experience/evidence/P38-T013/AUDIT-VISIBILITY.md`](../product-experience/evidence/P38-T013/AUDIT-VISIBILITY.md) · Policy Ops [`docs/product-experience/evidence/P38-T012/POLICY-OPS.md`](../product-experience/evidence/P38-T012/POLICY-OPS.md)
+Evidence: Final Gate [`docs/product-experience/evidence/P38-GATE/GATE-REVIEW.md`](../product-experience/evidence/P38-GATE/GATE-REVIEW.md) · Ops [`docs/product-experience/evidence/P38-T014/GOVERNANCE-OPS.md`](../product-experience/evidence/P38-T014/GOVERNANCE-OPS.md)
 
-Commerce Depth in progress: Admin governance + policy + audit + ops search — Commission/Settlement still deferred — await Architect `.task.md`
+Commerce vertical + governance complete for review — Cursor recommends **Option A Commission/Settlement Foundation** — await Architect decision envelope
 
 ---
 
@@ -1100,6 +1100,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
 | P36 | Commercial UI/UX Final Polish | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** · PARTIALLY_SELLABLE |
 | P37 | Experience Platform Foundation | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** |
-| P38 | Multi-Agency Commerce | **ACTIVE** (`TC-P38-T014` · Governance Ops PASS · Commerce Depth) |
+| P38 | Multi-Agency Commerce | **ACTIVE** (`TC-P38-T015` · Final Gate PASS WITH KNOWN LIMITATIONS) |
 | P35 | Production Payment Provider Readiness | **PAUSED** (designs locked; Stripe test-mode code ready; external account facts) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
