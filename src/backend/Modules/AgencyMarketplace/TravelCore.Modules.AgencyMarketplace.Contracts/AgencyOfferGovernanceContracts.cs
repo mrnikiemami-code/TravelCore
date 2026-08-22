@@ -15,7 +15,11 @@ public sealed record AgencyOfferModerationQueueItem(
     string Visibility,
     string PublicationStatus,
     string CreatedAt,
-    string UpdatedAt);
+    string UpdatedAt,
+    /// <summary>Latest operational governance event kind (not financial).</summary>
+    string? LastDecisionKind = null,
+    string? LastDecisionAt = null,
+    bool HasGovernanceHistory = false);
 
 /// <summary>
 /// Context passed to future policy extension points before governance mutations.
@@ -63,6 +67,15 @@ public interface IAgencyOfferChannelPolicy
 public interface IAgencyOfferGovernanceService
 {
     Task<IReadOnlyList<AgencyOfferModerationQueueItem>> ListPendingOffersAsync(
+        int take,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Operational governance search by publication status (TC-P38-T014).
+    /// Allowed: Submitted (pending), Approved, Rejected, Suspended, Retired.
+    /// </summary>
+    Task<IReadOnlyList<AgencyOfferModerationQueueItem>> ListOffersAsync(
+        string? publicationStatus,
         int take,
         CancellationToken cancellationToken = default);
 

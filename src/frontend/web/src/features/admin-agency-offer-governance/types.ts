@@ -1,3 +1,10 @@
+export type AgencyOfferGovernanceOpsStatus =
+  | "Submitted"
+  | "Approved"
+  | "Rejected"
+  | "Suspended"
+  | "Retired";
+
 export type AgencyOfferModerationQueueView = {
   offerId: string;
   agencyProfileId: string;
@@ -10,4 +17,7 @@ export type AgencyOfferModerationQueueView = {
   publicationStatus: string;
   createdAt: string;
   updatedAt: string;
+  lastDecisionKind: string | null;
+  lastDecisionAt: string | null;
+  hasGovernanceHistory: boolean;
 };

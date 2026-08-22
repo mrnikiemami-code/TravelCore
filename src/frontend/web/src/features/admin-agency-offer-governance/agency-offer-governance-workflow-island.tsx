@@ -7,19 +7,30 @@ import {
   approveAgencyOfferAction,
   evaluateAgencyOfferPoliciesAction,
   listAgencyOfferGovernanceHistoryAction,
-  listPendingAgencyOffersAction,
+  listAgencyOffersForGovernanceAction,
   rejectAgencyOfferAction,
   suspendAgencyOfferAction,
   type AgencyOfferGovernanceHistoryView,
   type AgencyOfferPolicyEvaluationView,
 } from "@/features/admin-agency-offer-governance/actions";
 import { getAdminAgencyOfferGovernanceCopy } from "@/features/admin-agency-offer-governance/copy";
-import type { AgencyOfferModerationQueueView } from "@/features/admin-agency-offer-governance/types";
+import type {
+  AgencyOfferGovernanceOpsStatus,
+  AgencyOfferModerationQueueView,
+} from "@/features/admin-agency-offer-governance/types";
 
 export type AgencyOfferGovernanceWorkflowIslandProps = {
   locale: AppLocale;
   apiConfigured: boolean;
 };
+
+const OPS_STATUSES: AgencyOfferGovernanceOpsStatus[] = [
+  "Submitted",
+  "Approved",
+  "Rejected",
+  "Suspended",
+  "Retired",
+];
 
 export function AgencyOfferGovernanceWorkflowIsland({
   locale,
@@ -30,12 +41,29 @@ export function AgencyOfferGovernanceWorkflowIsland({
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [take, setTake] = useState(50);
+  const [statusFilter, setStatusFilter] =
+    useState<AgencyOfferGovernanceOpsStatus>("Submitted");
   const [items, setItems] = useState<AgencyOfferModerationQueueView[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [policyReport, setPolicyReport] = useState<AgencyOfferPolicyEvaluationView | null>(null);
   const [history, setHistory] = useState<AgencyOfferGovernanceHistoryView[]>([]);
 
   const selected = items.find((x) => x.offerId === selectedId) ?? null;
+
+  function statusLabel(status: AgencyOfferGovernanceOpsStatus) {
+    switch (status) {
+      case "Submitted":
+        return copy.statusSubmitted;
+      case "Approved":
+        return copy.statusApproved;
+      case "Rejected":
+        return copy.statusRejected;
+      case "Suspended":
+        return copy.statusSuspended;
+      case "Retired":
+        return copy.statusRetired;
+    }
+  }
 
   function run(job: () => Promise<void>) {
     setError(null);
@@ -61,7 +89,7 @@ export function AgencyOfferGovernanceWorkflowIsland({
     setSelectedId(item.offerId);
     setItems((prev) => {
       const without = prev.filter((x) => x.offerId !== item.offerId);
-      if (item.publicationStatus === "Submitted") {
+      if (item.publicationStatus === statusFilter) {
         return [item, ...without];
       }
       return without;
@@ -85,6 +113,23 @@ export function AgencyOfferGovernanceWorkflowIsland({
           {copy.stepQueue}
         </Text>
         <div className="flex flex-wrap items-end gap-3">
+          <label className="flex flex-col gap-1 text-sm" htmlFor={`${formId}-status`}>
+            {copy.statusFilterLabel}
+            <select
+              className="min-h-touch rounded-md border border-border px-3"
+              id={`${formId}-status`}
+              value={statusFilter}
+              onChange={(e) =>
+                setStatusFilter(e.target.value as AgencyOfferGovernanceOpsStatus)
+              }
+            >
+              {OPS_STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {statusLabel(status)}
+                </option>
+              ))}
+            </select>
+          </label>
           <label className="flex flex-col gap-1 text-sm" htmlFor={`${formId}-take`}>
             {copy.takeLabel}
             <LtrValue>
@@ -105,11 +150,16 @@ export function AgencyOfferGovernanceWorkflowIsland({
             disabled={!apiConfigured || pending}
             onClick={() =>
               run(async () => {
-                const result = await listPendingAgencyOffersAction({ take });
+                const result = await listAgencyOffersForGovernanceAction({
+                  publicationStatus: statusFilter,
+                  take,
+                });
                 if (!result.ok) {
                   throw new Error(mapAuthError(result.status) ?? result.message);
                 }
                 setItems(result.items);
+                setPolicyReport(null);
+                setHistory([]);
                 if (result.items.length === 0) {
                   setSelectedId(null);
                 } else if (!selectedId || !result.items.some((x) => x.offerId === selectedId)) {
@@ -141,6 +191,7 @@ export function AgencyOfferGovernanceWorkflowIsland({
                   <LtrValue>{item.titleOverride ?? item.offerId}</LtrValue>
                   <Text role="caption">
                     {item.publicationStatus} · {item.salesChannel} · {item.visibility}
+                    {item.lastDecisionKind ? ` · ${item.lastDecisionKind}` : ""}
                   </Text>
                 </button>
               </li>
@@ -171,6 +222,28 @@ export function AgencyOfferGovernanceWorkflowIsland({
             </Text>
             <Text role="caption">
               {copy.salesChannelLabel}: {selected.salesChannel}
+            </Text>
+            <Text role="caption">
+              {copy.lastDecisionLabel}:{" "}
+              {selected.lastDecisionKind ? (
+                <>
+                  {selected.lastDecisionKind}
+                  {selected.lastDecisionAt ? (
+                    <>
+                      {" · "}
+                      <LtrValue>{selected.lastDecisionAt}</LtrValue>
+                    </>
+                  ) : null}
+                </>
+              ) : (
+                "—"
+              )}
+            </Text>
+            <Text role="caption">
+              {copy.historyAvailableLabel}:{" "}
+              {selected.hasGovernanceHistory
+                ? copy.historyAvailableYes
+                : copy.historyAvailableNo}
             </Text>
             {selected.highlight ? (
               <Text role="caption">

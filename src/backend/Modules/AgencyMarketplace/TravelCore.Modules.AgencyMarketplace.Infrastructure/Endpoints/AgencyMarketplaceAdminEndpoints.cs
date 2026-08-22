@@ -9,8 +9,8 @@ using TravelCore.Modules.Identity.Contracts;
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Endpoints;
 
 /// <summary>
-/// Admin AgencyOffer governance HTTP surface (TC-P38-T010).
-/// Review queue + approve/reject/suspend. Not Agency Portal. No financial engines.
+/// Admin AgencyOffer governance HTTP surface (TC-P38-T010 / T014).
+/// Review queue + status filter + approve/reject/suspend. Not Agency Portal. No financial engines.
 /// </summary>
 internal static class AgencyMarketplaceAdminEndpoints
 {
@@ -21,6 +21,36 @@ internal static class AgencyMarketplaceAdminEndpoints
     {
         var group = endpoints.MapGroup("/api/agency-marketplace/moderation/offers")
             .WithTags("AgencyMarketplace");
+
+        group.MapGet("/", async Task<IResult> (
+            string? publicationStatus,
+            int? take,
+            IAgencyOfferGovernanceService service,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var items = await service.ListOffersAsync(
+                    publicationStatus,
+                    take ?? 50,
+                    cancellationToken);
+                return Results.Ok(items);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "take"] = [ex.Message]
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    [ex.ParamName ?? "publicationStatus"] = [ex.Message]
+                });
+            }
+        }).RequireAuthorization(OffersReadPolicy);
 
         group.MapGet("/pending", async Task<IResult> (
             int? take,

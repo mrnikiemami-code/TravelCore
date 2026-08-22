@@ -40,6 +40,33 @@ public sealed class AgencyOfferGovernanceTests
         AgencyOfferGovernanceService.EnsureNotSelfModeration(offer, actingAgencyProfileId: null);
     }
 
+    [Theory]
+    [InlineData(null, AgencyOfferPublicationStatus.Submitted)]
+    [InlineData("pending", AgencyOfferPublicationStatus.Submitted)]
+    [InlineData("Submitted", AgencyOfferPublicationStatus.Submitted)]
+    [InlineData("Approved", AgencyOfferPublicationStatus.Approved)]
+    [InlineData("Rejected", AgencyOfferPublicationStatus.Rejected)]
+    [InlineData("Suspended", AgencyOfferPublicationStatus.Suspended)]
+    [InlineData("Retired", AgencyOfferPublicationStatus.Retired)]
+    public void Ops_status_filter_parses_allowed_values(
+        string? raw,
+        AgencyOfferPublicationStatus expected)
+    {
+        Assert.Equal(expected, AgencyOfferGovernanceService.ParseOpsPublicationStatus(raw));
+    }
+
+    [Theory]
+    [InlineData("Draft")]
+    [InlineData("Published")]
+    [InlineData("Archived")]
+    [InlineData("money")]
+    public void Ops_status_filter_rejects_non_ops_values(string raw)
+    {
+        var ex = Assert.Throws<ArgumentException>(() =>
+            AgencyOfferGovernanceService.ParseOpsPublicationStatus(raw));
+        Assert.Equal("publicationStatus", ex.ParamName);
+    }
+
     [Fact]
     public void Suspend_requires_Published_and_unlists()
     {

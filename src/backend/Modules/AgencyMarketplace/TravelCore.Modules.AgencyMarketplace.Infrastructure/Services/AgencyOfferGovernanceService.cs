@@ -6,13 +6,22 @@ using TravelCore.Modules.AgencyMarketplace.Infrastructure.Policies;
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Services;
 
 /// <summary>
-/// Admin AgencyOffer governance (TC-P38-T010 / T013).
+/// Admin AgencyOffer governance (TC-P38-T010 / T013 / T014).
 /// Agency creates/submits; Admin approves/governs; Public consumes Published only.
 /// Records operational governance history — not a financial ledger.
 /// </summary>
 internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceService
 {
     private const int MaxTake = 200;
+
+    private static readonly HashSet<AgencyOfferPublicationStatus> OpsFilterStatuses =
+    [
+        AgencyOfferPublicationStatus.Submitted,
+        AgencyOfferPublicationStatus.Approved,
+        AgencyOfferPublicationStatus.Rejected,
+        AgencyOfferPublicationStatus.Suspended,
+        AgencyOfferPublicationStatus.Retired
+    ];
 
     private readonly AgencyMarketplaceDbContext _db;
     private readonly IAgencyOfferPolicyEvaluator _policyEvaluator;
@@ -25,7 +34,13 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
         _policyEvaluator = policyEvaluator;
     }
 
-    public async Task<IReadOnlyList<AgencyOfferModerationQueueItem>> ListPendingOffersAsync(
+    public Task<IReadOnlyList<AgencyOfferModerationQueueItem>> ListPendingOffersAsync(
+        int take,
+        CancellationToken cancellationToken = default) =>
+        ListOffersAsync("Submitted", take, cancellationToken);
+
+    public async Task<IReadOnlyList<AgencyOfferModerationQueueItem>> ListOffersAsync(
+        string? publicationStatus,
         int take,
         CancellationToken cancellationToken = default)
     {
@@ -39,15 +54,42 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
             throw new ArgumentOutOfRangeException(nameof(take), $"Take cannot exceed {MaxTake}.");
         }
 
+        var status = ParseOpsPublicationStatus(publicationStatus);
+
         var rows = await _db.AgencyOffers
             .AsNoTracking()
-            .Where(x => x.PublicationStatus == AgencyOfferPublicationStatus.Submitted)
-            .OrderByDescending(x => x.CreatedAt)
+            .Where(x => x.PublicationStatus == status)
+            .OrderByDescending(x => x.UpdatedAt)
+            .ThenByDescending(x => x.CreatedAt)
             .ThenBy(x => x.Id)
             .Take(take)
             .ToListAsync(cancellationToken);
 
-        return rows.Select(MapItem).ToList();
+        return await MapItemsWithGovernanceVisibilityAsync(rows, cancellationToken);
+    }
+
+    internal static AgencyOfferPublicationStatus ParseOpsPublicationStatus(string? publicationStatus)
+    {
+        var raw = string.IsNullOrWhiteSpace(publicationStatus)
+            ? "Submitted"
+            : publicationStatus.Trim();
+
+        if (raw.Equals("pending", StringComparison.OrdinalIgnoreCase)
+            || raw.Equals("pendingreview", StringComparison.OrdinalIgnoreCase)
+            || raw.Equals("pending-review", StringComparison.OrdinalIgnoreCase))
+        {
+            return AgencyOfferPublicationStatus.Submitted;
+        }
+
+        if (!Enum.TryParse<AgencyOfferPublicationStatus>(raw, ignoreCase: true, out var status)
+            || !OpsFilterStatuses.Contains(status))
+        {
+            throw new ArgumentException(
+                "publicationStatus must be one of: Submitted (pending), Approved, Rejected, Suspended, Retired.",
+                nameof(publicationStatus));
+        }
+
+        return status;
     }
 
     public Task<AgencyOfferModerationQueueItem> ApproveOfferAsync(
@@ -154,7 +196,8 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
             fromPublicationStatus: fromStatus,
             toPublicationStatus: offer.PublicationStatus.ToString()));
         await _db.SaveChangesAsync(cancellationToken);
-        return MapItem(offer);
+        var enriched = await MapItemsWithGovernanceVisibilityAsync([offer], cancellationToken);
+        return enriched[0];
     }
 
     /// <summary>
@@ -185,7 +228,43 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
             offer.Visibility.ToString(),
             offer.Status.ToString());
 
-    private static AgencyOfferModerationQueueItem MapItem(AgencyOffer offer) =>
+    private async Task<IReadOnlyList<AgencyOfferModerationQueueItem>> MapItemsWithGovernanceVisibilityAsync(
+        IReadOnlyList<AgencyOffer> offers,
+        CancellationToken cancellationToken)
+    {
+        if (offers.Count == 0)
+        {
+            return [];
+        }
+
+        var offerIds = offers.Select(x => x.Id).ToList();
+        var events = await _db.AgencyOfferGovernanceEvents
+            .AsNoTracking()
+            .Where(x => offerIds.Contains(x.OfferId))
+            .OrderByDescending(x => x.OccurredAt)
+            .ThenByDescending(x => x.Id)
+            .ToListAsync(cancellationToken);
+
+        var latestByOffer = events
+            .GroupBy(x => x.OfferId)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        return offers.Select(offer =>
+        {
+            latestByOffer.TryGetValue(offer.Id, out var latest);
+            return MapItem(
+                offer,
+                lastDecisionKind: latest?.Kind.ToString(),
+                lastDecisionAt: latest?.OccurredAt.ToString(),
+                hasGovernanceHistory: latest is not null);
+        }).ToList();
+    }
+
+    private static AgencyOfferModerationQueueItem MapItem(
+        AgencyOffer offer,
+        string? lastDecisionKind = null,
+        string? lastDecisionAt = null,
+        bool hasGovernanceHistory = false) =>
         new(
             offer.Id.Value,
             offer.AgencyProfileId.Value,
@@ -197,5 +276,8 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
             offer.Visibility.ToString(),
             offer.PublicationStatus.ToString(),
             offer.CreatedAt.ToString(),
-            offer.UpdatedAt.ToString());
+            offer.UpdatedAt.ToString(),
+            lastDecisionKind,
+            lastDecisionAt,
+            hasGovernanceHistory);
 }

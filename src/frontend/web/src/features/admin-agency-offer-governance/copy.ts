@@ -8,6 +8,12 @@ export type AdminAgencyOfferGovernanceCopy = {
   stepQueue: string;
   refreshQueue: string;
   takeLabel: string;
+  statusFilterLabel: string;
+  statusSubmitted: string;
+  statusApproved: string;
+  statusRejected: string;
+  statusSuspended: string;
+  statusRetired: string;
   noItems: string;
   selectItem: string;
   agencyProfileLabel: string;
@@ -16,6 +22,10 @@ export type AdminAgencyOfferGovernanceCopy = {
   visibilityLabel: string;
   salesChannelLabel: string;
   highlightLabel: string;
+  lastDecisionLabel: string;
+  historyAvailableLabel: string;
+  historyAvailableYes: string;
+  historyAvailableNo: string;
   approveAction: string;
   rejectAction: string;
   suspendAction: string;
@@ -37,13 +47,19 @@ export type AdminAgencyOfferGovernanceCopy = {
 const FA: AdminAgencyOfferGovernanceCopy = {
   pageTitle: "حاکمیت Offer آژانس",
   pageIntro:
-    "صف Offerهای Submitted برای بررسی Admin. تأیید/رد/تعلیق بدون کمیسیون یا تسویه. Agency ≠ Admin.",
+    "جستجو و بررسی Offer بر اساس وضعیت عملیاتی. تأیید/رد/تعلیق بدون کمیسیون یا تسویه. Agency ≠ Admin.",
   navLabel: "ناوبری حاکمیت Offer",
   backToAgencies: "بازگشت به مدیریت آژانس",
-  stepQueue: "صف Offerهای در انتظار",
-  refreshQueue: "بروزرسانی صف",
+  stepQueue: "جستجوی عملیاتی Offer",
+  refreshQueue: "بروزرسانی فهرست",
   takeLabel: "تعداد",
-  noItems: "موردی در صف نیست.",
+  statusFilterLabel: "وضعیت انتشار",
+  statusSubmitted: "در انتظار بررسی",
+  statusApproved: "تأییدشده",
+  statusRejected: "ردشده",
+  statusSuspended: "تعلیق‌شده",
+  statusRetired: "بازنشسته‌شده",
+  noItems: "موردی با این فیلتر نیست.",
   selectItem: "یک Offer را انتخاب کنید.",
   agencyProfileLabel: "شناسهٔ AgencyProfile",
   tourProductLabel: "شناسهٔ TourProduct",
@@ -51,6 +67,10 @@ const FA: AdminAgencyOfferGovernanceCopy = {
   visibilityLabel: "نمایش",
   salesChannelLabel: "کانال فروش",
   highlightLabel: "هایلایت",
+  lastDecisionLabel: "آخرین تصمیم Governance",
+  historyAvailableLabel: "سابقه موجود",
+  historyAvailableYes: "بله",
+  historyAvailableNo: "خیر",
   approveAction: "تأیید",
   rejectAction: "رد",
   suspendAction: "تعلیق Published",
@@ -63,7 +83,7 @@ const FA: AdminAgencyOfferGovernanceCopy = {
   policyHooksLabel: "Hookها",
   noPolicyReport: "هنوز ارزیابی Policy انجام نشده است.",
   boundaryNote:
-    "AgencyOffer ≠ Price · Admin Approval ≠ Agency Ownership · Commission/Settlement خارج از این سطح.",
+    "AgencyOffer ≠ Price · Audit ≠ Ledger · Commission/Settlement خارج از این سطح.",
   apiMissing: "API پیکربندی نشده است.",
   errorPrefix: "خطا:",
   busy: "در حال پردازش…",
@@ -73,13 +93,19 @@ const FA: AdminAgencyOfferGovernanceCopy = {
 const EN: AdminAgencyOfferGovernanceCopy = {
   pageTitle: "Agency offer governance",
   pageIntro:
-    "Submitted AgencyOffer review queue. Approve, reject, or suspend without commission or settlement. Agency ≠ Admin.",
+    "Find and review AgencyOffers by operational status. Approve, reject, or suspend without commission or settlement. Agency ≠ Admin.",
   navLabel: "Offer governance navigation",
   backToAgencies: "Back to agency management",
-  stepQueue: "Pending offer queue",
-  refreshQueue: "Refresh queue",
+  stepQueue: "Operational offer search",
+  refreshQueue: "Refresh list",
   takeLabel: "Take",
-  noItems: "No items in queue.",
+  statusFilterLabel: "Publication status",
+  statusSubmitted: "Pending review",
+  statusApproved: "Approved",
+  statusRejected: "Rejected",
+  statusSuspended: "Suspended",
+  statusRetired: "Retired",
+  noItems: "No items for this filter.",
   selectItem: "Select an offer.",
   agencyProfileLabel: "AgencyProfile id",
   tourProductLabel: "TourProduct id",
@@ -87,6 +113,10 @@ const EN: AdminAgencyOfferGovernanceCopy = {
   visibilityLabel: "Visibility",
   salesChannelLabel: "Sales channel",
   highlightLabel: "Highlight",
+  lastDecisionLabel: "Last governance decision",
+  historyAvailableLabel: "History available",
+  historyAvailableYes: "Yes",
+  historyAvailableNo: "No",
   approveAction: "Approve",
   rejectAction: "Reject",
   suspendAction: "Suspend published",
@@ -99,7 +129,7 @@ const EN: AdminAgencyOfferGovernanceCopy = {
   policyHooksLabel: "Hooks",
   noPolicyReport: "No policy evaluation loaded yet.",
   boundaryNote:
-    "AgencyOffer ≠ Price · Admin Approval ≠ Agency Ownership · Commission/Settlement out of scope.",
+    "AgencyOffer ≠ Price · Audit ≠ Ledger · Commission/Settlement out of scope.",
   apiMissing: "API is not configured.",
   errorPrefix: "Error:",
   busy: "Working…",
@@ -110,13 +140,23 @@ const AR: AdminAgencyOfferGovernanceCopy = {
   ...EN,
   pageTitle: "حوكمة عروض الوكالة",
   pageIntro:
-    "قائمة العروض المقدمة لمراجعة المسؤول. موافقة/رفض/تعليق دون عمولة أو تسوية.",
+    "ابحث وراجع العروض حسب الحالة التشغيلية. موافقة/رفض/تعليق دون عمولة أو تسوية.",
   navLabel: "تنقل حوكمة العروض",
   backToAgencies: "العودة لإدارة الوكالات",
-  stepQueue: "قائمة العروض المعلقة",
+  stepQueue: "بحث تشغيلي للعروض",
   refreshQueue: "تحديث القائمة",
-  noItems: "لا عناصر في القائمة.",
+  statusFilterLabel: "حالة النشر",
+  statusSubmitted: "بانتظار المراجعة",
+  statusApproved: "موافق عليه",
+  statusRejected: "مرفوض",
+  statusSuspended: "معلق",
+  statusRetired: "متقاعد",
+  noItems: "لا عناصر لهذا التصفية.",
   selectItem: "اختر عرضاً.",
+  lastDecisionLabel: "آخر قرار حوكمة",
+  historyAvailableLabel: "السجل متاح",
+  historyAvailableYes: "نعم",
+  historyAvailableNo: "لا",
   approveAction: "موافقة",
   rejectAction: "رفض",
   suspendAction: "تعليق المنشور",

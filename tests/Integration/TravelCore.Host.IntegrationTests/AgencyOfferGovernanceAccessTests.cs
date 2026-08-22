@@ -178,6 +178,34 @@ public sealed class AgencyOfferGovernanceAccessTests
         Assert.Equal("Suspended", suspendDoc.RootElement.GetProperty("publicationStatus").GetString());
         Assert.Equal("Unlisted", suspendDoc.RootElement.GetProperty("visibility").GetString());
 
+        var approvedFilter = await adminClient.GetAsync(
+            "/api/agency-marketplace/moderation/offers?publicationStatus=Approved&take=50",
+            ct);
+        Assert.Equal(HttpStatusCode.OK, approvedFilter.StatusCode);
+        using var approvedDoc = JsonDocument.Parse(await approvedFilter.Content.ReadAsStringAsync(ct));
+        Assert.DoesNotContain(
+            approvedDoc.RootElement.EnumerateArray(),
+            x => x.GetProperty("offerId").GetGuid() == offerId);
+
+        var suspendedFilter = await adminClient.GetAsync(
+            "/api/agency-marketplace/moderation/offers?publicationStatus=Suspended&take=50",
+            ct);
+        Assert.Equal(HttpStatusCode.OK, suspendedFilter.StatusCode);
+        using var suspendedDoc = JsonDocument.Parse(await suspendedFilter.Content.ReadAsStringAsync(ct));
+        var suspendedItem = Assert.Single(
+            suspendedDoc.RootElement.EnumerateArray(),
+            x => x.GetProperty("offerId").GetGuid() == offerId);
+        Assert.Equal("Suspended", suspendedItem.GetProperty("publicationStatus").GetString());
+        Assert.True(suspendedItem.GetProperty("hasGovernanceHistory").GetBoolean());
+        Assert.Equal("Suspended", suspendedItem.GetProperty("lastDecisionKind").GetString());
+        Assert.False(suspendedItem.TryGetProperty("commission", out _));
+        Assert.False(suspendedItem.TryGetProperty("revenue", out _));
+
+        var badFilter = await adminClient.GetAsync(
+            "/api/agency-marketplace/moderation/offers?publicationStatus=Published&take=10",
+            ct);
+        Assert.Equal(HttpStatusCode.BadRequest, badFilter.StatusCode);
+
         var history = await adminClient.GetAsync(
             $"/api/agency-marketplace/moderation/offers/{offerId:D}/governance-history?take=20",
             ct);

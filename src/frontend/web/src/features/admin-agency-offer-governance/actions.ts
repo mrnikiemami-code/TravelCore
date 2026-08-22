@@ -18,6 +18,9 @@ type ApiAgencyOfferModerationQueueItem = {
   publicationStatus: string;
   createdAt: string;
   updatedAt: string;
+  lastDecisionKind?: string | null;
+  lastDecisionAt?: string | null;
+  hasGovernanceHistory?: boolean;
 };
 
 async function authHeaders(): Promise<HeadersInit> {
@@ -55,7 +58,29 @@ function mapItem(item: ApiAgencyOfferModerationQueueItem): AgencyOfferModeration
     publicationStatus: item.publicationStatus,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
+    lastDecisionKind: item.lastDecisionKind ?? null,
+    lastDecisionAt: item.lastDecisionAt ?? null,
+    hasGovernanceHistory: Boolean(item.hasGovernanceHistory),
   };
+}
+
+export async function listAgencyOffersForGovernanceAction(input?: {
+  publicationStatus?: string;
+  take?: number;
+}): Promise<
+  | { ok: true; items: AgencyOfferModerationQueueView[] }
+  | { ok: false; message: string; status?: number }
+> {
+  const params = new URLSearchParams();
+  if (input?.publicationStatus) params.set("publicationStatus", input.publicationStatus);
+  if (input?.take) params.set("take", String(input.take));
+  const qs = params.toString();
+  const result = await apiGetJson<ApiAgencyOfferModerationQueueItem[]>(
+    `/api/agency-marketplace/moderation/offers${qs ? `?${qs}` : ""}`,
+    { headers: await authHeaders(), cache: "no-store" },
+  );
+  if (!result.ok) return failMessage(result);
+  return { ok: true, items: (result.data ?? []).map(mapItem) };
 }
 
 export async function listPendingAgencyOffersAction(input?: {
@@ -64,15 +89,10 @@ export async function listPendingAgencyOffersAction(input?: {
   | { ok: true; items: AgencyOfferModerationQueueView[] }
   | { ok: false; message: string; status?: number }
 > {
-  const params = new URLSearchParams();
-  if (input?.take) params.set("take", String(input.take));
-  const qs = params.toString();
-  const result = await apiGetJson<ApiAgencyOfferModerationQueueItem[]>(
-    `/api/agency-marketplace/moderation/offers/pending${qs ? `?${qs}` : ""}`,
-    { headers: await authHeaders(), cache: "no-store" },
-  );
-  if (!result.ok) return failMessage(result);
-  return { ok: true, items: (result.data ?? []).map(mapItem) };
+  return listAgencyOffersForGovernanceAction({
+    publicationStatus: "Submitted",
+    take: input?.take,
+  });
 }
 
 async function mutateOfferAction(

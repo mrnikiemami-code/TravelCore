@@ -64,6 +64,8 @@ public sealed class AgencyMarketplacePanelAccessGuardrailTests
         var text = File.ReadAllText(endpointsPath);
         Assert.Contains("/api/agency-marketplace/moderation/offers", text, StringComparison.Ordinal);
         Assert.Contains("/pending", text, StringComparison.Ordinal);
+        Assert.Contains("publicationStatus", text, StringComparison.Ordinal);
+        Assert.Contains("ListOffersAsync", text, StringComparison.Ordinal);
         Assert.Contains("/approve", text, StringComparison.Ordinal);
         Assert.Contains("/reject", text, StringComparison.Ordinal);
         Assert.Contains("/suspend", text, StringComparison.Ordinal);
