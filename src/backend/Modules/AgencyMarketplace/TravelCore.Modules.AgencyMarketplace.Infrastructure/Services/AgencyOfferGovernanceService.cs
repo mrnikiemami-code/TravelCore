@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TravelCore.Modules.AgencyMarketplace.Contracts;
 using TravelCore.Modules.AgencyMarketplace.Domain;
+using TravelCore.Modules.AgencyMarketplace.Infrastructure.Policies;
 
 namespace TravelCore.Modules.AgencyMarketplace.Infrastructure.Services;
 
@@ -14,20 +15,14 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
     private const int MaxTake = 200;
 
     private readonly AgencyMarketplaceDbContext _db;
-    private readonly IAgencyOfferCommercialPolicy _commercialPolicy;
-    private readonly IAgencyOfferContentPolicy _contentPolicy;
-    private readonly IAgencyOfferChannelPolicy _channelPolicy;
+    private readonly IAgencyOfferPolicyEvaluator _policyEvaluator;
 
     public AgencyOfferGovernanceService(
         AgencyMarketplaceDbContext db,
-        IAgencyOfferCommercialPolicy commercialPolicy,
-        IAgencyOfferContentPolicy contentPolicy,
-        IAgencyOfferChannelPolicy channelPolicy)
+        IAgencyOfferPolicyEvaluator policyEvaluator)
     {
         _db = db;
-        _commercialPolicy = commercialPolicy;
-        _contentPolicy = contentPolicy;
-        _channelPolicy = channelPolicy;
+        _policyEvaluator = policyEvaluator;
     }
 
     public async Task<IReadOnlyList<AgencyOfferModerationQueueItem>> ListPendingOffersAsync(
@@ -91,9 +86,11 @@ internal sealed class AgencyOfferGovernanceService : IAgencyOfferGovernanceServi
         EnsureNotSelfModeration(offer, actingAgencyProfileId);
 
         var policyContext = ToPolicyContext(offer);
-        await _commercialPolicy.EnsureAllowsAsync(policyContext, cancellationToken);
-        await _contentPolicy.EnsureAllowsAsync(policyContext, cancellationToken);
-        await _channelPolicy.EnsureAllowsAsync(policyContext, cancellationToken);
+        var decision = await _policyEvaluator.EvaluateAsync(policyContext, cancellationToken);
+        if (!decision.IsAllowed)
+        {
+            throw new AgencyOfferPolicyDeniedException(decision);
+        }
 
         mutate(offer);
         await _db.SaveChangesAsync(cancellationToken);

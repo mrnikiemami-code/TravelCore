@@ -19,7 +19,7 @@ public sealed record AgencyOfferModerationQueueItem(
 
 /// <summary>
 /// Context passed to future policy extension points before governance mutations.
-/// Intentionally excludes money / commission / settlement fields.
+/// Intentionally excludes money fields (P38-T010/T011).
 /// </summary>
 public sealed record AgencyOfferPolicyContext(
     Guid OfferId,
@@ -31,27 +31,33 @@ public sealed record AgencyOfferPolicyContext(
     string OfferStatus);
 
 /// <summary>
-/// Future commercial-rules hook. Current implementation must Allow — no commission.
+/// Commercial-rules hook. Default Allow — no financial math (P38-T011).
 /// </summary>
 public interface IAgencyOfferCommercialPolicy
 {
-    Task EnsureAllowsAsync(AgencyOfferPolicyContext context, CancellationToken cancellationToken = default);
+    Task<AgencyOfferPolicyDecision> EvaluateAsync(
+        AgencyOfferPolicyContext context,
+        CancellationToken cancellationToken = default);
 }
 
 /// <summary>
-/// Future content-policy hook (copy / media / honesty). Current implementation must Allow.
+/// Content-policy hook (copy / media / honesty). Default Allow (P38-T011).
 /// </summary>
 public interface IAgencyOfferContentPolicy
 {
-    Task EnsureAllowsAsync(AgencyOfferPolicyContext context, CancellationToken cancellationToken = default);
+    Task<AgencyOfferPolicyDecision> EvaluateAsync(
+        AgencyOfferPolicyContext context,
+        CancellationToken cancellationToken = default);
 }
 
 /// <summary>
-/// Future channel-policy hook (Public / AgencyPortal / Private). Current implementation must Allow.
+/// Channel-policy hook (Public / AgencyPortal / Private). Default Allow (P38-T011).
 /// </summary>
 public interface IAgencyOfferChannelPolicy
 {
-    Task EnsureAllowsAsync(AgencyOfferPolicyContext context, CancellationToken cancellationToken = default);
+    Task<AgencyOfferPolicyDecision> EvaluateAsync(
+        AgencyOfferPolicyContext context,
+        CancellationToken cancellationToken = default);
 }
 
 public interface IAgencyOfferGovernanceService

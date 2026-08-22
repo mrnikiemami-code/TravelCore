@@ -1,7 +1,7 @@
+using TravelCore.Modules.AgencyMarketplace.Contracts;
 using TravelCore.Modules.AgencyMarketplace.Domain;
 using TravelCore.Modules.AgencyMarketplace.Infrastructure.Policies;
 using TravelCore.Modules.AgencyMarketplace.Infrastructure.Services;
-using TravelCore.Modules.AgencyMarketplace.Contracts;
 using Xunit;
 
 namespace TravelCore.Modules.AgencyMarketplace.UnitTests;
@@ -55,8 +55,9 @@ public sealed class AgencyOfferGovernanceTests
     }
 
     [Fact]
-    public async Task Default_policy_stubs_allow_without_commission_fields()
+    public async Task Default_policy_stubs_allow_without_money_fields()
     {
+        var ct = TestContext.Current.CancellationToken;
         var context = new AgencyOfferPolicyContext(
             OfferId: Guid.Parse("0198b3e0-0000-7000-8000-0000000000e1"),
             AgencyProfileId: ProfileA().Value,
@@ -66,10 +67,13 @@ public sealed class AgencyOfferGovernanceTests
             Visibility: "Unlisted",
             OfferStatus: "Draft");
 
-        await new AllowAgencyOfferCommercialPolicy().EnsureAllowsAsync(context, TestContext.Current.CancellationToken);
-        await new AllowAgencyOfferContentPolicy().EnsureAllowsAsync(context, TestContext.Current.CancellationToken);
-        await new AllowAgencyOfferChannelPolicy().EnsureAllowsAsync(context, TestContext.Current.CancellationToken);
+        var commercial = await new AllowAgencyOfferCommercialPolicy().EvaluateAsync(context, ct);
+        var content = await new AllowAgencyOfferContentPolicy().EvaluateAsync(context, ct);
+        var channel = await new AllowAgencyOfferChannelPolicy().EvaluateAsync(context, ct);
 
+        Assert.True(commercial.IsAllowed);
+        Assert.True(content.IsAllowed);
+        Assert.True(channel.IsAllowed);
         Assert.Null(typeof(AgencyOfferPolicyContext).GetProperty("Commission"));
         Assert.Null(typeof(AgencyOfferPolicyContext).GetProperty("Settlement"));
         Assert.Null(typeof(AgencyOfferPolicyContext).GetProperty("Payout"));

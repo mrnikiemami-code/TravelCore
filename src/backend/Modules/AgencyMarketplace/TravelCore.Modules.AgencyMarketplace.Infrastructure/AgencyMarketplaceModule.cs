@@ -40,6 +40,8 @@ public sealed class AgencyMarketplaceModule : ITravelCoreModule
         services.AddScoped<IAgencyOfferCommercialPolicy, AllowAgencyOfferCommercialPolicy>();
         services.AddScoped<IAgencyOfferContentPolicy, AllowAgencyOfferContentPolicy>();
         services.AddScoped<IAgencyOfferChannelPolicy, AllowAgencyOfferChannelPolicy>();
+        services.AddScoped<IAgencyOfferPublicationPolicy, AllowAgencyOfferPublicationPolicy>();
+        services.AddScoped<IAgencyOfferPolicyEvaluator, AgencyOfferPolicyEvaluator>();
     }
 
     public void MapEndpoints(IEndpointRouteBuilder endpoints)
