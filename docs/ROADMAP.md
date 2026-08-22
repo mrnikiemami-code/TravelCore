@@ -36,7 +36,7 @@
 |------|--------|
 | Project | TravelCore |
 | Current Phase | **P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-T001` Cursor **PASS** · Boundary plan) |
-| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P38 ACTIVE** |
+| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P38 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P39 ACTIVE** |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
@@ -1110,6 +1110,7 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P34 | Payment & Confirmation Readiness | **GATE ACCEPTED WITH KNOWN LIMITATIONS** ([`P34-GATE/GATE-REVIEW.md`](product-experience/evidence/P34-GATE/GATE-REVIEW.md)) |
 | P36 | Commercial UI/UX Final Polish | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** · PARTIALLY_SELLABLE |
 | P37 | Experience Platform Foundation | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** |
-| P38 | Multi-Agency Commerce | **ACTIVE** (`TC-P38-T015` · Final Gate PASS WITH KNOWN LIMITATIONS) |
+| P38 | Multi-Agency Commerce | **GATE ACCEPTED WITH KNOWN LIMITATIONS** (`TC-P38-T015`) |
+| P39 | Commercial Finance Foundation | **ACTIVE** (`TC-P39-T001` · Boundary plan PASS) |
 | P35 | Production Payment Provider Readiness | **PAUSED** (designs locked; Stripe test-mode code ready; external account facts) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |
