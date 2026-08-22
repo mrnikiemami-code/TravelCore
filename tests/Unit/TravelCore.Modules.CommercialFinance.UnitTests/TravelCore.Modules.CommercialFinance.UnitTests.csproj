@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RootNamespace>TravelCore.Modules.CommercialFinance.UnitTests</RootNamespace>
+    <AssemblyName>TravelCore.Modules.CommercialFinance.UnitTests</AssemblyName>
+    <Description>Commercial Finance domain unit tests (TC-P39-T006).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NodaTime" Version="3.3.3" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\backend\Modules\CommercialFinance\TravelCore.Modules.CommercialFinance.Contracts\TravelCore.Modules.CommercialFinance.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Modules\CommercialFinance\TravelCore.Modules.CommercialFinance.Domain\TravelCore.Modules.CommercialFinance.Domain.csproj" />
+    <ProjectReference Include="..\..\..\src\backend\Platform\Money\TravelCore.Money\TravelCore.Money.csproj" />
+  </ItemGroup>
+
+</Project>

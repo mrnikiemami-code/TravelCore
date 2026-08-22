@@ -34,7 +34,14 @@ public static class AccessPermissionCatalog
         ("agency.marketplace.offers.write", "Create/update Agency Marketplace offers"),
         ("agency.marketplace.offers.moderate", "Review, approve, reject, or suspend Agency Marketplace offer publication"),
         ("ugc.moderation.read", "Read UGC moderation queues"),
-        ("ugc.moderation.moderate", "Approve, reject, or publish UGC content in moderation workflow")
+        ("ugc.moderation.moderate", "Approve, reject, or publish UGC content in moderation workflow"),
+        ("commercial.finance.agreements.read", "Read Commercial Finance commission agreements"),
+        ("commercial.finance.agreements.write", "Create/update Commercial Finance commission agreements"),
+        ("commercial.finance.obligations.read", "Read Commercial Finance obligations"),
+        ("commercial.finance.settlements.read", "Read Commercial Finance settlement periods and records"),
+        ("commercial.finance.settlements.approve", "Approve Commercial Finance settlement close"),
+        ("commercial.finance.payouts.read", "Read Commercial Finance payout instructions"),
+        ("commercial.finance.payouts.approve", "Approve Commercial Finance payout instructions")
     ];
 
     public const string AdminRoleCode = "admin";

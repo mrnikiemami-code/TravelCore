@@ -60,8 +60,11 @@ public sealed class AccessTaxonomyTests
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "agency.marketplace.offers.moderate");
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "ugc.moderation.read");
         Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "ugc.moderation.moderate");
+        Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "commercial.finance.agreements.read");
+        Assert.Contains(AccessPermissionCatalog.AdminBaseline, x => x.Code == "commercial.finance.payouts.approve");
         Assert.DoesNotContain(AccessPermissionCatalog.AgencyPresentationBaseline, x => x.Code == "agency.marketplace.offers.moderate");
         Assert.DoesNotContain(AccessPermissionCatalog.AgencyPresentationBaseline, x => x.Code == "ugc.moderation.read");
+        Assert.DoesNotContain(AccessPermissionCatalog.AgencyPresentationBaseline, x => x.Code == "commercial.finance.agreements.read");
         Assert.Equal("admin", AccessPermissionCatalog.AdminRoleCode);
     }
 }

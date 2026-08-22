@@ -151,6 +151,41 @@ public sealed class AccessModule : ITravelCoreModule
             {
                 policy.RequireAuthenticatedUser();
                 policy.AddRequirements(new PermissionRequirement("ugc.moderation.moderate"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.CommercialFinanceAgreementsRead, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("commercial.finance.agreements.read"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.CommercialFinanceAgreementsWrite, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("commercial.finance.agreements.write"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.CommercialFinanceObligationsRead, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("commercial.finance.obligations.read"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.CommercialFinanceSettlementsRead, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("commercial.finance.settlements.read"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.CommercialFinanceSettlementsApprove, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("commercial.finance.settlements.approve"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.CommercialFinancePayoutsRead, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("commercial.finance.payouts.read"));
+            })
+            .AddPolicy(AccessAuthorizationPolicies.CommercialFinancePayoutsApprove, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new PermissionRequirement("commercial.finance.payouts.approve"));
             });
     }
 

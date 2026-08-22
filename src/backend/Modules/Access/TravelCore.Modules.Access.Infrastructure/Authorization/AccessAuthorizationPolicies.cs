@@ -111,4 +111,39 @@ public static class AccessAuthorizationPolicies
     /// UGC moderation mutations: Access-backed <c>ugc.moderation.moderate</c>.
     /// </summary>
     public const string UgcModerationModerate = "Access.Ugc.Moderation.Moderate";
+
+    /// <summary>
+    /// Commercial Finance agreement reads: Access-backed <c>commercial.finance.agreements.read</c>.
+    /// </summary>
+    public const string CommercialFinanceAgreementsRead = "Access.CommercialFinance.Agreements.Read";
+
+    /// <summary>
+    /// Commercial Finance agreement mutations: Access-backed <c>commercial.finance.agreements.write</c>.
+    /// </summary>
+    public const string CommercialFinanceAgreementsWrite = "Access.CommercialFinance.Agreements.Write";
+
+    /// <summary>
+    /// Commercial Finance obligation reads: Access-backed <c>commercial.finance.obligations.read</c>.
+    /// </summary>
+    public const string CommercialFinanceObligationsRead = "Access.CommercialFinance.Obligations.Read";
+
+    /// <summary>
+    /// Commercial Finance settlement reads: Access-backed <c>commercial.finance.settlements.read</c>.
+    /// </summary>
+    public const string CommercialFinanceSettlementsRead = "Access.CommercialFinance.Settlements.Read";
+
+    /// <summary>
+    /// Commercial Finance settlement approval: Access-backed <c>commercial.finance.settlements.approve</c>.
+    /// </summary>
+    public const string CommercialFinanceSettlementsApprove = "Access.CommercialFinance.Settlements.Approve";
+
+    /// <summary>
+    /// Commercial Finance payout reads: Access-backed <c>commercial.finance.payouts.read</c>.
+    /// </summary>
+    public const string CommercialFinancePayoutsRead = "Access.CommercialFinance.Payouts.Read";
+
+    /// <summary>
+    /// Commercial Finance payout approval: Access-backed <c>commercial.finance.payouts.approve</c>.
+    /// </summary>
+    public const string CommercialFinancePayoutsApprove = "Access.CommercialFinance.Payouts.Approve";
 }

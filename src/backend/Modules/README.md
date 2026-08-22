@@ -218,6 +218,14 @@ Create only the layers a module actually needs. Empty layer projects are not req
 - **P19 COMPLETE:** `TC-P19-GATE` evidence [`docs/plans/P19-GATE-acceptance-evidence.md`](../../../docs/plans/P19-GATE-acceptance-evidence.md) — no new Booking capability in Gate; Payment/Confirm remain DEFERRED; P20 not started.
 - Invariant: **Booking != Tour · Booking != TourDeparture · Booking != Price · Booking != Quote · Booking != Payment · Booking != Lead · Booking != VisaApplication · Booking != AgencyMarketplace**. **BookingStatus != PaymentStatus**. **BookingSourceKind != BookingStatus**. **CapacityDefinition != CapacityConsumption**. **CapacityHoldStatus != BookingStatus**.
 
+## Active modules (P39)
+
+| Module | Projects | Schema |
+|--------|----------|--------|
+| CommercialFinance | `CommercialFinance/TravelCore.Modules.CommercialFinance.{Domain,Contracts,Infrastructure}` | `commercial_finance` |
+
+- **CommercialFinance:** Contracts + persistence skeleton (`TC-P39-T006`) — CommissionAgreement · AgencyOfferCommissionOverride (logical `agency_offer_id`) · CommercialObligation lifecycle · SettlementPeriod/Record · PayoutInstruction · event consumption idempotency; market policy enum Iran/Uae; optional Money snapshots; admin read endpoints; **Commission != Pricing**; **Settlement != Payment**; **Payout != Booking**; **Obligation != Invoice**; no formulas · no settlement jobs · no payout execution · no Payment event handlers · no cross-schema FK.
+
 ## Host
 
 `TravelCore.Api` remains the composition host. Modules register explicitly via `ITravelCoreModule` (no assembly scanning).

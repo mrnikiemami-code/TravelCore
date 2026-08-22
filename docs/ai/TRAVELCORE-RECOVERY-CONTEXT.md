@@ -1,6 +1,6 @@
 # TravelCore Recovery Context
 
-**P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-T005` Cursor **PASS** · Decisions locked)
+**P39 — Multi-Agency Commercial Finance Foundation** (`TC-P39-T006` Cursor **PASS** · Contracts + persistence skeleton)
 
 ## Completed (recent)
 
@@ -8,11 +8,12 @@
 - P39-T002 ACCEPTED — Commercial Finance domain vocabulary
 - P39-T003 ACCEPTED — Commercial Obligation lifecycle + evidence boundaries
 - P39-T004 ACCEPTED — Business decision intake (Q1–Q38)
-- P39-T005: Locked finance policy decisions + Q1–Q38 classification + readiness matrix
+- P39-T005 ACCEPTED — Locked finance policy decisions + readiness matrix
+- P39-T006: Commercial Finance module skeleton — schema `commercial_finance`, entities, lifecycle guards, Access permissions, admin read endpoints
 
 ## Current Authorized Work
 
-**None** — WAITING for Architect after T005 RESULT. Next expected: **T006 skeleton/contracts** envelope.
+**None** — WAITING for Architect after T006 RESULT. Next expected: business-rule resolution or engine envelopes when authorized.
 
 ## Locked business policy (summary)
 
@@ -30,6 +31,7 @@ Market: SHARED_CORE_WITH_MARKET_SPECIFIC_POLICIES
 
 | Date | Change |
 |------|--------|
+| 2026-08-22 | Sync after TC-P39-T006 Commercial Finance contracts + persistence skeleton |
 | 2026-08-22 | Sync after TC-P39-T005 Commercial Finance decisions locked |
 | 2026-08-22 | Sync after TC-P39-T004 Commercial Finance business decision intake |
 | 2026-08-22 | Sync after TC-P39-T003 Commercial Obligation lifecycle foundation |
