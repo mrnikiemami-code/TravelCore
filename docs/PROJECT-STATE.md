@@ -30,7 +30,8 @@
 
 | فیلد | مقدار |
 |------|--------|
-| Current Phase | **P40 — Marketplace Merchandising & Experience Depth** (`TC-P40-T001` Cursor **PASS** · Experience audit + plan) |
+| Project Status | **PAUSED_BY_ARCHITECT** |
+| Current Phase | **P40 — Marketplace Merchandising & Experience Depth** (`TC-P40-T001` **Architect ACCEPTED** · Experience audit + plan) |
 | Previous Phase | **P30 — Product Experience Foundation** (**FOUNDATION ACCEPTED** — `TC-P30-GATE` ACCEPTED WITH KNOWN LIMITATIONS · `7b34e33`) |
 | Previous Phase | **Home Discovery Composition** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOMFEED-GATE` `4094697`) |
 | Previous Phase | **Hotel Catalog Browse Index** (implementation **COMPLETE** · architect **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW** — `TC-HOTIDX-GATE` `3b058e2`) |
@@ -75,8 +76,11 @@
 | Architecture Brain | COMPLETE |
 | Master Execution Roadmap | [`docs/ROADMAP.md`](ROADMAP.md) |
 | Emergency ChatGPT Recovery | [`docs/prompts/START-HERE-IF-CHATGPT-IS-LOST.md`](prompts/START-HERE-IF-CHATGPT-IS-LOST.md) |
-| Current Active Product Task | `TC-P40-T001` Cursor **PASS** — awaiting Architect ACCEPT |
-| Current Next Task | Architect review of `TC-P40-T001` · ranked P40 backlog · T002 comparison next |
+| Current Active Product Task | **NONE** — project paused |
+| Last Architect Accepted Task | `TC-P40-T001` — Marketplace experience audit + plan (`8ff420c`) |
+| Issued but NOT Accepted | `TC-P40-T002` — Public Multi-Agency Offer Comparison · **`NOT_STARTED`** |
+| Current Next Task | **Resume reconciliation** — recover `TC-P40-T002` repository state before any new envelope |
+| Pause Checkpoint | [`docs/ai/TRAVELCORE-PAUSE-RECOVERY-CHECKPOINT.md`](ai/TRAVELCORE-PAUSE-RECOVERY-CHECKPOINT.md) |
 | Pipeline compliance ledger | [`docs/plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED retroactively accepted; rollback rejected; **Cursor PASS ≠ Architect Acceptance** |
 | P01 | **COMPLETE** |
 | P01 Plan | `TC-P01-PLAN-R1` Architect Accepted |

@@ -35,15 +35,18 @@
 | فیلد | مقدار |
 |------|--------|
 | Project | TravelCore |
-| Current Phase | **P40 — Marketplace Merchandising & Experience Depth** (`TC-P40-T001` Cursor **PASS** · Experience audit + plan) |
-| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P38 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P39 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P40 ACTIVE** |
+| Project Status | **PAUSED_BY_ARCHITECT** |
+| Current Phase | **P40 — Marketplace Merchandising & Experience Depth** (`TC-P40-T001` **Architect ACCEPTED** · Experience audit + plan) |
+| Phase Status | P00–P29 COMPLETE · **P30 FOUNDATION ACCEPTED** · **P31–P34 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P35 PAUSED AS P1** · **P36 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P37 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P38 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P39 GATE ACCEPTED WITH KNOWN LIMITATIONS** · **P40 PAUSED** (`TC-P40-T002` NOT_STARTED) |
 | Last Accepted P00 Task | TC-P00-T008 |
 | Accepted Architecture Commit (T008) | `1bd4e95` |
 | Acceptance / State Commit (T008A) | `0074437` |
 | Last Accepted Commit | `b372367` (`TC-P12-GATE`) · P12 COMPLETE / ACCEPTED |
 | P00 Final Gate | TC-P00-GATE — PASS |
 | P00 Closure | TC-P00-CLOSE |
-| Current Next Task | Architect review of `TC-P40-T001` · ranked P40 backlog · T002 comparison next |
+| Last Architect Accepted Task | `TC-P40-T001` (`8ff420c`) |
+| Issued but NOT Accepted | `TC-P40-T002` — **`NOT_STARTED`** |
+| Current Next Task | **Resume reconciliation** — see [`docs/ai/TRAVELCORE-PAUSE-RECOVERY-CHECKPOINT.md`](ai/TRAVELCORE-PAUSE-RECOVERY-CHECKPOINT.md) |
 | Pipeline compliance ledger | [`plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md`](plans/PIPELINE-COMPLIANCE-LEDGER-CORRECTION-01.md) — MODOPS/HOTIDX/HOMFEED **RETROACTIVELY ACCEPTED AFTER FORENSIC REVIEW**; rollback **REJECTED**; **Cursor PASS ≠ Architect Acceptance** |
 | TC-P00-T002 State | COMPLETE / ACCEPTED |
 | TC-P00-T003 State | COMPLETE / ACCEPTED |
@@ -1042,7 +1045,9 @@ T001–T006 + GATE ACCEPTED · foundation complete · finance engines deferred �
 
 ## P40 — Marketplace Merchandising & Experience Depth
 
-**Status:** **ACTIVE** (`TC-P40-T001` Cursor **PASS** · Experience audit + plan)
+**Status:** **PAUSED_BY_ARCHITECT** (`TC-P40-T001` **Architect ACCEPTED** · `TC-P40-T002` issued · **NOT_STARTED**)
+
+Pause checkpoint: [`docs/ai/TRAVELCORE-PAUSE-RECOVERY-CHECKPOINT.md`](../ai/TRAVELCORE-PAUSE-RECOVERY-CHECKPOINT.md)
 
 Plan: [`docs/plans/P40-marketplace-merchandising-experience-depth.md`](plans/P40-marketplace-merchandising-experience-depth.md)
 
@@ -1052,7 +1057,7 @@ Prior gates: P38 commerce · P39 finance foundation
 
 Focus: multi-agency offer **comparison** · marketplace merchandising · Agency/Admin/Customer UX depth · **no fake KPIs** · campaign/placement ADR later
 
-Next expected: **TC-P40-T002** Public Multi-Agency Offer Comparison (not authorized until envelope)
+Next expected (on resume): **TC-P40-T002** Public Multi-Agency Offer Comparison — reconcile repository state first; **NOT_STARTED**
 
 ---
 
@@ -1138,6 +1143,6 @@ OUT of P30: DEMOFEED execution · new domain features · backend redesign (DEMOF
 | P37 | Experience Platform Foundation | **COMPLETE / GATE ACCEPTED WITH KNOWN LIMITATIONS** |
 | P38 | Multi-Agency Commerce | **GATE ACCEPTED WITH KNOWN LIMITATIONS** (`TC-P38-T015`) |
 | P39 | Commercial Finance Foundation | **GATE ACCEPTED WITH KNOWN LIMITATIONS** (`TC-P39-GATE`) |
-| P40 | Marketplace Merchandising & Experience | **ACTIVE** (`TC-P40-T001` · Audit PASS) |
+| P40 | Marketplace Merchandising & Experience | **PAUSED** (`TC-P40-T001` ACCEPTED · `TC-P40-T002` NOT_STARTED) |
 | P35 | Production Payment Provider Readiness | **PAUSED** (designs locked; Stripe test-mode code ready; external account facts) |
 | P30 | Product Experience Foundation | **FOUNDATION ACCEPTED** (`TC-P30-GATE`) |

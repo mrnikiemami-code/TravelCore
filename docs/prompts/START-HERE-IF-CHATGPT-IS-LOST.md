@@ -35,6 +35,8 @@ Fast recovery snapshot:
 
 [`docs/ai/TRAVELCORE-RECOVERY-CONTEXT.md`](../ai/TRAVELCORE-RECOVERY-CONTEXT.md)
 
+**If project is paused:** read [`docs/ai/TRAVELCORE-PAUSE-RECOVERY-CHECKPOINT.md`](../ai/TRAVELCORE-PAUSE-RECOVERY-CHECKPOINT.md) first.
+
 ### Authoritative command channel
 
 The authoritative architect chat is the **command / communication channel** only.
